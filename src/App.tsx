@@ -39,7 +39,7 @@ const App = () => (
             <Route path="/*" element={
               <QuestionBankProvider>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<Navigate to="/foyer" replace />} />
                   <Route path="/drill" element={<Drill />} />
                   <Route path="/waj" element={<WrongAnswerJournal />} />
                   <Route path="/flagged" element={<FlaggedQuestions />} />
