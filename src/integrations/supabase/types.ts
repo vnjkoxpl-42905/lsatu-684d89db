@@ -16,24 +16,36 @@ export type Database = {
     Tables: {
       achievements: {
         Row: {
+          achievement_id: string | null
           badge_id: string
+          category: string | null
           class_id: string
+          earned_at: string | null
           id: string
           progress: Json | null
+          requirement: string | null
           unlocked_at: string | null
         }
         Insert: {
+          achievement_id?: string | null
           badge_id: string
+          category?: string | null
           class_id: string
+          earned_at?: string | null
           id?: string
           progress?: Json | null
+          requirement?: string | null
           unlocked_at?: string | null
         }
         Update: {
+          achievement_id?: string | null
           badge_id?: string
+          category?: string | null
           class_id?: string
+          earned_at?: string | null
           id?: string
           progress?: Json | null
+          requirement?: string | null
           unlocked_at?: string | null
         }
         Relationships: []
@@ -131,6 +143,39 @@ export type Database = {
           keywords?: string[] | null
           reasoning_type?: string | null
           related_concepts?: string[] | null
+        }
+        Relationships: []
+      }
+      daily_stats: {
+        Row: {
+          class_id: string
+          correct_answers: number | null
+          created_at: string | null
+          date: string
+          id: string
+          questions_answered: number | null
+          time_spent_ms: number | null
+          xp_earned: number | null
+        }
+        Insert: {
+          class_id: string
+          correct_answers?: number | null
+          created_at?: string | null
+          date?: string
+          id?: string
+          questions_answered?: number | null
+          time_spent_ms?: number | null
+          xp_earned?: number | null
+        }
+        Update: {
+          class_id?: string
+          correct_answers?: number | null
+          created_at?: string | null
+          date?: string
+          id?: string
+          questions_answered?: number | null
+          time_spent_ms?: number | null
+          xp_earned?: number | null
         }
         Relationships: []
       }
@@ -287,6 +332,36 @@ export type Database = {
         }
         Relationships: []
       }
+      question_usage: {
+        Row: {
+          class_id: string
+          created_at: string | null
+          id: string
+          last_seen_at: string | null
+          mode: string | null
+          qid: string
+          times_seen: number | null
+        }
+        Insert: {
+          class_id: string
+          created_at?: string | null
+          id?: string
+          last_seen_at?: string | null
+          mode?: string | null
+          qid: string
+          times_seen?: number | null
+        }
+        Update: {
+          class_id?: string
+          created_at?: string | null
+          id?: string
+          last_seen_at?: string | null
+          mode?: string | null
+          qid?: string
+          times_seen?: number | null
+        }
+        Relationships: []
+      }
       reasoning_type_guidance: {
         Row: {
           common_flaws: string[] | null
@@ -334,6 +409,7 @@ export type Database = {
           created_at: string | null
           id: string
           initial_score: number
+          initial_total: number | null
           mode: string | null
           pt: number
           questions_json: Json | null
@@ -349,6 +425,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           initial_score?: number
+          initial_total?: number | null
           mode?: string | null
           pt: number
           questions_json?: Json | null
@@ -364,6 +441,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           initial_score?: number
+          initial_total?: number | null
           mode?: string | null
           pt?: number
           questions_json?: Json | null
