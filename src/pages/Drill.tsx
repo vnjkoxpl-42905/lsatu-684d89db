@@ -1718,7 +1718,7 @@ function DrillContent() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleNavigation('/foyer')}
+              onClick={() => handleNavigation('/')}
               className="text-muted-foreground hover:text-foreground min-h-[40px]"
             >
               <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
