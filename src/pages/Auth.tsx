@@ -359,19 +359,19 @@ export default function Auth() {
 
       {/* ── z-10: Hero front door ── */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none">
-        <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-10 font-medium">
+        <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-6 sm:mb-10 font-medium">
           Logical Reasoning
         </p>
 
-        <h1 className="text-[4.5rem] sm:text-[6rem] font-bold tracking-[-0.04em] text-white leading-none mb-5">
+        <h1 className="text-[3.5rem] sm:text-[6rem] font-bold tracking-[-0.04em] text-white leading-none mb-4 sm:mb-5">
           LSAT U
         </h1>
 
-        <p className="text-[11px] uppercase tracking-[0.22em] text-neutral-400 font-medium mb-3">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 font-medium mb-2 sm:mb-3">
           MASTER THE LSAT. OWN YOUR FUTURE.
         </p>
 
-        <p className="text-sm text-neutral-500 mb-14 max-w-[260px] leading-relaxed">
+        <p className="text-[13px] sm:text-sm text-neutral-500 mb-10 sm:mb-14 max-w-[260px] leading-relaxed">
           Clearer thinking, higher scores.
         </p>
 
