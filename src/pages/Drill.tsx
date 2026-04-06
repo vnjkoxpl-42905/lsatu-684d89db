@@ -13,7 +13,7 @@ import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
 import { VoiceCoachModal } from '@/components/drill/VoiceCoachModal';
-import { HighlightToolbar } from '@/components/drill/HighlightToolbar';
+import { DrillTopBar } from '@/components/drill/DrillTopBar';
 import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
 import { BlindReviewFlow, type BlindReviewResult } from '@/components/drill/BlindReviewFlow';
@@ -1712,108 +1712,47 @@ function DrillContent() {
           </div>
         )}
 
-        {/* Header - Clean and minimal */}
-        <div className="border-b border-white/[0.06] bg-zinc-900/95 backdrop-blur-sm sticky top-0 z-40">
-          <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-4 lg:px-8 py-3 sm:py-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleNavigation('/')}
-              className="text-muted-foreground hover:text-foreground min-h-[40px]"
-            >
-              <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="text-sm sm:text-base">Exit</span>
-            </Button>
-
-            {/* Question Metadata - Center */}
-            {currentQuestion ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={() => {
-                      const text = `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`;
-                      navigator.clipboard.writeText(text);
-                      toast('Question ID copied to clipboard');
-                    }}
-                    className="px-3 py-1.5 rounded-md bg-accent/30 text-foreground border border-border/50 text-sm font-medium hover:bg-accent/40 transition-colors"
-                  >
-                    <span className="hidden sm:inline">
-                      PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum}
-                    </span>
-                    <span className="sm:hidden">
-                      Q{currentQuestion.qnum}
-                    </span>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="space-y-1">
-                    <p className="font-semibold">PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum}</p>
-                    <p className="text-xs text-muted-foreground">Type: {currentQuestion.qtype}</p>
-                    <p className="text-xs text-muted-foreground">Difficulty: {currentQuestion.difficulty}/5</p>
-                    <p className="text-xs text-muted-foreground mt-2">Click to copy ID</p>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            ) : (
-              <div className="h-8" />
-            )}
-
-            <div className="flex items-center gap-2 sm:gap-6">
-              {/* Tutor Mode toggle */}
-              {session?.mode === 'adaptive' && (
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="tutor-mode" className="text-xs sm:text-sm text-muted-foreground cursor-pointer select-none whitespace-nowrap">
-                    Tutor
-                  </Label>
-                  <Switch
-                    id="tutor-mode"
-                    checked={tutorMode}
-                    onCheckedChange={setTutorMode}
-                    className="data-[state=checked]:bg-primary"
-                  />
-                </div>
-              )}
-
-              {poolStatus && (
-                <QuestionPoolChip
-                  status={poolStatus}
-                  totalQuestions={totalPoolSize}
-                  availableQuestions={availablePoolSize}
-                />
-              )}
-              
-              {hasTimer && timer && (
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={timer.isPaused ? timer.resume : timer.pause}
-                    className="h-8 w-8 min-h-[40px] min-w-[40px] p-0"
-                  >
-                    {timer.isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-                  </Button>
-                  <div className="text-base sm:text-lg font-mono font-semibold tabular-nums text-foreground">
-                    {timer.label}
-                  </div>
-                </div>
-              )}
+        {/* Unified Top Bar */}
+        <DrillTopBar
+          onBack={() => handleNavigation('/')}
+          questionLabel={currentQuestion ? (
+            window.innerWidth >= 640
+              ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`
+              : `Q${currentQuestion.qnum}`
+          ) : undefined}
+          questionTooltip={currentQuestion ? (
+            <div className="space-y-1">
+              <p className="font-semibold">PT{currentQuestion.pt}-S{currentQuestion.section}-Q{currentQuestion.qnum}</p>
+              <p className="text-xs text-muted-foreground">Type: {currentQuestion.qtype}</p>
+              <p className="text-xs text-muted-foreground">Difficulty: {currentQuestion.difficulty}/5</p>
+              <p className="text-xs text-muted-foreground mt-2">Click to copy ID</p>
             </div>
-          </div>
-        </div>
-
-      {/* Compact toolbar - Available for all modes */}
-      <div className="border-b border-white/[0.06] bg-zinc-900/80">
-        <div className="flex items-center justify-end w-full max-w-7xl mx-auto px-4 lg:px-8 py-2">
-          <HighlightToolbar 
-            mode={highlightMode} 
-            onModeChange={setHighlightMode}
-            isFlagged={isFlagged}
-            onToggleFlag={handleToggleFlag}
-            onUndo={handleUndo}
-            canUndo={highlightHistory.length > 0}
-          />
-        </div>
-      </div>
+          ) : undefined}
+          onCopyId={() => {
+            if (currentQuestion) {
+              const text = `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`;
+              navigator.clipboard.writeText(text);
+              toast('Question ID copied to clipboard');
+            }
+          }}
+          highlightMode={highlightMode}
+          onHighlightModeChange={setHighlightMode}
+          isFlagged={isFlagged}
+          onToggleFlag={handleToggleFlag}
+          onUndo={handleUndo}
+          canUndo={highlightHistory.length > 0}
+          hasTimer={hasTimer}
+          timerLabel={timer?.label}
+          timerPaused={timer?.isPaused}
+          onTimerToggle={timer ? (timer.isPaused ? timer.resume : timer.pause) : undefined}
+          showTutorToggle={session?.mode === 'adaptive'}
+          tutorMode={tutorMode}
+          onTutorModeChange={setTutorMode}
+          onOpenTutor={() => setTutorChatOpen(true)}
+          poolStatus={poolStatus || undefined}
+          totalPoolSize={totalPoolSize}
+          availablePoolSize={availablePoolSize}
+        />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
