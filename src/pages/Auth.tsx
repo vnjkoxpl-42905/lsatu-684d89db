@@ -25,7 +25,7 @@ const HEAVY: { duration: number; ease: [number, number, number, number] } = {
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
   'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
