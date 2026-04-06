@@ -1,0 +1,163 @@
+import { useEffect, useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Brain, Clock, Filter, Wand2 } from 'lucide-react';
+import type { DrillMode } from '@/types/drill';
+import { templateService, type DrillTemplate } from '@/lib/templateService';
+import { TemplateCard } from './TemplateCard';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+
+interface ModeSelectorProps {
+  onSelectMode: (mode: DrillMode) => void;
+}
+
+export function ModeSelector({ onSelectMode }: ModeSelectorProps) {
+  const [templates, setTemplates] = useState<DrillTemplate[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const loadTemplates = async () => {
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch class_id from students table
+        const { data: student, error: studentError } = await supabase
+          .from('students')
+          .select('class_id')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (studentError) throw studentError;
+        
+        if (student?.class_id) {
+          const data = await templateService.getTemplates(student.class_id);
+          setTemplates(data);
+        }
+      } catch (err) {
+        console.error('Failed to load templates:', err);
+        toast({
+          title: "Failed to load templates",
+          description: "Could not load your saved drills.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadTemplates();
+  }, [user, toast]);
+
+  const handleStartTemplate = (template: DrillTemplate) => {
+    // Will pass template data to the drill mode
+    onSelectMode('type-drill');
+    // TODO: Need to pass template config to parent
+  };
+
+  const handleDeleteTemplate = async (id: string) => {
+    try {
+      await templateService.deleteTemplate(id);
+      setTemplates(prev => prev.filter(t => t.id !== id));
+      toast({ title: "Template deleted" });
+    } catch (err) {
+      toast({ 
+        title: "Failed to delete", 
+        variant: "destructive" 
+      });
+    }
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 px-4">
+      {/* Saved Templates Section */}
+      {templates.length > 0 && (
+        <div>
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Your Saved Drills</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {templates.map(template => (
+              <TemplateCard
+                key={template.id}
+                template={template}
+                onStart={handleStartTemplate}
+                onDelete={handleDeleteTemplate}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Mode Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <Card className="p-5 sm:p-6 flex flex-col min-h-[240px] sm:min-h-[280px] touch-manipulation active:scale-[0.98] transition-transform">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-3 sm:mb-4">
+            <Brain className="w-7 h-7 sm:w-8 sm:h-8 text-primary flex-shrink-0" />
+            <h3 className="text-lg sm:text-xl font-semibold">Drill</h3>
+          </div>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Let the LSAT coach choose a question for you
+          </p>
+        </div>
+        <Button onClick={() => onSelectMode('adaptive')} size="lg" className="w-full mt-4 sm:mt-6 min-h-[48px]">
+          Start drill
+        </Button>
+      </Card>
+
+      <Card className="p-5 sm:p-6 flex flex-col min-h-[240px] sm:min-h-[280px] touch-manipulation active:scale-[0.98] transition-transform">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-3 sm:mb-4">
+            <Clock className="w-7 h-7 sm:w-8 sm:h-8 text-primary flex-shrink-0" />
+            <h3 className="text-lg sm:text-xl font-semibold">Full section</h3>
+          </div>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Section mode with standard or custom time.
+          </p>
+        </div>
+        <Button onClick={() => onSelectMode('full-section')} size="lg" className="w-full mt-4 sm:mt-6 min-h-[48px]">
+          Start section
+        </Button>
+      </Card>
+
+      <Card className="p-5 sm:p-6 flex flex-col min-h-[240px] sm:min-h-[280px] bg-gradient-to-br from-slate-50 to-zinc-100 dark:from-slate-900 dark:to-zinc-900 border-slate-300 dark:border-slate-700 touch-manipulation active:scale-[0.98] transition-transform">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-3 sm:mb-4">
+            <Wand2 className="w-7 h-7 sm:w-8 sm:h-8 text-slate-700 dark:text-slate-300 flex-shrink-0" />
+            <h3 className="text-lg sm:text-xl font-semibold">Smart Builder</h3>
+          </div>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Describe what you want to practice in plain language
+          </p>
+        </div>
+        <Button 
+          onClick={() => onSelectMode('natural-drill')} 
+          size="lg" 
+          className="w-full mt-4 sm:mt-6 bg-slate-800 hover:bg-slate-900 dark:bg-slate-200 dark:hover:bg-slate-100 dark:text-slate-900 min-h-[48px]"
+        >
+          Build Drill
+        </Button>
+      </Card>
+
+      <Card className="p-5 sm:p-6 flex flex-col min-h-[240px] sm:min-h-[280px] touch-manipulation active:scale-[0.98] transition-transform">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-3 sm:mb-4">
+            <Filter className="w-7 h-7 sm:w-8 sm:h-8 text-primary flex-shrink-0" />
+            <h3 className="text-lg sm:text-xl font-semibold">Build a set</h3>
+          </div>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Build a set by type, difficulty, or PT/section.
+          </p>
+        </div>
+        <Button onClick={() => onSelectMode('type-drill')} size="lg" className="w-full mt-4 sm:mt-6 min-h-[48px]">
+          Build drill
+        </Button>
+      </Card>
+      </div>
+    </div>
+  );
+}
