@@ -1749,9 +1749,6 @@ function DrillContent() {
           tutorMode={tutorMode}
           onTutorModeChange={setTutorMode}
           onOpenTutor={() => setTutorChatOpen(true)}
-          poolStatus={poolStatus || undefined}
-          totalPoolSize={totalPoolSize}
-          availablePoolSize={availablePoolSize}
         />
 
       {/* Main Content */}
