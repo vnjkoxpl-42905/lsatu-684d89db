@@ -46,6 +46,7 @@ const App = () => (
               <QuestionBankProvider>
                 <Routes>
                   <Route path="/" element={<Navigate to="/foyer" replace />} />
+                  <Route path="/practice" element={<Home />} />
                   <Route path="/drill" element={<Drill />} />
                   <Route path="/waj" element={<WrongAnswerJournal />} />
                   <Route path="/flagged" element={<FlaggedQuestions />} />
