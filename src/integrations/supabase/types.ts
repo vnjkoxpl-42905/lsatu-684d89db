@@ -14,7 +14,507 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      achievements: {
+        Row: {
+          badge_id: string
+          class_id: string
+          id: string
+          progress: Json | null
+          unlocked_at: string | null
+        }
+        Insert: {
+          badge_id: string
+          class_id: string
+          id?: string
+          progress?: Json | null
+          unlocked_at?: string | null
+        }
+        Update: {
+          badge_id?: string
+          class_id?: string
+          id?: string
+          progress?: Json | null
+          unlocked_at?: string | null
+        }
+        Relationships: []
+      }
+      attempts: {
+        Row: {
+          app_version: string | null
+          class_id: string
+          confidence: number | null
+          correct: boolean
+          id: string
+          level: number
+          mode: string
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          section: number
+          set_id: string | null
+          time_ms: number
+          timestamp_iso: string | null
+        }
+        Insert: {
+          app_version?: string | null
+          class_id: string
+          confidence?: number | null
+          correct: boolean
+          id?: string
+          level: number
+          mode: string
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          section: number
+          set_id?: string | null
+          time_ms: number
+          timestamp_iso?: string | null
+        }
+        Update: {
+          app_version?: string | null
+          class_id?: string
+          confidence?: number | null
+          correct?: boolean
+          id?: string
+          level?: number
+          mode?: string
+          pt?: number
+          qid?: string
+          qnum?: number
+          qtype?: string
+          section?: number
+          set_id?: string | null
+          time_ms?: number
+          timestamp_iso?: string | null
+        }
+        Relationships: []
+      }
+      concept_library: {
+        Row: {
+          application: string | null
+          category: string | null
+          concept_name: string
+          created_at: string | null
+          examples: string | null
+          explanation: string
+          id: string
+          keywords: string[] | null
+          reasoning_type: string | null
+          related_concepts: string[] | null
+        }
+        Insert: {
+          application?: string | null
+          category?: string | null
+          concept_name: string
+          created_at?: string | null
+          examples?: string | null
+          explanation: string
+          id?: string
+          keywords?: string[] | null
+          reasoning_type?: string | null
+          related_concepts?: string[] | null
+        }
+        Update: {
+          application?: string | null
+          category?: string | null
+          concept_name?: string
+          created_at?: string | null
+          examples?: string | null
+          explanation?: string
+          id?: string
+          keywords?: string[] | null
+          reasoning_type?: string | null
+          related_concepts?: string[] | null
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          class_id: string
+          details: Json | null
+          event: string
+          id: string
+          timestamp_iso: string | null
+        }
+        Insert: {
+          class_id: string
+          details?: Json | null
+          event: string
+          id?: string
+          timestamp_iso?: string | null
+        }
+        Update: {
+          class_id?: string
+          details?: Json | null
+          event?: string
+          id?: string
+          timestamp_iso?: string | null
+        }
+        Relationships: []
+      }
+      flagged_questions: {
+        Row: {
+          class_id: string
+          flagged_at: string | null
+          id: string
+          level: number
+          note: string | null
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          section: number
+        }
+        Insert: {
+          class_id: string
+          flagged_at?: string | null
+          id?: string
+          level: number
+          note?: string | null
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          section: number
+        }
+        Update: {
+          class_id?: string
+          flagged_at?: string | null
+          id?: string
+          level?: number
+          note?: string | null
+          pt?: number
+          qid?: string
+          qnum?: number
+          qtype?: string
+          section?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          by_level_json: Json | null
+          by_qtype_json: Json | null
+          class_id: string
+          daily_goal_streak: number | null
+          overall_answered: number | null
+          overall_avg_ms: number | null
+          overall_correct: number | null
+          streak_current: number | null
+          updated_at: string | null
+          xp_total: number | null
+        }
+        Insert: {
+          by_level_json?: Json | null
+          by_qtype_json?: Json | null
+          class_id: string
+          daily_goal_streak?: number | null
+          overall_answered?: number | null
+          overall_avg_ms?: number | null
+          overall_correct?: number | null
+          streak_current?: number | null
+          updated_at?: string | null
+          xp_total?: number | null
+        }
+        Update: {
+          by_level_json?: Json | null
+          by_qtype_json?: Json | null
+          class_id?: string
+          daily_goal_streak?: number | null
+          overall_answered?: number | null
+          overall_avg_ms?: number | null
+          overall_correct?: number | null
+          streak_current?: number | null
+          updated_at?: string | null
+          xp_total?: number | null
+        }
+        Relationships: []
+      }
+      question_type_strategies: {
+        Row: {
+          answer_strategy: string
+          category: string
+          correct_answer_patterns: string | null
+          created_at: string | null
+          difficulty_indicators: string | null
+          id: string
+          prephrase_goal: string | null
+          question_type: string
+          reading_strategy: string
+          related_reasoning_types: string[] | null
+          stem_keywords: string[] | null
+          wrong_answer_patterns: string | null
+        }
+        Insert: {
+          answer_strategy: string
+          category: string
+          correct_answer_patterns?: string | null
+          created_at?: string | null
+          difficulty_indicators?: string | null
+          id?: string
+          prephrase_goal?: string | null
+          question_type: string
+          reading_strategy: string
+          related_reasoning_types?: string[] | null
+          stem_keywords?: string[] | null
+          wrong_answer_patterns?: string | null
+        }
+        Update: {
+          answer_strategy?: string
+          category?: string
+          correct_answer_patterns?: string | null
+          created_at?: string | null
+          difficulty_indicators?: string | null
+          id?: string
+          prephrase_goal?: string | null
+          question_type?: string
+          reading_strategy?: string
+          related_reasoning_types?: string[] | null
+          stem_keywords?: string[] | null
+          wrong_answer_patterns?: string | null
+        }
+        Relationships: []
+      }
+      reasoning_type_guidance: {
+        Row: {
+          common_flaws: string[] | null
+          created_at: string | null
+          description: string
+          examples: string | null
+          id: string
+          key_indicators: string[] | null
+          reasoning_type: string
+          relevant_question_types: string[] | null
+          strengthen_tactics: string | null
+          weaken_tactics: string | null
+        }
+        Insert: {
+          common_flaws?: string[] | null
+          created_at?: string | null
+          description: string
+          examples?: string | null
+          id?: string
+          key_indicators?: string[] | null
+          reasoning_type: string
+          relevant_question_types?: string[] | null
+          strengthen_tactics?: string | null
+          weaken_tactics?: string | null
+        }
+        Update: {
+          common_flaws?: string[] | null
+          created_at?: string | null
+          description?: string
+          examples?: string | null
+          id?: string
+          key_indicators?: string[] | null
+          reasoning_type?: string
+          relevant_question_types?: string[] | null
+          strengthen_tactics?: string | null
+          weaken_tactics?: string | null
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          class_id: string
+          cooldowns_json: Json | null
+          current_qid: string | null
+          cursor_index: number | null
+          elapsed_ms: number | null
+          markup_json: Json | null
+          queue_json: Json | null
+          review_queue_json: Json | null
+          started_at: string | null
+          timer_mode: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          class_id: string
+          cooldowns_json?: Json | null
+          current_qid?: string | null
+          cursor_index?: number | null
+          elapsed_ms?: number | null
+          markup_json?: Json | null
+          queue_json?: Json | null
+          review_queue_json?: Json | null
+          started_at?: string | null
+          timer_mode?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          class_id?: string
+          cooldowns_json?: Json | null
+          current_qid?: string | null
+          cursor_index?: number | null
+          elapsed_ms?: number | null
+          markup_json?: Json | null
+          queue_json?: Json | null
+          review_queue_json?: Json | null
+          started_at?: string | null
+          timer_mode?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          adaptive_on: boolean | null
+          class_id: string
+          enabled_levels: number[] | null
+          enabled_qtypes: string[] | null
+          explore_ratio: number | null
+          pace_vs_challenge: number | null
+          time_pref: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          adaptive_on?: boolean | null
+          class_id: string
+          enabled_levels?: number[] | null
+          enabled_qtypes?: string[] | null
+          explore_ratio?: number | null
+          pace_vs_challenge?: number | null
+          time_pref?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          adaptive_on?: boolean | null
+          class_id?: string
+          enabled_levels?: number[] | null
+          enabled_qtypes?: string[] | null
+          explore_ratio?: number | null
+          pace_vs_challenge?: number | null
+          time_pref?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          class_id: string
+          created_at: string | null
+          id: string
+          last_active_at: string | null
+          pin_hash: string | null
+          schema_version: number | null
+          student_label: string | null
+          token_hash: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          pin_hash?: string | null
+          schema_version?: number | null
+          student_label?: string | null
+          token_hash: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          pin_hash?: string | null
+          schema_version?: number | null
+          student_label?: string | null
+          token_hash?: string
+        }
+        Relationships: []
+      }
+      tactical_patterns: {
+        Row: {
+          application: string | null
+          created_at: string | null
+          description: string
+          examples: string | null
+          formula: string | null
+          id: string
+          pattern_name: string
+          pattern_type: string
+          question_types: string[] | null
+          reasoning_type: string | null
+        }
+        Insert: {
+          application?: string | null
+          created_at?: string | null
+          description: string
+          examples?: string | null
+          formula?: string | null
+          id?: string
+          pattern_name: string
+          pattern_type: string
+          question_types?: string[] | null
+          reasoning_type?: string | null
+        }
+        Update: {
+          application?: string | null
+          created_at?: string | null
+          description?: string
+          examples?: string | null
+          formula?: string | null
+          id?: string
+          pattern_name?: string
+          pattern_type?: string
+          question_types?: string[] | null
+          reasoning_type?: string | null
+        }
+        Relationships: []
+      }
+      wrong_answer_journal: {
+        Row: {
+          class_id: string
+          created_at: string | null
+          first_wrong_at_iso: string
+          history_json: Json
+          id: string
+          last_status: string
+          level: number
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          revisit_count: number
+          section: number
+          updated_at: string | null
+        }
+        Insert: {
+          class_id: string
+          created_at?: string | null
+          first_wrong_at_iso?: string
+          history_json?: Json
+          id?: string
+          last_status: string
+          level: number
+          pt: number
+          qid: string
+          qnum: number
+          qtype: string
+          revisit_count?: number
+          section: number
+          updated_at?: string | null
+        }
+        Update: {
+          class_id?: string
+          created_at?: string | null
+          first_wrong_at_iso?: string
+          history_json?: Json
+          id?: string
+          last_status?: string
+          level?: number
+          pt?: number
+          qid?: string
+          qnum?: number
+          qtype?: string
+          revisit_count?: number
+          section?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
