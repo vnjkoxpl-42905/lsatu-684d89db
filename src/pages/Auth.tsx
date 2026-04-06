@@ -105,8 +105,10 @@ export default function Auth() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [username, setUsername] = React.useState('');
+  const [name, setName] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
