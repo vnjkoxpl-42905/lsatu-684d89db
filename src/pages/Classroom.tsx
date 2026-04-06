@@ -620,7 +620,6 @@ export default function Classroom() {
         {activeTab === 'submissions' && <SubmissionsTab />}
         {activeTab === 'feedback'    && <FeedbackTab />}
         {activeTab === 'review'      && <ReviewTab />}
-        {activeTab === 'bootcamps'   && <BootcampsTab />}
       </main>
     </div>
   );
