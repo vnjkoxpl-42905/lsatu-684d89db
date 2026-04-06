@@ -1978,7 +1978,7 @@ function DrillContent() {
             {session.mode !== 'adaptive' && session.mode !== 'full-section' && !isPracticeSetMode && selectedAnswer && !showSolution && (
               <div className="flex justify-end gap-3 pt-6 mt-2">
                 <Button
-                  onClick={handleSubmitNonAdaptive}
+                  onClick={() => handleSubmitNonAdaptive()}
                   size="lg"
                   disabled={timer?.isPaused}
                 >
