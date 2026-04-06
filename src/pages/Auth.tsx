@@ -769,7 +769,9 @@ export default function Auth() {
                         Continue with Google
                       </motion.button>
                     </>
-                  )}
+                      )}
+                   )}
+
                 </GlassShell>
               </motion.div>
             </div>
