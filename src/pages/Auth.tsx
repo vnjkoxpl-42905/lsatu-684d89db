@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable/index';
 import { BackgroundPaths } from '@/components/ui/background-paths';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
