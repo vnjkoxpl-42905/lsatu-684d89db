@@ -109,6 +109,16 @@ export default function Auth() {
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(() => !!localStorage.getItem('lsatu_saved_email'));
+
+  // Load saved email on mount
+  React.useEffect(() => {
+    const saved = localStorage.getItem('lsatu_saved_email');
+    if (saved) {
+      setEmail(saved);
+      setRememberMe(true);
+    }
+  }, []);
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
