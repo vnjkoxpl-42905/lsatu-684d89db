@@ -324,6 +324,7 @@ export type Database = {
           class_id: string
           daily_goal_questions: number | null
           daily_goal_streak: number | null
+          display_name: string | null
           last_practice_date: string | null
           level: number | null
           longest_streak: number | null
@@ -340,6 +341,7 @@ export type Database = {
           class_id: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          display_name?: string | null
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null
@@ -356,6 +358,7 @@ export type Database = {
           class_id?: string
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          display_name?: string | null
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null

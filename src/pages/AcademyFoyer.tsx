@@ -18,6 +18,7 @@ import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
@@ -48,9 +49,21 @@ export default function AcademyFoyer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Auth guard ───────────────────────────────────────────────────────────────
+  // ── Auth guard — also check onboarding ──────────────────────────────────────
   React.useEffect(() => {
-    if (!authLoading && !user) navigate("/auth");
+    if (authLoading) return;
+    if (!user) { navigate("/auth"); return; }
+
+    // Ensure user has completed onboarding
+    const checkOnboarding = async () => {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (!profile?.display_name) navigate("/onboarding", { replace: true });
+    };
+    checkOnboarding();
   }, [user, authLoading, navigate]);
 
   // ── Phase state machine ──────────────────────────────────────────────────────
