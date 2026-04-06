@@ -13,7 +13,7 @@ import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
 import { VoiceCoachModal } from '@/components/drill/VoiceCoachModal';
-import { HighlightToolbar } from '@/components/drill/HighlightToolbar';
+import { DrillTopBar } from '@/components/drill/DrillTopBar';
 import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
 import { BlindReviewFlow, type BlindReviewResult } from '@/components/drill/BlindReviewFlow';
