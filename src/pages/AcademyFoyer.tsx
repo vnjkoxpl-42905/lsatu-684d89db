@@ -28,7 +28,7 @@ import { LogoutButton } from "@/components/LogoutButton";
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
   const location  = useLocation();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { theme } = useTheme();
   const isLight = theme === 'light';
 

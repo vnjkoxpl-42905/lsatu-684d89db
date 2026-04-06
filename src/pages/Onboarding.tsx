@@ -27,7 +27,7 @@ const GlassShell = ({ children }: { children: React.ReactNode }) => (
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const [username, setUsername] = React.useState('');
   const [saving, setSaving] = React.useState(false);
 
