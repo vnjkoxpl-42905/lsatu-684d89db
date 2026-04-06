@@ -107,6 +107,48 @@ export type Database = {
         }
         Relationships: []
       }
+      blind_review_sessions: {
+        Row: {
+          class_id: string
+          completed_at: string | null
+          confidence_ratings: Json | null
+          created_at: string | null
+          flagged_qids: string[] | null
+          id: string
+          original_answers: Json | null
+          pt: number | null
+          reviewed_answers: Json | null
+          section: number | null
+          started_at: string | null
+        }
+        Insert: {
+          class_id: string
+          completed_at?: string | null
+          confidence_ratings?: Json | null
+          created_at?: string | null
+          flagged_qids?: string[] | null
+          id?: string
+          original_answers?: Json | null
+          pt?: number | null
+          reviewed_answers?: Json | null
+          section?: number | null
+          started_at?: string | null
+        }
+        Update: {
+          class_id?: string
+          completed_at?: string | null
+          confidence_ratings?: Json | null
+          created_at?: string | null
+          flagged_qids?: string[] | null
+          id?: string
+          original_answers?: Json | null
+          pt?: number | null
+          reviewed_answers?: Json | null
+          section?: number | null
+          started_at?: string | null
+        }
+        Relationships: []
+      }
       concept_library: {
         Row: {
           application: string | null
@@ -176,6 +218,33 @@ export type Database = {
           questions_answered?: number | null
           time_spent_ms?: number | null
           xp_earned?: number | null
+        }
+        Relationships: []
+      }
+      drill_templates: {
+        Row: {
+          class_id: string
+          config_json: Json | null
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          class_id: string
+          config_json?: Json | null
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          class_id?: string
+          config_json?: Json | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -253,7 +322,11 @@ export type Database = {
           by_level_json: Json | null
           by_qtype_json: Json | null
           class_id: string
+          daily_goal_questions: number | null
           daily_goal_streak: number | null
+          last_practice_date: string | null
+          level: number | null
+          longest_streak: number | null
           overall_answered: number | null
           overall_avg_ms: number | null
           overall_correct: number | null
@@ -265,7 +338,11 @@ export type Database = {
           by_level_json?: Json | null
           by_qtype_json?: Json | null
           class_id: string
+          daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          last_practice_date?: string | null
+          level?: number | null
+          longest_streak?: number | null
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
@@ -277,7 +354,11 @@ export type Database = {
           by_level_json?: Json | null
           by_qtype_json?: Json | null
           class_id?: string
+          daily_goal_questions?: number | null
           daily_goal_streak?: number | null
+          last_practice_date?: string | null
+          level?: number | null
+          longest_streak?: number | null
           overall_answered?: number | null
           overall_avg_ms?: number | null
           overall_correct?: number | null
@@ -403,11 +484,13 @@ export type Database = {
       }
       section_history: {
         Row: {
+          blind_review_percent: number | null
           blind_review_score: number | null
           class_id: string
           completed_at: string | null
           created_at: string | null
           id: string
+          initial_percent: number | null
           initial_score: number
           initial_total: number | null
           mode: string | null
@@ -419,11 +502,13 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          blind_review_percent?: number | null
           blind_review_score?: number | null
           class_id: string
           completed_at?: string | null
           created_at?: string | null
           id?: string
+          initial_percent?: number | null
           initial_score?: number
           initial_total?: number | null
           mode?: string | null
@@ -435,11 +520,13 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          blind_review_percent?: number | null
           blind_review_score?: number | null
           class_id?: string
           completed_at?: string | null
           created_at?: string | null
           id?: string
+          initial_percent?: number | null
           initial_score?: number
           initial_total?: number | null
           mode?: string | null
