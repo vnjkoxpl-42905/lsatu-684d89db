@@ -1,60 +1,30 @@
 
 
-## Plan: Unify Drill Top Bar to Match Reference Design
+## Problem Analysis
 
-### What Changes
-Merge the current two-row header (exit bar + highlight toolbar) into a single compact toolbar row matching the reference screenshots. The reference shows one horizontal bar with all controls inline: back button, search field, action icons, text tools, highlighters, timer, and menu.
+The dark bars on the left and right sides of the drill page are caused by the main content wrapper at line 1758 of `Drill.tsx`:
 
-### Layout (left to right, matching reference)
-1. **"<< BACK"** link-style button (replaces current "Exit" with arrow icon)
-2. **Search/Find field** — text input placeholder "Find Text, Type Here"
-3. **Separator**
-4. **Action icons row**: checkmark (submit), eye (show/hide answer), undo
-5. **Text tools**: font size (A), list/align, pen/draw
-6. **Separator**
-7. **Underline** (U icon)
-8. **Highlighter dots** (yellow, pink/light, orange)
-9. **Eraser**
-10. **"Elapsed Time: X:XX"** label with timer
-11. **More menu** (vertical dots)
-12. **Blue circle button** (tutor/AI chat trigger)
+```
+<div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
+```
 
-### Steps
+This `max-w-7xl mx-auto` caps the content at ~80rem and centers it, exposing the dark `bg-background` (near-black, `0 0% 3.9%`) behind it. The two content panels inside use `bg-white`, creating an obvious contrast gap on wider screens.
 
-**1. Merge two bars into one in `Drill.tsx`**
-- Remove the second `border-b` toolbar div (lines ~1804-1816)
-- Integrate `HighlightToolbar` contents inline into the main header bar
-- Restructure the header flex layout to fit all items in one row
+Additionally, the outer container at line 1697 has no background override — it inherits the dark theme background.
 
-**2. Restyle the back button**
-- Change from ghost button with ArrowLeft icon to a text link reading "<< BACK" in blue/cyan
+## Fix
 
-**3. Add a "Find Text" search input**
-- Add a small text input with placeholder "Find Text, Type Here" next to the back button
-- Wire it to highlight/scroll-to matching text in the stimulus (find-in-page functionality)
+**File: `src/pages/Drill.tsx`**
 
-**4. Reorganize icon groups with separators**
-- Group: submit check, show/hide eye, undo
-- Group: text format A, align/list, pen
-- Separator
-- Group: underline U, highlighter dots (yellow, pink, orange), eraser
-- These map to existing highlight toolbar functionality
+1. **Remove `max-w-7xl mx-auto`** from the content wrapper (line 1758) so the two panels stretch edge-to-edge.
+2. **Add `bg-white`** to the outer `min-h-screen` wrapper (line 1697) so any remaining gaps also show white instead of dark.
+3. **Ensure the `DrillTopBar`** sits on a consistent background — it currently uses `bg-background` (dark). Change it to match the drill page's white/light content theme (e.g., `bg-white text-neutral-900 border-b border-neutral-200`).
 
-**5. Restyle the timer**
-- Change from mono font block to inline "Elapsed Time: X:XX" label text matching reference
+**File: `src/components/drill/DrillTopBar.tsx`**
 
-**6. Add more-menu (three dots)**
-- Vertical dots icon button for overflow actions (flag, settings, etc.)
+4. Update the bar's root container background from dark theme tokens to `bg-neutral-900 text-white` or keep it as-is if the dark bar is intentional (matching the reference screenshot). The reference shows a dark top bar with white content below — so only the side gaps need fixing.
 
-**7. Move tutor/AI button to far right**
-- Blue filled circle button at the end of the bar (currently the tutor chat trigger)
-
-**8. Responsive handling**
-- On mobile (<768px), collapse less-critical tools into the three-dot overflow menu
-- Keep back, timer, and tutor button always visible
-
-### Files Changed
-- `src/pages/Drill.tsx` — merge header sections, restructure layout
-- `src/components/drill/HighlightToolbar.tsx` — may inline its contents or adapt for single-bar layout
-- Potentially new: `src/components/drill/DrillTopBar.tsx` — extracted component for the unified bar
+### Summary of changes
+- Remove `max-w-7xl mx-auto` so panels fill the full width
+- Add `bg-white` to the page-level container so no dark bleed-through occurs on sides
 
