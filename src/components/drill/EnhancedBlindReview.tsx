@@ -180,8 +180,8 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
           return next;
         });
       } else {
-        await supabase
-          .from('flagged_questions')
+        await (supabase
+          .from('flagged_questions') as any)
           .insert({
             qid: currentQid,
             user_id: user.id,

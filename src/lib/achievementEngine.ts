@@ -52,7 +52,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     const totalQuestions = context.userStats.overall_answered;
     
     // Get all milestone achievements
@@ -111,7 +111,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     
     if (!context.streakUpdate.streakIncreased) {
       return earned;
@@ -151,7 +151,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     
     // Check for "perfect 10" - 10 correct in a row
     if (context.attempt.correct) {

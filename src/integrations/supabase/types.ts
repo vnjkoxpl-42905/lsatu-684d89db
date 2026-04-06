@@ -10,67 +10,55 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
       achievements: {
         Row: {
+          achievement_id: string | null
           badge_id: string
-          category: string
-          created_at: string
-          description: string
-          icon: string
+          category: string | null
+          class_id: string
+          earned_at: string | null
           id: string
-          name: string
-          requirement: Json
-          tier: string
-          xp_reward: number
+          progress: Json | null
+          requirement: string | null
+          unlocked_at: string | null
         }
         Insert: {
+          achievement_id?: string | null
           badge_id: string
-          category: string
-          created_at?: string
-          description: string
-          icon: string
+          category?: string | null
+          class_id: string
+          earned_at?: string | null
           id?: string
-          name: string
-          requirement: Json
-          tier: string
-          xp_reward?: number
+          progress?: Json | null
+          requirement?: string | null
+          unlocked_at?: string | null
         }
         Update: {
+          achievement_id?: string | null
           badge_id?: string
-          category?: string
-          created_at?: string
-          description?: string
-          icon?: string
+          category?: string | null
+          class_id?: string
+          earned_at?: string | null
           id?: string
-          name?: string
-          requirement?: Json
-          tier?: string
-          xp_reward?: number
+          progress?: Json | null
+          requirement?: string | null
+          unlocked_at?: string | null
         }
         Relationships: []
       }
       attempts: {
         Row: {
           app_version: string | null
-          br_answer: string | null
-          br_changed: boolean | null
-          br_delta: string | null
-          br_marked: boolean | null
-          br_outcome: string | null
-          br_rationale: string | null
-          br_selected: boolean | null
-          br_time_ms: number | null
           class_id: string
           confidence: number | null
           correct: boolean
           id: string
           level: number
           mode: string
-          pre_answer: string | null
           pt: number
           qid: string
           qnum: number
@@ -80,25 +68,15 @@ export type Database = {
           time_ms: number
           timestamp_iso: string | null
           user_id: string | null
-          voice_used: boolean | null
         }
         Insert: {
           app_version?: string | null
-          br_answer?: string | null
-          br_changed?: boolean | null
-          br_delta?: string | null
-          br_marked?: boolean | null
-          br_outcome?: string | null
-          br_rationale?: string | null
-          br_selected?: boolean | null
-          br_time_ms?: number | null
           class_id: string
           confidence?: number | null
           correct: boolean
           id?: string
           level: number
           mode: string
-          pre_answer?: string | null
           pt: number
           qid: string
           qnum: number
@@ -108,25 +86,15 @@ export type Database = {
           time_ms: number
           timestamp_iso?: string | null
           user_id?: string | null
-          voice_used?: boolean | null
         }
         Update: {
           app_version?: string | null
-          br_answer?: string | null
-          br_changed?: boolean | null
-          br_delta?: string | null
-          br_marked?: boolean | null
-          br_outcome?: string | null
-          br_rationale?: string | null
-          br_selected?: boolean | null
-          br_time_ms?: number | null
           class_id?: string
           confidence?: number | null
           correct?: boolean
           id?: string
           level?: number
           mode?: string
-          pre_answer?: string | null
           pt?: number
           qid?: string
           qnum?: number
@@ -136,85 +104,48 @@ export type Database = {
           time_ms?: number
           timestamp_iso?: string | null
           user_id?: string | null
-          voice_used?: boolean | null
         }
         Relationships: []
       }
       blind_review_sessions: {
         Row: {
-          br_confirmed_count: number
-          br_corrected_count: number
-          br_items_count: number
-          br_median_time_ms: number | null
-          br_regret_count: number
-          br_stuck_count: number
           class_id: string
+          completed_at: string | null
+          confidence_ratings: Json | null
           created_at: string | null
+          flagged_qids: string[] | null
           id: string
-          session_id: string
+          original_answers: Json | null
+          pt: number | null
+          reviewed_answers: Json | null
+          section: number | null
+          started_at: string | null
         }
         Insert: {
-          br_confirmed_count?: number
-          br_corrected_count?: number
-          br_items_count?: number
-          br_median_time_ms?: number | null
-          br_regret_count?: number
-          br_stuck_count?: number
           class_id: string
+          completed_at?: string | null
+          confidence_ratings?: Json | null
           created_at?: string | null
+          flagged_qids?: string[] | null
           id?: string
-          session_id: string
+          original_answers?: Json | null
+          pt?: number | null
+          reviewed_answers?: Json | null
+          section?: number | null
+          started_at?: string | null
         }
         Update: {
-          br_confirmed_count?: number
-          br_corrected_count?: number
-          br_items_count?: number
-          br_median_time_ms?: number | null
-          br_regret_count?: number
-          br_stuck_count?: number
           class_id?: string
+          completed_at?: string | null
+          confidence_ratings?: Json | null
           created_at?: string | null
+          flagged_qids?: string[] | null
           id?: string
-          session_id?: string
-        }
-        Relationships: []
-      }
-      challenges: {
-        Row: {
-          active: boolean
-          bonus_rewards: Json | null
-          challenge_type: string
-          description: string
-          ends_at: string
-          id: string
-          name: string
-          requirements: Json
-          starts_at: string
-          xp_reward: number
-        }
-        Insert: {
-          active?: boolean
-          bonus_rewards?: Json | null
-          challenge_type: string
-          description: string
-          ends_at: string
-          id?: string
-          name: string
-          requirements: Json
-          starts_at?: string
-          xp_reward?: number
-        }
-        Update: {
-          active?: boolean
-          bonus_rewards?: Json | null
-          challenge_type?: string
-          description?: string
-          ends_at?: string
-          id?: string
-          name?: string
-          requirements?: Json
-          starts_at?: string
-          xp_reward?: number
+          original_answers?: Json | null
+          pt?: number | null
+          reviewed_answers?: Json | null
+          section?: number | null
+          started_at?: string | null
         }
         Relationships: []
       }
@@ -260,65 +191,59 @@ export type Database = {
       daily_stats: {
         Row: {
           class_id: string
-          correct_answers: number
+          correct_answers: number | null
+          created_at: string | null
           date: string
           id: string
-          questions_answered: number
-          time_spent_ms: number
-          xp_earned: number
+          questions_answered: number | null
+          time_spent_ms: number | null
+          xp_earned: number | null
         }
         Insert: {
           class_id: string
-          correct_answers?: number
-          date: string
+          correct_answers?: number | null
+          created_at?: string | null
+          date?: string
           id?: string
-          questions_answered?: number
-          time_spent_ms?: number
-          xp_earned?: number
+          questions_answered?: number | null
+          time_spent_ms?: number | null
+          xp_earned?: number | null
         }
         Update: {
           class_id?: string
-          correct_answers?: number
+          correct_answers?: number | null
+          created_at?: string | null
           date?: string
           id?: string
-          questions_answered?: number
-          time_spent_ms?: number
-          xp_earned?: number
+          questions_answered?: number | null
+          time_spent_ms?: number | null
+          xp_earned?: number | null
         }
         Relationships: []
       }
       drill_templates: {
         Row: {
           class_id: string
+          config_json: Json | null
           created_at: string | null
-          difficulties: number[]
           id: string
-          pts: number[]
-          qtypes: string[]
-          set_size: number
-          template_name: string
+          name: string
           updated_at: string | null
         }
         Insert: {
           class_id: string
+          config_json?: Json | null
           created_at?: string | null
-          difficulties: number[]
           id?: string
-          pts: number[]
-          qtypes: string[]
-          set_size?: number
-          template_name: string
+          name: string
           updated_at?: string | null
         }
         Update: {
           class_id?: string
+          config_json?: Json | null
           created_at?: string | null
-          difficulties?: number[]
           id?: string
-          pts?: number[]
-          qtypes?: string[]
-          set_size?: number
-          template_name?: string
+          name?: string
           updated_at?: string | null
         }
         Relationships: []
@@ -330,6 +255,7 @@ export type Database = {
           event: string
           id: string
           timestamp_iso: string | null
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -337,6 +263,7 @@ export type Database = {
           event: string
           id?: string
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -344,40 +271,47 @@ export type Database = {
           event?: string
           id?: string
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
       flagged_questions: {
         Row: {
-          class_id: string | null
+          class_id: string
           flagged_at: string | null
           id: string
+          level: number
           note: string | null
           pt: number
           qid: string
           qnum: number
+          qtype: string
           section: number
           user_id: string | null
         }
         Insert: {
-          class_id?: string | null
+          class_id: string
           flagged_at?: string | null
           id?: string
+          level: number
           note?: string | null
           pt: number
           qid: string
           qnum: number
+          qtype: string
           section: number
           user_id?: string | null
         }
         Update: {
-          class_id?: string | null
+          class_id?: string
           flagged_at?: string | null
           id?: string
+          level?: number
           note?: string | null
           pt?: number
           qid?: string
           qnum?: number
+          qtype?: string
           section?: number
           user_id?: string | null
         }
@@ -482,30 +416,30 @@ export type Database = {
       question_usage: {
         Row: {
           class_id: string
-          created_at: string
+          created_at: string | null
           id: string
-          last_seen_at: string
-          mode: string
+          last_seen_at: string | null
+          mode: string | null
           qid: string
-          times_seen: number
+          times_seen: number | null
         }
         Insert: {
           class_id: string
-          created_at?: string
+          created_at?: string | null
           id?: string
-          last_seen_at?: string
-          mode: string
+          last_seen_at?: string | null
+          mode?: string | null
           qid: string
-          times_seen?: number
+          times_seen?: number | null
         }
         Update: {
           class_id?: string
-          created_at?: string
+          created_at?: string | null
           id?: string
-          last_seen_at?: string
-          mode?: string
+          last_seen_at?: string | null
+          mode?: string | null
           qid?: string
-          times_seen?: number
+          times_seen?: number | null
         }
         Relationships: []
       }
@@ -550,67 +484,67 @@ export type Database = {
       }
       section_history: {
         Row: {
-          avg_time_ms: number
-          br_delta: number | null
+          blind_review_percent: number | null
+          blind_review_score: number | null
           br_percent: number | null
           br_score: number | null
-          br_total: number | null
-          br_used: boolean
-          by_difficulty_json: Json
-          by_qtype_json: Json
           class_id: string
+          completed_at: string | null
           created_at: string | null
           id: string
-          initial_percent: number
+          initial_percent: number | null
           initial_score: number
-          initial_total: number
+          initial_total: number | null
+          mode: string | null
           pt: number
+          questions_json: Json | null
           section: number
-          section_mode: string
-          total_time_ms: number
-          unanswered_count: number
+          time_taken_ms: number
+          total_questions: number
+          total_time_ms: number | null
+          user_id: string | null
         }
         Insert: {
-          avg_time_ms: number
-          br_delta?: number | null
+          blind_review_percent?: number | null
+          blind_review_score?: number | null
           br_percent?: number | null
           br_score?: number | null
-          br_total?: number | null
-          br_used?: boolean
-          by_difficulty_json?: Json
-          by_qtype_json?: Json
           class_id: string
+          completed_at?: string | null
           created_at?: string | null
           id?: string
-          initial_percent: number
-          initial_score: number
-          initial_total: number
+          initial_percent?: number | null
+          initial_score?: number
+          initial_total?: number | null
+          mode?: string | null
           pt: number
+          questions_json?: Json | null
           section: number
-          section_mode: string
-          total_time_ms: number
-          unanswered_count?: number
+          time_taken_ms?: number
+          total_questions?: number
+          total_time_ms?: number | null
+          user_id?: string | null
         }
         Update: {
-          avg_time_ms?: number
-          br_delta?: number | null
+          blind_review_percent?: number | null
+          blind_review_score?: number | null
           br_percent?: number | null
           br_score?: number | null
-          br_total?: number | null
-          br_used?: boolean
-          by_difficulty_json?: Json
-          by_qtype_json?: Json
           class_id?: string
+          completed_at?: string | null
           created_at?: string | null
           id?: string
-          initial_percent?: number
+          initial_percent?: number | null
           initial_score?: number
-          initial_total?: number
+          initial_total?: number | null
+          mode?: string | null
           pt?: number
+          questions_json?: Json | null
           section?: number
-          section_mode?: string
-          total_time_ms?: number
-          unanswered_count?: number
+          time_taken_ms?: number
+          total_questions?: number
+          total_time_ms?: number | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -767,148 +701,60 @@ export type Database = {
       user_achievements: {
         Row: {
           achievement_id: string
+          category: string | null
           class_id: string
-          earned_at: string
+          earned_at: string | null
           id: string
-          progress: number | null
+          requirement: string | null
         }
         Insert: {
           achievement_id: string
+          category?: string | null
           class_id: string
-          earned_at?: string
+          earned_at?: string | null
           id?: string
-          progress?: number | null
+          requirement?: string | null
         }
         Update: {
           achievement_id?: string
+          category?: string | null
           class_id?: string
-          earned_at?: string
+          earned_at?: string | null
           id?: string
-          progress?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_achievements_achievement_id_fkey"
-            columns: ["achievement_id"]
-            isOneToOne: false
-            referencedRelation: "achievements"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_challenges: {
-        Row: {
-          challenge_id: string
-          claimed: boolean
-          class_id: string
-          completed_at: string | null
-          id: string
-          progress: Json
-        }
-        Insert: {
-          challenge_id: string
-          claimed?: boolean
-          class_id: string
-          completed_at?: string | null
-          id?: string
-          progress?: Json
-        }
-        Update: {
-          challenge_id?: string
-          claimed?: boolean
-          class_id?: string
-          completed_at?: string | null
-          id?: string
-          progress?: Json
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_challenges_challenge_id_fkey"
-            columns: ["challenge_id"]
-            isOneToOne: false
-            referencedRelation: "challenges"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_voice_settings: {
-        Row: {
-          class_id: string
-          created_at: string | null
-          section_debrief_enabled: boolean | null
-          show_contrast: boolean | null
-          store_full_transcript: boolean | null
-          teach_back_on_correct: boolean | null
-          updated_at: string | null
-          voice_coach_enabled: boolean | null
-        }
-        Insert: {
-          class_id: string
-          created_at?: string | null
-          section_debrief_enabled?: boolean | null
-          show_contrast?: boolean | null
-          store_full_transcript?: boolean | null
-          teach_back_on_correct?: boolean | null
-          updated_at?: string | null
-          voice_coach_enabled?: boolean | null
-        }
-        Update: {
-          class_id?: string
-          created_at?: string | null
-          section_debrief_enabled?: boolean | null
-          show_contrast?: boolean | null
-          store_full_transcript?: boolean | null
-          teach_back_on_correct?: boolean | null
-          updated_at?: string | null
-          voice_coach_enabled?: boolean | null
+          requirement?: string | null
         }
         Relationships: []
       }
       voice_coaching_sessions: {
         Row: {
           action_taken: string | null
-          attempt_id: string | null
           class_id: string
-          coach_reply_id: string
-          coach_reply_text: string
-          contrast_shown: boolean | null
+          coach_response: string | null
           created_at: string | null
+          feedback_type: string | null
           id: string
-          qid: string
-          spoken_words: string | null
-          teach_back_given: boolean | null
-          transcript_full: string | null
-          voice_duration_ms: number
+          qid: string | null
+          user_id: string | null
         }
         Insert: {
           action_taken?: string | null
-          attempt_id?: string | null
           class_id: string
-          coach_reply_id: string
-          coach_reply_text: string
-          contrast_shown?: boolean | null
+          coach_response?: string | null
           created_at?: string | null
+          feedback_type?: string | null
           id?: string
-          qid: string
-          spoken_words?: string | null
-          teach_back_given?: boolean | null
-          transcript_full?: string | null
-          voice_duration_ms: number
+          qid?: string | null
+          user_id?: string | null
         }
         Update: {
           action_taken?: string | null
-          attempt_id?: string | null
           class_id?: string
-          coach_reply_id?: string
-          coach_reply_text?: string
-          contrast_shown?: boolean | null
+          coach_response?: string | null
           created_at?: string | null
+          feedback_type?: string | null
           id?: string
-          qid?: string
-          spoken_words?: string | null
-          teach_back_given?: boolean | null
-          transcript_full?: string | null
-          voice_duration_ms?: number
+          qid?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -928,6 +774,7 @@ export type Database = {
           revisit_count: number
           section: number
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -944,6 +791,7 @@ export type Database = {
           revisit_count?: number
           section: number
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -960,6 +808,7 @@ export type Database = {
           revisit_count?: number
           section?: number
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -968,7 +817,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_user_class_id: { Args: { uid: string }; Returns: string }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
