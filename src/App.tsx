@@ -17,6 +17,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
+import MainConclusionRole from "./pages/MainConclusionRole";
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import NotFound from "./pages/NotFound";
@@ -50,6 +51,7 @@ const App = () => (
                   <Route path="/schedule" element={<Schedule />} />
                   <Route path="/bootcamps" element={<Bootcamps />} />
                   <Route path="/bootcamp/causation-station" element={<CausationStation />} />
+                  <Route path="/bootcamp/main-conclusion-role" element={<MainConclusionRole />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </QuestionBankProvider>
