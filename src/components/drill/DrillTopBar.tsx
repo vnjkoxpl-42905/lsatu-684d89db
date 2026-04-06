@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { QuestionPoolChip } from "@/components/drill/QuestionPoolChip";
+
 import {
   Underline, Eraser, Flag, Undo2, Search,
   MoreVertical, Play, Pause, MessageCircle,
