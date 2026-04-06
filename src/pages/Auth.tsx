@@ -358,7 +358,7 @@ export default function Auth() {
       />
 
       {/* ── z-10: Hero front door ── */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 text-center select-none">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none">
         <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-10 font-medium">
           Logical Reasoning
         </p>
@@ -402,12 +402,12 @@ export default function Auth() {
             />
 
             {/* Modal panel */}
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
                 role="dialog"
                 aria-modal="true"
                 aria-label="LSAT U Access"
-                className="pointer-events-auto w-full max-w-[390px] will-change-transform"
+                className="pointer-events-auto w-full max-w-[390px] max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform"
                 initial={{ opacity: 0, scale: 0.98, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98, y: 10 }}

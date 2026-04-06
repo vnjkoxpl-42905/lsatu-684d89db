@@ -156,7 +156,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
   const dashOffset = isGhost ? CIRCUMFERENCE : 0;
 
   return (
-    <div className="relative w-full h-full select-none" aria-label="Academy navigation hub">
+    <div className="relative w-full h-full select-none touch-manipulation" aria-label="Academy navigation hub">
       {/* ── CSS keyframes (scoped inline) ── */}
       <style>{`
         @keyframes orbital-drift {
@@ -265,7 +265,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
               left: `${xp}%`,
               top:  `${yp}%`,
               transform: "translate(-50%, -50%)",
-              padding: "18px",
+              padding: "22px",
             }}
             initial={{ opacity: 0 }}
             animate={{
