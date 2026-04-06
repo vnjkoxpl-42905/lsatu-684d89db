@@ -418,10 +418,10 @@ export default function Auth() {
                   {!isRecovery && (
                     <button
                       onClick={() => setModalOpen(false)}
-                      className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors duration-200"
+                      className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
                       aria-label="Close"
                     >
-                      <X className="w-[14px] h-[14px]" />
+                      <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                     </button>
                   )}
 
