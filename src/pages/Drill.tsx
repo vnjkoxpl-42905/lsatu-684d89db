@@ -1243,7 +1243,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/' | '/foyer' | '/dashboard') => {
+  const handleNavigation = (destination: '/' | '/dashboard') => {
     setExitDestination(destination);
     setShowExitDialog(true);
   };
