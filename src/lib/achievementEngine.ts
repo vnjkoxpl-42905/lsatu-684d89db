@@ -111,7 +111,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     
     if (!context.streakUpdate.streakIncreased) {
       return earned;
