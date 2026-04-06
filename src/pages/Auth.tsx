@@ -25,7 +25,7 @@ const HEAVY: { duration: number; ease: [number, number, number, number] } = {
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
-  'pl-10 h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
+  'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
 const inputWithToggleCls = cn(inputCls, 'pr-10');
 const labelCls =
   'block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5';
@@ -67,13 +67,13 @@ const GlassShell = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <div className="relative rounded-2xl overflow-hidden shadow-[0_24px_56px_-12px_rgba(0,0,0,0.9),0_4px_20px_-4px_rgba(0,0,0,0.55)]">
+  <div className="relative rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-[0_24px_56px_-12px_rgba(0,0,0,0.9),0_4px_20px_-4px_rgba(0,0,0,0.55)]">
     {/* Traveling border beam — conic-gradient rotation, full perimeter */}
     <BorderBeam duration={6} color="rgba(255,255,255,0.55)" borderWidth={1.5} arcSize={0.15} />
     {/* Inner glass panel */}
     <div
       className={cn(
-        'relative p-8 bg-[#121212]/85 backdrop-blur-xl',
+        'relative p-6 sm:p-8 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:pb-8 bg-[#121212]/85 backdrop-blur-xl',
         'shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.09)]',
         className
       )}
@@ -359,28 +359,28 @@ export default function Auth() {
 
       {/* ── z-10: Hero front door ── */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none">
-        <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-10 font-medium">
+        <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-6 sm:mb-10 font-medium">
           Logical Reasoning
         </p>
 
-        <h1 className="text-[4.5rem] sm:text-[6rem] font-bold tracking-[-0.04em] text-white leading-none mb-5">
+        <h1 className="text-[3.5rem] sm:text-[6rem] font-bold tracking-[-0.04em] text-white leading-none mb-4 sm:mb-5">
           LSAT U
         </h1>
 
-        <p className="text-[11px] uppercase tracking-[0.22em] text-neutral-400 font-medium mb-3">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-neutral-400 font-medium mb-2 sm:mb-3">
           MASTER THE LSAT. OWN YOUR FUTURE.
         </p>
 
-        <p className="text-sm text-neutral-500 mb-14 max-w-[260px] leading-relaxed">
+        <p className="text-[13px] sm:text-sm text-neutral-500 mb-10 sm:mb-14 max-w-[260px] leading-relaxed">
           Clearer thinking, higher scores.
         </p>
 
         <motion.button
           whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => setModalOpen(true)}
-          className="h-12 px-9 bg-white text-[#000000] text-[11px] font-semibold uppercase tracking-[0.18em] rounded-lg
-            hover:bg-neutral-100 transition-colors duration-200
+          className="h-12 sm:h-12 px-9 min-w-[180px] bg-white text-[#000000] text-[11px] font-semibold uppercase tracking-[0.18em] rounded-lg
+            hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-200
             shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_4px_24px_-4px_rgba(255,255,255,0.1)]"
         >
           Start Here
@@ -407,10 +407,10 @@ export default function Auth() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="LSAT U Access"
-                className="pointer-events-auto w-full max-w-[390px] max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform"
-                initial={{ opacity: 0, scale: 0.98, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: 10 }}
+                className="pointer-events-auto w-full sm:max-w-[390px] max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform rounded-t-2xl sm:rounded-2xl"
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 60 }}
                 transition={HEAVY}
               >
                 <GlassShell>
@@ -418,10 +418,10 @@ export default function Auth() {
                   {!isRecovery && (
                     <button
                       onClick={() => setModalOpen(false)}
-                      className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors duration-200"
+                      className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
                       aria-label="Close"
                     >
-                      <X className="w-[14px] h-[14px]" />
+                      <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                     </button>
                   )}
 
@@ -730,7 +730,7 @@ export default function Auth() {
                         whileTap={{ scale: 0.99 }}
                         onClick={handleGoogleSignIn}
                         disabled={loading}
-                        className="w-full h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <svg className="w-4 h-4" viewBox="0 0 24 24">
                           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -763,15 +763,15 @@ export default function Auth() {
               transition={{ duration: 0.3 }}
               onClick={() => setForgotOpen(false)}
             />
-            <div className="fixed inset-0 z-[61] flex items-center justify-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-[61] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
-                className="pointer-events-auto w-full max-w-[340px]"
-                initial={{ opacity: 0, scale: 0.98, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: 8 }}
+                className="pointer-events-auto w-full sm:max-w-[340px] rounded-t-2xl sm:rounded-2xl"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 40 }}
                 transition={HEAVY}
               >
-                <GlassShell className="p-6">
+                <GlassShell className="p-5 sm:p-6">
                   <button
                     onClick={() => setForgotOpen(false)}
                     className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
