@@ -486,6 +486,8 @@ export type Database = {
         Row: {
           blind_review_percent: number | null
           blind_review_score: number | null
+          br_percent: number | null
+          br_score: number | null
           class_id: string
           completed_at: string | null
           created_at: string | null
@@ -499,11 +501,14 @@ export type Database = {
           section: number
           time_taken_ms: number
           total_questions: number
+          total_time_ms: number | null
           user_id: string | null
         }
         Insert: {
           blind_review_percent?: number | null
           blind_review_score?: number | null
+          br_percent?: number | null
+          br_score?: number | null
           class_id: string
           completed_at?: string | null
           created_at?: string | null
@@ -517,11 +522,14 @@ export type Database = {
           section: number
           time_taken_ms?: number
           total_questions?: number
+          total_time_ms?: number | null
           user_id?: string | null
         }
         Update: {
           blind_review_percent?: number | null
           blind_review_score?: number | null
+          br_percent?: number | null
+          br_score?: number | null
           class_id?: string
           completed_at?: string | null
           created_at?: string | null
@@ -535,6 +543,7 @@ export type Database = {
           section?: number
           time_taken_ms?: number
           total_questions?: number
+          total_time_ms?: number | null
           user_id?: string | null
         }
         Relationships: []
