@@ -20,6 +20,7 @@ import CausationStation from "./pages/CausationStation";
 import MainConclusionRole from "./pages/MainConclusionRole";
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
+import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
