@@ -55,6 +55,7 @@ export type Database = {
           set_id: string | null
           time_ms: number
           timestamp_iso: string | null
+          user_id: string | null
         }
         Insert: {
           app_version?: string | null
@@ -72,6 +73,7 @@ export type Database = {
           set_id?: string | null
           time_ms: number
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Update: {
           app_version?: string | null
@@ -89,6 +91,7 @@ export type Database = {
           set_id?: string | null
           time_ms?: number
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -138,6 +141,7 @@ export type Database = {
           event: string
           id: string
           timestamp_iso: string | null
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -145,6 +149,7 @@ export type Database = {
           event: string
           id?: string
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -152,6 +157,7 @@ export type Database = {
           event?: string
           id?: string
           timestamp_iso?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -167,6 +173,7 @@ export type Database = {
           qnum: number
           qtype: string
           section: number
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -179,6 +186,7 @@ export type Database = {
           qnum: number
           qtype: string
           section: number
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -191,6 +199,7 @@ export type Database = {
           qnum?: number
           qtype?: string
           section?: number
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -317,6 +326,54 @@ export type Database = {
         }
         Relationships: []
       }
+      section_history: {
+        Row: {
+          blind_review_score: number | null
+          class_id: string
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          initial_score: number
+          mode: string | null
+          pt: number
+          questions_json: Json | null
+          section: number
+          time_taken_ms: number
+          total_questions: number
+          user_id: string | null
+        }
+        Insert: {
+          blind_review_score?: number | null
+          class_id: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          initial_score?: number
+          mode?: string | null
+          pt: number
+          questions_json?: Json | null
+          section: number
+          time_taken_ms?: number
+          total_questions?: number
+          user_id?: string | null
+        }
+        Update: {
+          blind_review_score?: number | null
+          class_id?: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          initial_score?: number
+          mode?: string | null
+          pt?: number
+          questions_json?: Json | null
+          section?: number
+          time_taken_ms?: number
+          total_questions?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           class_id: string
@@ -402,6 +459,7 @@ export type Database = {
           schema_version: number | null
           student_label: string | null
           token_hash: string
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -412,6 +470,7 @@ export type Database = {
           schema_version?: number | null
           student_label?: string | null
           token_hash: string
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -422,6 +481,7 @@ export type Database = {
           schema_version?: number | null
           student_label?: string | null
           token_hash?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -464,6 +524,66 @@ export type Database = {
         }
         Relationships: []
       }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          category: string | null
+          class_id: string
+          earned_at: string | null
+          id: string
+          requirement: string | null
+        }
+        Insert: {
+          achievement_id: string
+          category?: string | null
+          class_id: string
+          earned_at?: string | null
+          id?: string
+          requirement?: string | null
+        }
+        Update: {
+          achievement_id?: string
+          category?: string | null
+          class_id?: string
+          earned_at?: string | null
+          id?: string
+          requirement?: string | null
+        }
+        Relationships: []
+      }
+      voice_coaching_sessions: {
+        Row: {
+          action_taken: string | null
+          class_id: string
+          coach_response: string | null
+          created_at: string | null
+          feedback_type: string | null
+          id: string
+          qid: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_taken?: string | null
+          class_id: string
+          coach_response?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          qid?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_taken?: string | null
+          class_id?: string
+          coach_response?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          qid?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       wrong_answer_journal: {
         Row: {
           class_id: string
@@ -480,6 +600,7 @@ export type Database = {
           revisit_count: number
           section: number
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           class_id: string
@@ -496,6 +617,7 @@ export type Database = {
           revisit_count?: number
           section: number
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           class_id?: string
@@ -512,6 +634,7 @@ export type Database = {
           revisit_count?: number
           section?: number
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
