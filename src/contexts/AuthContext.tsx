@@ -12,20 +12,16 @@ const signUpSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
-  username: z.string()
-    .min(3, 'Username must be at least 3 characters')
-    .max(30, 'Username must be at most 30 characters')
-    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscore, and hyphen'),
-  displayName: z.string()
-    .max(50, 'Display name must be at most 50 characters')
-    .optional()
+  name: z.string()
+    .min(1, 'Name is required')
+    .max(50, 'Name must be at most 50 characters')
 });
 
 interface AuthContextValue {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, username: string, displayName?: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -84,10 +80,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, username: string, displayName?: string) => {
+  const signUp = async (email: string, password: string, name: string) => {
     try {
-      // Validate inputs
-      const validation = signUpSchema.safeParse({ email, password, username, displayName });
+      const validation = signUpSchema.safeParse({ email, password, name });
       if (!validation.success) {
         const firstError = validation.error.errors[0];
         toast.error(firstError.message);
@@ -102,15 +97,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            username: validation.data.username,
-            display_name: validation.data.displayName || validation.data.username
+            display_name: validation.data.name
           }
         }
       });
 
       if (error) throw error;
       
-      toast.success('Account created successfully!');
       return { error: null };
     } catch (error: any) {
       toast.error(error.message || 'Failed to sign up');

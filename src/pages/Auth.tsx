@@ -105,9 +105,10 @@ export default function Auth() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [username, setUsername] = React.useState('');
+  const [name, setName] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
@@ -221,10 +222,12 @@ export default function Auth() {
           toast({ title: 'Passwords do not match', variant: 'destructive' });
           return;
         }
-        const { error } = await signUp(email, password, username, '');
+        const { error } = await signUp(email, password, name);
         if (error)
           toast({ title: 'Registration failed', description: error.message, variant: 'destructive' });
-        else toast({ title: 'Account created.' });
+        else {
+          setShowConfirmation(true);
+        }
       } else {
         const { error } = await signIn(email, password);
         if (error) {
@@ -596,8 +599,34 @@ export default function Auth() {
                         })}
                       </div>
 
+                      {showConfirmation ? (
+                        <div className="text-center space-y-4 py-4">
+                          <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
+                            <Mail className="w-6 h-6 text-emerald-400" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-white">Check your email</h3>
+                          <p className="text-[13px] text-neutral-400 leading-relaxed max-w-[280px] mx-auto">
+                            We sent a confirmation link to <span className="text-white font-medium">{email}</span>. Click the link to activate your account.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowConfirmation(false);
+                              setIsSignUp(false);
+                              setEmail('');
+                              setPassword('');
+                              setConfirmPassword('');
+                              setName('');
+                            }}
+                            className="text-[11px] text-neutral-500 hover:text-white transition-colors pt-2"
+                          >
+                            Back to sign in
+                          </button>
+                        </div>
+                      ) : (
+                      <>
                       <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Username — sign up only */}
+                        {/* Name — sign up only */}
                         <AnimatePresence>
                           {isSignUp && (
                             <motion.div
@@ -606,15 +635,14 @@ export default function Auth() {
                               exit={{ opacity: 0, height: 0 }}
                               className="overflow-hidden"
                             >
-                              <label className={labelCls}>Username</label>
+                              <label className={labelCls}>Name</label>
                               <Input
                                 type="text"
                                 required
-                                placeholder="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                minLength={3}
-                                maxLength={30}
+                                placeholder="Your name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                maxLength={50}
                                 className={inputCls}
                               />
                             </motion.div>
@@ -740,8 +768,11 @@ export default function Auth() {
                         </svg>
                         Continue with Google
                       </motion.button>
+                      </>
+                      )}
                     </>
                   )}
+
                 </GlassShell>
               </motion.div>
             </div>
