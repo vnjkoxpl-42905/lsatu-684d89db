@@ -763,12 +763,12 @@ export default function Auth() {
               transition={{ duration: 0.3 }}
               onClick={() => setForgotOpen(false)}
             />
-            <div className="fixed inset-0 z-[61] flex items-center justify-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-[61] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
-                className="pointer-events-auto w-full max-w-[340px]"
-                initial={{ opacity: 0, scale: 0.98, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: 8 }}
+                className="pointer-events-auto w-full sm:max-w-[340px] rounded-t-2xl sm:rounded-2xl"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 40 }}
                 transition={HEAVY}
               >
                 <GlassShell className="p-6">
