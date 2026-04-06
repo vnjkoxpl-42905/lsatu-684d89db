@@ -67,13 +67,13 @@ const GlassShell = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <div className="relative rounded-2xl overflow-hidden shadow-[0_24px_56px_-12px_rgba(0,0,0,0.9),0_4px_20px_-4px_rgba(0,0,0,0.55)]">
+  <div className="relative rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-[0_24px_56px_-12px_rgba(0,0,0,0.9),0_4px_20px_-4px_rgba(0,0,0,0.55)]">
     {/* Traveling border beam — conic-gradient rotation, full perimeter */}
     <BorderBeam duration={6} color="rgba(255,255,255,0.55)" borderWidth={1.5} arcSize={0.15} />
     {/* Inner glass panel */}
     <div
       className={cn(
-        'relative p-8 bg-[#121212]/85 backdrop-blur-xl',
+        'relative p-6 sm:p-8 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:pb-8 bg-[#121212]/85 backdrop-blur-xl',
         'shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.09)]',
         className
       )}
