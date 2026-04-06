@@ -250,18 +250,23 @@ export default function Auth() {
         if (error) {
           toast({ title: 'Authentication failed', description: error.message, variant: 'destructive' });
         } else {
-          // ── Navigate to Foyer with Welcome state ──
-          // skipAutoRedirectRef must be set SYNCHRONOUSLY so the auto-redirect
-          // useEffect above can't fire navigate('/foyer') while we're mid-async.
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
-          const name =
-            freshUser?.user_metadata?.username ||
-            freshUser?.user_metadata?.display_name ||
-            email.split('@')[0];
+          
+          // Check if user has completed onboarding
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('display_name')
+            .eq('class_id', freshUser!.id)
+            .maybeSingle();
 
-          navigate('/foyer', { state: { showWelcome: true, welcomeName: name } });
+          if (profile?.display_name) {
+            const displayName = profile.display_name;
+            navigate('/foyer', { state: { showWelcome: true, welcomeName: displayName } });
+          } else {
+            navigate('/onboarding');
+          }
           return;
         }
       }
