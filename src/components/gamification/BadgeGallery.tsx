@@ -22,7 +22,7 @@ interface Achievement {
 
 export function BadgeGallery() {
   const { user } = useAuth();
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [achievements, setAchievements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
   const [classId, setClassId] = useState<string | null>(null);

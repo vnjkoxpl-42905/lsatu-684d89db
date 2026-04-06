@@ -168,8 +168,8 @@ export function BlindReviewFlow({ session, selectedQids, onComplete }: BlindRevi
           .eq('user_id', user.id);
         setIsFlagged(false);
       } else {
-        await supabase
-          .from('flagged_questions')
+        await (supabase
+          .from('flagged_questions') as any)
           .insert({
             qid: currentQid,
             pt: currentQuestion.pt,
