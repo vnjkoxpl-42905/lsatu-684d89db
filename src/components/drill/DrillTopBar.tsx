@@ -179,9 +179,10 @@ export function DrillTopBar({
           </>
         )}
 
-        <Separator />
+        {/* Spacer */}
+        <div className="flex-1" />
 
-        {/* Highlighter tools */}
+        {/* Highlighter tools - right side */}
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -240,9 +241,6 @@ export function DrillTopBar({
             </Button>
           </>
         )}
-
-        {/* Spacer */}
-        <div className="flex-1" />
 
         {/* Tutor toggle */}
         {showTutorToggle && onTutorModeChange && (
