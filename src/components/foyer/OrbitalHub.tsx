@@ -44,7 +44,7 @@ export const FOYER_NODES: FoyerNode[] = [
     id: "practice",
     label: "PRACTICE",
     angleDeg: -90,
-    target: "/drill",
+    target: "/practice",
     description: "Drills, sections & adaptive sets",
     charge: 0,
   },
