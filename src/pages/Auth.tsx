@@ -771,7 +771,7 @@ export default function Auth() {
                 exit={{ opacity: 0, y: 40 }}
                 transition={HEAVY}
               >
-                <GlassShell className="p-6">
+                <GlassShell className="p-5 sm:p-6">
                   <button
                     onClick={() => setForgotOpen(false)}
                     className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
