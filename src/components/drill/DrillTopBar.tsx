@@ -162,24 +162,6 @@ export function DrillTopBar({
           </>
         )}
 
-        <Separator />
-
-        {/* Question ID chip */}
-        {questionLabel && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={onCopyId}
-                className="px-2 py-1 rounded bg-accent/30 text-foreground border border-border/50 text-xs font-medium hover:bg-accent/40 transition-colors shrink-0"
-              >
-                {questionLabel}
-              </button>
-            </TooltipTrigger>
-            {questionTooltip && (
-              <TooltipContent>{questionTooltip}</TooltipContent>
-            )}
-          </Tooltip>
-        )}
 
         {/* Undo - desktop only */}
         {!isMobile && onUndo && (
