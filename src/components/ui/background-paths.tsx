@@ -4,18 +4,28 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 function FloatingPaths({ position }: { position: number }) {
-    const paths = Array.from({ length: 36 }, (_, i) => ({
-        id: i,
-        d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
-            380 - i * 5 * position
-        } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
-            152 - i * 5 * position
-        } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
-            684 - i * 5 * position
-        } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
-        color: `rgba(15,23,42,${0.1 + i * 0.03})`,
-        width: 0.5 + i * 0.03,
-    }));
+    const paths = Array.from({ length: 36 }, (_, i) => {
+        const sx = -380 + i * 5 * position;
+        const sy = -189 - i * 6;
+        // Offset control points so curves start smooth instead of flat
+        const c1x = sx + 40 * position;
+        const c1y = sy + 80;
+        const c2x = -312 + i * 5 * position;
+        const c2y = 216 - i * 6;
+        const mx = 152 - i * 5 * position;
+        const my = 343 - i * 6;
+        const c3x = 616 - i * 5 * position;
+        const c3y = 470 - i * 6;
+        const c4x = 684 - i * 5 * position - 30 * position;
+        const c4y = 875 - i * 6 - 40;
+        const ex = 684 - i * 5 * position;
+        const ey = 875 - i * 6;
+        return {
+            id: i,
+            d: `M${sx} ${sy}C${c1x} ${c1y} ${c2x} ${c2y} ${mx} ${my}C${c3x} ${c3y} ${c4x} ${c4y} ${ex} ${ey}`,
+            width: 0.5 + i * 0.03,
+        };
+    });
     return (
         <div className="absolute inset-0 pointer-events-none">
             <svg
