@@ -1695,7 +1695,7 @@ function DrillContent() {
       </AlertDialog>
 
       <div className={cn(
-        "min-h-screen flex flex-col relative",
+        "min-h-screen flex flex-col relative bg-white",
         session.mode === 'full-section' && "pb-20"
       )}>
         {/* Pause Overlay */}
