@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 import Schedule from "./pages/Schedule";
+import Bootcamps from "./pages/Bootcamps";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
