@@ -110,7 +110,7 @@ export default function Auth() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
-  // useEffect never fires navigate('/foyer') while we're in the post-login async block.
+  // useEffect never fires navigate('/') while we're in the post-login async block.
   const skipAutoRedirectRef = React.useRef(false);
 
   // ── Recovery state ──
@@ -152,7 +152,7 @@ export default function Auth() {
     const url = new URL(window.location.href);
     const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
     const type = url.searchParams.get('type') || hashParams.get('type');
-    if (user && !isRecovery && type !== 'recovery' && !skipAutoRedirectRef.current) navigate('/foyer');
+    if (user && !isRecovery && type !== 'recovery' && !skipAutoRedirectRef.current) navigate('/');
   }, [user, navigate, isRecovery]);
 
   // Detect recovery mode
@@ -232,7 +232,7 @@ export default function Auth() {
         } else {
           // ── Navigate to Foyer with Welcome state ──
           // skipAutoRedirectRef must be set SYNCHRONOUSLY so the auto-redirect
-          // useEffect above can't fire navigate('/foyer') while we're mid-async.
+          // useEffect above can't fire navigate('/') while we're mid-async.
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
@@ -241,7 +241,7 @@ export default function Auth() {
             freshUser?.user_metadata?.display_name ||
             email.split('@')[0];
 
-          navigate('/foyer', { state: { showWelcome: true, welcomeName: name } });
+          navigate('/', { state: { showWelcome: true, welcomeName: name } });
           return;
         }
       }
