@@ -48,9 +48,21 @@ export default function AcademyFoyer() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Auth guard ───────────────────────────────────────────────────────────────
+  // ── Auth guard — also check onboarding ──────────────────────────────────────
   React.useEffect(() => {
-    if (!authLoading && !user) navigate("/auth");
+    if (authLoading) return;
+    if (!user) { navigate("/auth"); return; }
+
+    // Ensure user has completed onboarding
+    const checkOnboarding = async () => {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (!profile?.display_name) navigate("/onboarding", { replace: true });
+    };
+    checkOnboarding();
   }, [user, authLoading, navigate]);
 
   // ── Phase state machine ──────────────────────────────────────────────────────
