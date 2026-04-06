@@ -27,7 +27,7 @@ const GlassShell = ({ children }: { children: React.ReactNode }) => (
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const [username, setUsername] = React.useState('');
   const [saving, setSaving] = React.useState(false);
 
@@ -42,8 +42,8 @@ export default function Onboarding() {
 
   // If not logged in, redirect to auth
   React.useEffect(() => {
-    if (!authLoading && !user) navigate('/auth', { replace: true });
-  }, [authLoading, user, navigate]);
+    if (authReady && !user) navigate('/auth', { replace: true });
+  }, [authReady, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +79,7 @@ export default function Onboarding() {
     }
   };
 
-  if (authLoading) return null;
+  if (!authReady) return null;
 
   return (
     <div className="relative isolate min-h-screen bg-neutral-950 overflow-hidden">

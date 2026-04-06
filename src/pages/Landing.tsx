@@ -14,16 +14,16 @@ import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/dril
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
   const [selectedMode, setSelectedMode] = React.useState<DrillMode | null>(null);
 
   // Redirect to auth if not logged in
   React.useEffect(() => {
-    if (!authLoading && !user) {
+    if (authReady && !user) {
       navigate('/auth');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   const getFirstName = () => {
     if (!user) return 'there';

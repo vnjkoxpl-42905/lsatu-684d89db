@@ -28,7 +28,7 @@ import { LogoutButton } from "@/components/LogoutButton";
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
   const location  = useLocation();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { theme } = useTheme();
   const isLight = theme === 'light';
 
@@ -51,7 +51,7 @@ export default function AcademyFoyer() {
 
   // ── Auth guard — also check onboarding ──────────────────────────────────────
   React.useEffect(() => {
-    if (authLoading) return;
+    if (!authReady) return;
     if (!user) { navigate("/auth"); return; }
 
     // Ensure user has completed onboarding
@@ -64,7 +64,7 @@ export default function AcademyFoyer() {
       if (!profile?.display_name) navigate("/onboarding", { replace: true });
     };
     checkOnboarding();
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   // ── Phase state machine ──────────────────────────────────────────────────────
   const [phase, setPhase] = React.useState<FoyerPhase>(
@@ -104,7 +104,7 @@ export default function AcademyFoyer() {
   }, [navigate]);
 
   // ── Don't render until auth is resolved ─────────────────────────────────────
-  if (authLoading || !user) return null;
+  if (!authReady || !user) return null;
 
   // Theme-adaptive colors
   const brandColor   = isLight ? "rgba(0,0,0,0.38)"     : "rgba(255,255,255,0.22)";

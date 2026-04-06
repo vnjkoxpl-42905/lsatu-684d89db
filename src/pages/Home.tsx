@@ -92,7 +92,7 @@ function StudyToolRow({
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
   const [stats, setStats] = React.useState({
@@ -111,10 +111,10 @@ export default function Home() {
 
   // Auth guard
   React.useEffect(() => {
-    if (!authLoading && !user) {
+    if (authReady && !user) {
       navigate('/auth');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   // Load user stats
   React.useEffect(() => {
