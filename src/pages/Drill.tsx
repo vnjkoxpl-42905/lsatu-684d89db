@@ -165,7 +165,7 @@ function DrillContent() {
   // Initialize session with question pool filtering
   React.useEffect(() => {
     if (!state?.mode) {
-      navigate('/foyer');
+      navigate('/');
       return;
     }
 
@@ -1334,7 +1334,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate('/foyer')}
+          onBack={() => navigate('/')}
         />
       );
     }
@@ -1346,7 +1346,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate('/foyer')}
+          onBack={() => navigate('/')}
         />
       );
     }
@@ -1360,7 +1360,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate('/foyer')}
+        onBack={() => navigate('/')}
       />
     );
   }
@@ -1391,7 +1391,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate('/foyer');
+            navigate('/');
           }}
         />
       );
@@ -1421,7 +1421,7 @@ function DrillContent() {
         <BlindReviewResults
           session={session!}
           results={brResults}
-          onFinish={() => navigate('/foyer')}
+          onFinish={() => navigate('/')}
         />
       );
     }
@@ -1443,7 +1443,7 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate('/foyer')}>
+            <Button onClick={() => navigate('/')}>
               Return to Main Hub
             </Button>
           </div>

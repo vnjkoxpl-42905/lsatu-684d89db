@@ -244,7 +244,7 @@ export default function Home() {
               variant="ghost"
               size="sm"
               className="text-muted-foreground hover:text-foreground hover:bg-accent"
-              onClick={() => navigate('/foyer')}
+              onClick={() => navigate('/')}
             >
               Main Hub
             </Button>

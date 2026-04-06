@@ -178,7 +178,7 @@ export default function WrongAnswerJournal() {
             variant="ghost"
             size="sm"
             className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-            onClick={() => navigate('/foyer')}
+            onClick={() => navigate('/')}
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Return to Main Hub
