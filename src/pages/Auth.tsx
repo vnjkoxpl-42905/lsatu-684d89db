@@ -768,9 +768,10 @@ export default function Auth() {
                         </svg>
                         Continue with Google
                       </motion.button>
-                    </>
+                      </>
                       )}
-                   )}
+                    </>
+                  )}
 
                 </GlassShell>
               </motion.div>
