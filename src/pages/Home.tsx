@@ -92,7 +92,7 @@ function StudyToolRow({
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
   const [stats, setStats] = React.useState({
