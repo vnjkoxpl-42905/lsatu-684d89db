@@ -730,7 +730,7 @@ export default function Auth() {
                         whileTap={{ scale: 0.99 }}
                         onClick={handleGoogleSignIn}
                         disabled={loading}
-                        className="w-full h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <svg className="w-4 h-4" viewBox="0 0 24 24">
                           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
