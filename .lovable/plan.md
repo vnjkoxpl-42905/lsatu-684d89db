@@ -1,30 +1,26 @@
 
 
-## Problem Analysis
+## Plan: Reposition Tools and Remove Pool Chip
 
-The dark bars on the left and right sides of the drill page are caused by the main content wrapper at line 1758 of `Drill.tsx`:
+### Problem
+Looking at the reference image vs current layout:
+1. The highlight tools (underline, color dots, eraser) and flag are clustered left-center — they should sit further right, closer to the right-side controls
+2. The "Unseen only" chip (from `QuestionPoolChip`) is showing in the bar and shouldn't be there
 
-```
-<div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
-```
-
-This `max-w-7xl mx-auto` caps the content at ~80rem and centers it, exposing the dark `bg-background` (near-black, `0 0% 3.9%`) behind it. The two content panels inside use `bg-white`, creating an obvious contrast gap on wider screens.
-
-Additionally, the outer container at line 1697 has no background override — it inherits the dark theme background.
-
-## Fix
-
-**File: `src/pages/Drill.tsx`**
-
-1. **Remove `max-w-7xl mx-auto`** from the content wrapper (line 1758) so the two panels stretch edge-to-edge.
-2. **Add `bg-white`** to the outer `min-h-screen` wrapper (line 1697) so any remaining gaps also show white instead of dark.
-3. **Ensure the `DrillTopBar`** sits on a consistent background — it currently uses `bg-background` (dark). Change it to match the drill page's white/light content theme (e.g., `bg-white text-neutral-900 border-b border-neutral-200`).
+### Changes
 
 **File: `src/components/drill/DrillTopBar.tsx`**
 
-4. Update the bar's root container background from dark theme tokens to `bg-neutral-900 text-white` or keep it as-is if the dark bar is intentional (matching the reference screenshot). The reference shows a dark top bar with white content below — so only the side gaps need fixing.
+1. **Move highlight tools + flag to the right side** — relocate the highlight tools block (underline, yellow/pink/orange dots, eraser) and the flag button from their current position (before the spacer) to after the spacer, placing them just before the Tutor toggle and AI button on the right side.
 
-### Summary of changes
-- Remove `max-w-7xl mx-auto` so panels fill the full width
-- Add `bg-white` to the page-level container so no dark bleed-through occurs on sides
+2. **Remove the QuestionPoolChip** — delete the pool chip rendering block (lines 270-276) so "Unseen only" no longer appears in the top bar.
+
+3. **Remove unused props** — clean up `poolStatus`, `totalPoolSize`, `availablePoolSize` from the component interface since they're no longer rendered.
+
+**File: `src/pages/Drill.tsx`**
+
+4. **Stop passing pool props** to `DrillTopBar` — remove the `poolStatus`, `totalPoolSize`, `availablePoolSize` props from the `<DrillTopBar>` usage.
+
+### Resulting layout (left → right)
+`<< BACK` | Search input | Question ID | Undo | *(spacer)* | Underline | Dots | Eraser | Flag | Tutor toggle | AI button
 
