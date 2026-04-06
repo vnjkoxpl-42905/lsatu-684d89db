@@ -260,6 +260,12 @@ export default function Auth() {
         if (error) {
           toast({ title: 'Authentication failed', description: error.message, variant: 'destructive' });
         } else {
+          // Save or clear email based on "Remember me"
+          if (rememberMe) {
+            localStorage.setItem('lsatu_saved_email', email);
+          } else {
+            localStorage.removeItem('lsatu_saved_email');
+          }
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
