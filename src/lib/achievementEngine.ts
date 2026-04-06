@@ -52,7 +52,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     const totalQuestions = context.userStats.overall_answered;
     
     // Get all milestone achievements
