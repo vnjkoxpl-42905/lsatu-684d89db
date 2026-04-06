@@ -358,7 +358,7 @@ export default function Auth() {
       />
 
       {/* ── z-10: Hero front door ── */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-6 text-center select-none">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none">
         <p className="text-[9px] uppercase tracking-[0.35em] text-neutral-600 mb-10 font-medium">
           Logical Reasoning
         </p>
