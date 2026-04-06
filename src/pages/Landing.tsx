@@ -1,0 +1,163 @@
+import * as React from "react";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
+import { ModeSelector } from '@/components/drill/ModeSelector';
+import { SectionSelector } from '@/components/drill/SectionSelector';
+import { QuestionPicker } from '@/components/drill/QuestionPicker';
+import { NaturalDrillCreator } from '@/components/drill/NaturalDrillCreator';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { User } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
+
+export default function Landing() {
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const { manifest, isLoading, error } = useQuestionBank();
+  const [selectedMode, setSelectedMode] = React.useState<DrillMode | null>(null);
+
+  // Redirect to auth if not logged in
+  React.useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/auth');
+    }
+  }, [user, authLoading, navigate]);
+
+  const getFirstName = () => {
+    if (!user) return 'there';
+    
+    const displayName = user.user_metadata?.display_name || 
+                       user.user_metadata?.username || 
+                       user.email?.split('@')[0] || 
+                       'there';
+    
+    // Extract first name and capitalize
+    const firstName = displayName.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() || 'there';
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-neutral-950">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-2 border-white/10 border-t-white/40 rounded-full animate-spin" />
+          <p className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Preparing your practice session</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-neutral-950">
+        <p className="text-sm text-neutral-400">{error}</p>
+      </div>
+    );
+  }
+
+  const handleStartAdaptive = () => {
+    navigate('/drill', { state: { mode: 'adaptive' } });
+  };
+
+  const handleStartSection = (config: FullSectionConfig) => {
+    navigate('/drill', { state: { mode: 'full-section', config } });
+  };
+
+  const handleStartTypeDrill = (config: TypeDrillConfig) => {
+    navigate('/drill', { state: { mode: 'type-drill', config } });
+  };
+
+  const userInitials = user?.email?.slice(0, 2).toUpperCase() || 'U';
+
+  return (
+    <>
+      <div className="min-h-screen bg-neutral-950 p-4 sm:p-6 lg:p-8">
+      <div className="text-center mb-8 sm:mb-12 animate-fade-in">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+          <Button 
+            variant="ghost" 
+            className="gap-2 transition-all duration-200 hover:scale-105 min-h-[44px]"
+            onClick={() => navigate('/profile')}
+          >
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>{userInitials}</AvatarFallback>
+            </Avatar>
+            <span>Profile</span>
+          </Button>
+          <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/analytics')}
+              className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 min-h-[44px] text-sm sm:text-base"
+            >
+              Analytics
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/waj')}
+              className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 min-h-[44px] text-sm sm:text-base"
+            >
+              <span className="hidden sm:inline">Wrong Answer Journal</span>
+              <span className="sm:hidden">WAJ</span>
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/dashboard')}
+              className="transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 min-h-[44px] text-sm sm:text-base"
+            >
+              Dashboard
+            </Button>
+          </div>
+        </div>
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-4">LR Smart Drill</h1>
+        <p className="text-base sm:text-lg text-muted-foreground px-4">
+          Welcome back! Ready to practice?
+        </p>
+      </div>
+
+      {!selectedMode && manifest && (
+        <ModeSelector onSelectMode={setSelectedMode} />
+      )}
+
+      {selectedMode === 'adaptive' && (
+        <div className="max-w-2xl mx-auto text-center space-y-6 px-4">
+          <h2 className="text-xl sm:text-2xl font-bold">Start drill</h2>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button onClick={handleStartAdaptive} size="lg" className="min-h-[48px] w-full sm:w-auto">
+              Begin
+            </Button>
+            <Button variant="outline" onClick={() => setSelectedMode(null)} className="min-h-[48px] w-full sm:w-auto">
+              Back
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {selectedMode === 'full-section' && manifest && (
+        <SectionSelector
+          manifest={manifest}
+          onStartSection={handleStartSection}
+          onCancel={() => setSelectedMode(null)}
+        />
+      )}
+
+      {selectedMode === 'type-drill' && manifest && (
+        <QuestionPicker
+          manifest={manifest}
+          onStartDrill={handleStartTypeDrill}
+          onCancel={() => setSelectedMode(null)}
+        />
+      )}
+
+      {selectedMode === 'natural-drill' && (
+        <NaturalDrillCreator
+          onStartDrill={handleStartTypeDrill}
+          onCancel={() => setSelectedMode(null)}
+        />
+      )}
+      </div>
+    </>
+  );
+}
