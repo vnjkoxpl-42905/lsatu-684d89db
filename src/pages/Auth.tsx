@@ -771,6 +771,24 @@ export default function Auth() {
                           )}
                         </AnimatePresence>
 
+                        {/* Remember me — sign in only */}
+                        {!isSignUp && (
+                          <label className="flex items-center gap-2 cursor-pointer select-none group">
+                            <input
+                              type="checkbox"
+                              checked={rememberMe}
+                              onChange={(e) => {
+                                setRememberMe(e.target.checked);
+                                if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
+                              }}
+                              className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
+                            />
+                            <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                              Remember my email
+                            </span>
+                          </label>
+                        )}
+
                         {/* CTA */}
                         <div className="pt-1">
                           <CTAButton disabled={loading} loading={loading}>
