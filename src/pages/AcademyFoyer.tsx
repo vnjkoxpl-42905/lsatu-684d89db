@@ -104,7 +104,7 @@ export default function AcademyFoyer() {
   }, [navigate]);
 
   // ── Don't render until auth is resolved ─────────────────────────────────────
-  if (authLoading || !user) return null;
+  if (!authReady || !user) return null;
 
   // Theme-adaptive colors
   const brandColor   = isLight ? "rgba(0,0,0,0.38)"     : "rgba(255,255,255,0.22)";

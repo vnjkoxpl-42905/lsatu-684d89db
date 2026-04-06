@@ -79,7 +79,7 @@ export default function Onboarding() {
     }
   };
 
-  if (authLoading) return null;
+  if (!authReady) return null;
 
   return (
     <div className="relative isolate min-h-screen bg-neutral-950 overflow-hidden">
