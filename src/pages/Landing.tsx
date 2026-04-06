@@ -20,10 +20,10 @@ export default function Landing() {
 
   // Redirect to auth if not logged in
   React.useEffect(() => {
-    if (!authLoading && !user) {
+    if (authReady && !user) {
       navigate('/auth');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   const getFirstName = () => {
     if (!user) return 'there';

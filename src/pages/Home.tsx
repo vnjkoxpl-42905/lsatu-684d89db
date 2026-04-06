@@ -111,10 +111,10 @@ export default function Home() {
 
   // Auth guard
   React.useEffect(() => {
-    if (!authLoading && !user) {
+    if (authReady && !user) {
       navigate('/auth');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   // Load user stats
   React.useEffect(() => {
