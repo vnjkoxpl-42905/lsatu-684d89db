@@ -537,58 +537,7 @@ function ReviewTab() {
 // Tab definition
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Bootcamps tab
-// ─────────────────────────────────────────────────────────────────────────────
-
-const BootcampsTab: React.FC = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="space-y-6">
-      <div>
-        <IL>Featured Bootcamp</IL>
-        <p className="text-xs text-muted-foreground mt-1">Focused skill drills built into your classroom.</p>
-      </div>
-
-      {/* Causation Station Card */}
-      <div className="rounded-xl bg-card border border-border shadow-sm p-6 flex flex-col sm:flex-row gap-6 items-start">
-        <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center flex-shrink-0">
-          <span className="text-xl">⚗️</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h3 className="text-sm font-semibold text-foreground">Causation Station</h3>
-              <p className="text-xs text-muted-foreground mt-1 max-w-xl leading-relaxed">
-                A focused bootcamp to master causal reasoning — one of the most frequently tested skills on the LSAT. Train across 4 progressive modules: spot causation vs. correlation, identify alternate explanations, test relationships, and apply skills to real LSAT questions.
-              </p>
-              <div className="flex items-center gap-4 mt-3">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">4 Modules</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">76 Questions</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Flashcards + Journal</span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-4">
-            <button
-              onClick={() => navigate('/bootcamp/causation-station')}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
-            >
-              Launch Bootcamp
-              <span className="ml-1">→</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Tab definition
-// ─────────────────────────────────────────────────────────────────────────────
-
-type TabId = 'overview' | 'assignments' | 'materials' | 'submissions' | 'feedback' | 'review' | 'bootcamps';
+type TabId = 'overview' | 'assignments' | 'materials' | 'submissions' | 'feedback' | 'review';
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'overview',     label: 'Overview' },
@@ -597,7 +546,6 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'submissions',  label: 'Submissions' },
   { id: 'feedback',     label: 'Feedback' },
   { id: 'review',       label: 'Review Tools' },
-  { id: 'bootcamps',    label: 'Bootcamps' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -672,7 +620,6 @@ export default function Classroom() {
         {activeTab === 'submissions' && <SubmissionsTab />}
         {activeTab === 'feedback'    && <FeedbackTab />}
         {activeTab === 'review'      && <ReviewTab />}
-        {activeTab === 'bootcamps'   && <BootcampsTab />}
       </main>
     </div>
   );

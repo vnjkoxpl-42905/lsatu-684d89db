@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 import Schedule from "./pages/Schedule";
+import Bootcamps from "./pages/Bootcamps";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -47,6 +48,7 @@ const App = () => (
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/classroom" element={<Classroom />} />
                   <Route path="/schedule" element={<Schedule />} />
+                  <Route path="/bootcamps" element={<Bootcamps />} />
                   <Route path="/bootcamp/causation-station" element={<CausationStation />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

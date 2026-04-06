@@ -49,9 +49,17 @@ export const FOYER_NODES: FoyerNode[] = [
     charge: 0,
   },
   {
+    id: "bootcamps",
+    label: "BOOTCAMPS",
+    angleDeg: -18,
+    target: "/bootcamps",
+    description: "Focused skill-building programs",
+    charge: 0.7,
+  },
+  {
     id: "schedule",
     label: "SCHEDULE",
-    angleDeg: 0,
+    angleDeg: 54,
     target: "/schedule",
     description: "Plan, milestones & office hours",
     charge: 0.6,
@@ -59,7 +67,7 @@ export const FOYER_NODES: FoyerNode[] = [
   {
     id: "analytics",
     label: "ANALYTICS",
-    angleDeg: 90,
+    angleDeg: 126,
     target: "/analytics",
     description: "Accuracy, trends & performance insight",
     charge: 0,
@@ -67,7 +75,7 @@ export const FOYER_NODES: FoyerNode[] = [
   {
     id: "classroom",
     label: "CLASSROOM",
-    angleDeg: 180,
+    angleDeg: 198,
     target: "/classroom",
     description: "Assigned work, materials & submissions",
     charge: 0.82,
