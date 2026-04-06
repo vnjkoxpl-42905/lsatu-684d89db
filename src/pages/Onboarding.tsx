@@ -42,8 +42,8 @@ export default function Onboarding() {
 
   // If not logged in, redirect to auth
   React.useEffect(() => {
-    if (!authLoading && !user) navigate('/auth', { replace: true });
-  }, [authLoading, user, navigate]);
+    if (authReady && !user) navigate('/auth', { replace: true });
+  }, [authReady, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
