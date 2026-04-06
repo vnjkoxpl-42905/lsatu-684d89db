@@ -35,6 +35,9 @@ const App = () => (
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
 
+            {/* Onboarding — username setup for new users */}
+            <Route path="/onboarding" element={<Onboarding />} />
+
             {/* Foyer — arrival layer, no question bank needed */}
             <Route path="/foyer" element={<AcademyFoyer />} />
 
