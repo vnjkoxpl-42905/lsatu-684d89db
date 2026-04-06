@@ -14,7 +14,7 @@ import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/dril
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
   const [selectedMode, setSelectedMode] = React.useState<DrillMode | null>(null);
 
