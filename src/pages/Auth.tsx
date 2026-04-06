@@ -402,7 +402,7 @@ export default function Auth() {
             />
 
             {/* Modal panel */}
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
                 role="dialog"
                 aria-modal="true"
