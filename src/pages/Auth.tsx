@@ -109,6 +109,16 @@ export default function Auth() {
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(() => !!localStorage.getItem('lsatu_saved_email'));
+
+  // Load saved email on mount
+  React.useEffect(() => {
+    const saved = localStorage.getItem('lsatu_saved_email');
+    if (saved) {
+      setEmail(saved);
+      setRememberMe(true);
+    }
+  }, []);
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
@@ -250,6 +260,12 @@ export default function Auth() {
         if (error) {
           toast({ title: 'Authentication failed', description: error.message, variant: 'destructive' });
         } else {
+          // Save or clear email based on "Remember me"
+          if (rememberMe) {
+            localStorage.setItem('lsatu_saved_email', email);
+          } else {
+            localStorage.removeItem('lsatu_saved_email');
+          }
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
@@ -754,6 +770,24 @@ export default function Auth() {
                             </motion.div>
                           )}
                         </AnimatePresence>
+
+                        {/* Remember me — sign in only */}
+                        {!isSignUp && (
+                          <label className="flex items-center gap-2 cursor-pointer select-none group">
+                            <input
+                              type="checkbox"
+                              checked={rememberMe}
+                              onChange={(e) => {
+                                setRememberMe(e.target.checked);
+                                if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
+                              }}
+                              className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
+                            />
+                            <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                              Remember my email
+                            </span>
+                          </label>
+                        )}
 
                         {/* CTA */}
                         <div className="pt-1">
