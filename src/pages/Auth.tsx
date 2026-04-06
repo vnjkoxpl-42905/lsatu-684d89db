@@ -377,10 +377,10 @@ export default function Auth() {
 
         <motion.button
           whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => setModalOpen(true)}
-          className="h-12 px-9 bg-white text-[#000000] text-[11px] font-semibold uppercase tracking-[0.18em] rounded-lg
-            hover:bg-neutral-100 transition-colors duration-200
+          className="h-12 sm:h-12 px-9 min-w-[180px] bg-white text-[#000000] text-[11px] font-semibold uppercase tracking-[0.18em] rounded-lg
+            hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-200
             shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_4px_24px_-4px_rgba(255,255,255,0.1)]"
         >
           Start Here
