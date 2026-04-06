@@ -51,7 +51,7 @@ export default function AcademyFoyer() {
 
   // ── Auth guard — also check onboarding ──────────────────────────────────────
   React.useEffect(() => {
-    if (authLoading) return;
+    if (!authReady) return;
     if (!user) { navigate("/auth"); return; }
 
     // Ensure user has completed onboarding
@@ -64,7 +64,7 @@ export default function AcademyFoyer() {
       if (!profile?.display_name) navigate("/onboarding", { replace: true });
     };
     checkOnboarding();
-  }, [user, authLoading, navigate]);
+  }, [user, authReady, navigate]);
 
   // ── Phase state machine ──────────────────────────────────────────────────────
   const [phase, setPhase] = React.useState<FoyerPhase>(
