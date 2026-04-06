@@ -116,7 +116,26 @@ export function DrillTopBar({
 
   return (
     <div className="border-b border-white/[0.06] bg-zinc-900/95 backdrop-blur-sm sticky top-0 z-40">
-      <div className="flex items-center gap-1 sm:gap-2 w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2">
+      <div className="flex items-center gap-1 sm:gap-2 w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 relative">
+        {/* Centered question ID chip - absolute center */}
+        {questionLabel && (
+          <div className="absolute left-1/2 -translate-x-1/2 z-10">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={onCopyId}
+                  className="px-2 py-1 rounded bg-accent/30 text-foreground border border-border/50 text-xs font-medium hover:bg-accent/40 transition-colors shrink-0 whitespace-nowrap"
+                >
+                  {questionLabel}
+                </button>
+              </TooltipTrigger>
+              {questionTooltip && (
+                <TooltipContent>{questionTooltip}</TooltipContent>
+              )}
+            </Tooltip>
+          </div>
+        )}
+
         {/* Back button */}
         <button
           onClick={onBack}
@@ -143,24 +162,6 @@ export function DrillTopBar({
           </>
         )}
 
-        <Separator />
-
-        {/* Question ID chip */}
-        {questionLabel && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={onCopyId}
-                className="px-2 py-1 rounded bg-accent/30 text-foreground border border-border/50 text-xs font-medium hover:bg-accent/40 transition-colors shrink-0"
-              >
-                {questionLabel}
-              </button>
-            </TooltipTrigger>
-            {questionTooltip && (
-              <TooltipContent>{questionTooltip}</TooltipContent>
-            )}
-          </Tooltip>
-        )}
 
         {/* Undo - desktop only */}
         {!isMobile && onUndo && (
