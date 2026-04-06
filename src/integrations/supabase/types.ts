@@ -817,7 +817,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      students_safe: {
+        Row: {
+          class_id: string | null
+          created_at: string | null
+          id: string | null
+          last_active_at: string | null
+          schema_version: number | null
+          student_label: string | null
+          user_id: string | null
+        }
+        Insert: {
+          class_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          last_active_at?: string | null
+          schema_version?: number | null
+          student_label?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          class_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          last_active_at?: string | null
+          schema_version?: number | null
+          student_label?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
