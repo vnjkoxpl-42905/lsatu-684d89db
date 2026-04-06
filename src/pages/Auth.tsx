@@ -250,7 +250,23 @@ export default function Auth() {
     }
   };
 
-  const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
+      }
+      if (result.redirected) return;
+    } catch (err: any) {
+      toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
     e.preventDefault();
     setLoading(true);
     const { error } = await resetPassword(resetEmail);
