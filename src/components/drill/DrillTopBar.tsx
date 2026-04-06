@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { QuestionPoolChip } from "@/components/drill/QuestionPoolChip";
+
 import {
   Underline, Eraser, Flag, Undo2, Search,
   MoreVertical, Play, Pause, MessageCircle,
@@ -47,10 +47,6 @@ interface DrillTopBarProps {
   onTutorModeChange?: (v: boolean) => void;
   showTutorToggle?: boolean;
   onOpenTutor?: () => void;
-  // Pool
-  poolStatus?: string;
-  totalPoolSize?: number;
-  availablePoolSize?: number;
   // Find text
   onFindText?: (query: string) => void;
 }
@@ -74,9 +70,6 @@ export function DrillTopBar({
   onTutorModeChange,
   showTutorToggle = false,
   onOpenTutor,
-  poolStatus,
-  totalPoolSize,
-  availablePoolSize,
   onFindText,
 }: DrillTopBarProps) {
   const isMobile = useIsMobile();
@@ -186,9 +179,10 @@ export function DrillTopBar({
           </>
         )}
 
-        <Separator />
+        {/* Spacer */}
+        <div className="flex-1" />
 
-        {/* Highlighter tools */}
+        {/* Highlighter tools - right side */}
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -248,9 +242,6 @@ export function DrillTopBar({
           </>
         )}
 
-        {/* Spacer */}
-        <div className="flex-1" />
-
         {/* Tutor toggle */}
         {showTutorToggle && onTutorModeChange && (
           <div className="hidden sm:flex items-center gap-1.5">
@@ -266,14 +257,6 @@ export function DrillTopBar({
           </div>
         )}
 
-        {/* Pool chip */}
-        {poolStatus && totalPoolSize !== undefined && availablePoolSize !== undefined && (
-          <QuestionPoolChip
-            status={poolStatus}
-            totalQuestions={totalPoolSize}
-            availableQuestions={availablePoolSize}
-          />
-        )}
 
         {/* Timer */}
         {hasTimer && timerLabel && (
