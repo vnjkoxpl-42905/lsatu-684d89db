@@ -265,7 +265,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
               left: `${xp}%`,
               top:  `${yp}%`,
               transform: "translate(-50%, -50%)",
-              padding: "18px",
+              padding: "22px",
             }}
             initial={{ opacity: 0 }}
             animate={{

@@ -407,7 +407,7 @@ export default function Auth() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="LSAT U Access"
-                className="pointer-events-auto w-full max-w-[390px] will-change-transform"
+                className="pointer-events-auto w-full max-w-[390px] max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform"
                 initial={{ opacity: 0, scale: 0.98, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98, y: 10 }}
