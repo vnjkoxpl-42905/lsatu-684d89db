@@ -1,26 +1,77 @@
 
+## Plan: Fix Google sign-in redirecting back to the login page
 
-## Plan: Reposition Tools and Remove Pool Chip
+### What I found
+The backend login itself is succeeding. Your auth logs show repeated successful Google logins and successful token exchange (`/token` returns 200), so this is not a Google provider failure.
 
-### Problem
-Looking at the reference image vs current layout:
-1. The highlight tools (underline, color dots, eraser) and flag are clustered left-center — they should sit further right, closer to the right-side controls
-2. The "Unseen only" chip (from `QuestionPoolChip`) is showing in the bar and shouldn't be there
+The problem appears to be in the frontend auth timing:
 
-### Changes
+- `AuthContext.tsx` tries to protect the app during OAuth callback by detecting `~oauth`, `access_token`, or `code=`
+- But inside `onAuthStateChange`, it always does:
+  - `setSession(session)`
+  - `setUser(session?.user ?? null)`
+  - `setLoading(false)`
 
-**File: `src/components/drill/DrillTopBar.tsx`**
+That means if the first auth event during callback is `INITIAL_SESSION` or another event with `session = null`, the app marks auth as “done” too early.
+Once that happens:
+- `AcademyFoyer.tsx` sees `authLoading === false` and `user === null`
+- it immediately runs `navigate("/auth")`
+- user gets kicked back to the login page before the OAuth session fully settles
 
-1. **Move highlight tools + flag to the right side** — relocate the highlight tools block (underline, yellow/pink/orange dots, eraser) and the flag button from their current position (before the spacer) to after the spacer, placing them just before the Tutor toggle and AI button on the right side.
+So this is a race condition in auth readiness, not a broken Google sign-in.
 
-2. **Remove the QuestionPoolChip** — delete the pool chip rendering block (lines 270-276) so "Unseen only" no longer appears in the top bar.
+### Strategy
+Make auth initialization truly “ready” only after the OAuth callback has finished resolving, and prevent route guards from redirecting during that brief callback window.
 
-3. **Remove unused props** — clean up `poolStatus`, `totalPoolSize`, `availablePoolSize` from the component interface since they're no longer rendered.
+### Implementation steps
 
-**File: `src/pages/Drill.tsx`**
+1. **Tighten `AuthContext` readiness logic**
+   - Update `src/contexts/AuthContext.tsx`
+   - In `onAuthStateChange`, do not blindly call `setLoading(false)` for every event while an OAuth callback is in progress
+   - Only end loading when:
+     - a real session exists, or
+     - OAuth callback is not in progress, or
+     - we get a terminal auth state that proves callback is finished
+   - Keep `getSession()` as the primary readiness checkpoint
 
-4. **Stop passing pool props** to `DrillTopBar` — remove the `poolStatus`, `totalPoolSize`, `availablePoolSize` props from the `<DrillTopBar>` usage.
+2. **Track auth-ready separately from raw user state**
+   - Add a clearer concept of “auth initialized / auth ready” in the auth context
+   - This avoids components treating `user === null` as final before initialization is complete
 
-### Resulting layout (left → right)
-`<< BACK` | Search input | Question ID | Undo | *(spacer)* | Underline | Dots | Eraser | Flag | Tutor toggle | AI button
+3. **Harden page guards**
+   - Update `src/pages/AcademyFoyer.tsx`
+   - Ensure it does not redirect to `/auth` until auth is fully ready
+   - Optionally apply the same protection pattern to other guarded pages like `Home.tsx` and `Onboarding.tsx` so the behavior is consistent everywhere
 
+4. **Preserve onboarding logic**
+   - Keep the current intended flow:
+     - returning Google user with profile → `/foyer`
+     - new Google user without profile → `/onboarding`
+   - Only change the timing/guard behavior, not the destination rules
+
+5. **Verify the OAuth redirect path**
+   - Review whether the app ever lands on `/~oauth` during hosted auth callback and ensure the callback route is allowed to finish before route guards run
+   - If needed, broaden callback detection slightly so the app recognizes all Google return states reliably
+
+### Expected result
+After this fix:
+- user clicks Google sign-in
+- Google account chooser opens
+- user returns to the app
+- session is restored automatically
+- returning users stay signed in and land in the app
+- new users go to onboarding instead of bouncing back to login
+
+### Files to update
+- `src/contexts/AuthContext.tsx`
+- `src/pages/AcademyFoyer.tsx`
+- likely also:
+  - `src/pages/Home.tsx`
+  - `src/pages/Onboarding.tsx`
+
+### Technical note
+The key bug is this line of behavior in the current auth listener:
+```ts
+setLoading(false)
+```
+It runs too early during OAuth callback handling. The fix is to gate that state transition so route guards wait for real auth readiness before redirecting.
