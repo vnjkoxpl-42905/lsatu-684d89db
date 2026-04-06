@@ -51,6 +51,7 @@ const App = () => (
                   <Route path="/schedule" element={<Schedule />} />
                   <Route path="/bootcamps" element={<Bootcamps />} />
                   <Route path="/bootcamp/causation-station" element={<CausationStation />} />
+                  <Route path="/bootcamp/main-conclusion-role" element={<MainConclusionRole />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </QuestionBankProvider>
