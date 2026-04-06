@@ -70,9 +70,6 @@ export function DrillTopBar({
   onTutorModeChange,
   showTutorToggle = false,
   onOpenTutor,
-  poolStatus,
-  totalPoolSize,
-  availablePoolSize,
   onFindText,
 }: DrillTopBarProps) {
   const isMobile = useIsMobile();
