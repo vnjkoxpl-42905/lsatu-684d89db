@@ -1695,7 +1695,7 @@ function DrillContent() {
       </AlertDialog>
 
       <div className={cn(
-        "min-h-screen flex flex-col relative",
+        "min-h-screen flex flex-col relative bg-white",
         session.mode === 'full-section' && "pb-20"
       )}>
         {/* Pause Overlay */}
@@ -1755,7 +1755,7 @@ function DrillContent() {
         />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full max-w-7xl mx-auto">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden w-full">
         {poolExhausted ? (
           <div className="flex-1 overflow-y-auto p-8">
             <QuestionPoolExhausted
