@@ -116,7 +116,7 @@ export function DrillTopBar({
 
   return (
     <div className="border-b border-white/[0.06] bg-zinc-900/95 backdrop-blur-sm sticky top-0 z-40">
-      <div className="flex items-center gap-1 sm:gap-2 w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 relative">
+      <div className="flex items-center gap-1 sm:gap-2 w-full px-2 sm:px-4 lg:px-6 py-2 relative">
         {/* Centered question ID chip - absolute center */}
         {questionLabel && (
           <div className="absolute left-1/2 -translate-x-1/2 z-10">
@@ -139,7 +139,7 @@ export function DrillTopBar({
         {/* Back button */}
         <button
           onClick={onBack}
-          className="flex items-center gap-0.5 text-sky-400 hover:text-sky-300 transition-colors shrink-0 text-sm font-medium"
+          className="flex items-center gap-0.5 text-foreground hover:text-foreground/80 transition-colors shrink-0 text-sm font-medium"
         >
           <ChevronLeft className="w-4 h-4" />
           <ChevronLeft className="w-4 h-4 -ml-2.5" />
