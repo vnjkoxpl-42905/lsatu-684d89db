@@ -46,7 +46,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (!existing) {
-        // Create the record — use the auth UUID as both class_id and token_hash
         await supabase.from('students').insert({
           user_id: userId,
           class_id: userId,
@@ -54,6 +53,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
       }
     };
+
+    // Detect if we're mid-OAuth callback — don't prematurely set loading=false
+    const isOAuthCallback =
+      window.location.pathname.includes('~oauth') ||
+      window.location.hash.includes('access_token') ||
+      window.location.search.includes('code=');
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -71,7 +76,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
+      // Only mark loading done if we're NOT in an OAuth callback without a session
+      // (the onAuthStateChange will handle it once the token exchange completes)
+      if (session || !isOAuthCallback) {
+        setLoading(false);
+      }
       if (session?.user) {
         provisionStudentRecord(session.user.id);
       }
