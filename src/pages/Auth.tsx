@@ -223,10 +223,12 @@ export default function Auth() {
           toast({ title: 'Passwords do not match', variant: 'destructive' });
           return;
         }
-        const { error } = await signUp(email, password, username, '');
+        const { error } = await signUp(email, password, name);
         if (error)
           toast({ title: 'Registration failed', description: error.message, variant: 'destructive' });
-        else toast({ title: 'Account created.' });
+        else {
+          setShowConfirmation(true);
+        }
       } else {
         const { error } = await signIn(email, password);
         if (error) {
