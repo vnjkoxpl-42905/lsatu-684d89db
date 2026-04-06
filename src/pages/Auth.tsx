@@ -148,12 +148,29 @@ export default function Auth() {
     };
   }, [modalOpen, forgotOpen]);
 
-  // Redirect authenticated users — suppressed while WelcomeLoading is playing
+  // Redirect authenticated users — check if they have a username first
   React.useEffect(() => {
+    if (!user || isRecovery || skipAutoRedirectRef.current) return;
     const url = new URL(window.location.href);
     const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
     const type = url.searchParams.get('type') || hashParams.get('type');
-    if (user && !isRecovery && type !== 'recovery' && !skipAutoRedirectRef.current) navigate('/foyer');
+    if (type === 'recovery') return;
+
+    // Check if user has completed onboarding (has display_name)
+    const checkProfile = async () => {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('class_id', user.id)
+        .maybeSingle();
+
+      if (profile?.display_name) {
+        navigate('/foyer');
+      } else {
+        navigate('/onboarding');
+      }
+    };
+    checkProfile();
   }, [user, navigate, isRecovery]);
 
   // Detect recovery mode
