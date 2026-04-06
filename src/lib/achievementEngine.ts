@@ -151,7 +151,7 @@ class AchievementEngine {
     classId: string,
     context: AttemptContext
   ): Promise<Achievement[]> {
-    const earned: Achievement[] = [];
+    const earned: any[] = [];
     
     // Check for "perfect 10" - 10 correct in a row
     if (context.attempt.correct) {
