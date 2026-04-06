@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QuestionBankProvider } from "./contexts/QuestionBankContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
@@ -39,7 +39,7 @@ const App = () => (
             <Route path="/*" element={
               <QuestionBankProvider>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<Navigate to="/foyer" replace />} />
                   <Route path="/drill" element={<Drill />} />
                   <Route path="/waj" element={<WrongAnswerJournal />} />
                   <Route path="/flagged" element={<FlaggedQuestions />} />

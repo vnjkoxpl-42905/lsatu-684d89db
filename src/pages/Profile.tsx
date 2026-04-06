@@ -251,7 +251,7 @@ export default function Profile() {
             variant="ghost"
             size="sm"
             className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/foyer')}
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Return to Main Hub
@@ -531,7 +531,7 @@ export default function Profile() {
       {/* ── Bottom-left hub return — high-contrast, theme-adaptive */}
       <div className="fixed bottom-7 left-8 z-20">
         <Button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/foyer')}
           className="bg-foreground hover:bg-foreground/90 text-background border border-border shadow-md px-10 h-20 text-[18px] font-medium rounded-xl"
         >
           Return to Main Hub

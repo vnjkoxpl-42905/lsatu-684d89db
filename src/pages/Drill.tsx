@@ -165,7 +165,7 @@ function DrillContent() {
   // Initialize session with question pool filtering
   React.useEffect(() => {
     if (!state?.mode) {
-      navigate('/');
+      navigate('/foyer');
       return;
     }
 
@@ -1243,7 +1243,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/' | '/dashboard') => {
+  const handleNavigation = (destination: '/' | '/foyer' | '/dashboard') => {
     setExitDestination(destination);
     setShowExitDialog(true);
   };
@@ -1334,7 +1334,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate('/')}
+          onBack={() => navigate('/foyer')}
         />
       );
     }
@@ -1346,7 +1346,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate('/')}
+          onBack={() => navigate('/foyer')}
         />
       );
     }
@@ -1360,7 +1360,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate('/')}
+        onBack={() => navigate('/foyer')}
       />
     );
   }
@@ -1391,7 +1391,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate('/');
+            navigate('/foyer');
           }}
         />
       );
@@ -1421,7 +1421,7 @@ function DrillContent() {
         <BlindReviewResults
           session={session!}
           results={brResults}
-          onFinish={() => navigate('/')}
+          onFinish={() => navigate('/foyer')}
         />
       );
     }
@@ -1443,7 +1443,7 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate('/')}>
+            <Button onClick={() => navigate('/foyer')}>
               Return to Main Hub
             </Button>
           </div>
@@ -1828,7 +1828,7 @@ function DrillContent() {
                 }
               }}
               onExpandCriteria={() => {
-                navigate('/');
+                navigate('/foyer');
               }}
               onSettings={() => {
                 navigate('/profile');
