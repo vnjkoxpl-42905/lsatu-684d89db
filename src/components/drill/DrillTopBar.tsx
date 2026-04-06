@@ -257,14 +257,6 @@ export function DrillTopBar({
           </div>
         )}
 
-        {/* Pool chip */}
-        {poolStatus && totalPoolSize !== undefined && availablePoolSize !== undefined && (
-          <QuestionPoolChip
-            status={poolStatus}
-            totalQuestions={totalPoolSize}
-            availableQuestions={availablePoolSize}
-          />
-        )}
 
         {/* Timer */}
         {hasTimer && timerLabel && (
