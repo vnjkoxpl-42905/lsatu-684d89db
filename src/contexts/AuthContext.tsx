@@ -80,10 +80,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, username: string, displayName?: string) => {
+  const signUp = async (email: string, password: string, name: string) => {
     try {
-      // Validate inputs
-      const validation = signUpSchema.safeParse({ email, password, username, displayName });
+      const validation = signUpSchema.safeParse({ email, password, name });
       if (!validation.success) {
         const firstError = validation.error.errors[0];
         toast.error(firstError.message);
@@ -98,15 +97,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: {
           emailRedirectTo: redirectUrl,
           data: {
-            username: validation.data.username,
-            display_name: validation.data.displayName || validation.data.username
+            display_name: validation.data.name
           }
         }
       });
 
       if (error) throw error;
       
-      toast.success('Account created successfully!');
       return { error: null };
     } catch (error: any) {
       toast.error(error.message || 'Failed to sign up');
