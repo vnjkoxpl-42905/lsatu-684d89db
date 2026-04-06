@@ -47,10 +47,6 @@ interface DrillTopBarProps {
   onTutorModeChange?: (v: boolean) => void;
   showTutorToggle?: boolean;
   onOpenTutor?: () => void;
-  // Pool
-  poolStatus?: string;
-  totalPoolSize?: number;
-  availablePoolSize?: number;
   // Find text
   onFindText?: (query: string) => void;
 }
