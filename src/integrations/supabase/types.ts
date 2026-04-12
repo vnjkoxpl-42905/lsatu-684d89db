@@ -64,6 +64,7 @@ export type Database = {
           qnum: number
           qtype: string
           section: number
+          selected_answer: string | null
           set_id: string | null
           time_ms: number
           timestamp_iso: string | null
@@ -82,6 +83,7 @@ export type Database = {
           qnum: number
           qtype: string
           section: number
+          selected_answer?: string | null
           set_id?: string | null
           time_ms: number
           timestamp_iso?: string | null
@@ -100,6 +102,7 @@ export type Database = {
           qnum?: number
           qtype?: string
           section?: number
+          selected_answer?: string | null
           set_id?: string | null
           time_ms?: number
           timestamp_iso?: string | null
@@ -443,6 +446,33 @@ export type Database = {
           mode?: string | null
           qid?: string
           times_seen?: number | null
+        }
+        Relationships: []
+      }
+      question_views: {
+        Row: {
+          answered: boolean
+          class_id: string
+          id: string
+          mode: string | null
+          qid: string
+          viewed_at: string
+        }
+        Insert: {
+          answered?: boolean
+          class_id: string
+          id?: string
+          mode?: string | null
+          qid: string
+          viewed_at?: string
+        }
+        Update: {
+          answered?: boolean
+          class_id?: string
+          id?: string
+          mode?: string | null
+          qid?: string
+          viewed_at?: string
         }
         Relationships: []
       }
