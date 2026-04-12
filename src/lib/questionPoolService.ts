@@ -59,21 +59,75 @@ export class QuestionPoolService {
   }
 
   /**
-   * Get all question usage for the user
+   * Track that a question was displayed to the user (question_views table)
    */
-  static async getQuestionUsage(classId: string, mode: DrillMode): Promise<Map<string, QuestionUsage>> {
+  static async trackQuestionView(qid: string, classId: string, mode: DrillMode): Promise<string | null> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
+        .from('question_views')
+        .insert({
+          class_id: classId,
+          qid,
+          mode,
+          answered: false,
+        })
+        .select('id')
+        .single();
+
+      if (error) {
+        console.error('Failed to track question view:', error);
+        return null;
+      }
+      return data?.id ?? null;
+    } catch (error) {
+      console.error('Failed to track question view:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Mark a question view as answered
+   */
+  static async markViewAnswered(viewId: string): Promise<void> {
+    try {
+      await (supabase as any)
+        .from('question_views')
+        .update({ answered: true })
+        .eq('id', viewId);
+    } catch (error) {
+      console.error('Failed to mark view as answered:', error);
+    }
+  }
+
+  /**
+   * Get all question usage for the user — cross-mode by default
+   */
+  static async getQuestionUsage(classId: string, mode: DrillMode, crossMode: boolean = true): Promise<Map<string, QuestionUsage>> {
+    try {
+      let query = supabase
         .from('question_usage')
         .select('qid, last_seen_at, times_seen')
-        .eq('class_id', classId)
-        .eq('mode', mode);
+        .eq('class_id', classId);
+
+      // Only filter by mode if cross-mode is disabled
+      if (!crossMode) {
+        query = query.eq('mode', mode);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
       const usageMap = new Map<string, QuestionUsage>();
       data?.forEach(item => {
-        usageMap.set(item.qid, item);
+        const existing = usageMap.get(item.qid);
+        if (!existing || (item.last_seen_at && (!existing.last_seen_at || item.last_seen_at > existing.last_seen_at))) {
+          usageMap.set(item.qid, {
+            qid: item.qid,
+            last_seen_at: item.last_seen_at ?? '',
+            times_seen: (existing?.times_seen ?? 0) + (item.times_seen ?? 1),
+          });
+        }
       });
 
       return usageMap;
