@@ -379,6 +379,120 @@ function DrillContent() {
     }
   }, [session?.mode]);
 
+  const resetPerQuestionState = () => {
+    setSelectedAnswer('');
+    setShowSolution(false);
+    setTutorChatOpen(false);
+    setTutorMessages([]);
+    setVoiceCoachOpen(false);
+    setShowVoiceChip(false);
+    setAnswerLocked(false);
+    setEliminatedAnswers(new Set());
+    setQuestionStartTime(performance.now());
+    setHighlightHistory([]);
+    setIsRetryAfterWrong(false);
+    setCorrectExplanation('');
+    setShowReviewButton(false);
+  };
+
+  const checkIfFlagged = async () => {
+    if (!currentQuestion || !user) {
+      setIsFlagged(false);
+      return;
+    }
+    
+    try {
+      const { data, error } = await supabase
+        .from('flagged_questions')
+        .select('id')
+        .eq('qid', currentQuestion.qid)
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking flag status:', error);
+      }
+      
+      setIsFlagged(!!data);
+    } catch (err) {
+      console.error('Error checking flag:', err);
+      setIsFlagged(false);
+    }
+  };
+
+  const handleAnswerSelect = (answer: string) => {
+    if (!isPracticeSetMode && !isRetryAfterWrong && answerLocked) return;
+    if (!tutorMode && showSolution) return;
+    
+    if (selectedAnswer === answer) {
+      setSelectedAnswer('');
+      if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
+        const newAttempts = new Map(session.attempts);
+        newAttempts.delete(currentQuestion.qid);
+        setSession({ ...session, attempts: newAttempts });
+        
+        if (isPracticeSetMode) {
+          questionTimer.current.recordAnswer(currentQuestion.qid, '');
+        }
+      }
+    } else {
+      setSelectedAnswer(answer);
+      if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
+        const newAttempts = new Map(session.attempts);
+        const existingAttempt = newAttempts.get(currentQuestion.qid);
+        
+        newAttempts.set(currentQuestion.qid, {
+          selectedAnswer: answer,
+          correct: answer === currentQuestion.correctAnswer,
+          timeMs: isPracticeSetMode ? questionTimer.current.getTotalTime(currentQuestion.qid) : 0,
+          timestamp: Date.now(),
+          confidence: existingAttempt?.confidence || null,
+          reviewDone: false,
+          answerRevealed: existingAttempt?.answerRevealed || false,
+        });
+        setSession({ ...session, attempts: newAttempts });
+        
+        if (isPracticeSetMode) {
+          questionTimer.current.recordAnswer(currentQuestion.qid, answer);
+        }
+      }
+    }
+  };
+
+  const handleEliminateAnswer = (key: string) => {
+    setEliminatedAnswers(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+        if (selectedAnswer === key) {
+          setSelectedAnswer('');
+          if (session?.mode === 'full-section' && currentQuestion) {
+            const newAttempts = new Map(session.attempts);
+            newAttempts.delete(currentQuestion.qid);
+            setSession({ ...session, attempts: newAttempts });
+          }
+        }
+      }
+      return newSet;
+    });
+  };
+
+  const handleLongPressStart = (key: string) => {
+    const timer = setTimeout(() => {
+      handleEliminateAnswer(key);
+    }, 500);
+    setLongPressTimer(timer);
+  };
+
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+  };
+
 
   const saveAttemptToDatabase = async (attemptData: {
     qid: string;
