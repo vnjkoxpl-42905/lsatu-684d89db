@@ -303,6 +303,22 @@ function DrillContent() {
     initializeSession();
   }, [state, navigate, classId, classIdLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays]);
 
+  // Hydrate adaptive engine from DB on session start
+  React.useEffect(() => {
+    if (classId && session) {
+      adaptiveEngine.hydrateFromDB(classId);
+    }
+  }, [classId, !!session]);
+
+  // Track question views whenever currentQuestion changes
+  React.useEffect(() => {
+    if (!currentQuestion || !classId || !session) return;
+    currentViewId.current = null;
+    QuestionPoolService.trackQuestionView(currentQuestion.qid, classId, session.mode).then(id => {
+      currentViewId.current = id;
+    });
+  }, [currentQuestion?.qid, classId, session?.mode]);
+
   // Adaptive mode: select next question only when advanceToken changes
   React.useEffect(() => {
     if (!session || session.mode !== 'adaptive') return;
@@ -362,132 +378,6 @@ function DrillContent() {
       setAdvanceToken(t => t + 1);
     }
   }, [session?.mode]);
-
-  const resetPerQuestionState = () => {
-    setSelectedAnswer('');
-    setShowSolution(false);
-    setTutorChatOpen(false);
-    setTutorMessages([]);
-    setVoiceCoachOpen(false);
-    setShowVoiceChip(false);
-    setAnswerLocked(false);
-    setEliminatedAnswers(new Set());
-    setQuestionStartTime(performance.now());
-    setHighlightHistory([]);
-    setIsRetryAfterWrong(false);
-    setCorrectExplanation('');
-    setShowReviewButton(false);
-  };
-
-  const checkIfFlagged = async () => {
-    if (!currentQuestion || !user) {
-      setIsFlagged(false);
-      return;
-    }
-    
-    try {
-      const { data, error } = await supabase
-        .from('flagged_questions')
-        .select('id')
-        .eq('qid', currentQuestion.qid)
-        .eq('user_id', user.id)
-        .maybeSingle();
-      
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error checking flag status:', error);
-      }
-      
-      setIsFlagged(!!data);
-    } catch (err) {
-      console.error('Error checking flag:', err);
-      setIsFlagged(false);
-    }
-  };
-
-  const handleAnswerSelect = (answer: string) => {
-    // In practice-set mode, don't lock after answer selection
-    // In adaptive mode after wrong answer, allow unlimited retries (don't lock)
-    if (!isPracticeSetMode && !isRetryAfterWrong && answerLocked) return;
-    // When tutor mode is off, block answer changes after submission
-    if (!tutorMode && showSolution) return;
-    
-    // Toggle behavior: clicking same answer deselects it
-    if (selectedAnswer === answer) {
-      setSelectedAnswer('');
-      // For section/practice-set mode, clear the saved answer
-      if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
-        const newAttempts = new Map(session.attempts);
-        newAttempts.delete(currentQuestion.qid);
-        setSession({ ...session, attempts: newAttempts });
-        
-        // Record answer change in practice-set mode
-        if (isPracticeSetMode) {
-          questionTimer.current.recordAnswer(currentQuestion.qid, '');
-        }
-      }
-    } else {
-      setSelectedAnswer(answer);
-      // For section/practice-set mode, auto-save the answer
-      if ((session?.mode === 'full-section' || isPracticeSetMode) && currentQuestion) {
-        const newAttempts = new Map(session.attempts);
-        const existingAttempt = newAttempts.get(currentQuestion.qid);
-        
-        newAttempts.set(currentQuestion.qid, {
-          selectedAnswer: answer,
-          correct: answer === currentQuestion.correctAnswer,
-          timeMs: isPracticeSetMode ? questionTimer.current.getTotalTime(currentQuestion.qid) : 0,
-          timestamp: Date.now(),
-          confidence: existingAttempt?.confidence || null,
-          reviewDone: false,
-          answerRevealed: existingAttempt?.answerRevealed || false,
-        });
-        setSession({ ...session, attempts: newAttempts });
-        
-        // Record answer change in practice-set mode
-        if (isPracticeSetMode) {
-          questionTimer.current.recordAnswer(currentQuestion.qid, answer);
-        }
-      }
-
-      // Adaptive mode: selection only — submission is always manual via the Check Answer button
-    }
-  };
-
-  const handleEliminateAnswer = (key: string) => {
-    setEliminatedAnswers(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(key)) {
-        newSet.delete(key);
-      } else {
-        newSet.add(key);
-        // Deselect when eliminating if currently selected
-        if (selectedAnswer === key) {
-          setSelectedAnswer('');
-          // Clear saved answer in section mode
-          if (session?.mode === 'full-section' && currentQuestion) {
-            const newAttempts = new Map(session.attempts);
-            newAttempts.delete(currentQuestion.qid);
-            setSession({ ...session, attempts: newAttempts });
-          }
-        }
-      }
-      return newSet;
-    });
-  };
-
-  const handleLongPressStart = (key: string) => {
-    const timer = setTimeout(() => {
-      handleEliminateAnswer(key);
-    }, 500); // 500ms for long press
-    setLongPressTimer(timer);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
-  };
 
 
   const saveAttemptToDatabase = async (attemptData: {
