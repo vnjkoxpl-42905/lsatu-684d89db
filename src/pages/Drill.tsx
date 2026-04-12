@@ -556,7 +556,9 @@ function DrillContent() {
       level: currentQuestion.difficulty,
       confidence: null,
       mode: session.mode,
+      selected_answer: selectedAnswer,
     });
+    if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
     // Save to WAJ database with real review data
     const { logWrongAnswer } = await import('@/lib/wajService');
@@ -633,7 +635,9 @@ function DrillContent() {
       level: currentQuestion.difficulty,
       confidence: null,
       mode: session.mode,
+      selected_answer: ans,
     });
+    if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
     const newAttempts = new Map(session.attempts);
     newAttempts.set(currentQuestion.qid, {
@@ -680,7 +684,9 @@ function DrillContent() {
         level: currentQuestion.difficulty,
         confidence: null,
         mode: session.mode,
+        selected_answer: selectedAnswer,
       });
+      if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
       // Update session
       const newAttempts = new Map(session.attempts);
@@ -740,7 +746,9 @@ function DrillContent() {
         level: currentQuestion.difficulty,
         confidence: null,
         mode: session.mode,
+        selected_answer: selectedAnswer,
       });
+      if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
       const newAttempts = new Map(session.attempts);
       newAttempts.set(currentQuestion.qid, {
@@ -924,6 +932,7 @@ function DrillContent() {
         level: question.difficulty,
         confidence: null,
         mode: 'practice-set',
+        selected_answer: attempt.selectedAnswer,
       });
 
       // Log to WAJ if wrong
