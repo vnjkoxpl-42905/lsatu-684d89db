@@ -497,13 +497,13 @@ function DrillContent() {
     level: number;
     confidence: number | null;
     mode: DrillMode;
+    selected_answer?: string;
   }) => {
     const question = questionBank.getQuestion(attemptData.qid);
     if (!question) return;
     
     try {
       if (!classId && classIdLoading) {
-        // Still resolving — retry once the ID is available via the effect
         console.warn('saveAttemptToDatabase called before classId resolved, skipping');
         return;
       }
@@ -525,6 +525,7 @@ function DrillContent() {
         time_ms: attemptData.time_ms,
         confidence: attemptData.confidence,
         mode: attemptData.mode,
+        selected_answer: attemptData.selected_answer || null,
         timestamp_iso: new Date().toISOString(),
       });
 
