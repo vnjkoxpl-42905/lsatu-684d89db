@@ -124,7 +124,8 @@ function DrillContent() {
   const [classId, setClassId] = React.useState<string>('');
   const [classIdLoading, setClassIdLoading] = React.useState(true);
   const [advanceToken, setAdvanceToken] = React.useState(0);
-  
+  const currentViewId = React.useRef<string | null>(null);
+
   // Practice-set mode state
   const [isPracticeSetMode, setIsPracticeSetMode] = React.useState(false);
   const questionTimer = React.useRef(new QuestionTimer());
