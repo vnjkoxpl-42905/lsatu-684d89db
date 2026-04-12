@@ -186,8 +186,16 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
     setIsAnalyzing(true);
 
     try {
+      // Resolve class_id for the user
+      const { data: student } = await supabase
+        .from('students')
+        .select('class_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      const resolvedClassId = student?.class_id || user.id;
+
       const allQuestions = questionBank.getAllQuestions();
-      const result = await adaptiveEngine.generateSmartDrill(user.id, allQuestions, 20);
+      const result = await adaptiveEngine.generateSmartDrill(resolvedClassId, allQuestions, 20);
 
       if (result.questions.length === 0) {
         toast({

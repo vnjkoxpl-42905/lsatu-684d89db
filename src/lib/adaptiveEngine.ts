@@ -51,6 +51,55 @@ export interface SmartDrillResult {
 export class AdaptiveEngine {
   private cooldowns: Map<string, Date> = new Map();
   private recentAttempts: AttemptRecord[] = [];
+  private hydrated = false;
+
+  /**
+   * Hydrate engine state from the database so it persists across sessions.
+   * Loads the user's last 200 attempts and rebuilds cooldowns.
+   */
+  async hydrateFromDB(classId: string): Promise<void> {
+    if (this.hydrated) return;
+    try {
+      const { data, error } = await (supabase as any)
+        .from('attempts')
+        .select('qid, correct, time_ms, qtype, level, timestamp_iso')
+        .eq('class_id', classId)
+        .order('timestamp_iso', { ascending: false })
+        .limit(200);
+
+      if (error || !data) {
+        console.warn('Failed to hydrate adaptive engine:', error);
+        this.hydrated = true;
+        return;
+      }
+
+      // Rebuild recent attempts and cooldowns from DB history (oldest first)
+      const sorted = [...data].reverse();
+      for (const a of sorted) {
+        const record: AttemptRecord = {
+          qid: a.qid,
+          correct: a.correct,
+          time_ms: a.time_ms,
+          qtype: a.qtype,
+          difficulty: a.level,
+          timestamp: new Date(a.timestamp_iso),
+        };
+        this.recentAttempts.push(record);
+        this.cooldowns.set(a.qid, new Date(a.timestamp_iso));
+      }
+
+      // Trim to 100
+      if (this.recentAttempts.length > 100) {
+        this.recentAttempts = this.recentAttempts.slice(-100);
+      }
+
+      this.hydrated = true;
+      console.log(`Adaptive engine hydrated with ${data.length} attempts`);
+    } catch (err) {
+      console.error('Error hydrating adaptive engine:', err);
+      this.hydrated = true;
+    }
+  }
 
   // Enhanced adaptive selection with spaced repetition and breadth
   selectNextQuestion(
@@ -226,14 +275,14 @@ export class AdaptiveEngine {
     return { overall, byQType };
   }
 
-  async analyzeWeakAreas(userId: string): Promise<WeakAreaAnalysis | null> {
+  async analyzeWeakAreas(classId: string): Promise<WeakAreaAnalysis | null> {
     try {
       const { data: attempts, error } = await (supabase as any)
         .from('attempts')
         .select('qtype, level, correct, timestamp_iso, time_ms')
-        .eq('user_id', userId)
+        .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
-        .limit(150); // Increased from 100 for better analysis
+        .limit(150);
 
       if (error || !attempts || attempts.length < 10) {
         return null; // Not enough data
@@ -475,15 +524,15 @@ export class AdaptiveEngine {
    * limits).
    */
   async generateSmartDrill(
-    userId: string,
+    classId: string,
     pool: LRQuestion[],
     count: number
   ): Promise<SmartDrillResult> {
     // ── 1. Pull recent attempt history ──────────────────────────────────────
     const { data: rawAttempts, error } = await (supabase as any)
       .from('attempts')
-      .select('qid, qtype, level, correct')
-      .eq('user_id', userId)
+      .select('qid, qtype, level, correct, timestamp_iso')
+      .eq('class_id', classId)
       .order('timestamp_iso', { ascending: false })
       .limit(300);
 
