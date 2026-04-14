@@ -124,22 +124,8 @@ export default function Auth() {
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
   const skipAutoRedirectRef = React.useRef(false);
 
-  // ── Recovery state ──
+  // ── Forgot password state ──
   const [resetEmail, setResetEmail] = React.useState('');
-  const [isRecovery, setIsRecovery] = React.useState(false);
-  const [recoveryEmail, setRecoveryEmail] = React.useState('');
-  const [isInvalidToken, setIsInvalidToken] = React.useState(false);
-  const [newPassword, setNewPassword] = React.useState('');
-  const [recoveryConfirmPassword, setRecoveryConfirmPassword] = React.useState('');
-  const [showNewPassword, setShowNewPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState('');
-  const [hasRecoverySession, setHasRecoverySession] = React.useState(false);
-
-  // Auto-open modal for recovery links
-  React.useEffect(() => {
-    if (isRecovery) setModalOpen(true);
-  }, [isRecovery]);
 
   // Escape key + scroll lock
   React.useEffect(() => {
