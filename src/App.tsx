@@ -14,6 +14,7 @@ import WrongAnswerJournal from "./pages/WrongAnswerJournal";
 import FlaggedQuestions from "./pages/FlaggedQuestions";
 import Analytics from "./pages/Analytics";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
