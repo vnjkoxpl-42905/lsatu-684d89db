@@ -1,36 +1,40 @@
 
 
-## Plan: Integrate "Role Questions" Bootcamp
+## Plan: Fix Password Recovery Flow
 
-### Summary
-Add the "Role Questions" bootcamp from the GitHub repository as a new entry in the Bootcamps hub. The original project uses server-side APIs, so the content will be adapted to a self-contained client-side page matching the existing pattern used by `MainConclusionRole.tsx` and `CausationStation.tsx`.
+### Problem
+There's a race condition: when the user clicks the reset link, Supabase establishes a session (making `user` non-null), and the redirect-to-foyer effect in `Auth.tsx` fires before the recovery detection logic can set `isRecovery = true`. The user gets sent to `/foyer` instead of seeing the password reset form.
 
-### What will change
+### Solution
+Create a dedicated `/reset-password` route and page, and handle the `PASSWORD_RECOVERY` event in `AuthContext` to redirect there.
 
-#### 1. Create the Role Questions data file
-- New file: `src/data/roleQuestions/content.ts`
-- Contains the 5 lesson sections from the GitHub repo's `content.ts`, structured as typed module data with lesson text and section metadata
+### Changes
 
-#### 2. Create the Role Questions bootcamp page
-- New file: `src/pages/RoleQuestions.tsx`
-- Self-contained page following the same pattern as `MainConclusionRole.tsx`: sidebar module list, section navigation, lesson rendering with markdown-style content, progress tracking
-- Uses existing UI components (Button, ThemeToggle, LogoutButton, framer-motion)
-- No server API calls — all content is inline/imported from the data file
-- Auth-gated (redirects to `/auth` if not logged in)
+#### 1. Create `src/pages/ResetPassword.tsx`
+- Standalone page with "New Password" and "Confirm Password" fields
+- Reuses the project's glass aesthetic (dark bg, glass panel)
+- On mount, verifies a valid session exists (from the recovery link); if not, shows "invalid/expired" state with option to request a new link
+- On submit, calls `supabase.auth.updateUser({ password })`, then redirects to `/foyer`
 
-#### 3. Register the new bootcamp route
-- Add `/bootcamp/role-questions` route in `App.tsx` inside the `QuestionBankProvider` wrapper
+#### 2. Update `src/contexts/AuthContext.tsx`
+- In the `onAuthStateChange` listener, when `event === 'PASSWORD_RECOVERY'`, set a flag and store `window.__pendingRecovery = true` (or use a ref) so the app can redirect
+- Export the recovery state or handle redirect internally
 
-#### 4. Add entry to the Bootcamps hub
-- Update `src/pages/Bootcamps.tsx` — add a new card to the `BOOTCAMPS` array:
-  - Title: "Role Questions"
-  - Emoji: "🔍"
-  - Description based on the content (mastering role questions, identifying statement functions in LSAT arguments)
-  - Route: `/bootcamp/role-questions`
+#### 3. Update `src/App.tsx`
+- Add `/reset-password` route (outside `QuestionBankProvider`, like `/auth`)
+- Import `ResetPassword` page
+- Add a wrapper component or effect at the router level that listens for `PASSWORD_RECOVERY` and calls `navigate('/reset-password')`
 
-### Files to create/modify
-- **Create**: `src/data/roleQuestions/content.ts`
-- **Create**: `src/pages/RoleQuestions.tsx`
+#### 4. Update `src/contexts/AuthContext.tsx` — `resetPassword` redirect URL
+- Change `redirectTo` from `window.location.origin + '/auth'` to `window.location.origin + '/reset-password'` so the email link lands directly on the new page
+
+#### 5. Clean up `Auth.tsx`
+- Remove the recovery-specific state and UI (the `isRecovery`, `handlePasswordResetSubmit`, recovery form rendering) since it's now handled by the dedicated page
+- Remove the `type=recovery` guard in the redirect effect
+
+### Files
+- **Create**: `src/pages/ResetPassword.tsx`
 - **Modify**: `src/App.tsx` (add route)
-- **Modify**: `src/pages/Bootcamps.tsx` (add card)
+- **Modify**: `src/contexts/AuthContext.tsx` (change redirect URL, add PASSWORD_RECOVERY navigation)
+- **Modify**: `src/pages/Auth.tsx` (remove recovery UI code)
 
