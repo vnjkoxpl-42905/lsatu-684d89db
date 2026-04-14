@@ -93,7 +93,7 @@ const GlassShell = ({
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { user, signUp, signIn, resetPassword, updatePassword } = useAuth();
+  const { user, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
   // ── Modal state — localized so BackgroundPaths never re-renders ──
@@ -124,22 +124,8 @@ export default function Auth() {
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
   const skipAutoRedirectRef = React.useRef(false);
 
-  // ── Recovery state ──
+  // ── Forgot password state ──
   const [resetEmail, setResetEmail] = React.useState('');
-  const [isRecovery, setIsRecovery] = React.useState(false);
-  const [recoveryEmail, setRecoveryEmail] = React.useState('');
-  const [isInvalidToken, setIsInvalidToken] = React.useState(false);
-  const [newPassword, setNewPassword] = React.useState('');
-  const [recoveryConfirmPassword, setRecoveryConfirmPassword] = React.useState('');
-  const [showNewPassword, setShowNewPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState('');
-  const [hasRecoverySession, setHasRecoverySession] = React.useState(false);
-
-  // Auto-open modal for recovery links
-  React.useEffect(() => {
-    if (isRecovery) setModalOpen(true);
-  }, [isRecovery]);
 
   // Escape key + scroll lock
   React.useEffect(() => {
@@ -160,13 +146,8 @@ export default function Auth() {
 
   // Redirect authenticated users — check if they have a username first
   React.useEffect(() => {
-    if (!user || isRecovery || skipAutoRedirectRef.current) return;
-    const url = new URL(window.location.href);
-    const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
-    const type = url.searchParams.get('type') || hashParams.get('type');
-    if (type === 'recovery') return;
+    if (!user || skipAutoRedirectRef.current) return;
 
-    // Check if user has completed onboarding (has display_name)
     const checkProfile = async () => {
       const { data: profile } = await supabase
         .from('profiles')
@@ -181,63 +162,8 @@ export default function Auth() {
       }
     };
     checkProfile();
-  }, [user, navigate, isRecovery]);
+  }, [user, navigate]);
 
-  // Detect recovery mode
-  React.useEffect(() => {
-    const checkRecovery = async () => {
-      try {
-        const url = new URL(window.location.href);
-        const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
-        const type = url.searchParams.get('type') || hashParams.get('type');
-        if (type !== 'recovery') return;
-
-        setIsRecovery(true);
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (session?.user?.email) {
-          setRecoveryEmail(session.user.email);
-          setHasRecoverySession(true);
-          return;
-        }
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        if (accessToken && refreshToken) {
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-          if (error) {
-            setIsInvalidToken(true);
-          } else if (data.session) {
-            setRecoveryEmail(data.session.user.email || '');
-            setHasRecoverySession(true);
-          } else {
-            setIsInvalidToken(true);
-          }
-        } else {
-          setIsInvalidToken(true);
-        }
-      } catch {
-        setIsInvalidToken(true);
-      }
-    };
-
-    checkRecovery();
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setIsRecovery(true);
-        if (session?.user?.email) {
-          setRecoveryEmail(session.user.email);
-          setHasRecoverySession(true);
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, []);
 
   // ── Auth handlers ──
   const handleSubmit = async (e: React.FormEvent) => {
@@ -319,70 +245,6 @@ export default function Auth() {
     setLoading(false);
   };
 
-  const handlePasswordResetSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setPasswordError('');
-    setLoading(true);
-    if (newPassword.length < 8) {
-      setPasswordError('Minimum 8 characters.');
-      setLoading(false);
-      return;
-    }
-    if (newPassword !== recoveryConfirmPassword) {
-      setPasswordError('Passwords do not match.');
-      setLoading(false);
-      return;
-    }
-    const { error } = await updatePassword(newPassword);
-    if (error) {
-      const msg = error.message?.toLowerCase() || '';
-      if (
-        msg.includes('session') ||
-        msg.includes('expired') ||
-        msg.includes('invalid') ||
-        msg.includes('authenticated')
-      ) {
-        setIsInvalidToken(true);
-        toast({ title: 'Session expired', description: 'Request a new reset link.', variant: 'destructive' });
-      } else {
-        toast({ title: 'Update failed', description: error.message, variant: 'destructive' });
-      }
-      setLoading(false);
-      return;
-    }
-    toast({ title: 'Password updated.' });
-    try {
-      window.history.replaceState(null, '', '/');
-    } catch {}
-    setTimeout(() => navigate('/foyer'), 500);
-  };
-
-  const handleResendResetLink = async () => {
-    const addr = recoveryEmail || resetEmail;
-    if (!addr) {
-      toast({ title: 'Email required', variant: 'destructive' });
-      return;
-    }
-    setLoading(true);
-    const { error } = await resetPassword(addr);
-    if (!error) {
-      setIsInvalidToken(false);
-      setIsRecovery(false);
-      toast({ title: 'Link sent.' });
-    }
-    setLoading(false);
-  };
-
-  const handleBackToLogin = () => {
-    setIsRecovery(false);
-    setIsInvalidToken(false);
-    setNewPassword('');
-    setRecoveryConfirmPassword('');
-    setPasswordError('');
-    try {
-      window.history.replaceState(null, '', '/auth');
-    } catch {}
-  };
 
   return (
     <div className="relative isolate min-h-screen bg-neutral-950 overflow-hidden">
@@ -439,7 +301,7 @@ export default function Auth() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => !isRecovery && setModalOpen(false)}
+              onClick={() => setModalOpen(false)}
             />
 
             {/* Modal panel */}
@@ -456,160 +318,25 @@ export default function Auth() {
               >
                 <GlassShell>
                   {/* Close */}
-                  {!isRecovery && (
-                    <button
-                      onClick={() => setModalOpen(false)}
-                      className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
-                      aria-label="Close"
-                    >
-                      <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setModalOpen(false)}
+                    className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
+                    aria-label="Close"
+                  >
+                    <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
+                  </button>
 
                   {/* Header */}
                   <div className="text-center mb-7">
                     <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
-                      {isRecovery ? (isInvalidToken ? 'Link Expired' : 'New Password') : 'LSAT U'}
+                      LSAT U
                     </h2>
                     <p className="text-[11px] text-neutral-500">
-                      {isRecovery
-                        ? isInvalidToken
-                          ? 'Request a new reset link.'
-                          : 'Set a strong password for your account.'
-                        : isSignUp
-                        ? 'Create your account.'
-                        : 'Sign in to continue.'}
+                      {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
                     </p>
                   </div>
 
-                  {/* ── RECOVERY FLOW ── */}
-                  {isRecovery ? (
-                    isInvalidToken ? (
-                      <div className="space-y-4">
-                        <div className="rounded-lg border border-rose-500/20 bg-rose-500/[0.05] p-4">
-                          <p className="text-[11px] text-rose-400">
-                            This reset link is invalid or has expired.
-                          </p>
-                        </div>
-                        <div>
-                          <label className={labelCls}>Email</label>
-                          {/* group enables CSS focus-within icon colouring — no state needed */}
-                          <div className="relative group">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                            <Input
-                              type="email"
-                              placeholder="name@example.com"
-                              value={recoveryEmail || resetEmail}
-                              onChange={(e) => setResetEmail(e.target.value)}
-                              required
-                              className={inputCls}
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <CTAButton disabled={loading} loading={loading} onClick={handleResendResetLink} type="button">
-                            <span className="flex items-center gap-2">
-                              Resend Link <ArrowRight className="w-4 h-4" />
-                            </span>
-                          </CTAButton>
-                          <button
-                            onClick={handleBackToLogin}
-                            type="button"
-                            className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2"
-                          >
-                            Back to login
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <form onSubmit={handlePasswordResetSubmit} className="space-y-4">
-                        {!hasRecoverySession && (
-                          <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-3">
-                            <p className="text-[11px] text-neutral-500">Verifying reset link...</p>
-                          </div>
-                        )}
-                        <div>
-                          <label className={labelCls}>New Password</label>
-                          <div className="relative group">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                            <Input
-                              type={showNewPassword ? 'text' : 'password'}
-                              placeholder="••••••••••••"
-                              value={newPassword}
-                              onChange={(e) => {
-                                setNewPassword(e.target.value);
-                                setPasswordError('');
-                              }}
-                              required
-                              minLength={8}
-                              className={inputWithToggleCls}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowNewPassword(!showNewPassword)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                              aria-label="Toggle"
-                            >
-                              {showNewPassword ? (
-                                <EyeOff className="w-4 h-4" />
-                              ) : (
-                                <Eye className="w-4 h-4" />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                        <div>
-                          <label className={labelCls}>Confirm Password</label>
-                          <div className="relative group">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                            <Input
-                              type={showConfirmPassword ? 'text' : 'password'}
-                              placeholder="••••••••••••"
-                              value={recoveryConfirmPassword}
-                              onChange={(e) => {
-                                setRecoveryConfirmPassword(e.target.value);
-                                setPasswordError('');
-                              }}
-                              required
-                              minLength={8}
-                              className={inputWithToggleCls}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                              aria-label="Toggle"
-                            >
-                              {showConfirmPassword ? (
-                                <EyeOff className="w-4 h-4" />
-                              ) : (
-                                <Eye className="w-4 h-4" />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                        {passwordError && (
-                          <p className="text-[11px] text-rose-400">{passwordError}</p>
-                        )}
-                        <div className="space-y-2 pt-1">
-                          <CTAButton disabled={loading || !hasRecoverySession} loading={loading}>
-                            <span className="flex items-center gap-2">
-                              Save Password <ArrowRight className="w-4 h-4" />
-                            </span>
-                          </CTAButton>
-                          <button
-                            onClick={handleBackToLogin}
-                            type="button"
-                            className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2"
-                          >
-                            Back to login
-                          </button>
-                        </div>
-                      </form>
-                    )
-                  ) : (
-                    /* ── MAIN AUTH FLOW ── */
-                    <>
+                  {/* ── MAIN AUTH FLOW ── */}
                       {/* Segmented control */}
                       <div className="flex p-[3px] mb-6 bg-black/50 border border-white/[0.05] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
                         {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
@@ -826,8 +553,6 @@ export default function Auth() {
                       </motion.button>
                       </>
                       )}
-                    </>
-                  )}
 
                 </GlassShell>
               </motion.div>

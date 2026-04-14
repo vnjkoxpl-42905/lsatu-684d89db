@@ -87,16 +87,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
+      (event, newSession) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          // Redirect to dedicated reset page before marking ready
+          // so Auth.tsx doesn't redirect to /foyer
+          markReady(newSession);
+          window.location.replace('/reset-password');
+          return;
+        }
         if (newSession) {
-          // Got a real session — we're definitively ready
           markReady(newSession);
         } else if (!isOAuthRef.current) {
-          // Not an OAuth callback and no session — user is logged out, that's final
           markReady(null);
         }
-        // If isOAuthRef is true and session is null, we wait —
-        // the token exchange hasn't completed yet.
       }
     );
 
@@ -187,7 +190,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string) => {
     try {
-      const redirectUrl = `${window.location.origin}/auth`;
+      const redirectUrl = `${window.location.origin}/reset-password`;
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
       });
