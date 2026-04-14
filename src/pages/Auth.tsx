@@ -554,8 +554,6 @@ export default function Auth() {
                       </motion.button>
                       </>
                       )}
-                    </>
-                  )}
 
                 </GlassShell>
               </motion.div>
