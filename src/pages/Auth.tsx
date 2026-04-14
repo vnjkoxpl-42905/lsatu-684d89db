@@ -146,13 +146,8 @@ export default function Auth() {
 
   // Redirect authenticated users — check if they have a username first
   React.useEffect(() => {
-    if (!user || isRecovery || skipAutoRedirectRef.current) return;
-    const url = new URL(window.location.href);
-    const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
-    const type = url.searchParams.get('type') || hashParams.get('type');
-    if (type === 'recovery') return;
+    if (!user || skipAutoRedirectRef.current) return;
 
-    // Check if user has completed onboarding (has display_name)
     const checkProfile = async () => {
       const { data: profile } = await supabase
         .from('profiles')
@@ -167,63 +162,8 @@ export default function Auth() {
       }
     };
     checkProfile();
-  }, [user, navigate, isRecovery]);
+  }, [user, navigate]);
 
-  // Detect recovery mode
-  React.useEffect(() => {
-    const checkRecovery = async () => {
-      try {
-        const url = new URL(window.location.href);
-        const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
-        const type = url.searchParams.get('type') || hashParams.get('type');
-        if (type !== 'recovery') return;
-
-        setIsRecovery(true);
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (session?.user?.email) {
-          setRecoveryEmail(session.user.email);
-          setHasRecoverySession(true);
-          return;
-        }
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        if (accessToken && refreshToken) {
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-          if (error) {
-            setIsInvalidToken(true);
-          } else if (data.session) {
-            setRecoveryEmail(data.session.user.email || '');
-            setHasRecoverySession(true);
-          } else {
-            setIsInvalidToken(true);
-          }
-        } else {
-          setIsInvalidToken(true);
-        }
-      } catch {
-        setIsInvalidToken(true);
-      }
-    };
-
-    checkRecovery();
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setIsRecovery(true);
-        if (session?.user?.email) {
-          setRecoveryEmail(session.user.email);
-          setHasRecoverySession(true);
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, []);
 
   // ── Auth handlers ──
   const handleSubmit = async (e: React.FormEvent) => {
