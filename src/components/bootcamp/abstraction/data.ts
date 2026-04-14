@@ -1,20 +1,9 @@
-export interface RoleSection {
-  id: string;
-  title: string;
-  body: string;
-}
+import { AbstractionModule } from './types';
 
-export interface RoleModule {
-  id: string;
-  title: string;
-  description: string;
-  sections: RoleSection[];
-}
-
-export const roleQuestionsContent: RoleModule = {
-  id: 'role-questions',
-  title: 'Role Questions',
-  description: 'Mastering Role Questions: Identifying and analyzing the role of statements in LSAT arguments.',
+export const abstractionContent: AbstractionModule = {
+  id: 'abstraction',
+  title: 'Abstraction',
+  description: 'Mastering Abstraction: Identifying and analyzing the role of statements in LSAT arguments.',
   sections: [
     {
       id: 'sec-1',
@@ -164,7 +153,7 @@ After identifying the role of the quoted statement, run through this checklist:
 
 ---
 
-**You've completed the Role Questions bootcamp.** With practice, identifying statement roles will become second nature — and it's a skill that transfers to nearly every LR question type.`,
+**You've completed the Abstraction bootcamp.** With practice, identifying statement roles will become second nature — and it's a skill that transfers to nearly every LR question type.`,
     },
   ],
 };

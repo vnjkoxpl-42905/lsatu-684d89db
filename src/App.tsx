@@ -19,7 +19,7 @@ import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 import MainConclusionRole from "./pages/MainConclusionRole";
-import RoleQuestions from "./pages/RoleQuestions";
+import Abstraction from "./pages/Abstraction";
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import Onboarding from "./pages/Onboarding";
@@ -60,7 +60,7 @@ const App = () => (
                   <Route path="/bootcamps" element={<Bootcamps />} />
                   <Route path="/bootcamp/causation-station" element={<CausationStation />} />
                   <Route path="/bootcamp/main-conclusion-role" element={<MainConclusionRole />} />
-                  <Route path="/bootcamp/role-questions" element={<RoleQuestions />} />
+                  <Route path="/bootcamp/abstraction" element={<Abstraction />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </QuestionBankProvider>

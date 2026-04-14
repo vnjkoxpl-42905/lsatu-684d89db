@@ -6,9 +6,7 @@ import { ArrowLeft, CheckCircle2, Circle, ChevronLeft, ChevronRight } from 'luci
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { roleQuestionsContent } from '@/data/roleQuestions/content';
-
-type SectionId = string;
+import { abstractionContent } from './data';
 
 function Card({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
   return (
@@ -36,7 +34,6 @@ function CompletionButton({ isCompleted, onClick }: { isCompleted: boolean; onCl
   );
 }
 
-/* Simple markdown-ish renderer for the lesson body text */
 function LessonBody({ body }: { body: string }) {
   const lines = body.split('\n');
   const elements: React.ReactNode[] = [];
@@ -51,9 +48,7 @@ function LessonBody({ body }: { body: string }) {
       elements.push(<hr key={i} className="border-border my-4" />);
       return;
     }
-    // Table handling
     if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-      // Check if it's a separator row
       if (/^\|[\s-|]+\|$/.test(trimmed)) return;
       const cells = trimmed.split('|').filter(Boolean).map(c => c.trim());
       const isHeader = i + 1 < lines.length && /^\|[\s-|]+\|$/.test(lines[i + 1]?.trim() || '');
@@ -73,13 +68,11 @@ function LessonBody({ body }: { body: string }) {
       return;
     }
 
-    // Parse inline markdown
     const parseInline = (text: string): React.ReactNode => {
       const parts: React.ReactNode[] = [];
       let remaining = text;
       let key = 0;
       while (remaining) {
-        // Bold + italic
         const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
         const italicMatch = remaining.match(/\*([^*]+?)\*/);
         const match = boldMatch && italicMatch
@@ -102,7 +95,6 @@ function LessonBody({ body }: { body: string }) {
       return parts;
     };
 
-    // Headings — not used in our content but just in case
     if (trimmed.startsWith('✓ ')) {
       elements.push(<p key={i} className="text-xs text-emerald-600 dark:text-emerald-400 flex items-start gap-2"><CheckCircle2 className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" /><span>{parseInline(trimmed.slice(2))}</span></p>);
       return;
@@ -121,10 +113,10 @@ function LessonBody({ body }: { body: string }) {
   return <>{elements}</>;
 }
 
-export default function RoleQuestions() {
+export default function AbstractionBootcamp() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const sections = roleQuestionsContent.sections;
+  const sections = abstractionContent.sections;
   const [activeSectionId, setActiveSectionId] = useState(sections[0].id);
   const [completedSections, setCompletedSections] = useState<Record<string, boolean>>({});
 
@@ -148,14 +140,13 @@ export default function RoleQuestions() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
           <Button variant="ghost" size="sm" onClick={() => navigate('/bootcamps')} className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2">
             <ArrowLeft className="h-3.5 w-3.5" />
             Bootcamps
           </Button>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">Role Q's</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">Abstraction</span>
           <div className="flex items-center gap-2">
             <LogoutButton />
             <ThemeToggle />
@@ -164,10 +155,9 @@ export default function RoleQuestions() {
       </header>
 
       <div className="max-w-7xl mx-auto flex">
-        {/* Sidebar - Desktop */}
         <aside className="hidden lg:block w-72 border-r border-border p-6 sticky top-[65px] h-[calc(100vh-65px)] overflow-y-auto">
           <div className="space-y-1 mb-6">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Role Questions</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Abstraction</p>
             <p className="text-[10px] text-muted-foreground">Progress: {progress}%</p>
             <div className="w-full h-1.5 bg-accent rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
@@ -193,7 +183,6 @@ export default function RoleQuestions() {
           </nav>
         </aside>
 
-        {/* Mobile nav */}
         <div className="lg:hidden sticky top-[65px] z-10 bg-background border-b border-border overflow-x-auto">
           <div className="flex gap-1 p-2 min-w-max">
             {sections.map(sec => (
@@ -211,7 +200,6 @@ export default function RoleQuestions() {
           </div>
         </div>
 
-        {/* Content */}
         <main className="flex-1 p-4 lg:p-8 max-w-3xl space-y-4">
           <AnimatePresence mode="wait">
             <motion.div key={activeSectionId} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
@@ -220,7 +208,6 @@ export default function RoleQuestions() {
               </Card>
               <CompletionButton isCompleted={!!completedSections[activeSectionId]} onClick={() => handleComplete(activeSectionId)} />
 
-              {/* Nav buttons */}
               <div className="flex items-center justify-between pt-2">
                 <Button
                   variant="ghost"
