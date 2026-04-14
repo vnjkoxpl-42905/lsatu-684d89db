@@ -35,6 +35,7 @@ const App = () => (
           <Routes>
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Onboarding — username setup for new users */}
             <Route path="/onboarding" element={<Onboarding />} />
