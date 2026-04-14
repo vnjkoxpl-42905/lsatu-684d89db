@@ -337,7 +337,6 @@ export default function Auth() {
                   </div>
 
                   {/* ── MAIN AUTH FLOW ── */}
-                    <>
                       {/* Segmented control */}
                       <div className="flex p-[3px] mb-6 bg-black/50 border border-white/[0.05] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
                         {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
@@ -552,7 +551,6 @@ export default function Auth() {
                         </svg>
                         Continue with Google
                       </motion.button>
-                      </>
                       )}
 
                 </GlassShell>
