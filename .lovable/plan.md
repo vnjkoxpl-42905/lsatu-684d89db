@@ -1,40 +1,51 @@
 
 
-## Plan: Fix Password Recovery Flow
+## Plan: Create "Abstraction" as an Independent Bootcamp
 
-### Problem
-There's a race condition: when the user clicks the reset link, Supabase establishes a session (making `user` non-null), and the redirect-to-foyer effect in `Auth.tsx` fires before the recovery detection logic can set `isRecovery = true`. The user gets sent to `/foyer` instead of seeing the password reset form.
-
-### Solution
-Create a dedicated `/reset-password` route and page, and handle the `PASSWORD_RECOVERY` event in `AuthContext` to redirect there.
+### Summary
+Rename and decouple the GitHub repo content (currently labeled "Role Questions") into a fully independent bootcamp called **"Abstraction"**. It gets its own self-contained module directory, separate route, and distinct card in the Bootcamps hub — completely independent from "Main Conclusion & Role" or anything else.
 
 ### Changes
 
-#### 1. Create `src/pages/ResetPassword.tsx`
-- Standalone page with "New Password" and "Confirm Password" fields
-- Reuses the project's glass aesthetic (dark bg, glass panel)
-- On mount, verifies a valid session exists (from the recovery link); if not, shows "invalid/expired" state with option to request a new link
-- On submit, calls `supabase.auth.updateUser({ password })`, then redirects to `/foyer`
+#### 1. Create self-contained module: `src/components/bootcamp/abstraction/`
+- **`types.ts`** — interfaces (`AbstractionSection`, `AbstractionModule`)
+- **`data.ts`** — content from current `src/data/roleQuestions/content.ts`, with module id/title/description updated to reflect "Abstraction" identity
+- **`AbstractionBootcamp.tsx`** — full UI component (sidebar, card renderer, completion logic) extracted from current `RoleQuestions.tsx`
 
-#### 2. Update `src/contexts/AuthContext.tsx`
-- In the `onAuthStateChange` listener, when `event === 'PASSWORD_RECOVERY'`, set a flag and store `window.__pendingRecovery = true` (or use a ref) so the app can redirect
-- Export the recovery state or handle redirect internally
+#### 2. Create thin page wrapper: `src/pages/Abstraction.tsx`
+```tsx
+import AbstractionBootcamp from '@/components/bootcamp/abstraction/AbstractionBootcamp';
+export default function Abstraction() {
+  return <AbstractionBootcamp />;
+}
+```
 
 #### 3. Update `src/App.tsx`
-- Add `/reset-password` route (outside `QuestionBankProvider`, like `/auth`)
-- Import `ResetPassword` page
-- Add a wrapper component or effect at the router level that listens for `PASSWORD_RECOVERY` and calls `navigate('/reset-password')`
+- Remove `/bootcamp/role-questions` route
+- Add `/bootcamp/abstraction` route pointing to the new page
 
-#### 4. Update `src/contexts/AuthContext.tsx` — `resetPassword` redirect URL
-- Change `redirectTo` from `window.location.origin + '/auth'` to `window.location.origin + '/reset-password'` so the email link lands directly on the new page
+#### 4. Update `src/pages/Bootcamps.tsx`
+- Replace the "Role Questions" card with:
+  - **Title**: "Abstraction"
+  - **Emoji**: 🧬
+  - **Description**: TBD — we'll refine together
+  - **Route**: `/bootcamp/abstraction`
 
-#### 5. Clean up `Auth.tsx`
-- Remove the recovery-specific state and UI (the `isRecovery`, `handlePasswordResetSubmit`, recovery form rendering) since it's now handled by the dedicated page
-- Remove the `type=recovery` guard in the redirect effect
+#### 5. Delete old files
+- `src/data/roleQuestions/content.ts` (and empty directory)
+- `src/pages/RoleQuestions.tsx`
 
 ### Files
-- **Create**: `src/pages/ResetPassword.tsx`
-- **Modify**: `src/App.tsx` (add route)
-- **Modify**: `src/contexts/AuthContext.tsx` (change redirect URL, add PASSWORD_RECOVERY navigation)
-- **Modify**: `src/pages/Auth.tsx` (remove recovery UI code)
+| Action | File |
+|--------|------|
+| Create | `src/components/bootcamp/abstraction/types.ts` |
+| Create | `src/components/bootcamp/abstraction/data.ts` |
+| Create | `src/components/bootcamp/abstraction/AbstractionBootcamp.tsx` |
+| Create | `src/pages/Abstraction.tsx` |
+| Modify | `src/App.tsx` |
+| Modify | `src/pages/Bootcamps.tsx` |
+| Delete | `src/data/roleQuestions/content.ts` |
+| Delete | `src/pages/RoleQuestions.tsx` |
+
+No functional changes to content — just restructured into its own independent module with a new identity. From here we can iterate on the content and features together.
 
