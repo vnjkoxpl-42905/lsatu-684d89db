@@ -36,13 +36,13 @@ const BOOTCAMPS = [
     accentClass: 'bg-violet-500/10 border-violet-500/20',
   },
   {
-    id: 'role-questions',
-    title: 'Role Questions',
-    emoji: '🔍',
+    id: 'abstraction',
+    title: 'Abstraction',
+    emoji: '🧬',
     description:
-      'Master Role Questions — learn to identify the function of each statement in an LSAT argument. Practice distinguishing premises from intermediate conclusions, opposing views, concessions, and background information through worked examples.',
+      'Dissect LSAT argument structure from the ground up — isolate statements, trace support relationships, identify intermediate conclusions, opposing views, concessions, and structural traps.',
     stats: ['5 Sections', 'Worked Examples', 'Structural Analysis'],
-    route: '/bootcamp/role-questions',
+    route: '/bootcamp/abstraction',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
 ];
