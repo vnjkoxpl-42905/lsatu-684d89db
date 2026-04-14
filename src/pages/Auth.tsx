@@ -441,7 +441,7 @@ export default function Auth() {
                               <button
                                 type="button"
                                 onClick={() => setForgotOpen(true)}
-                                className="text-[10px] text-neutral-600 hover:text-white transition-colors duration-200"
+                                className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium"
                               >
                                 Forgot?
                               </button>
