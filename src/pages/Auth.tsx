@@ -93,7 +93,7 @@ const GlassShell = ({
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { user, signUp, signIn, resetPassword, updatePassword } = useAuth();
+  const { user, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
   // ── Modal state — localized so BackgroundPaths never re-renders ──
