@@ -1,53 +1,49 @@
 
 
-## Plan: Redesign Module 1 Intro Screen
+## Plan: Fix Stem Labels, Remove Quotes, Add Student Response Input
 
-### Problem
-The intro screen (lines 74-93 of `InteractiveStemDrill.tsx`) renders the entire module opening as a single card with a paragraph of text and a button. It feels like static notes, not a training experience.
+### Changes to `InteractiveStemDrill.tsx`
 
-### Solution
-Replace the single `intro` state with a multi-step cinematic onboarding flow using 3 sequential states: `intro-1`, `intro-2`, `intro-3`. Each step reveals one piece of the briefing with animation, creating a guided entry experience.
+**1. Remove quotation marks from stem display (line 283)**
+Remove the `"` characters wrapping the `<HighlightedStem>` component.
 
-### The 3-Step Flow
+**2. Fix the header label (line 280)**
+Change from "Analyze this stem" to just "Analyze This Stem" — keeping the existing label but confirming no "Question Stem" text exists (the current code already says "Analyze this stem"). Will audit for any other "question stem" references.
 
-**Step 1 — Module Title Card** (full-bleed hero feel)
-- Large "01" numeral in faint oversized type (decorative)
-- "The De-Abstraction Lab" as a bold heading
-- Subtle animated border or glow accent
-- Single line: "15 Exercises · Module 1"
-- CTA: "→ Continue"
+**3. Add a student response textarea in the `exercise` state**
+Before the student clicks "Reveal Keywords", add:
+- A prompt: "What do you think this means?"
+- A `<textarea>` for the student to type their interpretation
+- Store the response in component state (`studentResponse`)
+- The response is optional — they can skip and reveal directly
 
-**Step 2 — The Mission** (why this matters)
-- Heading: "Why This Matters"
-- The existing `MODULE_1_INTRO` text, but broken into 2-3 visually distinct paragraphs with fade-in stagger
-- Key phrase highlighted with a subtle pill/accent: "de-abstractify"
-- CTA: "→ What You'll Do"
+**4. Show AI comparison in the `translation` state**
+After the coach's translation is revealed, if the student typed a response:
+- Call the Lovable AI gateway (Gemini Flash) with a prompt comparing the student's interpretation to the coach's translation
+- Display the AI feedback in a new panel: "Your Analysis" showing their text + AI evaluation
+- Show a loading state while the AI responds
+- If no response was typed, skip this panel entirely
 
-**Step 3 — The Briefing** (what the student will do)
-- Heading: "Your Training"
-- 3 icon-labeled items describing the exercise flow:
-  - 🔍 Read the raw stem — try to decode it yourself
-  - 🔑 Reveal keyword definitions — see what each term means
-  - 💡 See the coach's translation — compare to your read
-- Animated entrance for each item (staggered)
-- CTA: "→ Begin Exercises" (transitions to the first stem)
+### Files modified
+| File | Change |
+|------|--------|
+| `InteractiveStemDrill.tsx` | Remove quotes, add textarea + state, add AI comparison panel |
 
-### Visual Style
-- Each step uses `AnimatePresence` with `motion.div` for smooth crossfade
-- Large decorative numeral ("01") using `text-[120px] font-bold text-foreground/[0.03]` for depth
-- Monochromatic palette — no color splashes except a thin primary accent line
-- Generous whitespace, no card borders on step 1 (let it breathe)
-- Steps 2 and 3 use subtle cards with `border-border` and slight backdrop blur
+### State additions
+```
+studentResponse: string        // what the student typed
+aiFeedback: string | null      // AI evaluation result  
+isAnalyzing: boolean           // loading state for AI call
+```
 
-### Implementation
-**File: `src/components/bootcamp/abstraction/InteractiveStemDrill.tsx`**
+### AI prompt structure
+```
+"The student was given this abstract LSAT stem: [stem]. 
+They interpreted it as: [student response]. 
+The correct coach translation is: [coach translation].
+Give brief, encouraging feedback (2-3 sentences). 
+Note what they got right, and clarify anything they missed."
+```
 
-1. Change `DrillState` type to add `'intro-1' | 'intro-2' | 'intro-3'` replacing `'intro'`
-2. Initialize state to `'intro-1'`
-3. Update `advance()` to chain: `intro-1 → intro-2 → intro-3 → exercise`
-4. Replace the single `if (state === 'intro')` block (lines 74-93) with 3 animated screens
-5. Add a small step indicator (3 dots) during the intro sequence
-6. Keep all existing exercise/keyword/translation logic unchanged
-
-No other files modified. No content removed. Just the intro screen refactored into a 3-step guided entry.
+Uses `google/gemini-2.5-flash` via the Lovable AI edge function pattern — no API key needed.
 
