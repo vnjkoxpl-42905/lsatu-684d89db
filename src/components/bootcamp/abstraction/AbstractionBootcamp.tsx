@@ -13,7 +13,7 @@ type ModuleId = 'stem-drill' | 'advanced-quiz';
 
 const MODULES: { id: ModuleId; title: string; subtitle: string; icon: React.ElementType; total: number }[] = [
   { id: 'stem-drill', title: '01. The De-Abstraction Lab', subtitle: '15 Exercises', icon: Beaker, total: stemDrills.length },
-  { id: 'advanced-quiz', title: '02. Advanced Application', subtitle: '6 Questions', icon: Brain, total: roleQuestions.length },
+  { id: 'advanced-quiz', title: '02. Advanced Application', subtitle: '7 Questions', icon: Brain, total: roleQuestions.length },
 ];
 
 export default function AbstractionBootcamp() {
