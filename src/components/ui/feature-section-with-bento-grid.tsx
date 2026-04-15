@@ -235,7 +235,6 @@ export const Globe = ({ className }: { className?: string }) => {
         phi += 0.01;
       },
     } as any);
-    });
 
     return () => {
       globe.destroy();
