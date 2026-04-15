@@ -151,6 +151,12 @@ export default function AcademyFoyer() {
             phase={phase}
             selectedNodeId={selectedNodeId}
             onSelectNode={handleSelectNode}
+            lockedNodeIds={[
+              ...(!permissions.has_bootcamp_access && !permissions.is_admin ? ["bootcamps"] : []),
+              ...(!permissions.has_classroom_access && !permissions.is_admin ? ["classroom"] : []),
+              ...(!permissions.has_analytics_access && !permissions.is_admin ? ["analytics"] : []),
+              ...(!permissions.has_schedule_access && !permissions.is_admin ? ["schedule"] : []),
+            ]}
           />
         </div>
       </div>
