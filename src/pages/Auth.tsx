@@ -247,7 +247,7 @@ export default function Auth() {
     setLoading(true);
     const { error } = await resetPassword(resetEmail.trim().toLowerCase());
     if (!error) {
-      setForgotOpen(false);
+      setForgotOpen(false); setModalOpen(true);
       setResetEmail('');
     }
     setLoading(false);
@@ -448,7 +448,7 @@ export default function Auth() {
                             {!isSignUp && (
                               <button
                                 type="button"
-                                onClick={() => setForgotOpen(true)}
+                                onClick={() => { setModalOpen(false); setForgotOpen(true); }}
                                 className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium"
                               >
                                 Forgot?
@@ -581,7 +581,7 @@ export default function Auth() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={() => setForgotOpen(false)}
+              onClick={() => { setForgotOpen(false); setModalOpen(true); }}
             />
             <div className="fixed inset-0 z-[61] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
@@ -593,7 +593,7 @@ export default function Auth() {
               >
                 <GlassShell className="p-5 sm:p-6">
                   <button
-                    onClick={() => setForgotOpen(false)}
+                    onClick={() => { setForgotOpen(false); setModalOpen(true); }}
                     className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
                     aria-label="Close"
                   >
