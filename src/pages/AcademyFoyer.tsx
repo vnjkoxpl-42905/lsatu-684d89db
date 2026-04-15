@@ -24,6 +24,8 @@ import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { Shield } from "lucide-react";
 
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
@@ -118,6 +120,15 @@ export default function AcademyFoyer() {
 
       {/* ── Top-right controls ── */}
       <div className="absolute top-5 right-6 z-30 flex items-center gap-1">
+        {permissions.is_admin && (
+          <button
+            onClick={() => navigate("/admin")}
+            className="p-2 rounded-lg text-zinc-400 hover:text-white transition-colors"
+            title="Admin Dashboard"
+          >
+            <Shield className="w-4 h-4" />
+          </button>
+        )}
         <LogoutButton />
         <ThemeToggle />
       </div>
