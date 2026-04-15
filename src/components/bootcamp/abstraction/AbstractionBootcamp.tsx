@@ -2,141 +2,37 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2, Circle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Beaker, Brain } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
-import { motion, AnimatePresence } from 'framer-motion';
-import { abstractionContent } from './data';
+import InteractiveStemDrill from './InteractiveStemDrill';
+import AdvancedQuizViewer from './AdvancedQuizViewer';
+import { stemDrills, roleQuestions } from './data';
 
-function Card({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-6 space-y-4">
-      <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">{label}</span>
-      <h2 className="text-base font-semibold text-foreground">{title}</h2>
-      <div className="text-sm text-muted-foreground leading-relaxed space-y-3">{children}</div>
-    </div>
-  );
-}
+type ModuleId = 'stem-drill' | 'advanced-quiz';
 
-function CompletionButton({ isCompleted, onClick }: { isCompleted: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={isCompleted}
-      className={`w-full py-3 rounded-xl text-sm font-bold transition-colors mt-4 ${
-        isCompleted
-          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 cursor-default'
-          : 'bg-foreground text-background hover:bg-foreground/90'
-      }`}
-    >
-      {isCompleted ? 'SECTION COMPLETED ✓' : 'Mark as Complete'}
-    </button>
-  );
-}
-
-function LessonBody({ body }: { body: string }) {
-  const lines = body.split('\n');
-  const elements: React.ReactNode[] = [];
-
-  lines.forEach((line, i) => {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      elements.push(<div key={i} className="h-2" />);
-      return;
-    }
-    if (trimmed === '---') {
-      elements.push(<hr key={i} className="border-border my-4" />);
-      return;
-    }
-    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-      if (/^\|[\s-|]+\|$/.test(trimmed)) return;
-      const cells = trimmed.split('|').filter(Boolean).map(c => c.trim());
-      const isHeader = i + 1 < lines.length && /^\|[\s-|]+\|$/.test(lines[i + 1]?.trim() || '');
-      if (isHeader) {
-        elements.push(
-          <div key={i} className="grid grid-cols-2 gap-2 text-xs font-bold text-foreground bg-accent/50 rounded-t-lg px-3 py-2 border border-border">
-            {cells.map((c, ci) => <span key={ci}>{c}</span>)}
-          </div>
-        );
-      } else {
-        elements.push(
-          <div key={i} className="grid grid-cols-2 gap-2 text-xs text-muted-foreground px-3 py-2 border-x border-b border-border last:rounded-b-lg">
-            {cells.map((c, ci) => <span key={ci}>{c}</span>)}
-          </div>
-        );
-      }
-      return;
-    }
-
-    const parseInline = (text: string): React.ReactNode => {
-      const parts: React.ReactNode[] = [];
-      let remaining = text;
-      let key = 0;
-      while (remaining) {
-        const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
-        const italicMatch = remaining.match(/\*([^*]+?)\*/);
-        const match = boldMatch && italicMatch
-          ? (boldMatch.index! <= italicMatch.index! ? boldMatch : italicMatch)
-          : boldMatch || italicMatch;
-
-        if (match && match.index !== undefined) {
-          if (match.index > 0) parts.push(<span key={key++}>{remaining.slice(0, match.index)}</span>);
-          if (match[0].startsWith('**')) {
-            parts.push(<strong key={key++} className="text-foreground font-semibold">{match[1]}</strong>);
-          } else {
-            parts.push(<em key={key++}>{match[1]}</em>);
-          }
-          remaining = remaining.slice(match.index + match[0].length);
-        } else {
-          parts.push(<span key={key++}>{remaining}</span>);
-          remaining = '';
-        }
-      }
-      return parts;
-    };
-
-    if (trimmed.startsWith('✓ ')) {
-      elements.push(<p key={i} className="text-xs text-emerald-600 dark:text-emerald-400 flex items-start gap-2"><CheckCircle2 className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" /><span>{parseInline(trimmed.slice(2))}</span></p>);
-      return;
-    }
-    if (/^\d+\.\s/.test(trimmed)) {
-      elements.push(<p key={i} className="text-sm text-muted-foreground pl-4">{parseInline(trimmed)}</p>);
-      return;
-    }
-    if (trimmed.startsWith('- ')) {
-      elements.push(<p key={i} className="text-sm text-muted-foreground pl-4">• {parseInline(trimmed.slice(2))}</p>);
-      return;
-    }
-    elements.push(<p key={i} className="text-sm text-muted-foreground leading-relaxed">{parseInline(trimmed)}</p>);
-  });
-
-  return <>{elements}</>;
-}
+const MODULES: { id: ModuleId; title: string; subtitle: string; icon: React.ElementType; total: number }[] = [
+  { id: 'stem-drill', title: '01. The De-Abstraction Lab', subtitle: '15 Exercises', icon: Beaker, total: stemDrills.length },
+  { id: 'advanced-quiz', title: '02. Advanced Application', subtitle: '6 Questions', icon: Brain, total: roleQuestions.length },
+];
 
 export default function AbstractionBootcamp() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const sections = abstractionContent.sections;
-  const [activeSectionId, setActiveSectionId] = useState(sections[0].id);
-  const [completedSections, setCompletedSections] = useState<Record<string, boolean>>({});
+  const [activeModule, setActiveModule] = useState<ModuleId>('stem-drill');
+  const [progress, setProgress] = useState<Record<ModuleId, number>>({ 'stem-drill': 0, 'advanced-quiz': 0 });
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
   }, [user, navigate]);
 
-  const activeSection = sections.find(s => s.id === activeSectionId)!;
-  const activeIndex = sections.findIndex(s => s.id === activeSectionId);
-
-  const handleComplete = (id: string) => {
-    setCompletedSections(prev => ({ ...prev, [id]: true }));
-    const idx = sections.findIndex(s => s.id === id);
-    if (idx < sections.length - 1) {
-      setActiveSectionId(sections[idx + 1].id);
-    }
+  const handleProgress = (moduleId: ModuleId) => (count: number) => {
+    setProgress(prev => ({ ...prev, [moduleId]: count }));
   };
 
-  const completedCount = Object.values(completedSections).filter(Boolean).length;
-  const progress = Math.round((completedCount / sections.length) * 100);
+  const totalDone = progress['stem-drill'] + progress['advanced-quiz'];
+  const totalItems = stemDrills.length + roleQuestions.length;
+  const overallProgress = Math.round((totalDone / totalItems) * 100);
 
   return (
     <div className="min-h-screen bg-background">
@@ -155,81 +51,79 @@ export default function AbstractionBootcamp() {
       </header>
 
       <div className="max-w-7xl mx-auto flex">
+        {/* Desktop Sidebar */}
         <aside className="hidden lg:block w-72 border-r border-border p-6 sticky top-[65px] h-[calc(100vh-65px)] overflow-y-auto">
           <div className="space-y-1 mb-6">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Abstraction</p>
-            <p className="text-[10px] text-muted-foreground">Progress: {progress}%</p>
+            <p className="text-[10px] text-muted-foreground">Progress: {overallProgress}%</p>
             <div className="w-full h-1.5 bg-accent rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${progress}%` }} />
+              <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${overallProgress}%` }} />
             </div>
           </div>
-          <nav className="space-y-1">
-            {sections.map(sec => {
-              const isActive = activeSectionId === sec.id;
-              const isCompleted = completedSections[sec.id];
+          <nav className="space-y-2">
+            {MODULES.map(mod => {
+              const isActive = activeModule === mod.id;
+              const done = progress[mod.id];
+              const Icon = mod.icon;
               return (
                 <button
-                  key={sec.id}
-                  onClick={() => setActiveSectionId(sec.id)}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg text-xs font-semibold transition-all ${
-                    isActive ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent'
+                  key={mod.id}
+                  onClick={() => setActiveModule(mod.id)}
+                  className={`w-full text-left p-4 rounded-xl border transition-all ${
+                    isActive
+                      ? 'border-primary/30 bg-primary/5'
+                      : 'border-transparent hover:bg-accent'
                   }`}
                 >
-                  <span className="text-left">{sec.title}</span>
-                  {isCompleted ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" /> : <Circle className="h-3.5 w-3.5 flex-shrink-0" />}
+                  <div className="flex items-center gap-3">
+                    <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-xs font-semibold truncate ${isActive ? 'text-primary' : 'text-foreground'}`}>{mod.title}</p>
+                      <p className="text-[10px] text-muted-foreground">{mod.subtitle} · {done}/{mod.total}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 w-full h-1 bg-accent rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                      style={{ width: `${mod.total > 0 ? (done / mod.total) * 100 : 0}%` }}
+                    />
+                  </div>
                 </button>
               );
             })}
           </nav>
         </aside>
 
-        <div className="lg:hidden sticky top-[65px] z-10 bg-background border-b border-border overflow-x-auto">
-          <div className="flex gap-1 p-2 min-w-max">
-            {sections.map(sec => (
-              <button
-                key={sec.id}
-                onClick={() => setActiveSectionId(sec.id)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap flex items-center gap-1.5 ${
-                  activeSectionId === sec.id ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                {sec.title}
-                {completedSections[sec.id] && <CheckCircle2 className="h-3 w-3 text-emerald-500" />}
-              </button>
-            ))}
+        {/* Mobile Tab Bar */}
+        <div className="lg:hidden sticky top-[65px] z-10 bg-background border-b border-border">
+          <div className="flex">
+            {MODULES.map(mod => {
+              const isActive = activeModule === mod.id;
+              const Icon = mod.icon;
+              return (
+                <button
+                  key={mod.id}
+                  onClick={() => setActiveModule(mod.id)}
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-semibold transition-colors border-b-2 ${
+                    isActive ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  <span className="truncate">{mod.id === 'stem-drill' ? 'De-Abstraction Lab' : 'Advanced Quiz'}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <main className="flex-1 p-4 lg:p-8 max-w-3xl space-y-4">
-          <AnimatePresence mode="wait">
-            <motion.div key={activeSectionId} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-              <Card label={`Section ${activeIndex + 1} of ${sections.length}`} title={activeSection.title}>
-                <LessonBody body={activeSection.body} />
-              </Card>
-              <CompletionButton isCompleted={!!completedSections[activeSectionId]} onClick={() => handleComplete(activeSectionId)} />
-
-              <div className="flex items-center justify-between pt-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={activeIndex === 0}
-                  onClick={() => setActiveSectionId(sections[activeIndex - 1].id)}
-                  className="gap-1 text-muted-foreground"
-                >
-                  <ChevronLeft className="h-3.5 w-3.5" /> Previous
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={activeIndex === sections.length - 1}
-                  onClick={() => setActiveSectionId(sections[activeIndex + 1].id)}
-                  className="gap-1 text-muted-foreground"
-                >
-                  Next <ChevronRight className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+        {/* Main Content */}
+        <main className="flex-1 p-4 lg:p-8 max-w-3xl">
+          {activeModule === 'stem-drill' && (
+            <InteractiveStemDrill onComplete={handleProgress('stem-drill')} />
+          )}
+          {activeModule === 'advanced-quiz' && (
+            <AdvancedQuizViewer onComplete={handleProgress('advanced-quiz')} />
+          )}
         </main>
       </div>
     </div>
