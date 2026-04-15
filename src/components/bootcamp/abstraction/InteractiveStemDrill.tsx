@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Eye, BookOpen, ArrowRight, CheckCircle2, Info, AlertTriangle, Search, KeyRound, Lightbulb } from 'lucide-react';
+import { ChevronRight, Eye, BookOpen, ArrowRight, CheckCircle2, Info, AlertTriangle, Search, KeyRound, Lightbulb, Loader2, MessageSquare } from 'lucide-react';
 import { stemDrills, MODULE_1_INTRO } from './data';
+import { supabase } from '@/integrations/supabase/client';
 
 type DrillState = 'intro-1' | 'intro-2' | 'intro-3' | 'exercise' | 'keywords' | 'requirements' | 'translation' | 'done';
 
@@ -48,10 +49,34 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
   const [currentIndex, setCurrentIndex] = useState(0);
   const [state, setState] = useState<DrillState>('intro-1');
   const [completedCount, setCompletedCount] = useState(0);
+  const [studentResponse, setStudentResponse] = useState('');
+  const [aiFeedback, setAiFeedback] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const drill = stemDrills[currentIndex];
   const isLast = currentIndex === stemDrills.length - 1;
   const hasRequirements = drill?.requirements && drill.requirements.length > 0;
+
+  const analyzeResponse = async () => {
+    if (!studentResponse.trim()) return;
+    setIsAnalyzing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-stem-response', {
+        body: {
+          stem: drill.rawStem,
+          studentResponse: studentResponse.trim(),
+          coachTranslation: drill.coachTranslation,
+        },
+      });
+      if (error) throw error;
+      setAiFeedback(data?.feedback || 'Unable to generate feedback.');
+    } catch (e) {
+      console.error('AI analysis error:', e);
+      setAiFeedback('Could not analyze your response right now. Compare your interpretation with the coach\'s translation above.');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const advance = () => {
     if (state === 'intro-1') setState('intro-2');
@@ -69,11 +94,25 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
       if (!isLast) {
         setCurrentIndex(prev => prev + 1);
         setState('exercise');
+        setStudentResponse('');
+        setAiFeedback(null);
       } else {
         setState('done');
       }
     }
   };
+
+  // Trigger AI analysis when entering translation state if student typed something
+  const advanceToTranslation = () => {
+    advance();
+  };
+
+  // When state changes to translation, fire AI analysis
+  React.useEffect(() => {
+    if (state === 'translation' && studentResponse.trim()) {
+      analyzeResponse();
+    }
+  }, [state]);
 
   const currentIntroStep = introStepIndex(state);
   const isIntro = currentIntroStep >= 0;
@@ -105,11 +144,9 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="relative flex flex-col items-center text-center max-w-lg w-full"
             >
-              {/* Decorative numeral */}
               <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[140px] font-black leading-none text-foreground/[0.03] select-none pointer-events-none">
                 01
               </span>
-
               <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-3 relative z-10">
                 Module 1
               </p>
@@ -137,36 +174,18 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
                 <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-2">The Mission</p>
                 <h2 className="text-xl lg:text-2xl font-bold text-foreground">Why This Matters</h2>
               </div>
-
               <div className="rounded-xl border border-border bg-card/60 backdrop-blur-sm p-6 space-y-4">
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15, duration: 0.4 }}
-                  className="text-sm text-muted-foreground leading-relaxed"
-                >
+                <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.4 }} className="text-sm text-muted-foreground leading-relaxed">
                   The ability to{' '}
                   <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold text-xs">
                     de-abstractify
                   </span>{' '}
                   , translating vague and abstract terms that appear in answer choices into their stimulus equivalents, is one of the most important skills the advanced student needs to master.
                 </motion.p>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.4 }}
-                  className="text-sm text-muted-foreground leading-relaxed"
-                >
+                <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.4 }} className="text-sm text-muted-foreground leading-relaxed">
                   If you do not have this ability, often you will end up choosing a wrong answer choice even if you knew what you were looking for. You simply did not understand what the answer choice was trying to say.
                 </motion.p>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45, duration: 0.4 }}
-                  className="text-sm text-foreground leading-relaxed font-medium"
-                >
+                <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.4 }} className="text-sm text-foreground leading-relaxed font-medium">
                   In other words, advanced students can read through a list of abstract answer choices and know exactly what they are referring to.
                 </motion.p>
               </div>
@@ -187,11 +206,9 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
                 <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-2">The Briefing</p>
                 <h2 className="text-xl lg:text-2xl font-bold text-foreground">Your Training</h2>
               </div>
-
               <p className="text-sm text-muted-foreground text-center leading-relaxed">
                 For each of the 15 stems, you will follow this process:
               </p>
-
               <div className="space-y-3">
                 {trainingSteps.map((step, i) => (
                   <motion.div
@@ -215,7 +232,6 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
           )}
         </AnimatePresence>
 
-        {/* CTA */}
         <motion.button
           key={`cta-${state}`}
           initial={{ opacity: 0 }}
@@ -277,12 +293,37 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
           {/* The Stem */}
           <div className="rounded-xl border border-border bg-card p-6 lg:p-8">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-4">
-              {state === 'exercise' ? 'Analyze this stem' : state === 'keywords' ? 'Keywords identified' : state === 'requirements' ? 'Requirements checklist' : 'Coach\'s breakdown'}
+              {state === 'exercise' ? 'Analyze This Stem' : state === 'keywords' ? 'Keywords Identified' : state === 'requirements' ? 'Requirements Checklist' : "Coach's Breakdown"}
             </p>
             <p className="text-lg lg:text-xl font-mono leading-relaxed text-foreground">
-              "<HighlightedStem rawStem={drill.rawStem} keywords={drill.keywords} showHighlights={state !== 'exercise'} />"
+              <HighlightedStem rawStem={drill.rawStem} keywords={drill.keywords} showHighlights={state !== 'exercise'} />
             </p>
           </div>
+
+          {/* Student Response Input (exercise state only) */}
+          {state === 'exercise' && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+              className="rounded-xl border border-border bg-card p-6 space-y-3"
+            >
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-primary" />
+                <p className="text-[10px] uppercase tracking-[0.2em] text-primary font-bold">What Do You Think This Means?</p>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Type your interpretation below. After revealing the translation, AI will compare your read to the coach's.
+              </p>
+              <textarea
+                value={studentResponse}
+                onChange={(e) => setStudentResponse(e.target.value)}
+                placeholder="In plain language, this stem is saying..."
+                className="w-full min-h-[80px] rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+              />
+              <p className="text-[10px] text-muted-foreground italic">Optional. You can skip this and go straight to keywords.</p>
+            </motion.div>
+          )}
 
           {/* Keywords Panel */}
           {(state === 'keywords' || state === 'requirements' || state === 'translation') && (
@@ -323,7 +364,7 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
             </motion.div>
           )}
 
-          {/* Translation + Example + LSAT Note */}
+          {/* Translation + Example + LSAT Note + AI Feedback */}
           {state === 'translation' && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
@@ -346,6 +387,33 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
                     <p className="text-xs text-muted-foreground leading-relaxed">{drill.lsatNote}</p>
                   </div>
                 </div>
+              )}
+
+              {/* AI Feedback Panel */}
+              {studentResponse.trim() && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-4"
+                >
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-primary font-bold">Your Analysis</p>
+                  <div className="rounded-lg bg-background/60 p-4 border border-border">
+                    <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium mb-2">Your Interpretation</p>
+                    <p className="text-sm text-foreground leading-relaxed">{studentResponse}</p>
+                  </div>
+                  {isAnalyzing ? (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      Analyzing your response...
+                    </div>
+                  ) : aiFeedback ? (
+                    <div className="rounded-lg bg-background/60 p-4 border border-border">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-primary font-medium mb-2">AI Feedback</p>
+                      <p className="text-sm text-foreground leading-relaxed">{aiFeedback}</p>
+                    </div>
+                  ) : null}
+                </motion.div>
               )}
             </motion.div>
           )}
