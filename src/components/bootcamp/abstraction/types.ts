@@ -1,12 +1,35 @@
-export interface AbstractionSection {
-  id: string;
-  title: string;
-  body: string;
+export interface KeywordDef {
+  word: string;
+  definition: string;
 }
 
-export interface AbstractionModule {
+export interface StemDrill {
+  id: number;
+  rawStem: string;
+  keywords: KeywordDef[];
+  coachTranslation: string;
+  concreteExample: string;
+}
+
+export interface AnswerBreakdown {
+  letter: string;
+  text: string;
+  explanation: string;
+  isCorrect: boolean;
+}
+
+export interface StructuralMapEntry {
+  label: string;
+  text: string;
+}
+
+export interface RoleQuestion {
   id: string;
-  title: string;
-  description: string;
-  sections: AbstractionSection[];
+  stimulus: string;
+  questionStem: string;
+  options: { letter: string; text: string }[];
+  correctAnswer: string;
+  structuralMap: StructuralMapEntry[];
+  answerBreakdowns: AnswerBreakdown[];
+  causalTrapWarning?: string;
 }
