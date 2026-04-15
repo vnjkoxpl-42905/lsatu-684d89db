@@ -26,8 +26,8 @@ export interface FoyerNode {
 
 const CX = 200;
 const CY = 200;
-const RADIUS = 152;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // ≈ 955
+const RADIUS = 190;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 export const FOYER_NODES: FoyerNode[] = [
   {
@@ -120,6 +120,14 @@ const HUD_CONTENT: Record<string, string> = {
   schedule: "Your daily study calendar.",
 };
 
+const HUD_META: Record<string, string> = {
+  practice: "PT 1–90 Available",
+  bootcamps: "15 Modules",
+  classroom: "12 Sessions",
+  analytics: "Live Tracking",
+  schedule: "Daily Planner",
+};
+
 interface UserPermissions {
   has_bootcamp_access: boolean;
   has_classroom_access: boolean;
@@ -210,7 +218,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
       >
         {/* Outer decorative dashed ring */}
         <circle
-          cx={CX} cy={CY} r={176}
+          cx={CX} cy={CY} r={220}
           fill="none"
           stroke={nodeStroke}
           strokeOpacity={isGhost ? 0.04 : 0.055}
@@ -254,7 +262,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
 
         {/* Inner static ring */}
         <circle
-          cx={CX} cy={CY} r={44}
+          cx={CX} cy={CY} r={70}
           fill="none"
           stroke={nodeStroke}
           strokeOpacity={isGhost ? 0.03 : 0.07}
@@ -383,46 +391,49 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
       })}
 
       {/* ════════════════════════════════════════
-          DYNAMIC HUD — top-center hover display
+          ORBITAL LENS — centered hover preview
           ════════════════════════════════════════ */}
-      <AnimatePresence>
-        {activeHoverNode && (() => {
-          const node = FOYER_NODES.find(n => n.id === activeHoverNode);
-          if (!node) return null;
-          const isLocked = lockedNodeIds.includes(node.id);
-          const isNodeUnlocked = node.id === "practice" || !isLocked;
-          return (
-            <motion.div
-              key={activeHoverNode}
-              className="fixed top-8 left-1/2 -translate-x-1/2 z-50 bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl shadow-2xl p-5 w-96"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="text-xs tracking-widest uppercase text-zinc-400 mb-2">
-                {node.label}
-              </div>
-              <div className="text-zinc-100 font-medium text-sm mb-3">
-                {HUD_CONTENT[node.id] ?? ""}
-              </div>
-              <div className="flex items-center gap-1.5">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+        <AnimatePresence mode="wait">
+          {activeHoverNode && (() => {
+            const node = FOYER_NODES.find(n => n.id === activeHoverNode);
+            if (!node) return null;
+            const isLocked = lockedNodeIds.includes(node.id);
+            const isNodeUnlocked = node.id === "practice" || !isLocked;
+            return (
+              <motion.div
+                key={activeHoverNode}
+                className="flex flex-col items-center text-center max-w-[200px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="text-sm tracking-[0.2em] uppercase text-zinc-400 mb-1">
+                  {node.label}
+                </div>
+                <div className="text-xl font-medium text-zinc-100 mb-4 leading-snug">
+                  {HUD_CONTENT[node.id] ?? ""}
+                </div>
+                <div className="text-xs text-zinc-500 font-mono mb-3">
+                  {HUD_META[node.id] ?? ""}
+                </div>
                 {isNodeUnlocked ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-xs text-emerald-500 font-medium">Access Granted</span>
-                  </>
+                  <span className="text-emerald-500/70 px-2 py-1 text-[10px] uppercase tracking-wider flex items-center gap-1">
+                    <Check className="w-2.5 h-2.5" />
+                    Access Granted
+                  </span>
                 ) : (
-                  <>
-                    <Lock className="w-3.5 h-3.5 text-amber-500" />
-                    <span className="text-xs text-amber-500 font-medium">Access Restricted</span>
-                  </>
+                  <span className="bg-zinc-900 text-zinc-500 px-2 py-1 rounded-full text-[10px] uppercase tracking-wider flex items-center gap-1">
+                    <Lock className="w-2.5 h-2.5" />
+                    Access Restricted
+                  </span>
                 )}
-              </div>
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
