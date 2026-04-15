@@ -169,26 +169,34 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const trimmedEmail = email.trim().toLowerCase();
     try {
       if (isSignUp) {
         if (password !== confirmPassword) {
           toast({ title: 'Passwords do not match', variant: 'destructive' });
           return;
         }
-        const { error } = await signUp(email, password, name);
+        const { error } = await signUp(trimmedEmail, password, name);
         if (error)
           toast({ title: 'Registration failed', description: error.message, variant: 'destructive' });
         else {
           setShowConfirmation(true);
         }
       } else {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(trimmedEmail, password);
         if (error) {
-          toast({ title: 'Authentication failed', description: error.message, variant: 'destructive' });
+          const isInvalidCreds = error.message?.toLowerCase().includes('invalid login credentials');
+          toast({
+            title: 'Sign-in failed',
+            description: isInvalidCreds
+              ? 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences. Your username is NOT part of sign-in — only email and password.'
+              : error.message,
+            variant: 'destructive',
+          });
         } else {
           // Save or clear email based on "Remember me"
           if (rememberMe) {
-            localStorage.setItem('lsatu_saved_email', email);
+            localStorage.setItem('lsatu_saved_email', trimmedEmail);
           } else {
             localStorage.removeItem('lsatu_saved_email');
           }
@@ -237,7 +245,7 @@ export default function Auth() {
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await resetPassword(resetEmail);
+    const { error } = await resetPassword(resetEmail.trim().toLowerCase());
     if (!error) {
       setForgotOpen(false);
       setResetEmail('');
