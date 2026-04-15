@@ -328,6 +328,10 @@ export type Database = {
           daily_goal_questions: number | null
           daily_goal_streak: number | null
           display_name: string | null
+          has_analytics_access: boolean
+          has_bootcamp_access: boolean
+          has_classroom_access: boolean
+          has_schedule_access: boolean
           last_practice_date: string | null
           level: number | null
           longest_streak: number | null
@@ -345,6 +349,10 @@ export type Database = {
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
           display_name?: string | null
+          has_analytics_access?: boolean
+          has_bootcamp_access?: boolean
+          has_classroom_access?: boolean
+          has_schedule_access?: boolean
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null
@@ -362,6 +370,10 @@ export type Database = {
           daily_goal_questions?: number | null
           daily_goal_streak?: number | null
           display_name?: string | null
+          has_analytics_access?: boolean
+          has_bootcamp_access?: boolean
+          has_classroom_access?: boolean
+          has_schedule_access?: boolean
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null
@@ -758,6 +770,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       voice_coaching_sessions: {
         Row: {
           action_taken: string | null
@@ -879,10 +909,16 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1009,6 +1045,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
