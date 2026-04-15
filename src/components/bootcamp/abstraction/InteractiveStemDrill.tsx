@@ -149,7 +149,7 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
                   <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold text-xs">
                     de-abstractify
                   </span>{' '}
-                  — translating vague and abstract terms that appear in answer choices into their stimulus equivalents — is one of the most important skills the advanced student needs to master.
+                  , translating vague and abstract terms that appear in answer choices into their stimulus equivalents, is one of the most important skills the advanced student needs to master.
                 </motion.p>
 
                 <motion.p
@@ -239,7 +239,7 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
         <CheckCircle2 className="h-12 w-12 text-emerald-500" />
         <h2 className="text-xl font-bold text-foreground">All 15 Stems Complete</h2>
         <p className="text-sm text-muted-foreground text-center max-w-md">
-          You've worked through every abstract answer choice stem. These patterns will appear repeatedly in Role questions — you now know exactly what they mean.
+          You've worked through every abstract answer choice stem. These patterns will appear repeatedly in Role questions. You now know exactly what they mean.
         </p>
       </div>
     );
