@@ -1,20 +1,26 @@
 
 
-## Plan: Fix Double Modal Overlay on Forgot Password
+## Plan: Loosen Password Requirements
 
 ### Problem
-When you click "Forgot?" on the sign-in form, the forgot-password modal (z-60/61) opens **on top of** the still-visible auth modal (z-40/50). Two glass panels stack, creating the red/overlapping box effect.
+Two layers of strictness:
+1. **Client-side zod validation** requires uppercase, lowercase, AND a number
+2. **Backend HIBP check** rejects passwords found in breach databases ("Password is known to be weak and easy to guess")
 
-### Root Cause
-`forgotOpen` is set to `true` but `modalOpen` remains `true`. Both modals render simultaneously with their own backdrop + glass shell.
+Both together make it very hard to pick an accepted password.
 
-### Fix (single file: `src/pages/Auth.tsx`)
+### Changes
 
-**1. Hide the auth modal when forgot-password opens**
-- On "Forgot?" button click (line 451): set `modalOpen(false)` alongside `setForgotOpen(true)`
+**1. Relax client-side validation (`src/contexts/AuthContext.tsx`)**
+- Remove the uppercase regex requirement
+- Remove the lowercase regex requirement
+- Remove the number regex requirement
+- Keep only `min(6)` and `max(100)` — simple length check
 
-**2. Restore the auth modal when forgot-password closes**
-- On forgot-password close (backdrop click line 584, X button line 596, and after successful submit line 250): set `modalOpen(true)` alongside `setForgotOpen(false)`
+**2. Disable HIBP check on the backend**
+- Use the `configure_auth` tool to set `password_hibp_enabled: false`
+- This stops the "known to be weak" rejection
 
-This is a 4-line change. The forgot-password modal becomes the only visible panel, no stacking.
+### Result
+Users only need a password that is 6+ characters. No special character requirements, no breach database checks.
 
