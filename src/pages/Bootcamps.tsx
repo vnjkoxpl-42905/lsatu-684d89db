@@ -37,11 +37,11 @@ const BOOTCAMPS = [
   },
   {
     id: 'abstraction',
-    title: 'Abstraction',
+    title: 'Abstract',
     emoji: '🧬',
     description:
-      'Dissect LSAT argument structure from the ground up — isolate statements, trace support relationships, identify intermediate conclusions, opposing views, concessions, and structural traps.',
-    stats: ['5 Sections', 'Worked Examples', 'Structural Analysis'],
+      'Master the abstract language of LSAT Role questions. Module 1 breaks down 15 dense answer-choice stems into plain English with keyword coaching. Module 2 walks you through 6 of the hardest PT Role questions with full structural maps and answer-choice analysis.',
+    stats: ['2 Modules', '15 Exercises', '6 Questions'],
     route: '/bootcamp/abstraction',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
