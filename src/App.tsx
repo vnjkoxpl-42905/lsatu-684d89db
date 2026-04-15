@@ -24,6 +24,8 @@ import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => (
   <ThemeProvider>
@@ -44,6 +46,9 @@ const App = () => (
             {/* Foyer — arrival layer, no question bank needed */}
             <Route path="/foyer" element={<AcademyFoyer />} />
 
+            {/* Admin Dashboard — no question bank needed */}
+            <Route path="/admin" element={<AdminDashboard />} />
+
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={
               <QuestionBankProvider>
@@ -53,14 +58,28 @@ const App = () => (
                   <Route path="/drill" element={<Drill />} />
                   <Route path="/waj" element={<WrongAnswerJournal />} />
                   <Route path="/flagged" element={<FlaggedQuestions />} />
-                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/analytics" element={
+                    <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
+                  } />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/classroom" element={<Classroom />} />
-                  <Route path="/schedule" element={<Schedule />} />
-                  <Route path="/bootcamps" element={<Bootcamps />} />
-                  <Route path="/bootcamp/causation-station" element={<CausationStation />} />
-                  <Route path="/bootcamp/main-conclusion-role" element={<MainConclusionRole />} />
-                  <Route path="/bootcamp/abstraction" element={<Abstraction />} />
+                  <Route path="/classroom" element={
+                    <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
+                  } />
+                  <Route path="/schedule" element={
+                    <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
+                  } />
+                  <Route path="/bootcamps" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
+                  } />
+                  <Route path="/bootcamp/causation-station" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
+                  } />
+                  <Route path="/bootcamp/main-conclusion-role" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionRole /></ProtectedRoute>
+                  } />
+                  <Route path="/bootcamp/abstraction" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
+                  } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </QuestionBankProvider>

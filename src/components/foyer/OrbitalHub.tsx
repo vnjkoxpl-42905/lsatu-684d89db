@@ -12,6 +12,7 @@
  */
 
 import React, { useState } from "react";
+import { Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -126,9 +127,10 @@ interface OrbitalHubProps {
   phase: FoyerPhase;
   selectedNodeId?: string | null;
   onSelectNode: (node: FoyerNode) => void;
+  lockedNodeIds?: string[];
 }
 
-export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: OrbitalHubProps) {
+export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, lockedNodeIds = [] }: OrbitalHubProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const { theme } = useTheme();
   const isLight = theme === 'light';
@@ -254,6 +256,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
         const nodeAnchor  = anchor(node.angleDeg);
         const isSelected  = selectedNodeId === node.id;
         const isHov       = hovered === node.id;
+        const isLocked    = lockedNodeIds.includes(node.id);
         const isReceding  = isDissolving && !isSelected;
         const staggerDelay = isMat ? 0.65 + i * 0.12 : 0;
 
@@ -315,7 +318,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
               {/* ── Label ── */}
               <div style={labelStyle(nodeAnchor)}>
                 <div
-                  className="text-[9px] uppercase font-semibold"
+                  className="text-[9px] uppercase font-semibold flex items-center gap-1"
                   style={{
                     letterSpacing: "0.22em",
                     color: isHov
@@ -326,6 +329,7 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: Orbi
                     transition: "color 0.3s",
                   }}
                 >
+                  {isLocked && <Lock className="w-[8px] h-[8px] opacity-60" />}
                   {node.label}
                 </div>
 

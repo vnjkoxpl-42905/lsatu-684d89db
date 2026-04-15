@@ -24,6 +24,8 @@ import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { Shield } from "lucide-react";
 
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
@@ -31,6 +33,7 @@ export default function AcademyFoyer() {
   const { user, authReady } = useAuth();
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const permissions = useUserPermissions();
 
   // ── Location state injected by Auth.tsx on fresh login ──────────────────────
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
@@ -118,6 +121,15 @@ export default function AcademyFoyer() {
 
       {/* ── Top-right controls ── */}
       <div className="absolute top-5 right-6 z-30 flex items-center gap-1">
+        {permissions.is_admin && (
+          <button
+            onClick={() => navigate("/admin")}
+            className="p-2 rounded-lg text-zinc-400 hover:text-white transition-colors"
+            title="Admin Dashboard"
+          >
+            <Shield className="w-4 h-4" />
+          </button>
+        )}
         <LogoutButton />
         <ThemeToggle />
       </div>
@@ -139,6 +151,12 @@ export default function AcademyFoyer() {
             phase={phase}
             selectedNodeId={selectedNodeId}
             onSelectNode={handleSelectNode}
+            lockedNodeIds={[
+              ...(!permissions.has_bootcamp_access && !permissions.is_admin ? ["bootcamps"] : []),
+              ...(!permissions.has_classroom_access && !permissions.is_admin ? ["classroom"] : []),
+              ...(!permissions.has_analytics_access && !permissions.is_admin ? ["analytics"] : []),
+              ...(!permissions.has_schedule_access && !permissions.is_admin ? ["schedule"] : []),
+            ]}
           />
         </div>
       </div>
