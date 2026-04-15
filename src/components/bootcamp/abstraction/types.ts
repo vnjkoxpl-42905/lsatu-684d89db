@@ -9,6 +9,8 @@ export interface StemDrill {
   keywords: KeywordDef[];
   coachTranslation: string;
   concreteExample: string;
+  requirements?: string[];
+  lsatNote?: string;
 }
 
 export interface AnswerBreakdown {
@@ -23,6 +25,12 @@ export interface StructuralMapEntry {
   text: string;
 }
 
+export interface DifficultTrait {
+  number: number;
+  title: string;
+  text: string;
+}
+
 export interface RoleQuestion {
   id: string;
   stimulus: string;
@@ -32,4 +40,9 @@ export interface RoleQuestion {
   structuralMap: StructuralMapEntry[];
   answerBreakdowns: AnswerBreakdown[];
   causalTrapWarning?: string;
+  walkthrough?: string[];
+  preTeaching?: string;
+  difficultTrait?: DifficultTrait;
+  takeaway?: string;
+  transitionNote?: string;
 }
