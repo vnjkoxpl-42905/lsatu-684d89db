@@ -146,7 +146,7 @@ export default function AcademyFoyer() {
 
       {/* ── Orbital Hub ── */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div style={{ width: "min(440px, 80vw, 80vh)", height: "min(440px, 80vw, 80vh)" }}>
+        <div style={{ width: "min(560px, 85vw, 85vh)", height: "min(560px, 85vw, 85vh)" }}>
           <OrbitalHub
             phase={phase}
             selectedNodeId={selectedNodeId}
