@@ -149,7 +149,7 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
                   <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold text-xs">
                     de-abstractify
                   </span>{' '}
-                  — translating vague and abstract terms that appear in answer choices into their stimulus equivalents — is one of the most important skills the advanced student needs to master.
+                  , translating vague and abstract terms that appear in answer choices into their stimulus equivalents, is one of the most important skills the advanced student needs to master.
                 </motion.p>
 
                 <motion.p
