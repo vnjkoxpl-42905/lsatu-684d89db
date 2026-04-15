@@ -1,46 +1,59 @@
 
 
-## Plan: Dynamic HUD for OrbitalHub
+## Plan: Orbital Lens Preview System
 
 ### Summary
-Replace the center "reading pocket" hover display with an elite top-center floating HUD card that activates after a 750ms intentional hover. The HUD shows the node name, a fixed description, and a live access status badge.
+Replace the detached top-center HUD with a centered "Orbital Lens" that lives inside the orbital ring. Expand the orbit for breathing room, use `AnimatePresence mode="wait"` for smooth content morphing, and redesign the content hierarchy with a borderless transparent aesthetic.
 
-### Changes (single file: `src/components/foyer/OrbitalHub.tsx`)
+### Changes
 
-**1. Add 750ms intentional hover logic**
-- Replace the instant `hovered` state with an `activeHoverNode` state + a `useRef` timeout
-- `onMouseEnter`: start a 750ms timeout that sets `activeHoverNode`
-- `onMouseLeave`: clear the timeout and set `activeHoverNode` to null
-- Keep the existing instant `hovered` state for the dot glow/ring effects (those should remain instant)
+**File: `src/components/foyer/OrbitalHub.tsx`**
 
-**2. Accept permissions prop**
-- Add `permissions` to `OrbitalHubProps` (type from `useUserPermissions`)
-- Pass it from `AcademyFoyer.tsx`
+**1. Expand the orbit**
+- Increase `RADIUS` from 152 to 190
+- Increase outer decorative ring from 176 to 220
+- Adjust inner ring from 44 to ~70 (gives room for the lens content)
+- Keep `CX`/`CY` at 200 (center of the 400x400 viewBox)
 
-**3. Define HUD content map**
-Static object with exact copy as specified:
-- Practice: "Full practice tests and timed sections."
-- Bootcamps: "Guided drills for advanced question types."
-- Classroom: "Video lessons and past coaching sessions."
-- Analytics: "Track your progress and spot weak areas."
-- Schedule: "Your daily study calendar."
+**2. Add metadata map**
+```
+const HUD_META: Record<string, string> = {
+  practice: "PT 1–90 Available",
+  bootcamps: "15 Modules",
+  classroom: "12 Sessions",
+  analytics: "Live Tracking",
+  schedule: "Daily Planner",
+};
+```
 
-**4. Replace center reading pocket with top-center HUD**
-- Remove the existing `AnimatePresence` center hover display (lines 357–404)
-- Add a new `AnimatePresence` block rendering a `fixed top-8 left-1/2 -translate-x-1/2 z-50` card
-- Styling: `bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl shadow-2xl p-5 w-96`
-- Fade-in + slide-down animation via framer-motion
-- Content layout:
-  - Header: node label in `text-xs tracking-widest uppercase text-zinc-400`
-  - Brief: 1-sentence description in `text-zinc-100 font-medium`
-  - Badge: Lock icon (amber) + "Access Restricted" if locked; Check icon (emerald) + "Access Granted" if unlocked. Practice is always unlocked.
+**3. Replace the fixed top-center HUD with a centered Orbital Lens**
+- Remove the `fixed top-8 left-1/2` card entirely
+- Add a new `absolute` div centered in the orbital container (`absolute inset-0 flex items-center justify-center pointer-events-none z-20`)
+- Inside, render `<AnimatePresence mode="wait">` with a keyed `motion.div`
+- Styling: `bg-transparent`, no border, no shadow — just crisp text centered in the hub
+- Max width ~200px so it fits comfortably inside the ring
 
-**5. Update AcademyFoyer.tsx**
-- Pass `permissions` prop to `OrbitalHub`
+**4. Content hierarchy (top to bottom, all centered)**
+- Node name: `text-sm tracking-[0.2em] uppercase text-zinc-400 mb-1`
+- Purpose: `text-xl font-medium text-zinc-100 mb-4` (use exact copy from `HUD_CONTENT`)
+- Metadata: `text-xs text-zinc-500 font-mono mb-3` (from `HUD_META`)
+- Access pill (de-emphasized):
+  - Locked: `bg-zinc-900 text-zinc-500 px-2 py-1 rounded-full text-[10px] uppercase tracking-wider` + tiny Lock icon
+  - Unlocked: `text-emerald-500/70 px-2 py-1 text-[10px] uppercase tracking-wider` no background
+
+**5. Smooth morphing transitions**
+- `AnimatePresence mode="wait"` ensures outgoing content fades before incoming
+- `initial={{ opacity: 0 }}`, `animate={{ opacity: 1 }}`, `exit={{ opacity: 0 }}`
+- Duration ~0.2s for snappy feel
+
+**File: `src/pages/AcademyFoyer.tsx`**
+
+**6. Expand the hub container**
+- Increase from `min(440px, 80vw, 80vh)` to `min(560px, 85vw, 85vh)` to accommodate the larger orbit
 
 ### Files Modified
 | File | Change |
 |------|--------|
-| `src/components/foyer/OrbitalHub.tsx` | Add intentional hover logic, HUD component, permissions prop |
-| `src/pages/AcademyFoyer.tsx` | Pass `permissions` prop to OrbitalHub |
+| `src/components/foyer/OrbitalHub.tsx` | Expand radius, replace HUD with centered Orbital Lens, add metadata, morphing transitions |
+| `src/pages/AcademyFoyer.tsx` | Increase hub container size |
 
