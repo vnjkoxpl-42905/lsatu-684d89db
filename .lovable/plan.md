@@ -1,30 +1,20 @@
 
 
-## Plan: Add Bento Grid Feature Section Component
+## Plan: Fix Double Modal Overlay on Forgot Password
 
 ### Problem
-The pasted code is from an Aceternity/Next.js template. It uses `next/image`, `next/link`, and `cobe` (globe library), and the JSX was stripped during copy-paste (all tags are missing). It needs to be adapted for this React+Vite project.
+When you click "Forgot?" on the sign-in form, the forgot-password modal (z-60/61) opens **on top of** the still-visible auth modal (z-40/50). Two glass panels stack, creating the red/overlapping box effect.
 
-### What I will do
+### Root Cause
+`forgotOpen` is set to `true` but `modalOpen` remains `true`. Both modals render simultaneously with their own backdrop + glass shell.
 
-**1. Install missing dependencies**
-- `cobe` (3D globe renderer)
-- `@tabler/icons-react` (icon library)
-- `framer-motion` is already installed
+### Fix (single file: `src/pages/Auth.tsx`)
 
-**2. Create `src/components/ui/feature-section-with-bento-grid.tsx`**
-Adapt the Aceternity component for React+Vite:
-- Replace `next/image` with standard `<img>` tags
-- Replace `next/link` with React Router `<Link>` or `<a>`
-- Reconstruct all the missing JSX (the pasted code lost all its HTML/JSX tags)
-- Rebuild the full component tree: `FeaturesSectionWithBentoGrid`, `FeatureCard`, `FeatureTitle`, `FeatureDescription`, `SkeletonOne` through `SkeletonFour`, and `Globe`
-- Keep all Tailwind classes, motion animations, and the cobe globe logic intact
+**1. Hide the auth modal when forgot-password opens**
+- On "Forgot?" button click (line 451): set `modalOpen(false)` alongside `setForgotOpen(true)`
 
-### Files
-| Action | File |
-|--------|------|
-| Install | `cobe`, `@tabler/icons-react` |
-| Create | `src/components/ui/feature-section-with-bento-grid.tsx` |
+**2. Restore the auth modal when forgot-password closes**
+- On forgot-password close (backdrop click line 584, X button line 596, and after successful submit line 250): set `modalOpen(true)` alongside `setForgotOpen(false)`
 
-The component will be ready to import and use anywhere in the app. No demo page will be created unless requested.
+This is a 4-line change. The forgot-password modal becomes the only visible panel, no stacking.
 
