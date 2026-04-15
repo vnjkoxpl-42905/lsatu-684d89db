@@ -332,7 +332,6 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
                   {isLocked && <Lock className="w-[8px] h-[8px] opacity-60" />}
                   {node.label}
                 </div>
-                </div>
 
                 {/* Charge bar */}
                 {node.charge > 0 && (
