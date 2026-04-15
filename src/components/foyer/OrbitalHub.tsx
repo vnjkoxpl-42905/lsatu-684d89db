@@ -1,18 +1,7 @@
 "use client";
 
-/**
- * OrbitalHub — the Radial Orbital Timeline centerpiece of the Academy Foyer.
- *
- * Architecture:
- *  - SVG layer  : ring track, leading arc, outer dashed ring, inner ring, charge halos
- *  - HTML layer : interactive node overlays (dot + label + hit target) — no counter-rotation needed
- *  - Phase prop controls all visibility + animation states
- *
- * Motion language: "architectural not animated" — 120-second orbital drift, nodes anchored.
- */
-
-import React, { useState } from "react";
-import { Lock } from "lucide-react";
+import React, { useState, useRef, useCallback } from "react";
+import { Lock, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -123,15 +112,57 @@ function labelStyle(a: LabelAnchor): React.CSSProperties {
 // COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 
+const HUD_CONTENT: Record<string, string> = {
+  practice: "Full practice tests and timed sections.",
+  bootcamps: "Guided drills for advanced question types.",
+  classroom: "Video lessons and past coaching sessions.",
+  analytics: "Track your progress and spot weak areas.",
+  schedule: "Your daily study calendar.",
+};
+
+interface UserPermissions {
+  has_bootcamp_access: boolean;
+  has_classroom_access: boolean;
+  has_analytics_access: boolean;
+  has_schedule_access: boolean;
+  is_admin: boolean;
+}
+
 interface OrbitalHubProps {
   phase: FoyerPhase;
   selectedNodeId?: string | null;
   onSelectNode: (node: FoyerNode) => void;
   lockedNodeIds?: string[];
+  permissions?: UserPermissions;
 }
 
-export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, lockedNodeIds = [] }: OrbitalHubProps) {
+export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, lockedNodeIds = [], permissions }: OrbitalHubProps) {
   const [hovered, setHovered] = useState<string | null>(null);
+  const [activeHoverNode, setActiveHoverNode] = useState<string | null>(null);
+  const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMouseEnter = useCallback((nodeId: string) => {
+    setHovered(nodeId);
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    hoverTimeout.current = setTimeout(() => {
+      setActiveHoverNode(nodeId);
+    }, 750);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHovered(null);
+    setActiveHoverNode(null);
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    };
+  }, []);
   const { theme } = useTheme();
   const isLight = theme === 'light';
 
@@ -285,8 +316,8 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
               scale:   { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
               filter:  { duration: 0.55 },
             }}
-            onMouseEnter={() => setHovered(node.id)}
-            onMouseLeave={() => setHovered(null)}
+            onMouseEnter={() => handleMouseEnter(node.id)}
+            onMouseLeave={handleMouseLeave}
             onClick={() => !isDissolving && onSelectNode(node)}
           >
             {/* ── Node dot (7px) ── */}
@@ -352,55 +383,45 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
       })}
 
       {/* ════════════════════════════════════════
-          READING POCKET — center hover display
+          DYNAMIC HUD — top-center hover display
           ════════════════════════════════════════ */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={hovered ?? "__default__"}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: isActive ? 1 : 0, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="text-center" style={{ width: 104 }}>
-            {hoveredNode ? (
-              <>
-                <div
-                  className="uppercase font-semibold mb-1.5"
-                  style={{ fontSize: 8, letterSpacing: "0.28em", color: `rgba(${nodeC},0.72)` }}
-                >
-                  {hoveredNode.label}
-                </div>
-                <div
-                  className="leading-relaxed"
-                  style={{ fontSize: 9, color: `rgba(${nodeC},0.45)` }}
-                >
-                  {hoveredNode.description}
-                </div>
-                {hoveredNode.charge > 0 && (
-                  <div
-                    className="mt-2 uppercase"
-                    style={{
-                      fontSize: 7,
-                      letterSpacing: "0.25em",
-                      color: `rgba(${nodeC},${0.18 + hoveredNode.charge * 0.3})`,
-                    }}
-                  >
-                    {hoveredNode.charge > 0.65 ? "New activity" : "Updated"}
-                  </div>
-                )}
-              </>
-            ) : (
-              <div
-                className="uppercase font-semibold"
-                style={{ fontSize: 8, letterSpacing: "0.42em", color: `rgba(${nodeC},0.28)` }}
-              >
-                LSAT U
+      <AnimatePresence>
+        {activeHoverNode && (() => {
+          const node = FOYER_NODES.find(n => n.id === activeHoverNode);
+          if (!node) return null;
+          const isLocked = lockedNodeIds.includes(node.id);
+          const isNodeUnlocked = node.id === "practice" || !isLocked;
+          return (
+            <motion.div
+              key={activeHoverNode}
+              className="fixed top-8 left-1/2 -translate-x-1/2 z-50 bg-zinc-950/90 backdrop-blur-md border border-zinc-800 rounded-xl shadow-2xl p-5 w-96"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="text-xs tracking-widest uppercase text-zinc-400 mb-2">
+                {node.label}
               </div>
-            )}
-          </div>
-        </motion.div>
+              <div className="text-zinc-100 font-medium text-sm mb-3">
+                {HUD_CONTENT[node.id] ?? ""}
+              </div>
+              <div className="flex items-center gap-1.5">
+                {isNodeUnlocked ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-500" />
+                    <span className="text-xs text-emerald-500 font-medium">Access Granted</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5 text-amber-500" />
+                    <span className="text-xs text-amber-500 font-medium">Access Restricted</span>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
     </div>
   );
