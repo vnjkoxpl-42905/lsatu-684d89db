@@ -12,6 +12,7 @@
  */
 
 import React, { useState } from "react";
+import { Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -126,9 +127,10 @@ interface OrbitalHubProps {
   phase: FoyerPhase;
   selectedNodeId?: string | null;
   onSelectNode: (node: FoyerNode) => void;
+  lockedNodeIds?: string[];
 }
 
-export default function OrbitalHub({ phase, selectedNodeId, onSelectNode }: OrbitalHubProps) {
+export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, lockedNodeIds = [] }: OrbitalHubProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const { theme } = useTheme();
   const isLight = theme === 'light';
