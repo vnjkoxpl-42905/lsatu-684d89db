@@ -42,7 +42,7 @@ export default function AbstractionBootcamp() {
             <ArrowLeft className="h-3.5 w-3.5" />
             Bootcamps
           </Button>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">Abstraction</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">Abstract</span>
           <div className="flex items-center gap-2">
             <LogoutButton />
             <ThemeToggle />
@@ -54,7 +54,7 @@ export default function AbstractionBootcamp() {
         {/* Desktop Sidebar */}
         <aside className="hidden lg:block w-72 border-r border-border p-6 sticky top-[65px] h-[calc(100vh-65px)] overflow-y-auto">
           <div className="space-y-1 mb-6">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Abstraction</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Abstract</p>
             <p className="text-[10px] text-muted-foreground">Progress: {overallProgress}%</p>
             <div className="w-full h-1.5 bg-accent rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${overallProgress}%` }} />
