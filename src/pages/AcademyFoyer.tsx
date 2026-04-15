@@ -33,6 +33,7 @@ export default function AcademyFoyer() {
   const { user, authReady } = useAuth();
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const permissions = useUserPermissions();
 
   // ── Location state injected by Auth.tsx on fresh login ──────────────────────
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
