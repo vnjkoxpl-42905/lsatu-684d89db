@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Eye, BookOpen, ArrowRight, CheckCircle2, Info, AlertTriangle } from 'lucide-react';
+import { ChevronRight, Eye, BookOpen, ArrowRight, CheckCircle2, Info, AlertTriangle, Search, KeyRound, Lightbulb } from 'lucide-react';
 import { stemDrills, MODULE_1_INTRO } from './data';
 
-type DrillState = 'intro' | 'exercise' | 'keywords' | 'requirements' | 'translation' | 'done';
+type DrillState = 'intro-1' | 'intro-2' | 'intro-3' | 'exercise' | 'keywords' | 'requirements' | 'translation' | 'done';
 
 function HighlightedStem({ rawStem, keywords, showHighlights }: { rawStem: string; keywords: { word: string; definition: string }[]; showHighlights: boolean }) {
   if (!showHighlights) {
@@ -36,9 +36,17 @@ function HighlightedStem({ rawStem, keywords, showHighlights }: { rawStem: strin
   return <>{result}</>;
 }
 
+const introStepIndex = (s: DrillState) => s === 'intro-1' ? 0 : s === 'intro-2' ? 1 : s === 'intro-3' ? 2 : -1;
+
+const trainingSteps = [
+  { icon: Search, label: 'Read the raw stem', desc: 'Try to decode what it means on your own first' },
+  { icon: KeyRound, label: 'Reveal keyword definitions', desc: 'See what each abstract term actually means' },
+  { icon: Lightbulb, label: "See the coach's translation", desc: 'Compare your interpretation to the breakdown' },
+];
+
 export default function InteractiveStemDrill({ onComplete }: { onComplete?: (count: number) => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [state, setState] = useState<DrillState>('intro');
+  const [state, setState] = useState<DrillState>('intro-1');
   const [completedCount, setCompletedCount] = useState(0);
 
   const drill = stemDrills[currentIndex];
@@ -46,19 +54,15 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
   const hasRequirements = drill?.requirements && drill.requirements.length > 0;
 
   const advance = () => {
-    if (state === 'intro') {
-      setState('exercise');
-    } else if (state === 'exercise') {
-      setState('keywords');
-    } else if (state === 'keywords') {
-      if (hasRequirements) {
-        setState('requirements');
-      } else {
-        setState('translation');
-      }
-    } else if (state === 'requirements') {
-      setState('translation');
-    } else if (state === 'translation') {
+    if (state === 'intro-1') setState('intro-2');
+    else if (state === 'intro-2') setState('intro-3');
+    else if (state === 'intro-3') setState('exercise');
+    else if (state === 'exercise') setState('keywords');
+    else if (state === 'keywords') {
+      if (hasRequirements) setState('requirements');
+      else setState('translation');
+    } else if (state === 'requirements') setState('translation');
+    else if (state === 'translation') {
       const newCount = completedCount + 1;
       setCompletedCount(newCount);
       onComplete?.(newCount);
@@ -71,27 +75,164 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
     }
   };
 
-  if (state === 'intro') {
+  const currentIntroStep = introStepIndex(state);
+  const isIntro = currentIntroStep >= 0;
+
+  // --- INTRO SCREENS ---
+  if (isIntro) {
     return (
-      <div className="space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 lg:p-8 space-y-4">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-primary font-bold">Module 1 — The De-Abstraction Lab</p>
-          <h2 className="text-lg font-bold text-foreground">Why This Matters</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">{MODULE_1_INTRO}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Take a look at the following 15 answer choice stems. For each one, try to figure out what it means before revealing the coach's breakdown. This is the skill you need to master.
-          </p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+        {/* Step indicator dots */}
+        <div className="flex gap-2 mb-10">
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === currentIntroStep ? 'w-8 bg-primary' : i < currentIntroStep ? 'w-4 bg-primary/40' : 'w-4 bg-border'
+              }`}
+            />
+          ))}
         </div>
-        <button
+
+        <AnimatePresence mode="wait">
+          {/* STEP 1: Title Card */}
+          {state === 'intro-1' && (
+            <motion.div
+              key="intro-1"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="relative flex flex-col items-center text-center max-w-lg w-full"
+            >
+              {/* Decorative numeral */}
+              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[140px] font-black leading-none text-foreground/[0.03] select-none pointer-events-none">
+                01
+              </span>
+
+              <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-3 relative z-10">
+                Module 1
+              </p>
+              <h1 className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight relative z-10 mb-3">
+                The De-Abstraction Lab
+              </h1>
+              <div className="w-12 h-[2px] bg-primary/60 rounded-full mb-5" />
+              <p className="text-sm text-muted-foreground">
+                15 Exercises
+              </p>
+            </motion.div>
+          )}
+
+          {/* STEP 2: The Mission */}
+          {state === 'intro-2' && (
+            <motion.div
+              key="intro-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="max-w-lg w-full space-y-6"
+            >
+              <div className="text-center mb-2">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-2">The Mission</p>
+                <h2 className="text-xl lg:text-2xl font-bold text-foreground">Why This Matters</h2>
+              </div>
+
+              <div className="rounded-xl border border-border bg-card/60 backdrop-blur-sm p-6 space-y-4">
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.4 }}
+                  className="text-sm text-muted-foreground leading-relaxed"
+                >
+                  The ability to{' '}
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold text-xs">
+                    de-abstractify
+                  </span>{' '}
+                  — translating vague and abstract terms that appear in answer choices into their stimulus equivalents — is one of the most important skills the advanced student needs to master.
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="text-sm text-muted-foreground leading-relaxed"
+                >
+                  If you do not have this ability, often you will end up choosing a wrong answer choice even if you knew what you were looking for. You simply did not understand what the answer choice was trying to say.
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45, duration: 0.4 }}
+                  className="text-sm text-foreground leading-relaxed font-medium"
+                >
+                  In other words, advanced students can read through a list of abstract answer choices and know exactly what they are referring to.
+                </motion.p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 3: The Briefing */}
+          {state === 'intro-3' && (
+            <motion.div
+              key="intro-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="max-w-lg w-full space-y-6"
+            >
+              <div className="text-center mb-2">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-primary font-bold mb-2">The Briefing</p>
+                <h2 className="text-xl lg:text-2xl font-bold text-foreground">Your Training</h2>
+              </div>
+
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                For each of the 15 stems, you will follow this process:
+              </p>
+
+              <div className="space-y-3">
+                {trainingSteps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.15 + i * 0.15, duration: 0.4 }}
+                    className="rounded-xl border border-border bg-card/60 backdrop-blur-sm p-4 flex items-start gap-4"
+                  >
+                    <div className="flex-shrink-0 h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <step.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{step.label}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{step.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* CTA */}
+        <motion.button
+          key={`cta-${state}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: state === 'intro-3' ? 0.6 : 0.3, duration: 0.3 }}
           onClick={advance}
-          className="w-full py-3.5 rounded-xl text-sm font-bold transition-all bg-foreground text-background hover:bg-foreground/90 flex items-center justify-center gap-2"
+          className="mt-10 px-8 py-3.5 rounded-xl text-sm font-bold transition-all bg-foreground text-background hover:bg-foreground/90 flex items-center justify-center gap-2"
         >
-          <ArrowRight className="h-4 w-4" /> Begin Exercises
-        </button>
+          {state === 'intro-1' && <>Continue <ChevronRight className="h-4 w-4" /></>}
+          {state === 'intro-2' && <>What You'll Do <ChevronRight className="h-4 w-4" /></>}
+          {state === 'intro-3' && <>Begin Exercises <ArrowRight className="h-4 w-4" /></>}
+        </motion.button>
       </div>
     );
   }
 
+  // --- DONE SCREEN ---
   if (state === 'done') {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
@@ -104,6 +245,7 @@ export default function InteractiveStemDrill({ onComplete }: { onComplete?: (cou
     );
   }
 
+  // --- EXERCISE FLOW ---
   return (
     <div className="space-y-6">
       {/* Progress */}
