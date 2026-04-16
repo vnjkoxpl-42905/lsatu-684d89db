@@ -22,7 +22,6 @@ interface AuthContextValue {
   authReady: boolean;
   signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: any }>;
   updatePassword: (newPassword: string) => Promise<{ error: any }>;
@@ -30,13 +29,12 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-/** Detect if the current page load is mid-OAuth callback */
+/** Detect if the current page load is mid-OAuth callback (URL-based only) */
 function isOAuthCallbackUrl(): boolean {
   return (
     window.location.pathname.includes('~oauth') ||
     window.location.hash.includes('access_token') ||
-    window.location.search.includes('code=') ||
-    sessionStorage.getItem('oauth_pending') === '1'
+    window.location.search.includes('code=')
   );
 }
 
@@ -171,23 +169,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        }
-      });
-      
-      if (error) throw error;
-      return { error: null };
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in with Google');
-      return { error };
-    }
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
   };
@@ -222,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, authReady, signUp, signIn, signInWithGoogle, signOut, resetPassword, updatePassword }}>
+    <AuthContext.Provider value={{ user, session, loading, authReady, signUp, signIn, signOut, resetPassword, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

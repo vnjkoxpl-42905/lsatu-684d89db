@@ -175,6 +175,26 @@ export default function Auth() {
     });
   }, []);
 
+  // Return-leg OAuth session finalization
+  // When the user returns from Google via the Lovable broker, re-invoke the
+  // broker so it can deliver tokens (without redirecting) and call setSession.
+  React.useEffect(() => {
+    if (sessionStorage.getItem('oauth_pending') === '1') {
+      console.log('[Auth] OAuth return-leg detected — re-invoking broker');
+      lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/auth",
+      }).then((result) => {
+        if (result.error) {
+          sessionStorage.removeItem('oauth_pending');
+          console.error('[Auth] OAuth return-leg failed', result.error);
+          toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
+        }
+        // If tokens were returned, setSession was already called inside the lovable module.
+        // AuthContext's onAuthStateChange will pick up the new session automatically.
+      });
+    }
+  }, []);
+
   // ── Auth handlers ──
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
