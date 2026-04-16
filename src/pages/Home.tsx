@@ -95,6 +95,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
+  const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
