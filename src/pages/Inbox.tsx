@@ -15,22 +15,21 @@ export default function Inbox() {
   const { conversationId } = useParams();
   const { conversations, loading, refresh } = useInbox();
   const { is_admin } = useUserPermissions();
-  const [activeId, setActiveId] = useState<string | null>(conversationId ?? null);
+  const activeId = conversationId ?? null;
 
   useEffect(() => {
     if (authReady && !user) navigate('/auth', { replace: true });
   }, [authReady, user, navigate]);
 
-  useEffect(() => {
-    setActiveId(conversationId ?? null);
-  }, [conversationId]);
-
-  // Auto-select first conversation on desktop
+  // Auto-select first conversation on desktop when no thread is in the URL
   useEffect(() => {
     if (!activeId && conversations.length > 0 && window.innerWidth >= 768) {
-      setActiveId(conversations[0].id);
+      navigate(`/inbox/${conversations[0].id}`, { replace: true });
     }
-  }, [conversations, activeId]);
+  }, [conversations, activeId, navigate]);
+
+  const selectThread = (id: string) => navigate(`/inbox/${id}`);
+  const clearThread = () => navigate('/inbox');
 
   const active = conversations.find((c) => c.id === activeId) ?? null;
 
