@@ -250,14 +250,16 @@ export default function Home() {
             >
               Main Hub
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground hover:bg-accent"
-              onClick={() => navigate('/analytics')}
-            >
-              View Analytics
-            </Button>
+            {perms.has_analytics_access && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground hover:bg-accent"
+                onClick={() => navigate('/analytics')}
+              >
+                View Analytics
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
