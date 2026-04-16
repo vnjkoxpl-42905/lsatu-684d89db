@@ -442,39 +442,18 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Opportunities */}
-                <div
-                  className={cn(
-                    'rounded-xl bg-card border border-border p-5',
-                    'shadow-sm',
-                  )}
-                >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">
-                    Opportunities
-                  </p>
-                  <div className="space-y-3">
-                    {trends.map((trend, i) => (
-                      <div key={i} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-1 h-1 rounded-full bg-neutral-600 shrink-0" />
-                          <span className="text-[13px] text-foreground/80">{trend.label}</span>
-                        </div>
-                        <span className="text-[13px] text-muted-foreground tabular-nums font-medium">
-                          {trend.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  {perms.has_analytics_access && (
+                {perms.has_analytics_access && (
+                  <div className={cn('rounded-xl bg-card border border-border p-5', 'shadow-sm')}>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => navigate('/analytics')}
-                      className="mt-4 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
+                      className="text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
                     >
                       View Full Analytics
                     </Button>
-                  )}
+                  </div>
+                )}
                 </div>
               </div>
             </div>
