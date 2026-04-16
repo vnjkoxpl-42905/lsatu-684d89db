@@ -1,106 +1,114 @@
 
-## Diagnosis
 
-The last edit failed because it implemented the wrong recovery model for managed Google OAuth.
+# Admin Dashboard & Feature Flag System — Implementation Plan
 
-### What the attempted edit changed
-1. Kept the click handler using:
-   - `sessionStorage.setItem('oauth_pending', '1')`
-   - `lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" })`
-2. Updated `AuthContext` so `oauth_pending` makes auth wait up to 8 seconds.
-3. Added a new mount-time effect in `Auth.tsx` that calls `lovable.auth.signInWithOAuth(...)` again after the browser returns to `/auth`.
+## Current State (Audit)
 
-### Why that caused the issue
-Per the managed OAuth helper’s expected behavior, `lovable.auth.signInWithOAuth()` should be called once before redirect. After return, the session should be restored automatically on page load.
+**What exists:**
+- `profiles` table has 4 boolean flags: `has_bootcamp_access`, `has_classroom_access`, `has_analytics_access`, `has_schedule_access` (all default `true`)
+- `user_roles` table with `app_role` enum (`admin`, `moderator`, `user`)
+- `useUserPermissions` hook reads flags + admin role
+- `ProtectedRoute` component gates 4 routes (analytics, classroom, schedule, bootcamps)
+- Basic `AdminDashboard` page with search + 4 toggle switches per user
+- `admin-manage-users` edge function (GET users, POST toggle flag)
+- Foyer `OrbitalHub` dims locked nodes
+- `LockedModule` fallback page
+- Practice, Drill, WAJ, Flagged, Profile pages have NO feature gates
 
-The new `Auth.tsx` effect calls it a second time on the fresh `/auth` load. That is the broken part.
+**What is missing:**
+- No flags for: Practice, Drill, WAJ, Flagged, Chat, PDF/Export
+- No bulk actions (Grant All / Revoke All)
+- No admin analytics (user activity, feature adoption, usage stats)
+- No last-login / last-seen tracking
+- No user role display in admin UI
+- No way to promote/demote admins
+- No access presets
+- Primary admin account (`contact@aspiringattorneys.com`) not seeded
+- Permission hook doesn't cover new flags
+- Edge function only handles 4 fields
 
-In the current code, this second call can:
-- start a fresh OAuth redirect again, or
-- return an error / non-session result, and
-- clear `oauth_pending` too early.
+## Architecture
 
-That breaks the waiting logic in `AuthContext`, so the app ends up with:
-- `authReady = true`
-- `user = null`
+**Approach:** Extend the existing `profiles` boolean-flag pattern (simple, queryable, no JSON blobs). Add new columns for additional features. Keep `user_roles` separate for admin/moderator roles. Add `last_seen_at` to profiles for activity tracking.
 
-At that point the app simply stays on `/auth`, which matches the behavior you’re seeing.
+**New profile flags:**
+- `has_practice_access` (default true)
+- `has_drill_access` (default true)  
+- `has_waj_access` (default true)
+- `has_flagged_access` (default true)
+- `has_chat_access` (default true)
+- `has_export_access` (default true)
 
-## Actual failure point
+**New profile column:**
+- `last_seen_at` (timestamptz, updated on app load)
 
-The current remaining failure is not “we forgot to call the helper again.”
-It is the opposite:
+## Execution Steps
 
-- we added a second post-return OAuth call that should not be there,
-- and that extra call interferes with normal session restoration.
+### 1. Database Migration
+Add 7 new columns to `profiles`:
+- `has_practice_access boolean DEFAULT true`
+- `has_drill_access boolean DEFAULT true`
+- `has_waj_access boolean DEFAULT true`
+- `has_flagged_access boolean DEFAULT true`
+- `has_chat_access boolean DEFAULT true`
+- `has_export_access boolean DEFAULT true`
+- `last_seen_at timestamptz DEFAULT now()`
 
-## Why the earlier reasoning was wrong
+Seed admin role for `contact@aspiringattorneys.com` (insert into `user_roles` if user exists, or document that it must be done after account creation).
 
-The previous fix assumed:
-- `supabase.auth.setSession(...)` must be triggered by our app again after redirect.
+### 2. Update `useUserPermissions` Hook
+Add all new flags. Update the profiles query to select new columns. Touch `last_seen_at` on each load.
 
-But in this managed flow, that assumption is wrong. The helper is not designed as a two-step “call before redirect, then call again on return” API. The second call is not a valid finalization step.
+### 3. Update `ProtectedRoute` + Add Guards
+- Extend `ProtectedRoute` to accept new flag names
+- Wrap Practice (`/practice`), Drill (`/drill`), WAJ (`/waj`), Flagged (`/flagged`) routes with guards in `App.tsx`
 
-So the implementation drifted away from the intended auth flow and introduced a self-inflicted failure.
+### 4. Update Edge Function `admin-manage-users`
+- Add new fields to the allowed list
+- Add GET endpoint for admin analytics (user counts, feature distribution, activity stats)
+- Add POST endpoint for bulk actions (grant-all, revoke-all per user)
+- Add role management (promote to admin, demote)
+- Return `last_seen_at` and role info in user list
 
-## Correct fix direction
+### 5. Rebuild Admin Dashboard
+Replace the current minimal table with a full admin panel:
 
-We should restore the flow to a single OAuth initiation call and let the auth provider restore the session naturally.
+**Sections:**
+- **Overview cards**: Total users, active today, active this week, admin count
+- **Feature adoption chart**: Bar chart showing how many users have each flag enabled
+- **User table** (enhanced):
+  - Email, display name, role badge (admin/user), last seen
+  - All 10 feature toggles organized in collapsible groups
+  - Row-level "Grant All" / "Revoke All" buttons
+  - Role management (make admin / remove admin)
+  - Search + filter by role or access level
+- **Global bulk actions**: Grant/revoke a specific feature for all users
 
-That means:
-1. Remove the mount-time “finalize OAuth on return” effect from `Auth.tsx`.
-2. Keep the auth waiting logic in `AuthContext`, but only as passive waiting for session restoration.
-3. Re-verify whether `/auth` is the right return path or whether we should use the app origin and protect against premature routing another way.
-4. Instrument the auth lifecycle so we can confirm:
-   - whether `oauth_pending` survives the return,
-   - whether `getSession()` is null or populated on load,
-   - whether `onAuthStateChange` receives a real session,
-   - whether routing happens before session restoration completes.
+**Design:** Dark zinc theme matching existing admin page. Clean table layout. Toggle switches for each flag. Badge indicators for roles.
 
-## Execution plan
+### 6. Update Foyer
+- Pass new permission flags to `OrbitalHub` for locked node display
+- Add practice node locking support
 
-### Step 1 — Remove the bad post-return behavior
-- Delete the `React.useEffect` in `src/pages/Auth.tsx` that re-calls `lovable.auth.signInWithOAuth(...)` on mount.
+### 7. Update `last_seen_at`
+In `AuthContext` or `useUserPermissions`, upsert `last_seen_at = now()` on session detection.
 
-### Step 2 — Keep only single-entry OAuth initiation
-- Leave the button handler as the only place that starts Google OAuth.
-- Preserve `oauth_pending` only as a waiting signal, not as a trigger to call OAuth again.
+## Files Modified
 
-### Step 3 — Add targeted verification instrumentation
-Temporarily log:
-- on `/auth` mount:
-  - current URL
-  - `oauth_pending`
-- in `AuthContext`:
-  - initial `isOAuthRef.current`
-  - `supabase.auth.getSession()` result
-  - every `onAuthStateChange` event and whether `newSession` exists
-  - when timeout fires
-  - when `markReady(null)` vs `markReady(session)` runs
+| File | Change |
+|------|--------|
+| Migration SQL | Add 7 columns to `profiles` |
+| `src/hooks/useUserPermissions.ts` | Add new flags, update `last_seen_at` |
+| `src/components/ProtectedRoute.tsx` | Extend flag type union |
+| `src/App.tsx` | Wrap Practice/Drill/WAJ/Flagged with ProtectedRoute |
+| `supabase/functions/admin-manage-users/index.ts` | Expand allowed fields, add bulk actions, add analytics endpoint, add role management |
+| `src/pages/AdminDashboard.tsx` | Full rebuild: analytics cards, enhanced user table, bulk actions, role management |
+| `src/pages/AcademyFoyer.tsx` | Pass new flags for locked nodes |
+| `src/components/foyer/OrbitalHub.tsx` | No changes needed (already accepts `lockedNodeIds`) |
 
-This will tell us whether the real remaining issue is:
-- session never being restored at all, or
-- session being restored but routing logic still beating it.
+## Constraints
+- No changes to `client.ts` or `types.ts`
+- All new columns default to `true` so existing users keep access
+- Admin bypass stays in `ProtectedRoute` (admins see everything)
+- `contact@aspiringattorneys.com` gets admin role seeded via edge function call or migration
 
-### Step 4 — Re-test the return path
-After removing the second call, verify:
-- user clicks Google
-- browser returns
-- `oauth_pending` still exists on first render
-- `getSession()` or `onAuthStateChange` yields a session
-- `user` becomes non-null
-- `/auth` redirects onward to `/foyer` or `/onboarding`
-
-### Step 5 — If session is still not restored
-Then we investigate the next layer, in order:
-1. whether the chosen `redirect_uri` path is compatible with the managed flow,
-2. whether the backend auth settings allow the return domain/path,
-3. whether the preview/published environment differs,
-4. whether another route guard is clearing or racing before auth settles.
-
-## Files to change in the next execution pass
-- `src/pages/Auth.tsx` — remove the second OAuth call; add temporary debug instrumentation
-- `src/contexts/AuthContext.tsx` — add temporary auth lifecycle logs only
-
-## Technical note
-There is also an older `signInWithGoogle` method still present in `AuthContext.tsx` that uses direct `supabase.auth.signInWithOAuth(...)`. It does not appear to be the active path for the current button, but it should be cleaned up afterward so there is only one Google OAuth implementation in the app.
