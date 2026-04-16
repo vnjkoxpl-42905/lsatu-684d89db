@@ -31,7 +31,7 @@ export function RecentPerformanceWidget() {
     if (!user) return;
 
     try {
-      const classId = (user as any).user_metadata?.class_id || '';
+      const classId = user.id;
 
       const { data, error } = await supabase
         .from('section_history')
