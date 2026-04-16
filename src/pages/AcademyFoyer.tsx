@@ -29,6 +29,7 @@ import FoyerTour from "@/components/foyer/FoyerTour";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useInbox } from "@/hooks/useInbox";
 import { Shield, HelpCircle } from "lucide-react";
 
 export default function AcademyFoyer() {
@@ -38,6 +39,7 @@ export default function AcademyFoyer() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const permissions = useUserPermissions();
+  const { unreadCount: inboxUnread } = useInbox();
 
   // ── Location state injected by Auth.tsx on fresh login ──────────────────────
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
