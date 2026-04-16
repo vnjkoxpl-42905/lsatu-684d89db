@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Paperclip, FileText, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -14,6 +14,8 @@ interface Profile {
   display_name: string | null;
 }
 
+const MAX_SIZE = 20 * 1024 * 1024;
+
 export function NewConversationDialog({ onCreated }: { onCreated: (conversationId: string) => void }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
@@ -22,7 +24,9 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [subject, setSubject] = useState('');
   const [firstMessage, setFirstMessage] = useState('');
+  const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open || !user) return;
@@ -39,9 +43,30 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
     p.class_id.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const pickFile = (f: File | null) => {
+    if (!f) return;
+    if (f.type !== 'application/pdf') {
+      toast.error('Only PDF files are allowed');
+      return;
+    }
+    if (f.size > MAX_SIZE) {
+      toast.error('File must be under 20MB');
+      return;
+    }
+    setFile(f);
+  };
+
+  const reset = () => {
+    setSubject('');
+    setFirstMessage('');
+    setSelectedUserId(null);
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
   const create = async () => {
-    if (!user || !selectedUserId || !firstMessage.trim()) {
-      toast.error('Pick a recipient and write a message');
+    if (!user || !selectedUserId || (!firstMessage.trim() && !file)) {
+      toast.error('Pick a recipient and write a message or attach a PDF');
       return;
     }
     setSubmitting(true);
@@ -59,16 +84,32 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
       ]);
       if (pErr) throw pErr;
 
-      const { error: mErr } = await supabase
+      const { data: msg, error: mErr } = await supabase
         .from('messages')
-        .insert({ conversation_id: conv.id, sender_id: user.id, body: firstMessage.trim() });
-      if (mErr) throw mErr;
+        .insert({ conversation_id: conv.id, sender_id: user.id, body: firstMessage.trim() })
+        .select()
+        .single();
+      if (mErr || !msg) throw mErr ?? new Error('Failed to send first message');
+
+      if (file) {
+        const path = `${conv.id}/${msg.id}/${file.name}`;
+        const { error: upErr } = await supabase.storage
+          .from('message-attachments')
+          .upload(path, file, { contentType: 'application/pdf', upsert: false });
+        if (upErr) throw upErr;
+        const { error: attErr } = await supabase.from('message_attachments').insert({
+          message_id: msg.id,
+          storage_path: path,
+          file_name: file.name,
+          file_size: file.size,
+          mime_type: 'application/pdf',
+        });
+        if (attErr) throw attErr;
+      }
 
       toast.success('Conversation started');
       setOpen(false);
-      setSubject('');
-      setFirstMessage('');
-      setSelectedUserId(null);
+      reset();
       onCreated(conv.id);
     } catch (e: any) {
       toast.error(e.message ?? 'Failed to create conversation');
@@ -78,7 +119,7 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Plus className="w-4 h-4 mr-1" /> New
@@ -123,10 +164,31 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
             <Label>Message</Label>
             <Textarea value={firstMessage} onChange={(e) => setFirstMessage(e.target.value)} placeholder="Write your first message…" rows={4} />
           </div>
+          {file && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-muted/40 text-sm">
+              <FileText className="w-4 h-4 text-muted-foreground" />
+              <span className="flex-1 truncate">{file.name}</span>
+              <button onClick={() => setFile(null)} className="text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/pdf"
+            className="hidden"
+            onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+          />
         </div>
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={create} disabled={submitting}>Send</Button>
+        <DialogFooter className="flex sm:justify-between gap-2">
+          <Button variant="ghost" size="sm" onClick={() => fileRef.current?.click()} disabled={submitting}>
+            <Paperclip className="w-4 h-4 mr-1" /> Attach PDF
+          </Button>
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={create} disabled={submitting}>Send</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

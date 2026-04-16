@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
@@ -15,22 +15,21 @@ export default function Inbox() {
   const { conversationId } = useParams();
   const { conversations, loading, refresh } = useInbox();
   const { is_admin } = useUserPermissions();
-  const [activeId, setActiveId] = useState<string | null>(conversationId ?? null);
+  const activeId = conversationId ?? null;
 
   useEffect(() => {
     if (authReady && !user) navigate('/auth', { replace: true });
   }, [authReady, user, navigate]);
 
-  useEffect(() => {
-    setActiveId(conversationId ?? null);
-  }, [conversationId]);
-
-  // Auto-select first conversation on desktop
+  // Auto-select first conversation on desktop when no thread is in the URL
   useEffect(() => {
     if (!activeId && conversations.length > 0 && window.innerWidth >= 768) {
-      setActiveId(conversations[0].id);
+      navigate(`/inbox/${conversations[0].id}`, { replace: true });
     }
-  }, [conversations, activeId]);
+  }, [conversations, activeId, navigate]);
+
+  const selectThread = (id: string) => navigate(`/inbox/${id}`);
+  const clearThread = () => navigate('/inbox');
 
   const active = conversations.find((c) => c.id === activeId) ?? null;
 
@@ -49,7 +48,7 @@ export default function Inbox() {
               <h1 className="text-base font-semibold">Inbox</h1>
             </div>
           </div>
-          {is_admin && <NewConversationDialog onCreated={(id) => setActiveId(id)} />}
+          {is_admin && <NewConversationDialog onCreated={(id) => navigate(`/inbox/${id}`)} />}
         </div>
       </header>
 
@@ -64,7 +63,7 @@ export default function Inbox() {
             <ThreadList
               conversations={conversations}
               activeId={activeId}
-              onSelect={(id) => setActiveId(id)}
+              onSelect={selectThread}
             />
           )}
         </aside>
@@ -74,7 +73,7 @@ export default function Inbox() {
           {active ? (
             <ConversationView
               conversation={active}
-              onBack={() => setActiveId(null)}
+              onBack={clearThread}
               onMessageSent={refresh}
             />
           ) : (
