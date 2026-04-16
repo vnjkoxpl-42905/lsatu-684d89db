@@ -1,18 +1,30 @@
 
 
-# Add AnimatedDock Component
+# Dock Routing Fix
 
-## What needs to happen
+## Routing plan per dock item
 
-Copy the provided `animated-dock.tsx` component into `src/components/ui/` with three adaptations for this project's stack:
+| Item | Destination | Type | Rationale |
+|------|------------|------|-----------|
+| **Homework** | `/practice` | Route | The practice page is the student's active work center — closest existing match to "homework" |
+| **Inbox** | No route — placeholder toast | Local action | No inbox/messages system exists yet. A toast saying "Inbox coming soon" is honest; a dead route is not |
+| **Scheduling** | `/schedule` | Route | Already correct, no change needed |
+| **Settings** | `/profile` | Route | The profile page already handles account and preferences — this is the existing settings destination |
+| **Help / Tour** | Trigger `setShowTour(true)` | Local action | The foyer already has a fully built `FoyerTour` component with replay logic. Clicking this should replay the tour directly, not navigate anywhere |
 
-1. **Import path**: Change `from "motion/react"` to `from "framer-motion"` (already installed; the `motion` package is not).
-2. **Remove Next.js dependency**: Replace `Link` from `next/link` with a plain `<a>` tag (external links with `target="_blank"`). This is a React/Vite project.
-3. **Use existing `cn` util**: Import from `@/lib/utils` instead of defining a local `cn`.
+## Implementation
 
-No new npm installs needed — `clsx`, `tailwind-merge`, and `framer-motion` are all already in the project.
+### 1. `src/components/ui/animated-dock.tsx`
+- Add optional `onClick?: () => void` to `DockItemData`
+- Make `link` optional (some items are local actions, not routes)
+- In the button handler: if `onClick` exists, call it; otherwise navigate
 
-## File created
+### 2. `src/pages/AcademyFoyer.tsx`
+- **Homework**: change `link` from `/homework` to `/practice`
+- **Inbox**: remove `link`, add `onClick` that fires a toast ("Inbox coming soon")
+- **Settings**: change `link` from `/settings` to `/profile`
+- **Help / Tour**: remove `link`, add `onClick` that calls `setShowTour(true)` and `setTourChecked(false)` to replay the tour
+- **Scheduling**: unchanged
 
-**`src/components/ui/animated-dock.tsx`** — the component with the three adaptations above. No other files changed.
+No new pages created. No dock placement or orbit changes.
 
