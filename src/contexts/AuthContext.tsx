@@ -35,7 +35,8 @@ function isOAuthCallbackUrl(): boolean {
   return (
     window.location.pathname.includes('~oauth') ||
     window.location.hash.includes('access_token') ||
-    window.location.search.includes('code=')
+    window.location.search.includes('code=') ||
+    sessionStorage.getItem('oauth_pending') === '1'
   );
 }
 
