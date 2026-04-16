@@ -105,11 +105,6 @@ export default function Home() {
   const [sparklineData, setSparklineData] = React.useState<
     Array<{ date: string; count: number }>
   >([]);
-  const [trends] = React.useState<Array<{ label: string; value: string }>>([
-    { label: 'Logical Reasoning', value: '72%' },
-    { label: 'Inference Questions', value: '68%' },
-    { label: 'Argument Structure', value: '65%' },
-  ]);
 
   // Auth guard
   React.useEffect(() => {
