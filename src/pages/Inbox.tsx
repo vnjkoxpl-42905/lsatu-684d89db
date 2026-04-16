@@ -48,7 +48,7 @@ export default function Inbox() {
               <h1 className="text-base font-semibold">Inbox</h1>
             </div>
           </div>
-          {is_admin && <NewConversationDialog onCreated={(id) => setActiveId(id)} />}
+          {is_admin && <NewConversationDialog onCreated={(id) => navigate(`/inbox/${id}`)} />}
         </div>
       </header>
 
@@ -63,7 +63,7 @@ export default function Inbox() {
             <ThreadList
               conversations={conversations}
               activeId={activeId}
-              onSelect={(id) => setActiveId(id)}
+              onSelect={selectThread}
             />
           )}
         </aside>
@@ -73,7 +73,7 @@ export default function Inbox() {
           {active ? (
             <ConversationView
               conversation={active}
-              onBack={() => setActiveId(null)}
+              onBack={clearThread}
               onMessageSent={refresh}
             />
           ) : (
