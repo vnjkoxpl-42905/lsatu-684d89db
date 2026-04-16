@@ -147,7 +147,7 @@ export default function AcademyFoyer() {
 
   // Theme-adaptive colors
   const brandColor   = isLight ? "rgba(0,0,0,0.38)"     : "rgba(255,255,255,0.22)";
-  const promptColor  = isLight ? "rgba(0,0,0,0.32)"     : "rgba(255,255,255,0.18)";
+  
   const dissolveGrad = isLight
     ? "radial-gradient(ellipse 60% 60% at 50% 50%, transparent 20%, rgba(255,255,255,0.7) 80%, #fff 100%)"
     : "radial-gradient(ellipse 60% 60% at 50% 50%, transparent 20%, rgba(0,0,0,0.7) 80%, #000 100%)";
