@@ -332,6 +332,7 @@ export type Database = {
           has_bootcamp_access: boolean
           has_classroom_access: boolean
           has_schedule_access: boolean
+          has_seen_tour: boolean
           last_practice_date: string | null
           level: number | null
           longest_streak: number | null
@@ -353,6 +354,7 @@ export type Database = {
           has_bootcamp_access?: boolean
           has_classroom_access?: boolean
           has_schedule_access?: boolean
+          has_seen_tour?: boolean
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null
@@ -374,6 +376,7 @@ export type Database = {
           has_bootcamp_access?: boolean
           has_classroom_access?: boolean
           has_schedule_access?: boolean
+          has_seen_tour?: boolean
           last_practice_date?: string | null
           level?: number | null
           longest_streak?: number | null
