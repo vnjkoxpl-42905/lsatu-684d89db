@@ -164,6 +164,33 @@ export default function Auth() {
     checkProfile();
   }, [user, navigate]);
 
+  // Finalize OAuth on return — the library needs to be called again on the
+  // fresh page load so it can detect the callback params and call setSession.
+  React.useEffect(() => {
+    if (sessionStorage.getItem('oauth_pending') !== '1') return;
+
+    const finalize = async () => {
+      try {
+        const result = await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: window.location.origin + "/auth",
+        });
+
+        if (result.error) {
+          sessionStorage.removeItem('oauth_pending');
+          toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
+        } else if (result.redirected) {
+          // Unexpected on return leg — clear flag
+          sessionStorage.removeItem('oauth_pending');
+        }
+        // Otherwise: tokens returned, setSession called internally, AuthContext picks it up
+      } catch (err: any) {
+        sessionStorage.removeItem('oauth_pending');
+        toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
+      }
+    };
+
+    finalize();
+  }, [toast]);
 
   // ── Auth handlers ──
   const handleSubmit = async (e: React.FormEvent) => {
