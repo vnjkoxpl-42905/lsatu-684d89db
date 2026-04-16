@@ -330,10 +330,17 @@ export type Database = {
           display_name: string | null
           has_analytics_access: boolean
           has_bootcamp_access: boolean
+          has_chat_access: boolean
           has_classroom_access: boolean
+          has_drill_access: boolean
+          has_export_access: boolean
+          has_flagged_access: boolean
+          has_practice_access: boolean
           has_schedule_access: boolean
           has_seen_tour: boolean
+          has_waj_access: boolean
           last_practice_date: string | null
+          last_seen_at: string | null
           level: number | null
           longest_streak: number | null
           overall_answered: number | null
@@ -352,10 +359,17 @@ export type Database = {
           display_name?: string | null
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
+          has_chat_access?: boolean
           has_classroom_access?: boolean
+          has_drill_access?: boolean
+          has_export_access?: boolean
+          has_flagged_access?: boolean
+          has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
+          has_waj_access?: boolean
           last_practice_date?: string | null
+          last_seen_at?: string | null
           level?: number | null
           longest_streak?: number | null
           overall_answered?: number | null
@@ -374,10 +388,17 @@ export type Database = {
           display_name?: string | null
           has_analytics_access?: boolean
           has_bootcamp_access?: boolean
+          has_chat_access?: boolean
           has_classroom_access?: boolean
+          has_drill_access?: boolean
+          has_export_access?: boolean
+          has_flagged_access?: boolean
+          has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
+          has_waj_access?: boolean
           last_practice_date?: string | null
+          last_seen_at?: string | null
           level?: number | null
           longest_streak?: number | null
           overall_answered?: number | null

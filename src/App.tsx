@@ -54,10 +54,18 @@ const App = () => (
               <QuestionBankProvider>
                 <Routes>
                   <Route path="/" element={<Navigate to="/foyer" replace />} />
-                  <Route path="/practice" element={<Home />} />
-                  <Route path="/drill" element={<Drill />} />
-                  <Route path="/waj" element={<WrongAnswerJournal />} />
-                  <Route path="/flagged" element={<FlaggedQuestions />} />
+                  <Route path="/practice" element={
+                    <ProtectedRoute flag="has_practice_access"><Home /></ProtectedRoute>
+                  } />
+                  <Route path="/drill" element={
+                    <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
+                  } />
+                  <Route path="/waj" element={
+                    <ProtectedRoute flag="has_waj_access"><WrongAnswerJournal /></ProtectedRoute>
+                  } />
+                  <Route path="/flagged" element={
+                    <ProtectedRoute flag="has_flagged_access"><FlaggedQuestions /></ProtectedRoute>
+                  } />
                   <Route path="/analytics" element={
                     <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
                   } />

@@ -133,6 +133,12 @@ interface UserPermissions {
   has_classroom_access: boolean;
   has_analytics_access: boolean;
   has_schedule_access: boolean;
+  has_practice_access: boolean;
+  has_drill_access: boolean;
+  has_waj_access: boolean;
+  has_flagged_access: boolean;
+  has_chat_access: boolean;
+  has_export_access: boolean;
   is_admin: boolean;
 }
 
