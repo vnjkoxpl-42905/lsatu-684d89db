@@ -117,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Safety: if OAuth callback never resolves within 8s, stop loading anyway
     if (isOAuthRef.current) {
       oauthTimeoutRef.current = setTimeout(() => {
+        console.warn('[AuthContext] OAuth timeout fired — no session received in 8s');
         setLoading(false);
         setAuthReady(true);
       }, 8000);
