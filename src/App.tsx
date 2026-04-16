@@ -25,6 +25,7 @@ import Bootcamps from "./pages/Bootcamps";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
+import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => (
@@ -48,6 +49,10 @@ const App = () => (
 
             {/* Admin Dashboard — no question bank needed */}
             <Route path="/admin" element={<AdminDashboard />} />
+
+            {/* Inbox — messaging, no question bank needed */}
+            <Route path="/inbox" element={<Inbox />} />
+            <Route path="/inbox/:conversationId" element={<Inbox />} />
 
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={

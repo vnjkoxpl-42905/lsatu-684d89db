@@ -29,6 +29,7 @@ import FoyerTour from "@/components/foyer/FoyerTour";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useInbox } from "@/hooks/useInbox";
 import { Shield, HelpCircle } from "lucide-react";
 
 export default function AcademyFoyer() {
@@ -38,6 +39,7 @@ export default function AcademyFoyer() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const permissions = useUserPermissions();
+  const { unreadCount: inboxUnread } = useInbox();
 
   // ── Location state injected by Auth.tsx on fresh login ──────────────────────
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
@@ -220,7 +222,7 @@ export default function AcademyFoyer() {
             <AnimatedDock
               items={[
                 { link: "/practice", Icon: <ClipboardList size={20} />, label: "Homework", badge: true },
-                { onClick: () => toast("Inbox coming soon", { description: "Messages & notifications will live here." }), Icon: <Inbox size={20} />, label: "Inbox", badge: 3 },
+                { link: "/inbox", Icon: <Inbox size={20} />, label: "Inbox", badge: inboxUnread > 0 ? inboxUnread : undefined },
                 { link: "/schedule", Icon: <CalendarDays size={20} />, label: "Scheduling" },
                 { link: "/profile", Icon: <Settings size={20} />, label: "Settings" },
                 { onClick: () => { setShowTour(true); setTourChecked(false); }, Icon: <LifeBuoy size={20} />, label: "Help / Tour" },
