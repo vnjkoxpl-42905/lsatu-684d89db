@@ -480,37 +480,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <>
-              {/* ── Action panels ───────────────────────────────────────────── */}
-              {selectedAction === 'full-section' && manifest && (
-                <div className="animate-slide-up">
-                  <SectionSelector
-                    manifest={manifest}
-                    onStartSection={handleStartSection}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-
-              {selectedAction === 'type-drill' && manifest && (
-                <div className="animate-slide-up">
-                  <QuestionPicker
-                    manifest={manifest}
-                    onStartDrill={handleStartTypeDrill}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-
-              {selectedAction === 'natural-drill' && (
-                <div className="animate-slide-up">
-                  <NaturalDrillCreator
-                    onStartDrill={handleStartTypeDrill}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-            </>
+            {renderActionPanel()}
           )}
         </div>
       </div>
