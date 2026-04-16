@@ -20,6 +20,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedDock } from "@/components/ui/animated-dock";
+import { User, BarChart3, BookOpen, Flag } from "lucide-react";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import FoyerTour from "@/components/foyer/FoyerTour";
