@@ -12,6 +12,12 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export interface AnimatedDockProps {
   className?: string;
@@ -21,7 +27,9 @@ export interface AnimatedDockProps {
 export interface DockItemData {
   link: string;
   Icon: React.ReactNode;
+  label?: string;
   target?: string;
+  badge?: number | boolean;
 }
 
 export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
@@ -29,25 +37,50 @@ export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
   const navigate = useNavigate();
 
   return (
-    <motion.div
-      onMouseMove={(e) => mouseX.set(e.pageX)}
-      onMouseLeave={() => mouseX.set(Infinity)}
-      className={cn(
-        "mx-auto flex h-16 items-end gap-4 rounded-2xl bg-secondary/50 border border-primary/10 shadow-md px-4 pb-3",
-        className,
-      )}
-    >
-      {items.map((item, index) => (
-        <DockItem key={index} mouseX={mouseX}>
-          <button
-            onClick={() => item.target ? window.open(item.link, item.target) : navigate(item.link)}
-            className="grow flex items-center justify-center w-full h-full text-primary-foreground cursor-pointer"
-          >
-            {item.Icon}
-          </button>
-        </DockItem>
-      ))}
-    </motion.div>
+    <TooltipProvider delayDuration={200}>
+      <motion.div
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        className={cn(
+          "mx-auto flex h-16 items-end gap-4 rounded-2xl bg-secondary/50 border border-primary/10 shadow-md px-4 pb-3",
+          className,
+        )}
+      >
+        {items.map((item, index) => (
+          <DockItem key={index} mouseX={mouseX}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() =>
+                    item.target
+                      ? window.open(item.link, item.target)
+                      : navigate(item.link)
+                  }
+                  className="relative grow flex items-center justify-center w-full h-full text-primary-foreground cursor-pointer"
+                >
+                  {item.Icon}
+                  {/* Badge indicator */}
+                  {item.badge && (
+                    <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-destructive-foreground ring-1 ring-background">
+                      {typeof item.badge === "number" && item.badge > 0
+                        ? item.badge > 9
+                          ? "9+"
+                          : item.badge
+                        : ""}
+                    </span>
+                  )}
+                </button>
+              </TooltipTrigger>
+              {item.label && (
+                <TooltipContent side="top" className="text-xs">
+                  {item.label}
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </DockItem>
+        ))}
+      </motion.div>
+    </TooltipProvider>
   );
 };
 

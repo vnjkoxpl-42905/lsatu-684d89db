@@ -21,7 +21,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedDock } from "@/components/ui/animated-dock";
-import { User, BarChart3, BookOpen, Flag } from "lucide-react";
+import { ClipboardList, Inbox, CalendarDays, Settings, LifeBuoy } from "lucide-react";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import FoyerTour from "@/components/foyer/FoyerTour";
@@ -218,10 +218,11 @@ export default function AcademyFoyer() {
           >
             <AnimatedDock
               items={[
-                { link: "/profile", Icon: <User size={20} /> },
-                { link: "/analytics", Icon: <BarChart3 size={20} /> },
-                { link: "/waj", Icon: <BookOpen size={20} /> },
-                { link: "/flagged", Icon: <Flag size={20} /> },
+                { link: "/homework", Icon: <ClipboardList size={20} />, label: "Homework", badge: true },
+                { link: "/inbox", Icon: <Inbox size={20} />, label: "Inbox", badge: 3 },
+                { link: "/schedule", Icon: <CalendarDays size={20} />, label: "Scheduling" },
+                { link: "/settings", Icon: <Settings size={20} />, label: "Settings" },
+                { link: "/help", Icon: <LifeBuoy size={20} />, label: "Help / Tour" },
               ]}
             />
           </motion.div>
