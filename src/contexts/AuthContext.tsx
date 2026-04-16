@@ -74,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(s?.user ?? null);
       setLoading(false);
       setAuthReady(true);
+      sessionStorage.removeItem('oauth_pending');
       if (oauthTimeoutRef.current) {
         clearTimeout(oauthTimeoutRef.current);
         oauthTimeoutRef.current = null;
