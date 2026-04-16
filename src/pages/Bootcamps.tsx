@@ -45,7 +45,7 @@ const BOOTCAMPS = [
     route: '/bootcamp/abstraction',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
-];
+] as const;
 
 export default function BootcampsPage() {
   const navigate = useNavigate();
