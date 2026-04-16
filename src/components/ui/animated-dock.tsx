@@ -25,7 +25,8 @@ export interface AnimatedDockProps {
 }
 
 export interface DockItemData {
-  link: string;
+  link?: string;
+  onClick?: () => void;
   Icon: React.ReactNode;
   label?: string;
   target?: string;
@@ -52,9 +53,11 @@ export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
               <TooltipTrigger asChild>
                 <button
                   onClick={() =>
-                    item.target
-                      ? window.open(item.link, item.target)
-                      : navigate(item.link)
+                    item.onClick
+                      ? item.onClick()
+                      : item.target
+                        ? window.open(item.link!, item.target)
+                        : navigate(item.link!)
                   }
                   className="relative grow flex items-center justify-center w-full h-full text-primary-foreground cursor-pointer"
                 >
