@@ -1,8 +1,6 @@
 import { type ReactNode } from "react";
-import { useUserPermissions, type UserPermissions } from "@/hooks/useUserPermissions";
+import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import LockedModule from "@/components/LockedModule";
-
-type PermissionFlag = keyof Omit<UserPermissions, "is_admin" | "loading">;
 
 interface ProtectedRouteProps {
   flag: PermissionFlag;
