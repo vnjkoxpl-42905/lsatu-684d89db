@@ -100,7 +100,37 @@ export default function AcademyFoyer() {
     }, 2400);
   }, []);
 
-  // ── Node selection → Dissolve → Navigate ────────────────────────────────────
+  // ── Check tour status when idle ─────────────────────────────────────────────
+  React.useEffect(() => {
+    if (phase !== "idle" || tourChecked || !user) return;
+    setTourChecked(true);
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('has_seen_tour')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (data && !data.has_seen_tour) {
+        setShowTour(true);
+      }
+    })();
+  }, [phase, tourChecked, user]);
+
+  // ── Tour completion handler ─────────────────────────────────────────────────
+  const handleTourComplete = React.useCallback(async () => {
+    setShowTour(false);
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({ has_seen_tour: true })
+        .eq('class_id', user.id);
+    }
+  }, [user]);
+
+  // ── Re-watch tour ───────────────────────────────────────────────────────────
+  const handleReplayTour = React.useCallback(() => {
+    setShowTour(true);
+  }, []);
   const handleSelectNode = React.useCallback((node: FoyerNode) => {
     setSelectedNodeId(node.id);
     setPhase("dissolving");
