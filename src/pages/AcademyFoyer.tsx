@@ -22,10 +22,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
+import FoyerTour from "@/components/foyer/FoyerTour";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { Shield } from "lucide-react";
+import { Shield, HelpCircle } from "lucide-react";
 
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
@@ -75,6 +76,9 @@ export default function AcademyFoyer() {
   );
   const [showWelcome, setShowWelcome] = React.useState(showWelcomeFromState);
   const [selectedNodeId, setSelectedNodeId] = React.useState<string | null>(null);
+  const [showTour, setShowTour] = React.useState(false);
+  const [tourChecked, setTourChecked] = React.useState(false);
+  const hubContainerRef = React.useRef<HTMLDivElement>(null);
   const matTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const navTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -96,7 +100,37 @@ export default function AcademyFoyer() {
     }, 2400);
   }, []);
 
-  // ── Node selection → Dissolve → Navigate ────────────────────────────────────
+  // ── Check tour status when idle ─────────────────────────────────────────────
+  React.useEffect(() => {
+    if (phase !== "idle" || tourChecked || !user) return;
+    setTourChecked(true);
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('has_seen_tour')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (data && !data.has_seen_tour) {
+        setShowTour(true);
+      }
+    })();
+  }, [phase, tourChecked, user]);
+
+  // ── Tour completion handler ─────────────────────────────────────────────────
+  const handleTourComplete = React.useCallback(async () => {
+    setShowTour(false);
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({ has_seen_tour: true })
+        .eq('class_id', user.id);
+    }
+  }, [user]);
+
+  // ── Re-watch tour ───────────────────────────────────────────────────────────
+  const handleReplayTour = React.useCallback(() => {
+    setShowTour(true);
+  }, []);
   const handleSelectNode = React.useCallback((node: FoyerNode) => {
     setSelectedNodeId(node.id);
     setPhase("dissolving");
@@ -124,12 +158,19 @@ export default function AcademyFoyer() {
         {permissions.is_admin && (
           <button
             onClick={() => navigate("/admin")}
-            className="p-2 rounded-lg text-zinc-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
             title="Admin Dashboard"
           >
             <Shield className="w-4 h-4" />
           </button>
         )}
+        <button
+          onClick={handleReplayTour}
+          className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+          title="Replay Tour"
+        >
+          <HelpCircle className="w-4 h-4" />
+        </button>
         <LogoutButton />
         <ThemeToggle />
       </div>
@@ -146,7 +187,7 @@ export default function AcademyFoyer() {
 
       {/* ── Orbital Hub ── */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div style={{ width: "min(560px, 85vw, 85vh)", height: "min(560px, 85vw, 85vh)" }}>
+        <div ref={hubContainerRef} style={{ width: "min(560px, 85vw, 85vh)", height: "min(560px, 85vw, 85vh)" }}>
           <OrbitalHub
             phase={phase}
             selectedNodeId={selectedNodeId}
@@ -200,6 +241,14 @@ export default function AcademyFoyer() {
         <WelcomeLoading
           userName={welcomeName}
           onComplete={handleWelcomeComplete}
+        />
+      )}
+
+      {/* ── Interactive Tour overlay ── */}
+      {showTour && phase === "idle" && (
+        <FoyerTour
+          hubContainerRef={hubContainerRef}
+          onComplete={handleTourComplete}
         />
       )}
     </div>
