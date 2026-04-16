@@ -70,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const markReady = (s: Session | null) => {
+      console.log('[AuthContext] markReady', { hasSession: !!s, userId: s?.user?.id });
       setSession(s);
       setUser(s?.user ?? null);
       setLoading(false);
