@@ -1,59 +1,66 @@
 
 
-## Plan: Orbital Lens Preview System
+## Plan: In-App Interactive Tour on First Foyer Visit
 
 ### Summary
-Replace the detached top-center HUD with a centered "Orbital Lens" that lives inside the orbital ring. Expand the orbit for breathing room, use `AnimatePresence mode="wait"` for smooth content morphing, and redesign the content hierarchy with a borderless transparent aesthetic.
+Build a multi-step guided tour overlay that triggers automatically the first time a user visits the Foyer. It highlights each orbital node and key UI elements with a spotlight + tooltip system. A `has_seen_tour` flag on the `profiles` table prevents replays. Users can skip or dismiss at any time.
 
-### Changes
+### 1. Database Migration
+Add a `has_seen_tour` boolean column to `profiles`, defaulting to `false`.
 
-**File: `src/components/foyer/OrbitalHub.tsx`**
-
-**1. Expand the orbit**
-- Increase `RADIUS` from 152 to 190
-- Increase outer decorative ring from 176 to 220
-- Adjust inner ring from 44 to ~70 (gives room for the lens content)
-- Keep `CX`/`CY` at 200 (center of the 400x400 viewBox)
-
-**2. Add metadata map**
-```
-const HUD_META: Record<string, string> = {
-  practice: "PT 1–90 Available",
-  bootcamps: "15 Modules",
-  classroom: "12 Sessions",
-  analytics: "Live Tracking",
-  schedule: "Daily Planner",
-};
+```sql
+ALTER TABLE public.profiles ADD COLUMN has_seen_tour boolean NOT NULL DEFAULT false;
 ```
 
-**3. Replace the fixed top-center HUD with a centered Orbital Lens**
-- Remove the `fixed top-8 left-1/2` card entirely
-- Add a new `absolute` div centered in the orbital container (`absolute inset-0 flex items-center justify-center pointer-events-none z-20`)
-- Inside, render `<AnimatePresence mode="wait">` with a keyed `motion.div`
-- Styling: `bg-transparent`, no border, no shadow — just crisp text centered in the hub
-- Max width ~200px so it fits comfortably inside the ring
+### 2. New Component: `FoyerTour.tsx`
 
-**4. Content hierarchy (top to bottom, all centered)**
-- Node name: `text-sm tracking-[0.2em] uppercase text-zinc-400 mb-1`
-- Purpose: `text-xl font-medium text-zinc-100 mb-4` (use exact copy from `HUD_CONTENT`)
-- Metadata: `text-xs text-zinc-500 font-mono mb-3` (from `HUD_META`)
-- Access pill (de-emphasized):
-  - Locked: `bg-zinc-900 text-zinc-500 px-2 py-1 rounded-full text-[10px] uppercase tracking-wider` + tiny Lock icon
-  - Unlocked: `text-emerald-500/70 px-2 py-1 text-[10px] uppercase tracking-wider` no background
+**`src/components/foyer/FoyerTour.tsx`**
 
-**5. Smooth morphing transitions**
-- `AnimatePresence mode="wait"` ensures outgoing content fades before incoming
-- `initial={{ opacity: 0 }}`, `animate={{ opacity: 1 }}`, `exit={{ opacity: 0 }}`
-- Duration ~0.2s for snappy feel
+A full-screen overlay component with these mechanics:
 
-**File: `src/pages/AcademyFoyer.tsx`**
+- **Spotlight mask**: A dark semi-transparent overlay (`bg-black/70 fixed inset-0 z-[100]`) with a CSS `clip-path` or SVG cutout that highlights the current target area.
+- **Tooltip card**: Positioned near the highlighted element. Minimal dark-glass style (`bg-zinc-950/95 backdrop-blur-sm border border-zinc-800 rounded-xl p-5 max-w-sm`). Contains step title, description, step indicator dots, and Next/Skip buttons.
+- **Steps array** (6 steps):
+  1. **Welcome** — center of screen, no spotlight. "Welcome to LSAT U. This is your hub — everything starts here."
+  2. **Practice** — spotlight the Practice node. "Start here. Timed sections, full PTs, and adaptive drills."
+  3. **Bootcamps** — spotlight the Bootcamps node. "Guided skill-building modules for advanced question types."
+  4. **Classroom** — spotlight the Classroom node. "Video lessons and past coaching sessions."
+  5. **Analytics** — spotlight the Analytics node. "Track your accuracy, trends, and weak areas over time."
+  6. **Schedule** — spotlight the Schedule node. "Your daily study calendar and milestones."
+- Each step animates in with a fade transition via Framer Motion.
+- "Skip Tour" link on every step. "Next" button advances. Last step shows "Get Started".
+- On completion or skip: call Supabase to set `has_seen_tour = true`, then unmount.
 
-**6. Expand the hub container**
-- Increase from `min(440px, 80vw, 80vh)` to `min(560px, 85vw, 85vh)` to accommodate the larger orbit
+### 3. Spotlight Targeting
+
+Each orbital node already has a computed position via `pct()`. The tour component will:
+- Accept the list of `FOYER_NODES` and the container ref
+- Calculate each node's screen position from its percentage coordinates
+- Render an SVG mask with a circular cutout at the target node's position
+- Transition the cutout smoothly between steps
+
+### 4. Integration in `AcademyFoyer.tsx`
+
+- After the hub reaches `idle` phase, check if `has_seen_tour` is `false` on the user's profile.
+- If false, render `<FoyerTour>` above the hub (z-100).
+- Pass a callback `onComplete` that sets the flag in the DB and hides the tour.
+- The tour only renders once the welcome animation is done (not during `ghost` or `materializing` phases).
+
+### 5. Re-watch Option
+
+Add a small "?" or "Tour" button in the top-right controls area (next to theme toggle) that resets `has_seen_tour` to `false` and re-triggers the tour. This lets users replay it anytime.
 
 ### Files Modified
+
 | File | Change |
 |------|--------|
-| `src/components/foyer/OrbitalHub.tsx` | Expand radius, replace HUD with centered Orbital Lens, add metadata, morphing transitions |
-| `src/pages/AcademyFoyer.tsx` | Increase hub container size |
+| Migration SQL | Add `has_seen_tour` boolean to `profiles` |
+| `src/components/foyer/FoyerTour.tsx` | New — full tour overlay component |
+| `src/pages/AcademyFoyer.tsx` | Query `has_seen_tour`, render tour after idle, add re-watch button |
+
+### Technical Details
+- Spotlight uses an SVG `<mask>` with a `<circle>` cutout animated via Framer Motion's `animate` prop for smooth repositioning between steps
+- Step content is a static array — no AI generation, no API calls
+- DB update is a single `supabase.from('profiles').update({ has_seen_tour: true }).eq('class_id', user.id)`
+- Tour is non-blocking: clicking outside the tooltip or pressing Escape also dismisses it
 
