@@ -480,7 +480,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            {renderActionPanel()}
+            renderActionPanel()
           )}
         </div>
       </div>
