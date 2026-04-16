@@ -228,14 +228,17 @@ export default function Auth() {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      sessionStorage.setItem('oauth_pending', '1');
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin + "/auth",
       });
       if (result.error) {
+        sessionStorage.removeItem('oauth_pending');
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
       if (result.redirected) return;
     } catch (err: any) {
+      sessionStorage.removeItem('oauth_pending');
       toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
     } finally {
       setLoading(false);

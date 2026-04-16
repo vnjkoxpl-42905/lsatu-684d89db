@@ -35,7 +35,8 @@ function isOAuthCallbackUrl(): boolean {
   return (
     window.location.pathname.includes('~oauth') ||
     window.location.hash.includes('access_token') ||
-    window.location.search.includes('code=')
+    window.location.search.includes('code=') ||
+    sessionStorage.getItem('oauth_pending') === '1'
   );
 }
 
@@ -73,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(s?.user ?? null);
       setLoading(false);
       setAuthReady(true);
+      sessionStorage.removeItem('oauth_pending');
       if (oauthTimeoutRef.current) {
         clearTimeout(oauthTimeoutRef.current);
         oauthTimeoutRef.current = null;
