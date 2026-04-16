@@ -76,6 +76,9 @@ export default function AcademyFoyer() {
   );
   const [showWelcome, setShowWelcome] = React.useState(showWelcomeFromState);
   const [selectedNodeId, setSelectedNodeId] = React.useState<string | null>(null);
+  const [showTour, setShowTour] = React.useState(false);
+  const [tourChecked, setTourChecked] = React.useState(false);
+  const hubContainerRef = React.useRef<HTMLDivElement>(null);
   const matTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const navTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
