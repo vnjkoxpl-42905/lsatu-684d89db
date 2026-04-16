@@ -243,6 +243,14 @@ export default function AcademyFoyer() {
           onComplete={handleWelcomeComplete}
         />
       )}
+
+      {/* ── Interactive Tour overlay ── */}
+      {showTour && phase === "idle" && (
+        <FoyerTour
+          hubContainerRef={hubContainerRef}
+          onComplete={handleTourComplete}
+        />
+      )}
     </div>
   );
 }
