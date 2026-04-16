@@ -22,10 +22,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
+import FoyerTour from "@/components/foyer/FoyerTour";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { Shield } from "lucide-react";
+import { Shield, HelpCircle } from "lucide-react";
 
 export default function AcademyFoyer() {
   const navigate  = useNavigate();
