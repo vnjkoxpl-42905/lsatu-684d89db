@@ -470,14 +470,16 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => navigate('/analytics')}
-                    className="mt-4 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
-                  >
-                    View Full Analytics
-                  </Button>
+                  {perms.has_analytics_access && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate('/analytics')}
+                      className="mt-4 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
+                    >
+                      View Full Analytics
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
