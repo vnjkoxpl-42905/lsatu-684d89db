@@ -428,18 +428,22 @@ export default function Home() {
                     </p>
                   </div>
                   <div className="divide-y divide-border">
-                    <StudyToolRow
-                      icon={XCircle}
-                      label="Wrong Answer Journal"
-                      description="Review mistakes and track growth patterns"
-                      onClick={() => navigate('/waj')}
-                    />
-                    <StudyToolRow
-                      icon={Flag}
-                      label="Flagged Questions"
-                      description="Questions you marked for deeper review"
-                      onClick={() => navigate('/flagged')}
-                    />
+                    {perms.has_waj_access && (
+                      <StudyToolRow
+                        icon={XCircle}
+                        label="Wrong Answer Journal"
+                        description="Review mistakes and track growth patterns"
+                        onClick={() => navigate('/waj')}
+                      />
+                    )}
+                    {perms.has_flagged_access && (
+                      <StudyToolRow
+                        icon={Flag}
+                        label="Flagged Questions"
+                        description="Questions you marked for deeper review"
+                        onClick={() => navigate('/flagged')}
+                      />
+                    )}
                   </div>
                 </div>
 
