@@ -9,6 +9,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export interface DockItemData {
 
 export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
   const mouseX = useMotionValue(Infinity);
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -37,13 +39,12 @@ export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
     >
       {items.map((item, index) => (
         <DockItem key={index} mouseX={mouseX}>
-          <a
-            href={item.link}
-            target={item.target}
-            className="grow flex items-center justify-center w-full h-full text-primary-foreground"
+          <button
+            onClick={() => item.target ? window.open(item.link, item.target) : navigate(item.link)}
+            className="grow flex items-center justify-center w-full h-full text-primary-foreground cursor-pointer"
           >
             {item.Icon}
-          </a>
+          </button>
         </DockItem>
       ))}
     </motion.div>

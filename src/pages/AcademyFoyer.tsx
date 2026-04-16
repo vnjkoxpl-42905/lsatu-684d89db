@@ -20,6 +20,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedDock } from "@/components/ui/animated-dock";
+import { User, BarChart3, BookOpen, Flag } from "lucide-react";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import FoyerTour from "@/components/foyer/FoyerTour";
@@ -145,7 +147,7 @@ export default function AcademyFoyer() {
 
   // Theme-adaptive colors
   const brandColor   = isLight ? "rgba(0,0,0,0.38)"     : "rgba(255,255,255,0.22)";
-  const promptColor  = isLight ? "rgba(0,0,0,0.32)"     : "rgba(255,255,255,0.18)";
+  
   const dissolveGrad = isLight
     ? "radial-gradient(ellipse 60% 60% at 50% 50%, transparent 20%, rgba(255,255,255,0.7) 80%, #fff 100%)"
     : "radial-gradient(ellipse 60% 60% at 50% 50%, transparent 20%, rgba(0,0,0,0.7) 80%, #000 100%)";
@@ -204,22 +206,24 @@ export default function AcademyFoyer() {
         </div>
       </div>
 
-      {/* ── Bottom prompt — appears once idle ── */}
+      {/* ── Utility dock — appears once idle ── */}
       <AnimatePresence>
         {phase === "idle" && (
           <motion.div
-            className="absolute bottom-9 inset-x-0 flex justify-center z-30 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            className="absolute bottom-10 inset-x-0 flex justify-center z-20"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <span
-              className="uppercase font-semibold select-none"
-              style={{ fontSize: 8, letterSpacing: "0.38em", color: promptColor }}
-            >
-              Select a module
-            </span>
+            <AnimatedDock
+              items={[
+                { link: "/profile", Icon: <User size={20} /> },
+                { link: "/analytics", Icon: <BarChart3 size={20} /> },
+                { link: "/waj", Icon: <BookOpen size={20} /> },
+                { link: "/flagged", Icon: <Flag size={20} /> },
+              ]}
+            />
           </motion.div>
         )}
       </AnimatePresence>
