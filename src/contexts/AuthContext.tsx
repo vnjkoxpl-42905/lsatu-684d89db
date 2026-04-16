@@ -86,11 +86,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     // Set up auth state listener FIRST
+    console.log('[AuthContext] init', { isOAuth: isOAuthRef.current, oauth_pending: sessionStorage.getItem('oauth_pending') });
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
+        console.log('[AuthContext] onAuthStateChange', { event, hasSession: !!newSession });
         if (event === 'PASSWORD_RECOVERY') {
-          // Redirect to dedicated reset page before marking ready
-          // so Auth.tsx doesn't redirect to /foyer
           markReady(newSession);
           window.location.replace('/reset-password');
           return;
@@ -105,12 +106,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+      console.log('[AuthContext] getSession result', { hasSession: !!existingSession });
       if (existingSession) {
         markReady(existingSession);
       } else if (!isOAuthRef.current) {
         markReady(null);
       }
-      // If OAuth callback with no session yet — keep loading, wait for onAuthStateChange
     });
 
     // Safety: if OAuth callback never resolves within 8s, stop loading anyway
