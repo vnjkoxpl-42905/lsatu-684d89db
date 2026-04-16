@@ -190,27 +190,50 @@ export default function Home() {
     setSelectedAction((prev) => (prev === modeId ? null : modeId));
   };
 
-  // ── Loading / Error states ──────────────────────────────────────────────
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border border-border border-t-foreground/30 rounded-full animate-spin" />
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            Preparing your workspace
-          </p>
+  // ── Manifest loading helper for action panels ───────────────────────────
+  const renderActionPanel = () => {
+    if (isLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center py-16 gap-3">
+          <div className="w-8 h-8 border border-border border-t-foreground/30 rounded-full animate-spin" />
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Loading questions…</p>
+          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={() => setSelectedAction(null)}>Cancel</Button>
         </div>
-      </div>
-    );
-  }
+      );
+    }
+    if (error) {
+      return (
+        <div className="flex flex-col items-center justify-center py-16 gap-3">
+          <p className="text-sm text-muted-foreground">{error}</p>
+          <Button variant="ghost" size="sm" className="text-muted-foreground text-xs" onClick={() => setSelectedAction(null)}>Back</Button>
+        </div>
+      );
+    }
+    if (!manifest) return null;
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">{error}</p>
-      </div>
-    );
-  }
+    if (selectedAction === 'full-section') {
+      return (
+        <div className="animate-slide-up">
+          <SectionSelector manifest={manifest} onStartSection={handleStartSection} onCancel={() => setSelectedAction(null)} />
+        </div>
+      );
+    }
+    if (selectedAction === 'type-drill') {
+      return (
+        <div className="animate-slide-up">
+          <QuestionPicker manifest={manifest} onStartDrill={handleStartTypeDrill} onCancel={() => setSelectedAction(null)} />
+        </div>
+      );
+    }
+    if (selectedAction === 'natural-drill') {
+      return (
+        <div className="animate-slide-up">
+          <NaturalDrillCreator onStartDrill={handleStartTypeDrill} onCancel={() => setSelectedAction(null)} />
+        </div>
+      );
+    }
+    return null;
+  };
 
   const userInitials = user?.email?.slice(0, 2).toUpperCase() || 'U';
 
@@ -457,37 +480,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <>
-              {/* ── Action panels ───────────────────────────────────────────── */}
-              {selectedAction === 'full-section' && manifest && (
-                <div className="animate-slide-up">
-                  <SectionSelector
-                    manifest={manifest}
-                    onStartSection={handleStartSection}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-
-              {selectedAction === 'type-drill' && manifest && (
-                <div className="animate-slide-up">
-                  <QuestionPicker
-                    manifest={manifest}
-                    onStartDrill={handleStartTypeDrill}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-
-              {selectedAction === 'natural-drill' && (
-                <div className="animate-slide-up">
-                  <NaturalDrillCreator
-                    onStartDrill={handleStartTypeDrill}
-                    onCancel={() => setSelectedAction(null)}
-                  />
-                </div>
-              )}
-            </>
+            renderActionPanel()
           )}
         </div>
       </div>
