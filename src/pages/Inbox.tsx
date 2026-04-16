@@ -14,7 +14,7 @@ export default function Inbox() {
   const navigate = useNavigate();
   const { conversationId } = useParams();
   const { conversations, loading, refresh } = useInbox();
-  const { isAdmin } = useUserPermissions();
+  const { is_admin } = useUserPermissions();
   const [activeId, setActiveId] = useState<string | null>(conversationId ?? null);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function Inbox() {
               <h1 className="text-base font-semibold">Inbox</h1>
             </div>
           </div>
-          {isAdmin && <NewConversationDialog onCreated={(id) => setActiveId(id)} />}
+          {is_admin && <NewConversationDialog onCreated={(id) => setActiveId(id)} />}
         </div>
       </header>
 
