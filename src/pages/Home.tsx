@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mode strip data
