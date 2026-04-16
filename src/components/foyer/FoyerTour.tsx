@@ -51,7 +51,8 @@ const STEPS: TourStep[] = [
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Get the center position of a node relative to the hub container */
+/** Get the center position of a node relative to the hub container,
+ *  offset toward its label so the spotlight covers both dot + text. */
 function getNodeCenter(nodeId: string, containerRect: DOMRect): { x: number; y: number } | null {
   const node = FOYER_NODES.find((n) => n.id === nodeId);
   if (!node) return null;
@@ -65,9 +66,21 @@ function getNodeCenter(nodeId: string, containerRect: DOMRect): { x: number; y: 
   const scaleX = containerRect.width / 400;
   const scaleY = containerRect.height / 400;
 
+  const screenX = containerRect.left + svgX * scaleX;
+  const screenY = containerRect.top + svgY * scaleY;
+
+  // Offset toward the label anchor direction so spotlight covers the text
+  const a = ((node.angleDeg % 360) + 360) % 360;
+  let ox = 0, oy = 0;
+  const LABEL_OFFSET = 18; // px shift toward label
+  if (a > 315 || a <= 45) { oy = -LABEL_OFFSET; }        // label above
+  else if (a > 45 && a <= 135) { ox = LABEL_OFFSET; }     // label right
+  else if (a > 135 && a <= 225) { oy = LABEL_OFFSET; }    // label below
+  else { ox = -LABEL_OFFSET; }                             // label left
+
   return {
-    x: containerRect.left + svgX * scaleX,
-    y: containerRect.top + svgY * scaleY,
+    x: screenX + ox,
+    y: screenY + oy,
   };
 }
 
@@ -122,7 +135,7 @@ export default function FoyerTour({ hubContainerRef, onComplete }: FoyerTourProp
     }
   };
 
-  const SPOTLIGHT_R = 54;
+  const SPOTLIGHT_R = 72;
 
   // Tooltip positioning: near the spotlight or centered
   const tooltipStyle: React.CSSProperties = spotlightPos
