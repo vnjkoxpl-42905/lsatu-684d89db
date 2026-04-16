@@ -383,8 +383,8 @@ export default function Home() {
                     'shadow-sm',
                   )}
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">
-                    At a Glance
+                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">
+                     Last 30 Days
                   </p>
                   <div className="flex items-baseline gap-10">
                     {/* Practiced */}
