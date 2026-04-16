@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedDock } from "@/components/ui/animated-dock";
 import { ClipboardList, Inbox, CalendarDays, Settings, LifeBuoy } from "lucide-react";
+import { toast } from "sonner";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import FoyerTour from "@/components/foyer/FoyerTour";
@@ -218,11 +219,11 @@ export default function AcademyFoyer() {
           >
             <AnimatedDock
               items={[
-                { link: "/homework", Icon: <ClipboardList size={20} />, label: "Homework", badge: true },
-                { link: "/inbox", Icon: <Inbox size={20} />, label: "Inbox", badge: 3 },
+                { link: "/practice", Icon: <ClipboardList size={20} />, label: "Homework", badge: true },
+                { onClick: () => toast("Inbox coming soon", { description: "Messages & notifications will live here." }), Icon: <Inbox size={20} />, label: "Inbox", badge: 3 },
                 { link: "/schedule", Icon: <CalendarDays size={20} />, label: "Scheduling" },
-                { link: "/settings", Icon: <Settings size={20} />, label: "Settings" },
-                { link: "/help", Icon: <LifeBuoy size={20} />, label: "Help / Tour" },
+                { link: "/profile", Icon: <Settings size={20} />, label: "Settings" },
+                { onClick: () => { setShowTour(true); setTourChecked(false); }, Icon: <LifeBuoy size={20} />, label: "Help / Tour" },
               ]}
             />
           </motion.div>
