@@ -1599,9 +1599,8 @@ function DrillContent() {
       <div
         key={key}
         className={cn(
-          "group relative flex items-start gap-3 py-1.5 px-4 -mx-4",
+          "group relative flex items-start gap-3 py-3.5 px-4 -mx-4 rounded-lg",
           "transition-all duration-[120ms] ease-out",
-          "border-b border-border",
           isEliminated && "opacity-55",
           showGreenHighlight && "bg-green-50 border-l-4 border-l-green-500"
         )}
@@ -1792,7 +1791,7 @@ function DrillContent() {
         {/* Left Panel — Stimulus */}
         <div className="flex-1 lg:max-h-full bg-white flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto">
-            <div className="p-5 sm:p-6 max-w-4xl mx-auto">
+            <div className="p-6 sm:p-8 max-w-3xl mx-auto">
               {currentQuestion.stimulus && (() => {
                 const fullText = normalizeText(currentQuestion.stimulus);
                 const stimulusHighlights = highlights.get(currentQuestion.qid)?.filter(h => h.section === 'stimulus') || [];
@@ -1831,9 +1830,9 @@ function DrillContent() {
 
         {/* Right Panel - Question & Answers */}
         <div className="flex-1 overflow-y-auto lg:border-l border-border lg:max-h-full bg-white">
-          <div className="p-5 sm:p-6 max-w-3xl">
+          <div className="p-6 sm:p-8 max-w-3xl">
             {/* Question Stem */}
-            <div className="mb-3">
+            <div className="mb-6">
               <div
                 className={cn(
                   "text-[15px] font-semibold text-neutral-900 leading-[1.4] tracking-tight",
@@ -1888,7 +1887,7 @@ function DrillContent() {
               <RadioGroup
                 value={selectedAnswer}
                 onValueChange={handleAnswerSelect}
-                className="space-y-0 -mx-5"
+                className="space-y-1 -mx-5"
               >
                 {Object.entries(currentQuestion.answerChoices).map(([key, text]) => 
                   renderAnswerChoice(key, text, { 
