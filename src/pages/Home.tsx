@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mode strip data
@@ -94,6 +95,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
+  const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
@@ -248,14 +250,16 @@ export default function Home() {
             >
               Main Hub
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground hover:bg-accent"
-              onClick={() => navigate('/analytics')}
-            >
-              View Analytics
-            </Button>
+            {perms.has_analytics_access && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground hover:bg-accent"
+                onClick={() => navigate('/analytics')}
+              >
+                View Analytics
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
@@ -424,18 +428,22 @@ export default function Home() {
                     </p>
                   </div>
                   <div className="divide-y divide-border">
-                    <StudyToolRow
-                      icon={XCircle}
-                      label="Wrong Answer Journal"
-                      description="Review mistakes and track growth patterns"
-                      onClick={() => navigate('/waj')}
-                    />
-                    <StudyToolRow
-                      icon={Flag}
-                      label="Flagged Questions"
-                      description="Questions you marked for deeper review"
-                      onClick={() => navigate('/flagged')}
-                    />
+                    {perms.has_waj_access && (
+                      <StudyToolRow
+                        icon={XCircle}
+                        label="Wrong Answer Journal"
+                        description="Review mistakes and track growth patterns"
+                        onClick={() => navigate('/waj')}
+                      />
+                    )}
+                    {perms.has_flagged_access && (
+                      <StudyToolRow
+                        icon={Flag}
+                        label="Flagged Questions"
+                        description="Questions you marked for deeper review"
+                        onClick={() => navigate('/flagged')}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -462,14 +470,16 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => navigate('/analytics')}
-                    className="mt-4 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
-                  >
-                    View Full Analytics
-                  </Button>
+                  {perms.has_analytics_access && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate('/analytics')}
+                      className="mt-4 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-7 px-2.5 -ml-1"
+                    >
+                      View Full Analytics
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
