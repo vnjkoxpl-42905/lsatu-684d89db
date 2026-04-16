@@ -158,12 +158,19 @@ export default function AcademyFoyer() {
         {permissions.is_admin && (
           <button
             onClick={() => navigate("/admin")}
-            className="p-2 rounded-lg text-zinc-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
             title="Admin Dashboard"
           >
             <Shield className="w-4 h-4" />
           </button>
         )}
+        <button
+          onClick={handleReplayTour}
+          className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+          title="Replay Tour"
+        >
+          <HelpCircle className="w-4 h-4" />
+        </button>
         <LogoutButton />
         <ThemeToggle />
       </div>
