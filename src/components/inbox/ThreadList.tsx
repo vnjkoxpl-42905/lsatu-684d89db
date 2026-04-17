@@ -11,8 +11,11 @@ interface Props {
 
 function otherParticipantName(c: Conversation, ownId: string) {
   const others = c.participants.filter((p) => p.user_id !== ownId);
-  if (others.length === 0) return c.subject || 'Conversation';
-  return others.map((o) => o.display_name || 'Unnamed').join(', ');
+  const realNames = others
+    .map((o) => o.display_name?.trim())
+    .filter((n): n is string => !!n);
+  if (realNames.length > 0) return realNames.join(', ');
+  return c.subject || 'Conversation';
 }
 
 export function ThreadList({ conversations, activeId, onSelect }: Props) {
