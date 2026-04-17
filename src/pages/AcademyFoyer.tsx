@@ -105,6 +105,19 @@ export default function AcademyFoyer() {
     }, 2400);
   }, []);
 
+  // ── Phase watchdog: guarantee dock renders if handoff stalls ───────────────
+  // If we're stuck in ghost/materializing without a WelcomeLoading overlay
+  // mounted (meaning the welcome handoff dropped a callback), force idle
+  // after a safety window longer than the legitimate 2400ms materialize delay.
+  React.useEffect(() => {
+    if (phase === "idle" || phase === "dissolving") return;
+    if (showWelcome) return; // legitimate welcome in progress
+    const t = setTimeout(() => {
+      setPhase("idle");
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [phase, showWelcome]);
+
   // ── Check tour status when idle ─────────────────────────────────────────────
   React.useEffect(() => {
     if (phase !== "idle" || tourChecked || !user) return;
