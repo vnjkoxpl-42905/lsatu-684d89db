@@ -208,8 +208,8 @@ export default function Auth() {
       setLoading(false);
       setModalOpen(true);
       toast({
-        title: 'Google sign-in didn\u2019t finish',
-        description: 'We couldn\u2019t complete your sign-in. Please try again.',
+        title: "Google sign-in didn't finish",
+        description: "We couldn't complete your sign-in. Please try again.",
         variant: 'destructive',
       });
     }, 10000);
