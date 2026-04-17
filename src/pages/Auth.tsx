@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -93,6 +93,7 @@ const GlassShell = ({
 
 export default function Auth() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
@@ -175,24 +176,83 @@ export default function Auth() {
     });
   }, []);
 
-  // Return-leg OAuth session finalization
+  // One-shot: surface a session-expired banner if we were bounced here by
+  // useUserPermissions after a dead/expired JWT. Scrubs the state so a manual
+  // refresh doesn't replay the toast.
+  React.useEffect(() => {
+    const reason = (location.state as { reason?: string } | null)?.reason;
+    if (reason === 'session_expired') {
+      setModalOpen(true);
+      toast({
+        title: 'Session expired',
+        description: 'Please sign in again to continue.',
+      });
+      navigate(location.pathname, { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Return-leg OAuth session finalization — Auth.tsx owns the visible timeout.
   // When the user returns from Google via the Lovable broker, re-invoke the
   // broker so it can deliver tokens (without redirecting) and call setSession.
+  // Wrapped in a 10s race so a stalled broker cannot hang the UI ambiguously.
   React.useEffect(() => {
-    if (sessionStorage.getItem('oauth_pending') === '1') {
-      console.log('[Auth] OAuth return-leg detected — re-invoking broker');
-      lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/auth",
-      }).then((result) => {
+    if (sessionStorage.getItem('oauth_pending') !== '1') return;
+    console.log('[Auth] OAuth return-leg detected — re-invoking broker');
+
+    let settled = false;
+    const timeoutId = window.setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      sessionStorage.removeItem('oauth_pending');
+      setLoading(false);
+      setModalOpen(true);
+      toast({
+        title: "Google sign-in didn't finish",
+        description: "We couldn't complete your sign-in. Please try again.",
+        variant: 'destructive',
+      });
+    }, 10000);
+
+    lovable.auth
+      .signInWithOAuth('google', { redirect_uri: window.location.origin + '/auth' })
+      .then((result) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeoutId);
         if (result.error) {
           sessionStorage.removeItem('oauth_pending');
           console.error('[Auth] OAuth return-leg failed', result.error);
-          toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
+          setLoading(false);
+          setModalOpen(true);
+          toast({
+            title: 'Google sign-in failed',
+            description: String(result.error),
+            variant: 'destructive',
+          });
         }
-        // If tokens were returned, setSession was already called inside the lovable module.
-        // AuthContext's onAuthStateChange will pick up the new session automatically.
+        // Success path: AuthContext.onAuthStateChange picks up the new session.
+      })
+      .catch((err) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeoutId);
+        sessionStorage.removeItem('oauth_pending');
+        console.error('[Auth] OAuth return-leg threw', err);
+        setLoading(false);
+        setModalOpen(true);
+        toast({
+          title: 'Google sign-in failed',
+          description: err?.message || 'Unknown error',
+          variant: 'destructive',
+        });
       });
-    }
+
+    return () => {
+      settled = true;
+      window.clearTimeout(timeoutId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Auth handlers ──

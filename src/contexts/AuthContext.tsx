@@ -22,7 +22,7 @@ interface AuthContextValue {
   authReady: boolean;
   signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signOut: () => Promise<void>;
+  signOut: (opts?: { keepSavedEmail?: boolean }) => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: any }>;
   updatePassword: (newPassword: string) => Promise<{ error: any }>;
 }
@@ -112,13 +112,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    // Safety: if OAuth callback never resolves within 8s, stop loading anyway
+    // Silent safety net: Auth.tsx owns the user-visible 10s return-leg timeout.
+    // This timer is longer (15s) so it only fires if the page is in an unusual
+    // state where Auth.tsx's timeout never ran. No toast, no user-visible signal —
+    // just unfreeze the UI so route guards can act on `user = null`.
     if (isOAuthRef.current) {
       oauthTimeoutRef.current = setTimeout(() => {
-        console.warn('[AuthContext] OAuth timeout fired — no session received in 8s');
+        console.warn('[AuthContext] OAuth safety-net fired — unfreezing UI silently');
+        sessionStorage.removeItem('oauth_pending');
         setLoading(false);
         setAuthReady(true);
-      }, 8000);
+      }, 15000);
     }
 
     return () => {
@@ -169,7 +173,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
 
-  const signOut = async () => {
+  const signOut = async (opts?: { keepSavedEmail?: boolean }) => {
+    sessionStorage.removeItem('oauth_pending');
+    if (!opts?.keepSavedEmail) {
+      localStorage.removeItem('lsatu_saved_email');
+    }
     await supabase.auth.signOut();
   };
 
