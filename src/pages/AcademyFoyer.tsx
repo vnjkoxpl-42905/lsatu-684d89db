@@ -235,7 +235,9 @@ export default function AcademyFoyer() {
             <AnimatedDock
               items={[
                 { link: "/practice", Icon: <ClipboardList size={20} />, label: "Homework", badge: true },
-                { link: "/inbox", Icon: <Inbox size={20} />, label: "Inbox", badge: inboxUnread > 0 ? inboxUnread : undefined },
+                ...((permissions.is_admin || permissions.has_chat_access)
+                  ? [{ link: "/inbox", Icon: <Inbox size={20} />, label: "Inbox", badge: inboxUnread > 0 ? inboxUnread : undefined }]
+                  : []),
                 { link: "/schedule", Icon: <CalendarDays size={20} />, label: "Scheduling" },
                 { link: "/profile", Icon: <Settings size={20} />, label: "Settings" },
                 { onClick: () => { setShowTour(true); setTourChecked(false); }, Icon: <LifeBuoy size={20} />, label: "Help / Tour" },

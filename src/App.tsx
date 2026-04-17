@@ -51,8 +51,12 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />} />
 
             {/* Inbox — messaging, no question bank needed */}
-            <Route path="/inbox" element={<Inbox />} />
-            <Route path="/inbox/:conversationId" element={<Inbox />} />
+            <Route path="/inbox" element={
+              <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+            } />
+            <Route path="/inbox/:conversationId" element={
+              <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
+            } />
 
             {/* All other routes - wrapped with QuestionBankProvider */}
             <Route path="/*" element={
