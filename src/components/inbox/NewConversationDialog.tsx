@@ -71,6 +71,30 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
     }
     setSubmitting(true);
     try {
+      // Reuse existing 1:1 thread if one already exists between admin and recipient
+      const { data: myParts, error: myPartsErr } = await supabase
+        .from('conversation_participants')
+        .select('conversation_id')
+        .eq('user_id', user.id);
+      if (myPartsErr) throw myPartsErr;
+      const myConvIds = (myParts ?? []).map((p) => p.conversation_id);
+      if (myConvIds.length > 0) {
+        const { data: shared, error: sharedErr } = await supabase
+          .from('conversation_participants')
+          .select('conversation_id')
+          .eq('user_id', selectedUserId)
+          .in('conversation_id', myConvIds)
+          .limit(1);
+        if (sharedErr) throw sharedErr;
+        if (shared && shared.length > 0) {
+          toast.info('A conversation with this student already exists. Opening it.');
+          setOpen(false);
+          reset();
+          onCreated(shared[0].conversation_id);
+          return;
+        }
+      }
+
       const { data: conv, error: cErr } = await supabase
         .from('conversations')
         .insert({ subject: subject.trim() || null, created_by: user.id })
