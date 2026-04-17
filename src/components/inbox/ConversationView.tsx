@@ -10,9 +10,12 @@ interface Props {
   conversation: Conversation;
   onBack?: () => void;
   onMessageSent?: () => void;
+  /** When true, suppress the internal header — for embedded use inside a
+   *  containing surface (e.g. FloatingMessenger) that renders its own. */
+  hideHeader?: boolean;
 }
 
-export function ConversationView({ conversation, onBack, onMessageSent }: Props) {
+export function ConversationView({ conversation, onBack, onMessageSent, hideHeader = false }: Props) {
   const { user } = useAuth();
   const { messages, refresh } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -30,19 +33,21 @@ export function ConversationView({ conversation, onBack, onMessageSent }: Props)
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-background/80 backdrop-blur">
-        {onBack && (
-          <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden" aria-label="Back">
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-        )}
-        <div className="min-w-0">
-          <div className="font-medium text-sm truncate">{headerName}</div>
-          {conversation.subject && (
-            <div className="text-xs text-muted-foreground truncate">{conversation.subject}</div>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-background/80 backdrop-blur">
+          {onBack && (
+            <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden" aria-label="Back">
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
           )}
+          <div className="min-w-0">
+            <div className="font-medium text-sm truncate">{headerName}</div>
+            {conversation.subject && (
+              <div className="text-xs text-muted-foreground truncate">{conversation.subject}</div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-muted/20">
         {messages.length === 0 ? (

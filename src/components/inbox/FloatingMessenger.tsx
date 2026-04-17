@@ -29,6 +29,12 @@ export function FloatingMessenger() {
     [conversations, activeId]
   );
 
+  const activeHeaderName = useMemo(() => {
+    if (!active || !user) return null;
+    const others = active.participants.filter((p) => p.user_id !== user.id);
+    return others.map((o) => o.display_name || 'Student').join(', ') || active.subject || 'Conversation';
+  }, [active, user]);
+
   if (!authReady || !user || permsLoading) return null;
   if (!has_chat_access && !is_admin) return null;
 
@@ -114,9 +120,15 @@ export function FloatingMessenger() {
               )}
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold truncate">
-                  {active ? 'Conversation' : 'Messages'}
+                  {active ? activeHeaderName : 'Messages'}
                 </div>
-                {!active && (
+                {active ? (
+                  active.subject && (
+                    <div className="text-[11px] text-muted-foreground truncate">
+                      {active.subject}
+                    </div>
+                  )
+                ) : (
                   <div className="text-[11px] text-muted-foreground">
                     {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
                   </div>
@@ -154,6 +166,7 @@ export function FloatingMessenger() {
                     <ConversationView
                       conversation={active}
                       onMessageSent={refresh}
+                      hideHeader
                     />
                   </motion.div>
                 ) : (
