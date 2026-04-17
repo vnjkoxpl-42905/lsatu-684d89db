@@ -220,7 +220,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    // Defensive fallback — can occur during HMR / fast-refresh when the
+    // provider module is briefly out of sync with consumers. Returning a
+    // safe stub prevents a blank-screen crash; consumers handle null user.
+    if (import.meta.env.DEV) {
+      console.warn('useAuth called outside AuthProvider — returning stub.');
+    }
+    return {
+      user: null,
+      session: null,
+      loading: true,
+      authReady: false,
+      signUp: async () => ({ error: new Error('Auth not ready') }),
+      signIn: async () => ({ error: new Error('Auth not ready') }),
+      signOut: async () => {},
+      resetPassword: async () => ({ error: new Error('Auth not ready') }),
+      updatePassword: async () => ({ error: new Error('Auth not ready') }),
+    } as AuthContextValue;
   }
   return context;
 }
