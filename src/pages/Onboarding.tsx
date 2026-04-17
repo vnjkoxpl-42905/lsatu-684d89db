@@ -28,7 +28,7 @@ const GlassShell = ({ children }: { children: React.ReactNode }) => (
 export default function Onboarding() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
-  const [username, setUsername] = React.useState('');
+  const [name, setName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
 
   // Pre-fill from metadata if available (e.g. Google name)
@@ -36,7 +36,7 @@ export default function Onboarding() {
     if (user) {
       const meta = user.user_metadata;
       const prefill = meta?.display_name || meta?.full_name || meta?.name || '';
-      if (prefill) setUsername(prefill);
+      if (prefill) setName(prefill);
     }
   }, [user]);
 
@@ -47,13 +47,13 @@ export default function Onboarding() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = username.trim();
+    const trimmed = name.trim();
     if (!trimmed) {
-      toast.error('Please enter a username');
+      toast.error('Please enter your name');
       return;
     }
     if (trimmed.length > 50) {
-      toast.error('Username must be 50 characters or less');
+      toast.error('Name must be 50 characters or less');
       return;
     }
 
@@ -73,7 +73,7 @@ export default function Onboarding() {
 
       navigate('/foyer', { state: { showWelcome: true, welcomeName: trimmed }, replace: true });
     } catch (err: any) {
-      toast.error(err?.message || 'Failed to save username');
+      toast.error(err?.message || 'Failed to save name');
     } finally {
       setSaving(false);
     }
@@ -101,21 +101,21 @@ export default function Onboarding() {
                 Welcome to LSAT U
               </h2>
               <p className="text-[11px] text-neutral-500">
-                Choose a username for your profile.
+                What should we call you?
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5">
-                  Username
+                  Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600 pointer-events-none" />
                   <Input
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Your username"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your name"
                     className="pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg"
                     maxLength={50}
                     autoFocus
@@ -125,7 +125,7 @@ export default function Onboarding() {
 
               <AnimatedButton
                 type="submit"
-                disabled={saving || !username.trim()}
+                disabled={saving || !name.trim()}
                 loading={saving}
                 variant="cta"
                 size="default"
