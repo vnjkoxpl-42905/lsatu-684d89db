@@ -130,7 +130,7 @@ export function useInbox() {
   useEffect(() => {
     if (!user) return;
     const channel = supabase
-      .channel('inbox-feed')
+      .channel(`inbox-feed-${user.id}-${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
         loadConversations();
       })
