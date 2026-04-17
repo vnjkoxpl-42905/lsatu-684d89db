@@ -27,6 +27,7 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 
 const App = () => (
   <ThemeProvider>
@@ -102,6 +103,7 @@ const App = () => (
               </QuestionBankProvider>
             } />
           </Routes>
+          <FloatingMessenger />
         </BrowserRouter>
       </TooltipProvider>
     </UserSettingsProvider>
