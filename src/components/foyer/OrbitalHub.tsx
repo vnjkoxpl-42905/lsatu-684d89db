@@ -115,7 +115,7 @@ function labelStyle(a: LabelAnchor): React.CSSProperties {
 const HUD_CONTENT: Record<string, string> = {
   practice: "Full practice tests and timed sections.",
   bootcamps: "Guided drills for advanced question types.",
-  classroom: "Video lessons and past coaching sessions.",
+  classroom: "Assigned work, materials, and instructor feedback.",
   analytics: "Track your progress and spot weak areas.",
   schedule: "Your daily study calendar.",
 };
@@ -123,7 +123,7 @@ const HUD_CONTENT: Record<string, string> = {
 const HUD_META: Record<string, string> = {
   practice: "PT 1–90 Available",
   bootcamps: "15 Modules",
-  classroom: "12 Sessions",
+  classroom: "Assignments & Feedback",
   analytics: "Live Tracking",
   schedule: "Daily Planner",
 };
