@@ -138,7 +138,7 @@ function AssignmentCard({ a, onLaunch }: { a: ClassroomAssignment; onLaunch: (a:
             <ChevronRight className="h-3 w-3" />
           </Button>
         )}
-        {(a.status === 'revision_needed') && (
+        {a.linkedRoute && a.status === 'revision_needed' && (
           <Button
             size="sm"
             variant="ghost"
@@ -185,7 +185,7 @@ function OverviewTab({ onTabChange }: { onTabChange: (tab: string) => void }) {
     <div className="space-y-6">
 
       {/* Stats row */}
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
         {[
           { label: 'Assigned', value: counts.assigned, color: 'text-foreground/80' },
           { label: 'In Progress', value: counts.in_progress, color: 'text-amber-400' },
@@ -254,7 +254,7 @@ function OverviewTab({ onTabChange }: { onTabChange: (tab: string) => void }) {
       {/* Quick actions */}
       <div className="space-y-2">
         <IL>Quick Access</IL>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             {
               icon: ClipboardList,
