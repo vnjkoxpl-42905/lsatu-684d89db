@@ -151,7 +151,7 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
                   onClick={() => setSelectedUserId(p.class_id)}
                   className={`w-full px-3 py-2 text-left text-sm hover:bg-accent ${selectedUserId === p.class_id ? 'bg-accent' : ''}`}
                 >
-                  {p.display_name || 'Unnamed'} <span className="text-xs text-muted-foreground">({p.class_id.slice(0, 8)})</span>
+                  {p.display_name || 'Student'} <span className="text-xs text-muted-foreground">({p.class_id.slice(0, 8)})</span>
                 </button>
               ))}
             </div>

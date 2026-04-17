@@ -24,7 +24,7 @@ export function ConversationView({ conversation, onBack, onMessageSent }: Props)
   if (!user) return null;
 
   const others = conversation.participants.filter((p) => p.user_id !== user.id);
-  const headerName = others.map((o) => o.display_name || 'Unnamed').join(', ') || conversation.subject || 'Conversation';
+  const headerName = others.map((o) => o.display_name || 'Student').join(', ') || conversation.subject || 'Conversation';
 
   const nameById = new Map(conversation.participants.map((p) => [p.user_id, p.display_name]));
 
