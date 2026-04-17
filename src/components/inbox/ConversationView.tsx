@@ -27,7 +27,10 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   if (!user) return null;
 
   const others = conversation.participants.filter((p) => p.user_id !== user.id);
-  const headerName = others.map((o) => o.display_name || 'Student').join(', ') || conversation.subject || 'Conversation';
+  const realNames = others
+    .map((o) => o.display_name?.trim())
+    .filter((n): n is string => !!n);
+  const headerName = realNames.join(', ') || conversation.subject || 'Conversation';
 
   const nameById = new Map(conversation.participants.map((p) => [p.user_id, p.display_name]));
 
@@ -41,7 +44,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             </Button>
           )}
           <div className="min-w-0">
-            <div className="font-medium text-sm truncate">{headerName}</div>
+            <div className="font-semibold text-base truncate">{headerName}</div>
             {conversation.subject && (
               <div className="text-xs text-muted-foreground truncate">{conversation.subject}</div>
             )}

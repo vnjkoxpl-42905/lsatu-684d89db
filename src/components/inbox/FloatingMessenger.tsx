@@ -32,7 +32,10 @@ export function FloatingMessenger() {
   const activeHeaderName = useMemo(() => {
     if (!active || !user) return null;
     const others = active.participants.filter((p) => p.user_id !== user.id);
-    return others.map((o) => o.display_name || 'Student').join(', ') || active.subject || 'Conversation';
+    const realNames = others
+      .map((o) => o.display_name?.trim())
+      .filter((n): n is string => !!n);
+    return realNames.join(', ') || active.subject || 'Conversation';
   }, [active, user]);
 
   if (!authReady || !user || permsLoading) return null;
