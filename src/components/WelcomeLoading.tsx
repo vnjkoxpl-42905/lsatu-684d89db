@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { VaporizeText } from "@/components/ui/vapour-text-effect";
 
@@ -70,10 +70,12 @@ export default function WelcomeLoading({
     setFontSize(computeFontSize());
   }, []);
 
-  // Called by VaporizeText once the vaporize phase finishes
-  const handleParticlesDone = () => {
+  // Called by VaporizeText once the vaporize phase finishes.
+  // Memoized so VaporizeText's run callback (which depends on onComplete)
+  // does not recreate on parent re-renders and restart the RAF animation.
+  const handleParticlesDone = useCallback(() => {
     setVisible(false);
-  };
+  }, []);
 
   // Called by AnimatePresence once the fade-out transition is finished
   const handleExitComplete = () => {

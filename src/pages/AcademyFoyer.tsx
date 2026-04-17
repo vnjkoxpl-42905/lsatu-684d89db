@@ -106,17 +106,21 @@ export default function AcademyFoyer() {
   }, []);
 
   // ── Phase watchdog: guarantee dock renders if handoff stalls ───────────────
-  // If we're stuck in ghost/materializing without a WelcomeLoading overlay
-  // mounted (meaning the welcome handoff dropped a callback), force idle
-  // after a safety window longer than the legitimate 2400ms materialize delay.
+  // Keyed on phase alone — does NOT depend on showWelcome, because the stuck
+  // path is precisely when showWelcome never flips false. Recovery unmounts the
+  // welcome overlay AND forces idle, so the dock becomes both mounted and
+  // visible (WelcomeLoading is a fixed z-[9999] black overlay — forcing phase
+  // without unmounting it would leave the dock obscured).
+  // 10s is longer than the full legitimate animation chain (~8.6s), so the
+  // watchdog is inert in any successful welcome flow.
   React.useEffect(() => {
-    if (phase === "idle" || phase === "dissolving") return;
-    if (showWelcome) return; // legitimate welcome in progress
+    if (phase !== "ghost" && phase !== "materializing") return;
     const t = setTimeout(() => {
+      setShowWelcome(false);
       setPhase("idle");
-    }, 3000);
+    }, 10000);
     return () => clearTimeout(t);
-  }, [phase, showWelcome]);
+  }, [phase]);
 
   // ── Check tour status when idle ─────────────────────────────────────────────
   React.useEffect(() => {
