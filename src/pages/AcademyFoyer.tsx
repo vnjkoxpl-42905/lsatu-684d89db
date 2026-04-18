@@ -207,8 +207,8 @@ export default function AcademyFoyer() {
       </div>
 
       {/* ── Orbital Hub ── */}
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div ref={hubContainerRef} style={{ width: "min(560px, 85vw, 85vh)", height: "min(560px, 85vw, 85vh)" }}>
+      <div className="absolute inset-0 flex items-center justify-center z-10 px-4 pb-24 sm:pb-0">
+        <div ref={hubContainerRef} style={{ width: "min(560px, 78vw, 70vh)", height: "min(560px, 78vw, 70vh)" }}>
           <OrbitalHub
             phase={phase}
             selectedNodeId={selectedNodeId}
@@ -229,7 +229,7 @@ export default function AcademyFoyer() {
       <AnimatePresence>
         {phase === "idle" && (
           <motion.div
-            className="absolute bottom-10 inset-x-0 flex justify-center z-20"
+            className="absolute bottom-4 sm:bottom-10 inset-x-0 flex justify-center z-20 px-3 [padding-bottom:env(safe-area-inset-bottom)]"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
