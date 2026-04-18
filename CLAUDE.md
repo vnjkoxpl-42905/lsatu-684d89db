@@ -61,4 +61,4 @@ No Prettier. Formatting is ESLint-only.
 - No test specs yet — Vitest runner is wired but `src/**/*.test.ts` does not exist.
 - No typecheck script, no Prettier config, no CI workflows.
 - `README.md` is a stub.
-- No `.claude/settings.json`, no custom `.claude/agents/`, no SessionStart hook.
+- `.claude/settings.json` is set up with a permission allowlist for safe dev work (npm scripts, git reads, MCP GitHub reads) and a denylist for destructive ops. No custom `.claude/agents/`, no SessionStart hook.
