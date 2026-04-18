@@ -18,9 +18,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     try {
       const saved = localStorage.getItem('lsatu-theme');
-      return (saved === 'light' ? 'light' : 'dark') as Theme;
+      return (saved === 'dark' ? 'dark' : 'light') as Theme;
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
 
