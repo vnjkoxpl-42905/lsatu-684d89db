@@ -57,6 +57,21 @@ function validateMessages(messages: any[]): messages is MessageInput[] {
   );
 }
 
+// Module-scope cache for coaching knowledge. Edge function isolates stay warm
+// across requests, so a simple TTL Map keyed by qid avoids the 4-table lookup
+// on every follow-up message. Coaching tables are near-static.
+interface CachedKnowledge {
+  value: {
+    strategy: any;
+    reasoning: any;
+    patterns: any[];
+    concepts: any[];
+  };
+  expires: number;
+}
+const knowledgeCache = new Map<string, CachedKnowledge>();
+const KNOWLEDGE_TTL_MS = 10 * 60 * 1000;
+
 // Helper function to get coaching knowledge from database
 async function getCoachingKnowledge(supabase: any, question: any) {
   try {
@@ -164,8 +179,16 @@ serve(async (req) => {
     // Initialize Supabase client with service role for knowledge base access
     const supabase = createClient(supabaseUrl, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Get coaching knowledge from database
-    const knowledge = await getCoachingKnowledge(supabase, question);
+    // Get coaching knowledge from database (cached per qid).
+    const cacheKey = question.qid;
+    const cached = knowledgeCache.get(cacheKey);
+    let knowledge: CachedKnowledge['value'];
+    if (cached && cached.expires > Date.now()) {
+      knowledge = cached.value;
+    } else {
+      knowledge = await getCoachingKnowledge(supabase, question);
+      knowledgeCache.set(cacheKey, { value: knowledge, expires: Date.now() + KNOWLEDGE_TTL_MS });
+    }
 
     // Prepare concise inputs to avoid token limits
     const clamp = (s: string | null | undefined, n: number) => {
@@ -249,70 +272,47 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
     const breakdownTextShort = clamp(breakdownText, 1500);
     const knowledgeContextShort = clamp(knowledgeContext, 4000);
 
-    // Only send the last few turns to the model
-    const messagesForModel = (messages || []).slice(-6);
+    // Keep roughly the last 10 turns so the tutor remembers the student's line of argument.
+    const messagesForModel = (messages || []).slice(-20);
 
     const isFirstMessage = messages.length === 0;
 
-    // Build unified Socratic system prompt — NEVER reveals the correct answer
-    let systemPrompt = `You are Joshua, a sharp, no-nonsense LSAT tutor. You sound like a smart friend who happens to be very good at the LSAT. You are concise, direct, and specific. You never hedge or pad. You never use em-dashes. You never cite sources or say things like "the stimulus states" or "the argument exhibits." You talk like a real person.
+    // Unified Socratic system prompt. Every imperative from the prior prompt
+    // is preserved; duplicated first-turn / follow-up blocks are consolidated.
+    const systemPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. Be concise, specific, and direct. No hedging, no padding, no em-dashes, no phrases like "the stimulus states" or "the argument exhibits." Plain English, real person.
 
 QUESTION CONTEXT:
 - Type: ${question.qtype}${question.reasoningType ? ` (${question.reasoningType})` : ''}
 - Stimulus: ${stimulusShort || 'N/A'}
 - Stem: ${stemShort}
-- Student picked (${question.userAnswer}): "${clamp(chosenAnswerText, 300)}"
+- Student picked (${question.userAnswer}): "${clamp(chosenAnswerText, 400)}"
+${whyWrong ? `\nWHY (${question.userAnswer}) IS WRONG:\n${whyWrong}` : ''}
+${question.breakdown?.crucialInsight ? `\nCRUCIAL INSIGHT: ${question.breakdown.crucialInsight}` : ''}
 ${breakdownTextShort ? `\nARGUMENT BREAKDOWN:\n${breakdownTextShort}` : ''}
 ${knowledgeContextShort ? `\nCOACHING KNOWLEDGE:\n${knowledgeContextShort}` : ''}
 
-`;
+ABSOLUTE RULES:
+1. Never reveal the correct answer letter or confirm/deny whether a specific choice is correct.
+2. Never explain why the correct answer is correct. Never contrast the wrong answer with the correct one.
+3. Never list or explain answer choices the student hasn't specifically asked about.
+4. If asked "what is the correct answer?" or "is it (X)?", reply: "I can't give that away — go back and try again. You've got this."
 
-    if (isFirstMessage) {
-      // First message: targeted wrong-answer coaching
-      systemPrompt += `YOUR TASK: Explain why (${question.userAnswer}) is wrong. Be specific to THIS answer on THIS question.
-
-THE STUDENT PICKED (${question.userAnswer}): "${clamp(chosenAnswerText, 400)}"
-${whyWrong ? `\nEXPERT ANALYSIS OF WHY (${question.userAnswer}) IS WRONG:\n${whyWrong}` : ''}
-${question.breakdown?.crucialInsight ? `\nCRUCIAL INSIGHT: ${question.breakdown.crucialInsight}` : ''}
-
-INSTRUCTIONS:
-1. Name the specific phrase or idea in (${question.userAnswer}) that makes it tempting.
-2. Explain exactly why it doesn't hold up, referencing the stimulus. Be concrete: quote a few key words from the answer or stimulus.
-3. Nudge toward what they should look for instead, without naming the correct answer letter or its content.
-4. End by encouraging them to return to the question and try again.
-5. 2-3 short, punchy sentences. Plain English. No jargon, no academic tone.
-
-GOOD EXAMPLE: "(B) is tempting because it sounds like the author is questioning the method, but look at the last sentence: the author says the results 'clearly demonstrate' it works. The issue with (B) is that it gets the author's attitude backwards. Look for an answer that matches what the author actually concludes, not what you'd expect them to say. Go back and give it another shot."
-
-BAD EXAMPLE (too generic): "This answer doesn't align with the argument's main point. The reasoning doesn't support this conclusion."`;
-    } else {
-      // Follow-up messages: answer student's questions, keep coaching
-      systemPrompt += `YOUR TASK: Answer the student's follow-up question. Help them think through the problem.
-
-THE STUDENT ORIGINALLY PICKED (${question.userAnswer}): "${clamp(chosenAnswerText, 300)}"
-${whyWrong ? `\nWHY (${question.userAnswer}) IS WRONG:\n${whyWrong}` : ''}
-
-RULES:
-- Stay specific to this question. Quote from the stimulus and answers when helpful.
-- 2-3 sentences unless they ask for a deeper concept explanation.
+COACHING STYLE:
+- Your job is to help them THINK. Guide their reasoning, point out flaws in their logic, nudge them toward the right approach. Don't hand over conclusions.
+- Stay specific to THIS question. Quote a few key words from the stimulus or their pick when it helps.
+- Default to 2-3 short, punchy sentences. Go longer only if they ask for a deeper concept explanation.
 - If they ask about a specific wrong answer, explain why that particular answer doesn't work.
 - If they ask about strategy, draw from the coaching knowledge above.
-- If they seem stuck, give a nudge about what to look for — but never name the correct answer.
-- Encourage them to return to the question and try again.
-- Sound like a sharp tutor, not a chatbot.`;
-    }
+- Nudge toward what to look for without naming the correct answer.
+- Always end by encouraging them to return to the question and try again.
 
-    // ABSOLUTE CONSTRAINTS — appended to every prompt
-    systemPrompt += `
+${isFirstMessage
+  ? `FIRST TURN: Diagnose why (${question.userAnswer}) is wrong, using the WHY block above if provided. Name the specific phrase or idea in (${question.userAnswer}) that makes it tempting, explain concretely why it doesn't hold up (quote a few key words from the answer or stimulus), nudge toward what they should look for instead, then send them back to try again. 2-3 sentences.
 
-ABSOLUTE RULES — NEVER VIOLATE THESE:
-1. NEVER reveal the correct answer letter. NEVER say which answer is correct.
-2. NEVER confirm or deny if a specific answer choice is the correct one.
-3. NEVER explain why the correct answer is correct. NEVER contrast the wrong answer with the correct answer.
-4. NEVER list or explain answer choices the student has not specifically asked about.
-5. If the student asks "what is the correct answer?" or "is it (X)?", say: "I can't give that away — go back and try again. You've got this."
-6. Your job is to help them THINK, not to give them the answer. Guide their reasoning, point out flaws in their logic, and nudge them toward the right approach.
-7. Always encourage the student to return to the question and attempt it again.`;
+GOOD: "(B) is tempting because it sounds like the author is questioning the method, but look at the last sentence: the author says the results 'clearly demonstrate' it works. (B) gets the author's attitude backwards. Look for an answer that matches what the author actually concludes. Go back and give it another shot."
+
+BAD (too generic): "This answer doesn't align with the argument's main point."`
+  : `FOLLOW-UP: Answer the student's question using the coaching style above. If they seem stuck, give a small nudge — never the correct answer.`}`;
 
     const useStream = wantsStream === true;
 
@@ -323,7 +323,7 @@ ABSOLUTE RULES — NEVER VIOLATE THESE:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3.1-pro-preview",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: systemPrompt },
           ...messagesForModel,
