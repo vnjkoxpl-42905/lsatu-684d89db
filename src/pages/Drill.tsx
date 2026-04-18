@@ -1261,7 +1261,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/' | '/foyer' | '/dashboard') => {
+  const handleNavigation = (destination: '/practice' | '/foyer' | '/dashboard') => {
     setExitDestination(destination);
     setShowExitDialog(true);
   };
@@ -1731,7 +1731,7 @@ function DrillContent() {
 
         {/* Unified Top Bar */}
         <DrillTopBar
-          onBack={() => handleNavigation('/')}
+          onBack={() => handleNavigation('/practice')}
           questionLabel={currentQuestion ? (
             window.innerWidth >= 640
               ? `PT${currentQuestion.pt}-S${currentQuestion.section}-Q${currentQuestion.qnum}`
