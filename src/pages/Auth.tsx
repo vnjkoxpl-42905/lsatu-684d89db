@@ -279,7 +279,7 @@ export default function Auth() {
           toast({
             title: 'Sign-in failed',
             description: isInvalidCreds
-              ? 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences. Your username is NOT part of sign-in — only email and password.'
+              ? 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.'
               : error.message,
             variant: 'destructive',
           });
