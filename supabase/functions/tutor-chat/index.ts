@@ -66,6 +66,7 @@ interface CachedKnowledge {
     reasoning: any;
     patterns: any[];
     concepts: any[];
+    resolvedReasoningType: string | null;
   };
   expires: number;
 }
@@ -115,43 +116,68 @@ function normalizeQtype(raw?: string | null): string | null {
   return QTYPE_SYNONYMS[trimmed] || trimmed;
 }
 
-// Helper function to get coaching knowledge from database
+// Helper function to get coaching knowledge from database.
+//
+// Two-phase: strategy + tactical_patterns load in parallel first, then the
+// reasoning-type-keyed lookups (guidance + concepts) run in a second parallel
+// batch using either `question.reasoningType` or — as a fallback when the bank
+// row lacks one — `strategy.related_reasoning_types[0]`. This preserves the
+// original 4-query parallelism for tagged questions (one extra roundtrip only
+// when the fallback path fires), and lets the guidance + concept blocks render
+// for every question whose strategy row has a non-"All" related-type seeded.
 async function getCoachingKnowledge(supabase: any, question: any) {
   try {
     const qtype = normalizeQtype(question.qtype) || question.qtype;
-    const [strategyResult, reasoningResult, patternsResult, conceptsResult] = await Promise.all([
+
+    const [strategyResult, patternsResult] = await Promise.all([
       supabase
         .from('question_type_strategies')
         .select('*')
         .eq('question_type', qtype)
         .maybeSingle(),
-
-      question.reasoningType
-        ? supabase
-            .from('reasoning_type_guidance')
-            .select('*')
-            .eq('reasoning_type', question.reasoningType)
-            .maybeSingle()
-        : Promise.resolve({ data: null }),
-
       supabase
         .from('tactical_patterns')
         .select('*')
         .contains('question_types', [qtype]),
-
-      question.reasoningType
-        ? supabase
-            .from('concept_library')
-            .select('*')
-            .eq('reasoning_type', question.reasoningType)
-        : Promise.resolve({ data: [] })
     ]);
 
+    const strategy = strategyResult.data;
+
+    // Resolve the reasoning-type key: use the question's own tag first, then
+    // fall back to the strategy row's first related reasoning type. Skip
+    // umbrella values like "All" that don't correspond to a guidance row.
+    let reasoningKey: string | null = question.reasoningType || null;
+    if (!reasoningKey && strategy?.related_reasoning_types?.length) {
+      const candidate = strategy.related_reasoning_types.find(
+        (t: string) => t && t !== 'All'
+      );
+      if (candidate) reasoningKey = candidate;
+    }
+
+    let reasoning: unknown = null;
+    let concepts: unknown[] = [];
+    if (reasoningKey) {
+      const [reasoningResult, conceptsResult] = await Promise.all([
+        supabase
+          .from('reasoning_type_guidance')
+          .select('*')
+          .eq('reasoning_type', reasoningKey)
+          .maybeSingle(),
+        supabase
+          .from('concept_library')
+          .select('*')
+          .eq('reasoning_type', reasoningKey),
+      ]);
+      reasoning = reasoningResult.data;
+      concepts = conceptsResult.data || [];
+    }
+
     return {
-      strategy: strategyResult.data,
-      reasoning: reasoningResult.data,
+      strategy,
+      reasoning,
       patterns: patternsResult.data || [],
-      concepts: conceptsResult.data || []
+      concepts,
+      resolvedReasoningType: reasoningKey,
     };
   } catch (error) {
     console.error('Error fetching coaching knowledge');
@@ -159,7 +185,8 @@ async function getCoachingKnowledge(supabase: any, question: any) {
       strategy: null,
       reasoning: null,
       patterns: [],
-      concepts: []
+      concepts: [],
+      resolvedReasoningType: null,
     };
   }
 }
@@ -287,7 +314,7 @@ ${knowledge.strategy.prephrase_goal ? `- Prephrase Goal: ${knowledge.strategy.pr
     }
 
     if (knowledge.reasoning) {
-      knowledgeContext += `\n**REASONING TYPE GUIDANCE (${question.reasoningType}):**
+      knowledgeContext += `\n**REASONING TYPE GUIDANCE (${knowledge.resolvedReasoningType}):**
 - Description: ${knowledge.reasoning.description}
 - Key Indicators: ${knowledge.reasoning.key_indicators?.join(', ')}
 - Common Flaws: ${knowledge.reasoning.common_flaws?.join(', ')}
@@ -326,7 +353,7 @@ ${knowledge.concepts.map((c: any) => `- ${c.concept_name}: ${c.explanation}
     const systemPrompt = `You are Joshua, a sharp LSAT tutor who sounds like a smart friend, not an academic. Be concise, specific, and direct. No hedging, no padding, no em-dashes, no phrases like "the stimulus states" or "the argument exhibits." Plain English, real person.
 
 QUESTION CONTEXT:
-- Type: ${question.qtype}${question.reasoningType ? ` (${question.reasoningType})` : ''}
+- Type: ${question.qtype}${knowledge.resolvedReasoningType ? ` (${knowledge.resolvedReasoningType})` : ''}
 - Stimulus: ${stimulusShort || 'N/A'}
 - Stem: ${stemShort}
 - Student picked (${question.userAnswer}): "${clamp(chosenAnswerText, 400)}"
