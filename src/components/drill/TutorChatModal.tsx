@@ -4,6 +4,7 @@ import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LRQuestion } from '@/lib/questionLoader';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -26,6 +27,7 @@ export function TutorChatModal({
   userAnswer,
   onClose,
 }: TutorChatModalProps) {
+  const isMobile = useIsMobile();
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -237,30 +239,43 @@ export function TutorChatModal({
     isLoading && (!lastMsg || (lastMsg.role === 'assistant' && lastMsg.content === ''));
 
   return (
-    <div className={cn(
-      "fixed bottom-6 left-6 z-50 w-[380px] max-h-[420px] flex flex-col",
-      "bg-neutral-950/90 backdrop-blur-xl",
-      "border border-white/[0.06] ring-1 ring-white/[0.04]",
-      "shadow-2xl shadow-black/40 rounded-2xl",
-      "animate-in slide-in-from-bottom-4 fade-in duration-300"
-    )}>
+    <div
+      className={cn(
+        "fixed z-50 flex flex-col",
+        "bg-neutral-950/95 backdrop-blur-xl",
+        "border border-white/[0.06] ring-1 ring-white/[0.04]",
+        "shadow-2xl shadow-black/40",
+        isMobile
+          ? "inset-x-0 bottom-0 h-[85dvh] rounded-t-2xl animate-in slide-in-from-bottom duration-300"
+          : "bottom-6 left-6 w-[380px] max-h-[420px] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+      )}
+    >
+      {/* ── Drag handle (mobile only) ── */}
+      {isMobile && (
+        <div className="shrink-0 flex justify-center pt-2 pb-1">
+          <div className="h-1 w-10 rounded-full bg-white/20" />
+        </div>
+      )}
 
       {/* ── Header ─────────────────────────────────────────────────── */}
-      <div className="shrink-0 px-5 pt-4 pb-3">
+      <div className="shrink-0 px-5 pt-3 pb-3">
         <span className="text-[10px] tracking-[0.18em] text-neutral-500 font-medium uppercase select-none">
           Coach
         </span>
       </div>
 
       {/* ── Messages ────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-5 pb-2">
+      <div className="flex-1 overflow-y-auto px-5 pb-2 min-h-0">
         <div className="space-y-4">
           {messages.map((msg, idx) =>
             msg.role === 'assistant' ? (
               msg.content.length > 0 ? (
                 <p
                   key={idx}
-                  className="text-[13px] leading-[1.65] text-neutral-200 whitespace-pre-wrap animate-in fade-in duration-200 select-text"
+                  className={cn(
+                    "leading-[1.65] text-neutral-200 whitespace-pre-wrap animate-in fade-in duration-200 select-text",
+                    isMobile ? "text-[15px]" : "text-[13px]"
+                  )}
                 >
                   {msg.content}
                 </p>
@@ -268,7 +283,10 @@ export function TutorChatModal({
             ) : (
               <p
                 key={idx}
-                className="text-right text-[12px] leading-[1.5] text-neutral-500 italic whitespace-pre-wrap animate-in fade-in duration-150 select-text"
+                className={cn(
+                  "text-right leading-[1.5] text-neutral-500 italic whitespace-pre-wrap animate-in fade-in duration-150 select-text",
+                  isMobile ? "text-[14px]" : "text-[12px]"
+                )}
               >
                 {msg.content}
               </p>
@@ -286,9 +304,27 @@ export function TutorChatModal({
       </div>
 
       {/* ── Input ───────────────────────────────────────────────────── */}
-      <div className="shrink-0 px-4 pt-2 pb-3">
+      <div
+        className={cn(
+          "shrink-0 px-4 pt-2",
+          isMobile
+            ? "pb-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/[0.04] bg-neutral-950/95"
+            : "pb-3"
+        )}
+      >
+        {/* Return CTA pinned above composer on mobile */}
+        {isMobile && (
+          <button
+            onClick={onClose}
+            className="w-full mb-2 min-h-[48px] py-3 rounded-lg bg-white text-neutral-900 text-[14px] font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none"
+          >
+            Return to question →
+          </button>
+        )}
+
         <div className={cn(
-          "flex items-center gap-2 px-3 py-2",
+          "flex items-center gap-2 px-3",
+          isMobile ? "py-3" : "py-2",
           "bg-white/[0.04] border border-white/[0.06] rounded-lg"
         )}>
           <input
@@ -299,30 +335,37 @@ export function TutorChatModal({
             onKeyDown={handleKeyDown}
             disabled={isLoading || initializing}
             placeholder="Ask a follow-up…"
-            className="flex-1 bg-transparent border-0 outline-none text-[13px] text-neutral-200 placeholder:text-neutral-600 disabled:opacity-40 select-text"
+            className={cn(
+              "flex-1 bg-transparent border-0 outline-none text-neutral-200 placeholder:text-neutral-600 disabled:opacity-40 select-text",
+              isMobile ? "text-[16px]" : "text-[13px]"
+            )}
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading || initializing}
             className={cn(
-              "shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-150",
+              "shrink-0 rounded-full flex items-center justify-center transition-all duration-150",
+              isMobile ? "w-9 h-9" : "w-6 h-6",
               input.trim() && !isLoading && !initializing
                 ? "bg-white/10 text-neutral-200 hover:bg-white/20 active:scale-95"
                 : "bg-white/[0.04] text-neutral-600 cursor-not-allowed"
             )}
           >
-            <ArrowUp className="w-3 h-3" />
+            <ArrowUp className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
           </button>
         </div>
 
-        <div className="mt-2 px-1">
-          <button
-            onClick={onClose}
-            className="w-full py-2.5 rounded-lg bg-white text-neutral-900 text-[13px] font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none"
-          >
-            Return to question →
-          </button>
-        </div>
+        {/* Desktop: return CTA below composer */}
+        {!isMobile && (
+          <div className="mt-2 px-1">
+            <button
+              onClick={onClose}
+              className="w-full py-2.5 rounded-lg bg-white text-neutral-900 text-[13px] font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none"
+            >
+              Return to question →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
