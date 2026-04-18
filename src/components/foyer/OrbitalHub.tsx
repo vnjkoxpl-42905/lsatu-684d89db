@@ -365,9 +365,9 @@ export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, locked
               {/* ── Label ── */}
               <div style={labelStyle(nodeAnchor)}>
                 <div
-                  className="text-[9px] uppercase font-semibold flex items-center gap-1"
+                  className={isMobile ? "text-[8px] uppercase font-semibold flex items-center gap-1" : "text-[9px] uppercase font-semibold flex items-center gap-1"}
                   style={{
-                    letterSpacing: "0.22em",
+                    letterSpacing: isMobile ? "0.16em" : "0.22em",
                     color: isHov
                       ? `rgba(${nodeC},0.95)`
                       : node.charge > 0.5
