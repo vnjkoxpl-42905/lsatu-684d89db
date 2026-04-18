@@ -205,6 +205,54 @@ function parseSeededRows(tableName, keyColumn = null) {
   return { found, perFile };
 }
 
+// Build a qtype → related_reasoning_types[] map from question_type_strategies
+// inserts. Used to simulate the edge function's fallback path: when a question
+// has no reasoningType, we key guidance + concept lookups by the strategy
+// row's first non-"All" related reasoning type.
+function parseStrategyRelatedReasoning() {
+  const migDir = path.join(REPO, 'supabase/migrations');
+  const files = fs.readdirSync(migDir).filter(f => f.endsWith('.sql')).sort();
+  const result = new Map(); // qtype -> string[] (may be empty if column absent)
+  const renames = []; // {from, to}
+  for (const f of files) {
+    const sql = fs.readFileSync(path.join(migDir, f), 'utf8');
+    const insertRe = /INSERT\s+INTO\s+(?:public\.)?question_type_strategies\b[\s\S]*?;/gi;
+    let match;
+    while ((match = insertRe.exec(sql)) !== null) {
+      const block = match[0];
+      const colMatch = block.match(/question_type_strategies\s*\(([^)]+)\)\s*VALUES/i);
+      if (!colMatch) continue;
+      const cols = colMatch[1].split(',').map(s => s.trim());
+      const qtIdx = cols.indexOf('question_type');
+      const rrIdx = cols.indexOf('related_reasoning_types');
+      if (qtIdx === -1) continue;
+      const rows = splitRows(block.slice(block.indexOf('VALUES') + 6));
+      for (const row of rows) {
+        const fields = splitFields(row);
+        if (!fields[qtIdx]) continue;
+        const qt = stripQuotes(fields[qtIdx]);
+        const arr = rrIdx !== -1 && fields[rrIdx] ? parseSqlArray(fields[rrIdx]) : [];
+        result.set(qt, arr);
+      }
+    }
+    // Apply UPDATE renames so the map key matches the post-migration canonical.
+    const updRe = /UPDATE\s+(?:public\.)?question_type_strategies\s+SET\s+question_type\s*=\s*'((?:[^']|'')*)'\s+WHERE\s+question_type\s*=\s*'((?:[^']|'')*)'/gi;
+    let um;
+    while ((um = updRe.exec(sql)) !== null) {
+      const to = um[1].replace(/''/g, "'");
+      const from = um[2].replace(/''/g, "'");
+      renames.push({ from, to });
+    }
+  }
+  for (const { from, to } of renames) {
+    if (result.has(from)) {
+      result.set(to, result.get(from));
+      result.delete(from);
+    }
+  }
+  return result;
+}
+
 // Tactical patterns has a `question_types text[]` column we also want to index on.
 // Parse each row and extract the `question_types` ARRAY.
 function parseTacticalPatternsByQtype() {
@@ -327,6 +375,7 @@ function report() {
   const tacticalPatterns = parseSeededRows('tactical_patterns', 'pattern_name');
   const concepts = parseSeededRows('concept_library', 'concept_name');
   const tacticalByQtype = parseTacticalPatternsByQtype();
+  const strategyRR = parseStrategyRelatedReasoning();
 
   console.log('='.repeat(72));
   console.log('Tutor Coaching KB Coverage Audit');
@@ -438,6 +487,39 @@ function report() {
   console.log(`  Concept coverage:    ${pct(conceptCovered, totalWithRT)} of bank questions with a reasoningType have a concept_library row for that reasoning type`);
   const noneCount = bank.byReasoning.get('(none)') || 0;
   console.log(`  Questions with no reasoningType at all: ${noneCount} (${pct(noneCount, bank.totalQuestions)})`);
+  const taggedCount = bank.totalQuestions - noneCount;
+  console.log(`  Raw reasoningType coverage: ${pct(taggedCount, bank.totalQuestions)} of bank questions have a reasoningType field populated`);
+
+  // --- Fallback-simulated coverage ---
+  // For each bank question: pick effective reasoning type via the fallback
+  // chain (reasoningType OR strategy.related_reasoning_types.find(t !== 'All')).
+  // Then count how many resolve to a guidance-seeded and a concept-seeded row.
+  let fbGuidanceCovered = 0, fbConceptCovered = 0, fbResolved = 0;
+  {
+    const jsonFiles = getJsonFiles();
+    for (const rel of jsonFiles) {
+      const abs = path.join(REPO, 'public', rel);
+      if (!fs.existsSync(abs)) continue;
+      let doc;
+      try { doc = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
+      const questions = Array.isArray(doc) ? doc : (doc.questions || []);
+      for (const q of questions) {
+        let effective = (q.reasoningType || q.reasoning_type || '').trim() || null;
+        if (!effective) {
+          const qt = normalizeQType(q.questionType || q.qtype, q.questionStem);
+          const related = strategyRR.get(qt) || [];
+          const candidate = related.find(t => t && t !== 'All');
+          if (candidate) effective = candidate;
+        }
+        if (effective) fbResolved++;
+        if (effective && guidance.found.has(effective)) fbGuidanceCovered++;
+        if (effective && conceptReasoningTypes.has(effective)) fbConceptCovered++;
+      }
+    }
+  }
+  console.log(`  Fallback-resolved reasoning key: ${pct(fbResolved, bank.totalQuestions)} of bank questions have either a reasoningType OR a usable strategy.related_reasoning_types[0]`);
+  console.log(`  Guidance coverage w/ fallback:   ${pct(fbGuidanceCovered, bank.totalQuestions)} of bank questions would hit a reasoning_type_guidance row via the edge function's fallback chain`);
+  console.log(`  Concept coverage w/ fallback:    ${pct(fbConceptCovered, bank.totalQuestions)} of bank questions would hit at least one concept_library row via the fallback chain`);
 
   if (noneCount === bank.totalQuestions) {
     console.log('\n  !! CRITICAL: no bank question carries a reasoningType field.');
