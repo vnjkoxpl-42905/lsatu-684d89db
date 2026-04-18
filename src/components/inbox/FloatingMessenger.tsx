@@ -12,7 +12,7 @@ import { ThreadList } from './ThreadList';
 import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer'];
 
 export function FloatingMessenger() {
   const location = useLocation();
