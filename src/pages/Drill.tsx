@@ -83,8 +83,8 @@ function DrillContent() {
   const [selectedAnswer, setSelectedAnswer] = React.useState<string>('');
   const [showSolution, setShowSolution] = React.useState(false);
   const [tutorChatOpen, setTutorChatOpen] = React.useState(false);
-  const [suppressAutoSubmitOnce, setSuppressAutoSubmitOnce] = React.useState(false);
   const [tutorQuestionSnapshot, setTutorQuestionSnapshot] = React.useState<LRQuestion | null>(null);
+  const [tutorUserAnswerSnapshot, setTutorUserAnswerSnapshot] = React.useState<string>('');
   
   const [tutorMessages, setTutorMessages] = React.useState<Array<{role: 'user' | 'assistant'; content: string}>>([]);
   const [wajModalOpen, setWajModalOpen] = React.useState(false);
@@ -383,6 +383,8 @@ function DrillContent() {
     setSelectedAnswer('');
     setShowSolution(false);
     setTutorChatOpen(false);
+    setTutorQuestionSnapshot(null);
+    setTutorUserAnswerSnapshot('');
     setTutorMessages([]);
     setVoiceCoachOpen(false);
     setShowVoiceChip(false);
@@ -729,6 +731,7 @@ function DrillContent() {
               hasSnapshot: !!currentQuestion
             });
             setTutorQuestionSnapshot(currentQuestion);
+            setTutorUserAnswerSnapshot(selectedAnswer);
             setTutorChatOpen(true);
           }
         }, 150);
@@ -2114,17 +2117,18 @@ function DrillContent() {
           onReset={() => {
             setTutorChatOpen(false);
             setTutorQuestionSnapshot(null);
+            setTutorUserAnswerSnapshot('');
             setAnswerLocked(false);
           }}
         >
           <TutorChatModal
             open={tutorChatOpen}
             question={tutorQuestionSnapshot}
-            userAnswer={selectedAnswer}
+            userAnswer={tutorUserAnswerSnapshot}
             onClose={() => {
-              setSuppressAutoSubmitOnce(true);
               setTutorChatOpen(false);
               setTutorQuestionSnapshot(null);
+              setTutorUserAnswerSnapshot('');
               setAnswerLocked(false);
             }}
           />

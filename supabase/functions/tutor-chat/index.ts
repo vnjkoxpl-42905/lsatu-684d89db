@@ -132,7 +132,7 @@ serve(async (req) => {
 
     // Parse and validate input
     const body = await req.json();
-    const { question, messages } = body;
+    const { question, messages, stream: wantsStream } = body;
 
     if (!validateQuestion(question)) {
       return new Response(
@@ -314,6 +314,8 @@ ABSOLUTE RULES — NEVER VIOLATE THESE:
 6. Your job is to help them THINK, not to give them the answer. Guide their reasoning, point out flaws in their logic, and nudge them toward the right approach.
 7. Always encourage the student to return to the question and attempt it again.`;
 
+    const useStream = wantsStream === true;
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -326,7 +328,7 @@ ABSOLUTE RULES — NEVER VIOLATE THESE:
           { role: "system", content: systemPrompt },
           ...messagesForModel,
         ],
-        stream: false,
+        stream: useStream,
       }),
     });
 
@@ -362,6 +364,19 @@ ABSOLUTE RULES — NEVER VIOLATE THESE:
       );
     }
 
+    // Streaming branch — forward SSE from Lovable straight to the client.
+    if (useStream && response.body) {
+      return new Response(response.body, {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
+      });
+    }
+
+    // Non-streaming branch (existing behavior, preserved for other callers).
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
 

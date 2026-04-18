@@ -17,6 +17,9 @@ interface TutorChatModalProps {
   onClose: () => void;
 }
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
 export function TutorChatModal({
   open,
   question,
@@ -29,6 +32,7 @@ export function TutorChatModal({
   const [initializing, setInitializing] = React.useState(true);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const abortRef = React.useRef<AbortController | null>(null);
 
   // Scroll to bottom as messages arrive
   React.useEffect(() => {
@@ -47,11 +51,14 @@ export function TutorChatModal({
     if (open && question && initializing) {
       loadInitialQuestion();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, question, initializing]);
 
-  // Reset state on close
+  // Reset + abort on close
   React.useEffect(() => {
     if (!open) {
+      abortRef.current?.abort();
+      abortRef.current = null;
       setMessages([]);
       setInput('');
       setInitializing(true);
@@ -59,58 +66,124 @@ export function TutorChatModal({
     }
   }, [open]);
 
-  const extractFunctionError = async (err: any): Promise<string> => {
-    try {
-      const ctx = (err as any)?.context;
-      if (ctx && typeof (ctx as any).text === 'function') {
-        const status = (ctx as any).status;
-        const raw = await (ctx as any).text();
+  // Abort on unmount
+  React.useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+      abortRef.current = null;
+    };
+  }, []);
+
+  const buildQuestionData = (q: LRQuestion) => ({
+    qid: q.qid,
+    pt: q.pt,
+    section: q.section,
+    qnum: q.qnum,
+    qtype: q.qtype,
+    level: q.difficulty,
+    stimulus: q.stimulus,
+    questionStem: q.questionStem,
+    answerChoices: q.answerChoices,
+    userAnswer,
+    correctAnswer: q.correctAnswer,
+    breakdown: q.breakdown,
+    answerChoiceExplanations: q.answerChoiceExplanations,
+    reasoningType: q.reasoningType,
+  });
+
+  // Stream SSE chunks from the tutor-chat edge function, appending deltas.
+  const streamTutorReply = async (
+    body: { question: any; messages: Message[] },
+    signal: AbortSignal,
+    onDelta: (text: string) => void,
+  ): Promise<void> => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token || SUPABASE_ANON_KEY;
+
+    const resp = await fetch(`${SUPABASE_URL}/functions/v1/tutor-chat`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...body, stream: true }),
+      signal,
+    });
+
+    if (!resp.ok) {
+      let msg = `Joshua is having trouble (HTTP ${resp.status}).`;
+      try {
+        const err = await resp.json();
+        msg = err.error || err.message || msg;
+      } catch {
+        // non-JSON error body
+      }
+      throw new Error(msg);
+    }
+
+    if (!resp.body) throw new Error('No response stream from coaching service.');
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let newlineIdx: number;
+      while ((newlineIdx = buffer.indexOf('\n')) !== -1) {
+        const line = buffer.slice(0, newlineIdx).trim();
+        buffer = buffer.slice(newlineIdx + 1);
+        if (!line.startsWith('data:')) continue;
+        const payload = line.slice(5).trim();
+        if (payload === '[DONE]') return;
         try {
-          const json = JSON.parse(raw);
-          const msg = json.error || json.message || raw;
-          return status ? `${msg} (HTTP ${status})` : msg;
+          const json = JSON.parse(payload);
+          const delta = json.choices?.[0]?.delta?.content;
+          if (typeof delta === 'string' && delta.length > 0) onDelta(delta);
         } catch {
-          return status ? `${raw} (HTTP ${status})` : raw;
+          // skip malformed chunk
         }
       }
-      return (err as any)?.message || 'Unexpected error from coaching service.';
-    } catch {
-      return (err as any)?.message || 'Unexpected error from coaching service.';
     }
+  };
+
+  const appendDelta = (delta: string) => {
+    setMessages((prev) => {
+      if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+      if (last.role !== 'assistant') return prev;
+      return [...prev.slice(0, -1), { ...last, content: last.content + delta }];
+    });
   };
 
   const loadInitialQuestion = async () => {
     if (!question) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    // Prime empty assistant message we'll stream into
+    setMessages([{ role: 'assistant', content: '' }]);
     setIsLoading(true);
+
     try {
-      const questionData = {
-        qid: question.qid,
-        pt: question.pt,
-        section: question.section,
-        qnum: question.qnum,
-        qtype: question.qtype,
-        level: question.difficulty,
-        stimulus: question.stimulus,
-        questionStem: question.questionStem,
-        answerChoices: question.answerChoices,
-        userAnswer,
-        correctAnswer: question.correctAnswer,
-        breakdown: question.breakdown,
-        answerChoiceExplanations: question.answerChoiceExplanations,
-        reasoningType: question.reasoningType,
-      };
-      const { data, error } = await supabase.functions.invoke('tutor-chat', {
-        body: { question: questionData, messages: [] },
-      });
-      if (error) throw error;
-      setMessages([{ role: 'assistant', content: data.content }]);
+      await streamTutorReply(
+        { question: buildQuestionData(question), messages: [] },
+        controller.signal,
+        appendDelta,
+      );
       setInitializing(false);
     } catch (e: any) {
-      const msg = await extractFunctionError(e);
+      if (e?.name === 'AbortError') return;
+      const msg = e?.message || 'Unexpected error from coaching service.';
       setMessages([{ role: 'assistant', content: msg }]);
       setInitializing(false);
       toast.error(msg);
     } finally {
+      if (abortRef.current === controller) abortRef.current = null;
       setIsLoading(false);
     }
   };
@@ -119,38 +192,33 @@ export function TutorChatModal({
     if (!input.trim() || !question || isLoading) return;
     const userMessage = input.trim();
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+
+    const nextHistory: Message[] = [...messages, { role: 'user', content: userMessage }];
+    setMessages([...nextHistory, { role: 'assistant', content: '' }]);
     setIsLoading(true);
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
-      const questionData = {
-        qid: question.qid,
-        pt: question.pt,
-        section: question.section,
-        qnum: question.qnum,
-        qtype: question.qtype,
-        level: question.difficulty,
-        stimulus: question.stimulus,
-        questionStem: question.questionStem,
-        answerChoices: question.answerChoices,
-        userAnswer,
-        correctAnswer: question.correctAnswer,
-        breakdown: question.breakdown,
-        answerChoiceExplanations: question.answerChoiceExplanations,
-        reasoningType: question.reasoningType,
-      };
-      const { data, error } = await supabase.functions.invoke('tutor-chat', {
-        body: {
-          question: questionData,
-          messages: [...messages, { role: 'user', content: userMessage }],
-        },
-      });
-      if (error) throw error;
-      setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+      await streamTutorReply(
+        { question: buildQuestionData(question), messages: nextHistory },
+        controller.signal,
+        appendDelta,
+      );
     } catch (e: any) {
-      const msg = await extractFunctionError(e);
-      setMessages(prev => [...prev, { role: 'assistant', content: msg }]);
+      if (e?.name === 'AbortError') return;
+      const msg = e?.message || 'Unexpected error from coaching service.';
+      setMessages((prev) => {
+        if (prev.length === 0) return prev;
+        const last = prev[prev.length - 1];
+        if (last.role !== 'assistant') return prev;
+        return [...prev.slice(0, -1), { ...last, content: msg }];
+      });
       toast.error(msg);
     } finally {
+      if (abortRef.current === controller) abortRef.current = null;
       setIsLoading(false);
     }
   };
@@ -163,6 +231,10 @@ export function TutorChatModal({
   };
 
   if (!open || !question) return null;
+
+  const lastMsg = messages[messages.length - 1];
+  const awaitingFirstToken =
+    isLoading && (!lastMsg || (lastMsg.role === 'assistant' && lastMsg.content === ''));
 
   return (
     <div className={cn(
@@ -185,12 +257,14 @@ export function TutorChatModal({
         <div className="space-y-4">
           {messages.map((msg, idx) =>
             msg.role === 'assistant' ? (
-              <p
-                key={idx}
-                className="text-[13px] leading-[1.65] text-neutral-200 whitespace-pre-wrap animate-in fade-in duration-200 select-text"
-              >
-                {msg.content}
-              </p>
+              msg.content.length > 0 ? (
+                <p
+                  key={idx}
+                  className="text-[13px] leading-[1.65] text-neutral-200 whitespace-pre-wrap animate-in fade-in duration-200 select-text"
+                >
+                  {msg.content}
+                </p>
+              ) : null
             ) : (
               <p
                 key={idx}
@@ -201,7 +275,7 @@ export function TutorChatModal({
             )
           )}
 
-          {(isLoading || initializing) && (
+          {awaitingFirstToken && (
             <p className="text-[18px] tracking-widest text-neutral-600 animate-pulse leading-none select-none">
               ···
             </p>
