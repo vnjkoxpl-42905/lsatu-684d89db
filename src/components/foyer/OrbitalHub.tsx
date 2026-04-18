@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { Lock, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -151,6 +152,7 @@ interface OrbitalHubProps {
 }
 
 export default function OrbitalHub({ phase, selectedNodeId, onSelectNode, lockedNodeIds = [], permissions }: OrbitalHubProps) {
+  const isMobile = useIsMobile();
   const [hovered, setHovered] = useState<string | null>(null);
   const [activeHoverNode, setActiveHoverNode] = useState<string | null>(null);
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
