@@ -45,7 +45,6 @@ export default function AcademyFoyer() {
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
   const showWelcomeFromState = state?.showWelcome ?? false;
   const welcomeName = state?.welcomeName
-    ?? user?.user_metadata?.username
     ?? user?.user_metadata?.display_name
     ?? user?.email?.split("@")[0]
     ?? "there";

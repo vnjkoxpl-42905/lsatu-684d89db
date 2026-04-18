@@ -167,7 +167,6 @@ export default function Home() {
     if (!user) return 'there';
     const displayName =
       user.user_metadata?.display_name ||
-      user.user_metadata?.username ||
       user.email?.split('@')[0] ||
       'there';
     const firstName = displayName.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');

@@ -28,9 +28,8 @@ export default function Landing() {
   const getFirstName = () => {
     if (!user) return 'there';
     
-    const displayName = user.user_metadata?.display_name || 
-                       user.user_metadata?.username || 
-                       user.email?.split('@')[0] || 
+    const displayName = user.user_metadata?.display_name ||
+                       user.email?.split('@')[0] ||
                        'there';
     
     // Extract first name and capitalize

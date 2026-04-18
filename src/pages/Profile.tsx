@@ -201,7 +201,6 @@ export default function Profile() {
   const email        = user?.email ?? '';
   const displayName  =
     user?.user_metadata?.display_name ||
-    user?.user_metadata?.username ||
     email.split('@')[0] ||
     'Student';
   const initials     = displayName.slice(0, 2).toUpperCase();
