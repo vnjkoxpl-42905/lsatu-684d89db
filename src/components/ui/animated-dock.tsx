@@ -43,7 +43,8 @@ export const AnimatedDock = ({ className, items }: AnimatedDockProps) => {
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         className={cn(
-          "mx-auto flex h-16 items-end gap-4 rounded-2xl bg-secondary/50 border border-primary/10 shadow-md px-4 pb-3",
+          "mx-auto flex h-14 sm:h-16 items-end gap-2 sm:gap-4 rounded-2xl bg-secondary/80 sm:bg-secondary/50 backdrop-blur-xl border border-primary/10 shadow-md px-3 sm:px-4 pb-3",
+          "[padding-bottom:max(0.75rem,env(safe-area-inset-bottom))]",
           className,
         )}
       >
