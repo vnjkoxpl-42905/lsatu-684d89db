@@ -72,16 +72,60 @@ interface CachedKnowledge {
 const knowledgeCache = new Map<string, CachedKnowledge>();
 const KNOWLEDGE_TTL_MS = 10 * 60 * 1000;
 
+// Normalize the bank's raw questionType to the canonical form used as the
+// coaching-table primary key. The bank has casing/punctuation drift
+// ("Must be True" vs "Must Be True", "Principle Strengthen" vs "Principle-Strengthen",
+// "Method" vs "Method of Reasoning"), so exact-match .eq() lookups miss ~100
+// questions/session without this step. Mirrors src/lib/questionLoader.ts.
+const CANONICAL_QTYPES = new Set([
+  'Flaw', 'Necessary Assumption', 'Weaken', 'Strengthen', 'Sufficient Assumption',
+  'Principle-Strengthen', 'Evaluate', 'Most Strongly Supported', 'Must Be True',
+  'Agree/Disagree', 'Must Be False', 'Method of Reasoning', 'Main Conclusion',
+  'Parallel Flaw', 'Role', 'Parallel Reasoning', 'Principle-Conform', 'Paradox',
+]);
+const QTYPE_SYNONYMS: Record<string, string> = {
+  'Flaw in Reasoning': 'Flaw', 'Error in Reasoning': 'Flaw',
+  'Assumption': 'Necessary Assumption',
+  'Justify the Exception': 'Strengthen', 'Strengthen (EXCEPT)': 'Strengthen',
+  'Strengthen/Explain': 'Strengthen', 'Strengthen/Explain EXCEPT': 'Strengthen',
+  'Weaken EXCEPT': 'Weaken', 'Weaken/Counter': 'Weaken', 'Logical Counter': 'Weaken',
+  'Principle Strengthen': 'Principle-Strengthen', 'Principle: Strengthen': 'Principle-Strengthen',
+  'Principle: Justify': 'Principle-Strengthen', 'Principle-Identify': 'Principle-Strengthen',
+  'Principle Conform': 'Principle-Conform', 'Principle: Conform': 'Principle-Conform',
+  'Principle: Underlying': 'Principle-Conform', 'Principle Illustrated': 'Principle-Conform',
+  'Inconsistent with Principle': 'Principle-Conform', 'Principle': 'Principle-Conform',
+  'Evaluate the Argument': 'Evaluate',
+  'Most Supported': 'Most Strongly Supported',
+  'Main Point': 'Main Conclusion',
+  'Must be True': 'Must Be True', 'Must Be True EXCEPT': 'Must Be True',
+  'Must be False': 'Must Be False',
+  'Point at Issue': 'Agree/Disagree', 'Point of Agreement': 'Agree/Disagree', 'Dispute': 'Agree/Disagree',
+  'Method': 'Method of Reasoning',
+  'Role in the Argument': 'Role',
+  'Parallel': 'Parallel Reasoning', 'Complete the Argument': 'Parallel Reasoning',
+  'Parallel Reasoning: Complete Argument': 'Parallel Reasoning',
+  'Parallel Reasoning: Questionable': 'Parallel Reasoning',
+  'Resolve the Paradox': 'Paradox', 'Resolve Paradox': 'Paradox', 'Explain the Discrepancy': 'Paradox',
+};
+function normalizeQtype(raw?: string | null): string | null {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  if (CANONICAL_QTYPES.has(trimmed)) return trimmed;
+  return QTYPE_SYNONYMS[trimmed] || trimmed;
+}
+
 // Helper function to get coaching knowledge from database
 async function getCoachingKnowledge(supabase: any, question: any) {
   try {
+    const qtype = normalizeQtype(question.qtype) || question.qtype;
     const [strategyResult, reasoningResult, patternsResult, conceptsResult] = await Promise.all([
       supabase
         .from('question_type_strategies')
         .select('*')
-        .eq('question_type', question.qtype)
+        .eq('question_type', qtype)
         .maybeSingle(),
-      
+
       question.reasoningType
         ? supabase
             .from('reasoning_type_guidance')
@@ -89,12 +133,12 @@ async function getCoachingKnowledge(supabase: any, question: any) {
             .eq('reasoning_type', question.reasoningType)
             .maybeSingle()
         : Promise.resolve({ data: null }),
-      
+
       supabase
         .from('tactical_patterns')
         .select('*')
-        .contains('question_types', [question.qtype]),
-      
+        .contains('question_types', [qtype]),
+
       question.reasoningType
         ? supabase
             .from('concept_library')

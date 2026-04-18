@@ -164,27 +164,40 @@ function scanBank() {
 }
 
 // ---- Parse migrations for seeded rows ----
-function parseSeededRows(tableName) {
+function parseSeededRows(tableName, keyColumn = null) {
   const migDir = path.join(REPO, 'supabase/migrations');
   const files = fs.readdirSync(migDir).filter(f => f.endsWith('.sql')).sort();
   const found = new Set();
   const perFile = [];
   for (const f of files) {
     const sql = fs.readFileSync(path.join(migDir, f), 'utf8');
-    // Find every INSERT INTO <table> block (allow optional schema prefix)
     const insertRe = new RegExp(`INSERT\\s+INTO\\s+(?:public\\.)?${tableName}\\b([\\s\\S]*?);`, 'gi');
     let match;
     let fileCount = 0;
     while ((match = insertRe.exec(sql)) !== null) {
       const block = match[1];
-      // VALUES rows: each starts with `(` and begins with a single-quoted string.
-      // Handles doubled single quotes within later fields since we only grab the first field.
       const rowRe = /\n\s*\(\s*'((?:[^']|'')*)'/g;
       let rowMatch;
       while ((rowMatch = rowRe.exec(block)) !== null) {
         const key = rowMatch[1].replace(/''/g, "'");
         found.add(key);
         fileCount++;
+      }
+    }
+    // Apply rename UPDATEs in file order so the post-migration key set is accurate.
+    if (keyColumn) {
+      const updateRe = new RegExp(
+        `UPDATE\\s+(?:public\\.)?${tableName}\\s+SET\\s+${keyColumn}\\s*=\\s*'((?:[^']|'')*)'\\s+WHERE\\s+${keyColumn}\\s*=\\s*'((?:[^']|'')*)'`,
+        'gi'
+      );
+      let um;
+      while ((um = updateRe.exec(sql)) !== null) {
+        const newKey = um[1].replace(/''/g, "'");
+        const oldKey = um[2].replace(/''/g, "'");
+        if (found.has(oldKey)) {
+          found.delete(oldKey);
+          found.add(newKey);
+        }
       }
     }
     if (fileCount > 0) perFile.push({ file: f, count: fileCount });
@@ -274,6 +287,29 @@ function stripQuotes(s) {
   return t;
 }
 
+// Scan the bank a second time emitting raw questionType strings, run each
+// through normalizeQType() (same as the edge function's normalizer), and
+// check if the normalized string is a seed key. This measures what the
+// production tutor-chat actually sees.
+function rawCoverageAfterNormalization(seedKeys) {
+  const jsonFiles = getJsonFiles();
+  let total = 0, covered = 0;
+  for (const rel of jsonFiles) {
+    const abs = path.join(REPO, 'public', rel);
+    if (!fs.existsSync(abs)) continue;
+    let doc;
+    try { doc = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
+    const questions = Array.isArray(doc) ? doc : (doc.questions || []);
+    for (const q of questions) {
+      total++;
+      const raw = q.questionType || q.qtype;
+      const normalized = normalizeQType(raw, q.questionStem);
+      if (seedKeys.has(normalized)) covered++;
+    }
+  }
+  return { covered, total };
+}
+
 function parseSqlArray(s) {
   // e.g. ARRAY['Weaken', 'Strengthen']
   const m = s.match(/ARRAY\s*\[([\s\S]*?)\]/i);
@@ -286,10 +322,10 @@ function pct(n, d) { return d === 0 ? '0.0%' : `${(100 * n / d).toFixed(1)}%`; }
 
 function report() {
   const bank = scanBank();
-  const strategies = parseSeededRows('question_type_strategies');
-  const guidance = parseSeededRows('reasoning_type_guidance');
-  const tacticalPatterns = parseSeededRows('tactical_patterns');
-  const concepts = parseSeededRows('concept_library');
+  const strategies = parseSeededRows('question_type_strategies', 'question_type');
+  const guidance = parseSeededRows('reasoning_type_guidance', 'reasoning_type');
+  const tacticalPatterns = parseSeededRows('tactical_patterns', 'pattern_name');
+  const concepts = parseSeededRows('concept_library', 'concept_name');
   const tacticalByQtype = parseTacticalPatternsByQtype();
 
   console.log('='.repeat(72));
@@ -382,6 +418,13 @@ function report() {
     if (strategies.found.has(qt)) strategiesCovered += n;
     if (tacticalByQtype.has(qt)) tacticalCovered += n;
   }
+
+  // Raw-match coverage: mirrors what tutor-chat actually queries. The edge
+  // function normalizes question.qtype via QTYPE_SYNONYMS, so we simulate
+  // that here by checking whether the *normalized* name matches a seed key.
+  // This should track `strategiesCovered` closely after the normalizer ships.
+  const rawPost = rawCoverageAfterNormalization(strategies.found);
+  console.log(`  Normalized lookup coverage: ${pct(rawPost.covered, bank.totalQuestions)} of bank questions hit a strategy row via tutor-chat's normalizeQtype() (raw bank values mapped then exact-matched against seed keys)`);
   for (const [rt, n] of sortedRT) {
     if (rt === '(none)') continue;
     if (guidance.found.has(rt)) guidanceCovered += n;
