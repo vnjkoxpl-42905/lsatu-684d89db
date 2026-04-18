@@ -25,3 +25,6 @@ dist-ssr
 
 # Claude Code personal overrides (not committed)
 .claude/settings.local.json
+
+# Supabase CLI cache
+supabase/.temp/
