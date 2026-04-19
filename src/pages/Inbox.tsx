@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -12,10 +12,23 @@ import { ArrowLeft, Inbox as InboxIcon } from 'lucide-react';
 export default function Inbox() {
   const { user, authReady } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { conversationId } = useParams();
   const { conversations, loading, refresh } = useInbox();
   const { is_admin } = useUserPermissions();
   const activeId = conversationId ?? null;
+
+  // Cross-surface entry points (e.g., Foyer "Ask Joshua") land here with
+  // { composeWith: <userId> } to pre-open the composer. Capture at mount so
+  // reloads / back-nav don't replay it.
+  const [composeTarget, setComposeTarget] = useState<string | null>(
+    () => (location.state as { composeWith?: string } | null)?.composeWith ?? null,
+  );
+  useEffect(() => {
+    if (location.state) navigate(location.pathname, { replace: true, state: null });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const clearComposeTarget = useCallback(() => setComposeTarget(null), []);
 
   useEffect(() => {
     if (authReady && !user) navigate('/auth', { replace: true });
@@ -48,7 +61,12 @@ export default function Inbox() {
               <h1 className="text-base font-semibold">Inbox</h1>
             </div>
           </div>
-          {is_admin && <NewConversationDialog onCreated={(id) => navigate(`/inbox/${id}`)} />}
+          <NewConversationDialog
+            showTrigger={is_admin}
+            autoOpenWith={composeTarget}
+            onAutoOpenHandled={clearComposeTarget}
+            onCreated={(id) => navigate(`/inbox/${id}`)}
+          />
         </div>
       </header>
 

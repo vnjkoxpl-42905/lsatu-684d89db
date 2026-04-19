@@ -28,6 +28,7 @@ import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub
 import FoyerTour from "@/components/foyer/FoyerTour";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
 import FoyerHeroRing from "@/components/foyer/FoyerHeroRing";
+import { ADMIN_USER_ID, findAdminConversationId } from "@/lib/askJoshua";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -41,7 +42,7 @@ export default function AcademyFoyer() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
   const permissions = useUserPermissions();
-  const { unreadCount: inboxUnread } = useInbox();
+  const { conversations, unreadCount: inboxUnread } = useInbox();
 
   // ── Location state injected by Auth.tsx on fresh login ──────────────────────
   const state = location.state as { showWelcome?: boolean; welcomeName?: string } | null;
@@ -166,9 +167,24 @@ export default function AcademyFoyer() {
   // ── Don't render until auth is resolved ─────────────────────────────────────
   if (!authReady || !user) return null;
 
-  // ── WF-2 scaffold: new foyer layout behind env flag. Push-1 renders the
-  // sidebar + ring shell only; Push-2 wires data and node selection.
+  // ── WF-2 scaffold: new foyer layout behind env flag. Push-2 wires real
+  // handlers (Smart Drill → /drill, Resume dim, Ask Joshua → existing admin
+  // thread or composer pre-addressed). Resume has no source yet, so the node
+  // stays dim until an in-progress-session data source lands.
   if (import.meta.env.VITE_NEW_FOYER === "true") {
+    const isAdminSelf = user.id === ADMIN_USER_ID;
+    const handleAskJoshua = async () => {
+      const existing = await findAdminConversationId(user.id);
+      if (existing) {
+        navigate(`/inbox/${existing}`);
+        return;
+      }
+      // Students can't INSERT conversations per RLS; composer will surface the
+      // error. Admin-level plumbing to allow student-initiated threads is a
+      // separate ticket.
+      navigate("/inbox", { state: { composeWith: ADMIN_USER_ID } });
+    };
+
     return (
       <div className="fixed inset-0 bg-background overflow-hidden">
         <div className="absolute top-5 right-6 z-30 flex items-center gap-1">
@@ -194,10 +210,14 @@ export default function AcademyFoyer() {
 
         <div className="flex h-[100dvh] gap-4 p-4">
           <div className="hidden md:block">
-            <FoyerSidebar />
+            <FoyerSidebar conversations={conversations} unreadCount={inboxUnread} />
           </div>
           <main className="flex-1 relative rounded-md border border-border/60 bg-card overflow-hidden">
-            <FoyerHeroRing />
+            <FoyerHeroRing
+              onSmartDrill={() => navigate("/drill")}
+              onResume={undefined}
+              onAskJoshua={isAdminSelf ? undefined : handleAskJoshua}
+            />
           </main>
         </div>
       </div>
