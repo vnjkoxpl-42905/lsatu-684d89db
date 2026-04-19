@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Mail } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Conversation } from "@/hooks/useInbox";
 import { formatParticipantName } from "@/lib/displayName";
@@ -10,64 +10,98 @@ export interface InboxPreviewCardProps {
   unreadCount: number;
 }
 
-function otherPartyName(conv: Conversation, selfId: string): string | null {
-  const other = conv.participants.find((p) => p.user_id !== selfId);
-  if (!other) return null;
-  return formatParticipantName(other.display_name, other.is_admin);
+function otherParticipant(conv: Conversation, selfId: string) {
+  return conv.participants.find((p) => p.user_id !== selfId) ?? null;
+}
+
+function initialsFor(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "·";
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
 export default function InboxPreviewCard({ conversations, unreadCount }: InboxPreviewCardProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const latest = conversations[0] ?? null;
-
-  const title = latest
-    ? (latest.subject || (user ? otherPartyName(latest, user.id) : null) || "Conversation")
-    : "Inbox";
-  const snippet = latest?.last_message?.body ?? (latest ? "No messages yet" : "No threads yet");
-  const time = latest?.last_message?.created_at ?? latest?.last_message_at ?? null;
+  const rows = conversations.slice(0, 3);
 
   return (
-    <button
-      type="button"
-      onClick={() => navigate(latest ? `/inbox/${latest.id}` : "/inbox")}
-      className="w-full text-left rounded-md border border-border/60 px-[9px] py-[8px] hover:bg-muted/40 transition-colors"
-    >
+    <div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-muted-foreground">
-          <Mail size={11} strokeWidth={1.6} />
-          <span
-            className="uppercase font-medium"
-            style={{ fontSize: 10, letterSpacing: "0.16em" }}
-          >
-            Inbox
-          </span>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <span className="text-xs uppercase tracking-widest">Inbox</span>
+          {unreadCount > 0 && (
+            <span
+              className="rounded-full bg-foreground text-background px-1.5 py-[1px] font-medium"
+              style={{ fontSize: 9, minWidth: 16, textAlign: "center" }}
+            >
+              {unreadCount}
+            </span>
+          )}
         </div>
-        {unreadCount > 0 ? (
-          <span
-            className="rounded-full bg-foreground text-background px-1.5 py-[1px] font-medium"
-            style={{ fontSize: 9, minWidth: 16, textAlign: "center" }}
-          >
-            {unreadCount}
-          </span>
-        ) : null}
+        <button
+          type="button"
+          onClick={() => navigate("/inbox")}
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          View all →
+        </button>
       </div>
-      <div
-        className="mt-1.5 font-medium text-foreground truncate"
-        style={{ fontSize: 12 }}
-      >
-        {title}
-      </div>
-      <div className="flex items-center justify-between gap-2">
-        <div className="truncate text-muted-foreground" style={{ fontSize: 11 }}>
-          {snippet}
-        </div>
-        {time ? (
-          <div className="shrink-0 text-muted-foreground" style={{ fontSize: 10 }}>
-            {formatDistanceToNow(new Date(time), { addSuffix: false })}
-          </div>
-        ) : null}
-      </div>
-    </button>
+
+      <ul className="mt-2 divide-y divide-border/40">
+        {rows.length === 0 && (
+          <li className="py-3 text-xs text-muted-foreground">No conversations yet</li>
+        )}
+        {rows.map((conv) => {
+          const other = user ? otherParticipant(conv, user.id) : null;
+          const name = other
+            ? formatParticipantName(other.display_name, other.is_admin)
+            : conv.subject || "Conversation";
+          const preview = conv.last_message?.body ?? "No messages yet";
+          const time = conv.last_message?.created_at ?? conv.last_message_at ?? null;
+
+          return (
+            <li key={conv.id}>
+              <button
+                type="button"
+                onClick={() => navigate(`/inbox/${conv.id}`)}
+                className="w-full flex items-start gap-3 py-2 px-1 -mx-1 rounded-md text-left hover:bg-muted/40 transition-colors"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="text-[10px] font-medium">
+                    {initialsFor(name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-foreground truncate flex-1">
+                      {name}
+                    </span>
+                    {time && (
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {formatDistanceToNow(new Date(time), { addSuffix: false })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-xs text-muted-foreground truncate flex-1">
+                      {preview}
+                    </span>
+                    {conv.unread && (
+                      <span
+                        className="shrink-0 rounded-full bg-foreground"
+                        style={{ width: 6, height: 6 }}
+                        aria-label="Unread"
+                      />
+                    )}
+                  </div>
+                </div>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
