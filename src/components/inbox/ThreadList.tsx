@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { formatDistanceToNow } from 'date-fns';
 import type { Conversation } from '@/hooks/useInbox';
+import { formatParticipantName } from '@/lib/displayName';
 
 interface Props {
   conversations: Conversation[];
@@ -11,10 +12,10 @@ interface Props {
 
 function otherParticipantName(c: Conversation, ownId: string) {
   const others = c.participants.filter((p) => p.user_id !== ownId);
-  const realNames = others
-    .map((o) => o.display_name?.trim())
-    .filter((n): n is string => !!n);
-  if (realNames.length > 0) return realNames.join(', ');
+  const names = others
+    .map((o) => formatParticipantName(o.display_name, o.is_admin))
+    .filter((n) => n && n !== 'User');
+  if (names.length > 0) return names.join(', ');
   return c.subject || 'Conversation';
 }
 

@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useConversationMessages, type Conversation } from '@/hooks/useInbox';
 import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
+import { formatParticipantName } from '@/lib/displayName';
 
 interface Props {
   conversation: Conversation;
@@ -27,12 +28,14 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   if (!user) return null;
 
   const others = conversation.participants.filter((p) => p.user_id !== user.id);
-  const realNames = others
-    .map((o) => o.display_name?.trim())
-    .filter((n): n is string => !!n);
-  const headerName = realNames.join(', ') || conversation.subject || 'Conversation';
+  const formattedNames = others
+    .map((o) => formatParticipantName(o.display_name, o.is_admin))
+    .filter((n) => n && n !== 'User');
+  const headerName = formattedNames.join(', ') || conversation.subject || 'Conversation';
 
-  const nameById = new Map(conversation.participants.map((p) => [p.user_id, p.display_name]));
+  const nameById = new Map(
+    conversation.participants.map((p) => [p.user_id, formatParticipantName(p.display_name, p.is_admin)])
+  );
 
   return (
     <div className="flex flex-col h-full">
