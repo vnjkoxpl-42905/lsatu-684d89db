@@ -1059,6 +1059,13 @@ export type Database = {
       }
     }
     Functions: {
+      get_conversation_participant_names: {
+        Args: { _user_ids: string[] }
+        Returns: {
+          display_name: string
+          user_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
