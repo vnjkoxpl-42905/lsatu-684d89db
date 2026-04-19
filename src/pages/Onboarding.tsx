@@ -71,7 +71,7 @@ export default function Onboarding() {
         display_name: trimmed,
       }, { onConflict: 'class_id' });
 
-      navigate('/foyer', { state: { showWelcome: true, welcomeName: trimmed }, replace: true });
+      navigate('/foyer', { replace: true });
     } catch (err: any) {
       toast.error(err?.message || 'Failed to save name');
     } finally {
