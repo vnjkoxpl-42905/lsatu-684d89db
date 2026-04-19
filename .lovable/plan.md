@@ -1,84 +1,55 @@
 
 
-## What I found — Google sign-in flow analysis
+## What's actually stored
+- DB confirms admin (`user_id = 5ff160ef…`) has `profiles.display_name = "Joshua Fisseha"` — the only admin row.
+- Project rule (CLAUDE.md): "instructor is displayed as **Joshua**".
+- Current rendering surfaces use `display_name` verbatim:
+  - `ThreadList.tsx` line 17 → joins raw display_names
+  - `ConversationView.tsx` line 33 → header uses raw display_name
+  - `MessageBubble` → renders raw `senderName`
+- So once the RLS-fix RPC lands (previously approved plan), students will see **"Joshua Fisseha"** everywhere, not "Joshua".
 
-### The two code paths involved
+## Two issues to resolve together
 
-**Path A — outbound click (`Auth.tsx` lines 328-346)**
-1. `handleGoogleSignIn` sets `sessionStorage.oauth_pending = '1'`
-2. Calls `lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" })`
-3. The Lovable broker redirects the browser to `/~oauth/initiate` → Google → back to `/auth`
+**Issue 1 — name not visible at all (already-approved fix, not yet shipped)**
+RLS on `profiles` blocks students from reading the admin row → `display_name = null` → UI shows "Conversation". Fix: SECURITY DEFINER RPC `get_conversation_participant_names`.
 
-**Path B — return-leg (`Auth.tsx` lines 209-266)**
-1. On mount, if `oauth_pending === '1'`, re-invoke `lovable.auth.signInWithOAuth('google', ...)` so the broker delivers tokens (this time without redirecting)
-2. `lovableAuth` internally calls `supabase.auth.setSession(result.tokens)` (`src/integrations/lovable/index.ts` lines 28-32) — this is a `POST` to `/auth/v1/token`
-3. `AuthContext.onAuthStateChange` fires → `markReady(session)` → `Auth.tsx` user-watcher navigates to `/foyer` or `/onboarding`
-4. Hard 10s timeout shows "Google sign-in didn't finish" toast
+**Issue 2 — when name does appear, it should say "Joshua" (per product rule), not "Joshua Fisseha"**
+Need a single canonical formatter for the admin's display name across inbox surfaces.
 
-### The actual problem
+## Proposed plan
 
-**This is the documented Lovable preview iframe limitation**, not a bug in your code:
+### 1. Ship the RLS fix (from prior approved plan)
+- New migration: `get_conversation_participant_names(_user_ids uuid[])` SECURITY DEFINER RPC, returns `(user_id, display_name)` only for users who share a conversation with the caller.
+- `src/hooks/useInbox.ts` lines 80–85: replace direct `profiles` select with the RPC. (Code already references this RPC with a `@ts-expect-error` — migration just needs to actually create it.)
 
-> The Lovable Preview environment uses a fetch proxy that interferes with Supabase authentication POST requests, specifically to `/auth/v1/token`. This results in a "Failed to fetch" error with status 0, even though GET requests function correctly.
+### 2. Add admin-name normalizer
+- New util `src/lib/displayName.ts` with `formatParticipantName(displayName, isAdmin)` that returns `"Joshua"` when `isAdmin === true`, otherwise the trimmed `display_name`.
+- Extend `useInbox.ts`:
+  - Also fetch which participant `user_id`s have the `admin` role (via existing `has_role` / `user_roles`) and attach `is_admin: boolean` to each `Participant`.
+  - Type update: add `is_admin?: boolean` to the `Participant` interface.
+- Apply formatter in:
+  - `ThreadList.tsx` line 14–17 (thread title + avatar initial → "J")
+  - `ConversationView.tsx` lines 30–35 (header + `nameById` map for sender labels)
+  - `MessageBubble` indirectly via the passed `senderName`
 
-What the user experiences in the preview iframe (`id-preview--…lovable.app`):
-1. Click "Continue with Google" → modal disables, redirect to Google works
-2. Pick Google account → redirected back to `/auth` with `oauth_pending = '1'`
-3. Return-leg effect re-invokes the broker → broker hands back tokens
-4. `supabase.auth.setSession(tokens)` POSTs `/auth/v1/token` → **fetch proxy blocks it → "Failed to fetch"**
-5. `lovableAuth.signInWithOAuth` returns `{ error }` → `Auth.tsx` shows toast: **"Google sign-in failed: Failed to fetch"** (or, if it just hangs, the 10s safety timeout fires "Google sign-in didn't finish")
-6. `oauth_pending` is cleared, modal reopens, user is back at the email/password form — never authenticated
+### 3. Verification
+- As a student, open `/inbox`:
+  - Thread title reads **"Joshua"**, avatar initial **"J"**
+  - Conversation header reads **"Joshua"**
+  - Incoming bubbles labeled **"Joshua"**
+- As admin (Joshua), student names still render as their real `display_name` (admin path unchanged).
+- No regression: non-admin participant names still appear verbatim.
 
-### Why I'm confident this is the preview-iframe issue specifically
+## Files
+- `supabase/migrations/<new>.sql` — `get_conversation_participant_names` RPC
+- `src/hooks/useInbox.ts` — call RPC, fetch admin user_ids, set `is_admin` on participants
+- `src/lib/displayName.ts` — new `formatParticipantName` helper
+- `src/components/inbox/ThreadList.tsx` — use formatter
+- `src/components/inbox/ConversationView.tsx` — use formatter
 
-- `vite.config.ts` line 35 already has `navigateFallbackDenylist: [/^\/~oauth/]` → the SW is correctly bypassing the OAuth path, so it isn't a cached-redirect problem
-- `src/integrations/lovable/index.ts` is the Lovable-managed auto-generated file → not user-editable, and is the canonical correct pattern
-- `Auth.tsx` correctly:
-  - sets `oauth_pending` before redirect
-  - re-invokes the broker on return
-  - sets `redirect_uri: window.location.origin + '/auth'` (works on custom domains too)
-  - has a 10s visible timeout + 15s silent safety net in `AuthContext` so the UI cannot hang permanently
-- The only failure surface left is the network call itself, and the documented fact is that `/auth/v1/token` POSTs fail in the preview iframe's fetch proxy
-
-### What's NOT the problem (rule-outs)
-
-- Not a missing/wrong Google OAuth credential — the broker uses Lovable-managed creds by default
-- Not a missing `/reset-password`-style return route — `/auth` is the return target and is registered in `App.tsx`
-- Not a PWA service-worker cache hit on `/~oauth`
-- Not a CORS issue (per the lovable-stack-overflow note, do not add CORS headers — they don't fix this)
-- Not a `redirect_uri` mismatch — Lovable auto-allowlists project origins
-- Not the email/password flow — that uses a different supabase call path
-
-### Verification recommendation (before any code change)
-
-Test Google sign-in on the **published URL** (not the preview iframe):
-- `https://lsatu.lovable.app`
-- `https://www.lsatprep.study`
-- `https://lsatprep.study`
-
-If Google sign-in **works** on the published URL but **fails** on the `id-preview--…lovable.app` iframe, the diagnosis is confirmed: nothing in the code needs to change. The preview iframe simply cannot complete the OAuth POST due to its fetch proxy.
-
-### What we should consider doing (optional UX changes only)
-
-The code is correct. The only constructive change would be to **make the failure mode less confusing** when a user tests Google sign-in inside the preview iframe:
-
-**Option 1 — Detect preview iframe + show a clearer message.** When the URL host contains `id-preview--` AND `oauth_pending` is set AND the broker returns an error, show a one-time toast like: "Google sign-in is not supported in the Lovable preview. Open the published URL to test it."
-
-**Option 2 — Hide the "Continue with Google" button entirely when running inside `id-preview--…lovable.app`**, replacing it with an inline note pointing to the published URL.
-
-**Option 3 — Do nothing in code.** Just verify on the published URL and confirm to yourself that prod works. Most appropriate if you're only testing in preview as a dev convenience.
-
-### Files (no code change recommended yet, listed for reference)
-
-- `src/pages/Auth.tsx` — outbound + return-leg handlers (lines 209-266, 328-346)
-- `src/contexts/AuthContext.tsx` — `onAuthStateChange` + 15s safety net (lines 98-135)
-- `src/integrations/lovable/index.ts` — Lovable-managed broker wrapper (do not edit)
-- `vite.config.ts` line 35 — PWA denylist for `/~oauth` (already correct)
-
-### Recommended next step
-
-Test the published URL first. Tell me which of these is true and we'll proceed:
-- (a) Works on published URL, fails only in preview iframe → confirmed platform issue, optionally implement Option 1 or 2 above for clearer UX
-- (b) Fails on published URL too → real bug; I'll re-investigate with browser tools and edge-function logs to find the actual failure point
-- (c) Works in both → was a transient broker hiccup; nothing to do
+## Out of scope
+- No `profiles` RLS changes
+- No changes to admin-side rendering (admin keeps seeing real student names)
+- No changes to `display_name` stored in DB (stays "Joshua Fisseha")
 
