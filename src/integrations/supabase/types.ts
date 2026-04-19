@@ -1063,6 +1063,7 @@ export type Database = {
         Args: { _user_ids: string[] }
         Returns: {
           display_name: string
+          is_admin: boolean
           user_id: string
         }[]
       }

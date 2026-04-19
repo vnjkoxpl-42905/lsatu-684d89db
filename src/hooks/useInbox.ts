@@ -85,19 +85,11 @@ export function useInbox() {
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
     const { data: nameRows } = await (supabase as any)
       .rpc('get_conversation_participant_names', { _user_ids: userIds });
-    const nameMap = new Map(
-      ((nameRows ?? []) as Array<{ user_id: string; display_name: string | null }>)
-        .map((r) => [r.user_id, r.display_name])
-    );
-
-    // Fetch admin role for participants so the UI can normalize the instructor's
-    // display name to "Joshua" per project rule.
-    const { data: adminRows } = await supabase
-      .from('user_roles')
-      .select('user_id')
-      .eq('role', 'admin')
-      .in('user_id', userIds);
-    const adminSet = new Set((adminRows ?? []).map((r) => r.user_id));
+    const rows = (nameRows ?? []) as Array<{ user_id: string; display_name: string | null; is_admin: boolean }>;
+    const nameMap = new Map(rows.map((r) => [r.user_id, r.display_name]));
+    // RLS on user_roles blocks students from reading other users' roles, so
+    // admin status is sourced from the RPC (which runs SECURITY DEFINER).
+    const adminSet = new Set(rows.filter((r) => r.is_admin).map((r) => r.user_id));
 
     // Last message per conversation
     const { data: msgs } = await supabase
