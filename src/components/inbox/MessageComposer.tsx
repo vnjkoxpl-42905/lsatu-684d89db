@@ -1,19 +1,25 @@
 import { useRef, useState } from 'react';
-import { Paperclip, Send, X, FileText } from 'lucide-react';
+import { Paperclip, Send, X, FileText, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { toast } from 'sonner';
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
 export function MessageComposer({ conversationId, onSent }: { conversationId: string; onSent?: () => void }) {
   const { user } = useAuth();
+  const permissions = useUserPermissions();
   const [body, setBody] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [sending, setSending] = useState(false);
+  const [polishing, setPolishing] = useState(false);
+  const [polished, setPolished] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const showPolish = !permissions.loading && permissions.is_admin;
 
   const pickFile = (f: File | null) => {
     if (!f) return;
@@ -26,6 +32,28 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       return;
     }
     setFile(f);
+  };
+
+  const polish = async () => {
+    const text = body.trim();
+    if (text.length < 3) return;
+    setPolishing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('polish-message', {
+        body: { text, conversationId },
+      });
+      if (error) throw error;
+      const next = (data as { polished?: string } | null)?.polished;
+      if (typeof next !== 'string' || next.length === 0) {
+        throw new Error('No polished text returned');
+      }
+      setPolished(next);
+    } catch (e: any) {
+      setPolished(null);
+      toast.error(e?.message ?? 'Polish failed');
+    } finally {
+      setPolishing(false);
+    }
   };
 
   const send = async () => {
@@ -60,6 +88,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
 
       setBody('');
       setFile(null);
+      setPolished(null);
       if (fileRef.current) fileRef.current.value = '';
       onSent?.();
     } catch (e: any) {
@@ -80,6 +109,40 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           </button>
         </div>
       )}
+      {polished !== null && (
+        <div className="px-3 py-2 rounded-md border border-border bg-muted/40 text-sm space-y-2">
+          <div className="text-xs uppercase tracking-wide text-muted-foreground">Polished version</div>
+          <div className="whitespace-pre-wrap">{polished}</div>
+          <div className="flex flex-wrap gap-2 pt-1">
+            <Button
+              size="sm"
+              onClick={() => {
+                setBody(polished);
+                setPolished(null);
+              }}
+              disabled={sending || polishing}
+            >
+              Use this
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setPolished(null)}
+              disabled={sending || polishing}
+            >
+              Keep mine
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={polish}
+              disabled={sending || polishing || body.trim().length < 3}
+            >
+              Try again
+            </Button>
+          </div>
+        </div>
+      )}
       <div className="flex items-end gap-2">
         <input
           ref={fileRef}
@@ -97,6 +160,18 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         >
           <Paperclip className="w-4 h-4" />
         </Button>
+        {showPolish && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={polish}
+            disabled={sending || polishing || body.trim().length < 3}
+            aria-label="Polish with AI"
+            title="Polish with AI"
+          >
+            <Sparkles className={`w-4 h-4 ${polishing ? 'animate-pulse' : ''}`} />
+          </Button>
+        )}
         <Textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
