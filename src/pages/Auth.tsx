@@ -91,6 +91,11 @@ const GlassShell = ({
 // AUTH PAGE
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Module-scope remount counter (ID-9 diagnosis). Survives component
+// unmount/remount so we can see whether the page is actually remounting vs
+// its effect re-running.
+let AUTH_MOUNT_COUNT = 0;
+
 export default function Auth() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -167,13 +172,18 @@ export default function Auth() {
 
   // Debug: log auth page mount state for OAuth diagnosis
   React.useEffect(() => {
+    AUTH_MOUNT_COUNT += 1;
     console.log('[Auth mount]', {
+      count: AUTH_MOUNT_COUNT,
       url: window.location.href,
       hash: window.location.hash,
       search: window.location.search,
       oauth_pending: sessionStorage.getItem('oauth_pending'),
       user: !!user,
     });
+    return () => {
+      console.log('[Auth unmount]', { count: AUTH_MOUNT_COUNT });
+    };
   }, []);
 
   // One-shot: surface a session-expired banner if we were bounced here by

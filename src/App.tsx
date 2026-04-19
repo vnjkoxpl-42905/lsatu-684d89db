@@ -29,7 +29,20 @@ import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 
-const App = () => (
+// Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
+// React root is remounting (e.g. from a service-worker replace) vs its child
+// providers re-initializing.
+let APP_MOUNT_COUNT = 0;
+
+const App = () => {
+  React.useEffect(() => {
+    APP_MOUNT_COUNT += 1;
+    console.log('[App mount]', { count: APP_MOUNT_COUNT });
+    return () => {
+      console.log('[App unmount]', { count: APP_MOUNT_COUNT });
+    };
+  }, []);
+  return (
   <ThemeProvider>
   <AuthProvider>
     <UserSettingsProvider>
@@ -109,6 +122,7 @@ const App = () => (
     </UserSettingsProvider>
   </AuthProvider>
   </ThemeProvider>
-);
+  );
+};
 
 export default App;
