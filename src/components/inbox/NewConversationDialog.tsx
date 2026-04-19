@@ -16,7 +16,19 @@ interface Profile {
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
-export function NewConversationDialog({ onCreated }: { onCreated: (conversationId: string) => void }) {
+export function NewConversationDialog({
+  onCreated,
+  showTrigger = true,
+  autoOpenWith,
+  onAutoOpenHandled,
+}: {
+  onCreated: (conversationId: string) => void;
+  showTrigger?: boolean;
+  // When this changes to a truthy string, the dialog opens with the recipient
+  // preselected. Used for cross-surface entry points like Foyer "Ask Joshua".
+  autoOpenWith?: string | null;
+  onAutoOpenHandled?: () => void;
+}) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -27,6 +39,16 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!autoOpenWith) return;
+    setSelectedUserId(autoOpenWith);
+    setOpen(true);
+    onAutoOpenHandled?.();
+    // onAutoOpenHandled is a one-shot clearer; excluding it keeps the effect
+    // from re-firing if the parent's callback identity changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoOpenWith]);
 
   useEffect(() => {
     if (!open || !user) return;
@@ -144,11 +166,13 @@ export function NewConversationDialog({ onCreated }: { onCreated: (conversationI
 
   return (
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
-      <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Plus className="w-4 h-4 mr-1" /> New
-        </Button>
-      </DialogTrigger>
+      {showTrigger && (
+        <DialogTrigger asChild>
+          <Button size="sm" variant="outline">
+            <Plus className="w-4 h-4 mr-1" /> New
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>New conversation</DialogTitle>

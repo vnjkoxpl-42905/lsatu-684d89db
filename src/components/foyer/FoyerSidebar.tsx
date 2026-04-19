@@ -8,14 +8,19 @@ import {
   CalendarDays,
   Inbox as InboxIcon,
   BookOpen,
-  Bell,
-  Clock,
 } from "lucide-react";
 import InboxPreviewCard from "./InboxPreviewCard";
-import StateBlockMini from "./StateBlockMini";
+import { useAuth } from "@/contexts/AuthContext";
+import type { Conversation } from "@/hooks/useInbox";
 
-export type FoyerSidebarProps = Record<string, never>;
+export interface FoyerSidebarProps {
+  conversations: Conversation[];
+  unreadCount: number;
+}
 
+// Homework intentionally omitted: no dedicated route exists. The legacy dock
+// labeled "Homework" aliased `/practice`; we don't ship dead links or
+// misleading duplicates.
 const NAV_ITEMS: Array<{ to: string; label: string; icon: React.ReactNode }> = [
   { to: "/classroom", label: "Classroom", icon: <BookOpen size={12} strokeWidth={1.6} /> },
   { to: "/practice", label: "Practice", icon: <ClipboardList size={12} strokeWidth={1.6} /> },
@@ -26,7 +31,13 @@ const NAV_ITEMS: Array<{ to: string; label: string; icon: React.ReactNode }> = [
   { to: "/inbox", label: "Inbox", icon: <InboxIcon size={12} strokeWidth={1.6} /> },
 ];
 
-export default function FoyerSidebar(_props: FoyerSidebarProps) {
+export default function FoyerSidebar({ conversations, unreadCount }: FoyerSidebarProps) {
+  const { user } = useAuth();
+  const displayName = (user?.user_metadata?.display_name as string | undefined)
+    ?? user?.email?.split("@")[0]
+    ?? "";
+  const initial = displayName.trim().charAt(0).toUpperCase() || "·";
+
   return (
     <aside className="w-[240px] h-full flex flex-col border border-border/60 rounded-md bg-card overflow-hidden">
       {/* Brand strip */}
@@ -44,19 +55,13 @@ export default function FoyerSidebar(_props: FoyerSidebarProps) {
             LSAT U
           </span>
         </div>
-        <span className="text-muted-foreground" style={{ fontSize: 10 }} title="Coming soon">
-          {/* TODO: wire ⌘K once a command palette exists */}
-          ⌘K
-        </span>
       </div>
 
-      {/* Bento state blocks */}
-      <div className="p-3 space-y-2">
-        <InboxPreviewCard />
-        <div className="grid grid-cols-2 gap-2">
-          <StateBlockMini label="Alerts" icon={<Bell size={10} strokeWidth={1.6} />} value="--" />
-          <StateBlockMini label="Streak" icon={<Clock size={10} strokeWidth={1.6} />} value="--" />
-        </div>
+      {/* Bento state blocks — Inbox only. Resume card intentionally absent: no
+          real in-progress-session source exists yet. No Alerts/Streak: no
+          sources, and we don't ship placeholder data. */}
+      <div className="p-3">
+        <InboxPreviewCard conversations={conversations} unreadCount={unreadCount} />
       </div>
 
       <div className="h-px bg-border/60" />
@@ -92,15 +97,18 @@ export default function FoyerSidebar(_props: FoyerSidebarProps) {
 
       {/* Footer */}
       <div className="mt-auto border-t border-border/60 px-3 py-2.5 flex items-center gap-2">
-        <div className="relative">
-          <div className="h-[22px] w-[22px] rounded-full bg-muted flex items-center justify-center text-foreground font-medium" style={{ fontSize: 10 }}>
-            {/* Push-2 fills in initial from auth user */}
-            ·
-          </div>
+        <div
+          className="h-[22px] w-[22px] rounded-full bg-muted flex items-center justify-center text-foreground font-medium"
+          style={{ fontSize: 10 }}
+        >
+          {initial}
         </div>
-        <div className="leading-tight">
-          <div className="font-medium text-foreground" style={{ fontSize: 11 }}>
-            --
+        <div className="leading-tight min-w-0 flex-1">
+          <div
+            className="font-medium text-foreground truncate"
+            style={{ fontSize: 11 }}
+          >
+            {displayName || "—"}
           </div>
         </div>
       </div>
