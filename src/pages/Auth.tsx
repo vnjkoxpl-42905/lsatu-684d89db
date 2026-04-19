@@ -315,8 +315,7 @@ export default function Auth() {
             .maybeSingle();
 
           if (profile?.display_name) {
-            const displayName = profile.display_name;
-            navigate('/foyer', { state: { showWelcome: true, welcomeName: displayName } });
+            navigate('/foyer');
           } else {
             navigate('/onboarding');
           }
@@ -689,8 +688,6 @@ export default function Auth() {
           </>
         )}
       </AnimatePresence>
-
-      {/* WelcomeLoading now lives in AcademyFoyer.tsx, mounted over the ghost hub */}
 
       {/* ── Forgot password sub-modal ── */}
       <AnimatePresence>

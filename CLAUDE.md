@@ -27,11 +27,11 @@ No Prettier. Formatting is ESLint-only.
 
 ## Architecture (big picture)
 
-- **Routing** — React Router v6. Routes are registered in `src/App.tsx`, pages live in `src/pages/`. `/foyer` is the landing orbital hub. Feature-gated pages are wrapped by `ProtectedRoute`.
+- **Routing** — React Router v6. Routes are registered in `src/App.tsx`, pages live in `src/pages/`. `/foyer` is the landing surface. Feature-gated pages are wrapped by `ProtectedRoute`.
 - **Auth + permissions** — Supabase Auth session plus Lovable Cloud Auth JWT fallback (`@lovable.dev/cloud-auth-js`). Per-feature access flags (`has_practice_access`, `has_drill_access`, `has_chat_access`, `is_admin`, ...) are resolved in `src/hooks/useUserPermissions.ts`. Session death is detected via JWT/401.
 - **Supabase integration** — client auto-generated at `src/integrations/supabase/client.ts` (Supabase JS v2). DB types are auto-generated — do not hand-edit. Edge Functions (Deno) in `supabase/functions/`: `admin-manage-users`, `analyze-stem-response`, `generate-micro-drill`, `motivation-engine`, `parse-drill-request`, `tutor-chat`, `voice-coach-respond`. SQL migrations in `supabase/migrations/`.
 - **State** — React Context for cross-cutting concerns (`AuthContext`, `UserSettingsContext`, `QuestionBankContext`, `ThemeContext`, `TimerContext`). TanStack Query v5 for server state.
-- **Primary navigation — Foyer Orbital** — `src/components/foyer/OrbitalHub.tsx` is the core navigation surface. It is the primary nav for the product. Any dock or utility tray is secondary utility only and must not duplicate orbital modules.
+- **Primary navigation — Foyer** — `src/pages/AcademyFoyer.tsx` composes `src/components/foyer/FoyerSidebar.tsx` (state blocks + workspace nav) with `src/components/foyer/FoyerHeroRing.tsx` (3 nodes: Smart Drill, Resume, Ask Joshua). This is the primary nav for the product.
 - **Messaging / Inbox** — real messaging feature, not cosmetic. Lives in `src/components/inbox/` (`FloatingMessenger`, `ConversationView`, `ThreadList`) plus `src/hooks/useInbox.ts`. One ongoing 1:1 thread per student with the admin (Joshua). Supports PDF attachments. Gated by `has_chat_access`.
 - **Practice surfaces** — Drill and Wrong Answer Journal (WAJ) are real product surfaces, not launchers. Core logic in `src/lib/`: `adaptiveEngine`, `drillIntelligence`, `achievementEngine`, `gamification`, `questionLoader`, `streakSystem`, `wajService`.
 - **Admin** — `AdminDashboard` + `admin-manage-users` edge function. Must be desktop AND mobile responsive. Needs granular per-feature toggle control.
@@ -50,7 +50,7 @@ No Prettier. Formatting is ESLint-only.
 
 ## Product rules (must not regress)
 
-- Foyer orbital is the primary navigation. Dock / utility tray is secondary utility only, never a duplicate of orbital modules.
+- Foyer (`FoyerSidebar` + `FoyerHeroRing`) is the primary navigation. No bottom dock or utility tray — any new entry point belongs in the sidebar nav or the hero ring, not in a duplicate surface.
 - Inbox is real messaging with back-and-forth threads and PDF attachments, scoped 1:1 per student with admin.
 - Admin is fully responsive on desktop and mobile.
 - Do not expose actions users cannot actually perform — no fake analytics, no dead buttons, no misleading placeholders. Prefer truthful fallbacks over fake data.

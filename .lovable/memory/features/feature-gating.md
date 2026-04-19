@@ -27,7 +27,7 @@ All boolean, default `true`:
 ## Enforcement
 - `useUserPermissions` hook fetches all 10 flags + admin role
 - `ProtectedRoute` component wraps routes in App.tsx
-- Foyer `OrbitalHub` dims locked nodes based on permission flags
+- Foyer hero ring (`FoyerHeroRing`) dims Ask Joshua for admin-self and Resume until a source lands; sidebar nav items (`FoyerSidebar`) are always enabled — per-feature access is enforced at route level via `ProtectedRoute`
 - Edge function `admin-manage-users` handles: list users, toggle flags, bulk grant/revoke, promote/demote roles, analytics
 
 ## Edge Function Actions (POST body)
