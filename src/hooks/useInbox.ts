@@ -76,13 +76,19 @@ export function useInbox() {
       .select('id, conversation_id, user_id, last_read_at')
       .in('conversation_id', convIds);
 
-    // Resolve display names
+    // Resolve display names via SECURITY DEFINER RPC — RLS on `profiles` blocks
+    // non-admin cross-user SELECTs, so a direct `.from('profiles').select(...)`
+    // silently drops the admin row and leaves the thread titled "Conversation".
+    // The RPC returns display_name only for users who share a conversation with
+    // the caller.
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
-    const { data: profiles } = await supabase
-      .from('profiles')
-      .select('class_id, display_name')
-      .in('class_id', userIds);
-    const nameMap = new Map((profiles ?? []).map((p) => [p.class_id, p.display_name]));
+    const { data: nameRows } = await supabase
+      // @ts-expect-error — RPC not yet in generated Supabase types; Lovable regenerates on migration apply, at which point this directive becomes stale and should be removed.
+      .rpc('get_conversation_participant_names', { _user_ids: userIds });
+    const nameMap = new Map(
+      ((nameRows ?? []) as Array<{ user_id: string; display_name: string | null }>)
+        .map((r) => [r.user_id, r.display_name])
+    );
 
     // Last message per conversation
     const { data: msgs } = await supabase
