@@ -29,6 +29,10 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+// Module-scope remount counter (ID-9 diagnosis). Distinguishes provider
+// remounts from effect re-runs in the onAuthStateChange cascade.
+let AUTH_PROVIDER_MOUNT_COUNT = 0;
+
 /** Detect if the current page load is mid-OAuth callback (URL-based only) */
 function isOAuthCallbackUrl(): boolean {
   return (
@@ -84,7 +88,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     // Set up auth state listener FIRST
-    console.log('[AuthContext] init', { isOAuth: isOAuthRef.current, oauth_pending: sessionStorage.getItem('oauth_pending') });
+    AUTH_PROVIDER_MOUNT_COUNT += 1;
+    console.log('[AuthContext] init', {
+      mountCount: AUTH_PROVIDER_MOUNT_COUNT,
+      isOAuth: isOAuthRef.current,
+      oauth_pending: sessionStorage.getItem('oauth_pending'),
+    });
     
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
@@ -126,6 +135,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return () => {
+      console.log('[AuthContext] cleanup', { mountCount: AUTH_PROVIDER_MOUNT_COUNT });
       subscription.unsubscribe();
       if (oauthTimeoutRef.current) clearTimeout(oauthTimeoutRef.current);
     };
