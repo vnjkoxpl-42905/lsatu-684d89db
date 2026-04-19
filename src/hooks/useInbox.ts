@@ -8,6 +8,7 @@ export interface Participant {
   user_id: string;
   last_read_at: string;
   display_name?: string | null;
+  is_admin?: boolean;
 }
 
 export interface Conversation {
@@ -82,13 +83,21 @@ export function useInbox() {
     // The RPC returns display_name only for users who share a conversation with
     // the caller.
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
-    const { data: nameRows } = await supabase
-      // @ts-expect-error — RPC not yet in generated Supabase types; Lovable regenerates on migration apply, at which point this directive becomes stale and should be removed.
+    const { data: nameRows } = await (supabase as any)
       .rpc('get_conversation_participant_names', { _user_ids: userIds });
     const nameMap = new Map(
       ((nameRows ?? []) as Array<{ user_id: string; display_name: string | null }>)
         .map((r) => [r.user_id, r.display_name])
     );
+
+    // Fetch admin role for participants so the UI can normalize the instructor's
+    // display name to "Joshua" per project rule.
+    const { data: adminRows } = await supabase
+      .from('user_roles')
+      .select('user_id')
+      .eq('role', 'admin')
+      .in('user_id', userIds);
+    const adminSet = new Set((adminRows ?? []).map((r) => r.user_id));
 
     // Last message per conversation
     const { data: msgs } = await supabase
@@ -112,6 +121,7 @@ export function useInbox() {
           user_id: p.user_id,
           last_read_at: p.last_read_at,
           display_name: nameMap.get(p.user_id) ?? null,
+          is_admin: adminSet.has(p.user_id),
         }));
       const lastRead = lastReadMap.get(c.id);
       const lastMsg = lastMsgMap.get(c.id) ?? null;
