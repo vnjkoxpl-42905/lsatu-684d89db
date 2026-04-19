@@ -1,72 +1,84 @@
 
 
-## Goal
-Make Foyer, Drill, and Tutor (Joshua) usable and polished on phone widths (≤640px), with mobile-specific UI patterns where appropriate — not just shrunk desktop layouts.
+## What I found — Google sign-in flow analysis
 
-## Confirmed mobile problems (from live capture at 390×844)
+### The two code paths involved
 
-**Foyer (`/foyer`) — visible in screenshot**
-- Orbital ring is wider than viewport: "BOOTCAMPS" clipped to "BOOTCAM", "SCHEDULE" clipped to "SCHEDUL"
-- Header: "LSAT U" appears as "L S A T  U" with broken letter-spacing at narrow width; help "?" sits awkwardly
-- Bottom utility dock sits on top of the bottom orbital nodes (Analytics/Schedule), creating tap-target collision
-- No safe-area padding for iOS home-indicator zone
+**Path A — outbound click (`Auth.tsx` lines 328-346)**
+1. `handleGoogleSignIn` sets `sessionStorage.oauth_pending = '1'`
+2. Calls `lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" })`
+3. The Lovable broker redirects the browser to `/~oauth/initiate` → Google → back to `/auth`
 
-**Drill (`/practice` → drill session)** — known from code (`src/pages/Drill.tsx`, `DrillTopBar.tsx`)
-- Top bar tools (timer + voice coach + flag + tutor) overflow on narrow widths
-- Question stem + answer choices use desktop-grade padding; touch targets <44px for radio buttons
-- Mode/section selector uses multi-column grid that wraps awkwardly
-- BACK button still navigates to `/` → Foyer (Option A from prior plan, applied mobile + desktop)
+**Path B — return-leg (`Auth.tsx` lines 209-266)**
+1. On mount, if `oauth_pending === '1'`, re-invoke `lovable.auth.signInWithOAuth('google', ...)` so the broker delivers tokens (this time without redirecting)
+2. `lovableAuth` internally calls `supabase.auth.setSession(result.tokens)` (`src/integrations/lovable/index.ts` lines 28-32) — this is a `POST` to `/auth/v1/token`
+3. `AuthContext.onAuthStateChange` fires → `markReady(session)` → `Auth.tsx` user-watcher navigates to `/foyer` or `/onboarding`
+4. Hard 10s timeout shows "Google sign-in didn't finish" toast
 
-**Tutor / Joshua modal (`TutorChatModal.tsx`)** — known from code
-- Renders as centered Dialog on all viewports — on phones a centered modal with input at bottom of dialog gets covered by mobile keyboard, and side margins waste precious width
-- Should be a full-height bottom-sheet on phone (slides up, input docked above keyboard, swipe-down to dismiss)
-- "Return to question" button currently full-width but sits in modal footer that scrolls out
+### The actual problem
 
-## Changes (scoped, mobile-only where possible)
+**This is the documented Lovable preview iframe limitation**, not a bug in your code:
 
-### 1. `src/components/foyer/OrbitalHub.tsx`
-- Detect `useIsMobile()` (already exists)
-- On mobile: shrink orbit radius to `min(45vw, 160px)`, reduce node label font to `text-[9px]`, allow labels to wrap to 2 lines, anchor right-side labels with `right` instead of `left` so they don't clip viewport edge
-- Add `px-4` safe horizontal padding on container
-- Center orbit vertically with `pb-32` to clear the bottom dock
+> The Lovable Preview environment uses a fetch proxy that interferes with Supabase authentication POST requests, specifically to `/auth/v1/token`. This results in a "Failed to fetch" error with status 0, even though GET requests function correctly.
 
-### 2. `src/pages/AcademyFoyer.tsx` (header)
-- On mobile: replace "L S A T   U" wide-tracked header with compact "LSATU" or icon-only, move help "?" into a kebab menu
+What the user experiences in the preview iframe (`id-preview--…lovable.app`):
+1. Click "Continue with Google" → modal disables, redirect to Google works
+2. Pick Google account → redirected back to `/auth` with `oauth_pending = '1'`
+3. Return-leg effect re-invokes the broker → broker hands back tokens
+4. `supabase.auth.setSession(tokens)` POSTs `/auth/v1/token` → **fetch proxy blocks it → "Failed to fetch"**
+5. `lovableAuth.signInWithOAuth` returns `{ error }` → `Auth.tsx` shows toast: **"Google sign-in failed: Failed to fetch"** (or, if it just hangs, the 10s safety timeout fires "Google sign-in didn't finish")
+6. `oauth_pending` is cleared, modal reopens, user is back at the email/password form — never authenticated
 
-### 3. `src/components/ui/animated-dock.tsx` (bottom utility tray)
-- Add `pb-[env(safe-area-inset-bottom)]` to clear iOS home indicator
-- On mobile: reduce dock icon size from 44 → 40px, tighten gap, add `bg-background/95 backdrop-blur-xl border-t` so it visually separates from orbital
+### Why I'm confident this is the preview-iframe issue specifically
 
-### 4. `src/pages/Drill.tsx` + `src/components/drill/DrillTopBar.tsx`
-- **Apply BACK fix (Option A)**: `onBack` clears active session state instead of `handleNavigation('/')`, so user returns to drill setup screen, not Foyer. Same behavior desktop + mobile.
-- Top bar on mobile: collapse secondary tools (flag, voice coach chip) into a single "···" overflow popover; keep timer + tutor visible
-- Mode/section selector: switch desktop 3-col grid to 1-col stack on `<sm`, increase touch target to `min-h-[56px]`
-- Answer choice buttons: ensure `min-h-[48px]`, `text-base` (16px to prevent iOS zoom), full-width
-- Add `pb-[env(safe-area-inset-bottom)]` to footer action bar
+- `vite.config.ts` line 35 already has `navigateFallbackDenylist: [/^\/~oauth/]` → the SW is correctly bypassing the OAuth path, so it isn't a cached-redirect problem
+- `src/integrations/lovable/index.ts` is the Lovable-managed auto-generated file → not user-editable, and is the canonical correct pattern
+- `Auth.tsx` correctly:
+  - sets `oauth_pending` before redirect
+  - re-invokes the broker on return
+  - sets `redirect_uri: window.location.origin + '/auth'` (works on custom domains too)
+  - has a 10s visible timeout + 15s silent safety net in `AuthContext` so the UI cannot hang permanently
+- The only failure surface left is the network call itself, and the documented fact is that `/auth/v1/token` POSTs fail in the preview iframe's fetch proxy
 
-### 5. `src/components/drill/TutorChatModal.tsx`
-- Render as `<Sheet side="bottom">` from shadcn on mobile (`useIsMobile()` branch); keep `<Dialog>` on desktop
-- Sheet height: `h-[85dvh]` so input stays above keyboard (use `dvh` not `vh` for iOS keyboard-aware sizing)
-- Sticky composer at bottom with `pb-[env(safe-area-inset-bottom)]`
-- Sticky "Return to question" CTA pinned above composer, full-width, `min-h-[48px]`
-- Drag-handle visual at top of sheet
+### What's NOT the problem (rule-outs)
 
-## Out of scope
-- No changes to streaming logic, prompt content, or model selection (Phase 2 work stays as-is)
-- No changes to `index.css` design tokens
-- No changes to desktop layouts beyond the BACK button fix
-- No changes to Bootcamp/Classroom/Analytics pages (separate audit if needed)
-- No changes to PWA install flow
+- Not a missing/wrong Google OAuth credential — the broker uses Lovable-managed creds by default
+- Not a missing `/reset-password`-style return route — `/auth` is the return target and is registered in `App.tsx`
+- Not a PWA service-worker cache hit on `/~oauth`
+- Not a CORS issue (per the lovable-stack-overflow note, do not add CORS headers — they don't fix this)
+- Not a `redirect_uri` mismatch — Lovable auto-allowlists project origins
+- Not the email/password flow — that uses a different supabase call path
 
-## Files
-- `src/components/foyer/OrbitalHub.tsx` — mobile orbit sizing + label anchoring
-- `src/pages/AcademyFoyer.tsx` — mobile header compaction
-- `src/components/ui/animated-dock.tsx` — safe-area + mobile sizing
-- `src/pages/Drill.tsx` — BACK fix (Option A), mobile mode selector, safe-area footer
-- `src/components/drill/DrillTopBar.tsx` — mobile overflow popover
-- `src/components/drill/TutorChatModal.tsx` — mobile bottom-sheet branch
+### Verification recommendation (before any code change)
 
-## Verification (after implementation)
-- Re-capture screenshots at 390×844 for `/foyer`, drill setup, drill question, tutor open
-- Confirm: no horizontal scroll, no clipped labels, all tap targets ≥44px, no dock/orbital collision, tutor sheet doesn't get covered by keyboard
+Test Google sign-in on the **published URL** (not the preview iframe):
+- `https://lsatu.lovable.app`
+- `https://www.lsatprep.study`
+- `https://lsatprep.study`
+
+If Google sign-in **works** on the published URL but **fails** on the `id-preview--…lovable.app` iframe, the diagnosis is confirmed: nothing in the code needs to change. The preview iframe simply cannot complete the OAuth POST due to its fetch proxy.
+
+### What we should consider doing (optional UX changes only)
+
+The code is correct. The only constructive change would be to **make the failure mode less confusing** when a user tests Google sign-in inside the preview iframe:
+
+**Option 1 — Detect preview iframe + show a clearer message.** When the URL host contains `id-preview--` AND `oauth_pending` is set AND the broker returns an error, show a one-time toast like: "Google sign-in is not supported in the Lovable preview. Open the published URL to test it."
+
+**Option 2 — Hide the "Continue with Google" button entirely when running inside `id-preview--…lovable.app`**, replacing it with an inline note pointing to the published URL.
+
+**Option 3 — Do nothing in code.** Just verify on the published URL and confirm to yourself that prod works. Most appropriate if you're only testing in preview as a dev convenience.
+
+### Files (no code change recommended yet, listed for reference)
+
+- `src/pages/Auth.tsx` — outbound + return-leg handlers (lines 209-266, 328-346)
+- `src/contexts/AuthContext.tsx` — `onAuthStateChange` + 15s safety net (lines 98-135)
+- `src/integrations/lovable/index.ts` — Lovable-managed broker wrapper (do not edit)
+- `vite.config.ts` line 35 — PWA denylist for `/~oauth` (already correct)
+
+### Recommended next step
+
+Test the published URL first. Tell me which of these is true and we'll proceed:
+- (a) Works on published URL, fails only in preview iframe → confirmed platform issue, optionally implement Option 1 or 2 above for clearer UX
+- (b) Fails on published URL too → real bug; I'll re-investigate with browser tools and edge-function logs to find the actual failure point
+- (c) Works in both → was a transient broker hiccup; nothing to do
 
