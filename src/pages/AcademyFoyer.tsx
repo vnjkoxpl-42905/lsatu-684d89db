@@ -26,6 +26,8 @@ import { toast } from "sonner";
 import WelcomeLoading from "@/components/WelcomeLoading";
 import OrbitalHub, { FoyerPhase, FoyerNode } from "@/components/foyer/OrbitalHub";
 import FoyerTour from "@/components/foyer/FoyerTour";
+import FoyerSidebar from "@/components/foyer/FoyerSidebar";
+import FoyerHeroRing from "@/components/foyer/FoyerHeroRing";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -163,6 +165,44 @@ export default function AcademyFoyer() {
 
   // ── Don't render until auth is resolved ─────────────────────────────────────
   if (!authReady || !user) return null;
+
+  // ── WF-2 scaffold: new foyer layout behind env flag. Push-1 renders the
+  // sidebar + ring shell only; Push-2 wires data and node selection.
+  if (import.meta.env.VITE_NEW_FOYER === "true") {
+    return (
+      <div className="fixed inset-0 bg-background overflow-hidden">
+        <div className="absolute top-5 right-6 z-30 flex items-center gap-1">
+          {permissions.is_admin && (
+            <button
+              onClick={() => navigate("/admin")}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+              title="Admin Dashboard"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
+          )}
+          <button
+            onClick={handleReplayTour}
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+            title="Replay Tour"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+          <LogoutButton />
+          <ThemeToggle />
+        </div>
+
+        <div className="flex h-[100dvh] gap-4 p-4">
+          <div className="hidden md:block">
+            <FoyerSidebar />
+          </div>
+          <main className="flex-1 relative rounded-md border border-border/60 bg-card overflow-hidden">
+            <FoyerHeroRing />
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   // Theme-adaptive colors
   const brandColor   = isLight ? "rgba(0,0,0,0.38)"     : "rgba(255,255,255,0.22)";
