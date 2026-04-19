@@ -325,7 +325,22 @@ export default function Auth() {
     }
   };
 
+  const isLovablePreviewIframe = () => {
+    if (typeof window === 'undefined') return false;
+    const host = window.location.hostname;
+    const inIframe = window.self !== window.top;
+    return inIframe && (host.includes('id-preview--') || host.endsWith('.lovableproject.com'));
+  };
+
   const handleGoogleSignIn = async () => {
+    if (isLovablePreviewIframe()) {
+      toast({
+        title: 'Google sign-in unavailable in preview',
+        description: 'Open the published URL (lsatu.lovable.app) to sign in with Google. Email/password works here.',
+        variant: 'destructive',
+      });
+      return;
+    }
     setLoading(true);
     try {
       sessionStorage.setItem('oauth_pending', '1');
