@@ -235,9 +235,12 @@ export default function Auth() {
           console.error('[Auth] OAuth return-leg failed', result.error);
           setLoading(false);
           setModalOpen(true);
+          const inPreview = window.self !== window.top && (window.location.hostname.includes('id-preview--') || window.location.hostname.endsWith('.lovableproject.com'));
           toast({
-            title: 'Google sign-in failed',
-            description: String(result.error),
+            title: inPreview ? 'Google sign-in unavailable in preview' : 'Google sign-in failed',
+            description: inPreview
+              ? 'Open the published URL (lsatu.lovable.app) to sign in with Google.'
+              : String(result.error),
             variant: 'destructive',
           });
         }
@@ -325,7 +328,22 @@ export default function Auth() {
     }
   };
 
+  const isLovablePreviewIframe = () => {
+    if (typeof window === 'undefined') return false;
+    const host = window.location.hostname;
+    const inIframe = window.self !== window.top;
+    return inIframe && (host.includes('id-preview--') || host.endsWith('.lovableproject.com'));
+  };
+
   const handleGoogleSignIn = async () => {
+    if (isLovablePreviewIframe()) {
+      toast({
+        title: 'Google sign-in unavailable in preview',
+        description: 'Open the published URL (lsatu.lovable.app) to sign in with Google. Email/password works here.',
+        variant: 'destructive',
+      });
+      return;
+    }
     setLoading(true);
     try {
       sessionStorage.setItem('oauth_pending', '1');
