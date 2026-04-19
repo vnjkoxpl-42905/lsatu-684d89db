@@ -235,9 +235,12 @@ export default function Auth() {
           console.error('[Auth] OAuth return-leg failed', result.error);
           setLoading(false);
           setModalOpen(true);
+          const inPreview = window.self !== window.top && (window.location.hostname.includes('id-preview--') || window.location.hostname.endsWith('.lovableproject.com'));
           toast({
-            title: 'Google sign-in failed',
-            description: String(result.error),
+            title: inPreview ? 'Google sign-in unavailable in preview' : 'Google sign-in failed',
+            description: inPreview
+              ? 'Open the published URL (lsatu.lovable.app) to sign in with Google.'
+              : String(result.error),
             variant: 'destructive',
           });
         }
