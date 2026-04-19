@@ -1,8 +1,12 @@
+import type { LucideIcon } from "lucide-react";
+import { MessageCircle, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface FoyerHeroRingProps {
   onSmartDrill: () => void;
   onAskJoshua?: () => void; // undefined → dim
+  smartDrillIcon?: LucideIcon;
+  askJoshuaIcon?: LucideIcon;
   // Optional center focus card. Rendered only when focusHeadline is truthy.
   focusLabel?: string;
   focusHeadline?: string;
@@ -28,15 +32,19 @@ const BOTTOM = pos(90); // Ask Joshua — 6 o'clock
 
 function NodeButton({
   label,
+  icon: Icon,
   x,
   y,
   enabled,
+  pulse,
   onClick,
 }: {
   label: string;
+  icon: LucideIcon;
   x: number;
   y: number;
   enabled: boolean;
+  pulse?: boolean;
   onClick?: () => void;
 }) {
   return (
@@ -44,22 +52,47 @@ function NodeButton({
       type="button"
       disabled={!enabled}
       onClick={onClick}
-      className="absolute -translate-x-1/2 -translate-y-1/2 text-center focus:outline-none"
+      aria-label={label}
+      className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full"
       style={{
         left: `${(x / 500) * 100}%`,
         top: `${(y / 500) * 100}%`,
       }}
     >
-      <div
-        className={[
-          "uppercase font-semibold transition-colors",
-          enabled
-            ? "text-foreground hover:text-foreground"
-            : "text-muted-foreground/40 cursor-not-allowed",
-        ].join(" ")}
-        style={{ fontSize: 12, letterSpacing: "0.24em" }}
-      >
-        {label}
+      <div className="relative flex flex-col items-center gap-2">
+        <div className="relative">
+          {enabled && (
+            <div
+              className="absolute inset-0 -z-10 rounded-full bg-foreground/10 blur-md scale-150"
+              aria-hidden
+            />
+          )}
+          {enabled && pulse && (
+            <div
+              className="absolute inset-0 -z-10 rounded-full bg-foreground/20 opacity-20 animate-ping"
+              aria-hidden
+            />
+          )}
+          <div
+            className={[
+              "relative w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all duration-300",
+              enabled
+                ? "border-border/80 bg-background/80 backdrop-blur-sm text-foreground hover:border-foreground hover:shadow-lg hover:shadow-foreground/10"
+                : "border-border/30 bg-background/40 text-muted-foreground/40 cursor-not-allowed",
+            ].join(" ")}
+          >
+            <Icon size={18} aria-hidden />
+          </div>
+        </div>
+        <div
+          className={[
+            "uppercase font-semibold whitespace-nowrap",
+            enabled ? "text-muted-foreground" : "text-muted-foreground/40",
+          ].join(" ")}
+          style={{ fontSize: 10, letterSpacing: "0.22em" }}
+        >
+          {label}
+        </div>
       </div>
     </button>
   );
@@ -68,6 +101,8 @@ function NodeButton({
 export default function FoyerHeroRing({
   onSmartDrill,
   onAskJoshua,
+  smartDrillIcon = Zap,
+  askJoshuaIcon = MessageCircle,
   focusLabel,
   focusHeadline,
   focusSubline,
@@ -99,9 +134,18 @@ export default function FoyerHeroRing({
           </g>
         </svg>
 
-        <NodeButton label="Smart Drill" x={TOP.x} y={TOP.y} enabled onClick={onSmartDrill} />
+        <NodeButton
+          label="Smart Drill"
+          icon={smartDrillIcon}
+          x={TOP.x}
+          y={TOP.y}
+          enabled
+          pulse
+          onClick={onSmartDrill}
+        />
         <NodeButton
           label="Ask Joshua"
+          icon={askJoshuaIcon}
           x={BOTTOM.x}
           y={BOTTOM.y}
           enabled={askEnabled}
