@@ -11,6 +11,42 @@ import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
+const foyerNodes: TimelineItem[] = [
+  {
+    id: 1,
+    title: "Smart Drill",
+    date: "Now",
+    content: "Adaptive drill tuned to your weakest question types.",
+    category: "Practice",
+    icon: Zap,
+    relatedIds: [2],
+    status: "in-progress",
+    energy: 80,
+  },
+  {
+    id: 2,
+    title: "Resume",
+    date: "Last session",
+    content: "Pick up where you left off.",
+    category: "Practice",
+    icon: Play,
+    relatedIds: [1],
+    status: "pending",
+    energy: 60,
+  },
+  {
+    id: 3,
+    title: "Ask Joshua",
+    date: "Anytime",
+    content: "Send your instructor a question or PDF.",
+    category: "Coaching",
+    icon: MessageCircle,
+    relatedIds: [],
+    status: "completed",
+    energy: 100,
+  },
+];
+
 export default function AcademyFoyer() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
