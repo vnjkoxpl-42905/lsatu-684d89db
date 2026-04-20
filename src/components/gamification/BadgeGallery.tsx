@@ -46,7 +46,7 @@ export function BadgeGallery() {
       const { data: student } = await supabase
         .from('students')
         .select('class_id')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .maybeSingle();
       
       if (student?.class_id) {

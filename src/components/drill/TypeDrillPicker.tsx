@@ -267,7 +267,7 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
       const { data: student, error: studentError } = await supabase
         .from('students')
         .select('class_id')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
       if (studentError) {
