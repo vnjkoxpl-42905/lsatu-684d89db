@@ -78,7 +78,7 @@ export default function FoyerHeroRing() {
           r={RADIUS}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.25}
+          strokeOpacity={0.18}
         />
         {/* Inner echo */}
         <circle
@@ -87,7 +87,7 @@ export default function FoyerHeroRing() {
           r={INNER_R}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.18}
+          strokeOpacity={0.12}
         />
 
         {nodes.map((n) => {
