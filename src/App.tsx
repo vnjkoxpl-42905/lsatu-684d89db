@@ -25,6 +25,7 @@ import Bootcamps from "./pages/Bootcamps";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
+const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -63,6 +64,13 @@ const App = () => {
 
             {/* Admin Dashboard — no question bank needed */}
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/board" element={
+              <ProtectedRoute flag="has_classroom_access">
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <AdminBoard />
+                </React.Suspense>
+              </ProtectedRoute>
+            } />
 
             {/* Inbox — messaging, no question bank needed */}
             <Route path="/inbox" element={
