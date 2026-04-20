@@ -99,7 +99,8 @@ export default function AcademyFoyer() {
         <RadialOrbitalTimeline
           timelineData={foyerNodes}
           onActivate={(id) => {
-            if (id === 1 || id === 2) navigate("/drill");
+            if (id === 1) navigate("/drill", { state: { mode: "adaptive" } });
+            else if (id === 2) navigate("/drill");
             else if (id === 3) toast.info("Ask Joshua coming soon");
           }}
         />
