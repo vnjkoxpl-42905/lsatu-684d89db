@@ -1,55 +1,69 @@
 
 
-## What's actually stored
-- DB confirms admin (`user_id = 5ff160ef…`) has `profiles.display_name = "Joshua Fisseha"` — the only admin row.
-- Project rule (CLAUDE.md): "instructor is displayed as **Joshua**".
-- Current rendering surfaces use `display_name` verbatim:
-  - `ThreadList.tsx` line 17 → joins raw display_names
-  - `ConversationView.tsx` line 33 → header uses raw display_name
-  - `MessageBubble` → renders raw `senderName`
-- So once the RLS-fix RPC lands (previously approved plan), students will see **"Joshua Fisseha"** everywhere, not "Joshua".
+The user wants the Foyer ring + dock to visually match the older reference screenshot they shared (image-52/53 and now this attached one). Key cues from their message:
 
-## Two issues to resolve together
+- "visually identical to the style in the previous version" — older ring style
+- "color scheme" identical to old
+- "dock bar should be updated with the current nodes" — wait, dock has icons not nodes; they likely mean keep current icons but match older dock style
+- "function identically to the previous ring with different nodes" — keep current 3 nodes (SMART DRILL, ASK, RESUME), routing unchanged
+- "visually identically the same adjusting for sizing and spacing"
+- "current ring is not visually good"
+- "the dock bar was hover like before I want it to be like that" — older dock had hover-reveal behavior (icons/labels appear on hover)
 
-**Issue 1 — name not visible at all (already-approved fix, not yet shipped)**
-RLS on `profiles` blocks students from reading the admin row → `display_name = null` → UI shows "Conversation". Fix: SECURITY DEFINER RPC `get_conversation_participant_names`.
+I need to look at git history or the older version. Let me check chat history for what the older version looked like — based on the reference screenshots in prior turns (image-52/53 showed PRACTICE/CLASSROOM/BOOTCAMPS/ANALYTICS/SCHEDULE 5-node ring with subtle hairlines, small dots, label outside ring, dock as floating pill with hover reveal).
 
-**Issue 2 — when name does appear, it should say "Joshua" (per product rule), not "Joshua Fisseha"**
-Need a single canonical formatter for the admin's display name across inbox surfaces.
+Plan: restore the older visual treatment on both components while keeping current 3 nodes and current dock icon set + handlers.
 
-## Proposed plan
+## Plan — Restore older Foyer visual treatment
 
-### 1. Ship the RLS fix (from prior approved plan)
-- New migration: `get_conversation_participant_names(_user_ids uuid[])` SECURITY DEFINER RPC, returns `(user_id, display_name)` only for users who share a conversation with the caller.
-- `src/hooks/useInbox.ts` lines 80–85: replace direct `profiles` select with the RPC. (Code already references this RPC with a `@ts-expect-error` — migration just needs to actually create it.)
+### FoyerHeroRing.tsx (visual rewrite, same nodes & handlers)
 
-### 2. Add admin-name normalizer
-- New util `src/lib/displayName.ts` with `formatParticipantName(displayName, isAdmin)` that returns `"Joshua"` when `isAdmin === true`, otherwise the trimmed `display_name`.
-- Extend `useInbox.ts`:
-  - Also fetch which participant `user_id`s have the `admin` role (via existing `has_role` / `user_roles`) and attach `is_admin: boolean` to each `Participant`.
-  - Type update: add `is_admin?: boolean` to the `Participant` interface.
-- Apply formatter in:
-  - `ThreadList.tsx` line 14–17 (thread title + avatar initial → "J")
-  - `ConversationView.tsx` lines 30–35 (header + `nameById` map for sender labels)
-  - `MessageBubble` indirectly via the passed `senderName`
+Match older reference exactly:
+- SVG container `max-w-[560px] aspect-square mx-auto`
+- Outer ring: 1px hairline, `stroke-border` at opacity 0.25 (ghost line)
+- Inner echo ring at ~32% radius, opacity 0.18
+- Dot anchors: `r=3.5`, solid `fill-foreground`, no glow by default
+- Labels: 10px uppercase, `tracking-[0.28em]`, `font-medium`, `fill-foreground/70`, positioned ~46px outside ring path along the radial direction (recalc offsets per node so all three sit at same perpendicular distance)
+- Active state (hover/focus):
+  - Dot grows to `r=5` and gets soft primary halo `r=22, fillOpacity=0.18, blur(6px)`
+  - Label brightens to `fill-foreground` opacity 1
+  - 1px primary underline beneath label, label-width, 5px below baseline, fade in 200ms
+- Keep 3 nodes at 12 / 4 / 8 o'clock — SMART DRILL, ASK, RESUME — same handlers (navigate /drill, toast, navigate /drill)
+- Empty center, no card/text
 
-### 3. Verification
-- As a student, open `/inbox`:
-  - Thread title reads **"Joshua"**, avatar initial **"J"**
-  - Conversation header reads **"Joshua"**
-  - Incoming bubbles labeled **"Joshua"**
-- As admin (Joshua), student names still render as their real `display_name` (admin path unchanged).
-- No regression: non-admin participant names still appear verbatim.
+Color tokens only: `stroke-border`, `fill-foreground`, `fill-primary`, `stroke-primary`. No hardcoded hex.
 
-## Files
-- `supabase/migrations/<new>.sql` — `get_conversation_participant_names` RPC
-- `src/hooks/useInbox.ts` — call RPC, fetch admin user_ids, set `is_admin` on participants
-- `src/lib/displayName.ts` — new `formatParticipantName` helper
-- `src/components/inbox/ThreadList.tsx` — use formatter
-- `src/components/inbox/ConversationView.tsx` — use formatter
+### FoyerDock.tsx (restore hover-reveal pill)
 
-## Out of scope
-- No `profiles` RLS changes
-- No changes to admin-side rendering (admin keeps seeing real student names)
-- No changes to `display_name` stored in DB (stays "Joshua Fisseha")
+Older behavior was a minimal pill where icons sit muted and only "light up" on hover/focus. Restore that:
+- Pill: `rounded-full border border-border/60 bg-background/80 backdrop-blur-md shadow-lg shadow-black/30 px-2 py-2 gap-1`
+- Each button: `h-11 w-11 rounded-full` with **transparent** default background, icon color `text-foreground/55`
+- On hover/focus: background fades to `bg-foreground` and icon flips to `text-background` over 200ms (this is the "hover like before" behavior — buttons are flat/ghost until hovered, then become the filled dark circle)
+- Inbox unread badge unchanged (red dot top-right with count)
+- Same 3 buttons + handlers: Inbox → /inbox, Bell → toast, LifeBuoy → toast
+- Keep `aria-label`s and focus rings
+
+### AcademyFoyer.tsx (one-line spacing)
+
+- Ring↔dock vertical gap: `gap-8` → `gap-12`
+
+### Verification
+
+- `/foyer` at 1561px viewport: ring contained ≤560px, ghost stroke, tiny dots, labels breathing room, dock floats below with clear gap
+- Hover any ring node → dot halo + label brightens + underline fades in
+- Hover any dock icon → button fills dark, icon flips light (hover-reveal restored)
+- All 6 click targets route/toast as before
+- `npm run build` clean
+
+### Files
+
+- `src/components/foyer/FoyerHeroRing.tsx` (visual rewrite)
+- `src/components/foyer/FoyerDock.tsx` (hover-reveal restoration)
+- `src/pages/AcademyFoyer.tsx` (gap-8 → gap-12)
+
+### Out of scope
+
+- Sidebar untouched
+- Routing/handlers/node count/icon set untouched
+- No new dependencies, no token changes in `index.css` or `tailwind.config.ts`
 
