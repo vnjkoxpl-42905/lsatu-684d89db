@@ -157,7 +157,7 @@ export default function FoyerHeroRing() {
               <circle
                 cx={dot.x}
                 cy={dot.y}
-                r={isActive ? 5 : 3.5}
+                r={isActive ? 4.5 : 3}
                 className="fill-foreground"
                 style={{ transition: "r 200ms ease" }}
                 pointerEvents="none"
@@ -168,7 +168,7 @@ export default function FoyerHeroRing() {
                 y={labelY}
                 textAnchor={anchor}
                 className="fill-foreground"
-                fillOpacity={isActive ? 1 : 0.7}
+                fillOpacity={isActive ? 1 : 0.55}
                 style={{
                   fontSize: LABEL_FONT_PX,
                   letterSpacing: `${LABEL_TRACKING_EM}em`,
