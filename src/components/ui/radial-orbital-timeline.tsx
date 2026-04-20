@@ -140,19 +140,19 @@ export default function RadialOrbitalTimeline({
         style={{ perspective: "1000px" }}
       >
         {/* Center sphere — cool glass */}
-        <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-border/50 via-border/25 to-transparent border border-border/40 flex items-center justify-center z-10 backdrop-blur-sm">
+        <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-foreground/20 via-foreground/10 to-transparent border border-foreground/30 flex items-center justify-center z-10 backdrop-blur-sm">
           <div className="absolute inset-2 rounded-full bg-foreground/5 animate-pulse" />
           <div className="w-3 h-3 rounded-full bg-foreground/40" />
         </div>
 
         {/* Orbit ring — Apple-like layered depth, razor thin */}
-        <div className="absolute w-[420px] h-[420px] rounded-full border border-border/30 backdrop-blur-sm shadow-[0_0_60px_rgba(255,255,255,0.08)]" />
-        <div className="absolute w-[400px] h-[400px] rounded-full border border-border/60" />
+        <div className="absolute w-[420px] h-[420px] rounded-full border border-foreground/15 backdrop-blur-sm shadow-[0_0_60px_rgba(255,255,255,0.08)]" />
+        <div className="absolute w-[400px] h-[400px] rounded-full border border-foreground/40" />
         <div
-          className="absolute w-[400px] h-[400px] rounded-full border border-dashed border-border/25"
+          className="absolute w-[400px] h-[400px] rounded-full border border-dashed border-foreground/20"
           style={{ animation: "spin 60s linear infinite" }}
         />
-        <div className="absolute w-[384px] h-[384px] rounded-full border border-border/35" />
+        <div className="absolute w-[384px] h-[384px] rounded-full border border-foreground/20" />
 
         {timelineData.map((item, index) => {
           const position = calculateNodePosition(index, timelineData.length);
