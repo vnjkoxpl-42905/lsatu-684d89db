@@ -155,6 +155,13 @@ const JSON_FILES = [
   '/data/PT138-S2-LR.json',
   '/data/PT139-S1-LR.json',
   '/data/PT139-S4-LR.json',
+  // Twenty-third batch - PT154, PT155
+  '/data/PT154-S1-LR.json',
+  '/data/PT154-S2-LR.json',
+  '/data/PT154-S4-LR.json',
+  '/data/PT155-S1-LR.json',
+  '/data/PT155-S2-LR.json',
+  '/data/PT155-S4-LR.json',
 ];
 
 // Simple hash for qid generation
@@ -230,9 +237,11 @@ const TYPE_SYNONYMS: Record<string, string> = {
   
   // Principle variants
   'Principle-Strengthen': 'Principle-Strengthen',
+  'Principle Strengthen': 'Principle-Strengthen',
   'Principle: Strengthen': 'Principle-Strengthen',
   'Principle: Justify': 'Principle-Strengthen',
   'Principle-Conform': 'Principle-Conform',
+  'Principle Conform': 'Principle-Conform',
   'Principle: Conform': 'Principle-Conform',
   'Principle: Underlying': 'Principle-Conform',
   'Principle': 'Principle-Conform',

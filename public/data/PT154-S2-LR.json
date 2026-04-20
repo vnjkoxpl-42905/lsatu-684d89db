@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Activist: The average CEO is paid many times more than the average worker is paid at the same company. But it is certain that no CEO works many times harder than the average worker. Therefore the high pay of CEOs is wholly unjustified.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the activist’s argument?",
+    "answerChoices": {
+      "A": "At any given company, people’s pay should be proportional to how hard they work.",
+      "B": "At any given company, people’s pay should be proportional to how much they contribute to the overall success of the company.",
+      "C": "At any given company, people’s pay should be proportional to how much they need to sustain a reasonably comfortable lifestyle.",
+      "D": "At any given company, people who perform the same work should receive equal pay.",
+      "E": "People who are able to work hard have an obligation to do so."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "The poet E. E. Cummings stood for the individual human being against regimentation and standardization of any sort. Yet in doing so Cummings stood against something essential to the work he did, since metaphor presupposes literal language, and literal language essentially involves regimentation.",
+    "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Not all poets use metaphor.",
+      "B": "Metaphor was essential to E. E. Cummings’s work.",
+      "C": "There can be no literal language without metaphor.",
+      "D": "Poetry cannot be regimented or standardized.",
+      "E": "E. E. Cummings did not use literal language."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Horses, although descended from a forest-dwelling ancestor, thrive in grasslands. In the last 2 million years, horses have gone through three cycles of population increase followed by a rapid decline in population. The most recent cycle peaked 25,000 years ago during a cold period that preceded a period of warming.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the horse population peaked 25,000 years ago and then rapidly declined?",
+    "answerChoices": {
+      "A": "The forest-dwelling ancestor of horses was many times smaller than horses.",
+      "B": "The only true wild horse existing today, Przewalski’s horse, inhabits the cold grasslands of Central Asia.",
+      "C": "Some modern species that are related to horses, such as zebras, inhabit the warm grasslands of Africa.",
+      "D": "During cold periods there are extensive grasslands, but these tend to revert to forest when the climate warms.",
+      "E": "Several cycles of a cold period followed by a period of warming have occurred in the last 2 million years."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: Some primary schools’ early education reading programs encourage children to read by paying them for each book they read outside of class. Such programs should be viewed with suspicion. While paying kids to read might get them to read more, it also might teach them to regard reading as a chore rather than as a source of intrinsic satisfaction.",
+    "questionStem": "Which one of the following principles, if valid, most strongly supports the editorial’s reasoning?",
+    "answerChoices": {
+      "A": "Early education reading programs should focus more on getting children to read challenging books than on getting them to read a large number of books.",
+      "B": "Children will be more likely to develop into regular readers if they choose the books they read than if they do not.",
+      "C": "Parents will usually play a more important role than teachers in instilling in children a love of reading.",
+      "D": "The goal of early education reading programs should be to instill in children a love of reading.",
+      "E": "Improving children’s facility with reading will get them to enjoy reading."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Weaken",
+    "questionDifficulty": 1,
+    "stimulus": "Salmon farmer: Farm-raised salmon is preferable to wild salmon due to its year-round availability, consistent quality, and cheaper price. But the best reason to prefer farmed salmon is ecological: as consumers’ desire for farmed salmon increases, the market for threatened wild salmon drops, which in turn leads to more wild fish being allowed to live and multiply freely, thus increasing their numbers.",
+    "questionStem": "Which one of the following, if true, most weakens the salmon farmer’s argument?",
+    "answerChoices": {
+      "A": "Farmed salmon are fed with large quantities of small fish caught in areas where wild salmon attempt to feed.",
+      "B": "Though some wild salmon may be of lesser quality than farmed salmon, some is far better.",
+      "C": "Most people who eat salmon are not aware of any differences between the taste of wild salmon and that of farmed salmon.",
+      "D": "Limits on the number of salmon that can be taken from the wild have led to increases in the price of wild salmon.",
+      "E": "Wild salmon are more likely than farmed salmon to have consumed pollutants that may be harmful to humans."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Most Supported",
+    "questionDifficulty": 1,
+    "stimulus": "Video games are commonly criticized as morally corrupting in that they allow people to imagine themselves transgressing conventional morality. But it is telling that precisely this criticism was leveled against many forms of popular culture in their early stages of development, including novels, movies, and rock music. And just as it now seems silly to suggest that reading novels is morally corrupting, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "we should expect most new forms of popular culture to be criticized as morally corrupting",
+      "B": "we should prefer forms of popular culture that have matured to those that are still in their early stages of development",
+      "C": "we can expect these concerns about video games to fade over time",
+      "D": "we should condemn forms of popular culture that allow people to imagine themselves transgressing conventional morality",
+      "E": "it is silly to suggest that video games do not allow people to imagine themselves transgressing conventional morality"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 2,
+    "stimulus": "Library policy: For a book to be removed from circulation, the book must be badly damaged and must not have been checked out for over two years. Books that are either written by local authors or are considered to be of significance to local history can only be removed from circulation if they have not been checked out for over three years. \nApplication: Paper Flowers should not be removed from circulation.",
+    "questionStem": "Which one of the following, if true, fully justifies the above application of the library policy?",
+    "answerChoices": {
+      "A": "Paper Flowers is badly damaged.",
+      "B": "Paper Flowers has been checked out within the last year.",
+      "C": "Paper Flowers was last checked out between two and three years ago.",
+      "D": "Paper Flowers was written by a local author.",
+      "E": "Paper Flowers was not written by a local author, but is considered to be of significance to local history."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Editorial: If current trends continue, obesity will soon be the leading cause of preventable illness in our country. Yet a recent survey found that 45 percent of doctors said they did not feel qualified to advise their patients about weight-related issues. Clearly, therefore, doctors need more training in the treatment of obesity.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the editor’s argument?",
+    "answerChoices": {
+      "A": "Doctors should not be trained to treat a condition unless there exist effective treatments for that condition.",
+      "B": "Changes in the way that doctors are trained are warranted only if there are changes in the treatment options.",
+      "C": "Doctors do more good when they treat their patients’ unpreventable illnesses than when they counsel them about preventable ones.",
+      "D": "Doctors should focus their efforts on the health conditions that they are able to treat most effectively.",
+      "E": "Doctors should be adequately trained to treat the underlying causes of preventable illness."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Editor: It is a myth that a significant amount of music on the Internet is the result of people downloading others’ music and reworking it into new music of their own. We know this because it has been shown that 99 percent of Internet users who download music do not publish new music of their own on the Internet.",
+    "questionStem": "The editor’s reasoning is questionable in that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that a relatively small number of people can create a significant amount of new music",
+      "B": "neglects to consider the ease with which music can be published on the Internet",
+      "C": "fails to provide an alternative account of the sources for most of the music published on the Internet",
+      "D": "presumes, without giving justification, that those who rework downloaded music into new creations always publish those new creations on the Internet",
+      "E": "takes for granted that Internet users always prefer music that is original to music that has been downloaded and reworked into a new creation"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Wei: A respected automobile expert claims that most cars will develop transmission problems unless their transmissions are serviced at least once every three years. But this claim is false. I have owned both of my cars for over twelve years, I have never had the transmission serviced on either one, and neither one has ever developed a transmission problem.",
+    "questionStem": "The pattern of flawed reasoning in Wei’s argument is most similar to the pattern of flawed reasoning exhibited by which one of the following?",
+    "answerChoices": {
+      "A": "My veterinarian told me that most cats who do not have yearly teeth cleaning will develop gum problems. However, I have not had my cat’s teeth cleaned for the past ten years, and she has not had any gum problems. Therefore, my veterinarian was wrong.",
+      "B": "Car dealers claim that customers save money in the long run if they purchase extended warranties for new cars. But car dealers have a strong interest in making money from the warranties. Thus, the car dealers’ claim is false.",
+      "C": "A high-ranking traffic safety official claims that driving over the speed limit increases the chance of having an automobile accident. But this claim is not true. I never drive over the speed limit, and I have had two accidents in the past year.",
+      "D": "Boot manufacturers claim that a good pair of boots will last at least five years. But this claim is false. The boots I got on sale at The Discount Store lasted only two years.",
+      "E": "A study of local rainfall shows that we have received at least 20 centimeters (8 inches) of rain per year for the past 50 years. Thus, we will probably get at least 20 centimeters of rain this year, too."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Most Supported",
+    "questionDifficulty": 1,
+    "stimulus": "A part of the brain called the amygdala is involved in sensing fear. People who have Urbach-Wiethe disease, which destroys the amygdala, generally do not experience fear. They do, however, experience extreme fear when given a breath that is very high in carbon dioxide, just as some people with normal amygdalae do.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Extreme fear is not the only intense response that people can have to a breath that is high in carbon dioxide.",
+      "B": "Sensing fear is not the only function the amygdala can serve.",
+      "C": "Urbach-Wiethe disease is not the only disease that can destroy the amygdala.",
+      "D": "The amygdala is not the only part of the brain that can be affected by Urbach-Wiethe disease.",
+      "E": "The amygdala is not the only part of the brain that can be involved in sensing fear."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Bauer: It is a mistake to criticize the city for being overzealous in its issuance of parking tickets. Can you imagine how much worse parking would be if parking regulations were not enforced?",
+    "questionStem": "The reasoning in Bauer’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "misrepresents a criticism about the consequences of a practice as a criticism about the intrinsic value of the practice",
+      "B": "takes for granted that a certain authority should be respected merely because it is an authority",
+      "C": "takes for granted that a particular practice is good simply because it is the way things have traditionally been done",
+      "D": "confuses the cause of a certain phenomenon for an effect of that phenomenon",
+      "E": "defends the current situation merely by suggesting its superiority to an implausible alternative"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Advertisers typically prohibit graphic designers from signing their works because the purpose of a graphic design is to draw attention to an advertised product or service, not to the designer. Nonetheless, it is better that graphic designers not remain anonymous. Anonymity undermines effective graphic design by making it difficult to hold designers accountable for their work.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Prohibitions against graphic designers’ signing their works are common in advertising.",
+      "B": "In advertising, the purpose of a graphic design is to focus attention on an advertised product or service rather than on the designer.",
+      "C": "It is not desirable that graphic designers remain anonymous.",
+      "D": "Graphic design is made less effective by anonymity on the part of graphic designers.",
+      "E": "Holding graphic designers accountable for their work is difficult when those designers are anonymous."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Superintendent: Within the school district overall, 11 percent of high school students drop out. However, of the high school students who participate in work internships, only 1 percent drop out. Clearly, then, participation in a work internship decreases the chance that a student will drop out.",
+    "questionStem": "The reasoning in the superintendent’s argument is flawed because the argument",
+    "answerChoices": {
+      "A": "uses evidence that is in principle impossible to disprove",
+      "B": "uses the key term “student” in one sense in a premise and in another sense in the conclusion",
+      "C": "generalizes from a single instance of a certain kind to all instances of that kind",
+      "D": "infers a specific causal relationship from a correlation that might well have arisen from another cause",
+      "E": "contains a premise that presupposes the truth of the conclusion"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Journalist: Despite the recent spate of depressing political news, many investors are putting money into stocks. Clearly, these investors are confident of increased growth in the country’s economy. Thus, since voter confidence in the economy tends to favor incumbent political leaders, it is likely that the party now in power will retain power after the upcoming elections.",
+    "questionStem": "Which one of the following is an assumption required by the journalist’s reasoning?",
+    "answerChoices": {
+      "A": "The economic policies pursued by the government are a major factor in producing stock market growth.",
+      "B": "The investment choices of voters tend to reflect their political preferences.",
+      "C": "The economic attitudes of investors do not differ greatly from those of voters in general.",
+      "D": "Voters generally attribute some responsibility for the state of the economy to the policies of previous governments.",
+      "E": "Voters are usually more loyal to parties than to individual politicians."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Archaeologist: The people who lived in this area deposited their rubbish in pits near their dwellings. Some claim that the rubbish found in those pits provides great insight into the possessions these people had, but this rubbish by itself actually tells us relatively little about those possessions; among other reasons, the pits have been subject to erosion over long periods of time, with destructive effects on the rubbish within.",
+    "questionStem": "Which one of the following, if true, most strengthens the grounds presented by the archaeologist for drawing the conclusion in the argument above?",
+    "answerChoices": {
+      "A": "The pits contain certain tools not found in dwellings or at other above-ground locations.",
+      "B": "Scavengers routinely salvaged the most durable items from the rubbish pits.",
+      "C": "The soil surrounding the rubbish pits was sometimes removed for the manufacture of bricks.",
+      "D": "The pits in which the rubbish was deposited had earlier been used by this group of people as burial sites.",
+      "E": "Certain types of items were never discarded by members of this group of people."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Parallel",
+    "questionDifficulty": 3,
+    "stimulus": "Consultant: The mayor shouldn’t adopt her rival’s controversial proposal for solving the city’s budget problem. If she adopts the proposal and it succeeds, she risks increasing her rival’s credibility. If it fails, she will get blamed for wasting time on such an unconventional idea.",
+    "questionStem": "Which one of the following arguments is most closely parallel in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Zvi should continue practicing his instrument over the vacation. If he stops, he risks losing ground on what he has already mastered. And if he loses any ground, he will not be prepared in time for the recital.",
+      "B": "Joni should not self-publish her novel. It is unlikely that most readers will take a self-published novel seriously, and any success she does have will cause her to be ostracized by the big publishing houses.",
+      "C": "Despite his current financial predicament, Brett should not sell his comic book collection. It will certainly continue to grow in monetary value. Additionally, its sentimental value is too easily underestimated.",
+      "D": "Alvin should not submit his paper for presentation at the conference. He might not have time to meet his publisher’s deadline if the paper is accepted, and if the paper is rejected, he will lose confidence in it altogether.",
+      "E": "Elisa should call the tourist agency now to reserve a spot on the tour. If she waits much longer, she risks not being able to go on the tour. And if she calls right away, she will likely still be able to negotiate the price."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Role",
+    "questionDifficulty": 3,
+    "stimulus": "Anthropologists have long debated whether the customs of a culture invariably function to preserve it. According to one proposed definition, a culture is the totality of the customs practiced by those whose culture it is. If this definition is correct, then the customs of a culture necessarily function to preserve it, even if only in the most trivial sense, because, under this conception of a culture, the abandonment of any custom by a culture’s members would by definition constitute that culture’s destruction.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that under a certain conception of culture, the abandonment of any custom by a culture’s members would constitute that culture’s destruction?",
+    "answerChoices": {
+      "A": "It is the main conclusion drawn in the argument.",
+      "B": "It is a definition of a technical term used in the argument.",
+      "C": "It is a claim that is used to support a conditional conclusion drawn in the argument.",
+      "D": "It is a claim that is used to support the view that a culture should be understood as a totality of customs.",
+      "E": "It is a claim ascribed by the argument to some anthropologists but dismissed by the argument as trivial."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Doctor: The patient had been experiencing back and leg pain. A computerized scan suggested that there was pressure on a nerve exiting to the leg from a lower vertebra. Such pressure can cause nerve inflammation, which can in turn cause pain. I decided that if the nerve was inflamed, the best way to reduce the inflammation would be a cortisone injection to the nerve, and this, in fact, did result in significant pain relief. I conclude, therefore, that pressure on the nerve in question was causing this patient’s back and leg pain.",
+    "questionStem": "Which one of the following is an assumption required by the doctor’s argument?",
+    "answerChoices": {
+      "A": "Computerized scans are the most accurate way of diagnosing certain kinds of ailments.",
+      "B": "The cortisone injection did not reduce pressure on the inflamed nerve in the patient’s leg.",
+      "C": "The pain relief did not occur merely through the patient’s belief in the efficacy of the cortisone.",
+      "D": "Only cortisone injections can cause a reduction of an inflammation of a nerve like that in the patient’s leg.",
+      "E": "The best treatment for back and leg pain is usually a drug that relieves inflammation."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 4,
+    "stimulus": "The public’s welfare can be undermined by its own tastes. Journalists tend to focus on stories that will stimulate their readers’ interest. Because sensation and drama serve this purpose more successfully than do matter-of-fact descriptions of political or social developments of far-reaching importance, newspaper articles containing the latter are all too often displaced by those that highlight rumors and implausible conspiracies.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument above?",
+    "answerChoices": {
+      "A": "The best interests of the public sometimes fail to be served because of the sorts of preferences that people have.",
+      "B": "Journalists’ tendency to focus on sensational and dramatic stories rather than those of far-reaching importance is to the detriment of the public welfare.",
+      "C": "Newspaper articles that focus on rumors or speculate about conspiracies too often displace stories about important political or social developments.",
+      "D": "The shortcomings of modern print-journalism can be attributed to the preferences of its readers.",
+      "E": "Journalists should pay more attention to the public’s welfare than to its tastes when choosing which stories to focus on."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "A study of 30 years of weather pattern records of several industrialized urban areas found that weekend days tend to be cloudier than weekdays. Thus it can no longer be denied that human activity has appreciable, large-scale effects on weather, because the few seven-day cycles that occur naturally are of too little significance to cause measurable weather patterns.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Industrial activity tends to decrease significantly on weekend days in the large urban areas studied.",
+      "B": "There are no naturally occurring seven-day cycles in the areas studied.",
+      "C": "If living organisms have an appreciable large-scale effect on weather patterns, then this is due at least partly to the effects of human activity.",
+      "D": "If something appreciably affects large-scale weather patterns, it is probably cyclical in nature.",
+      "E": "If a weather pattern with a natural cause has a seven-day cycle, then that cause has a seven-day cycle."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "Art critic: All of Dolores Albarran’s oil paintings are highly original, though few of them are critically acclaimed or popular with collectors. Remarkably, Albarran produced no highly original works until late in her career, and few of her abstract works demonstrate much originality.",
+    "questionStem": "If all of the art critic’s statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Most of Albarran’s works that are not popular with collectors are highly original.",
+      "B": "Few of the works produced late in Albarran’s career are abstract works.",
+      "C": "Most, if not all, of the works produced late in Albarran’s career are oil paintings.",
+      "D": "Most, if not all, of Albarran’s abstract works are not oil paintings.",
+      "E": "Few or none of Albarran’s critically acclaimed works are highly original."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Paradox",
+    "questionDifficulty": 3,
+    "stimulus": "The effects of global warming on the polar ice caps have been studied with computer models. According to some models, if the global temperature increases by as little as two degrees Celsius, the seawater will rise to a temperature that could melt the ice caps considerably. However, those models also show that under such a scenario, the volume of the ice caps would increase, not shrink.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the apparent paradox described above?",
+    "answerChoices": {
+      "A": "As global temperatures increase, more seawater evaporates into the atmosphere, thereby leading to increased snowfall at the polar caps, which then melts and refreezes as ice.",
+      "B": "As global temperatures increase, more seawater evaporates into the atmosphere, thereby lowering the ocean level, which then results in less contact between the ice caps and the warmer water, thereby stabilizing the size of the ice caps.",
+      "C": "As sea temperatures increase, the difference in temperature between the polar ice caps and the adjacent water becomes greater, which in turn causes the water to melt the ice it contacts at a faster rate.",
+      "D": "As sea temperatures increase, evaporation of seawater causes the concentration of salt in the water to increase, which thereby lowers the temperature needed to freeze the seawater.",
+      "E": "As global temperatures increase, more seawater evaporates into the atmosphere, thereby leading to increased cloud formation, which causes smaller variations between the average temperatures of the earth’s hottest climates and those of its coldest climates."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Until recently, experts have been unable to identify the artist who created a Renaissance painting depicting aristocrats in a historic battle. But the mystery has been solved by the discovery of a self-portrait of a well-known artist from very early in his career, dated to the same year that the painting of the battle scene was created. One of the figures in the battle scene closely resembles the young man in the self-portrait. It is likely, therefore, that the artist who painted the self-portrait also painted the battle scene.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The painting of the battle scene depicts several other people who appear to be roughly the same age as the man depicted in the self-portrait.",
+      "B": "Most of the figures depicted in the painting of the battle scene resemble real people from history.",
+      "C": "It was not uncommon in the Renaissance for painters to use live models in depicting people in their paintings.",
+      "D": "It would have been a violation of etiquette for so young an artist to include himself among aristocrats in a painting of a historic battle.",
+      "E": "The historic battle that is the subject of the painting took place a number of years before the birth of the artist who painted the self-portrait."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 4,
+    "stimulus": "Babson: The idea of charging people a dollar to read individual articles and essays online, while novel, will succeed if the quality of the articles and essays is high enough. A dollar isn’t much money: in many countries people routinely reward quality service with tips of much more than a dollar.\nCortez: But most people tip only for those services for which it is customary to tip. The fact that people don’t currently pay for articles and essays individually is a bad sign for anyone who hopes to earn money this way.",
+    "questionStem": "The dialogue provides the most support for the claim that Babson and Cortez disagree over whether",
+    "answerChoices": {
+      "A": "people will routinely part with money under circumstances in which it is considered customary to do so",
+      "B": "people in countries in which tipping is customary are more likely than people in other countries to be willing to pay a dollar to read individual articles and essays online",
+      "C": "it is possible to write articles and essays for which some people would pay a dollar each to read online even where social customs do not support such a practice",
+      "D": "people’s attitudes toward tipping suggest that the idea of charging a dollar to read individual articles and essays online will be successful as long as their quality is high enough",
+      "E": "most people are likely to find the idea of paying a dollar to read individual articles and essays online to be a novel one"
+    },
+    "correctAnswer": "D"
+  }
+]

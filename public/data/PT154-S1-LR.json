@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 2,
+    "stimulus": "Rhett: Otto gives me a ride to work every morning and expects me to help pay for fuel. But I shouldn’t have to pay. Giving me a ride doesn’t increase the amount he spends on fuel, since he has to go right by my house anyway.\nBarbara: By that flawed logic, you would be entitled to the warm air that heats the unused spare room of my house, if you could divert it to your house without increasing my expenses.",
+    "questionStem": "The dialogue provides the most support for the claim that Rhett and Barbara disagree over whether",
+    "answerChoices": {
+      "A": "Otto requires Rhett to help pay for fuel for the ride to work",
+      "B": "Rhett should have to help pay Otto’s fuel expenses",
+      "C": "giving Rhett a ride to work increases Otto’s fuel expenses",
+      "D": "Rhett is entitled to the warm air that heats Barbara’s unused spare room",
+      "E": "Rhett could divert to his house the warm air that heats Barbara’s unused spare room without increasing her expenses"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Classicist: In the ancient Athenian democracy, unlike in any other political system in world history, the legislature consisted of all eligible voters. Athenian voters, not elected representatives, made all political decisions by direct vote after public debate in the Assembly. Thus, if the world has ever known true democracy, it was only in ancient Athens.",
+    "questionStem": "The conclusion of the classicist’s argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Most political systems in world history have not been democracies.",
+      "B": "Public debate is an essential part of any democratic decision-making process.",
+      "C": "Athens was the only city in ancient Greece that had a democratic political system.",
+      "D": "A political system is not a true democracy unless the eligible voters themselves vote directly on all political decisions.",
+      "E": "Most Athenians who were eligible to vote attended the Assembly whenever it was debating important political decisions."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Role",
+    "questionDifficulty": 2,
+    "stimulus": "Near-Earth objects (NEOs) such as asteroids threaten the Earth because they have the potential to collide with it. The goal of NEO research is to develop measures to counteract a possible hit by a sizable NEO. Government funding of this research is not a waste of money. Buying home insurance makes good fiscal sense, and governments fund NEO research for the same reason that people insure their homes.",
+    "questionStem": "The statement that buying home insurance makes good fiscal sense plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It connects an analogy made in the argument to the argument’s conclusion.",
+      "B": "It is the overall conclusion of the argument.",
+      "C": "It defines a key term used in a premise of the argument.",
+      "D": "It provides a contrast to the situation that is the main focus of the argument.",
+      "E": "It is a general principle for which the argument attempts to provide support."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Oscar: Clearly, student evaluations provide the best assessment of teacher performance. Who is in a better position to judge a teacher than that teacher’s students?\nBettina: Student evaluations of teachers are usually conducted at the end of a class. However, students generally fail to appreciate the impact of a teacher until many years later. So, peer evaluations of teachers might be a good supplement or a better alternative.",
+    "questionStem": "The dialogue provides the most support for the claim that Oscar and Bettina disagree over whether",
+    "answerChoices": {
+      "A": "students are ever capable of adequately judging a teacher’s performance",
+      "B": "students’ opinions may change over a period of many years",
+      "C": "student evaluations furnish the optimal assessment of teacher performance",
+      "D": "teacher performance should be assessed without conducting any student evaluations",
+      "E": "student evaluations are usually conducted at the end of a class"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Taste buds were the primary tool early humans used for testing foods. Sour taste warns of possible spoilage of food while bitterness is a warning of many poisons. Early humans also recognized sweet foods and salty foods as meeting nutritional needs. So the fact that people can now clearly distinguish these four tastes—sour, bitter, sweet, and salty—is completely explained by people’s use of taste to test for the healthfulness of foods.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes a necessary condition for the truth of its conclusion to be sufficient to justify that conclusion",
+      "B": "fails to consider that many people associate foods more with their smells than with their tastes",
+      "C": "fails to consider that some nutritious foods are bitter when raw but not after being cooked",
+      "D": "fails to consider that most early humans ate a much more limited range of foodstuffs than do contemporary people",
+      "E": "takes what might be only a partial explanation of a phenomenon to be the complete explanation"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "To discourage congestion, a city raised on-street parking rates in a downtown business district. For restaurants in the district, whose customers require short-term parking, the surprising result was a small increase in sales.",
+    "questionStem": "Which one of the following, if true, contributes to an explanation of the increase in sales at restaurants in the district?",
+    "answerChoices": {
+      "A": "Customers of the district’s businesses can also use private parking lots, which are generally more expensive than on-street parking.",
+      "B": "Owners of the district’s businesses, for the most part, initially opposed the raising of the on-street parking rates.",
+      "C": "Even before the change in parking rates, the staffs of the businesses in the district used only off-street parking.",
+      "D": "More expensive parking leads to greater turnover in cars parked in front of the businesses in the district.",
+      "E": "The business district is in competition with malls that offer free parking to their customers."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Mark: Advances in technology have caused the decline of newspaper sales. News can be reported in articles on the Internet as it happens and at any time of day. No print newspaper can possibly keep up with that.\nFatuma: Newspaper writing is hampered by conventions that do not add to readers’ understanding of the news. It is not the fault of technology that newspapers are losing their audience to the Internet. Newspaper articles are just too long. On the Internet, news articles get to the point.",
+    "questionStem": "Mark and Fatuma disagree over the truth of which one of the following?",
+    "answerChoices": {
+      "A": "Readers are abandoning newspapers in favor of news articles on the Internet because of the speed with which they appear on the Internet.",
+      "B": "Newspaper articles are too long.",
+      "C": "News articles on the Internet get to the point.",
+      "D": "Newspaper writing is hampered by conventions that do not add to the reader’s understanding of the news.",
+      "E": "No print newspaper can possibly publish news as fast as it can be published on the Internet."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Most Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Statistics teachers often debate whether to teach the mathematical theories underlying statistics or to focus on the use of statistical methods to solve real problems. This is like the difference between learning to build a car and learning to drive one. Almost all statistics courses teach “building,” and if there is extra time, they may cover a tip or two on “driving.” But, just as ordinary drivers do not need to know how to build a car in order to drive one, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "students should not be presumed by their teachers to have a particular goal or purpose in taking a class",
+      "B": "statistics should be considered as a discipline that is distinct from mathematics",
+      "C": "statistics teachers should focus on providing their students with the skills that they are most likely to use",
+      "D": "users of statistics do not need to understand the underlying theory in order to solve real problems",
+      "E": "statisticians do not need to understand the needs of their students in order to become teachers"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Gecko lizards are found in any environment where there is an abundant population of gnats. Gnats can survive only in wet climates. Because there are no gecko lizards living here, there must not be an abundant population of gnats here. Consequently, the climate here must not be wet.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "presumes, without providing justification, that gecko lizards can survive only in environments with abundant gnat populations",
+      "B": "presumes, without providing justification, that all wet environments contain abundant populations of gnats",
+      "C": "does not consider whether small populations of gnats can survive in climates that are not wet",
+      "D": "does not mention whether gecko lizards eat anything besides gnats",
+      "E": "fails to establish that some gecko lizards could not survive in a dry climate containing only a small population of gnats"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Parallel",
+    "questionDifficulty": 1,
+    "stimulus": "If Thompson appeals to moderates, his most ardent supporters will desert him and he will not have enough votes to win the election. However, if he does not appeal to moderates, these moderates will vote for his opponent and he will not have enough votes to win the election. Either way, Thompson is bound to lose the election.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "If Chen supports building a new art center, the center will be built. If Chen opposes building a new art center, the center will not be built. So whether or not a new art center will be built depends on Chen’s decision.",
+      "B": "If the company decides to relocate, it will lose a number of employees, since many employees are unwilling to move. But if the company decides to stay where it is now, it will lose a number of employees, since many employees are unhappy in this location. So the company will lose employees no matter what it decides.",
+      "C": "If money is not appropriated to fix the city roads, the pothole problem will get out of control. And if the pothole problem gets out of control, the city councilors will all be replaced. So the city council has no choice but to appropriate money to address the pothole problem.",
+      "D": "If the city council approves a small increase in property taxes, there will be enough money to restore the city swimming pools in Rice Park. If the city council approves a large increase in property taxes, there will be enough money to restore the city swimming pools and build a recreational center in Rice Park. Either way, the city will make progress in improving the facilities in Rice Park.",
+      "E": "If Madsen decides to support the proposed shopping mall, she will make an effective spokesperson for the project. But if Madsen decides to oppose the shopping mall, there will be no difficulty in finding another effective spokesperson. So the project’s success does not depend on Madsen’s decision."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "It is morally praiseworthy to be honest only if one is honest out of respect for morality. Strictly speaking, therefore, Downing did not act in a manner worthy of such praise when he told the judge the truth about his business partner’s fraudulence. Downing was motivated by concern for his own well-being—even though what he did was certainly honest.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "An action motivated by concern for oneself cannot be deserving of moral condemnation.",
+      "B": "Some actions that are essentially honest are not morally praiseworthy.",
+      "C": "An action performed out of respect for morality cannot also be an action motivated by concern for oneself.",
+      "D": "The moral praiseworthiness of an action can be judged only according to standards that refer to the circumstances of the person acting.",
+      "E": "Morality demands that one be honest, even in cases where this could be detrimental to one’s own well-being."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Art history professor: Costa criticizes my theories about the distinction between baroque and neoclassical Austrian painting. He argues that since there are no features possessed by all and only the works from a given historical period, assigning works of art to period styles is intellectually bankrupt. His reasoning can be discounted, however, since his own current theories on the transition from classical to romantic French opera also presuppose such an assignment.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the art history professor’s argument?",
+    "answerChoices": {
+      "A": "The argument confuses a necessary condition for discounting a person’s reasoning with a sufficient condition for discounting a person’s reasoning.",
+      "B": "The argument overlooks the possibility that theoreticians can hold radically different theories at different times.",
+      "C": "The argument rejects the reasoning on which a criticism is based merely on the grounds that that very criticism could be applied to theories of the person who offered it.",
+      "D": "The argument presumes, without providing justification, that what is true of art in general must also be true of every particular type of art.",
+      "E": "The argument presumes, without providing justification, that theories about one type of art cannot be compared to theories about another."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Columnist: Computer voice-recognition technology currently cannot distinguish between homophones such as “their” and “there.” As a consequence, until voice-recognition technology is improved to recognize and utilize grammatical and semantic relations among words, voice-recognition programs will not accurately translate a computer user’s spoken words into written text.",
+    "questionStem": "Which one of the following is an assumption required by the columnist’s argument?",
+    "answerChoices": {
+      "A": "In order for computer voice-recognition technology to distinguish between homophones, it must be able to recognize grammatical and semantic relations among words.",
+      "B": "If voice-recognition technology is improved to recognize and utilize grammatical and semantic relations among words, voice-recognition programs will accurately translate spoken words into text.",
+      "C": "Humans can distinguish between homophones without using information about the grammatical and semantic relations among words.",
+      "D": "Unless voice-recognition technology can distinguish between words that are homophones, it cannot recognize grammatical and semantic relations among words.",
+      "E": "Computer programs that check the spelling and grammar of written text are currently able to distinguish between homophones."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "Although early jazz music featured a great deal of improvisation, this improvisation did not stray too far from the rather simple, catchy melodies upon which it was based. So, however interesting it may be, later music featuring improvisation that strays far from the melody ought not to be classified as jazz.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "For a piece of music to be classified as jazz, it must feature some amount of improvisation.",
+      "B": "The later music featuring improvisation was heavily influenced by early jazz.",
+      "C": "Some of the later music featuring improvisation was performed by artists who had been jazz musicians earlier in their careers.",
+      "D": "Many types of music other than jazz feature a great deal of improvisation.",
+      "E": "The later music featuring improvisation has much more in common with early jazz than with any other type of music."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Method",
+    "questionDifficulty": 2,
+    "stimulus": "In the winter, ravens survive by eating carcasses; in fact, an individual raven may survive for weeks on one carcass. Yet, according to many reports, ravens will often recruit more ravens to help eat a carcass. This seemingly altruistic behavior struck Bernd Heinrich as being worthy of investigation. He set up observation blinds from which he had a clear view of an open meadow in which he placed meat. He found that the mated pair of ravens in whose territory the meadow was located laid exclusive claim to the meat; so, to avoid starvation, juvenile ravens—who do not yet have territories—had to assemble in groups large enough to drive the resident pair away from the meat.",
+    "questionStem": "Which one of the following descriptions best fits Bernd Heinrich’s study as reported in the passage above?",
+    "answerChoices": {
+      "A": "He proposed two alternative hypotheses, each of which would explain a set of observations.",
+      "B": "His investigation partially confirmed prior observations but led to a radical reinterpretation of those observations.",
+      "C": "He proposed a theory and then proceeded to confirm it through observation.",
+      "D": "He used different methods from those used in earlier studies but arrived at the same conclusion.",
+      "E": "His investigation replicated previous studies but yielded a more limited set of observational data."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "The prevailing view among historians is that medieval European peasants were deeply dedicated to religion. But the record keepers in medieval Europe were members of the clergy. It should not surprise us that chroniclers who were professionally occupied with religion would exaggerate people’s religious devotion. Thus, there is reason to doubt the prevailing view of medieval peasants’ piety.",
+    "questionStem": "Which one of the following, if true, would most weaken the argument above?",
+    "answerChoices": {
+      "A": "Among the written records produced by clergy in medieval Europe and currently available to historians are a number of documents detailing nonreligious, as well as religious, activities of peasants.",
+      "B": "Many members of the clergy in medieval Europe spent more time among peasants than among people of any other social class.",
+      "C": "Written records produced by clergy in medieval Europe very rarely portray merchants or nobles as being dedicated to religion.",
+      "D": "Historians cannot develop a reliable account of the religious attitudes held during any given historical period unless they have consulted all of the relevant surviving records from that period.",
+      "E": "Documents produced by clergy in medieval Europe contain detailed descriptions of participation by peasants and others in religious activities."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Beads were used as currency for centuries. But why beads? The striking fact about many objects that have been used as currency—gold, silver, and feathers, to name a few—is that they were first used mainly, and often solely, as decorative objects. Thus, it is natural that beads, which were initially valued as objects of adornment, also came to be used as currency.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the argument above?",
+    "answerChoices": {
+      "A": "The similarity between the secondary uses of two different objects can cause the primary use of one to be transferred to the other.",
+      "B": "The similarity between the primary uses of two different objects can cause the secondary use of one to be transferred to the other.",
+      "C": "An object having a certain original use is likely to have the same derivative use as do other objects having that original use.",
+      "D": "An object cannot take on a derivative use unless it ceases to have its original use.",
+      "E": "The more an object is used to represent value in general, the more likely it is to be valued for particular uses."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "In many families adults speak to babies in simplified language. Yet constantly repeating simple phrases like “Nice kitty. See the kitty?” does not provide extra help to children in learning a language. We know this because there are families in which no one speaks to babies this way, yet the children in these families master the grammatical structure of their language just as well and as quickly as other children do.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "Babies pay no extra attention to spoken phrases with simple grammatical structures.",
+      "B": "Speaking to babies in simplified language could impair their language learning.",
+      "C": "Any child who has mastered the grammatical structure of a language has learned the language.",
+      "D": "Many linguists believe that speaking to babies in simplified language helps the babies learn language.",
+      "E": "To learn a language one must acquire its vocabulary as well as its grammatical structure."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Medical researcher: At the Flegco Corporation, all employees whose work involves lifting heavy objects wear back belts to prevent back injuries. However, a study found that Flegco employees who wear back belts are actually more likely to suffer back injuries than are employees who do not wear back belts. This suggests that back belts do not help to prevent back injuries.",
+    "questionStem": "The reasoning in the medical researcher’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It compares the incidence of back injury between two groups who probably do not have the same risk factors for back injury.",
+      "B": "It fails to address the possibility that Flegco Corporation employees are more likely to wear back belts than are employees who perform similar tasks in other corporations.",
+      "C": "It takes for granted that if a factor is associated with an increased likelihood of a certain effect, that factor must causally contribute to that effect.",
+      "D": "It confuses the claim that a phenomenon does not causally contribute to a certain effect with the claim that that phenomenon causally contributes to preventing that effect.",
+      "E": "It fails to address the possibility that even if a factor is sufficient to produce a certain effect, its presence may not be necessary in order for that effect to be produced."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "That Shakespeare’s The Winter’s Tale (1610–1611) is modeled after Euripides’ Alcestis (fifth century B.C.) seems undeniable. However, it is generally accepted that Shakespeare knew little or no Greek, so Euripides’ original play would be an unlikely source. Thus, it seems most likely that Shakespeare came to know Euripides’ play through a Latin translation.",
+    "questionStem": "Which one of the following, if true, least strengthens the argument?",
+    "answerChoices": {
+      "A": "Latin phrases that were widely used in England during Shakespeare’s time appear in a number of his plays.",
+      "B": "The only English language version of Alcestis available in Shakespeare’s time differed drastically from the original in ways The Winter’s Tale does not.",
+      "C": "Paul Buchanan’s 1539 Latin translation of Alcestis was faithful to the original and widely available during the 1600s.",
+      "D": "Shakespeare’s father’s community standing makes it probable that Shakespeare attended grammar school, where Latin would have been a mandatory subject.",
+      "E": "There is strong evidence to suggest that Shakespeare relied on Latin translations of Greek plays as sources for some of his other works."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Restaurant critic: Most people agree that the food at Marva’s Diner is exceptional, while the food at the more popular Traintrack Inn is fairly ordinary. This discrepancy should come as no surprise, since the Traintrack Inn’s more convenient location is by itself almost enough to guarantee a steady flow of customers.",
+    "questionStem": "Which one of the following is a principle that, if valid, most helps to justify the restaurant critic’s reasoning?",
+    "answerChoices": {
+      "A": "The best way for a business to attract a steady flow of customers is to improve its products.",
+      "B": "Any restaurant can become more popular by moving to a more convenient location.",
+      "C": "The quality of the food at a restaurant is the most important factor in its popularity.",
+      "D": "A business will improve its products only when it is necessary to do so in order to attract customers.",
+      "E": "There is no relationship between the quality of a restaurant’s food and the popularity of that restaurant."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "Newspaper: Increases in produce prices apparently have led to an increase in the planting of personal gardens. The two largest retail seed companies each reported sales increases of around 19 percent in the last year alone, a year in which the price of produce spiked.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the newspaper’s argument?",
+    "answerChoices": {
+      "A": "Increases in produce prices are largely driven by increases in the fuel costs of bringing crops to market.",
+      "B": "The average personal garden is much smaller than it was decades ago when inexpensive produce started to become available.",
+      "C": "Community gardens report that waiting lists for renting garden plots have gotten longer over the last year.",
+      "D": "Personal gardens are usually popular in economic downturns.",
+      "E": "A large retail seed company went out of business early last year."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "Inventor: All highly successful entrepreneurs have as their main desire the wish to leave a mark on the world. Highly successful entrepreneurs are unique in that whenever they see a solution to a problem, they implement that idea. All other people see solutions to problems but are too interested in leisure time or job security to always have the motivation to implement their ideas.",
+    "questionStem": "If the inventor’s statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Most people do not want to leave a mark on the world because trying to do so would reduce their leisure time or job security.",
+      "B": "All people who invariably implement their solutions to problems have at least some interest in leisure time or job security.",
+      "C": "The main desire of all people who implement solutions whenever they detect them is to leave a mark on the world.",
+      "D": "Generally, highly successful entrepreneurs’ interests in leisure time or job security are not strong enough to have a negative impact on their ability to see solutions to problems.",
+      "E": "All people whose main desire is to implement their solutions to problems leave a mark on the world."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Paradox",
+    "questionDifficulty": 3,
+    "stimulus": "Nuts are high in calories. All else being equal, the more calories one consumes, the more likely one is to become overweight. However, studies have found that people who eat nuts regularly are actually less likely to be overweight than people who never eat nuts.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "The likelihood of becoming overweight depends not only on how many calories one consumes but also on how rapidly one burns those calories through physical activity.",
+      "B": "Due to the fact that nuts are rich in calories, consuming a sufficiently large quantity produces a feeling of satiation.",
+      "C": "If people who avoid a certain kind of food are more likely to be overweight than people who consume that food regularly, then that food should not be avoided for weight loss purposes.",
+      "D": "On average, people who never eat nuts consume the same total calories per day as people who regularly eat nuts.",
+      "E": "Most people who regularly eat nuts eat correspondingly less of foods whose taste, unlike that of nuts, stimulates a hunger response."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Each major earthquake in this region has been preceded by a series of minor tremors. Since the region has recently experienced a series of minor tremors, a major earthquake will strike the region in the near future.",
+    "questionStem": "Which one of the following arguments exhibits a pattern of questionable reasoning most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "In the past, a major hurricane has resulted from each tropical storm that formed in this region. Since no tropical storms are now forming in the region, no major hurricane is to be expected in the near future.",
+      "B": "This river has overflowed in every spring thaw following a winter with high snowfall. As this winter the area received a record amount of snow, the river will overflow this coming spring.",
+      "C": "On planets other than Earth, the presence of certain rare minerals indicates that these planets experienced a period of heavy meteor bombardment. Since the same minerals are found on Earth, Earth experienced a period of heavy meteor bombardment as well.",
+      "D": "The introduction of non-native species to an island always results in the extinction of some of its native species. Since non-native species are currently being introduced to the Galápagos Islands, there will be extinction among the Galápagos’ native species.",
+      "E": "So far, all local outbreaks of this disease among humans occurred soon after the detection of high infection rates among local wildlife. An unusually high infection rate among these animals was recently detected, so a local outbreak of the disease among humans is imminent."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 1,
+    "questionNumber": 26,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "Philosopher: A person is morally responsible for an action only if that action is performed freely. And an action is free only if there is an alternative action that is genuinely open to the person. But an alternative action is genuinely open only if performing that alternative action is not morally wrong.",
+    "questionStem": "If the philosopher’s statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "An alternative action is not genuinely open to a person unless that person would be morally responsible for performing the alternative action.",
+      "B": "People are not morally responsible for most of the actions that they perform.",
+      "C": "A person is morally responsible for an action if there is an alternative action that is genuinely open to the person.",
+      "D": "If it would be morally wrong for a person to perform a given action, then that action is genuinely open to that person.",
+      "E": "An action is not free unless there is an alternative action that is not morally wrong."
+    },
+    "correctAnswer": "E"
+  }
+]

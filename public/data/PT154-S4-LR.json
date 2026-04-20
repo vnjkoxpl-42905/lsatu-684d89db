@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "One reason swimming immediately after eating is thought to be dangerous is that it could cause muscle cramps. But there is no reason to believe this. Muscle cramps are usually caused by muscle fatigue and dehydration, which are unrelated to eating. Reduced blood flow to muscles during digestion might also be a cause, though this is disputed. In any case, not enough blood goes to the stomach to aid in digestion after a meal to reduce blood flow to muscles.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Swimming immediately after eating is not dangerous.",
+      "B": "Reduced blood flow to muscles is not a cause of muscle cramps.",
+      "C": "There is no reason to believe that swimming immediately after eating causes muscle cramps.",
+      "D": "Blood going to the stomach to aid in digestion after a meal is not a cause of muscle cramps.",
+      "E": "Blood going to the stomach to aid in digestion after a meal would not reduce blood flow to the muscles."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 2,
+    "stimulus": "Flores: The behavior of the character Gawain in Malory’s Le Morte D’Arthur fluctuates radically and without apparent reason between heroic and criminal. Malory’s portrayal of Gawain is incoherent in this way because Malory based his book on earlier sources from different eras, and Gawain’s role changed over time.\nPiro: While the variation you mention might stem from the different times that Malory’s sources were written, in Malory’s work Gawain’s heroic behavior occurs during crises, but his criminal behavior occurs during stable periods, when there is more room to break the rules.",
+    "questionStem": "The dialogue provides most support for the claim that Flores and Piro disagree over whether",
+    "answerChoices": {
+      "A": "Malory’s portrayal of the character of Gawain in Le Morte D’Arthur is incoherent",
+      "B": "the sources for Malory’s characterization of Gawain were written in different eras",
+      "C": "Gawain was portrayed as a hero in some of the stories that Malory used as sources",
+      "D": "the behavior of Gawain in Le Morte D’Arthur alternates between heroic and criminal",
+      "E": "the sources for Malory’s characterization of Gawain vary significantly regarding the role played by Gawain"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Audiologist: What is often considered age-related hearing loss is really the accumulated damage of long-term exposure to loud noise. This is demonstrated by studies of remote populations, who have little exposure to loud noise. These studies found that age-related hearing loss in these populations was limited or nonexistent.",
+    "questionStem": "Which one of the following, if true, most strengthens the audiologist’s argument?",
+    "answerChoices": {
+      "A": "Ancient medical texts describe methods of treating hearing loss.",
+      "B": "Among remote populations, those people who lived for several years in urban areas show more age-related hearing loss than those who have always lived in remote areas.",
+      "C": "Those who live in urban areas typically become so accustomed to low-level background noise that they are unaware they are hearing it.",
+      "D": "Age-related hearing loss can make it difficult for people to participate in conversations that occur in social settings with more than two or three people.",
+      "E": "Those who work in environments in which they are regularly exposed to loud noise tend not to wear ear protection unless they are required to."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "A rare Roman bronze helmet was recently discovered in England and sold to a private collector. An English law that requires finders of valuable antiquities to offer them to English museums at reasonable prices did not apply to the Roman helmet because it is neither prehistoric nor made of precious metal. The law is therefore inadequate as a means of giving the English people access to their archaeological heritage.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Most English people want important archaeological items to be housed in museums.",
+      "B": "The Roman helmet is part of the archaeological heritage of the English people.",
+      "C": "The Roman helmet is more valuable than most items that are housed in English museums.",
+      "D": "The private collector did not pay more for the Roman helmet than an English museum would have.",
+      "E": "No English museum could have paid more for the Roman helmet than the private collector did."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "Professor: During election years, voters often feel that they are insufficiently informed about election issues. And studies have revealed the surprising fact that regular subscribers to the few newspapers that do provide extensive coverage of election issues are no better informed about election issues than subscribers to newspapers that have very little coverage of these issues.",
+    "questionStem": "Which one of the following, if true, most helps to explain the surprising fact stated by the professor?",
+    "answerChoices": {
+      "A": "The newspapers that provide extensive coverage of election issues have a smaller circulation, on average, than the newspapers that provide very little coverage of these issues.",
+      "B": "Many newspapers that once provided extensive coverage of election issues now provide very little coverage of these issues.",
+      "C": "Most regular subscribers to the newspapers that provide extensive coverage of election issues rarely read the articles about these issues.",
+      "D": "Many of the voters who feel that they are insufficiently informed about election issues do not subscribe to newspapers.",
+      "E": "Most voters get the majority of their information about election issues from sources other than newspapers."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 1,
+    "stimulus": "Historian: Much of what made medieval European communities as close-knit as they usually were was the way they went about meeting basic needs. In medieval communities, in order to get crops harvested or a well dug, people had to come together in respectful cooperation, suspending any private grievances. So if people in industrialized societies today undertook corresponding group tasks, their communities would probably become more close-knit.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the historian’s argument?",
+    "answerChoices": {
+      "A": "Much of what made medieval communities as close-knit as they usually were was the way they went about meeting basic needs.",
+      "B": "People in industrialized societies today should undertake group tasks similar to those that medieval communities undertook in order to meet their basic needs.",
+      "C": "In medieval communities, people went about meeting basic needs in ways that required them to come together in respectful cooperation, suspending any private grievances.",
+      "D": "Medieval communities were usually more close-knit than communities in industrial societies are today because, in medieval communities, people undertook group tasks requiring them to come together in respectful cooperation.",
+      "E": "Communities in industrial societies today would probably become more close-knit if their members undertook group tasks requiring the participants to come together in respectful cooperation."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Late blight is a disease affecting tomato plants that causes blue-grey patches to appear on the leaves. Applying a copper solution to the blighted plants is an effective treatment for the disease. Therefore, late blight must be caused by a deficiency of copper in the plant’s mineral intake.",
+    "questionStem": "The flawed nature of the argument can be most effectively demonstrated by noting that, by parallel reasoning, we could argue that",
+    "answerChoices": {
+      "A": "since radiation therapy can be an effective treatment for some types of cancer, it follows that higher doses of radiation will be more effective in treating those same types of cancer",
+      "B": "since scurvy is caused by a deficiency of vitamin C, it follows that vitamin C is an effective treatment for scurvy",
+      "C": "since malnutrition can cause health problems, it follows that the more food you eat, the healthier you will be",
+      "D": "since paracetamol is effective in treating headaches, it follows that headaches are caused by a lack of paracetamol in the bloodstream",
+      "E": "since calcium deficiency in apple trees causes brown spots on the apples, it follows that apple trees growing in soils that are rich in calcium will not produce apples with brown spots"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "questionDifficulty": 1,
+    "stimulus": "Statistics show clearly that in those countries with the most severe penalties for driving while intoxicated, a smaller percentage of drivers have traffic accidents involving alcohol use than in other countries. This refutes those who claim that would-be drunk drivers will not be deterred by the prospect of severe penalties.",
+    "questionStem": "Which one of the following would, if true, most undermine the argument?",
+    "answerChoices": {
+      "A": "The countries with the largest populations do not have severe penalties for driving while intoxicated.",
+      "B": "Very severe penalties against driving while intoxicated are in effect only in countries in which alcohol use is rare.",
+      "C": "The higher a country’s speed limits, the more frequent traffic accidents tend to be in that country.",
+      "D": "Only a relatively small minority of those who drive while intoxicated are actually apprehended while doing so.",
+      "E": "All countries impose severer penalties on those who cause accidents while driving intoxicated than on those who are merely apprehended while driving intoxicated."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 1,
+    "stimulus": "Many airlines offer, for a fee, to “offset” the carbon emissions produced when you fly, but such schemes are almost entirely ineffective. Although the fees are usually invested in projects that directly reduce carbon emissions, in most cases these projects would have proceeded even without that investment, so no carbon emissions are prevented.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Steps that are taken in order to mitigate the harmful effects of one’s freely chosen, harmful actions do not absolve one from the original harm.",
+      "B": "If an outcome would have occurred in the absence of a certain action, then the outcome was not a consequence of that action.",
+      "C": "If a company or individual gains financially from a particular action, they should not be considered morally praiseworthy for any positive consequences of that action.",
+      "D": "Measures aimed at achieving a certain outcome should only be taken when they are of demonstrable effectiveness at achieving that outcome.",
+      "E": "If a project for reducing carbon emissions does not tackle the largest source of carbon emissions, then it is of limited value in reducing such emissions."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Columnist: The dangers of mountain climbing have been greatly exaggerated by the popular media. In the 80 years from 1922 to 2002, there were fewer than 200 climbing fatalities on Mount Everest, one of the most dangerous mountains in the world. Contrast that with the more than 7,000 traffic fatalities in France alone in 2002.",
+    "questionStem": "The reasoning in the columnist’s argument is flawed because it fails to consider",
+    "answerChoices": {
+      "A": "whether the number of traffic fatalities in France was higher in 2002 than in other years",
+      "B": "whether the number of traffic fatalities in France is usually higher than that in other countries",
+      "C": "whether the number of fatalities among climbers on Mount Everest could be reduced by implementing stricter safety measures",
+      "D": "how many climbers were on Mount Everest during those 80 years and how many people traveled on French roads in 2002",
+      "E": "how many climbing fatalities there were during those 80 years on mountains other than Mount Everest"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Gyms and fitness centers are sometimes good places to buy used exercise machines. When gyms and fitness centers upgrade machines, they often sell the old machines at reasonable prices. Although these exercise machines have generally seen considerable use, they are also built better than machines designed for home use and are likely to have been well maintained.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "Any good source of used exercise machines will offer at least some well-maintained machines at reasonable prices.",
+      "B": "The best kind of used exercise machine to buy is a well-maintained machine designed for home use and offered at a reasonable price.",
+      "C": "Any place where one can buy well-maintained, used exercise machines at reasonable prices is a good place to buy used exercise machines.",
+      "D": "No place that sells only exercise machines designed for home use is a good place to buy used exercise machines.",
+      "E": "No good source of used exercise machines sells any poorly maintained exercise machines at high prices."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most Supported",
+    "questionDifficulty": 2,
+    "stimulus": "A lichen is made up of a photosynthetic organism and a fungus growing in symbiosis on a solid surface. Lichens absorb minerals from air and rainwater but also from the surfaces on which they grow; they cannot excrete the elements they absorb. Some varieties are very vulnerable to toxic compounds, including compounds found in polluted air. Such compounds can damage both of the symbiotic partners.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Lichens would not be vulnerable to toxic compounds if they could excrete the elements that they absorb.",
+      "B": "The return of lichens to a region indicates that the air quality has improved there.",
+      "C": "The absence of lichens in a region indicates that the air is probably polluted in that area.",
+      "D": "The photosynthetic organism and the fungus that make up a lichen can also thrive independently of each other.",
+      "E": "Serious air pollution in a region can cause problems for lichens."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Role",
+    "questionDifficulty": 3,
+    "stimulus": "Lindsey: There are, of course, many poets with cheerful dispositions; however, those I have met have much more often been disposed to melancholy. Thus, if the poets I have met are representative of poets generally, one can reasonably conclude that many poets are made melancholy by writing poetry. As everyone knows, an activity as profound and engrossing as writing poetry can be depressing.",
+    "questionStem": "Which one of the following most accurately describes the role played in Lindsey’s argument by the claim that an activity as profound and engrossing as writing poetry can be depressing?",
+    "answerChoices": {
+      "A": "It is a premise offered as evidence for another premise, which in turn is offered in support of the argument’s overall conclusion.",
+      "B": "It is a premise for which another premise is offered as evidence.",
+      "C": "It is the overall conclusion of the argument.",
+      "D": "It clarifies a claim made within the overall conclusion of the argument.",
+      "E": "It is a premise offered as direct support for the argument’s overall conclusion."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "People’s antagonism to development in their neighborhoods can be harmful to a city. For example, nightclubs tend to be unpopular with neighbors because of the late hours they keep. So if neighborhoods are allowed to block new nightclubs, a city will never get new nightclubs.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "New nightclubs would usually be approved if the decision whether to approve was made at the city level.",
+      "B": "All neighborhoods in a city are equally opposed to getting new nightclubs.",
+      "C": "It is a bad thing for a city if the city never gets new nightclubs.",
+      "D": "Restaurants that do not keep late hours are rarely unpopular with neighbors.",
+      "E": "New nightclubs invariably produce some benefits for the neighborhoods in which they open."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Many popular novels have stylistic elements commonly associated with journalistic writing. Moreover, many authors of popular novels began their careers as journalists. So using a journalistic writing style increases the chances that a novel will be popular.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "takes something that is required for a novel to be popular to be something that is certain to make a novel popular",
+      "B": "takes for granted that most journalists could become novelists if they wanted to",
+      "C": "fails to specify exactly what is required for a novel to be considered popular",
+      "D": "fails to consider how many unsuccessful novels have been written in a journalistic style",
+      "E": "takes the fact that a novel is popular to indicate that it is well written"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Most Supported",
+    "questionDifficulty": 3,
+    "stimulus": "Researchers investigating the accuracy of eyewitness accounts staged and made a video of a crime, and showed it to test subjects. A lineup of “suspects,” none of whom was the person playing the criminal in the video, was then shown to the subjects. When the subjects were not told that the suspect might not be in the lineup, 78 percent of them misidentified one or another of the persons in the lineup as the criminal. Only 38 percent of the subjects made misidentifications when they were told that the suspect might not be in the lineup.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Eyewitnesses are no more likely to accurately select a suspect from a lineup than are people who are given an accurate verbal description of the suspect.",
+      "B": "People tend to want to satisfy the stated expectations of those who ask them for information.",
+      "C": "When specifically directed by a person of authority to say that something is among a group of things when it is not, most people will comply.",
+      "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
+      "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Advice columnist: Parents should not encourage their children to place great value on outdoing others. Being motivated in this way not only fosters resentment, it makes one less happy because it gives one a desire for achievement that is difficult to satisfy.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
+    "answerChoices": {
+      "A": "Parents should encourage their children to be happy about the things that they do well.",
+      "B": "Parents should try to ensure that their children have at least some desires that are easy to satisfy.",
+      "C": "One should never encourage a person to acquire a trait if having the trait would make that person less happy.",
+      "D": "Parents should do everything they can to ensure that their children have significant achievements.",
+      "E": "How much one achieves relative to one’s own potential is just as important as how much one achieves relative to others."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Economist: Machinery firms in this country argue that in order to grow big enough to compete successfully with foreign rivals, the protection that they have been receiving from foreign competition must be extended for several more years. Yet these firms have been receiving protection from foreign competition for the last ten years. If it were possible for protection from foreign competition to enable this country’s machinery firms to grow big enough to compete successfully with foreign rivals, ten years would be a sufficient time frame for this to happen.",
+    "questionStem": "The economist’s statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Protection from foreign competition rarely if ever enables firms to grow big enough to compete with foreign rivals.",
+      "B": "Ten years is a sufficient time frame for assessing the success of any economic policy.",
+      "C": "None of the machinery firms in the economist’s country has grown significantly over the last ten years.",
+      "D": "Most of the machinery firms in the economist’s country will go out of business unless they are protected from foreign competition.",
+      "E": "Protection from foreign competition will not enable machinery firms in the economist’s country to grow big enough to take on foreign rivals."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Store owner: My customers are not worried about crime in this neighborhood; every day I talk to people who shop at my store, and they tell me that they are not worried. So crime is not adversely affecting my business by reducing the number of people willing to shop at my store.",
+    "questionStem": "The reasoning in the store owner’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "infers that something is not the case on the grounds that there is only a small amount of evidence for its being the case",
+      "B": "appeals to personal opinion to establish a factual claim",
+      "C": "generalizes about the whole neighborhood based on the case of one store",
+      "D": "draws a conclusion on the basis of a biased sample",
+      "E": "fails to consider that crime might affect the neighborhood negatively without affecting businesses negatively"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Critic: The more a novel appeals to the general public, the more money its author will make from it. However, since any serious novelist cares about literary style, no serious novelist is motivated primarily by the desire to make money.",
+    "questionStem": "The conclusion of the critic’s argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "No novel written by a serious novelist in fact appeals to the general public.",
+      "B": "No novelist who cares about literary style is motivated primarily by the desire to make money.",
+      "C": "No novelist whose novels exhibit good literary style is motivated primarily by the desire to make money.",
+      "D": "Any novelist who is motivated primarily by the desire to make money writes novels that in fact appeal to the general public.",
+      "E": "Any novel that in fact appeals to the general public was written by a novelist motivated primarily by the desire to make money."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Engineer: Air bags in automobiles occasionally cause injuries by accidentally inflating when no collision has occurred. Automobile manufacturers are attempting to fix the problem by inventing more elaborate computer control systems for air bags. But the more complex such a system is, the more ways there are in which it can fail. Thus, the new computer control systems will probably only make the problems with accidental air bag inflation even worse.",
+    "questionStem": "The engineer’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It fails to address adequately the possibility that the likelihood of a system’s failing need not increase with the number of ways in which it can fail.",
+      "B": "It takes for granted that any failure in an air bag’s computer control system will cause that air bag to inflate accidentally.",
+      "C": "It fails to address adequately the possibility that air bags may often accidentally inflate even when their computer control systems do not fail.",
+      "D": "It overlooks the possibility that, even if the new computer control systems exacerbate the problems with accidental air bag inflation, they may have advantages that outweigh this disadvantage.",
+      "E": "It overlooks the possibility that, even if air bags occasionally cause accidental injuries, they may nonetheless be responsible for preventing many more injuries than they cause."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Educator: Environmental factors clearly have little effect on whether a teenager will participate in sports. Family life is probably the strongest environmental factor, yet it is common for one teenager in a family to participate in sports enthusiastically while other teenagers in the family are indifferent to sports. Moreover, school programs designed to encourage inactive teenagers to participate in sports are generally ineffective.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the educator’s argument?",
+    "answerChoices": {
+      "A": "Athletic ability varies, even among siblings, and teenagers who have demonstrable athletic ability are more likely than those who do not to participate in sports.",
+      "B": "Some teenagers, even those in schools that do not have any sports programs, are more enthusiastic about participating in sports than their parents are.",
+      "C": "Adults’ enthusiasm for participating in sports generally is directly proportional to the extent to which they participated in sports when they were younger.",
+      "D": "The proportion of teenagers who participate in sports varies greatly from society to society and from decade to decade.",
+      "E": "School programs designed to encourage inactive teenagers to participate in sports widely vary in success, with only a few being highly successful."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Safety expert: Conversing on a cell phone while driving is more dangerous than conversing with a passenger in the vehicle. The person talking with the driver on a cell phone is unable to see the driving situation and, hence, cannot immediately recognize situations in which driving becomes difficult. In contrast, a passenger in the vehicle will usually be quiet or even provide helpful warnings in such situations.",
+    "questionStem": "Which one of the following is an assumption required by the safety expert’s argument?",
+    "answerChoices": {
+      "A": "Speaking to a driver during a difficult driving situation significantly increases the risk of an accident, unless the speaker is providing helpful warnings.",
+      "B": "A driver having a conversation with a passenger in the vehicle during a difficult driving situation is not substantially more likely to have an accident than is a driver who is not conversing during a difficult driving situation.",
+      "C": "People who use cell phones while driving generally believe that talking on a cell phone does not increase their risk of being in an accident.",
+      "D": "Helpful warnings given to a driver in a difficult driving situation are as likely to distract the driver as to help the driver in controlling the car.",
+      "E": "Conversing on a cell phone while driving is no more dangerous than conversing with a passenger in the vehicle who continues to speak during difficult driving situations."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "People who have experienced a traumatic event but who did not subsequently develop post-traumatic stress disorder (PTSD) tend to produce higher levels of the hormone cortisol when exposed to stress than do people who have not experienced traumatic events. This suggests that experiencing a traumatic event can affect how much cortisol one produces in response to stress.",
+    "questionStem": "Which one of the following, if true, most weakens the argument above?",
+    "answerChoices": {
+      "A": "Medical conditions sometimes affect how much cortisol people who have not experienced a traumatic event produce in response to stress.",
+      "B": "Producing more cortisol than average in response to stress helps prevent a person from developing PTSD as a result of experiencing a traumatic event.",
+      "C": "People experiencing a traumatic event produce more cortisol than they would under less severe instances of stress.",
+      "D": "Many effective treatments for PTSD are designed to reduce how much cortisol those with PTSD produce when exposed to stress.",
+      "E": "Experiencing a traumatic event can damage the gland that produces cortisol, resulting in that gland producing more cortisol."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "The technical sophistication of commercial fishing equipment increased steadily from 1960 through 2010, which enabled the commercial fishing industry to harvest a greater percentage of the total amount of fish, by weight, in the world’s oceans in each succeeding year during that time. The commercial fishing industry’s harvest, by weight, increased steadily from 1960 until 1995 but did not increase after 1995.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "After 1995, the number of fish harvested each year by the commercial fishing industry increased, but the average weight of each fish harvested decreased.",
+      "B": "After 2010, improvements in commercial fishing equipment did not enable the fishing industry to harvest a greater percentage of the total amount of fish, by weight, in the world’s oceans.",
+      "C": "The total amount of fish, by weight, in the world’s oceans decreased during the period from 1995 to 2010.",
+      "D": "The commercial fishing industry’s harvest, by weight, was significantly lower in 2010 than it was in 1995.",
+      "E": "No significant improvements in commercial fishing equipment occurred before 1960."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT154",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Current evidence indicates that there is no methane on Planet 253. If that is the case, it is certain that there is no life on Planet 253. Since microbes always produce methane, if there is no methane then there are no microbes.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "There is, in fact, no methane on Planet 253.",
+      "B": "If methane exists on Planet 253 then we would be able to detect its presence.",
+      "C": "If there is no methane currently on Planet 253 then there has never been methane on Planet 253.",
+      "D": "If there are no microbes on Planet 253 then there is no life on Planet 253.",
+      "E": "If there is methane on Planet 253 then there must be life on Planet 253."
+    },
+    "correctAnswer": "D"
+  }
+]

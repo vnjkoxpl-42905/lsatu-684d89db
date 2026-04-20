@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "questionDifficulty": 1,
+    "stimulus": "Advertisement: Omnicide kills more species of insects than any other insecticide. So Omnicide is the best insecticide for home gardeners, especially gardeners who cannot determine which insects are destroying their plants.",
+    "questionStem": "Which one of the following, if true, most weakens the reasoning in the advertisement?",
+    "answerChoices": {
+      "A": "Some of Omnicide’s competitors kill almost as many species of insects as Omnicide does.",
+      "B": "Many insect species are beneficial to garden plants, and Omnicide kills most of these beneficial species.",
+      "C": "Merely protecting plants from attack by insect pests does not guarantee that the plants will be healthy.",
+      "D": "Omnicide is more profitable for the manufacturer than most other insecticides made by the same company.",
+      "E": "Omnicide does not kill weeds or mammalian pests such as gophers, moles, and groundhogs."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Although the audience for part one of the television documentary Train Stories shown on Thursday night was small, the audience for part two on Friday night was not significantly smaller. Thus, most of the viewers who watched the program the first night liked it enough to tune in again the next night.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Most of the viewers who tuned in to the program the second night had also watched it the first night.",
+      "B": "Most of the viewers who tuned in to the program the second night liked it.",
+      "C": "Most of the viewers who watched the program both nights enjoyed the first night more than the second.",
+      "D": "Many of the viewers who tuned in to the program the first night but not the second night were unable to watch television on the second night.",
+      "E": "Many of the viewers who watched the program the first night were people who generally like to watch television documentaries."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "When frightened by hunters in a truck, healthy gazelles run away quickly, efficiently using the landscape for concealment. But when a healthy gazelle detects the approach of a predator such as a lion, it leaps high into the air as it runs away—a behavior known as “stotting.” As a defensive behavior, stotting appears paradoxical, because it draws predators’ attention and consumes energy that could be put into running faster.",
+    "questionStem": "Which one of the following would, if true, most help to resolve the apparent paradox described above?",
+    "answerChoices": {
+      "A": "Animals that are startled sometimes act in ways that appear irrational to human observers.",
+      "B": "Young gazelles and gazelles that are not very healthy often stot when they become frightened by humans or by loud machines.",
+      "C": "To animals that typically prey on gazelles, stotting is a signal of strength and ability to escape.",
+      "D": "A healthy gazelle can usually detect the approach of a predator before the predator becomes aware of the presence of the gazelle.",
+      "E": "While not able to run as quickly as gazelles, predators such as lions hunt effectively by hunting in groups and coordinating their attacks."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Zahler Motors executive: The Graham Motor Company should stop running its deceptive minivan commercial, which claims that Graham’s minivan has a foldable third-row seat while our minivans do not. Zahler’s minivan from the newest model year, which recently began arriving at dealers, has a foldable third-row seat.\nGraham Motor Company executive: Our commercial is not misleading. Zahler dealers are still selling new minivans from the previous model year, which lack a foldable third-row seat.",
+    "questionStem": "The dialogue most strongly supports the claim that which one of the following principles is accepted by the Graham executive but not by the Zahler executive?",
+    "answerChoices": {
+      "A": "It is not misleading for a company to advertise that its product has a feature that a competing product lacks if some instances of the competing product that are currently offered for sale lack the feature in question.",
+      "B": "It is not misleading for a company to advertise that its product has a feature that a competing product lacks if company executives are unaware that the competing product has the feature in question.",
+      "C": "It is not misleading for a company to advertise that its product has a feature that a competing product lacks if most consumers would not choose the product solely or primarily on the basis of whether it has that feature.",
+      "D": "It is misleading for a company to advertise that its product has a feature that a competing product lacks if, on balance, the competing product has more of the features that most consumers want.",
+      "E": "It is misleading for a company to advertise that its product has a feature that a competing product lacks if all instances of the competing product that are currently offered for sale have the feature in question."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Of the dinosaurs of the birdlike group called ornithomimids, the later ones had toothless beaks and weak jaw muscles. A fossil of the later ornithomimid species Gallimimus bullatus was found to have remnants of a comblike plate inside the beak. Such plates are found in modern ducks and geese, animals that strain small bits of food from water and mud. Paleontologists therefore hypothesize that G. bullatus fed by filtering food from water and mud.",
+    "questionStem": "Which one of the following, if true, most bolsters the support for the paleontologists’ hypothesis?",
+    "answerChoices": {
+      "A": "Some dinosaurs with toothless beaks and weak jaw muscles are believed to have pursued small prey and to have eaten eggs.",
+      "B": "Toothless beaks and weak jaw muscles were not common to any dinosaur group other than ornithomimids.",
+      "C": "Except for the comblike plates in their beaks, G. bullatus shared few anatomical features with modern ducks and geese.",
+      "D": "Most G. bullatus fossils have been found in sediments deposited in lakes, rivers, and other wet environments.",
+      "E": "Paleontologists have not found evidence that any dinosaurs other than G. bullatus had comblike plates."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Must Be True",
+    "questionDifficulty": 2,
+    "stimulus": "In a counterattack on the harmful effects of acid rain, wildlife experts are adding lime to the water of some lakes. “Liming” neutralizes the acid and thus staves off some damage caused by acid rain and restores the health of some lakes where life has already been harmed by acidification. Lakes in which lime is used must be treated periodically because their water is constantly being replaced, carrying away the lime. If a lake’s water is replaced more often than once every six months, it is not a candidate for liming because of the cost.",
+    "questionStem": "If all the statements above are true, each of the following must also be true except:",
+    "answerChoices": {
+      "A": "If a lake is a candidate for liming, its water is replaced every six months or less often.",
+      "B": "In some lakes, if liming is to be successful over the long term in counteracting the harmful effects of acid rain, liming must be repeated at intervals.",
+      "C": "Unlimed lakes in which the water is replaced frequently are less likely to be harmed by acid rain than those lakes in which the water is replaced infrequently.",
+      "D": "Liming can be effective even if it is used after some life in a lake has been killed by acid rain.",
+      "E": "If a lake’s water is replaced frequently, it may not be economical to attack the effects of acid rain there by liming."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Transportation official: I reject the claim that the ruts in our city’s roads are caused by large trucks rather than studded snow tires. There are many places that have as much large truck traffic as we have here and also have a comparable amount of snowfall, and only those few places that allow studded snow tires have ruts in their roads similar to ours. Clearly, studded snow tires are to blame.",
+    "questionStem": "Which one of the following, if true, most strengthens the transportation official’s argument?",
+    "answerChoices": {
+      "A": "Large trucks are not allowed to have studded snow tires in many areas.",
+      "B": "The number of ruts in the roads of the transportation official’s city has declined recently as the amount of large truck traffic has diminished.",
+      "C": "Most of the places that allow studded snow tires but have negligible large truck traffic have roads full of ruts similar to those in the transportation official’s city.",
+      "D": "Some cities with even more truck traffic than in the transportation official’s city also have ruts in their roads.",
+      "E": "Most places that have little snowfall do not allow the use of studded snow tires."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "A person who does not have both a high school diploma and a demonstrated competence in the techniques of cardiopulmonary resuscitation will not be licensed as an emergency medical technician. Since Marie has both a high school diploma and a demonstrated competence in the techniques of cardiopulmonary resuscitation, she will be licensed as an emergency medical technician.",
+    "questionStem": "Which one of the following contains flawed reasoning that most closely parallels the flawed reasoning in the argument above?",
+    "answerChoices": {
+      "A": "Without having either an excellent ear for music or exceptional manual dexterity, a person cannot play the piano well. Since Paul plays piano extremely well, he must have both an excellent ear for music and exceptional manual dexterity.",
+      "B": "It is not possible to be an effective foreign language teacher without being fluent in at least two languages. Since Professor Yessios is fluent not only in her native Greek but also in English and in Persian, she will be an effective foreign language teacher.",
+      "C": "A person cannot be a licensed plumbing contractor without having completed an apprenticeship. Since Martin is a licensed plumber, his apprenticeship has been completed.",
+      "D": "No one can be an effective mayor of a major industrial seaport without a thorough knowledge of both national and international affairs. The fact that Mayor Leroux is an effective mayor proves that she is thoroughly knowledgeable in both national and international affairs.",
+      "E": "The only way to make a delicious vegetable soup is to use fresh vegetables. Since this vegetable soup is delicious, it must have been made with fresh vegetables."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Essayist: Practical intelligence is the ability to discover means to ends. This ability is a skill—something that does not develop on its own. Thus, if there were a being that was never deprived of anything but was always and immediately given what it wants, that being could never become intelligent in the practical sense.",
+    "questionStem": "The conclusion of the essayist’s argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "A being cannot acquire a skill without the help of others.",
+      "B": "Skills are acquired only if they are needed.",
+      "C": "The best way to learn how to acquire something is to be deprived of it.",
+      "D": "A being with practical intelligence would get what it wants entirely through the use of its practical intelligence.",
+      "E": "If a being were always deprived of what it wanted, it could not acquire practical intelligence."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Dentist: Five recently conducted studies all show that the proportion of children with decayed, missing, or filled teeth is lower in Europe, where water is not fluoridated, than in the United States, where it is. This is convincing evidence that fluoridation of water does not have a substantial tendency to prevent tooth decay.",
+    "questionStem": "Which one of the following, if true, would most strengthen the dentist’s argument?",
+    "answerChoices": {
+      "A": "Toothpaste containing fluoride is widely available in both the United States and Europe.",
+      "B": "Nearly all dentists in the United States use dental treatments involving the application of fluoride directly to tooth surfaces.",
+      "C": "Dental hygiene is typically taught in elementary school in both Europe and the United States.",
+      "D": "On average, children in Europe receive dental checkups more frequently than children in the United States.",
+      "E": "The diets of children in the United States are not generally worse for teeth than those of children in Europe."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 3,
+    "stimulus": "Science writer: Studies indicate that North Americans are becoming more lethargic. One researcher has concluded from these data that fast-food consumption has an adverse effect on people’s health. In the early 1970s the average North American family consumed one fast-food meal a week, while in the 1990s an average family consumed one fast-food meal a day. However, few lethargic adults exercise regularly, and lack of exercise can contribute to lethargy. Thus, the lethargy studies do not settle the question of whether fast food is unhealthy.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the science writer’s argument?",
+    "answerChoices": {
+      "A": "A lack of regular exercise is one cause of lethargy in North Americans.",
+      "B": "High consumption of fast food is a health risk only when combined with a lack of regular exercise.",
+      "C": "The researcher’s data show that the consumption of fast food is not the main cause of poor health in North Americans.",
+      "D": "The lethargy studies failed to consider one probable cause of lethargy.",
+      "E": "The researcher’s conclusion was not adequately justified by the lethargy studies."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Physician: Of the health experts who advocate moderate consumption of alcohol for its cardiac benefits, some say that red wine is the most beneficial. But while there is statistical evidence that people who drink moderate amounts of red wine are less likely to fall victim to heart disease than are people who drink moderate amounts of other alcoholic beverages, proponents of red wine have yet to determine what biochemical mechanism, if any, explains this difference. So their evidence is inconclusive.",
+    "questionStem": "Which one of the following principles must be assumed in order for the physician’s conclusion to be properly drawn?",
+    "answerChoices": {
+      "A": "If a substance has health benefits when consumed in moderation, then physicians should advocate moderate consumption even if excessive consumption is harmful.",
+      "B": "Assertions regarding the health benefits of foods or drinks should be supported by persuasive statistical evidence.",
+      "C": "Physicians should not make any recommendations regarding the consumption of food or drink unless there is conclusive evidence supporting those recommendations.",
+      "D": "Evidence regarding the health benefits of foods or drinks must be corroborated by accurate accounts of the mechanisms involved in order to be conclusive.",
+      "E": "One should try to find a causal mechanism for the health benefits of a substance only if those benefits have been conclusively demonstrated."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Philosopher: As many prominent physicists have suggested, energy is merely a theoretical construct. Since the theory of relativity tells us that there is no essential distinction between energy and mass, mass must also be a theoretical construct. But all physical objects are composed purely of mass and energy. Thus, physical objects must also be theoretical constructs.",
+    "questionStem": "The philosopher’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It fails to consider whether anything other than physical objects may be composed purely of mass and energy.",
+      "B": "It overlooks the possibility that something may lack a feature even if it is composed purely of things that have that feature.",
+      "C": "It presumes, without providing justification, that two things may have different features even if there is no essential distinction between them.",
+      "D": "It fails to address adequately the possibility that a feature of some theoretical constructs need not be shared by every theoretical construct.",
+      "E": "It presumes, without providing justification, that the fact that a suggestion has been made by a physicist proves the truth of that suggestion."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Method",
+    "questionDifficulty": 2,
+    "stimulus": "Jones: A budget deficit is good for the country’s finances; it discourages excessive government spending.\nEspinosa: That’s like saying that reaching the credit limit on your credit cards is a good thing for your finances because it discourages you from spending excessively. While it’s true that reaching your credit limit will likely discourage you from spending excessively, it’s still poor financial management. You should have stayed out of debt in the first place. The same goes for governments.",
+    "questionStem": "The strategy Espinosa uses in responding to Jones’s argument is to",
+    "answerChoices": {
+      "A": "provide an argument that is analogous to the one given by Jones but that is clearly fallacious",
+      "B": "demonstrate that Jones’s position presupposes what it sets out to prove",
+      "C": "offer empirical evidence that undermines Jones’s conclusion",
+      "D": "argue that Jones’s reasoning about finances is questionable because of Jones’s poor management of personal finances",
+      "E": "suggest that Jones’s conclusion is more general than is warranted by the evidence Jones presents"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Must Be True",
+    "questionDifficulty": 3,
+    "stimulus": "Most cats like to go outside to play when the temperature is above freezing. However, Jamil does not allow his cat to go outside unless at least one member of his family is outside, and Jamil’s family members go outside only when the sun is shining or it is hot outside.",
+    "questionStem": "Which one of the following can be properly inferred from the information above?",
+    "answerChoices": {
+      "A": "If Jamil’s cat is outside, then the temperature is above freezing.",
+      "B": "If Jamil’s cat is not outside, it is cloudy and it is not hot outside.",
+      "C": "If the sun is shining or it is hot outside, Jamil’s cat is probably outside.",
+      "D": "If at least one member of Jamil’s family is outside, then Jamil’s cat is outside also.",
+      "E": "If the sun is not shining and it is not hot outside, Jamil’s cat is not outside."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Park ranger: It is unfair to cite people for fishing in the newly restricted areas. They probably are unaware of the changes in regulations, since even many of us who are supposed to enforce these changes have not yet been informed of them. Until we have made a real effort to publicize the new restrictions, we should do no more than issue a simple warning against fishing in the newly restricted areas.",
+    "questionStem": "Which one of the following is a principle that, if valid, most helps to justify the park ranger’s argument?",
+    "answerChoices": {
+      "A": "People should not be cited for violating laws of which they are unaware.",
+      "B": "Regulations regarding park use should be widely publicized.",
+      "C": "The public should not be expected to know more about the law than any law enforcement officials do.",
+      "D": "People who fish in a public park should make every effort to be fully aware of the restrictions that govern fishing in the park.",
+      "E": "People who are caught in the act of violating a law should be afforded the opportunity to explain why they think that law does not apply to them."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "For several years the Technology Institute has used a new experimental curriculum in its plumbing program. A survey last year found that only one-third of the Institute’s plumbing graduates—well below the national average—were able to pass the plumber’s certification test. This shows that the new curriculum has lowered the quality of plumbing instruction.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "treats a phenomenon as an effect of an observed change in the face of evidence indicating that it may be the cause of that change",
+      "B": "uses a lack of evidence that the quality of the Institute’s plumbing instruction has increased as though it were conclusive evidence that it has decreased",
+      "C": "concludes that something has diminished in quality from evidence indicating that it is of below-average quality",
+      "D": "uses a national average as a standard without specifying what that national average is",
+      "E": "confuses a factor’s presence being required to produce a phenomenon with the factor’s presence being sufficient in itself to produce that phenomenon"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Parallel",
+    "questionDifficulty": 3,
+    "stimulus": "To achieve the traditional hotness of spicy cuisines, cooks use some specific kind of chili or other spice. But, as experienced cooks know, if food is sufficiently spiced it is impossible to distinguish which ingredient is causing the hot sensation. Therefore, none of the hot spices traditionally used is irreplaceable.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "It is light-sensitive pigment in fishes’ eyes that makes it possible for them to see. Any one of a variety of pigments makes underwater vision possible. Therefore, no particular one of these pigments is necessary for underwater vision.",
+      "B": "Every country needs an adequate defense. But this can be overdone; no country that devotes the majority of its resources to the military can avoid war. Therefore, peacetime cannot persist in any nation that uses over half of its resources to support its armed forces.",
+      "C": "To receive a doctorate, a student must complete the required number of classes and write a dissertation. Therefore, any student who writes a dissertation and completes the required number of classes will receive a doctorate.",
+      "D": "Attending a music concert is a far richer experience than listening to a recorded piece of music. When playing live, musicians often depart from the original score; therefore, each live concert is a unique and irreplaceable event.",
+      "E": "Good cooks always select their ingredients carefully, for they know that every delicious meal is made with high-quality ingredients. Therefore, no meal made without high-quality ingredients is delicious."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "Productivity growth in industrialized nations has dropped substantially since computer technology became widespread in the 1960s and 1970s. Furthermore, productivity growth has dropped the most in industries that rely most heavily on computer technology. Thus, a business that has increased its reliance on computer technology probably has not improved its productivity growth by doing so.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The industries that rely most heavily on computer technology have been burdened by inefficiencies that have substantially hindered their productivity growth.",
+      "B": "Productivity growth in many less industrialized nations has also dropped substantially since the 1960s and 1970s.",
+      "C": "Productivity growth in industries responsible for producing computer technology has increased substantially as computer technology has become more widespread.",
+      "D": "Within any given industry, the businesses whose productivity growth has been greatest have been those that have invested most heavily in computer technology.",
+      "E": "Within the next few years, recent technological advances will almost certainly make investments in computer technology among the most effective ways for any business to improve productivity."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Mr. Klemke argues that the complaints recently lodged against his roofing company are unfounded, on the grounds that each of the complainants disagrees with Klemke’s widely known political views and is therefore biased. However, having a different political outlook from Klemke’s would in no way prevent one from being badly treated by his company. Clearly, then, the complaints are not, as Mr. Klemke alleges, unfounded.",
+    "questionStem": "The argument against Mr. Klemke’s allegation is flawed in that it",
+    "answerChoices": {
+      "A": "takes a consequence of someone’s being biased to be a cause of the bias",
+      "B": "concludes that a claim is false on the grounds that an inadequate argument has been given for it",
+      "C": "rejects an argument on the grounds that the person who offered the argument is biased",
+      "D": "relies on a sample of opinions that is unlikely to represent diverse political outlooks",
+      "E": "overlooks the possibility that people whose views diverge are unaware of their disagreement"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Guidelines for constructing new Bonjour hotels: A hotel is to have a radiant floor heating system installed if a radiant floor cooling system is being installed or if it is to be a luxury hotel; however, a radiant floor cooling system should not be installed in any hotel that is located in a region that tends to have high humidity during the summer.",
+    "questionStem": "The reasoning in which one of the following is most strongly supported by the guidelines?",
+    "answerChoices": {
+      "A": "The newest Bonjour hotel should not have a radiant floor cooling system installed, for it is not being newly constructed and it will not be a luxury hotel.",
+      "B": "The newest Bonjour hotel should have a radiant floor heating system but not a radiant floor cooling system installed, for it is a luxury hotel in a region that has high humidity throughout the year.",
+      "C": "The newest Bonjour hotel should not have a radiant floor cooling system installed, for it will not be a luxury hotel and it will have a radiant floor heating system.",
+      "D": "The newest Bonjour hotel should have neither a radiant floor heating system nor a radiant floor cooling system installed, for it will be a luxury hotel in a region that frequently has high humidity in the summer.",
+      "E": "The newest Bonjour hotel should have both a radiant floor cooling system and a radiant floor heating system installed, for it will be a luxury hotel in a region with very low humidity throughout the year."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Essayist: The historical figures that we find most engaging are very rarely those who are morally most virtuous. What most commonly distinguishes them is their bravery and creativity. Thus, moral virtue is not among the characteristics that we admire most, since the people whose lives we would most like to live are those whose characteristics we admire most.",
+    "questionStem": "Which one of the following is an assumption required by the essayist’s argument?",
+    "answerChoices": {
+      "A": "The historical figures that we find most engaging are those whose lives we would most like to live.",
+      "B": "Bravery and creativity are characteristics that make it more difficult to be morally virtuous.",
+      "C": "Historical figures are very rarely morally virtuous.",
+      "D": "People develop their conception of what makes an individual admirable based on what they know about historical figures.",
+      "E": "Moral virtue is the characteristic of historical figures that we find least engaging."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "On Earth, biological activity leads to a change in the ratio of isotope S-34 to isotope S-32. However, a newly discovered meteorite of Martian origin exhibits ratios of these elements found only in terrestrial minerals dating from before the beginning of life on Earth. Therefore, it is unlikely that life occurred on Mars.",
+    "questionStem": "Each of the following, if true, would weaken the argument except:",
+    "answerChoices": {
+      "A": "Life forms that have a different effect on the ratio of S-34 to S-32 from that of life forms on Earth could have evolved elsewhere.",
+      "B": "The effects of life on the ratio of S-34 to S-32 depend on a number of climatic and environmental factors with regard to which Earth and Mars differ.",
+      "C": "The ratio of S-34 to S-32 in the meteorite is the same as that on Mars as a whole at the time that the material in the meteorite left Mars.",
+      "D": "Relatively few terrestrial mineral samples contain S-34 and S-32 in the ratio that indicates the presence of biological activity.",
+      "E": "The current ratio of S-34 to S-32 on Mars is different from that at the time the material in the meteorite left Mars."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Editorial: Last year, many polls found that most people in our country claimed to be tired of television news programs’ obsession with celebrity scandals and to be unwilling to watch such programs. But at the same time, ratings of television news shows soared. This indicates that when responding to polls, whether or not they are aware of it, people often portray themselves as they wish to be perceived, rather than as they actually are.",
+    "questionStem": "Which one of the following is an assumption that the argument in the editorial requires?",
+    "answerChoices": {
+      "A": "Last year, everyone in the editorialist’s country who claimed in polls to be tired of television news programs’ obsession with celebrity scandals also claimed to be unwilling to watch such programs.",
+      "B": "Last year, almost everyone in the editorialist’s country who claimed in polls to be tired of television news programs’ obsession with celebrity scandals and to be unwilling to watch such programs continued to watch those programs.",
+      "C": "Last year, at least some of the people who responded to polls in the editorialist’s country did not believe that in their responses they were portraying themselves as they actually were.",
+      "D": "Last year, none of the people in the editorialist’s country who responded to polls about their views about television news programs portrayed themselves as they actually were.",
+      "E": "Last year, at least some people responding to polls in the editorialist’s country wished to be perceived as unwilling to watch television news programs."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "The rise of book megastores in the 1990s increased sales of best-sellers, but decreased sales of less commercial, more literary books. In 1986, best-selling hardcover titles accounted for about 7 percent of all hardcover sales. By 1996, that figure had nearly doubled. Megastores can offer deeper discounts than independent stores and offer their biggest discounts on best-selling hardcovers, which discourages sales of other hardcovers.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Bookstore customers are more likely to purchase a book that they have seen on a best-seller list than one that they have not.",
+      "B": "In the 1990s, bookstore customers’ most frequent purchases were books written by authors who had already written at least one best-seller.",
+      "C": "In the 1990s, less commercial, more literary works increasingly had their initial publication in paperback editions rather than hardback editions.",
+      "D": "By 1996, there were about 20 percent more titles in print than in 1986.",
+      "E": "Books that are not expected to be best-sellers are featured more often in independent bookstores than in book megastores."
+    },
+    "correctAnswer": "C"
+  }
+]

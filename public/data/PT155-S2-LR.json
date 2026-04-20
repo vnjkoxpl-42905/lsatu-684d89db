@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "CEO: While we only have the sales reports for the first 9 months of this year, I feel confident in concluding that this will be a good year for us in terms of sales. In each of the last 5 years, our monthly sales average was less than $30 million. However, our monthly sales average so far for this year is over $35 million.",
+    "questionStem": "Which one of the following, if true, most strengthens the CEO’s argument?",
+    "answerChoices": {
+      "A": "The CEO’s company typically has its highest monthly sales of the year during the last 3 months of the year.",
+      "B": "The quality of the products sold by the CEO’s company has always been considered to be relatively high.",
+      "C": "The CEO has a strong incentive to highlight any good news regarding the company and to downplay bad news.",
+      "D": "The CEO’s company started a new advertising campaign at the beginning of this year that has proved unusually effective so far.",
+      "E": "Several other companies who sell products similar to those sold by the CEO’s company have also reported that this year’s monthly sales averages so far have been higher than previous years’ averages."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Javier: Government workers are paid higher hourly wages than comparable private sector employees. So the government could save money by hiring private contractors to perform services now performed by government employees.\nMykayla: An analysis of government contracts showed that, on average, the government paid substantially more to hire contractors than it would have cost for government employees to perform comparable services.",
+    "questionStem": "Javier and Mykayla disagree with each other over whether",
+    "answerChoices": {
+      "A": "the government could reduce spending by reducing the number of employees on its payroll",
+      "B": "the government would save money if it hired private contractors to perform services now performed by government employees",
+      "C": "government workers generally are paid higher hourly wages than comparable private sector workers",
+      "D": "every service that is currently performed by government employees could be performed by private contractors",
+      "E": "the total amount of money that the government pays its employees annually is greater than the total amount that it spends on contractors annually"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Biologist: DNA analysis shows that Acacia heterophylla, a tree native to the Indian Ocean’s Réunion Island, is descended from the Hawaiian tree Acacia koa. Some think this occurred because A. koa seeds floated from Hawaii to Réunion, but that explanation is implausible, since the seeds will not germinate after being soaked in seawater. Moreover, both trees grow in the mountains, not near the shore. Seabirds sometimes carry seeds great distances, so they probably caused the dispersal.",
+    "questionStem": "Which one of the following, if true, most strengthens the support for the biologist’s hypothesis?",
+    "answerChoices": {
+      "A": "A. koa branches carrying seeds can remain afloat for prolonged periods of time.",
+      "B": "There are mountain-nesting seabird species common to Réunion and Hawaii.",
+      "C": "A. koa is thought to be descended from Acacia melanoxylon, a tree native to eastern Australia.",
+      "D": "Ocean currents have sometimes carried buoyant objects from Hawaii to Réunion.",
+      "E": "Many seabird species return to land very infrequently, and often do so only to breed."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Although smaller class sizes are popular with parents and teachers, the evidence shows that large scale reductions in class size lead to only slight improvements in student performance. Because school finances are limited, the cost-benefit test that any educational policy must pass is not “Does this policy have any positive effect?” but rather “Is there a more productive use of education dollars?” So public funds would in fact be better spent on efforts to recruit and retain better teachers.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Reducing class size is an extremely expensive type of educational reform measure.",
+      "B": "Dollar for dollar, efforts to recruit and retain good teachers yield larger improvements in student performance than do reductions in class size.",
+      "C": "Because reducing class size is a popular policy, it is much easier to get public approval for that policy than for most other educational policies.",
+      "D": "Reducing class size is the most cost effective way to recruit and retain good teachers.",
+      "E": "In practice, it is difficult to identify what would be the most productive use of education dollars."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Most Supported",
+    "questionDifficulty": 1,
+    "stimulus": "Seasonal allergy symptoms are the immune system’s response to pollen in the air. When large amounts of pollen are inhaled, it can trigger an inflammatory response that causes allergy symptoms. While there are medicines that minimize those symptoms, a more effective—though often impractical—strategy is simply to stay indoors on dry, windy days during allergy season.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Medicines that minimize seasonal allergy symptoms prevent people from inhaling large amounts of pollen.",
+      "B": "Most types of pollen do not cause seasonal allergy symptoms.",
+      "C": "People who stay indoors on dry, windy days during allergy season are unlikely to inhale large amounts of pollen.",
+      "D": "People who take medicines that minimize seasonal allergy symptoms tend to stay indoors on dry, windy days during allergy season.",
+      "E": "People who experience seasonal allergy symptoms typically use air filters that remove pollen from the air in their homes."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Saturn’s moon Enceladus has a rocky core and an icy surface. Between these two layers, there must be a lake of liquid water. The Cassini space probe was used to measure the density of matter composing Enceladus. These measurements revealed something denser than ice between the core and surface of Enceladus, and that could only be liquid water.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Saturn’s moon Enceladus has a rocky core and an icy surface.",
+      "B": "There must be a lake of liquid water between the rocky core and the icy surface of Enceladus.",
+      "C": "The Cassini space probe was used to measure the density of Enceladus.",
+      "D": "Density measurements reveal something denser than ice between the core and surface of Enceladus.",
+      "E": "Anything denser than ice between the core and surface of Enceladus would have to be liquid water."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Thousands of fossils from the long-extinct dire wolf have been found in a cluster of natural tar pits in which animals became trapped and were preserved for millennia. None of these fossils came from dire wolf pups under six months old. Pups under six months old, therefore, probably did not accompany adults that were scavenging or hunting.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Dire wolf pups under six months old would not have contributed to the adults’ success in scavenging or hunting.",
+      "B": "If a dire wolf pup under six months old became trapped in a tar pit, it would be better able to pull itself free than an adult dire wolf would.",
+      "C": "Before the dire wolf became extinct, more dire wolves became trapped in the tar pits than did any other animal species.",
+      "D": "The entrapment of dire wolves in the tar pits most frequently occurred when those animals were scavenging or hunting.",
+      "E": "For the dire wolves that lived nearby, the tar pits were a favorite location for scavenging and hunting."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "If a garden does not receive plenty of water and sunlight and is not planted in rich soil, then it will not be productive. Patricia has located her garden in an area that is ideal for receiving water and sunlight, and has made sure the soil is rich by adding fertilizer and compost. Hence, Patricia’s garden will be productive.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "fails to specify adequately the meaning in context of the term “ideal”",
+      "B": "infers a cause from a correlation",
+      "C": "confuses a cause with its effect",
+      "D": "takes a set of necessary conditions as sufficient",
+      "E": "relies on a sample that is unlikely to be representative"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Rodents are small, gnawing mammals characterized by their chisel-like incisor teeth. Although most North American mammal species are not rodent species, most of the individual mammals in North America are rodents.",
+    "questionStem": "Which one of the following one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Most species of North American mammals have chisel-like incisor teeth.",
+      "B": "In North America, rodent species tend to have more individual members than other species of mammals have.",
+      "C": "Most species of mammals that have chisel-like incisor teeth can be found in North America.",
+      "D": "Of the mammal species in North America, the one with the most individual members is a species of rodent.",
+      "E": "Most nonrodent mammal species can be found in North America."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Paradox",
+    "questionDifficulty": 3,
+    "stimulus": "Toning shoes—walking shoes with a specially rounded sole—are popular with fitness enthusiasts. Research shows that the major leg muscles of people walking in toning shoes receive no more exercise than those of people walking in ordinary walking shoes. Nevertheless, many people experience a strengthening of their major leg muscles after switching to toning shoes.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Toning shoes strengthen small underused muscles in the feet and ankles.",
+      "B": "Muscles in the leg adapt to the rounded shape of toning shoes almost immediately.",
+      "C": "Many people find toning shoes especially comfortable and walk more as a result.",
+      "D": "There is little evidence that toning shoes cause injuries to their wearers.",
+      "E": "Shoes that strengthen the major leg muscles are more marketable than ordinary shoes."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: Specialists naturally tend to view their own specialties as fundamentally important. We are therefore amply justified in being skeptical when geneticists claim that personality traits not traditionally thought to be genetically determined are, in fact, genetically determined. The geneticists are probably just amplifying their sense of their own importance.",
+    "questionStem": "The reasoning in the psychologist’s argument is flawed in that this argument",
+    "answerChoices": {
+      "A": "generalizes about all specialists on the basis of an unrepresentative sample",
+      "B": "presumes that the traditional view must be the right view simply because it is what has been traditionally believed",
+      "C": "draws a conclusion that is merely a restatement of one of its main premises",
+      "D": "appeals to the authority of those unlikely to be well informed about the topic at issue",
+      "E": "disputes a claim on the basis of a supposed motive for making the claim rather than by assessing the evidence relevant to the claim"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "After the disastrous 1986 accident at the Chernobyl nuclear plant, the surrounding area was contaminated with radiation. Wild animals that are now there have very high levels of radiation in their muscles and bones. And yet since the disaster, wildlife populations in the region have expanded rapidly.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Animals that did not arrive in the area around the Chernobyl nuclear plant until after the accident still developed high levels of radiation in their muscles and bones.",
+      "B": "Some of the species that inhabit the region are migratory and so only live in the region for part of the year, limiting their exposure to the radiation.",
+      "C": "The region affected by the release of radiation is very large, encompassing 1,800 square miles (4,660 square kilometers).",
+      "D": "While some of the radioactive chemicals released by the accident depress fertility in local birds, others do not.",
+      "E": "The threat of radiation poisoning drove people out of the area, which opened up new habitat for wildlife and eliminated the danger from hunters."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Commentator: The worldwide oil crisis of 1973 was not due to any real shortage of oil, but was the result of collusion between international oil companies and oil-producing countries to artificially restrict the supply of oil in order to profit from higher prices. This is shown by the fact that after 1973 the profits of oil companies showed large increases, as did the incomes of oil-producing countries.",
+    "questionStem": "The reasoning in the commentator’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to consider the possibility that a party can benefit from an event without helping to bring about that event",
+      "B": "presumes, without providing justification, that oil companies and oil-producing countries were the only parties to benefit from the 1973 oil crisis",
+      "C": "rests on using the term “profit” in an ambiguous way",
+      "D": "fails to establish that there was a worldwide oil surplus prior to the crisis of 1973",
+      "E": "fails to consider the possibility that events that occur simultaneously can be causally related"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "In a study, six medical students were each separately presented with the same patient, whose symptoms could be the result of any one of several medical conditions. The attending physician asked each student a leading question of the form, “What tests should we order to try to rule out a diagnosis of X?” where X was filled in with a different medical condition for each student. A week later each student was presented with a patient having similar symptoms in the presence of a different attending physician who asked for a diagnosis without asking any leading questions. Each student began by testing the diagnosis that had been suggested by the original attending physician.",
+    "questionStem": "Which one of the following statements is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "On the second occasion, none of the medical students began by testing the same diagnosis as any of the other medical students.",
+      "B": "At most one of the medical students knew which of the several medical conditions was most likely to lead to the patients’ symptoms.",
+      "C": "The second attending physician was unaware of the results of the students’ encounter with the first attending physician.",
+      "D": "On the second occasion, exactly one of the students tested for the medical condition that actually caused the patient’s symptoms.",
+      "E": "At least some of the medical students were unaware that the patients’ symptoms could be the result of medical conditions other than the one suggested by the original attending physician."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Few, if any, carbonated beverages contain calcium. Some very popular ones, however, contain significant amounts of caffeine, and consuming caffeine causes people to excrete significantly more calcium than they would otherwise. Interestingly, teenagers who drink large amounts of carbonated beverages containing caffeine tend to suffer more broken bones than those who do not. Calcium deficiency can make bones more brittle, of course, so the higher incidence of broken bones in teenagers who consume carbonated beverages with caffeine is probably due primarily to caffeine consumption.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Teenagers who drink large quantities of carbonated beverages containing caffeine tend to drink smaller quantities of calcium-rich beverages than other teenagers do.",
+      "B": "Teenagers engage in the types of activities that carry a high risk of causing broken bones much more often than both older and younger people do.",
+      "C": "Some teenagers have calcium deficiencies even though they do not consume any caffeine.",
+      "D": "Some of the less popular carbonated beverages contain even more caffeine than the more popular ones.",
+      "E": "The more calcium a person ingests as a regular part of his or her diet, the more calcium that person will tend to excrete."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Role",
+    "questionDifficulty": 3,
+    "stimulus": "Philosopher: Groups are not the type of entity that can be worthy of praise or blame. Blameworthiness implies conscience and agency. Nations do not have consciences. Families are not agents. Hence, any ascription of praise or blame to a group must be translated into some statement about individuals if we are to evaluate it properly.",
+    "questionStem": "Which one of the following most accurately describes the role played in the philosopher’s argument by the claim that nations do not have consciences?",
+    "answerChoices": {
+      "A": "It is an intermediate conclusion offered as direct support for the argument’s main conclusion.",
+      "B": "It is offered as support for an intermediate conclusion that is in turn offered as direct support for the argument’s main conclusion.",
+      "C": "It is cited as an implication of the main conclusion drawn in the argument.",
+      "D": "It is cited as an instance of a general conclusion drawn in the argument.",
+      "E": "It is the main conclusion drawn in the argument."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Psychiatrist: Psychological stress is known both to cause negative emotions and to impair physical health. This suggests that overcoming such negative emotions when they arise could cause one’s health to improve.",
+    "questionStem": "The psychiatrist’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It presumes without justification that two conditions that together have a certain effect causally influence one another.",
+      "B": "It presumes, merely on the basis that two conditions have a common cause, that one of these two conditions can causally influence the other.",
+      "C": "It confuses two causes that together are necessary to bring about an effect with causes that are sufficient for that effect.",
+      "D": "It takes for granted that two conditions that together have a certain effect can, each by itself, produce the same effect.",
+      "E": "It takes for granted that removing a condition that causally contributes to another condition suffices to eliminate the latter condition."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Some potential anticancer drugs work by depriving growing tumors of needed blood vessels. The creation of blood vessels is called angiogenesis, and the experimental drugs work by inhibiting this process. The same drugs have been found to prevent obesity in rodents.",
+    "questionStem": "The statements above, if true, lend the strongest support to which one of the following?",
+    "answerChoices": {
+      "A": "The cells in tumors are more similar in structure to fat cells than to other cells in the body.",
+      "B": "Drugs that inhibit angiogenesis would probably enable obese humans to lose weight.",
+      "C": "Fat tissue depends on angiogenesis in order to grow.",
+      "D": "Rodents with cancer are more likely to be obese than healthy rodents.",
+      "E": "Drugs that inhibit angiogenesis also prevent absorption of vital nutrients."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Parallel",
+    "questionDifficulty": 3,
+    "stimulus": "Although the slightest difference in shades of paint is noticeable, it is pointless to spend much time trying to match an old paint precisely when repainting only part of the interior of a house. This is because paint fades somewhat in the months after it has been applied. Thus, even if a new paint matches the old during application, the two paints will no longer match after a year or so.",
+    "questionStem": "The reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "A bicycle is most comfortable to ride when the wheels are perfectly aligned. However, because the position of a bike wheel always shifts a bit when the bike is ridden, it is useless to put very much effort into perfectly aligning a new wheel.",
+      "B": "It is rarely worthwhile to look for parts for an older car. Because most cars do not last more than 20 years, it is best to buy a new car instead of restoring an older car.",
+      "C": "Keeping hair healthy requires using a shampoo designed specifically for one’s hair type. However, hair will become unhealthy if washed consistently with the same brand of shampoo. Thus, to maintain healthy hair, a person should alternate between two suitable shampoos.",
+      "D": "Although cookies made with butter have a better texture than do cookies made with margarine, it is pointless to spend the extra money needed to buy butter, when cookies made with margarine are almost as good.",
+      "E": "Unless the size and shape of a dress exactly matches the size and shape of its lining, the dress will hang unevenly when it is worn. However, because most people would not notice this unevenness, it is not worthwhile when making a dress to spend much time attempting to match a dress and its lining perfectly."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Social observer: Advertising agencies are willfully neglecting the most profitable segment of the market: older adults. Older adults control more of this nation’s personal disposable income than does the rest of the population combined. Therefore, advertising agencies can maximize their clients’ profits if they gear their advertisements mainly to older adults.",
+    "questionStem": "Which one of the following, if assumed, would enable the conclusion of the social observer’s argument to be properly inferred?",
+    "answerChoices": {
+      "A": "Older people generally have larger incomes and have had longer to accumulate resources than younger people.",
+      "B": "No company can maximize its profits unless it markets its products primarily to a population segment that controls most of this nation’s personal disposable income.",
+      "C": "Advertising that is directed toward the wealthiest people is the most effective means for a business to improve the reputation of its products.",
+      "D": "No advertising agency that tailors its advertisements mainly to an audience that does not control much of this nation’s personal disposable income will maximize its clients’ profits.",
+      "E": "Any advertising agency that gears its advertisements mainly to a population segment that controls 50 percent or more of this nation’s personal disposable income will maximize its clients’ profits."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Professor: It has been argued that all judges should be elected rather than appointed to their positions. But this is a bad idea. If judges ran for election, they would have to raise campaign funds. Thus, they would be likely to accept campaign contributions from special interests. It is well known that such contributions lead to conflicts of interest for politicians, so it is to be expected that they would produce similar conflicts of interest for judges.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the professor’s reasoning?",
+    "answerChoices": {
+      "A": "If politicians should avoid conflicts of interest, then judges should avoid conflicts of interest as well.",
+      "B": "Special interests should not make offers of campaign contributions to those running for elective office.",
+      "C": "Judges should be appointed to their positions only if doing so ensures that they will usually be able to avoid conflicts of interest.",
+      "D": "If judges should be appointed, then it is likely that there are other public offices that should be changed from elected to appointed offices.",
+      "E": "No public office for which election campaigning would be likely to produce conflicts of interest should be changed from an appointed to an elected office."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Merle: Usually when I insert a dollar bill into the change machine at the office it makes a squeaking sound before it produces change. But the machine can make the sound only when the electric outlet it is plugged into is turned on. Therefore, it must be that the electric outlet usually is turned on.",
+    "questionStem": "Which one of the following arguments exhibits flawed reasoning most similar to the flawed reasoning exhibited by Merle’s argument?",
+    "answerChoices": {
+      "A": "Everyone who has read the new horror novel found the plot disturbing. Indeed, the plot would disturb anyone with a vivid imagination. Therefore, everyone who has read the novel must have a vivid imagination.",
+      "B": "Some people who have read the new horror novel found the plot disturbing. But the plot would not be disturbing to people who lack vivid imaginations. Therefore, some people must have vivid imaginations.",
+      "C": "Many people who have read the new horror novel found the plot disturbing. Undoubtedly, everyone who found the plot disturbing has a vivid imagination. Therefore, many of the people who have read the novel must have vivid imaginations.",
+      "D": "Most people who have read the new horror novel found the plot disturbing. But the plot cannot disturb anyone who lacks a vivid imagination. Therefore, most people must have vivid imaginations.",
+      "E": "Most people who have read the new horror novel found the plot disturbing. But the plot cannot disturb people who lack vivid imaginations. Therefore, most people with vivid imaginations must find the plot disturbing."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Method",
+    "questionDifficulty": 4,
+    "stimulus": "Kira: It would be unwise for you to buy that insurance policy. It’s designed to make money for the company that sells it to you. They set the prices to ensure profits.\nBinh: Undeniably, the insurer is in business to make money. But the mere fact that an insurer draws a profit in no way implies that buying one of its policies is unwise.",
+    "questionStem": "Binh responds to Kira’s argument by doing which one of the following?",
+    "answerChoices": {
+      "A": "suggesting that Kira has overlooked a fact that, although consistent with her premises, is in direct conflict with her conclusion",
+      "B": "denying Kira’s premises while suggesting that her conclusion, although possibly true, is highly unlikely",
+      "C": "arguing that Kira’s premises are not only inadequate to prove her conclusion but in fact point strongly toward its being false",
+      "D": "conceding Kira’s premises without denying her conclusion, while asserting that the latter does not follow from the former",
+      "E": "observing that while Kira’s premises each independently support her conclusion, the premises themselves are inconsistent with one another"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Economist: The increase in the minimum wage in Country X will quickly lead to a decrease in Country X’s rate of unemployment. Raising the minimum wage will lead to more disposable income for a large segment of the working population. Much of this increased income will be spent on consumer goods. Surely this increase in demand for consumer goods will lead to an increase in the number of factory jobs necessary to meet production.",
+    "questionStem": "Each of the following, if true, would weaken the economist’s argument except:",
+    "answerChoices": {
+      "A": "The cost of a minimum-wage increase in Country X will be passed on to consumers in the form of significantly higher prices for consumer goods.",
+      "B": "Most of the consumer goods sold in Country X are produced outside the country.",
+      "C": "In many factories in Country X, most workers are paid much more than the current minimum wage.",
+      "D": "The cost to employers of an increase in the minimum wage in Country X will be made up by reductions in the workforce.",
+      "E": "Most factories that produce consumer goods in Country X have large surpluses of goods as a result of years of overproduction."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Art critic: An arrangement of objects tends to be aesthetically pleasing to the extent that it gives the impression that the person who arranged the objects succeeded at what he or she was attempting to do.",
+    "questionStem": "The generalization expressed by the art critic, if correct, most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "The new art installation is very pleasing aesthetically. However, even though it is not apparent to viewers, the artist did not intend the wooden panels to be arranged the way they in fact are. So the panels should be rearranged to reflect the artist’s intention.",
+      "B": "The wooden panels in the art installation probably are not arranged in the way that the artist wanted them arranged, for the installation is less aesthetically pleasing than other installations.",
+      "C": "The arrangement of wooden panels in the art installation is likely to give the impression that the artist who arranged them did not quite succeed at what she was attempting to do, for the arrangement is almost, but not quite, symmetrical.",
+      "D": "The art installation would be more aesthetically pleasing if the wooden panels in it were arranged more symmetrically, for then it would seem more like the artist had gotten the panels arranged the way she wanted.",
+      "E": "The artist could make the arrangement of wooden panels in the art installation more aesthetically pleasing by making it less symmetrical, for then it would give less of an impression that every aspect of the arrangement was fully planned."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "The three-spine stickleback is a small fish that lives both in oceans and in freshwater lakes. While ocean stickleback are covered with armor to protect them from their predators, lake stickleback have virtually no armor. Since armor limits the speed of a stickleback’s growth, this indicates that having a larger size is a better defense against the lake stickleback’s predators than having armor.",
+    "questionStem": "Which one of the following, if true, weakens the argument?",
+    "answerChoices": {
+      "A": "Sticklebacks with armor are unable to swim as fast, making them most vulnerable to fast-moving predators.",
+      "B": "Having a larger size is an important factor in whether lake stickleback, but not ocean stickleback, survive cold winters.",
+      "C": "Unlike ocean stickleback, the lake stickleback are more often preyed upon by predatory insects than by larger fish.",
+      "D": "Both ocean stickleback and lake stickleback feed primarily on the same types of foods.",
+      "E": "Sticklebacks originated in the ocean but began populating freshwater lakes and streams following the last ice age."
+    },
+    "correctAnswer": "B"
+  }
+]

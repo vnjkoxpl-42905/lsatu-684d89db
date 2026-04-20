@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "A company produced a small car that costs much less—but is also much less safe—than any car previously available. However, most customers of the new car increased their safety on the roads by buying it.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent paradox in the above claims?",
+    "answerChoices": {
+      "A": "The company surveyed potential customers and discovered that most of them were more concerned about cost than about safety.",
+      "B": "The company could significantly increase the car’s safety without dramatically increasing its production cost.",
+      "C": "Most people who bought the new car were probably unaware that it is much less safe than other cars.",
+      "D": "Many households that previously could afford only one car can now afford two.",
+      "E": "Most people who bought the new car previously travelled by bicycle or motorcycle, which are less safe than the new car."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Brian: I used to eat cheeseburgers from fast-food restaurants almost every day. But then I read that eating bread and meat in the same meal interferes with digestion. So I stopped eating cheeseburgers and switched to a diet of lean meats, fruits, and vegetables. Since starting this new diet, I feel much better and my cholesterol level and blood pressure are lower. This proves that eating bread and meat in the same meal is unhealthy.",
+    "questionStem": "The reasoning in Brian’s argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "treats a statement as established fact merely because a self-appointed expert has asserted it",
+      "B": "draws a conclusion that merely restates a premise offered in support of it",
+      "C": "treats a condition that must occur in order for an effect to occur as a condition that would ensure that the effect occurs",
+      "D": "concludes that one part of a change was responsible for an effect without ruling out the possibility that other parts of that change were responsible",
+      "E": "concludes that making a dietary change improved the health of a particular person simply because that change results in improved health for most people"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Must Be True",
+    "questionDifficulty": 1,
+    "stimulus": "Researcher: Newly formed neurons can help to heal an injured brain but only if they develop into the type of neurons that are most common in the injured area. Studies have shown that when a part of the brain called the striatum is injured, newly formed neurons in the striatum never become midsized spiny neurons, the type most common in the striatum.",
+    "questionStem": "If the researcher’s statements are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Newly formed neurons sometimes develop into midsized spiny neurons in areas of the brain other than the striatum.",
+      "B": "Newly formed neurons are commonly found in injured areas of the brain shortly after the injury occurs.",
+      "C": "Midsized spiny neurons are not the most common type of neuron in any part of the brain other than the striatum.",
+      "D": "In cases of injury to the striatum, newly formed neurons will not help to heal the injury.",
+      "E": "In most cases of brain injury, newly formed neurons do not help to heal the injury."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Method",
+    "questionDifficulty": 1,
+    "stimulus": "Leona: Thompson’s article on the novel Emily’s Trials is intriguing but ultimately puzzling. In discussing one scene, Thompson says that a character’s “furrowed brow” and grim expression indicate deep inner turmoil and anxiety. Later, however, Thompson refers to the same scene and describes this character as the “self-identified agent” of an action. This ascription is interesting and challenging in its own right; but Thompson begins the article by claiming that a “self-identified agent” is fundamentally incapable of having misgivings or anxiety.",
+    "questionStem": "The argumentative strategy Leona uses in discussing the article is to criticize Thompson’s comments on the grounds that",
+    "answerChoices": {
+      "A": "some of Thompson’s reasoning is circular",
+      "B": "Thompson provides no definition of the concept of a “self-identified agent”",
+      "C": "the analysis of character offered by Thompson is insufficiently supported by the textual evidence",
+      "D": "it is unlikely that any character could qualify as a “self-identified agent”",
+      "E": "some of Thompson’s claims contradict each other"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "An online auction site conducted a study of auction techniques involving 8,000 used cars, divided into two equal groups. Each car’s listing in the first group included a brief description of its condition. The description of each car in the other half additionally listed defects of the car. More cars in the second group sold, and of comparable cars in both groups that sold, the cars in the second group fetched higher prices.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the second group of cars had better sales results than the first group?",
+    "answerChoices": {
+      "A": "Most people are skeptical of the descriptions that accompany items when they are put up for auction online.",
+      "B": "People are likely to assume that a car with no reported defects has been maintained more attentively and is therefore in better overall condition.",
+      "C": "Prospective buyers are likely to overlook mention of defects buried in a detailed description of the condition of an object they are considering purchasing.",
+      "D": "Listing defects in a description of an item tends to lead people to assume that no major defect has gone unmentioned.",
+      "E": "With thousands of cars for sale, prospective buyers are unlikely to read detailed descriptions of more than a small fraction of them."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 1,
+    "stimulus": "Critic: Linsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective, and yet these novelists are widely held to be good writers.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the critic’s argument?",
+    "answerChoices": {
+      "A": "Linsey is a good songwriter.",
+      "B": "The view that Linsey is a bad songwriter is poorly supported.",
+      "C": "The writings of many modern novelists are disjointed and subjective.",
+      "D": "Many modern novelists are widely held to be good writers.",
+      "E": "Linsey’s talent as a writer is no less than that of many modern novelists."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Computer security experts correctly maintain that computer passwords are a less secure means of protecting one’s information than are alternative security options like fingerprint scanners. But computer passwords are not going to be replaced by these other options anytime soon. The alternative security options remain significantly more expensive to employ, and they can replace passwords only if they become standard on most of the world’s computers.",
+    "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "There are ways to make computer passwords a more secure means of protecting one’s information.",
+      "B": "Any security option that is no more expensive to employ than computer passwords provides less security than computer passwords.",
+      "C": "Most computer security experts do not believe that computer passwords will be replaced by an alternative security option anytime soon.",
+      "D": "Security options that are significantly more expensive to employ than computer passwords will not become standard on most of the world’s computers anytime soon.",
+      "E": "As soon as a security option is developed that is not significantly more expensive to employ than computer passwords, computer passwords will be replaced as a security measure."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "Statistics show clearly that in those countries with the most severe penalties for driving while intoxicated, a smaller percentage of drivers have traffic accidents involving alcohol use than in other countries. This refutes those who claim that would-be drunk drivers will not be deterred by the prospect of severe penalties.",
+    "questionStem": "Which one of the following would, if true, most undermine the argument?",
+    "answerChoices": {
+      "A": "The countries with the largest populations do not have severe penalties for driving while intoxicated.",
+      "B": "Very severe penalties against driving while intoxicated are in effect only in countries in which alcohol use is rare.",
+      "C": "The higher a country’s speed limits, the more frequent traffic accidents tend to be in that country.",
+      "D": "Only a relatively small minority of those who drive while intoxicated are actually apprehended while doing so.",
+      "E": "All countries impose severer penalties on those who cause accidents while driving intoxicated than on those who are merely apprehended while driving intoxicated."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Many airlines offer, for a fee, to “offset” the carbon emissions produced when you fly, but such schemes are almost entirely ineffective. Although the fees are usually invested in projects that directly reduce carbon emissions, in most cases these projects would have proceeded even without that investment, so no carbon emissions are prevented.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Steps that are taken in order to mitigate the harmful effects of one’s freely chosen, harmful actions do not absolve one from the original harm.",
+      "B": "If an outcome would have occurred in the absence of a certain action, then the outcome was not a consequence of that action.",
+      "C": "If a company or individual gains financially from a particular action, they should not be considered morally praiseworthy for any positive consequences of that action.",
+      "D": "Measures aimed at achieving a certain outcome should only be taken when they are of demonstrable effectiveness at achieving that outcome.",
+      "E": "If a project for reducing carbon emissions does not tackle the largest source of carbon emissions, then it is of limited value in reducing such emissions."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Many species of plants produce nectars known as extrafloral nectories (EFNs), which are known to attract certain ants that defend the plants against leaf-eating insects. Recently, greenhouse experiments have found that jumping spiders jump onto plants with active EFNs six times more often than they jump onto plants without EFNs, and regularly eat the nectar. So, like the ants, jumping spiders apparently defend EFN-producing plants against leaf-eating insects.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument above?",
+    "answerChoices": {
+      "A": "For many species of nectar-producing plants, productivity is increased when a plant is protected from leaf-eating insects.",
+      "B": "In field experiments, the introduction of jumping spiders into an environment was followed by a significant increase in the population of EFN-producing plants.",
+      "C": "Some species of EFN-producing plants cannot survive without some outside agent protecting them from leaf-eating insects.",
+      "D": "Experiments with types of spiders other than jumping spiders suggest that these other types of spiders do not defend EFN-producing plants.",
+      "E": "Regions with large populations of ants also tend to have large populations of EFN-producing plants."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "When using a manufactured pattern to make clothing, a tailor alters the pattern to accommodate any future distortion of the fabric. Also, unless the clothing is to be worn by a person whose measurements precisely match the pattern size, the tailor alters the pattern to fit the wearer exactly. Thus, a professional tailor never blindly follows a pattern, but always adjusts the pattern to fit the wearer exactly.",
+    "questionStem": "The conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Most manufactured patterns do not already accommodate the future distortion of fabrics that shrink or stretch.",
+      "B": "At least some tailors who adjust patterns to the wearer and to the fabrics used are professional tailors.",
+      "C": "The best tailors are those most able to alter patterns to fit the wearer exactly.",
+      "D": "All professional tailors sew only for people whose measurements do not exactly match their chosen patterns.",
+      "E": "A professional tailor can always estimate exactly how much a fabric will shrink or stretch."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most Supported",
+    "questionDifficulty": 3,
+    "stimulus": "Typically, a design that turns out well has gone through many drafts, each an improvement over the previous one. What usually allows a designer to see an idea’s advantages and flaws is a sketch of the idea. The ways in which the sketch appears muddled or confused tend to reveal to the designer ways in which the design has been inadequately conceptualized.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "The designs that turn out best go through the most drafts.",
+      "B": "Many good designs have emerged from design ideas that were flawed.",
+      "C": "Designs that do not turn out well have not gone through many drafts.",
+      "D": "Designs whose initial conceptualization was inadequate rarely turn out well.",
+      "E": "A designer will never see advantages and flaws in a design idea without the aid of a sketch."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Mayor: Some residents complain that the city has no right to require homeowners to connect to city water services, even though we are doing so in order to ensure public health and safety. But they are wrong. We will charge the homeowners a fair market price for the service, and our plan will benefit all of the city’s residents by increasing city revenue and by making the city a healthier and safer place in which to live.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the reasoning in the mayor’s argument?",
+    "answerChoices": {
+      "A": "A city has the right to require homeowners to connect to city water services if it charges a fair price for the service and if the requirement will benefit all the city’s residents.",
+      "B": "A city should require homeowners to connect to city water services only if it will increase revenue and make the city a healthier and safer place in which to live.",
+      "C": "A city has no right to require homeowners to connect to city water services if it does not charge the homeowners a fair market price for the service.",
+      "D": "Residents of a city have no right to complain about the requirement that homeowners connect to city water services if the requirement will benefit all the city’s residents.",
+      "E": "A city can successfully increase revenue and make itself a healthier and safer place to live only if the city is able to require homeowners to connect to city water services."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Deborra: The art of still photography cannot enable us to understand the world. After all, understanding starts from refusing to accept the world as it looks and inquiring into the world’s reality, and the reality of the world is not in its images but in its functions. Functioning takes place in time and must be explained in time; only that which narrates can enable us to understand.",
+    "questionStem": "Which one of the following is an assumption on which Deborra’s argument depends?",
+    "answerChoices": {
+      "A": "Artists who take still photographs do not attempt to understand the world.",
+      "B": "The functioning of the world cannot be captured on film.",
+      "C": "The art of still photography is not narrative.",
+      "D": "A complete understanding of the world is not attainable through art.",
+      "E": "Images cannot be properly explained."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Candidate: In each election in the last ten years, the candidate who supported property tax reform received a significant majority of the votes in the northeastern part of my district. In no other part of my district has there been any discernible pattern of voting for or against property tax reform. Therefore, in order to attract additional voters in the northeastern part of my district without alienating voters elsewhere, all I need to do is to go on record as favoring property tax reform.",
+    "questionStem": "The reasoning in the candidate’s argument is most vulnerable to criticism on the grounds that the candidate",
+    "answerChoices": {
+      "A": "would not attempt to enact property tax reform if elected",
+      "B": "draws opposite conclusions about voting patterns in different parts of the district",
+      "C": "draws a general conclusion about patterns of voting based on a small sample",
+      "D": "surmises from the fact that two phenomena are correlated that one causes the other",
+      "E": "draws a conclusion based solely on data that are ten years old"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Most Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Researchers investigating the accuracy of eyewitness accounts staged and made a video of a crime, and showed it to test subjects. A lineup of “suspects,” none of whom was the person playing the criminal in the video, was then shown to the subjects. When the subjects were not told that the suspect might not be in the lineup, 78 percent of them misidentified one or another of the persons in the lineup as the criminal. Only 38 percent of the subjects made misidentifications when they were told that the suspect might not be in the lineup.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Eyewitnesses are no more likely to accurately select a suspect from a lineup than are people who are given an accurate verbal description of the suspect.",
+      "B": "People tend to want to satisfy the stated expectations of those who ask them for information.",
+      "C": "When specifically directed by a person of authority to say that something is among a group of things when it is not, most people will comply.",
+      "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
+      "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Advice columnist: Parents should not encourage their children to place great value on outdoing others. Being motivated in this way not only fosters resentment, it makes one less happy because it gives one a desire for achievement that is difficult to satisfy.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
+    "answerChoices": {
+      "A": "Parents should encourage their children to be happy about the things that they do well.",
+      "B": "Parents should try to ensure that their children have at least some desires that are easy to satisfy.",
+      "C": "One should never encourage a person to acquire a trait if having the trait would make that person less happy.",
+      "D": "Parents should do everything they can to ensure that their children have significant achievements.",
+      "E": "How much one achieves relative to one’s own potential is just as important as how much one achieves relative to others."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Most Supported",
+    "questionDifficulty": 5,
+    "stimulus": "Economist: Machinery firms in this country argue that in order to grow big enough to compete successfully with foreign rivals, the protection that they have been receiving from foreign competition must be extended for several more years. Yet these firms have been receiving protection from foreign competition for the last ten years. If it were possible for protection from foreign competition to enable this country’s machinery firms to grow big enough to compete successfully with foreign rivals, ten years would be a sufficient time frame for this to happen.",
+    "questionStem": "The economist’s statements, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Protection from foreign competition rarely if ever enables firms to grow big enough to compete with foreign rivals.",
+      "B": "Ten years is a sufficient time frame for assessing the success of any economic policy.",
+      "C": "None of the machinery firms in the economist’s country has grown significantly over the last ten years.",
+      "D": "Most of the machinery firms in the economist’s country will go out of business unless they are protected from foreign competition.",
+      "E": "Protection from foreign competition will not enable machinery firms in the economist’s country to grow big enough to take on foreign rivals."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 5,
+    "stimulus": "McKee: Heckling the performer is a long-standing tradition of stand-up comedy. The performers know this and learn to respond entertainingly. That’s why it’s unwise for comedy venues to prevent audience members from heckling.\nChapman: Heckling is only a long-standing tradition of comedy because it’s tolerated. And it’s usually only fun for the heckler. In most cases, heckling is just a distraction from the performance.",
+    "questionStem": "McKee’s and Chapman’s statements indicate that they disagree about each of the following except:",
+    "answerChoices": {
+      "A": "Comedy venues should tolerate audience members’ heckling the performers.",
+      "B": "Stand-up comedians’ responses to heckling should be considered part of their stand-up comedy performance.",
+      "C": "The best stand-up comedians are able to respond entertainingly when they are heckled by audience members.",
+      "D": "Many audience members at comedy venues enjoy watching stand-up comedians respond to heckling.",
+      "E": "It is unwise for comedy venues to disregard long-standing traditions of stand-up comedy."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Political scientist: Democracy depends on free choices, and choices cannot be free unless they are made on the basis of well-reasoned opinions. In the Information Age, reading skills have become essential to forming well-reasoned opinions. Thus, in the Information Age, a highly literate society will be a democratic one.",
+    "questionStem": "The political scientist’s reasoning is flawed in that it",
+    "answerChoices": {
+      "A": "mistakes necessary conditions for sufficient conditions",
+      "B": "fails to take into account that there are many means of forming well-reasoned opinions",
+      "C": "confuses the means of doing something with the reasons for doing it",
+      "D": "generalizes too hastily from one type of case to another",
+      "E": "takes for granted that a condition under which something occurs is a condition under which all its prerequisites occur"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "All of the students at Harrison University live in one of two residence complexes, either Pulham or Westerville. Although just a small fraction of the classes at Harrison are night classes, 38 percent of Harrison students take at least one night class. That figure is lower for Harrison students living in Westerville: Only 29 percent of those students take at least one night class.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "More than 38 percent of the students at Harrison who live in Pulham take a night class.",
+      "B": "More than 50 percent of the students who take night classes at Harrison are from Pulham.",
+      "C": "More students at Harrison live in Westerville than live in Pulham.",
+      "D": "Harrison students living in Pulham are less likely than those living in Westerville to take more than one night class.",
+      "E": "Night classes at Harrison have larger enrollments, on average, than day classes do."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "The universe as a whole necessarily tends toward greater disorder, or entropy. From this alone, it follows that the earth’s biosphere has always been moving toward increased disorder as well, in spite of appearances to the contrary.",
+    "questionStem": "Which one of the following is most similar in its flawed reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Wooded Lake is one of the most beautiful lakes in the world. This follows from the fact that the extensive system of interconnected lakes of which Wooded Lake is a part is one of the most beautiful systems of its type worldwide.",
+      "B": "This has been the coldest April in this region in the last half-century. So, on any given day this April, it is likely that the weather was unseasonably cold.",
+      "C": "The manifest indicates that every deck on that cruise ship houses some commercial cargo, even though on some decks the cargo storage areas are difficult to find. Hence every deck on the ship is devoted to commercial cargo storage, even though this is not immediately obvious.",
+      "D": "Although Hopper claims to have been working in another part of the plant when the accident occurred, company records show that every person on the cleanup crew of which Hopper is a member was in the grain area at the time. Hence Hopper either has misremembered events, or is not telling the truth.",
+      "E": "Two of the seven critical parts in that gear assembly are unsafe to use, even though this is not obvious upon a casual inspection. The assembly therefore is unsafe to rely on and ought to be repaired."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Researcher: Consumption of turmeric, a basic ingredient in curry dishes, probably slows cognitive decline. Our research team analyzed a database of information about the cognitive function, ethnicity, and diet of elderly residents of Singapore. Those who eat curries regularly had higher scores on cognitive-function tests than those who rarely or never eat curries; this relationship was strongest for the elderly Singapore residents of Indian ethnicity.",
+    "questionStem": "Which one of the following, if true, most strengthens the researcher’s explanation of the research team’s findings?",
+    "answerChoices": {
+      "A": "Even before analyzing the database, the researchers had hypothesized that turmeric consumption slows cognitive decline.",
+      "B": "Highly educated residents of Singapore are more likely than other residents to eat curries regularly.",
+      "C": "Most Singapore residents who are of Indian ethnicity eat curries regularly.",
+      "D": "Singapore residents, on a per capita basis, eat curries more often than do residents of most other countries.",
+      "E": "Indian curries generally contain much more turmeric than other curries contain."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "A theory cannot properly be regarded as empirical unless there is some conceivable observation that, if the theory were false, would refute it.",
+    "questionStem": "The principle above most helps to justify which one of the following?",
+    "answerChoices": {
+      "A": "Since no one was present at the origin of the universe, the Big Bang theory of the universe’s origin is not an empirical theory.",
+      "B": "Since set theory is not an empirical theory, there is no conceivable observation that would refute it.",
+      "C": "Psychoanalysis is such a flexible theory that no conceivable observation could show it to be false, so it is not an empirical theory.",
+      "D": "There are conceivable observations that would refute quantum theory, so quantum theory is an empirical theory.",
+      "E": "The theory of relativity must be true since, although scientists have conceived of observations that would refute it, it has not yet been refuted."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT155",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Parallel",
+    "questionDifficulty": 5,
+    "stimulus": "Shopkeeper: Our city will soon approve the construction of a new shopping center, but I won’t be relocating my store there. My store needs to be in a high-visibility site with good growth potential, but the new shopping center will be at either Maple Street or West Avenue. The Maple Street site lacks visibility, and the West Avenue site has poor growth potential.",
+    "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to the shopkeeper’s pattern of reasoning?",
+    "answerChoices": {
+      "A": "Appiah will not renew the lease on her apartment unless her rent does not increase and she is permitted to get a pet. But Appiah’s landlord prohibits pets and plans to raise the rent on every apartment in the building. So Appiah will not renew her lease.",
+      "B": "Professor Myers is unable to teach any class next semester unless it meets in Diaz Hall in the afternoon. Myers can teach either ethics or political theory. Ethics classes cannot meet in the afternoon, but political theory classes can. Political theory classes can also meet in Diaz Hall. So Myers will teach political theory next semester.",
+      "C": "Finch will not travel this month unless he can get inexpensive plane tickets or stay with a friend. But Finch only wants to travel to Bridgeport or Hazleton. Plane tickets to Bridgeport are expensive. Finch cannot stay with a friend in Hazleton. So Finch will not travel this month.",
+      "D": "The concert will not sell out of tickets unless it is held at a small venue in the downtown area. But the concert will either be held at Jensen Arena, which is a large venue, or at Pembroke Hall, which is located outside the downtown area. So the concert will not sell out.",
+      "E": "The new park near the river will not be popular unless it is well lit and its natural scenery remains undisturbed. The park will be well lit if lamps are installed near the riverbank. But installing lamps there would disturb the park’s natural scenery. So the new park will not be popular."
+    },
+    "correctAnswer": "D"
+  }
+]
