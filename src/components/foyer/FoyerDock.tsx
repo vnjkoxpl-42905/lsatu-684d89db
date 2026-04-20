@@ -7,9 +7,12 @@ export default function FoyerDock() {
   const navigate = useNavigate();
   const { unreadCount } = useInbox();
 
+  const buttonClass =
+    "group relative flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-foreground/55 transition-colors duration-200 hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
   return (
     <div
-      className="flex items-center gap-1 rounded-full border border-border bg-background p-2 shadow-lg"
+      className="flex items-center gap-1 rounded-full border border-border/60 bg-background/80 p-2 shadow-lg shadow-black/30 backdrop-blur-md"
       role="toolbar"
       aria-label="Foyer dock"
     >
@@ -17,11 +20,9 @@ export default function FoyerDock() {
         type="button"
         onClick={() => navigate("/inbox")}
         aria-label={
-          unreadCount > 0
-            ? `Inbox, ${unreadCount} unread`
-            : "Inbox"
+          unreadCount > 0 ? `Inbox, ${unreadCount} unread` : "Inbox"
         }
-        className="relative flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className={buttonClass}
       >
         <Inbox className="h-5 w-5" aria-hidden />
         {unreadCount > 0 && (
@@ -35,7 +36,7 @@ export default function FoyerDock() {
         type="button"
         onClick={() => toast.info("Notifications coming soon")}
         aria-label="Notifications"
-        className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className={buttonClass}
       >
         <Bell className="h-5 w-5" aria-hidden />
       </button>
@@ -44,7 +45,7 @@ export default function FoyerDock() {
         type="button"
         onClick={() => toast.info("Help center coming soon")}
         aria-label="Help"
-        className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className={buttonClass}
       >
         <LifeBuoy className="h-5 w-5" aria-hidden />
       </button>
