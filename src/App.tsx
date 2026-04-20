@@ -26,6 +26,7 @@ import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
+const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -72,6 +73,11 @@ const App = () => {
                   <AdminBoard />
                 </React.Suspense>
               </ProtectedRoute>
+            } />
+            <Route path="/admin/drive-files" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                <DriveFiles />
+              </React.Suspense>
             } />
 
             {/* Inbox — messaging, no question bank needed */}
