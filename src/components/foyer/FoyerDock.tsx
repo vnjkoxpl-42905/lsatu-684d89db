@@ -8,11 +8,11 @@ export default function FoyerDock() {
   const { unreadCount } = useInbox();
 
   const buttonClass =
-    "group relative flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-foreground/55 transition-colors duration-200 hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+    "group relative flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-all duration-200 hover:scale-105 hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
   return (
     <div
-      className="flex items-center gap-1 rounded-full border border-border/60 bg-background/80 p-2 shadow-lg shadow-black/30 backdrop-blur-md"
+      className="flex items-center gap-2 rounded-full border border-border/60 bg-background/80 p-2 shadow-lg shadow-black/30 backdrop-blur-md"
       role="toolbar"
       aria-label="Foyer dock"
     >

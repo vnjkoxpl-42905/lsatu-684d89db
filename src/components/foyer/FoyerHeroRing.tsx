@@ -14,8 +14,8 @@ interface NodeDef {
 const VIEWBOX = 800;
 const CENTER = 400;
 const RADIUS = 300;
-const INNER_R = 96;
-const LABEL_OFFSET = 46; // perpendicular distance from ring to label baseline
+const INNER_R = 120;
+const LABEL_OFFSET = 52; // perpendicular distance from ring to label baseline
 const LABEL_FONT_PX = 10;
 const LABEL_TRACKING_EM = 0.28;
 
@@ -78,7 +78,7 @@ export default function FoyerHeroRing() {
           r={RADIUS}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.25}
+          strokeOpacity={0.18}
         />
         {/* Inner echo */}
         <circle
@@ -87,7 +87,7 @@ export default function FoyerHeroRing() {
           r={INNER_R}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.18}
+          strokeOpacity={0.12}
         />
 
         {nodes.map((n) => {
@@ -157,7 +157,7 @@ export default function FoyerHeroRing() {
               <circle
                 cx={dot.x}
                 cy={dot.y}
-                r={isActive ? 5 : 3.5}
+                r={isActive ? 4.5 : 3}
                 className="fill-foreground"
                 style={{ transition: "r 200ms ease" }}
                 pointerEvents="none"
@@ -168,7 +168,7 @@ export default function FoyerHeroRing() {
                 y={labelY}
                 textAnchor={anchor}
                 className="fill-foreground"
-                fillOpacity={isActive ? 1 : 0.7}
+                fillOpacity={isActive ? 1 : 0.55}
                 style={{
                   fontSize: LABEL_FONT_PX,
                   letterSpacing: `${LABEL_TRACKING_EM}em`,
