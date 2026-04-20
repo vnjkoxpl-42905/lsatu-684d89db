@@ -17,16 +17,22 @@ export interface TimelineItem {
   relatedIds: number[];
   status: "completed" | "in-progress" | "pending";
   energy: number;
+  variant?: "stat" | "finder";
 }
 
 interface RadialOrbitalTimelineProps {
   timelineData: TimelineItem[];
   onActivate?: (id: number) => void;
+  renderExpandedContent?: (
+    item: TimelineItem,
+    close: () => void,
+  ) => React.ReactNode;
 }
 
 export default function RadialOrbitalTimeline({
   timelineData,
   onActivate,
+  renderExpandedContent,
 }: RadialOrbitalTimelineProps) {
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [rotationAngle, setRotationAngle] = useState(0);
@@ -44,6 +50,13 @@ export default function RadialOrbitalTimeline({
       setPulseEffect({});
       setAutoRotate(true);
     }
+  };
+
+  const closeExpanded = () => {
+    setExpandedItems({});
+    setActiveNodeId(null);
+    setPulseEffect({});
+    setAutoRotate(true);
   };
 
   const getRelatedItems = (itemId: number): number[] => {
@@ -209,12 +222,15 @@ export default function RadialOrbitalTimeline({
                 {item.title}
               </div>
 
-              {isExpanded && (
+              {isExpanded && (() => {
+                const custom = renderExpandedContent?.(item, closeExpanded);
+                return (
                 <Card
                   className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-background/90 backdrop-blur-md border-border shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-border" />
+                  {custom ? custom : (<>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between mb-1">
                       <Badge
@@ -291,8 +307,10 @@ export default function RadialOrbitalTimeline({
                       </Button>
                     )}
                   </CardContent>
+                  </>)}
                 </Card>
-              )}
+                );
+              })()}
             </div>
           );
         })}

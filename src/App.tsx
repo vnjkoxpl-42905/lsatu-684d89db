@@ -59,8 +59,10 @@ const App = () => {
             {/* Onboarding — username setup for new users */}
             <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Foyer — arrival layer, no question bank needed */}
-            <Route path="/foyer" element={<AcademyFoyer />} />
+            {/* Foyer — needs QuestionBankProvider for the FIND node's picker */}
+            <Route path="/foyer" element={
+              <QuestionBankProvider><AcademyFoyer /></QuestionBankProvider>
+            } />
 
             {/* Admin Dashboard — no question bank needed */}
             <Route path="/admin" element={<AdminDashboard />} />

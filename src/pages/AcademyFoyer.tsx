@@ -2,14 +2,16 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Zap, Play, MessageCircle } from "lucide-react";
+import { Menu, Zap, Play, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
 import FoyerDock from "@/components/foyer/FoyerDock";
+import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { toast } from "sonner";
+
+const FIND_NODE_ID = 3;
 
 const foyerNodes: TimelineItem[] = [
   {
@@ -35,15 +37,16 @@ const foyerNodes: TimelineItem[] = [
     energy: 60,
   },
   {
-    id: 3,
-    title: "Ask Joshua",
+    id: FIND_NODE_ID,
+    title: "Find",
     date: "Anytime",
-    content: "Send your instructor a question or PDF.",
-    category: "Coaching",
-    icon: MessageCircle,
+    content: "Jump to a specific question.",
+    category: "Practice",
+    icon: Search,
     relatedIds: [],
-    status: "completed",
+    status: "in-progress",
     energy: 100,
+    variant: "finder",
   },
 ];
 
@@ -101,7 +104,28 @@ export default function AcademyFoyer() {
           onActivate={(id) => {
             if (id === 1) navigate("/drill", { state: { mode: "adaptive" } });
             else if (id === 2) navigate("/drill");
-            else if (id === 3) toast.info("Ask Joshua coming soon");
+          }}
+          renderExpandedContent={(item, close) => {
+            if (item.variant !== "finder") return null;
+            return (
+              <FoyerFindCard
+                onOpen={(qid) =>
+                  navigate("/drill", {
+                    state: {
+                      mode: "type-drill",
+                      config: {
+                        qtypes: [],
+                        difficulties: [],
+                        pts: [],
+                        count: 1,
+                        selectedQids: [qid],
+                      },
+                    },
+                  })
+                }
+                onClose={close}
+              />
+            );
           }}
         />
         <FoyerDock />
