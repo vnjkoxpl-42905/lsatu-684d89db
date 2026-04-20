@@ -1,27 +1,24 @@
 
 
-## Refine orbital ring to Apple-like sleek aesthetic
+Bump the orbital track ring opacity so it reads clearly against the dark foyer background while keeping the razor-thin Apple aesthetic.
 
-Current orbit ring is two simple `border-border` circles. Refine to Apple-style thin, layered, cool-gray sophistication.
+### Change — `src/components/ui/radial-orbital-timeline.tsx` (the 4 ring layers around lines 148-152)
 
-### Changes to `src/components/ui/radial-orbital-timeline.tsx` (lines 148-150)
+Raise opacities (cool gray, still 1px, no warm tint):
 
-Replace current orbit rings with 4-layer depth system:
+- Outer atmospheric halo: `border-border/10` → **`border-border/30`**, shadow `rgba(255,255,255,0.03)` → **`rgba(255,255,255,0.08)`**
+- Primary track ring: `border-border/25` → **`border-border/60`** (the hero line — clearly visible)
+- Inner depth ring: `border-border/15` → **`border-border/35`**
+- Dashed detail ring: `border-dashed border-border/10` → **`border-dashed border-border/25`**
 
-1. **Outer atmospheric glow** — `w-[420px] h-[420px] rounded-full border border-border/10 shadow-[0_0_60px_rgba(255,255,255,0.03)]` — barely-there ambient halo
-2. **Primary track ring** — `w-[400px] h-[400px] rounded-full border border-border/25` — the main orbital path, razor thin, subtle gray
-3. **Inner depth ring** — `w-[384px] h-[384px] rounded-full border border-border/15` — nested for dimensional depth
-4. **Dashed detail ring** — `w-[400px] h-[400px] rounded-full border border-dashed border-border/10` — delicate motion indicator, even fainter
+Center sphere gradient stays cool but slightly stronger: `from-border/30 via-border/15` → **`from-border/50 via-border/25`**, border `border-border/20` → **`border-border/40`**.
 
-Color scheme shifts from warm bronze toward cool neutral grays (border token is neutral gray in the design system). Keep 1px stroke width (razor thin). Add subtle `backdrop-blur-sm` on the outer ring for that frosted glass depth Apple uses.
-
-Center sphere (lines 142-146) — refine to cooler glass aesthetic: gradient from `from-border/30 via-border/15 to-transparent`, border `border-border/20`, softer pulse glow.
+Keep all widths (420 / 400 / 400 / 384), keep `backdrop-blur-sm`, keep neutral grays, keep auto-rotate and node behavior untouched.
 
 ### Verification
 
-- `/foyer` orbit ring appears as thin, ethereal gray tracks with subtle depth layers
-- Cool gray color scheme (not bronze/warm)
-- 1px strokes throughout — razor thin
-- Auto-rotate animation continues smoothly
-- All 3 nodes (Smart Drill, Resume, Ask Joshua) still orbit and expand correctly
+- `/foyer` orbit ring is clearly visible against dark bg (primary track reads as a confident hairline, not a guess)
+- Still 1px / razor thin
+- Still cool neutral gray (no bronze)
+- Nodes, expand, dock, sidebar unchanged
 
