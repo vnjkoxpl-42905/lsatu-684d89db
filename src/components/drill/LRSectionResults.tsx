@@ -15,6 +15,7 @@ import { questionBank } from '@/lib/questionLoader';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import type { DrillSession, BlindReviewResult } from '@/types/drill';
+import { toast } from 'sonner';
 
 interface LRSectionResultsProps {
   session: DrillSession;
@@ -168,7 +169,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           class_id: resolvedClassId,
           pt,
           section,
-          section_mode: session.mode,
+          mode: session.mode,
           initial_score: initialScore,
           initial_total: initialTotal,
           initial_percent: initialPercent,
@@ -212,6 +213,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           }
         }
       } catch (error) {
+        toast.error('Failed to save section results. Please try again.');
         console.error('Failed to save section history:', error);
       }
     };
