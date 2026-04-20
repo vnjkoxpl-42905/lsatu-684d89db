@@ -1,54 +1,105 @@
+import { useRef, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { Inbox, Bell, LifeBuoy } from "lucide-react";
 import { toast } from "sonner";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import { useInbox } from "@/hooks/useInbox";
+
+interface DockItemProps {
+  mouseX: MotionValue<number>;
+  onClick: () => void;
+  ariaLabel: string;
+  children: ReactNode;
+  badge?: ReactNode;
+}
+
+function DockItem({ mouseX, onClick, ariaLabel, children, badge }: DockItemProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  const widthSync = useTransform(distance, [-150, 0, 150], [44, 72, 44]);
+  const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
+
+  const iconScaleSync = useTransform(width, [44, 72], [1, 1.4]);
+  const iconScale = useSpring(iconScaleSync, { mass: 0.1, stiffness: 150, damping: 12 });
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ width }}
+      className="relative aspect-square rounded-full bg-foreground text-background"
+    >
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={ariaLabel}
+        className="absolute inset-0 flex items-center justify-center rounded-full transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <motion.div
+          style={{ scale: iconScale }}
+          className="flex items-center justify-center"
+        >
+          {children}
+        </motion.div>
+      </button>
+      {badge}
+    </motion.div>
+  );
+}
 
 export default function FoyerDock() {
   const navigate = useNavigate();
   const { unreadCount } = useInbox();
-
-  const buttonClass =
-    "group relative flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-all duration-200 hover:scale-105 hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  const mouseX = useMotionValue(Infinity);
 
   return (
-    <div
-      className="flex items-center gap-2 rounded-full border border-border/60 bg-background/80 p-2 shadow-lg shadow-black/30 backdrop-blur-md"
+    <motion.div
+      onMouseMove={(e) => mouseX.set(e.pageX)}
+      onMouseLeave={() => mouseX.set(Infinity)}
+      className="flex items-end gap-3 rounded-full border border-border/60 bg-background/80 px-3 py-2 shadow-lg shadow-black/30 backdrop-blur-md"
       role="toolbar"
       aria-label="Foyer dock"
     >
-      <button
-        type="button"
+      <DockItem
+        mouseX={mouseX}
         onClick={() => navigate("/inbox")}
-        aria-label={
-          unreadCount > 0 ? `Inbox, ${unreadCount} unread` : "Inbox"
+        ariaLabel={unreadCount > 0 ? `Inbox, ${unreadCount} unread` : "Inbox"}
+        badge={
+          unreadCount > 0 ? (
+            <span className="pointer-events-none absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          ) : undefined
         }
-        className={buttonClass}
       >
         <Inbox className="h-5 w-5" aria-hidden />
-        {unreadCount > 0 && (
-          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
-            {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
-        )}
-      </button>
+      </DockItem>
 
-      <button
-        type="button"
+      <DockItem
+        mouseX={mouseX}
         onClick={() => toast.info("Notifications coming soon")}
-        aria-label="Notifications"
-        className={buttonClass}
+        ariaLabel="Notifications"
       >
         <Bell className="h-5 w-5" aria-hidden />
-      </button>
+      </DockItem>
 
-      <button
-        type="button"
+      <DockItem
+        mouseX={mouseX}
         onClick={() => toast.info("Help center coming soon")}
-        aria-label="Help"
-        className={buttonClass}
+        ariaLabel="Help"
       >
         <LifeBuoy className="h-5 w-5" aria-hidden />
-      </button>
-    </div>
+      </DockItem>
+    </motion.div>
   );
 }
