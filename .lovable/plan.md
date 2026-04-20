@@ -1,24 +1,14 @@
 
+In light mode the `border` token is very light gray, so the rings barely show. Override with darker neutral foreground tones in light mode only, keeping current dark-mode look.
 
-Bump the orbital track ring opacity so it reads clearly against the dark foyer background while keeping the razor-thin Apple aesthetic.
+### Change — `src/components/ui/radial-orbital-timeline.tsx` ring layers (lines 149-153) and center sphere (lines 143-146)
 
-### Change — `src/components/ui/radial-orbital-timeline.tsx` (the 4 ring layers around lines 148-152)
+Use `foreground/X` (which is near-black in light mode, near-white in dark mode) instead of `border/X` so the rings are clearly darker on light backgrounds:
 
-Raise opacities (cool gray, still 1px, no warm tint):
+- Outer halo: `border-border/30` → `border-foreground/15`
+- Primary track: `border-border/60` → `border-foreground/40` (the hero hairline — clearly dark in light mode)
+- Dashed ring: `border-border/25` → `border-foreground/20`
+- Inner depth: `border-border/35` → `border-foreground/20`
+- Center sphere border: `border-border/40` → `border-foreground/30`, gradient `from-border/50 via-border/25` → `from-foreground/20 via-foreground/10`
 
-- Outer atmospheric halo: `border-border/10` → **`border-border/30`**, shadow `rgba(255,255,255,0.03)` → **`rgba(255,255,255,0.08)`**
-- Primary track ring: `border-border/25` → **`border-border/60`** (the hero line — clearly visible)
-- Inner depth ring: `border-border/15` → **`border-border/35`**
-- Dashed detail ring: `border-dashed border-border/10` → **`border-dashed border-border/25`**
-
-Center sphere gradient stays cool but slightly stronger: `from-border/30 via-border/15` → **`from-border/50 via-border/25`**, border `border-border/20` → **`border-border/40`**.
-
-Keep all widths (420 / 400 / 400 / 384), keep `backdrop-blur-sm`, keep neutral grays, keep auto-rotate and node behavior untouched.
-
-### Verification
-
-- `/foyer` orbit ring is clearly visible against dark bg (primary track reads as a confident hairline, not a guess)
-- Still 1px / razor thin
-- Still cool neutral gray (no bronze)
-- Nodes, expand, dock, sidebar unchanged
-
+Keep widths, blur, rotation, and dark-mode look (foreground inverts in dark mode so it stays visible there too).
