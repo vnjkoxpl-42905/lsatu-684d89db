@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Zap, Play, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
-import FoyerHeroRing from "@/components/foyer/FoyerHeroRing";
 import FoyerDock from "@/components/foyer/FoyerDock";
+import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { toast } from "sonner";
 
 export default function AcademyFoyer() {
   const navigate = useNavigate();
@@ -59,7 +60,13 @@ export default function AcademyFoyer() {
       </Sheet>
 
       <main className="flex flex-1 flex-col items-center justify-center gap-12 px-6 py-10">
-        <FoyerHeroRing />
+        <RadialOrbitalTimeline
+          timelineData={foyerNodes}
+          onActivate={(id) => {
+            if (id === 1 || id === 2) navigate("/drill");
+            else if (id === 3) toast.info("Ask Joshua coming soon");
+          }}
+        />
         <FoyerDock />
       </main>
     </div>
