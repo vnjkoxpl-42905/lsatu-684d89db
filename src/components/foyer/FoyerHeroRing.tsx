@@ -14,8 +14,8 @@ interface NodeDef {
 const VIEWBOX = 800;
 const CENTER = 400;
 const RADIUS = 300;
-const INNER_R = 96;
-const LABEL_OFFSET = 46; // perpendicular distance from ring to label baseline
+const INNER_R = 120;
+const LABEL_OFFSET = 52; // perpendicular distance from ring to label baseline
 const LABEL_FONT_PX = 10;
 const LABEL_TRACKING_EM = 0.28;
 
