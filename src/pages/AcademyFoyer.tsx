@@ -133,7 +133,6 @@ export default function AcademyFoyer() {
             );
           }}
         />
-        <FoyerDock />
       </main>
     </div>
   );
