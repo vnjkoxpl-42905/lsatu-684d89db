@@ -58,7 +58,7 @@ export default function AcademyFoyer() {
         </SheetContent>
       </Sheet>
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-8 px-6 py-10">
+      <main className="flex flex-1 flex-col items-center justify-center gap-12 px-6 py-10">
         <FoyerHeroRing />
         <FoyerDock />
       </main>
