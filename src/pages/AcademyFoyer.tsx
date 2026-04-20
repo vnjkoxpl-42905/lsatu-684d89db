@@ -2,13 +2,50 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Zap, Play, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
-import FoyerHeroRing from "@/components/foyer/FoyerHeroRing";
 import FoyerDock from "@/components/foyer/FoyerDock";
+import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { toast } from "sonner";
+
+const foyerNodes: TimelineItem[] = [
+  {
+    id: 1,
+    title: "Smart Drill",
+    date: "Now",
+    content: "Adaptive drill tuned to your weakest question types.",
+    category: "Practice",
+    icon: Zap,
+    relatedIds: [2],
+    status: "in-progress",
+    energy: 80,
+  },
+  {
+    id: 2,
+    title: "Resume",
+    date: "Last session",
+    content: "Pick up where you left off.",
+    category: "Practice",
+    icon: Play,
+    relatedIds: [1],
+    status: "pending",
+    energy: 60,
+  },
+  {
+    id: 3,
+    title: "Ask Joshua",
+    date: "Anytime",
+    content: "Send your instructor a question or PDF.",
+    category: "Coaching",
+    icon: MessageCircle,
+    relatedIds: [],
+    status: "completed",
+    energy: 100,
+  },
+];
 
 export default function AcademyFoyer() {
   const navigate = useNavigate();
@@ -59,7 +96,13 @@ export default function AcademyFoyer() {
       </Sheet>
 
       <main className="flex flex-1 flex-col items-center justify-center gap-12 px-6 py-10">
-        <FoyerHeroRing />
+        <RadialOrbitalTimeline
+          timelineData={foyerNodes}
+          onActivate={(id) => {
+            if (id === 1 || id === 2) navigate("/drill");
+            else if (id === 3) toast.info("Ask Joshua coming soon");
+          }}
+        />
         <FoyerDock />
       </main>
     </div>
