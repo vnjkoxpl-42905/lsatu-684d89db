@@ -1,26 +1,39 @@
 
 
-User wants the HextaUI Apple-style magnify dock hover behavior applied to the existing FoyerDock at the bottom of `/foyer`. The source uses Next.js `Link` and `motion/react` — adapt to react-router + already-installed `framer-motion`. Keep the 3 existing buttons (Inbox+badge, Notifications, Help) and their handlers.
+Add the HextaUI animated theme toggler with the circular view-transition reveal effect, but adapted to drive the existing `ThemeContext` (which uses an inverted `light` class on `<html>` + `lsatu-theme` localStorage key). Bypassing the context would desync every other component.
 
-### Change — `src/components/foyer/FoyerDock.tsx` (rewrite, single file)
+### Files
 
-1. Imports: add `useRef` and from `framer-motion`: `motion`, `useMotionValue`, `useSpring`, `useTransform`, type `MotionValue`.
-2. Container becomes `motion.div` with `onMouseMove={(e) => mouseX.set(e.pageX)}` and `onMouseLeave={() => mouseX.set(Infinity)}`. Keep current pill styling (`rounded-full border border-border/60 bg-background/80 backdrop-blur-md shadow-lg`) plus `role="toolbar"`.
-3. New internal `DockItem` component:
-   - Props: `mouseX: MotionValue<number>`, `onClick`, `ariaLabel`, `children`, optional `badge`.
-   - `ref` on outer `motion.div`; compute `distance = mouseX - (rect.x + rect.width/2)`.
-   - `widthSync = useTransform(distance, [-150, 0, 150], [44, 72, 44])` then `useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 })`.
-   - `iconScale = useTransform(width, [44, 72], [1, 1.4])` → `useSpring` same config.
-   - Render `motion.div` (style `{ width }`, aspect-square, rounded-full, `bg-foreground text-background`) wrapping a real `<button type="button">` (full size, focus-visible ring, `aria-label`, `onClick`) which contains a `motion.div` with `style={{ scale: iconSpring }}` holding the icon and optional badge.
-4. Render 3 DockItems: Inbox (navigate `/inbox`, badge from `useInbox().unreadCount`, dynamic aria-label), Bell (toast "Notifications coming soon"), LifeBuoy (toast "Help center coming soon").
-5. Preserve mobile: hover magnify naturally idles on touch (mouseX stays Infinity → all items at base 44px). Keep min 44px touch target.
-6. No new dependencies. No other files changed.
+**1. New — `src/components/ui/animated-theme-toggler.tsx`**
+- `"use client"` directive omitted (Vite, not Next).
+- Uses `useTheme()` from `@/contexts/ThemeContext` instead of reading/writing `document.documentElement` directly.
+- `darkMode = theme === 'dark'`.
+- `onToggle`:
+  - Feature-detect `document.startViewTransition`. If unsupported (Firefox/Safari older), just call `toggleTheme()` and return — graceful fallback.
+  - If supported: `await document.startViewTransition(() => flushSync(() => toggleTheme())).ready`, then run the circular `clipPath` animation from the button center using `Math.hypot` to find max reach distance, 700ms ease-in-out on `::view-transition-new(root)`.
+- Render a `<button ref>` with Framer Motion `AnimatePresence` swapping `Sun` (when dark) / `Moon` (when light) icons with the snippet's rotate+scale+opacity transition (~0.33s).
+- Remove hard-coded `text-white` / `text-black` — use `text-foreground` so it reads on both themes; `className` prop still merges via `cn`.
+- Default visual: rounded-full, p-2, focus rings off (matches snippet aesthetic).
+
+**2. Edit — `src/components/ThemeToggle.tsx`**
+- Re-export the new animated toggler so every existing usage (`ThemeToggle` is imported by Foyer, Bootcamps, AbstractionBootcamp, etc.) automatically gets the new behavior with no other file changes:
+  ```tsx
+  export { AnimatedThemeToggler as ThemeToggle } from '@/components/ui/animated-theme-toggler';
+  ```
+- Keeps the same component name + `className` prop API, so all call sites keep working.
+
+### Why this approach
+
+- Single source of truth preserved: `ThemeContext` still owns state + persistence. The animated toggler is purely presentation + view-transition orchestration.
+- Zero call-site churn: every header that already renders `<ThemeToggle />` instantly gets the circular reveal animation.
+- Works in non-Chromium browsers (View Transitions API still partial) via feature-detect fallback — theme still toggles, just without the radial wipe.
+- No new dependencies (`framer-motion`, `lucide-react` already installed).
 
 ### Verification
 
-- `/foyer` dock shows 3 buttons in the same position; cursor sweep magnifies the nearest icon smoothly with neighbors easing.
-- Inbox click → `/inbox`; unread badge still renders top-right.
-- Bell + Help still toast "coming soon".
-- Keyboard tab focus shows ring on each button; touch on mobile still works at base size.
-- No console errors.
+- `/foyer` header: clicking the theme toggle triggers a circular reveal expanding from the button, swapping Sun↔Moon icons with rotate/scale.
+- Theme actually flips (sidebar, ring, dock all re-skin) and persists across reload (`lsatu-theme` in localStorage).
+- All other pages using `<ThemeToggle />` (Bootcamps, AbstractionBootcamp, etc.) inherit the same animation.
+- No console errors in Chrome; falls back to instant toggle in Firefox/Safari without errors.
+- Icon visible in both light and dark modes (uses `text-foreground`).
 
