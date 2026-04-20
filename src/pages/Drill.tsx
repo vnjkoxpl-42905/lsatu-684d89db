@@ -52,6 +52,8 @@ import { QuestionPoolChip } from '@/components/drill/QuestionPoolChip';
 import { QuestionPoolExhausted } from '@/components/drill/QuestionPoolExhausted';
 import { toast } from 'sonner';
 import { QuestionTimer } from '@/lib/questionTimer';
+import { record } from '@rrweb/record';
+import type { eventWithTime } from '@rrweb/types';
 
 const adaptiveEngine = new AdaptiveEngine();
 
@@ -77,6 +79,22 @@ function DrillContent() {
     root.classList.remove('light');
     return () => {
       if (wasLight) root.classList.add('light');
+    };
+  }, []);
+
+  // ── rrweb: start recording on mount, stop on unmount ──
+  React.useEffect(() => {
+    const stop = record({
+      emit: (event) => { eventsRef.current.push(event); },
+      sampling: { mousemove: 50, scroll: 150, input: 'last' },
+      recordCanvas: false,
+      collectFonts: false,
+    });
+    stopRecordingRef.current = stop ?? null;
+    return () => {
+      stopRecordingRef.current?.();
+      stopRecordingRef.current = null;
+      eventsRef.current = [];
     };
   }, []);
 
@@ -127,6 +145,11 @@ function DrillContent() {
   const [classIdLoading, setClassIdLoading] = React.useState(true);
   const [advanceToken, setAdvanceToken] = React.useState(0);
   const currentViewId = React.useRef<string | null>(null);
+
+  // rrweb session replay capture (one row per question in session_replays)
+  const eventsRef = React.useRef<eventWithTime[]>([]);
+  const stopRecordingRef = React.useRef<(() => void) | null>(null);
+  const lastRecordedQidRef = React.useRef<string | null>(null);
 
   // Practice-set mode state
   const [isPracticeSetMode, setIsPracticeSetMode] = React.useState(false);
@@ -316,6 +339,12 @@ function DrillContent() {
   // Track question views whenever currentQuestion changes
   React.useEffect(() => {
     if (!currentQuestion || !classId || !session) return;
+    // Flush previous question's rrweb events before switching context
+    const prevQid = lastRecordedQidRef.current;
+    if (prevQid && prevQid !== currentQuestion.qid) {
+      flushReplay(prevQid, session.mode);
+    }
+    lastRecordedQidRef.current = currentQuestion.qid;
     currentViewId.current = null;
     QuestionPoolService.trackQuestionView(currentQuestion.qid, classId, session.mode).then(id => {
       currentViewId.current = id;
@@ -500,6 +529,28 @@ function DrillContent() {
     }
   };
 
+
+  const flushReplay = async (qid: string, mode: DrillMode): Promise<void> => {
+    const events = eventsRef.current;
+    eventsRef.current = [];
+    if (events.length === 0 || !user) return;
+    const payloadSize = JSON.stringify(events).length;
+    if (payloadSize > 7_500_000) {
+      console.warn('Session replay exceeds 7.5MB, skipping', { qid, size: payloadSize });
+      return;
+    }
+    const resolvedClassId = classId || user.id;
+    // TODO: drop `as any` after next supabase type regen (session_replays table)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from('session_replays').insert({
+      class_id: resolvedClassId,
+      user_id: user.id,
+      qid,
+      mode,
+      events_jsonb: events,
+    });
+    if (error) console.error('Failed to save session replay:', error);
+  };
 
   const saveAttemptToDatabase = async (attemptData: {
     qid: string;
@@ -694,6 +745,7 @@ function DrillContent() {
       mode: session.mode,
       selected_answer: ans,
     });
+    await flushReplay(currentQuestion.qid, session.mode);
     if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
     const newAttempts = new Map(session.attempts);
@@ -743,6 +795,7 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
+      await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
       // Update session
@@ -806,6 +859,7 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
+      await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
       const newAttempts = new Map(session.attempts);
@@ -972,6 +1026,9 @@ function DrillContent() {
   const handleFinishPracticeSet = async () => {
     if (!session || !user) return;
 
+    // Flush final-question rrweb events before tearing down the session view
+    if (currentQuestion) await flushReplay(currentQuestion.qid, session.mode);
+
     // Pause timer
     if (timer) timer.pause();
 
@@ -1025,6 +1082,9 @@ function DrillContent() {
 
   const handleFinishSection = async () => {
     if (!session) return;
+
+    // Flush final-question rrweb events before tearing down the session view
+    if (currentQuestion) await flushReplay(currentQuestion.qid, session.mode);
 
     // Evaluate correctness for all attempted questions
     const updatedAttempts = new Map(session.attempts);
