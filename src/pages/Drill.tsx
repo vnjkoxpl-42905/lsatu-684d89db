@@ -446,7 +446,9 @@ function DrillContent() {
         newAttempts.set(currentQuestion.qid, {
           selectedAnswer: answer,
           correct: answer === currentQuestion.correctAnswer,
-          timeMs: isPracticeSetMode ? questionTimer.current.getTotalTime(currentQuestion.qid) : 0,
+          timeMs: isPracticeSetMode
+            ? questionTimer.current.getTotalTime(currentQuestion.qid)
+            : Math.floor(performance.now() - questionStartTime),
           timestamp: Date.now(),
           confidence: existingAttempt?.confidence || null,
           reviewDone: false,
@@ -505,19 +507,19 @@ function DrillContent() {
     confidence: number | null;
     mode: DrillMode;
     selected_answer?: string;
-  }) => {
+  }): Promise<boolean> => {
     const question = questionBank.getQuestion(attemptData.qid);
-    if (!question) return;
-    
+    if (!question) return false;
+
     try {
       if (!classId && classIdLoading) {
         console.warn('saveAttemptToDatabase called before classId resolved, skipping');
-        return;
+        return false;
       }
       const resolvedClassId = classId || user?.id || '';
       if (!resolvedClassId) {
         console.error('Cannot save attempt: no class_id and no user.id available');
-        return;
+        return false;
       }
       const { error } = await (supabase as any).from('attempts').insert({
         user_id: user?.id,
@@ -538,10 +540,60 @@ function DrillContent() {
 
       if (error) {
         console.error('Failed to save attempt to database:', error);
+        return false;
       }
+      return true;
     } catch (err) {
       console.error('Error saving attempt:', err);
+      return false;
     }
+  };
+
+  const commitSessionAttempts = async (
+    attempts: DrillSession['attempts'],
+    mode: DrillMode
+  ): Promise<{ saved: number; failed: number }> => {
+    let saved = 0;
+    let failed = 0;
+    for (const [qid, attempt] of attempts) {
+      const question = questionBank.getQuestion(qid);
+      if (!question || !attempt.selectedAnswer) continue;
+
+      const ok = await saveAttemptToDatabase({
+        qid,
+        correct: attempt.correct,
+        time_ms: attempt.timeMs,
+        qtype: question.qtype,
+        level: question.difficulty,
+        confidence: attempt.confidence ?? null,
+        mode,
+        selected_answer: attempt.selectedAnswer,
+      });
+      if (ok) saved++;
+      else failed++;
+
+      if (!attempt.correct) {
+        try {
+          const { logWrongAnswer } = await import('@/lib/wajService');
+          await logWrongAnswer({
+            class_id: classId,
+            qid,
+            pt: question.pt,
+            section: question.section,
+            qnum: question.qnum,
+            qtype: question.qtype,
+            level: question.difficulty,
+            chosen_answer: attempt.selectedAnswer,
+            correct_answer: question.correctAnswer,
+            time_ms: attempt.timeMs,
+            confidence_1_5: null,
+          });
+        } catch (error) {
+          console.error('Failed to log to WAJ:', error);
+        }
+      }
+    }
+    return { saved, failed };
   };
 
   const handleWAJSave = async (review: { whyWrong: string; whyEliminated: string; plan: string }) => {
@@ -916,51 +968,22 @@ function DrillContent() {
 
   const handleFinishPracticeSet = async () => {
     if (!session || !user) return;
-    
+
     // Pause timer
     if (timer) timer.pause();
-    
-    // Save all attempts with timing data
-    for (const [qid, attempt] of session.attempts) {
-      const question = questionBank.getQuestion(qid);
-      if (!question || !attempt.selectedAnswer) continue;
-      
-      const timingMetrics = questionTimer.current.getMetrics(qid);
-      
-      await saveAttemptToDatabase({
-        qid,
-        correct: attempt.correct,
-        time_ms: timingMetrics.totalTimeMs,
-        qtype: question.qtype,
-        level: question.difficulty,
-        confidence: null,
-        mode: 'practice-set',
-        selected_answer: attempt.selectedAnswer,
-      });
 
-      // Log to WAJ if wrong
-      if (!attempt.correct) {
-        const { logWrongAnswer } = await import('@/lib/wajService');
-        try {
-          await logWrongAnswer({
-            class_id: classId,
-            qid,
-            pt: question.pt,
-            section: question.section,
-            qnum: question.qnum,
-            qtype: question.qtype,
-            level: question.difficulty,
-            chosen_answer: attempt.selectedAnswer,
-            correct_answer: question.correctAnswer,
-            time_ms: timingMetrics.totalTimeMs,
-            confidence_1_5: null,
-          });
-        } catch (error) {
-          console.error('Failed to log to WAJ:', error);
-        }
-      }
+    // Sync timer metrics into attempt.timeMs before commit (practice-set uses cumulative timer)
+    const attemptsWithTiming: DrillSession['attempts'] = new Map(session.attempts);
+    for (const [qid, attempt] of attemptsWithTiming) {
+      const totalTimeMs = questionTimer.current.getMetrics(qid).totalTimeMs;
+      attemptsWithTiming.set(qid, { ...attempt, timeMs: totalTimeMs });
     }
-    
+
+    const { failed } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
+    if (failed > 0) {
+      toast.error(`Failed to save ${failed} attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
+    }
+
     // Show results
     setPostSectionScreen('score-report');
   };
@@ -997,9 +1020,9 @@ function DrillContent() {
     }
   };
 
-  const handleFinishSection = () => {
+  const handleFinishSection = async () => {
     if (!session) return;
-    
+
     // Evaluate correctness for all attempted questions
     const updatedAttempts = new Map(session.attempts);
     for (const [qid, attempt] of updatedAttempts) {
@@ -1012,20 +1035,26 @@ function DrillContent() {
         });
       }
     }
-    
+
     // Create updated session with evaluated attempts
     const updatedSession = {
       ...session,
       attempts: updatedAttempts,
     };
-    
+
+    // Persist per-question attempts to DB (F2.15)
+    const { failed } = await commitSessionAttempts(updatedAttempts, 'full-section');
+    if (failed > 0) {
+      toast.error(`Failed to save ${failed} question attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
+    }
+
     // Build automatic review set based on rules (using updated session)
     const reviewSet = buildAutoReviewSet(updatedSession);
     setAutoReviewQids(reviewSet);
-    
+
     // Update session state
     setSession(updatedSession);
-    
+
     // Show section complete screen
     setPostSectionScreen('complete');
   };
