@@ -7,13 +7,15 @@ import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import {
-  MOCK_ASSIGNMENTS,
-  MOCK_MATERIALS,
   STATUS_LABEL,
   TYPE_LABEL,
   type AssignmentStatus,
   type ClassroomAssignment,
+  type ClassroomMaterial,
 } from '@/lib/classroomData';
+
+const ASSIGNMENTS: ClassroomAssignment[] = [];
+const MATERIALS: ClassroomMaterial[] = [];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Small utility components
@@ -162,14 +164,14 @@ function OverviewTab({ onTabChange }: { onTabChange: (tab: string) => void }) {
   const navigate = useNavigate();
 
   const counts = React.useMemo(() => ({
-    assigned:        MOCK_ASSIGNMENTS.filter(a => a.status === 'assigned').length,
-    in_progress:     MOCK_ASSIGNMENTS.filter(a => a.status === 'in_progress').length,
-    submitted:       MOCK_ASSIGNMENTS.filter(a => a.status === 'submitted').length,
-    returned:        MOCK_ASSIGNMENTS.filter(a => a.status === 'returned' || a.status === 'revision_needed').length,
-    completed:       MOCK_ASSIGNMENTS.filter(a => a.status === 'completed').length,
+    assigned:        ASSIGNMENTS.filter(a => a.status === 'assigned').length,
+    in_progress:     ASSIGNMENTS.filter(a => a.status === 'in_progress').length,
+    submitted:       ASSIGNMENTS.filter(a => a.status === 'submitted').length,
+    returned:        ASSIGNMENTS.filter(a => a.status === 'returned' || a.status === 'revision_needed').length,
+    completed:       ASSIGNMENTS.filter(a => a.status === 'completed').length,
   }), []);
 
-  const priority = MOCK_ASSIGNMENTS
+  const priority = ASSIGNMENTS
     .filter(a => a.status === 'assigned' || a.status === 'in_progress' || a.status === 'revision_needed')
     .sort((a, b) => {
       if (!a.dueDate) return 1;
@@ -177,7 +179,7 @@ function OverviewTab({ onTabChange }: { onTabChange: (tab: string) => void }) {
       return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
     })[0];
 
-  const unreadFeedback = MOCK_ASSIGNMENTS.filter(
+  const unreadFeedback = ASSIGNMENTS.filter(
     a => a.feedback && !a.feedback.opened && (a.status === 'returned' || a.status === 'revision_needed'),
   );
 
@@ -303,7 +305,7 @@ function AssignmentsTab() {
   const navigate = useNavigate();
   const [filter, setFilter] = React.useState<StatusFilter>('all');
 
-  const filtered = MOCK_ASSIGNMENTS.filter(a =>
+  const filtered = ASSIGNMENTS.filter(a =>
     filter === 'all' ? true : a.status === filter,
   ).sort((a, b) => {
     const order: Record<AssignmentStatus, number> = {
@@ -373,7 +375,12 @@ function AssignmentsTab() {
 function MaterialsTab() {
   return (
     <div className="space-y-3">
-      {MOCK_MATERIALS.map(m => (
+      {MATERIALS.length === 0 && (
+        <div className="rounded-xl bg-card border border-border shadow-sm px-6 py-10 text-center">
+          <p className="text-[13px] text-muted-foreground">No materials posted yet. Your instructor will add notes and reading here.</p>
+        </div>
+      )}
+      {MATERIALS.map(m => (
         <div
           key={m.id}
           className="rounded-xl bg-card border border-border shadow-sm px-5 py-4 flex flex-col gap-2"
@@ -403,7 +410,7 @@ function MaterialsTab() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function FeedbackTab() {
-  const withFeedback = MOCK_ASSIGNMENTS.filter(a => !!a.feedback);
+  const withFeedback = ASSIGNMENTS.filter(a => !!a.feedback);
 
   return (
     <div className="space-y-3">
@@ -456,7 +463,7 @@ function FeedbackTab() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function SubmissionsTab() {
-  const submitted = MOCK_ASSIGNMENTS.filter(
+  const submitted = ASSIGNMENTS.filter(
     a => a.status === 'submitted' || a.status === 'returned' || a.status === 'completed',
   );
 
@@ -561,7 +568,7 @@ export default function Classroom() {
     if (!user) navigate('/auth');
   }, [user, navigate]);
 
-  const unreadFeedbackCount = MOCK_ASSIGNMENTS.filter(
+  const unreadFeedbackCount = ASSIGNMENTS.filter(
     a => a.feedback && !a.feedback.opened && (a.status === 'returned' || a.status === 'revision_needed'),
   ).length;
 

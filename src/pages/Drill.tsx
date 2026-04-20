@@ -24,6 +24,7 @@ import { LRSectionResults } from '@/components/drill/LRSectionResults';
 import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import { TimerProvider, useTimerContextSafe } from '@/contexts/TimerContext';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { questionBank } from '@/lib/questionLoader';
 import { AdaptiveEngine } from '@/lib/adaptiveEngine';
@@ -59,6 +60,7 @@ function DrillContent() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { settings } = useUserSettings();
+  const { isLoading: qbLoading } = useQuestionBank();
   const state = location.state as { 
     mode: DrillMode; 
     config?: FullSectionConfig | TypeDrillConfig;
@@ -176,6 +178,7 @@ function DrillContent() {
       // (classId === '') and again when classId resolves, wiping any in-progress
       // answers and causing a premature "could not resolve your class" toast.
       if (classIdLoading) return;
+      if (qbLoading) return;
 
       const mode = state.mode;
       let questionQueue: string[] = [];
@@ -301,7 +304,7 @@ function DrillContent() {
     };
 
     initializeSession();
-  }, [state, navigate, classId, classIdLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays]);
+  }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays]);
 
   // Hydrate adaptive engine from DB on session start
   React.useEffect(() => {
@@ -1410,6 +1413,11 @@ function DrillContent() {
         onBack={() => navigate('/foyer')}
       />
     );
+  }
+
+  // Adaptive: currentQuestion null while session exists = effect chain still loading
+  if (session?.mode === 'adaptive' && !currentQuestion) {
+    return <div className="min-h-screen bg-background" />;
   }
 
   // Handle session completion with BR (old flow)
