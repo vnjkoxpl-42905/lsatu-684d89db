@@ -1,32 +1,39 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  ClipboardList,
-  Layers,
+  GraduationCap,
+  Dumbbell,
+  Flame,
   BarChart3,
   CalendarDays,
-  BookOpen,
+  Settings,
+  User as UserIcon,
+  Shield,
 } from "lucide-react";
-import InboxPreviewCard from "./InboxPreviewCard";
+import { format } from "date-fns";
 import { useAuth } from "@/contexts/AuthContext";
-import type { Conversation } from "@/hooks/useInbox";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { formatParticipantName } from "@/lib/displayName";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { LogoutButton } from "@/components/LogoutButton";
 
 export interface FoyerSidebarProps {
-  conversations: Conversation[];
-  unreadCount: number;
   displayName?: string | null;
 }
 
-// Drill + Inbox removed from the nav: Drill is the hero-ring Smart Drill + the
-// in-ring focus card CTA; Inbox surfaces above via the three-row preview list.
-// Homework has no route and stays out.
-const NAV_ITEMS: Array<{ to: string; label: string; icon: React.ReactNode }> = [
-  { to: "/classroom", label: "Classroom", icon: <BookOpen size={12} strokeWidth={1.6} /> },
-  { to: "/practice", label: "Practice", icon: <ClipboardList size={12} strokeWidth={1.6} /> },
-  { to: "/bootcamps", label: "Bootcamps", icon: <Layers size={12} strokeWidth={1.6} /> },
-  { to: "/analytics", label: "Analytics", icon: <BarChart3 size={12} strokeWidth={1.6} /> },
-  { to: "/schedule", label: "Schedule", icon: <CalendarDays size={12} strokeWidth={1.6} /> },
-];
+const NAV_ITEMS = [
+  { to: "/classroom", label: "Classroom", Icon: GraduationCap },
+  { to: "/practice", label: "Practice", Icon: Dumbbell },
+  { to: "/bootcamps", label: "Bootcamps", Icon: Flame },
+  { to: "/analytics", label: "Analytics", Icon: BarChart3 },
+  { to: "/schedule", label: "Schedule", Icon: CalendarDays },
+] as const;
 
 function emailFallback(email: string | undefined): string {
   const local = email?.split("@")[0] ?? "";
@@ -34,85 +41,119 @@ function emailFallback(email: string | undefined): string {
   return local.charAt(0).toUpperCase() + local.slice(1);
 }
 
-export default function FoyerSidebar({ conversations, unreadCount, displayName }: FoyerSidebarProps) {
+export default function FoyerSidebar({ displayName }: FoyerSidebarProps) {
   const { user } = useAuth();
-  const resolvedName =
+  const permissions = useUserPermissions();
+  const navigate = useNavigate();
+
+  const rawName =
     displayName?.trim() ||
     (user?.user_metadata?.display_name as string | undefined)?.trim() ||
     emailFallback(user?.email);
-  const initial = resolvedName.trim().charAt(0).toUpperCase() || "·";
+
+  const resolved = formatParticipantName(rawName, permissions.is_admin);
+  const initial = resolved.charAt(0).toUpperCase() || "·";
+  const today = format(new Date(), "EEEE, MMMM d");
 
   return (
-    <aside className="w-[280px] h-full flex flex-col border border-border/60 rounded-xl bg-card p-4 gap-3 overflow-hidden">
-      {/* Brand strip */}
-      <div className="flex items-center gap-2">
-        <div className="h-[18px] w-[18px] rounded-md bg-foreground/90 flex items-center justify-center">
-          <span className="text-background font-medium" style={{ fontSize: 9 }}>
+    <aside className="flex h-full w-full flex-col bg-background">
+      <div className="flex items-center gap-2 border-b border-border p-6">
+        <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground">
+          <span
+            className="font-medium text-background"
+            style={{ fontSize: 11 }}
+          >
             L
           </span>
         </div>
         <span
-          className="uppercase font-medium text-foreground"
-          style={{ fontSize: 11, letterSpacing: "0.22em" }}
+          className="font-medium uppercase text-foreground"
+          style={{ fontSize: 12, letterSpacing: "0.22em" }}
         >
           LSAT U
         </span>
       </div>
 
-      <div className="h-px bg-border/40" />
+      <div className="px-6 py-4 text-sm tracking-wide text-muted-foreground">
+        {today}
+      </div>
 
-      {/* Inbox — three most recent threads with section header + View all */}
-      <InboxPreviewCard conversations={conversations} unreadCount={unreadCount} />
+      <div
+        className="px-6 pb-2 pt-6 text-xs uppercase text-muted-foreground"
+        style={{ letterSpacing: "0.2em" }}
+      >
+        Workspace
+      </div>
 
-      <div className="h-px bg-border/40" />
-
-      {/* Workspace nav */}
-      <nav className="flex-1 overflow-y-auto -mx-1">
-        <div
-          className="px-2 pb-1.5 uppercase text-muted-foreground"
-          style={{ fontSize: 10, letterSpacing: "0.18em" }}
-        >
-          Workspace
-        </div>
-        <ul className="space-y-0.5">
-          {NAV_ITEMS.map((item) => (
-            <li key={item.to}>
-              <NavLink
-                to={item.to}
-                className={({ isActive }) =>
-                  [
-                    "flex items-center gap-2 rounded px-2 py-[6px] text-foreground/80 hover:bg-muted/50",
-                    isActive ? "bg-muted font-medium text-foreground" : "",
-                  ].join(" ")
-                }
-                style={{ fontSize: 12 }}
-              >
-                <span className="inline-flex items-center justify-center w-3">{item.icon}</span>
-                <span>{item.label}</span>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+      <nav className="flex flex-col">
+        {NAV_ITEMS.map(({ to, label, Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            className={({ isActive }) =>
+              [
+                "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors",
+                isActive
+                  ? "border-primary bg-accent/60 text-foreground"
+                  : "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
+              ].join(" ")
+            }
+          >
+            <Icon className="h-4 w-4" />
+            <span>{label}</span>
+          </NavLink>
+        ))}
       </nav>
 
-      <div className="h-px bg-border/40" />
+      <div className="flex-1" />
 
-      {/* Footer */}
-      <div className="flex items-center gap-2">
-        <div
-          className="h-[22px] w-[22px] rounded-full bg-muted flex items-center justify-center text-foreground font-medium"
-          style={{ fontSize: 10 }}
-        >
-          {initial}
+      <div className="flex items-center gap-3 border-t border-border p-6">
+        <Avatar className="h-6 w-6">
+          <AvatarFallback className="text-[10px] font-medium">
+            {initial}
+          </AvatarFallback>
+        </Avatar>
+        <div className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+          {resolved || "—"}
         </div>
-        <div className="leading-tight min-w-0 flex-1">
-          <div
-            className="font-medium text-foreground truncate"
-            style={{ fontSize: 12 }}
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              aria-label="Settings"
+              className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              <Settings className="h-4 w-4" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="end"
+            side="top"
+            className="w-48 p-1"
           >
-            {resolvedName || "—"}
-          </div>
-        </div>
+            <button
+              onClick={() => navigate("/profile")}
+              className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-foreground hover:bg-accent"
+            >
+              <UserIcon className="h-4 w-4" />
+              Profile
+            </button>
+            {permissions.is_admin && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-foreground hover:bg-accent"
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </button>
+            )}
+            <div className="my-1 border-t border-border" />
+            <div className="flex items-center gap-1 px-1">
+              <ThemeToggle className="flex-1 justify-start" />
+              <LogoutButton />
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </aside>
   );

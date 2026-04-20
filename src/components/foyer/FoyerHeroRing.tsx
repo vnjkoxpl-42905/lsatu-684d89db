@@ -1,188 +1,200 @@
-import type { LucideIcon } from "lucide-react";
-import { MessageCircle, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-export interface FoyerHeroRingProps {
-  onSmartDrill: () => void;
-  onAskJoshua?: () => void; // undefined → dim
-  smartDrillIcon?: LucideIcon;
-  askJoshuaIcon?: LucideIcon;
-  // Optional center focus card. Rendered only when focusHeadline is truthy.
-  focusLabel?: string;
-  focusHeadline?: string;
-  focusSubline?: string;
-  focusCtaLabel?: string;
-  onFocusCta?: () => void;
-}
+type NodeId = "smart" | "ask" | "resume";
 
-type NodePos = { angleDeg: number; x: number; y: number };
-
-// 500x500 viewBox; center at (250, 250), radius 215.
-const CX = 250;
-const CY = 250;
-const R = 215;
-
-function pos(angleDeg: number): NodePos {
-  const rad = (angleDeg * Math.PI) / 180;
-  return { angleDeg, x: CX + R * Math.cos(rad), y: CY + R * Math.sin(rad) };
-}
-
-const TOP = pos(-90); // Smart Drill — 12 o'clock
-const BOTTOM = pos(90); // Ask Joshua — 6 o'clock
-
-function NodeButton({
-  label,
-  icon: Icon,
-  x,
-  y,
-  enabled,
-  pulse,
-  onClick,
-}: {
+interface NodeDef {
+  id: NodeId;
   label: string;
-  icon: LucideIcon;
-  x: number;
-  y: number;
-  enabled: boolean;
-  pulse?: boolean;
-  onClick?: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      disabled={!enabled}
-      onClick={onClick}
-      aria-label={label}
-      className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full"
-      style={{
-        left: `${(x / 500) * 100}%`,
-        top: `${(y / 500) * 100}%`,
-      }}
-    >
-      <div className="relative flex flex-col items-center gap-2">
-        <div className="relative">
-          {enabled && (
-            <div
-              className="absolute inset-0 -z-10 rounded-full bg-foreground/10 blur-md scale-150"
-              aria-hidden
-            />
-          )}
-          {enabled && pulse && (
-            <div
-              className="absolute inset-0 -z-10 rounded-full bg-foreground/20 opacity-20 animate-ping"
-              aria-hidden
-            />
-          )}
-          <div
-            className={[
-              "relative w-11 h-11 rounded-full border-2 flex items-center justify-center transition-all duration-300",
-              enabled
-                ? "border-border/80 bg-background/80 backdrop-blur-sm text-foreground hover:border-foreground hover:shadow-lg hover:shadow-foreground/10"
-                : "border-border/30 bg-background/40 text-muted-foreground/40 cursor-not-allowed",
-            ].join(" ")}
-          >
-            <Icon size={18} aria-hidden />
-          </div>
-        </div>
-        <div
-          className={[
-            "uppercase font-semibold whitespace-nowrap",
-            enabled ? "text-muted-foreground" : "text-muted-foreground/40",
-          ].join(" ")}
-          style={{ fontSize: 10, letterSpacing: "0.22em" }}
-        >
-          {label}
-        </div>
-      </div>
-    </button>
-  );
+  theta: number;
+  anchor: "start" | "middle" | "end";
+  labelOffsetX: number;
+  labelOffsetY: number;
+  onClick: () => void;
 }
 
-export default function FoyerHeroRing({
-  onSmartDrill,
-  onAskJoshua,
-  smartDrillIcon = Zap,
-  askJoshuaIcon = MessageCircle,
-  focusLabel,
-  focusHeadline,
-  focusSubline,
-  focusCtaLabel,
-  onFocusCta,
-}: FoyerHeroRingProps) {
-  const askEnabled = !!onAskJoshua;
-  const hasFocus = !!focusHeadline;
+const VIEWBOX = 800;
+const CENTER = 400;
+const RADIUS = 320;
+const INNER_R = 110;
+const LABEL_FONT_PX = 11;
+const LABEL_TRACKING_EM = 0.25;
+
+function polar(theta: number, r = RADIUS) {
+  return {
+    x: CENTER + r * Math.cos(theta - Math.PI / 2),
+    y: CENTER + r * Math.sin(theta - Math.PI / 2),
+  };
+}
+
+function underlineLen(label: string): number {
+  const perChar = LABEL_FONT_PX * (0.6 + LABEL_TRACKING_EM);
+  return Math.max(label.length * perChar, 16);
+}
+
+export default function FoyerHeroRing() {
+  const navigate = useNavigate();
+  const [activeId, setActiveId] = React.useState<NodeId | null>(null);
+
+  const nodes: NodeDef[] = React.useMemo(
+    () => [
+      {
+        id: "smart",
+        label: "SMART DRILL",
+        theta: 0,
+        anchor: "middle",
+        labelOffsetX: 0,
+        labelOffsetY: -28,
+        onClick: () => navigate("/drill"),
+      },
+      {
+        id: "ask",
+        label: "ASK",
+        theta: (2 * Math.PI) / 3,
+        anchor: "start",
+        labelOffsetX: 20,
+        labelOffsetY: 6,
+        onClick: () => toast.info("Your AI coach is coming soon"),
+      },
+      {
+        id: "resume",
+        label: "RESUME",
+        theta: (4 * Math.PI) / 3,
+        anchor: "end",
+        labelOffsetX: -20,
+        labelOffsetY: 6,
+        // TODO(F-future): wire to useLastSession hook once built.
+        onClick: () => navigate("/drill"),
+      },
+    ],
+    [navigate],
+  );
+
+  const setActive = (id: NodeId) => setActiveId(id);
+  const clearActive = (id: NodeId) =>
+    setActiveId((cur) => (cur === id ? null : cur));
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <div className="relative w-full h-full max-w-[600px] max-h-[600px] aspect-square">
-        <svg
-          viewBox="0 0 500 500"
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute inset-0 w-full h-full"
-        >
-          <g fill="none" stroke="currentColor">
-            <circle
-              cx={CX}
-              cy={CY}
-              r={240}
-              strokeOpacity={0.05}
-              strokeWidth={0.5}
-              strokeDasharray="2 12"
-            />
-            <circle cx={CX} cy={CY} r={R} strokeOpacity={0.14} strokeWidth={0.75} />
-            <circle cx={CX} cy={CY} r={140} strokeOpacity={0.08} strokeWidth={0.75} />
-          </g>
-        </svg>
-
-        <NodeButton
-          label="Smart Drill"
-          icon={smartDrillIcon}
-          x={TOP.x}
-          y={TOP.y}
-          enabled
-          pulse
-          onClick={onSmartDrill}
+    <div className="relative flex w-full items-center justify-center">
+      <svg
+        viewBox={`0 0 ${VIEWBOX} ${VIEWBOX}`}
+        className="aspect-square w-full max-w-[640px] text-foreground"
+        role="img"
+        aria-label="Foyer actions"
+      >
+        <circle
+          cx={CENTER}
+          cy={CENTER}
+          r={RADIUS}
+          className="fill-none stroke-border"
+          strokeWidth={1}
+          strokeOpacity={0.4}
         />
-        <NodeButton
-          label="Ask Joshua"
-          icon={askJoshuaIcon}
-          x={BOTTOM.x}
-          y={BOTTOM.y}
-          enabled={askEnabled}
-          onClick={onAskJoshua}
+        <circle
+          cx={CENTER}
+          cy={CENTER}
+          r={INNER_R}
+          className="fill-none stroke-border"
+          strokeWidth={1}
+          strokeOpacity={0.3}
         />
 
-        {hasFocus && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="pointer-events-auto rounded-xl border border-border/60 bg-card/95 backdrop-blur-sm px-5 py-4 text-center max-w-[220px] shadow-sm">
-              {focusLabel && (
-                <div
-                  className="uppercase text-muted-foreground"
-                  style={{ fontSize: 10, letterSpacing: "0.22em" }}
-                >
-                  {focusLabel}
-                </div>
-              )}
-              <div className="mt-1 text-base font-semibold text-foreground">
-                {focusHeadline}
-              </div>
-              {focusSubline && (
-                <div className="mt-0.5 text-xs text-muted-foreground">{focusSubline}</div>
-              )}
-              {focusCtaLabel && onFocusCta && (
-                <Button
-                  size="sm"
-                  onClick={onFocusCta}
-                  className="mt-3"
-                  aria-label={focusCtaLabel}
-                >
-                  {focusCtaLabel}
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+        {nodes.map((n) => {
+          const p = polar(n.theta);
+          const isActive = activeId === n.id;
+          const labelX = p.x + n.labelOffsetX;
+          const labelY = p.y + n.labelOffsetY;
+          const uLen = underlineLen(n.label);
+          const uY = labelY + 6;
+          const uX1 =
+            n.anchor === "middle"
+              ? labelX - uLen / 2
+              : n.anchor === "start"
+                ? labelX
+                : labelX - uLen;
+          const uX2 = uX1 + uLen;
+
+          return (
+            <g
+              key={n.id}
+              tabIndex={0}
+              role="button"
+              aria-label={n.label}
+              onClick={n.onClick}
+              onMouseEnter={() => setActive(n.id)}
+              onMouseLeave={() => clearActive(n.id)}
+              onFocus={() => setActive(n.id)}
+              onBlur={() => clearActive(n.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  n.onClick();
+                }
+              }}
+              className="cursor-pointer outline-none"
+            >
+              {/* Invisible hit target widens the clickable area */}
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={44}
+                fill="transparent"
+                pointerEvents="all"
+              />
+              {/* Soft glow behind active dot */}
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={26}
+                className="fill-primary"
+                fillOpacity={isActive ? 0.18 : 0}
+                style={{
+                  filter: "blur(6px)",
+                  transition: "fill-opacity 200ms ease",
+                }}
+                pointerEvents="none"
+              />
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={6}
+                className="fill-foreground"
+                pointerEvents="none"
+              />
+              <text
+                x={labelX}
+                y={labelY}
+                textAnchor={n.anchor}
+                className="fill-foreground"
+                style={{
+                  fontSize: LABEL_FONT_PX,
+                  letterSpacing: `${LABEL_TRACKING_EM}em`,
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  userSelect: "none",
+                }}
+                pointerEvents="none"
+              >
+                {n.label}
+              </text>
+              <line
+                x1={uX1}
+                x2={uX2}
+                y1={uY}
+                y2={uY}
+                className="stroke-primary"
+                strokeWidth={1}
+                style={{
+                  opacity: isActive ? 1 : 0,
+                  transition: "opacity 200ms ease",
+                }}
+                pointerEvents="none"
+              />
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }

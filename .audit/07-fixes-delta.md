@@ -93,3 +93,20 @@ One line in `tailwind.config.ts`: `future: { hoverOnlyWhenSupported: true }`. Au
 ## Count
 
 22 fixes total. 8 persistence, 2 messaging, 4 admin/content, 1 identity, 7 infra/design. None overlap the original April 2026 list.
+
+---
+
+## 2026-04-20 — Foyer redesign rule overrides
+
+**Rule:** No dead buttons (CLAUDE.md, master-reference.md §1)
+
+**Override scope:** One-time exception for Foyer redesign. Three placeholder sites:
+- Ring ASK node → toast "Your AI coach is coming soon"
+- Dock Bell → toast "Notifications coming soon"
+- Dock LifeBuoy → toast "Help center coming soon" (no /help route exists)
+
+**Rationale:** Foyer visual architecture ships before backend features (AI coach, notifications, help center). Placeholders preserve the intended spatial design and signal future features without blocking the redesign.
+
+**Expected removal:** Next 2-3 sprints as real features land. ASK becomes AI coach chat. Bell becomes real notifications. LifeBuoy becomes help center or is removed.
+
+**Rule itself remains in force** for all other surfaces. This is a scoped exception, not a rule change.
