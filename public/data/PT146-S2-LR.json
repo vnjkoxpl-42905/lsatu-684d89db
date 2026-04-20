@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "For the first few weeks after birth, the dunnart has such poor control over its respiratory muscles that it cannot use them to breathe. Instead, this tiny marsupial breathes through its thin skin, which gradually thickens as the dunnart matures inside its mother’s pouch. The dunnart is unique among warm-blooded animals, the rest of which need thick skin throughout their lives to maintain body temperature and reduce water loss.",
+    "questionStem": "Which one of the following, if true, most helps explain how newborn dunnarts manage to survive despite their thin skins?",
+    "answerChoices": {
+      "A": "The dunnart’s respiratory muscles begin to develop a few days after birth.",
+      "B": "The dunnart’s body temperature is higher than that of many other warm-blooded animals.",
+      "C": "Adult dunnarts experience more heat and water loss through their skin than other adult marsupials do.",
+      "D": "Its mother’s pouch keeps a newborn dunnart warm and reduces water loss through its skin.",
+      "E": "Some dunnarts live where daytime temperatures are high and the climate is dry."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 1,
+    "stimulus": "Successful stand-up comedians are able to keep the attention of a large audience for a few hours, in such a way that the audience remembers long afterwards what the comedian said. And in their routines, many comedians make interesting points about serious topics. Unsurprisingly, humor is the means through which comedians are able to accomplish all of this. University professors hope to achieve much the same in their lectures. Thus, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "stand-up comedians and university professors have the same skill set",
+      "B": "incorporating humor into lectures can help professors to achieve the goals they have for those lectures",
+      "C": "university professors can achieve the goals they have for their lectures only if they incorporate humor into them",
+      "D": "there is no reason to suppose that a lecture lasting several hours cannot hold an audience’s attention",
+      "E": "university professors should treat even the most serious topics in a humorous way"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Reviewer: Almost all books that offer management advice are written from the perspective of the CEO. But most managers aren’t CEOs and don’t have the same perspective as CEOs. So the advice in management books is of limited use for most managers.",
+    "questionStem": "The conclusion of the reviewer’s argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Advice books rarely take the perspective of their intended audience.",
+      "B": "Most people who read management advice books aspire to be CEOs.",
+      "C": "Almost all CEOs have experience as lower-level managers.",
+      "D": "Advice is of limited use unless it is offered from the perspective of the recipient.",
+      "E": "Most managers prefer to read books that they think will be useful to them in their work."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "The mayor has been accused of taking a bribe based on the fact that a consultant that does business with the city paid for improvements to the mayor’s vacation house. In his own defense, the mayor has said that he paid every bill for those improvements that was presented to him.",
+    "questionStem": "Which one of the following, if true, most undermines the mayor’s defense?",
+    "answerChoices": {
+      "A": "Authorities are investigating the consultant for taking bribes from officials of other cities.",
+      "B": "The mayor was aware that many of the bills were being presented to the consultant rather than to the mayor.",
+      "C": "The building contractor in charge of the improvements to the mayor’s house had done business with the city in the past.",
+      "D": "The improvements to the mayor’s house were done with expensive materials and involved thousands of hours of labor.",
+      "E": "The amount of money that the city paid the consultant over the last year greatly exceeded the cost of the improvements to the mayor’s house."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Archaeologist: The earliest evidence of controlled fire use in Europe dates to just 400,000 years ago. This casts doubt on the commonly held view that, because of Europe’s cold winter climate, mastery of fire was a necessary prerequisite for humans’ migration there.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "The humans who first mastered fire used it for heat but not for cooking.",
+      "B": "The climate in Europe was significantly colder 400,000 years ago than it is today.",
+      "C": "Prior to 400,000 years ago, humans occasionally took advantage of naturally occurring fires.",
+      "D": "Humans would not have mastered fire were it not for the need for heat in a cold climate.",
+      "E": "There were humans inhabiting Europe prior to 400,000 years ago."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 2,
+    "stimulus": "Astronomer: This country’s space agency is currently building a new space telescope that is, unfortunately, way over budget. Some people argue that the project should be canceled. But that would be a mistake. If we cancel it now, all the money that has already been spent—which is more than the additional cost required to complete the project—would be wasted.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the astronomer’s argument?",
+    "answerChoices": {
+      "A": "A government agency should not cancel a partially completed project unless the amount of money already spent on the project is small relative to the agency’s overall budget.",
+      "B": "If more than half of the total cost of a project has already been spent, then the project should be completed.",
+      "C": "If it becomes clear that the total cost of a project will be more than twice the amount originally budgeted, then the project should be canceled.",
+      "D": "One should not commit additional funding to a project just because one has spent considerable money on it in the past.",
+      "E": "In determining which scientific projects to fund, governments should give priority to the projects that are most likely to lead to important new discoveries."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Naturalist: Different nonhuman primate species exhibit many contrasts in behavior. If a zookeeper leaves a screwdriver within reach of a chimpanzee, the animal is likely to examine and play with it for a time, and then move on to something else. In the same circumstances, an orangutan is likely to pretend to ignore the tool at first; later, in the zookeeper’s absence, the orangutan may use the screwdriver to try to dismantle its cage.",
+    "questionStem": "Which one of the following is most strongly supported by the naturalist’s statements?",
+    "answerChoices": {
+      "A": "Orangutans are the most intelligent of nonhuman primates.",
+      "B": "Orangutans have better memories than chimpanzees have.",
+      "C": "Some nonhuman primates are capable of deception.",
+      "D": "Orangutans dislike being caged more than chimpanzees do.",
+      "E": "Not all nonhuman primates understand tool use."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 1,
+    "stimulus": "Manager: The only employees who should receive bonuses this year are those who were exceptionally productive over the past year. Liang is an excellent account executive, but she works in a corporate division that has failed to meet its productivity goals for the year. Thus Liang should not receive a bonus this year.",
+    "questionStem": "The reasoning in the manager’s argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "fails to take into account the possibility that the standards by which productivity is judged might vary across different divisions of a corporation",
+      "B": "overlooks the possibility that a corporation as a whole can have a profitable year even though one division of the corporation does not",
+      "C": "fails to justify its use of one group’s performance as the basis for a conclusion about a wholly different group",
+      "D": "reaches a conclusion about the performance of one member of a group merely on the basis of the performance of the group as a whole",
+      "E": "takes for granted that an employee who has an unproductive year will not be exceptionally productive in subsequent years"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Even though she thought the informant was untrustworthy, the journalist promised not to reveal his identity so long as the information he provided did not turn out to be false. However, she will publicly reveal the informant’s identity if she is ordered to do so by a judge or her editor. After all, the information concerns safety violations at the power plant. Thus, the journalist will surely reveal the informant’s identity even if the information is accurate.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The information that the informant provided is known to be false.",
+      "B": "The journalist’s editor will not order her to reveal the informant’s identity unless the information is accurate and concerns public safety.",
+      "C": "If the information concerns safety at the power plant, a judge will order the journalist to reveal her informant’s identity.",
+      "D": "The truth of the information provided by the informant can be verified only if the informant’s identity is publicly revealed.",
+      "E": "The informant understood, at the time the journalist promised him confidentiality, that she would break this promise if ordered to do so by a judge."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Principle Application",
+    "questionDifficulty": 1,
+    "stimulus": "One who has borrowed an item from someone and promised to return it by a certain date should do so if it would not be difficult to return it on time and the person from whom one has borrowed it has not given permission to return the item late.",
+    "questionStem": "The principle stated above most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Christopher told Sumi that the book she borrowed from him need not be returned by Friday. Thus, it would be wrong for Sumi to return the book earlier than Friday.",
+      "B": "Nick promised Wanda that he would return the bicycle he borrowed from her by tomorrow. Thus, if Wanda did not give Nick permission to return it late, he ought to return it by tomorrow even if doing so is difficult.",
+      "C": "Val should return Ted’s car to him today, because although he told her that she could return it late, she promised that she would return it today and it would not be difficult for her to do so.",
+      "D": "Yesenia borrowed Mike’s computer, and he has just requested that she return it to him by tomorrow. Although Yesenia has not promised to return it by tomorrow, she should return it by then since it would not be difficult for her to do so.",
+      "E": "Oliver borrowed Madeline’s guitar from her yesterday and promised to bring it back today. So, since it would be easy for Oliver to return the guitar today, and Madeline has not given him permission to return it late, he should return it today."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Human skin gives off an array of gaseous substances, including carbon dioxide and lactic acid, both of which attract mosquitoes. However, neither of these two substances, whether alone or combined with one another, will attract mosquitoes as much as a bare human arm will, even in complete darkness, where a mosquito has no visual cues. Therefore, some other gaseous substance given off by human skin also attracts mosquitoes.",
+    "questionStem": "The reasoning in the argument requires which one of the following assumptions?",
+    "answerChoices": {
+      "A": "Mosquitoes do not communicate with one another.",
+      "B": "Mosquitoes are not attracted to humans by body heat.",
+      "C": "Human skin gives off gaseous substances in greater amounts during the day than during the night.",
+      "D": "Mosquitoes are no more successful in finding a bare human arm in darkness than in light.",
+      "E": "Human skin never gives off any gaseous substances that repel mosquitoes."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "A 1955 analysis of paint samples from an Italian painting found evidence of cobalt, suggesting the use of cobalt blue, a pigment not used in Europe before 1804. The painting was thus deemed to have been produced sometime after 1804. A 2009 analysis also found cobalt, but that analysis suggested that the painting might have been produced before 1804.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "The 2009 analysis revealed that cobalt was located only in the topmost paint layer, which was possibly applied to conceal damage to original paint layers.",
+      "B": "The 2009 analysis used sophisticated scientific equipment that can detect much smaller amounts of cobalt than could the equipment used for the 1955 analysis.",
+      "C": "The 2009 analysis took more samples from the painting than the 1955 analysis did, though those samples were smaller.",
+      "D": "Many experts, based on the style and the subject matter of the painting, have dated the painting to the 1700s.",
+      "E": "New information that came to light in the 1990s suggested that cobalt blue was used only rarely in Italy in the years immediately following 1804."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "A six-month public health campaign sought to limit the spread of influenza by encouraging people to take precautions such as washing their hands frequently and avoiding public places when they experience influenza symptoms. Since the incidence of influenza was much lower during those months than experts had predicted, the public evidently heeded the campaign.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "The incidence of food-borne illnesses, which can be effectively controlled by frequent hand washing, was markedly lower than usual during the six-month period.",
+      "B": "During the six-month period, the incidence of the common cold, which has many of the same symptoms as influenza, was about the same as usual.",
+      "C": "There were fewer large public gatherings than usual during the six-month period.",
+      "D": "Independently of the public health campaign, the news media spread the message that one’s risk of contracting influenza can be lessened by frequent hand washing.",
+      "E": "In a survey completed before the campaign began, many people admitted that they should do more to limit the spread of influenza."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Identify The Conclusion",
+    "questionDifficulty": 4,
+    "stimulus": "A study at a company found that most meetings showed diminishing returns after 30 minutes, and little could be expected after 60 minutes. Moreover, the most productive meetings were those for which a clear time frame was established. For a meeting at the company to achieve maximum productivity, then, it needs to have a clear time frame and be no more than 30 minutes long.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "In general, a meeting at the company that is no more than 30 minutes long and has a clear time frame will achieve maximum productivity.",
+      "B": "Most meetings at the company show diminishing returns after 30 minutes, according to a study.",
+      "C": "A meeting at the company will be maximally productive only if it has a clear time frame and lasts no more than 30 minutes.",
+      "D": "According to a study, meetings at the company were the most productive when they had clear time frames.",
+      "E": "A study of meetings at the company says that little productivity should be expected after the 60-minute mark."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Nutritionist: Most fad diets prescribe a single narrow range of nutrients for everyone. But because different foods contain nutrients that are helpful for treating or preventing different health problems, dietary needs vary widely from person to person. However, everyone should eat plenty of fruits and vegetables, which protect against a wide range of health problems.",
+    "questionStem": "Which one of the following is most strongly supported by the nutritionist’s statements?",
+    "answerChoices": {
+      "A": "Most fad diets require that everyone following them eat plenty of fruits and vegetables.",
+      "B": "Fruits and vegetables are the only foods that contain enough different nutrients to protect against a wide range of health problems.",
+      "C": "Any two people have different health problems and thus different dietary needs.",
+      "D": "Most fad diets fail to satisfy the dietary needs of some people.",
+      "E": "There are very few if any nutrients that are contained in every food other than fruits and vegetables."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Evaluate",
+    "questionDifficulty": 5,
+    "stimulus": "The caffeine in coffee stimulates the production of irritating acid in the stomach. But darker roasts of coffee, produced by roasting the coffee beans longer, contain more N-methylpyridinium (NMP) than lighter roasts, and NMP tends to suppress production of acid in the stomach. Therefore if you drink caffeinated coffee, darker roasts will irritate your stomach less than lighter roasts.",
+    "questionStem": "The answer to which one of the following questions most helps in evaluating the argument?",
+    "answerChoices": {
+      "A": "Does extending the roasting time of coffee beans increase the amount of caffeine present in the brewed coffee?",
+      "B": "Does a reduction in acid production in the stomach have an adverse effect on stomach function?",
+      "C": "Would coffee drinkers who drink caffeinated coffee increase their coffee consumption if the coffee they drank contained less caffeine?",
+      "D": "Do some coffee drinkers who switch from lighter to darker roasts of coffee increase their daily coffee consumption?",
+      "E": "Do lighter roasts of coffee have any important health benefits that darker roasts of coffee lack?"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Film historians often find it difficult to determine typical audience members’ responses to particular films, especially those from the early twentieth century. Box office figures help little, for they indicate only a film’s financial success or failure; they do not show what audiences found funny, or frightening, or moving. These historians also find that newspaper and magazine reviews fail to provide much insight.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above?",
+    "answerChoices": {
+      "A": "Newspaper and magazine reviews of films are usually written in advance of a film’s general release.",
+      "B": "Typical audience members’ responses to films from the latter part of the twentieth century are easy to determine.",
+      "C": "The box office success of a film does not depend on its viewers finding it funny, frightening, or moving.",
+      "D": "Film historians do not believe that film reviews in newspapers and magazines reveal typical film audience members’ views.",
+      "E": "Films from the early part of the twentieth century were not usually reviewed in newspapers or magazines."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 3,
+    "stimulus": "The consensus among astronomers, based upon observations of the surfaces of pulsars, is that pulsars are spinning balls of neutrons compressed into a sphere some 10 kilometers in diameter with a mass roughly equal to that of our sun. However, their observed properties are also consistent with some pulsars actually being filled with quarks, the building blocks of neutrons. Because the core of a quark-filled pulsar, unlike a neutron-filled one, would have an overall positive charge, it would attract a layer of negatively charged particles that could support a crust of neutrons.",
+    "questionStem": "The statement that the core of a quark-filled pulsar would have an overall positive charge plays which one of the following roles in the argument above?",
+    "answerChoices": {
+      "A": "It helps explain how pulsars could have neutrons on their surface even if they were not entirely made up of neutrons.",
+      "B": "It forms part of a challenge to the claim that some pulsars may be made up of quarks.",
+      "C": "It helps explain why some pulsars would not be readily recognized as such by astronomers.",
+      "D": "It presents a new finding that challenges the consensus view of the structure of pulsars.",
+      "E": "It points out a problem with the view that pulsars have a mass roughly equal to that of our sun."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Analyst: Any new natural-gas-powered electrical generation station needs to be located close to a natural-gas pipeline, a large body of water for cooling, and transmission lines. It also must be situated in a region where residents will not oppose construction. Our country has an extensive system of transmission lines, but our natural-gas pipelines run in the vicinity of only three of our large bodies of water, and residents would oppose any significant construction projects near these bodies of water.",
+    "questionStem": "The analyst’s statements, if true, most strongly support which one of the following statements about the analyst’s country?",
+    "answerChoices": {
+      "A": "Future electrical needs will have to be met by alternatives to natural-gas-powered generation.",
+      "B": "If a new natural-gas-powered electrical station is built in a region, many residents will move away from that region.",
+      "C": "No site would be suitable for constructing a natural-gas-powered electrical station unless the existing system of natural-gas pipelines is expanded.",
+      "D": "There currently is no natural-gas-powered electrical generation station near any of the three largest bodies of water.",
+      "E": "Many residents who would oppose the construction of a new natural-gas-powered electrical station in their region would not oppose the construction of new transmission lines there."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "Voting records regularly show that people over 65 vote in the highest percentages while young adults are least likely to vote. This indicates that citizens are becoming increasingly disconnected from the political system with each passing generation.",
+    "questionStem": "The argument’s reasoning is questionable in that the argument",
+    "answerChoices": {
+      "A": "compares an early stage of one generation to a later stage of another",
+      "B": "fails to take into account the relative sizes of the generations compared",
+      "C": "provides evidence for a phenomenon without providing an explanation of the phenomenon",
+      "D": "confuses the cause of an effect with the effect itself",
+      "E": "overlooks the possibility that voting patterns among age groups will change in the future"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Principle Application",
+    "questionDifficulty": 3,
+    "stimulus": "A local marsh would need to be drained before the proposed office complex could be built. Such marshes often play crucial roles in purifying groundwater and there has been no scientific assessment of the marsh’s role in maintaining the quality of the city’s well water. The city should therefore block the proposed office complex pending such an assessment.",
+    "questionStem": "The principle underlying the argument above is most similar to the principle underlying which one of the following arguments?",
+    "answerChoices": {
+      "A": "A new highway cannot be built in the lake district unless an environmental impact assessment is first carried out. An environmental impact assessment would cost more than the projected economic benefit of the highway. The proposal for a new highway in the lake district should therefore be rejected.",
+      "B": "Defective products can cost an appliance manufacturer millions of dollars because of product recalls and lawsuits. Yova Corporation’s new line of appliances has not yet been thoroughly tested for defects. Thus, Yova should not bring its new line to market at this time.",
+      "C": "A laboratory safety check of a portable grill requires a week of uninterrupted testing. The new portable grill has been at the testing lab for a week, but the testing could not begin until the paperwork arrived three days later. Therefore, no report on the results of the safety check should be released at this time.",
+      "D": "Building the new highway along the proposed northern route would inevitably damage an adjoining wilderness area. The highway would also cause environmental damage if it follows the proposed southern route, but it would not harm any wilderness areas. Thus, if the highway is built, it should be built on the southern route.",
+      "E": "Building a light rail line to serve the downtown core could involve cost overruns and expensive delays, but traffic congestion will become intolerable within ten years without a light rail line. A light rail line should therefore be built."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "In a recent study, one group of participants watched video recordings of themselves running on treadmills, and a second group watched recordings of other people running on treadmills. When contacted later, participants in the first group reported exercising, on average, 1 hour longer each day than did the other participants. This shows that watching a recording of yourself exercising can motivate you to exercise more.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "In another study, people who watched recordings of themselves lifting weights exercised for more time each day than did people who watched recordings of themselves running.",
+      "B": "Another study’s members exhibited an increased willingness to give to charity after hearing stories in which people with whom they identified did so.",
+      "C": "Participants who were already highly motivated to exercise did not report exercising for any longer each day than they had before the study.",
+      "D": "In studies of identical twins, participants who observed their twin reading overreported by a significant amount how much time they themselves spent reading in the days that followed.",
+      "E": "A third group of participants who watched recordings of themselves sitting on couches afterwards reported being sedentary for more time each day than did the other participants."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Environmentalist: Efforts to attain an overall reduction in carbon use by convincing people to focus on their personal use of fossil fuels cannot achieve that goal. Even if most people changed their behavior, changes in personal use of fossil fuels cannot produce the needed reductions in carbon use. Only government policies can produce change on the required scale.",
+    "questionStem": "The environmentalist’s argument requires assuming which one of the following?",
+    "answerChoices": {
+      "A": "Convincing most people to focus on their personal use of fossil fuels would not lead to their successfully pressuring the government into implementing policies that reduce carbon use.",
+      "B": "The calculations needed to determine how best to minimize one’s personal use of fossil fuels are too difficult for individuals to carry out on their own.",
+      "C": "Efforts to convince people to focus on reducing their personal use of fossil fuels have been made only by those who are not currently involved in framing government policy.",
+      "D": "It is easier to convince the government to change its policies on carbon use than to convince people to reduce their personal use of fossil fuels.",
+      "E": "People who are concerned about environmental issues are more likely to support political candidates who support environmental issues."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "There are only two plausible views about where the aesthetic value of a painting lies: either in its purely formal qualities or in what the painting means. But there exists no compelling general account of how a painting could derive its value from its purely formal characteristics. Therefore, the aesthetic value of a painting lies in what it means.",
+    "questionStem": "The pattern of questionable reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "This cardiac patient could be treated with surgery or angioplasty, among other methods. But his weak condition would make recovery from surgery a very long process. Therefore, the doctors ought to perform angioplasty.",
+      "B": "Should the company be outbid on the new project, it will either have to lay off workers or find new business. But it does not expect to find new business in the foreseeable future. Therefore, it must be expecting to win the bid on the new project.",
+      "C": "History is driven primarily by economic forces or primarily by political forces. But no historian has shown convincingly that history is driven mainly by economic forces. Therefore, it is driven primarily by political forces.",
+      "D": "Some analysts are forecasting that if the economy expands, the inflation rate will rise or the unemployment rate will fall. But the unemployment rate promises to remain stable. Therefore, the inflation rate will not change either.",
+      "E": "If the party does not change its policies, it will lose heavily in the next election. But if it changes its policies, some people who support those policies will be upset and will sit out the next election. Therefore, it is impossible for the party to win in the next election."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "Substantial economic growth must be preceded by technological innovations that expanding industries incorporate into their production or distribution procedures. Since a worldwide ban on the use of fossil fuels would surely produce many technological innovations, it is obvious that such a ban would be followed by an economic boom rather than by the economic depression forecast by the critics of such a ban.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the argument’s reasoning?",
+    "answerChoices": {
+      "A": "The argument assumes the truth of the conclusion for which it purports to be providing evidence.",
+      "B": "The argument attempts to establish the falsehood of a proposition by criticizing the reasoning of those who assert its truth.",
+      "C": "The argument attempts to establish a conclusion on the basis of stronger evidence than the conclusion requires.",
+      "D": "The argument confuses a necessary condition for a phenomenon with a sufficient condition for that phenomenon.",
+      "E": "The argument presumes, without providing warrant, that because certain conditions only sometimes precede a certain phenomenon, these conditions always bring about the phenomenon."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Agreement",
+    "questionDifficulty": 5,
+    "stimulus": "Winston: The rules for awarding Nobel Prizes stipulate that no more than three people can share the same prize. Nobel Prizes in scientific disciplines are generally given in recognition of particular scientific results, however, and many important results are the work of four or more scientists.\nSanjay: Those rules also stipulate that prize winners must be living, but some highly influential scientists died before their work was fully appreciated.",
+    "questionStem": "The dialogue most strongly supports the claim that Winston and Sanjay agree that",
+    "answerChoices": {
+      "A": "the rules that govern the awarding of Nobel Prizes should be changed so that prizes can be awarded to deceased persons",
+      "B": "the rules that govern the awarding of Nobel Prizes in scientific disciplines should be different from the rules for other Nobel Prizes",
+      "C": "Nobel Prizes in scientific disciplines should not be given in recognition of particular scientific results",
+      "D": "the evaluation of individual achievement in science is a highly subjective matter",
+      "E": "Nobel Prizes are inaccurate indicators of scientists’ contributions to their disciplines"
+    },
+    "correctAnswer": "E"
+  }
+]

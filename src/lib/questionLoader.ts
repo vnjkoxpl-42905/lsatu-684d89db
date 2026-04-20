@@ -162,6 +162,20 @@ const JSON_FILES = [
   '/data/PT155-S1-LR.json',
   '/data/PT155-S2-LR.json',
   '/data/PT155-S4-LR.json',
+  // Twenty-fourth batch - PT146, PT147, PT148, PT149, PT153
+  '/data/PT146-S1-LR.json',
+  '/data/PT146-S2-LR.json',
+  '/data/PT146-S3-LR.json',
+  '/data/PT147-S1-LR.json',
+  '/data/PT147-S4-LR.json',
+  '/data/PT148-S1-LR.json',
+  '/data/PT148-S3-LR.json',
+  '/data/PT148-S4-LR.json',
+  '/data/PT149-S1-LR.json',
+  '/data/PT149-S3-LR.json',
+  '/data/PT149-S4-LR.json',
+  '/data/PT153-S2-LR.json',
+  '/data/PT153-S3-LR.json',
 ];
 
 // Simple hash for qid generation
@@ -223,6 +237,7 @@ const TYPE_SYNONYMS: Record<string, string> = {
   // Flaw variants
   'Flaw': 'Flaw',
   'Flaw in Reasoning': 'Flaw',
+  'Flawed Reasoning': 'Flaw',
   'Error in Reasoning': 'Flaw',
   
   // Assumption variants
@@ -240,41 +255,51 @@ const TYPE_SYNONYMS: Record<string, string> = {
   'Principle Strengthen': 'Principle-Strengthen',
   'Principle: Strengthen': 'Principle-Strengthen',
   'Principle: Justify': 'Principle-Strengthen',
+  'Principle Justify': 'Principle-Strengthen',
   'Principle-Conform': 'Principle-Conform',
   'Principle Conform': 'Principle-Conform',
   'Principle: Conform': 'Principle-Conform',
   'Principle: Underlying': 'Principle-Conform',
+  'Principle Application': 'Principle-Conform',
   'Principle': 'Principle-Conform',
-  
+
   // Evaluation
   'Evaluate': 'Evaluate',
   'Evaluate the Argument': 'Evaluate',
-  
+  'Argument Evaluation': 'Evaluate',
+
   // Inference variants
   'Most Strongly Supported': 'Most Strongly Supported',
   'Most Supported': 'Most Strongly Supported',
+  'Complete the Argument': 'Most Strongly Supported',
   'Main Point': 'Main Conclusion',
   'Main Conclusion': 'Main Conclusion',
+  'Identify The Conclusion': 'Main Conclusion',
+  'Identify the Conclusion': 'Main Conclusion',
   'Must Be True': 'Must Be True',
   'Must be True': 'Must Be True',
   'Must Be False': 'Must Be False',
-  
+
   // Agreement/Disagreement
   'Agree/Disagree': 'Agree/Disagree',
   'Point at Issue': 'Agree/Disagree',
   'Point of Agreement': 'Agree/Disagree',
   'Disagree': 'Agree/Disagree',
-  
+  'Agreement': 'Agree/Disagree',
+  'Misinterpretation': 'Agree/Disagree',
+
   // Method and Role
   'Method of Reasoning': 'Method of Reasoning',
   'Method': 'Method of Reasoning',
   'Role': 'Role',
   'Role in the Argument': 'Role',
-  
+  'Role in Argument': 'Role',
+
   // Parallel
   'Parallel Reasoning': 'Parallel Reasoning',
   'Parallel': 'Parallel Reasoning',
   'Parallel Flaw': 'Parallel Flaw',
+  'Flawed Parallel Reasoning': 'Parallel Flaw',
   
   // Paradox
   'Paradox': 'Paradox',

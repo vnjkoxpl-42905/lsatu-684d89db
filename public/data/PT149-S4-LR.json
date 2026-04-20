@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Dentist: I recommend brushing one’s teeth after every meal to remove sugars that facilitate the growth of certain bacteria; these bacteria produce acid that dissolves minerals in tooth enamel, resulting in cavities. And when brushing is not practical, I recommend chewing gum—even gum that contains sugar—to prevent the formation of cavities.",
+    "questionStem": "Which one of the following, if true, would most help to reconcile the dentist’s apparently paradoxical recommendations?",
+    "answerChoices": {
+      "A": "A piece of chewing gum that contains sugar contains far less sugar than does the average meal.",
+      "B": "Tooth decay can be stopped and reversed if it is caught before a cavity develops.",
+      "C": "Chewing gum stimulates the production of saliva, which reduces acidity in the mouth and helps remineralize tooth enamel.",
+      "D": "Sugars can be on teeth for as long as 24 hours before the teeth-damaging bacteria whose growth they facilitate begin to proliferate.",
+      "E": "Chewing gum exercises and relaxes the jaw muscles and so contributes to the overall health of the oral tract."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "questionDifficulty": 1,
+    "stimulus": "When the ancient fossils of a primitive land mammal were unearthed in New Zealand, they provided the first concrete evidence that the island country had once had indigenous land mammals. Until that discovery, New Zealand had no known native land mammals. The discovery thus falsifies the theory that New Zealand’s rich and varied native bird population owes its existence to the lack of competition from mammals.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "The unearthed land mammal is only one of several ancient land mammals that were indigenous to New Zealand.",
+      "B": "The recently discovered land mammal became extinct long before the native bird population was established.",
+      "C": "The site at which the primitive land mammal was unearthed also contains the fossils of primitive reptile and insect species.",
+      "D": "Countries with rich and varied native land mammal populations do not have rich and varied native bird populations.",
+      "E": "Some other island countries that are believed to have no native land mammals in fact had indigenous land mammals at one time."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Restaurant owner: The newspaper reporter who panned my restaurant acknowledges having no special expertise about food and its preparation. His previous job was as a political reporter. He is a good writer, but he is not a true restaurant critic. A newspaper would never call someone a drama critic who had no special training in theater.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the restaurant owner’s argument?",
+    "answerChoices": {
+      "A": "The newspaper reporter who panned the restaurant acknowledges having no special expertise about food and its preparation.",
+      "B": "The previous job of the newspaper reporter who panned the restaurant was as a political reporter.",
+      "C": "The newspaper reporter who panned the restaurant is a good writer.",
+      "D": "The newspaper reporter who panned the restaurant is not a true restaurant critic.",
+      "E": "A newspaper would never call someone a drama critic who had no special training in theater."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "It has been hypothesized that our solar system was formed from a cloud of gas and dust produced by a supernova—an especially powerful explosion of a star. Supernovas produce the isotope iron-60, so if this hypothesis were correct, then iron-60 would have been present in the early history of the solar system. But researchers have found no iron-60 in meteorites that formed early in the solar system’s history, thereby disproving the hypothesis.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "If a meteorite is formed early in the solar system’s history, it contains chemical elements that are unlikely to be found in gas and dust produced by a supernova.",
+      "B": "Other solar systems are not formed from clouds of gas and dust produced by supernovas.",
+      "C": "Supernovas do not produce significant quantities of any form of iron other than iron-60.",
+      "D": "Researchers have found iron-60 in meteorites that were formed relatively late in the solar system’s history.",
+      "E": "If there had been iron-60 present in the early history of the solar system, it would be found in meteorites formed early in the solar system’s history."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "Safety expert: Tuna is often treated with carbon monoxide so that it will not turn brown as it ages. Treating tuna with carbon monoxide does not make it harmful in any way. Nonetheless, there is a danger that such treatment will result in more people getting sick from eating tuna.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the safety expert’s statements?",
+    "answerChoices": {
+      "A": "Workers in fish processing plants can be sickened by exposure to carbon monoxide if the appropriate safety procedures are not followed at those plants.",
+      "B": "Over the last several years, tuna consumption has increased in most parts of the world.",
+      "C": "Tuna that is treated with carbon monoxide provides no visible indication when it has spoiled to the point that it can cause food poisoning.",
+      "D": "Treating tuna with carbon monoxide is the only way to keep it from turning brown as it ages.",
+      "E": "Most consumers strongly prefer tuna that is not brown because they believe that brown tuna is not fresh."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Astrophysicist: Gamma ray bursts (GRBs)—explosions of powerful radiation from deep space—have traditionally been classified as either “short” or “long,” terms that reflect the explosion’s relative duration. However, an unusual GRB has been sighted. Its duration was long, but in every other respect it had the properties of a short GRB. Clearly, the descriptive labels “short” and “long” have now outlived their usefulness.",
+    "questionStem": "The conclusion of the astrophysicist’s argument is most strongly supported if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "No other GRBs with unusual properties have been sighted.",
+      "B": "The classification of GRBs can sometimes be made on the basis of duration alone.",
+      "C": "Properties other than duration are more important than duration in the proper classification of the unusual GRB.",
+      "D": "GRBs cannot be classified according to the different types of cosmic events that create them.",
+      "E": "Descriptive labels are easily replaced with nondescriptive labels such as “type I” and “type II.”"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "In one study, hospital patients’ immune systems grew stronger when the patients viewed comic videos. This indicates that laughter can aid recovery from illness. But much greater gains in immune system strength occurred in the patients whose tendency to laugh was greater to begin with. So hospital patients with a greater tendency to laugh are helped more in their recovery from illness even when they laugh a little than other patients are helped when they laugh a greater amount.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that the patients whose tendency to laugh was greater to begin with laughed more at the comic videos than did the other patients",
+      "B": "fails to address adequately the possibility that the patients whose tendency to laugh was greatest to begin with already had stronger immune systems than the other patients",
+      "C": "presumes, without providing justification, that hospital patients have immune systems representative of those of the entire population",
+      "D": "takes for granted that the gains in immune system strength did not themselves influence the patients’ tendency to laugh",
+      "E": "presumes, without providing justification, that the patients whose tendency to laugh was greatest to begin with recovered from their illnesses more rapidly than the other patients"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "A study of guppy fish shows that a male guppy will alter its courting patterns in response to feedback from a female guppy. Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.",
+    "questionStem": "Which one of the following, if true, provides the most support for the argument?",
+    "answerChoices": {
+      "A": "When a model of a female guppy was substituted for the female guppy, male guppies still courted, but were not more likely to show their side with more orange.",
+      "B": "In many other species females show a preference for symmetry of coloring rather than quantity of coloring.",
+      "C": "No studies have been done on whether male guppies with more orange coloring father more offspring than those with less orange coloring.",
+      "D": "Female guppies have little if any orange coloring on their sides.",
+      "E": "The male and female guppies were kept in separate tanks so they could see each other but not otherwise directly interact."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Politician: Some proponents of unilateral nuclear arms reduction argue that it would encourage other countries to reduce their own nuclear arsenals, eventually leading to an international agreement on nuclear arms reduction. Our acting on the basis of this argument would be dangerous, because the argument ignores the countries presently on the verge of civil wars. These countries, many of which have nuclear capability, cannot be relied upon to conform to any international military policy.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the politician’s argument?",
+    "answerChoices": {
+      "A": "Countries that are on the verge of civil wars are unlikely to agree to reduce either their nuclear arms or their conventional weapons.",
+      "B": "Unilateral nuclear arms reduction by the politician’s country would encourage all countries to reduce their nuclear arsenals.",
+      "C": "Many countries cannot be relied upon to disclose the extent of their nuclear capability.",
+      "D": "It is unlikely that an international agreement on nuclear disarmament will ever be achieved.",
+      "E": "It is risky for the politician’s country to unilaterally reduce nuclear arms in hopes of achieving an international agreement on arms reduction."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "Advertisement: Auto accidents are the most common cause of whiplash injury, a kind of injury that is caused by a sudden sharp motion of the neck. However, many other types of accidents can produce a sudden sharp motion of the neck and thereby result in whiplash injury. A sudden sharp motion of the neck can be caused by a fall, a bump on the head, or even by being shoved from behind. That is why you should insist on receiving Lakeside Injury Clinic’s complete course of treatment for whiplash after any accident that involves a fall or a bump on the head.",
+    "questionStem": "Which one of the following, if true, provides the strongest basis for criticizing the reasoning in the advertisement?",
+    "answerChoices": {
+      "A": "Being shoved from behind rarely causes whiplash.",
+      "B": "Auto accidents often involve falling or being bumped on the head.",
+      "C": "Nonautomobile accidents other than those involving falls or bumps on the head also occasionally cause whiplash injuries.",
+      "D": "It is very uncommon for falling or being bumped on the head to result in a sudden sharp motion of the neck.",
+      "E": "The appropriate treatment for whiplash caused by a fall or a bump on the head is no different from that for whiplash caused by an auto accident."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "A group of citizens opposes developing a nearby abandoned railroad grade into a hiking trail. Its members argue that trail users will likely litter the area with food wrappers and other debris. But this objection is groundless. Most trail users will be dedicated hikers who have great concern for the environment. Consequently, development of the trail should proceed.",
+    "questionStem": "The argument above is flawed in that it",
+    "answerChoices": {
+      "A": "bases its conclusion mainly on a claim that an opposing argument is weak",
+      "B": "illicitly infers that because each member of a set has a certain property that set itself has the property",
+      "C": "illicitly assumes as one of its premises the contention it purports to show",
+      "D": "illicitly infers that an attribute of a few users of the proposed trail will characterize a majority of users of the trail",
+      "E": "attacks the citizens in the group rather than their objection to developing the trail"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "For years, university administrators, corporations, and government agencies have been predicting an imminent and catastrophic shortage of scientists and engineers. But since there is little noticeable upward pressure on the salaries of scientists and engineers, and unemployment is as high in these fields as any other, these doomsayers are turning out to be wrong.",
+    "questionStem": "Which one of the following would, if true, most strengthen the argument above?",
+    "answerChoices": {
+      "A": "The proportion of all research in science and engineering being carried out by corporations is larger than it was five years ago.",
+      "B": "Most students choose fields of study that offer some prospect of financial success.",
+      "C": "The number of students in university programs in science and engineering has increased significantly in the last five years.",
+      "D": "Certain specializations in science and engineering have an oversupply of labor and others have shortages.",
+      "E": "The knowledge and skills acquired during university programs in science and engineering need to be kept current through periodic retraining and professional experience."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 3,
+    "stimulus": "Rhonda: As long as the cost is not too great, you should use your time, energy, or money to help others. People who are active participants in charitable causes have richer lives than miserly hermits, however prosperous the hermits may be.\nBrad: You should ignore the problems of complete strangers and focus your generosity on your immediate relatives and close friends, since these are the people who will remember your sacrifices and return the kindness when you yourself need help.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify both Rhonda’s and Brad’s arguments?",
+    "answerChoices": {
+      "A": "One should always do what will produce the most benefit for the most people.",
+      "B": "One should treat others as one expects to be treated by them.",
+      "C": "One should act in ways that will benefit oneself.",
+      "D": "One should make sacrifices for others only if they will eventually return the favor.",
+      "E": "One should always act in a manner that one can reflect on with pride."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 1,
+    "stimulus": "Columnist: Wildlife activists have proposed that the practice of stringing cable TV lines from the same poles that carry electric power lines should be banned because cable TV lines, while electrically neutral themselves, make it easier for animals to climb near electric power lines, risking electrocution. This particular argument for banning the practice fails, however, since some animals are electrocuted by power lines even where cable TV lines are all underground.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the columnist’s reasoning?",
+    "answerChoices": {
+      "A": "It takes a sufficient condition for an argument’s being inadequate to be a necessary condition for its being inadequate.",
+      "B": "It rejects an argument for a proposal merely on the grounds that the proposal would not completely eliminate the problem it is intended to address.",
+      "C": "It fails to consider the additional advantageous effects that a proposal to address a problem might have.",
+      "D": "It rejects an argument by criticizing the argument’s proponents rather than by criticizing its substance.",
+      "E": "It rejects a proposal to address a problem merely on the grounds that other proposals to address the problem would also be effective."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Role",
+    "questionDifficulty": 3,
+    "stimulus": "The ancient reptile Thrinaxodon, an ancestor of mammals, had skull features suggesting that it had sensory whiskers. If Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature. Therefore, Thrinaxodon was probably warm-blooded, for such insulation would be of little use to a cold-blooded animal.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that if Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature?",
+    "answerChoices": {
+      "A": "It is a premise offered in support of the conclusion that insulation regulating body temperature would be of little use to a cold-blooded animal.",
+      "B": "It is a premise offered in support of the main conclusion drawn in the argument.",
+      "C": "It is a conclusion for which the claim that Thrinaxodon had skull features suggesting that it had sensory whiskers is offered as support.",
+      "D": "It is a statement of a hypothesis that the argument attempts to show is false.",
+      "E": "It is offered as an explanation of the phenomenon described by the argument’s main conclusion, but it is not itself used to provide support for that conclusion."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Economist: Currently, many countries rely primarily on taxing income to fund government expenditures. But taxing income does nothing to promote savings and investment. Taxing consumption, on the other hand, would encourage savings. The most important challenge facing these countries is improving their economies, and the only way to accomplish this is to increase their savings rates.",
+    "questionStem": "Which one of the following most logically completes the economist’s argument?",
+    "answerChoices": {
+      "A": "most governments should stop taxing savings and investment",
+      "B": "the economies of countries will rapidly improve if their governments adopt tax policies that encourage savings and investment",
+      "C": "in most countries taxes on consumption alone could raise adequate revenues to fund government expenditures",
+      "D": "the tax laws of many countries should be revised to focus on taxing consumption rather than income",
+      "E": "it is detrimental to the economic improvement of any country to continue to tax income"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "Meade: People who are injured as a result of their risky behaviors not only cause harm to themselves but, because we all have important ties to other people, inevitably impose emotional and financial costs on others. To protect the interests of others, therefore, governments are justified in outlawing behavior that puts one’s own health at risk.",
+    "questionStem": "Which one of the following principles, if valid, most undermines the reasoning in Meade’s argument?",
+    "answerChoices": {
+      "A": "Endangering the social ties that one has to other people is itself a harm to oneself.",
+      "B": "People who have important ties to others have a personal obligation not to put their own health at risk.",
+      "C": "Governments are not justified in limiting an individual’s behavior unless that behavior imposes emotional or financial costs on others.",
+      "D": "Preventing harm to others is not by itself a sufficient justification for laws that limit personal freedom.",
+      "E": "People’s obligation to avoid harming others outweighs their obligation to avoid harming themselves."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Sanderson intentionally did not tell his cousin about overhearing someone say that the factory would close, knowing that if he withheld this information, his cousin would assume it would remain open. Clearly this was morally wrong. After all, lying is morally wrong. And making a statement with the intention of misleading someone is lying. True, it was Sanderson’s failing to state something that misled his cousin. Yet there is no moral difference between stating and failing to state if they are done with the same intention.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Sanderson believed that his cousin would not want to be informed about the factory closing.",
+      "B": "No one ever told Sanderson’s cousin about the factory closing.",
+      "C": "Sanderson believed that the factory would in fact be closing.",
+      "D": "Sanderson would have lied to his cousin if his cousin had asked him whether the factory would be closing.",
+      "E": "Sanderson had something to gain by his cousin’s continuing to believe that the factory would remain open."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Principle Application",
+    "questionDifficulty": 2,
+    "stimulus": "After a judge has made the first ruling on a particular point of law, judges must follow that precedent if the original ruling is not contrary to the basic moral values of society. In the absence of precedent, when judges’ own legal views do not contradict any widespread public opinion—and only then—they may abide by their own legal views in deciding a case.",
+    "questionStem": "Of the rulings described below, which one conforms most closely to the principles stated above?",
+    "answerChoices": {
+      "A": "Judge Swoboda is confronted with a legal issue never before decided. Realizing that his own view on the issue contradicts what most people believe, he nonetheless issues a ruling that accords with his own legal views.",
+      "B": "Judge Valenzuela decides, in the absence of any precedent, whether children as young as twelve can be legally tried as adults. There is overwhelming public support for trying children twelve and older as adults, a practice that violates Judge Valenzuela’s personal moral views. So Judge Valenzuela rules, in keeping with his own legal beliefs, against trying twelve-year-olds as adults.",
+      "C": "Judge Levinsky sets a legal precedent when she rules that the “starfish exception” applies to children. In deciding a later case concerning the starfish exception, Judge Wilson adheres to his own legal views rather than Judge Levinsky’s ruling, even though he does not believe that Judge Levinsky’s ruling opposes the basic moral values of society.",
+      "D": "Judge Watanabe must decide a case that depends on an issue for which no legal precedent exists. There is no widespread public opinion on the issue, so Judge Watanabe rules against the defendant because that conforms to her own legal view about the issue.",
+      "E": "Judge Balila rules against the defendant because doing so conforms to her own views about the legal issues involved. However, this ruling is contrary to relevant precedents, all of which conform to the basic moral values of society."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 5,
+    "stimulus": "Neuroscientists subjected volunteers with amusia—difficulty telling different melodies apart and remembering simple tunes—to shifts in pitch comparable to those that occur when someone plays one piano key and then another. The volunteers were unable to discern a difference between the tones. But the volunteers were able to track timed sequences of musical tones and perceive slight changes in timing.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following hypotheses?",
+    "answerChoices": {
+      "A": "People who are unable to discern pitch compensate by developing a heightened perception of timing.",
+      "B": "Amusia results more from an inability to discern pitch than from an inability to discern timing.",
+      "C": "People who are unable to tell pitches apart in isolation are able to do so in the context of a melody by relying upon timing.",
+      "D": "The ability to tell melodies apart depends on the discernment of pitch alone and not at all on the perception of timing.",
+      "E": "Whereas perception of timing can apparently be learned, discernment of pitch is most likely innate."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 5,
+    "stimulus": "Literary critic: There is little of social significance in contemporary novels, for readers cannot enter the internal world of the novelist’s mind unless they experience that world from the moral perspective of the novel’s characters. But in contemporary novels, the transgressions committed by some characters against others are sensationalistic spectacles whose only purpose is to make readers wonder what will happen next, rather than events whose purpose is to be seen as the injustices they are.",
+    "questionStem": "Which one of the following principles, if valid, would most help to justify the literary critic’s argument?",
+    "answerChoices": {
+      "A": "An artist who wants to engage the moral sensibilities of his or her audience should not assume that forms of artistic expression that previously served this purpose continue to do so.",
+      "B": "A novelist who wants to make a reader empathize with a victim of injustice should avoid sensationalistic spectacles whose only purpose is to make readers wonder what will happen next.",
+      "C": "A work of art is socially important only if it engages the moral sensibilities of its audience.",
+      "D": "If a novel allows a reader to understand injustice from the point of view of its victims, it will be socially significant.",
+      "E": "Novels have social significance only to the extent that they allow readers to enter the internal world of the novelist’s mind."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "A recent study revealed that people who follow precisely all the standard recommendations for avoidance of infection by pathogenic microorganisms in meat-based foods are more likely to contract diseases caused by these pathogens than are those who deviate considerably from the standard recommendations. Hence, the standard recommendations for avoidance of infection by these pathogens must be counterproductive.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it fails to take into account which one of the following possibilities?",
+    "answerChoices": {
+      "A": "Pathogenic microorganisms can reproduce in foods that are not meat-based.",
+      "B": "Many people do follow precisely all the standard recommendations for avoidance of infection by pathogenic microorganisms in meat-based foods.",
+      "C": "Not all diseases caused by microorganisms have readily recognizable symptoms.",
+      "D": "Preventing infection by pathogenic microorganisms is simply a matter of following the appropriate set of recommendations.",
+      "E": "Those most concerned with avoiding pathogenic infections from meat-based foods are those most susceptible to them."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "No nonfiction book published by Carriage Books has ever earned a profit. Since Carriage Books earned a profit on every book it published last year, it clearly did not publish a nonfiction book last year.",
+    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "No actor represented by the talent agent Mira Roberts has ever won an important role in a major movie. Since every actor represented by Ms. Roberts had at least one important acting role last year, it clear that none of those actors worked in a movie last year.",
+      "B": "No hotel owned by the Bidmore Group specializes in serving business travelers. Since the Cray Springs Hotel is owned by the Bidmore Group, it clearly does not specialize in serving business travelers.",
+      "C": "Pranwich Corporation has never given a bonus to an employee in its marketing division. Since Pranwich gave bonuses to every one of its systems analysts last year, it is clear that the company employed no systems analysts in its marketing division at that time.",
+      "D": "James Benson has never done business with the city of Waldville. Since Waldville only maintains business files on individuals that it does business with, it clearly does not have a business file on James Benson.",
+      "E": "Conway Flooring has never installed hardwood flooring for any customer in Woodridge. Since Conway Flooring has had a lot of customers in Woodridge, the company clearly does not install hardwood flooring."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 5,
+    "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
+    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Joe made a legitimate offer to buy Sandy’s car and Sandy has not rejected the offer. Thus, there was a valid contract.",
+      "B": "Kenta accepted Gus’s offer to buy a shipment of goods, but Gus, unknown to Kenta, made the offer in jest. Thus, the contract was not valid.",
+      "C": "Frank’s offer to buy Mindy’s business from her was legitimate. Thus, if Mindy is a reasonable person, she will accept the offer.",
+      "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
+      "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
+    "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
+    "answerChoices": {
+      "A": "A number of animal species that inhabit the islands are not found in the Americas.",
+      "B": "Genetic analysis indicates that the iguana species on the islands are different in several respects from those found in the Americas.",
+      "C": "Documented cases of iguanas rafting long distances between land masses are uncommon.",
+      "D": "Fossils of iguana species closely related to those that inhabit the islands have been found in Australia.",
+      "E": "The lineages of numerous plant and animal species found in Australia or in South America date back to a period prior to the fragmentation of Gondwana."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that greatness can be attained only by military conquest",
+      "B": "takes for granted that the largest tomb found so far must be the largest that was built",
+      "C": "does not show how the recently discovered tomb compares with other tombs from the same period that have been found in other regions",
+      "D": "fails to evaluate the significance of the fact that Alexander’s empire did not survive his death",
+      "E": "takes for granted that archaeologists can determine the size of the tomb from its remains"
+    },
+    "correctAnswer": "B"
+  }
+]

@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Cool weather typically weakens muscle power in cold-blooded creatures. In the veiled chameleon, a cold-blooded animal, the speed at which the animal can retract its tongue declines dramatically as the temperature falls. However, the speed at which this chameleon can extend its tongue does not decline much as the temperature falls.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Most cold-blooded animals are much more active in warmer weather than in cooler weather.",
+      "B": "Many cold-blooded animals, including the veiled chameleon, have tongues that can extend quite a distance.",
+      "C": "Veiled chameleons are found in a wide range of habitats, including ones with wide variations in temperature and ones with moderate climates.",
+      "D": "In the veiled chameleon, tongue retraction is powered by muscles, whereas tongue extension is driven by energy stored in a rubber band-like sheath.",
+      "E": "Compared with the muscles in the tongues of most cold-blooded animals, the retraction muscles in the veiled chameleon’s tongue are considerably stronger."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Acme’s bank loan must be immediately repaid in full if Acme’s earnings fall below $1 million per year. If Acme has to repay the entire loan immediately, it will have to declare bankruptcy. Acme had seemed safe from bankruptcy, having reported annual earnings of well over $1 million in each year it has had the bank loan. However, Acme has now admitted overstating its earnings for last year, so it will have to declare bankruptcy.",
+    "questionStem": "The argument requires the assumption that",
+    "answerChoices": {
+      "A": "Acme’s earnings for last year, when accurately stated, are below $1 million",
+      "B": "Acme has other debts besides the bank loan",
+      "C": "last year is not the only year for which Acme overstated earnings",
+      "D": "Acme’s earnings for the current year will fall below $1 million",
+      "E": "Acme would be able to avoid bankruptcy if it did not have to repay the bank loan"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Hospital patients generally have lower infection rates and require shorter hospital stays if they are housed in private rooms rather than semiprivate rooms. Yet in Woodville’s hospital, which has only semiprivate rooms, infection rates and length of stays are typically the same as in several nearby hospitals where most of the rooms are private, even though patients served by these hospitals are very similar to those served by Woodville’s hospital.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict in the information above?",
+    "answerChoices": {
+      "A": "Many of the doctors who routinely treat patients in Woodville’s hospital also routinely treat patients in one or more of the nearby hospitals.",
+      "B": "Most of the nearby hospitals were built within the last 10 years, whereas Woodville’s hospital was built about 50 years ago.",
+      "C": "Infection is more likely to be spread where people come into close contact with one another than where they do not.",
+      "D": "Woodville’s hospital has a policy of housing one patient per room in semiprivate rooms whenever possible.",
+      "E": "Woodville’s hospital is located in its central business district, whereas most of the nearby hospitals are located outside their municipalities’ business districts."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Economist: Unemployment will soon decrease. If total government spending significantly increases next year, the economy will be stimulated in the short term and unemployment will decrease. If, on the other hand, total government spending significantly decreases next year, businesses will retain more of their earnings in the short term and employ more workers, thereby decreasing unemployment.",
+    "questionStem": "The conclusion drawn by the economist is properly inferred if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Either total government spending will significantly decrease next year or else total government spending will significantly increase next year.",
+      "B": "Government officials are currently implementing policies that are intended to reduce unemployment.",
+      "C": "If there is a significantly increased demand for workers, then there will be a significant decrease in unemployment.",
+      "D": "A significant increase in total government spending will slow the economy in the long run.",
+      "E": "If the economy is not stimulated and businesses do not retain more of their earnings, then unemployment will not decrease."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Misinterpretation",
+    "questionDifficulty": 3,
+    "stimulus": "Marisa: Existing zoning regulations must be loosened; in some places the restrictions on development are now so prohibitive as to reduce the property values of undeveloped areas significantly.\nTyne: I disagree. Though it is true that the recent increase in the stringency of zoning regulations could be seen by developers as merely an activists’ ploy to restrict development further, the value of natural, undisturbed areas can only be better preserved by such regulatory protection.",
+    "questionStem": "Tyne’s response to Marisa suggests that Tyne has misinterpreted which one of the following words in Marisa’s remarks?",
+    "answerChoices": {
+      "A": "regulations",
+      "B": "development",
+      "C": "prohibitive",
+      "D": "values",
+      "E": "significantly"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Scientist: Laboratory animals have access to ample food, and they get relatively little exercise. These factors can skew the results of research using animals, since such studies often rely on the assumption that the animal subjects are healthy. For instance, animal studies that purport to show that extreme caloric restriction can extend lifespans take for granted that their subjects were not overfed to begin with.",
+    "questionStem": "The scientist’s argument requires assuming which one of the following?",
+    "answerChoices": {
+      "A": "Laboratory animals are healthy if they are fed a carefully restricted diet and get plenty of exercise.",
+      "B": "Laboratory conditions that provide animals with ample food but relatively little exercise can be unhealthy for the animals.",
+      "C": "It is not unusual for animals outside of laboratory settings to have access to ample food and get relatively little exercise.",
+      "D": "Some animal studies take into consideration the differences between the living conditions of laboratory animals and those of other animals.",
+      "E": "When provided with unlimited food over a long period of time, animals show little day-to-day variation in their eating habits."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 2,
+    "stimulus": "Trade negotiator: Increasing economic prosperity in a country tends to bring political freedom to its inhabitants. Therefore, it is wrong for any country to adopt trade policies that are likely to seriously hinder growth in the prosperity of any other country.",
+    "questionStem": "Which one of the following principles, if valid, most help to justify the trade negotiator’s reasoning?",
+    "answerChoices": {
+      "A": "Every country should adopt at least some policies that encourage the development of political freedom in other countries.",
+      "B": "Both economic prosperity and political freedom can contribute to the overall well-being of any country’s inhabitants.",
+      "C": "The primary reason that any country seeks economic prosperity is to foster political freedom in that country.",
+      "D": "A country should not do anything that might hinder the growth of political freedom in any other country.",
+      "E": "It is wrong for any country to adopt trade policies that might diminish the prosperity of its inhabitants."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Whenever an artist endowed with both a high level of artistic skill and a high degree of creativity combines these two abilities in the process of creating an artwork, the resulting product is a great work of art. Moreover, no work of art can be great unless both of these elements are combined in its execution. Thus, great works of art are necessarily rare.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Not every artist possesses a high level of artistic skill.",
+      "B": "A high degree of creativity and a high level of artistic skill are seldom combined in the creation of a work of art.",
+      "C": "An artist endowed with a high degree of creativity and a high level of artistic skill will necessarily produce great works of art.",
+      "D": "Few artists are endowed with a high degree of creativity.",
+      "E": "Anyone endowed with both a high level of artistic skill and a high degree of creativity will produce only a few great works of art."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Cereal advertisement: Fitness experts say that regular exercise is the most effective way to become physically fit, and studies have shown that adults who eat cereal every day exercise more regularly than adults who do not eat cereal. So by eating Fantastic Flakes every morning, you too will be on the most effective path to physical fitness.",
+    "questionStem": "The argumentation in the advertisement is flawed in that it",
+    "answerChoices": {
+      "A": "infers a cause from a mere correlation",
+      "B": "presumes, without providing justification, that Fantastic Flakes are more nutritious than other cereals",
+      "C": "infers that a given factor is the sole predictor of a result merely on the grounds that the factor has been shown to contribute to that result",
+      "D": "draws a conclusion about all adults from a sample that is too small to be representative",
+      "E": "infers that some members of a group have a particular characteristic merely from the fact that the group as a whole has it"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: Some critics argue that as the entertainment value of news reporting increases, the caliber of that reporting decreases. Yet the greatest journalists have been the most entertaining. So these critics are mistaken.",
+    "questionStem": "The journalist’s conclusion is properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The news reporting of the greatest journalists has been of the highest caliber.",
+      "B": "The greatest journalists have been entertainers who report the news.",
+      "C": "Journalistic greatness involves producing news that is very valuable in some sense.",
+      "D": "Entertainment and news are not mutually exclusive categories.",
+      "E": "The worst journalists have been more entertaining than informative."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Identify The Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Linguist: Three of the four subfamilies of the so-called “Austronesian” languages are found only among indigenous peoples in Taiwan, whereas the fourth is found on islands over a huge area stretching from Madagascar to the eastern Pacific Ocean. Since these subfamilies all originated in the same language, which must have been originally spoken in a single geographic location, these facts suggest that Taiwan is the homeland where Austronesian languages have been spoken longest and, hence, that Austronesian-speaking peoples originated in Taiwan and later migrated to other islands.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the linguist’s argument?",
+    "answerChoices": {
+      "A": "The Austronesian family of languages has four subfamilies, three of which are found only among indigenous peoples in Taiwan.",
+      "B": "Wherever most subfamilies of the Austronesian family of languages have been spoken longest is probably the homeland where Austronesian languages originated.",
+      "C": "Taiwan is probably the homeland where Austronesian languages have been spoken longest.",
+      "D": "Austronesian-speaking peoples originated in the homeland where Austronesian languages have been spoken longest.",
+      "E": "Austronesian-speaking peoples probably originated in Taiwan and later migrated to other islands."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Method of Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "West: Of our company’s three quality control inspectors, Haynes is clearly the worst. Of the appliances that were returned to us last year because of quality control defects, half were inspected by Haynes.\nYoung: But Haynes inspects significantly more than half the appliances we sell each year.",
+    "questionStem": "Young responds to West’s argument by",
+    "answerChoices": {
+      "A": "contending that the argument presupposes what it is trying to prove",
+      "B": "questioning the relevance of West’s conclusion",
+      "C": "disputing the accuracy of one of the argument’s stated premises",
+      "D": "arguing for a less extreme version of West’s conclusion",
+      "E": "denying one of the argument’s presuppositions"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "While playing a game with a ball, both Emma and John carelessly ignored the danger their game posed to nearby objects. An errant throw by John struck and broke a neighbor’s window. Because his throw broke the window, John, but not Emma, should be required to perform chores for the neighbor as compensation for the damage.",
+    "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
+    "answerChoices": {
+      "A": "While looking after her neighbor’s pets, Laura left the door to her neighbor’s house unlocked. Fortunately, nothing bad happened as a result. But her neighbor should not trust Laura to look after her pets in the future.",
+      "B": "Gerald hired Linda and Seung to move his furniture to a new residence. Linda and Seung carefully followed Gerald’s instructions, but not all of the furniture fit in the moving truck. Gerald should still be required to pay Linda and Seung for the work they did.",
+      "C": "Terry and Chris were racing their cars on a public street. Chris lost control of his car and struck a parked car. Chris, but not Terry, should be required to pay to repair the damage.",
+      "D": "Alexis and Juan rented a boat for the afternoon. Because of improper use by the previous renter, the boat’s engine malfunctioned during their excursion. The boat’s owner should be required to refund Alexis’s and Juan’s rental fees.",
+      "E": "Susan and Leland disregarded posted warnings in order to skate on a frozen pond. When the ice broke, Susan’s ankle was injured. Susan cannot hold the pond’s owners responsible for her injuries."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Psychology researchers observed that parents feel emotion while singing to their infants. The researchers hypothesized that this emotion noticeably affects the sound of the singing. To test this hypothesis the parents were recorded while singing to their infants and while singing with no infant present. They were instructed to make the two renditions as similar as possible. These recordings were then played for psychologists who had not observed the recordings being made. For 80 percent of the recordings, these psychologists were able to correctly identify, by listening alone, which recordings were of parents singing to their children. The researchers concluded that their hypothesis was correct.",
+    "questionStem": "Which one of the following, if true, would most strengthen the researchers’ reasoning?",
+    "answerChoices": {
+      "A": "A separate study by the same researchers found that parents feel more emotion when singing to their own children than when singing to other children.",
+      "B": "Some, but not all, of the parents in the study realized that their song renditions were being recorded.",
+      "C": "Parents displayed little emotion when singing with no child or adult present.",
+      "D": "When a person feels emotion, that emotion provokes involuntary physiological responses that affect the vocal cords and lungs.",
+      "E": "Most of the parents who participated in the study believed that the emotion they felt while singing to their infants affected their singing."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "Many scholars claim that Shakespeare’s portrayal of Richard III was extremely inaccurate, arguing that he derived that portrayal from propagandists opposed to Richard III. But these claims are irrelevant for appreciating Shakespeare’s work. The character of Richard III as portrayed in Shakespeare’s drama is fascinating and illuminating both aesthetically and morally, regardless of its relation to historical fact.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "In historical drama, the aesthetic value of the work is not necessarily undermined by historical inaccuracies.",
+      "B": "In dealing with real people, dramatists should reflect their lives accurately.",
+      "C": "Shakespeare’s historical importance puts him beyond the scope of all literary criticism.",
+      "D": "History is always told by propagandists from the winning side.",
+      "E": "Historical inaccuracies should be corrected only when they impugn the reputations of good people."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Voter: Our prime minister is evidently seeking a job at an international organization. Anyone seeking a job at an international organization would surely spend a lot of time traveling abroad, and our prime minister has spent more days abroad than at home so far this year.",
+    "questionStem": "Which one of the following arguments is most similar in its flawed reasoning to the voter’s argument?",
+    "answerChoices": {
+      "A": "Kao must be a golfer. Kao is planning to run for office, and most people who run for office play golf.",
+      "B": "Franklin will lose the coming election. The opposing candidate has better policy ideas and brings more relevant experience to the job.",
+      "C": "Ramirez is evidently able to control the traffic signals. Just now, as Ramirez approached the curb, the traffic signal changed from red to green.",
+      "D": "Thompson must be negotiating a personal loan. Thompson was at the bank yesterday, and people who are negotiating a personal loan go to the bank to meet with a loan agent.",
+      "E": "McKinsey must have committed a crime at some point. After all, despite extensive background checks no one has been able to show that McKinsey has never committed a crime."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Identify The Conclusion",
+    "questionDifficulty": 1,
+    "stimulus": "It is pointless to debate the truth of the law of noncontradiction, a fundamental logical principle according to which two statements that contradict each other cannot both be true. For a debate to be productive, participants must hold some basic principles in common. But the principles held in common in a debate over the law of noncontradiction would be much less certain than that law, so it matters little whether the law of noncontradiction can be defended on the basis of those principles.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "It is pointless to debate the truth of the law of noncontradiction.",
+      "B": "Statements that contradict each other cannot both be true.",
+      "C": "The participants in a productive debate must hold at least some basic principles in common.",
+      "D": "The law of noncontradiction is a principle that the participants in a productive debate must hold in common.",
+      "E": "Any principles that could be used to defend the law of noncontradiction are less certain than it is."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Pundit: For many high school graduates, attending a university would be of no help in getting a corporate job. The attributes corporations value most in potential employees are initiative, flexibility, and the ability to solve practical problems. Many new high school graduates have these attributes already.",
+    "questionStem": "The pundit’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "fails to establish that university graduates do not have initiative, flexibility, and the ability to solve practical problems",
+      "B": "overlooks the possibility that corporations may require an attribute that potential employees can obtain only by attending a university",
+      "C": "provides no justification for the presumption that corporations only hire employees who have initiative, flexibility, and the ability to solve practical problems",
+      "D": "takes for granted that the only reason that high school graduates go on to attend university is to improve their job prospects",
+      "E": "takes for granted that initiative, flexibility, and the ability to solve practical problems are attributes that can be acquired through study"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "Archaeologist: Neanderthals, a human-like species living 60,000 years ago, probably preserved meat by smoking it. Burnt lichen and grass have been found in many Neanderthal fireplaces. A fire of lichen and grass produces a lot of smoke but does not produce nearly as much heat or light as a wood fire.",
+    "questionStem": "Which one of the following, if true, would most weaken the archaeologist’s argument?",
+    "answerChoices": {
+      "A": "In close proximity to the fireplaces with lichen and grass are other fireplaces that, evidence suggests, burned material that produced more heat than smoke.",
+      "B": "In the region containing the Neanderthal fireplaces in which lichen and grass were burnt, no plants that could be burned more effectively to produce heat or light were available 60,000 years ago.",
+      "C": "Some of the fireplaces containing burnt lichen are in regions in which lichen is not believed to have been plentiful and so would have had to have been brought in from some distance.",
+      "D": "There is clear evidence that at least some groups of Neanderthals living more recently than 60,000 years ago developed methods of preserving meat other than smoking it.",
+      "E": "The ability to preserve meat through smoking would have made the Neanderthal humans less vulnerable to poor periods of hunting."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Point at Issue",
+    "questionDifficulty": 4,
+    "stimulus": "Edgar: Some of the pumps supplying water to our region have been ordered shut down in order to protect a species of small fish. But it is absurd to inconvenience thousands of people for the sake of something so inconsequential.\nRafaela: You’re missing the point. The threat to that fish species is a sign of a very serious threat to our water supply.",
+    "questionStem": "The dialogue provides the most support for the claim that Edgar and Rafaela disagree over whether",
+    "answerChoices": {
+      "A": "shutting down the pumps will actually inconvenience a large number of people",
+      "B": "the survival of the fish species is the only reason for shutting down the pumps",
+      "C": "species of small fish are inconsequential",
+      "D": "the order to shut down the pumps was legal",
+      "E": "shutting down the pumps will be sufficient to protect the fish species"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Only engineering is capable of analyzing the nature of a machine in terms of the successful working of the whole; physics and chemistry determine the material conditions necessary for this success, but cannot express the notion of purpose. Similarly, only physiology can analyze the nature of an organism in terms of organs’ roles in the body’s healthy functioning. Physics and chemistry cannot ascertain by themselves any of these operational principles.",
+    "questionStem": "Which one of the following is an assumption required by the analogy?",
+    "answerChoices": {
+      "A": "The functioning of the human organism is machine-like in nature.",
+      "B": "Physics and chemistry determine the material conditions required for good physiological functioning.",
+      "C": "The notion of purpose used by engineers to judge the success of machinery has an analog in organisms.",
+      "D": "Physiology as a science is largely independent of physics and chemistry.",
+      "E": "Biological processes are irreducible to mechanical or chemical processes."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "After a hepadnavirus inserts itself into a chromosome of an animal, fragments of the virus are passed on to all of that animal’s descendants. A hepadnavirus fragment is present in a chromosome of the zebra finch and in precisely the same location in a corresponding chromosome of the dark-eyed junco. The fact that these two bird species diverged from each other about 25 million years ago therefore means that the hepadnavirus is at least 25 million years old.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Viruses can affect the evolution of an organism and can thereby influence the likelihood of their diverging into two species.",
+      "B": "The chromosomes of the zebra finch and the dark-eyed junco contain fragments of no virus other than the hepadnavirus.",
+      "C": "When a virus inserts itself into an animal’s chromosome, the insertion occurs at a random spot.",
+      "D": "Many bird species other than the zebra finch and the dark-eyed junco contain fragments of the hepadnavirus.",
+      "E": "The presence of a hepadnavirus in an animal species does not affect the likelihood of that species’ survival."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "questionDifficulty": 3,
+    "stimulus": "The diet of Heliothis subflexa caterpillars consists entirely of fruit from plants of the genus Physalis. These fruit do not contain linolenic acid, which is necessary to the growth and maturation of many insects other than H. subflexa. Linolenic acid in an insect’s diet is also necessary for the production of a chemical called volicitin. While most caterpillar species have volicitin in their saliva, H. subflexa does not.",
+    "questionStem": "Which one of the following can be properly inferred from the statements above?",
+    "answerChoices": {
+      "A": "H. subflexa caterpillars synthesize linolenic acid within their bodies.",
+      "B": "Most species of caterpillar have sources of linolenic acid in their diets.",
+      "C": "Any caterpillar that has linolenic acid in its diet has volicitin in its saliva.",
+      "D": "A food source containing linolenic acid would be poisonous to H. subflexa caterpillars.",
+      "E": "No caterpillars other than H. subflexa eat fruit from plants of the genus Physalis."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 4,
+    "stimulus": "Politician: Democracy requires that there be no restrictions on the ability of citizens to share their ideas freely, without fear of reprisal. Therefore the right to have private conversations, unmonitored by the government, is essential to democracy. For a government to monitor conversations on the Internet would thus be a setback for democracy.",
+    "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that democracy depends on the ability of citizens to share their ideas freely, without fear of reprisal?",
+    "answerChoices": {
+      "A": "It is a claim for which no support is provided, and which is used to support only the argument’s main conclusion.",
+      "B": "It is a claim for which no support is provided, and which is used to support a claim that is itself used to support the argument’s main conclusion.",
+      "C": "It is a claim for which support is provided, and which is in turn used to support the argument’s main conclusion.",
+      "D": "It is the argument’s main conclusion and is inferred from two other statements in the argument, one of which is used to support the other.",
+      "E": "It is the argument’s main conclusion and is inferred from two other statements in the argument, neither of which is used to support the other."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 5,
+    "stimulus": "One way to compare chess-playing programs is to compare how they perform with fixed time limits per move. Given any two computers with which a chess-playing program is compatible, and given fixed time limits per move, such a program will have a better chance of winning on the faster computer. This is simply because the program will be able to examine more possible moves in the time allotted per move.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "If one chess-playing program can examine more possible moves than a different chess-playing program run on the same computer under the same time constraints per move, the former program will have a better chance of winning than the latter.",
+      "B": "How fast a given computer is has no effect on which chess-playing computer programs can run on that computer.",
+      "C": "In general, the more moves a given chess-playing program is able to examine under given time constraints per move, the better the chances that program will win.",
+      "D": "If two different chess-playing programs are running on two different computers under the same time constraints per move, the program running on the faster computer will be able to examine more possible moves in the time allotted.",
+      "E": "If a chess-playing program is run on two different computers and is allotted more time to examine possible moves when running on the slow computer than when running on the fast computer, it will have an equal chance of winning on either computer."
+    },
+    "correctAnswer": "C"
+  }
+]

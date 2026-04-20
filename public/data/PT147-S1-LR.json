@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "After a major toll highway introduced a system of electronic toll paying, delays at all of its interchanges declined significantly. Travel time per car trip decreased by an average of 10 percent. Tailpipe pollution for each trip decreased commensurately. Despite this, the total air pollution from vehicles on that highway did not decrease measurably.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "The highway began charging higher tolls when it switched to electronic toll paying.",
+      "B": "Even after the switch to electronic toll paying, there were sometimes long delays at the highway’s interchanges.",
+      "C": "The prospect of faster, more convenient travel induced more drivers to use the highway.",
+      "D": "Travel time on the highway for car trips under 30 kilometers (18.6 miles) did not decrease appreciably.",
+      "E": "Some drivers did not switch to the electronic system but instead continued to use cash to pay their tolls at toll booths."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "A lack of trust in one’s neighbors leads to their lack of respect for the law. A new study provides compelling evidence for this. Neighborhoods in which people routinely lock their doors have higher burglary rates than neighborhoods in which people do not routinely lock their doors.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "treats something that is merely sufficient to produce a result as if it were necessary to produce that result",
+      "B": "draws a moral conclusion from evidence that could only support a factual conclusion",
+      "C": "bases its conclusion on data that are contradictory",
+      "D": "asserts in a premise what it is trying to establish in its conclusion",
+      "E": "treats what could be the effect of something as if it were the cause of that thing"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "In recent decades, government efforts to fight counterfeiting have been extremely successful, especially efforts to remove counterfeit bills from circulation. Yet counterfeiters are not finding it at all difficult to get away with passing counterfeit bills to merchants and even banks.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Government information campaigns that teach merchants and bank tellers how to detect counterfeit bills are more effective than ever.",
+      "B": "Governments are continually developing new currency designs with features that are difficult for criminals to counterfeit.",
+      "C": "Counterfeiters are generally unaware that the percentage of fake bills in circulation is the lowest it has ever been.",
+      "D": "Government success in removing counterfeit bills from circulation has caused merchants and bank tellers to become lax in checking for counterfeit bills.",
+      "E": "Governments are spending larger and larger sums of money in their efforts to remove counterfeit bills from circulation."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "If a civilization as technologically advanced as human civilization existed on another planet and that planet were within 50 light years of Earth, that civilization would have found evidence of intelligent life on Earth and could have easily contacted us. Scientists can thus rule out the possibility of finding a civilization as technologically advanced as our own within 50 light years of Earth.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Scientists who are searching for evidence of extraterrestrial life forms generally focus their search on evidence of technologically advanced life forms.",
+      "B": "There is no reason to doubt the possibility that there are technologically advanced civilizations on planets more than 50 light years from Earth.",
+      "C": "If scientists received a message from a technologically advanced civilization on another planet, they would be able to decipher it fully.",
+      "D": "A technologically advanced civilization on another planet would want to communicate with intelligent life that it detected on Earth.",
+      "E": "Intelligent life forms on other planets would be able to recognize all signs of intelligent life on Earth."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Recently, many traffic lights and street markings were temporarily removed from a heavily traveled street in a major metropolitan area. Given that this street experiences significant volumes of automobile traffic, the number of accidents on the street was expected to increase. However, even though the street experienced no reduction in traffic, the number of accidents was greatly reduced.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict described above?",
+    "answerChoices": {
+      "A": "People often disregard traffic lights and street markings.",
+      "B": "The lack of traffic lights and street markings caused drivers to drive more cautiously.",
+      "C": "Most drivers were not aware that traffic lights and street markings had been removed.",
+      "D": "Traffic lights and street markings are intended to have benefits in addition to those related to safety.",
+      "E": "Drivers were given advance notice that the traffic lights and street markings would be removed."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Some have argued that body size influences mating decisions throughout all societies. Their argument rests largely on self-reports of university-age students and on analyses of personal advertisements in newspapers for dating partners.",
+    "questionStem": "The reasoning in the argument described above is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "concludes that one kind of event causes another kind of event without ruling out the possibility that both kinds of events are the result of a third kind of event",
+      "B": "bases a conclusion on a sample that may be unrepresentative of the population about which the conclusion is drawn",
+      "C": "concludes that an effect has only one cause in the face of evidence that the effect has multiple causes",
+      "D": "uses a claim that applies only to entire societies to draw a conclusion about individual persons",
+      "E": "draws a universal conclusion on the basis of a very small number of individual cases"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Journalist: The new mayor is undeniably bold. His assertions are made with utter certainty and confidence. While these kinds of assertions may make him popular with the public, they also demonstrate that he is not an introspective person.",
+    "questionStem": "Which one of the following is an assumption required by the journalist’s argument?",
+    "answerChoices": {
+      "A": "Introspective people do not make assertions with utter certainty and confidence.",
+      "B": "Politicians who make assertions with utter certainty and confidence are popular with the public.",
+      "C": "People who are bold make public assertions with utter certainty and confidence.",
+      "D": "People whose assertions are uncertain and lack confidence are introspective.",
+      "E": "Politicians who are not bold are unpopular with the public."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "While studying a large colony of macaque monkeys, scientists interacting with baby monkeys under a week old found that the babies would imitate some, but not all, of the scientists’ actions. The babies readily smacked their lips and stuck out their tongues when the scientists did, but stared impassively when the scientists opened and closed their mouths or made hand gestures. Of these four kinds of actions, only lip smacking and sticking out the tongue are used by adult macaques when interacting with babies.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "Baby macaques under a week old are natural mimics of whatever they see.",
+      "B": "Baby macaques under a week old cannot imitate hand gestures because they do not yet control the necessary muscles.",
+      "C": "Adult macaques use lip smacking and sticking out the tongue to entertain infant macaques.",
+      "D": "Baby macaques under a week old mistake the scientists interacting with them for adult macaques.",
+      "E": "Baby macaques under a week old only imitate human gestures also used by adult macaques."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Identify The Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Some scientists believe that small humanoid skeletons found on an Indonesian island are the remains of human beings with a growth disorder. It is more likely that they represent a distinct human species that became smaller over time due to environmental pressure. These skeletons do not fit the pattern of known growth disorders. And evidence suggests that certain fox and mouse species on the island have evolved into smaller versions of their common counterparts.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Some scientists believe that the humanoid skeletons are the remains of human beings with a growth disorder.",
+      "B": "It is more likely that the humanoid skeletons represent a distinct human species than that they are the remains of human beings with a growth disorder.",
+      "C": "The humanoid skeletons do not fit the pattern of known growth disorders.",
+      "D": "Certain fox and mouse species on an Indonesian island have evolved into smaller versions of their common counterparts.",
+      "E": "Environmental pressure can cause species living on islands to become smaller over time."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "The more sunlight our planet reflects back into space, the cooler the global atmosphere tends to become. Snow and ice reflect much more sunlight back into space than do ocean water or land without snow cover. Therefore, the greater the area of Earth’s surface that is covered with snow and ice, the cooler, on average, the global atmosphere is likely to become.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "Low atmospheric temperatures are required for the formation of clouds that result in snow.",
+      "B": "Other factors besides the reflectivity of ice and snow affect the cooling of Earth’s atmosphere.",
+      "C": "Ocean water and land heated by sunlight in turn warm Earth’s atmosphere.",
+      "D": "The atmosphere derives most of its heat from the passage of sunlight through it.",
+      "E": "Lighter-colored soil reflects more sunlight back into space than does darker-colored soil."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Point at Issue",
+    "questionDifficulty": 2,
+    "stimulus": "Nick: The Pincus family and their construction company have supported our university financially for decades. The university should not give the contract for building its new library to the family’s main competitor. Doing so would be disloyal to a friend of the university.\nPedro: Accepting a donation does not oblige the university to give the donor any special privileges. If it did, then it wouldn’t really be a charitable contribution. We should award the contract to whatever company makes the most competitive bid.",
+    "questionStem": "The dialogue provides the most support for the claim that Nick and Pedro disagree over whether",
+    "answerChoices": {
+      "A": "loyalty should sometimes be a consideration in making business decisions",
+      "B": "the Pincus family and their construction company donated money for the purpose of acquiring special privileges from the university",
+      "C": "the acceptance of donations places a university under a special obligation to the donor",
+      "D": "the university should be more grateful to donors with a long history of financial support than to new donors",
+      "E": "the Pincus family’s construction company did not make the most competitive bid"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 3,
+    "stimulus": "Ampicillin and other modern antibiotics kill a much wider variety of bacteria than penicillin does. They also carry higher profit margins, so drug companies now have an incentive to stop manufacturing the older, less profitable antibiotics. This could cause a penicillin shortage, forcing doctors to use the much more powerful new antibiotics in cases where they might otherwise be unnecessary. Thus, these newer antibiotics are likely to result in an outbreak of diseases caused by drug-resistant bacteria, since _______.",
+    "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "drug-resistant bacteria flourish in the absence of competition from a wide variety of other bacteria",
+      "B": "older antibiotics like penicillin have been widely used for many decades",
+      "C": "a shortage of penicillin would drive up its price and profit margin",
+      "D": "treatment of diseases with the powerful new antibiotics is much more expensive than treatment with the older ones",
+      "E": "most bacteria that are resistant to penicillin are not resistant to ampicillin and other modern antibiotics"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Weingarten claims that keeping animals in zoos is unethical. He points out that it involves placing animals in unnatural environments merely for the sake of human amusement. However, since Weingarten sees nothing wrong with owning pets, and keeping pets surely involves placing an animal in an unnatural environment merely for human amusement, his claim should be rejected.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "takes for granted that Weingarten owns one or more pets",
+      "B": "inappropriately generalizes from a particular case",
+      "C": "misrepresents the conclusion of the opposing argument",
+      "D": "takes a necessary condition for a practice’s being unethical as a sufficient condition for its being so",
+      "E": "rejects a claim merely on the grounds that its proponent holds another view inconsistent with it"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 2,
+    "stimulus": "Activist: President Zagel should resign, because she is unable to govern effectively given the widespread belief that she rigged the election.\nPresident Zagel: Over the last decade, scandals have forced two presidents of this country to resign. If I were to resign, the rest of the world would see us as a country whose political system is hopelessly unstable. That would be unacceptable, so I must remain in office.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the activist’s argument in the face of President Zagel’s argument?",
+    "answerChoices": {
+      "A": "A country whose election procedures are resistant to illegitimate manipulation will eventually become politically stable.",
+      "B": "The leader of a country should resign if doing so is likely to improve that country’s international reputation for political stability.",
+      "C": "If a president is involved in a scandal that is more serious than scandals that have forced previous leaders to resign, then that president should resign.",
+      "D": "If it can be conclusively proven that an officeholder rigged an election, then that officeholder should be removed from office.",
+      "E": "It is more important for a country to have a leader who can govern effectively than it is to be viewed by other countries as having a stable political system."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "A popular book argues that people who are successful in business have, without exception, benefited from a lot of luck on their way to success. But this is ridiculous. Anyone who has studied successful people knows that success requires a lot of hard work.",
+    "questionStem": "The argument commits which one of the following errors of reasoning?",
+    "answerChoices": {
+      "A": "It mistakes the claim that something is required for a purpose for the claim that it is sufficient for that purpose.",
+      "B": "It accepts a view as authoritative without establishing the authority of the source of the view.",
+      "C": "It takes for granted in a premise what it is trying to prove in its conclusion.",
+      "D": "It treats an effect of something as the cause of that thing.",
+      "E": "It attacks the source of an argument rather than attacking the substance of that argument."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Principle",
+    "questionDifficulty": 2,
+    "stimulus": "University president: When a faculty member’s falsification of research was uncovered, the media treated it as evidence of the university’s low standards, even though in truth it was a mere case of dishonesty. But since vigilance with respect to academic standards is always necessary, it’s good that standards have become a topic of discussion.",
+    "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
+    "answerChoices": {
+      "A": "The latest government scandal was caused primarily by a lack of oversight, which in turn led to corruption. Since no amount of oversight can eliminate all corruption, it is important that the problems with oversight are not the only topic of discussion.",
+      "B": "The latest government scandal has been attributed to lack of oversight, although the true cause of the scandal was simple corruption. Nonetheless, this discussion of oversight is welcome, because oversight is important in its own right.",
+      "C": "The latest government scandal has been attributed to both lack of oversight and corruption. As a result, these important concerns are now being discussed. So, despite the harm that it caused, it is good that the scandal occurred.",
+      "D": "The latest government scandal has been analyzed as a case of simple corruption, although corruption had little to do with it. Because the true cause of the scandal was lack of oversight, attributing the cause of the scandal to simple corruption is harmful.",
+      "E": "The latest government scandal has been analyzed as a case of simple corruption, with no mention of the role played by lack of oversight. Nonetheless, the focus on corruption is welcome, because corruption played the largest role in the scandal."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Argument Evaluation",
+    "questionDifficulty": 4,
+    "stimulus": "Politician: Over the next decade, our city will be replacing all of its street signs with signs that are designed for improved readability. But since no one is complaining about the current signs, installing the new ones is a colossal waste of time and money.",
+    "questionStem": "Which one of the following would be most useful to know in evaluating the politician’s argument?",
+    "answerChoices": {
+      "A": "What features of the new street signs improve the readability of the signs?",
+      "B": "Are the new street signs considerably more expensive to manufacture than the current street signs were?",
+      "C": "What percentage of its street signs does the city replace annually in the course of ordinary maintenance?",
+      "D": "Do any other cities plan to replace their street signs with signs designed for improved readability?",
+      "E": "Were experts consulted when the new street signs were designed?"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "A large survey of scientists found that almost all accept Wang’s Law, and almost all know the results of the Brown-Eisler Experiment. But those results together with Wang’s Law contradict the Minsk Hypothesis. Therefore, most of the scientists surveyed reject the Minsk Hypothesis.",
+    "questionStem": "The argument requires assuming which one of the following?",
+    "answerChoices": {
+      "A": "The scientists surveyed are generally aware that the results of the Brown-Eisler Experiment together with Wang’s Law contradict the Minsk Hypothesis.",
+      "B": "The scientists in the survey who know the results of the Brown-Eisler Experiment are exactly the same ones who accept Wang’s Law.",
+      "C": "Almost all of the scientists surveyed are familiar with the way in which the results of the Brown-Eisler Experiment were obtained.",
+      "D": "The sample is large enough to be representative of scientists in the field.",
+      "E": "Wang’s Law has in fact been shown to be true."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 4,
+    "stimulus": "Any literary translation is a compromise between two goals that cannot be entirely reconciled: faithfulness to the meaning of the text and faithfulness to the original author’s style. Thus, even the most skillful translation will be at best a flawed approximation of the original work.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument above?",
+    "answerChoices": {
+      "A": "A translation of a literary work should be entirely faithful to neither the meaning of the text nor the original author’s style.",
+      "B": "If a literary translation is flawed as an approximation of the original work, it cannot be regarded as a successful compromise between faithfulness to the meaning of the text and faithfulness to the original author’s style.",
+      "C": "The most skillful literary translation of a work will not necessarily be the most balanced compromise between faithfulness to the meaning of the text and faithfulness to the original author’s style.",
+      "D": "Any translation that is not entirely faithful to both the meaning of the text and the original author’s style will be at best a flawed approximation of that work.",
+      "E": "Not even the most skillful literary translation could be faithful to both the literal meaning of the text and the original author’s style."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Must Be True",
+    "questionDifficulty": 4,
+    "stimulus": "Sociologist: Television, telephones, and other electronic media encourage imprecise, uncritical thinking. Yet critical thinking is the only adequate protection against political demagogues, who seek to exploit people by presenting emotionally loaded language as an objective description of reality.",
+    "questionStem": "If the sociologist’s statements are true, then each of the following statements could be true except:",
+    "answerChoices": {
+      "A": "There are no political demagogues in some highly technological societies.",
+      "B": "Political demagogues are not the only ones who seek to exploit people by presenting emotionally loaded language as an objective description of reality.",
+      "C": "Highly emotional people are more easily exploited than less emotional people.",
+      "D": "The mere presence of an orderly system of government in a society provides adequate protection against political demagogues.",
+      "E": "The mere presence of electronic communications technology in a society provides adequate protection against the erosion of media freedoms."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "People with higher-than-average blood levels of a normal dietary by-product called homocysteine are twice as likely to be diagnosed with Alzheimer’s disease as are those with average or below-average homocysteine levels. Thus, it is likely that the risk of developing Alzheimer’s disease could be reduced by including in one’s diet large amounts of B vitamins and folic acid, which convert homocysteine into substances known to have no relation to Alzheimer’s disease.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Many Alzheimer’s patients have normal homocysteine levels.",
+      "B": "The substances into which homocysteine is converted can sometimes have harmful effects unrelated to Alzheimer’s disease.",
+      "C": "B vitamins and folic acid are not metabolized by the body very efficiently when taken in the form of vitamin-mineral supplements.",
+      "D": "People whose relatives contracted Alzheimer’s disease are much more likely to develop Alzheimer’s than those whose relatives did not.",
+      "E": "Alzheimer’s disease tends to increase the levels of homocysteine in the blood."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 5,
+    "stimulus": "Consumer advocate: Economists reason that price gouging—increasing the price of goods when no alternative seller is available—is efficient because it allocates goods to people whose willingness to pay more shows that they really need those goods. But willingness to pay is not proportional to need. In the real world, some people simply cannot pay as much as others. As a result, a price increase will allocate goods to the people with the most money, not to those with the most need.",
+    "questionStem": "Which one of the following most accurately describes the role played in the consumer advocate’s argument by the claim that willingness to pay is not proportional to need?",
+    "answerChoices": {
+      "A": "It disputes one explanation in order to make way for an alternative explanation.",
+      "B": "It is the overall conclusion of the argument.",
+      "C": "It is a component of reasoning disputed in the argument.",
+      "D": "It is a general principle whose validity the argument questions.",
+      "E": "It denies a claim that the argument takes to be assumed in the reasoning that it rejects."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Zoologist: Plants preferentially absorb heavy nitrogen from rainwater. Heavy nitrogen consequently becomes concentrated in the tissues of herbivores, and animals that eat meat in turn exhibit even higher concentrations of heavy nitrogen in their bodily tissues. We compared bone samples from European cave bears of the Ice Age with blood samples from present-day bears fed meat-enriched diets, and the levels of heavy nitrogen present in these samples were identical. Thus, the prehistoric European cave bears were not exclusively herbivores.",
+    "questionStem": "Which one of the following, if true, would most strengthen the zoologist’s argument?",
+    "answerChoices": {
+      "A": "Plants can also absorb heavy nitrogen from a variety of sources other than rainwater.",
+      "B": "The rate at which heavy nitrogen accumulated in the blood of Ice Age herbivores can be inferred from samples of their bones.",
+      "C": "The same number of samples was taken from present-day bears as was taken from Ice Age cave bears.",
+      "D": "Bone samples from present-day bears fed meat-enriched diets exhibit the same levels of heavy nitrogen as do their blood samples.",
+      "E": "The level of heavy nitrogen in the bones of any bear fed a meat-enriched diet is the same as that in the bones of any other meat-eating bear."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Biologist: Some computer scientists imagine that all that is required for making an artificial intelligence is to create a computer program that encapsulates the information contained in the human genome. They are mistaken. The operation of the human brain is governed by the interactions of proteins whose structures are encoded in the human genome.",
+    "questionStem": "Which one of the following is an assumption required by the biologist’s argument?",
+    "answerChoices": {
+      "A": "The functions of the human brain are governed by processes that cannot be simulated by a computer.",
+      "B": "The interactions of the proteins that govern the operation of the human brain are not determined by the information contained in the human genome.",
+      "C": "The only way to create an artificial intelligence is to model it on the operation of the human brain.",
+      "D": "The amount of information contained in the human genome is too large to be easily encapsulated by a computer program.",
+      "E": "It is much more difficult to write a program that encapsulates the interactions of proteins than to write a program that encapsulates the information contained in the human genome."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 4,
+    "stimulus": "Some advertisers offer certain consumers home computers free of charge. Advertisements play continuously on the computers’ screens whenever they are in use. As consumers use the computers to browse the Internet, information about their browsing patterns is sent to the advertisers, enabling them to transmit to each consumer advertising that accurately reflects his or her individual interests. The advertisers can afford to offer the computers for free because of the increased sales that result from this precise targeting of individual consumers.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "At least some consumers who use a computer offered free of charge by advertisers for browsing the Internet spend more money on purchases from those advertisers than they would if they did not use such a computer to browse the Internet.",
+      "B": "No advertisers could offer promotions that give away computers free of charge if consumers never used those computers to browse the Internet.",
+      "C": "There are at least some consumers who browse the Internet using computers offered free of charge by the advertisers and who, if they did not use those computers to browse the Internet, would spend little if any money on purchases from those advertisers.",
+      "D": "The advertisers would not be able to offer the computers absolutely free of charge if advertisements that accurately reflected the interests of the computers’ users did not play continuously across the computers’ screens whenever they were in use.",
+      "E": "Consumers who use a computer offered free of charge by the advertisers can sometimes choose to abstain from having information about their browsing patterns sent to the advertisers."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT147",
+    "sectionNumber": 1,
+    "questionNumber": 26,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "Some eloquent speakers impress their audiences with the vividness and clarity of the messages conveyed. Speakers who resort to obscenity, however, are not genuinely eloquent, so none of these speakers impress their audiences.",
+    "questionStem": "The flawed reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "A culture without myths will also lack fundamental moral certainties. Thus, this culture must lack fundamental moral certainties, since it is devoid of myth.",
+      "B": "There are authors who write one page a day and produce one book per year. Serious authors, however, do not write one page per day, so some authors who write one book a year are not serious.",
+      "C": "Cities that are centers of commerce are always centers of industry as well. It follows that some centers of commerce are small cities, since there are centers of industry that are not small cities.",
+      "D": "Most farmers like living in rural areas. Since Carla is not a farmer, she probably would not enjoy living in the country.",
+      "E": "Sculptors sometimes produce significant works of art. But musicians are not sculptors. Hence, musicians never produce significant works of art."
+    },
+    "correctAnswer": "E"
+  }
+]

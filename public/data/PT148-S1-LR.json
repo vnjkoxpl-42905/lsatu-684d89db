@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "In a recent study of dust-mite allergy sufferers, one group slept on mite-proof bedding, while a control group slept on bedding that was not mite-proof. The group using mite-proof bedding had a 69 percent reduction in the dust-mite allergen in their mattresses, whereas there was no significant reduction in the control group. However, even though bedding is the main source of exposure to dust mites, no symptom reduction was reported in either group.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict in the statements above?",
+    "answerChoices": {
+      "A": "Dust-mite allergens in bedding tend to irritate many allergy sufferers’ nasal passages more than do the same allergens in other locations, such as carpets.",
+      "B": "When people report their own allergy symptoms, they tend to exaggerate the severity of those symptoms.",
+      "C": "The medical community does not fully understand how dust-mite allergens cause allergy.",
+      "D": "For dust-mite allergy sufferers to get relief from their allergies, dust-mite allergens must be reduced by 90 to 95 percent.",
+      "E": "All of the participants in the study were told that one group in the study would be sleeping on mite-proof bedding."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Five years ago, the hair dryer produced by the Wilson Appliance Company accounted for 50 percent of all sales of hair dryers nationwide. Currently, however, Wilson Appliance’s product makes up only 25 percent of such sales. Because of this decline, and because the average net income that Wilson receives per hair dryer sold has not changed over the last 5 years, the company’s net income from sales of the product must be only half of what it was 5 years ago.",
+    "questionStem": "The reasoning in the argument is flawed because the argument",
+    "answerChoices": {
+      "A": "mistakes a decline in the market share of Wilson Appliance’s hair dryer for a decline in the total sales of that product",
+      "B": "does not provide specific information about the profits hair dryers generate for the companies that produce them",
+      "C": "fails to discuss sales figures for Wilson Appliance’s products other than its hair dryers",
+      "D": "overlooks the possibility that the retail price of Wilson Appliance’s hair dryer may have increased over the past 5 years",
+      "E": "provides no independent evidence that Wilson Appliance’s hair dryer is one of the company’s least profitable products"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Whether or not one can rightfully call a person’s faithfulness a virtue depends in part on the object of that person’s faithfulness. Virtues are by definition praiseworthy, which is why no one considers resentment virtuous, even though it is in fact a kind of faithfulness—faithfulness to hatreds or animosities.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "The object of a person’s faithfulness partially determines whether or not that faithfulness is virtuous.",
+      "B": "Virtuous behavior is praiseworthy by definition.",
+      "C": "Behavior that emerges from hatred or animosity cannot be called virtuous.",
+      "D": "Faithfulness and resentment are obviously different, despite some similarities.",
+      "E": "Resentment should not be considered a virtuous emotion."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "Columnist: A government-owned water utility has received approval to collect an additional charge on water bills and to use that additional revenue to build a dam. A member of the legislature has proposed not building the dam but instead spending the extra money from water bills to build new roads. That proposal is unacceptable.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the columnist’s judgment that the legislator’s proposal is unacceptable?",
+    "answerChoices": {
+      "A": "Customers of a utility have a right to know how the money they pay to the utility will be used.",
+      "B": "Money designated for projects that benefit an entire community should not be used for projects that benefit only some members of a community.",
+      "C": "An additional charge on water bills should not be used to fund a project that most of the utility’s customers disapprove of.",
+      "D": "An additional charge on water bills should not be imposed unless it is approved by the legislature.",
+      "E": "A water utility should not collect an additional charge unless the money collected is used for water-related expenditures."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "During its caterpillar stage, the leopard magpie moth feeds on a plant called the Natal grass cycad and by so doing laces its body with macrozamin, a toxin that makes the moth highly unpalatable to would-be predators. Since the Natal grass cycad is now endangered and facing extinction, the leopard magpie moth is also in danger of extinction.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "Feeding on the Natal grass cycad is the only means by which the leopard magpie moth can make itself highly unpalatable to predators.",
+      "B": "The leopard magpie moth does not have the speed or the agility to escape from any of its potential predators.",
+      "C": "Potential predators of the leopard magpie moth cannot determine from appearance alone whether a moth’s body is laced with macrozamin.",
+      "D": "Leopard magpie moths are not able to locate Natal grass cycads unless those plants are abundant.",
+      "E": "None of the potential predators of the leopard magpie moth have developed a tolerance to macrozamin."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 1,
+    "stimulus": "Citizen: Our government has a large budget surplus, which our leaders wish to use to pay down the national debt. This makes no sense. Because of underfunding, our military is inadequate, the infrastructures of our cities are decaying, and our highways are in disrepair. If homeowners used all their money to pay off their mortgages early, while refusing to pay for upkeep of their homes, this would not make them better off financially. The same goes for the country as a whole.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the citizen’s argument?",
+    "answerChoices": {
+      "A": "Homeowners should not pay off their mortgages early if they must neglect upkeep of their homes in order to do so.",
+      "B": "It does not make sense for the government to use the budget surplus to pay down the national debt.",
+      "C": "A homeowner’s personal financial situation is analogous in relevant ways to the financial situation of a country’s government.",
+      "D": "Because of underfunding, the government does not maintain adequate standards in the services it provides.",
+      "E": "Government leaders want to use the country’s large budget surplus to pay down the national debt."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Peraski: Although driving gas-guzzling automobiles produces a greater level of pollution than driving smaller cars, those of us who drive smaller cars when we could use a bicycle cannot speak out against the use of gas guzzlers. We would be revealing our hypocrisy.\nJackson: I acknowledge I could do better in this area. But, it would be worse not to speak out against greater sources of pollution just because I am being hypocritical.",
+    "questionStem": "The dialogue provides the most support for the claim that Peraski and Jackson disagree over whether",
+    "answerChoices": {
+      "A": "driving a gas-guzzling automobile produces a greater level of pollution than driving a smaller car",
+      "B": "speaking out against the use of gas guzzlers despite driving in situations in which one could use a bicycle reveals hypocrisy",
+      "C": "driving even a small car when one could use a bicycle contributes to the level of pollution",
+      "D": "one should speak out against polluting even if doing so reveals one’s own hypocrisy",
+      "E": "there is no moral difference between driving a gas guzzler and driving a smaller car"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "For a species of large abalone shellfish to develop from a species of smaller ones, they must spend less energy on finding food and avoiding predators, and more on competition in mating. So it is surprising that the fossil record shows that a species of large abalones developed from a smaller one only after otters, which prey on abalones, began to dominate the waters in which the abalones lived.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Otters and abalones also compete for the same types of food and so are drawn to the same waters.",
+      "B": "The fossils that were studied showed the development of only one of the two species of large abalones known to exist.",
+      "C": "Otters also prey on the abalones’ competitors for food and so indirectly make it easier for abalones to get food.",
+      "D": "Small abalone species tend to reproduce more rapidly than larger abalone species.",
+      "E": "Otters have a preference for large abalones over small ones and so prefer waters in which large abalones are found."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Some managers think that the best way to maximize employee performance is to institute stiff competition among employees. However, in situations where one competitor is perceived to be clearly superior, other competitors become anxious and doubt their own ability to perform. Thus, stiff competition can undermine the result it was intended to achieve.",
+    "questionStem": "The conclusion of the argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Those who are perceived to be clearly superior almost always win.",
+      "B": "The winner of a competition is often the competitor who exerts the most effort.",
+      "C": "When competitors perceive the competition as winnable, their overall performance generally improves.",
+      "D": "Doubting one’s own ability to perform can decrease one’s overall performance.",
+      "E": "Competitors who work to undermine the confidence of other participants often do better in competitions."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Must Be False",
+    "questionDifficulty": 4,
+    "stimulus": "Creating a database of all the plant species in the scientific record has proved to be no easy task. For centuries, botanists have been collecting and naming plants without realizing that many were in fact already named. And by using DNA analysis, botanists have shown that varieties of plants long thought to belong to the same species actually belong to different species.",
+    "questionStem": "Of the following claims, which one can most justifiably be rejected on the basis of the statements above?",
+    "answerChoices": {
+      "A": "Most of the duplicates and omissions among plant names in the scientific record have yet to be cleared up.",
+      "B": "An accurate database of all the plant species in the scientific record can serve as an aid to botanists in their work.",
+      "C": "Duplicates and omissions in the scientific record also occur in fields other than botany.",
+      "D": "Botanists have no techniques for determining whether distinct plant species have been given distinct names.",
+      "E": "A person who consults the scientific record looking under only one of a plant’s names may miss available information about that plant."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "A year ago several regional hospitals attempted to reduce the number of patient injuries resulting from staff errors by implementing a plan to systematically record all such errors. The incidence of these injuries has substantially decreased at these hospitals since then. Clearly, the knowledge that their errors were being carefully monitored made the hospitals’ staffs much more meticulous in carrying out their patient-care duties.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Before the plan was implemented the hospitals already had a policy of thoroughly investigating any staff error that causes life-threatening injury to a patient.",
+      "B": "The incidence of patient injuries at a regional hospital that did not participate in the plan also decreased over the year in question.",
+      "C": "The plan did not call for the recording of staff errors that could have caused patient injuries but did not.",
+      "D": "The decrease in the incidence of the injuries did not begin at any hospital until the staff there became aware that the records were being closely analyzed.",
+      "E": "Under the plan, the hospitals’ staff members who were found to have made errors that caused injuries to patients received only reprimands for their first errors."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Paradox",
+    "questionDifficulty": 3,
+    "stimulus": "In a national park located on an island, a herd of moose was increasing in number and threatening to destroy species of native plants. Wolves were introduced to the island to reduce the herd and thereby prevent destruction of the vegetation. Although the wolves prospered, the moose herd continued to grow.",
+    "questionStem": "Which one of the following, if true, most helps to explain the failure of the strategy involving wolves?",
+    "answerChoices": {
+      "A": "The presence of wolves in an area tends to discourage other predators from moving into the area.",
+      "B": "Attempts to control moose populations in other national parks by introducing predators have also been unsuccessful.",
+      "C": "Wolves often kill moose weakened by diseases that probably would have spread to other moose.",
+      "D": "Healthy moose generally consume more vegetation than do those that are diseased or injured.",
+      "E": "Moose that are too old to breed are just as likely to die of natural causes as of attack by wolves."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "If the purpose of laws is to contribute to people’s happiness, we have a basis for criticizing existing laws as well as proposing new laws. Hence, if that is not the purpose, then we have no basis for the evaluation of existing laws, from which we must conclude that existing laws acquire legitimacy simply because they are the laws.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "takes a sufficient condition for a state of affairs to be a necessary condition for it",
+      "B": "infers a causal relationship from the mere presence of a correlation",
+      "C": "trades on the use of a term in one sense in a premise and in a different sense in the conclusion",
+      "D": "draws a conclusion about how the world actually is on the basis of claims about how it should be",
+      "E": "infers that because a set of things has a certain property, each member of that set has the property"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "In order for life to exist on the recently discovered planet P23, there must be water on the planet’s surface. But there is no water on P23’s surface, so there is no life on planet P23.",
+    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "A company must have efficient employees to be successful. And if a company’s employees are knowledgeable and hardworking, then they are probably efficient. Thus, in order for a company to be successful, it must have knowledgeable and hardworking employees.",
+      "B": "The fact that the suspect was flustered when questioned by the police might be a result of the suspect’s surprise at being questioned. But if it is, the probability that the suspect is guilty is very low. Thus, the fact that the suspect was flustered is not necessarily a sign that the suspect is guilty.",
+      "C": "Oil companies are not buying new drilling equipment. But if they were planning on increasing their drilling, they would be buying new drilling equipment. Thus, oil companies are not planning on increasing their drilling.",
+      "D": "The price of real estate in a particular town is increasing. And if the town’s economy were improving, the price of real estate there would increase. Thus, the town’s economy is improving.",
+      "E": "The exports of a particular nation have recently decreased. But whenever that nation’s exports decrease, its trade deficit increases. Thus, the nation’s trade deficit has recently increased."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 2,
+    "stimulus": "Sanchez: The sixteen new computers that the school purchased were not as expensive as many people assume. So it isn’t true that too much was spent on computers.\nMerriweather: It isn’t that the school paid more for each computer than it was worth, but that the computers that were purchased were much more elaborate than they needed to be.",
+    "questionStem": "The dialogue provides the most support for the claim that Sanchez and Merriweather disagree over whether the school",
+    "answerChoices": {
+      "A": "needed sixteen new computers",
+      "B": "purchased more computers than it should have",
+      "C": "spent more in purchasing the sixteen computers than it should have",
+      "D": "paid more for each computer than it was worth",
+      "E": "has been harshly criticized for purchasing the sixteen computers"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Airport administrator: According to the latest figures, less than 1 commercial flight in 2 million strays off course while landing, a number low enough to allow runways to be built closer together without a significant increase in risk. Opponents of closer runways claim that the number is closer to 1 in 20,000, but this figure is based on a partial review of air traffic control tapes and so is relatively unreliable compared to the other figure, which is based on a thorough study of the flight reports required of pilots for all commercial flights.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the airport administrator’s argument?",
+    "answerChoices": {
+      "A": "The argument presumes, without providing justification, that building runways closer together will encourage pilots to be more cautious while landing.",
+      "B": "The argument overlooks the fact that those who make mistakes are often unreliable sources of information about those mistakes.",
+      "C": "The argument questions the integrity of those who are opposed to allowing runways to be built closer together.",
+      "D": "The argument presumes, without providing justification, that the air traffic control tapes studied do not provide accurate information concerning specific flights.",
+      "E": "The argument infers from a lack of conclusive evidence supporting the higher number’s accuracy that it must be inaccurate."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "In deep temperate lakes, water temperatures vary according to depth. In winter, the coldest water is at the top; in summer, at the bottom. The changes in temperature distribution, or “turnover,” occur in fall and late winter. Lake trout will be found, as a rule, in the coldest water. So, if anglers seek lake trout in deep temperate lakes while these lakes are partially iced over in late winter, they will do best to eschew the lake trout’s summer haunts and fish instead in a shallow bay or close to the surface off a rocky point.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "The ease with which lake trout can be caught by anglers varies with the time of year and the water temperature.",
+      "B": "Cold water is denser, and therefore heavier, than relatively warmer water.",
+      "C": "Lake trout are found exclusively in deep temperate lakes.",
+      "D": "Lake trout do not alter their feeding habits from one part of the year to another.",
+      "E": "In deep temperate lakes that have ice residues on the surface, late-winter “turnover” has not yet occurred."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Agreement",
+    "questionDifficulty": 5,
+    "stimulus": "Liang: Watching movies in which violence is portrayed as an appropriate way to resolve problems increases levels of aggression in viewers. Therefore, children’s access to these movies should be restricted.\nSarah: Watching a drama whose characters are violent allows the audience to vicariously experience the emotions associated with aggression and thus be purged of them. Hence, the access by mature audiences to such forms of entertainment should not be restricted.",
+    "questionStem": "The dialogue provides the most support for inferring that Liang and Sarah agree with each other that",
+    "answerChoices": {
+      "A": "people who experience an emotion vicariously are likely to purge themselves of that emotion",
+      "B": "the members of a mature audience are unlikely to believe that violence is sometimes an appropriate way to resolve problems",
+      "C": "if violence in certain movies causes violence in viewers, access to those movies should be restricted",
+      "D": "the effects of dramatic depictions of violence on audiences are at least partially understood",
+      "E": "children are more likely than adults to be attracted to dramas involving characters who behave violently"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Politician: Of the candidates running, Thompson is the best person to lead this nation. For one thing, Thompson opposes higher taxes whereas the other candidates support them. Many would agree that anyone who opposes higher taxes will make a better leader than someone who supports them.",
+    "questionStem": "Which one of the following, if true, casts the most doubt on the politician’s argument?",
+    "answerChoices": {
+      "A": "Opposing higher taxes is not a factor contributing to good leadership.",
+      "B": "Being opposed to higher taxes is not a sufficient condition for good leadership.",
+      "C": "Thompson has questionable opinions concerning important issues other than taxes.",
+      "D": "All of the past leaders who supported higher taxes performed their jobs adequately.",
+      "E": "All of the past leaders who supported higher taxes were hardworking."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Method",
+    "questionDifficulty": 5,
+    "stimulus": "Patterson: Bone flutes dating to the Upper Paleolithic are the earliest evidence for music. Thus it is likely that music first arose during this period.\nGarza: But the Upper Paleolithic is exceptional for the intensive use of bone, which typically survives well in archaeological contexts, unlike other materials commonly used for musical instruments, such as wood.",
+    "questionStem": "Garza responds to Patterson by doing which one of the following?",
+    "answerChoices": {
+      "A": "arguing that the body of evidence to which Patterson appeals is insufficient for Patterson’s purposes",
+      "B": "offering evidence to challenge the truth of the premise of Patterson’s argument",
+      "C": "presenting a counterexample to the general conclusion drawn in Patterson’s argument",
+      "D": "presenting an argument analogous to Patterson’s argument to reveal a potential flaw in Patterson’s reasoning",
+      "E": "using Patterson’s evidence to draw a conclusion inconsistent with the conclusion drawn in Patterson’s argument"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 5,
+    "stimulus": "No occupation should be subject to a licensing requirement unless incompetence in the performance of tasks normally carried out within that occupation poses a plausible threat to human health or safety.",
+    "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Because some of the duties that police officers carry out have no connection to human health or safety, police officers should not be subject to a licensing requirement.",
+      "B": "Because there are no realistic circumstances in which poor work by an interior designer poses a danger to human beings, interior designers should not be subject to a licensing requirement.",
+      "C": "Because hospital administrators routinely make decisions that affect the health of hundreds of people, hospital administrators should be subject to a licensing requirement.",
+      "D": "Because hair stylists regularly use substances that can pose a threat to human health if handled improperly, hair stylists should be subject to a licensing requirement.",
+      "E": "Because tattoo artists who do not maintain strict sanitation pose a serious threat to human health, tattoo artists should be subject to a licensing requirement."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Must Be True",
+    "questionDifficulty": 4,
+    "stimulus": "Most of the new cars that Regis Motors sold last year were purchased by residents of Blomenville. Regis Motors sold more new cars last year than it did in any previous year. Still, most new cars purchased by Blomenville residents last year were not purchased from Regis Motors.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Regis Motors sold more new cars to residents of Blomenville last year than they had in any previous year.",
+      "B": "The total number of new cars purchased by residents of Blomenville was greater last year than it was in any previous year.",
+      "C": "A car retailer other than Regis Motors sold the most new cars to residents of Blomenville last year.",
+      "D": "The number of new cars purchased last year by residents of Blomenville is greater than the number of new cars sold by Regis Motors.",
+      "E": "Regis Motors’ share of the new car market in Blomenville last year increased over its share the year before."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Editorial: Teenagers tend to wake up around 8:00 A.M., the time when they stop releasing melatonin, and are sleepy if made to wake up earlier. Since sleepiness can impair driving ability, car accidents involving teenagers driving to school could be reduced if the school day began later than 8:00 A.M. Indeed, when the schedule for Granville’s high school was changed so that school began at 8:30 A.M. rather than earlier, the overall number of car accidents involving teenage drivers in Granville declined.",
+    "questionStem": "Which one of the following, if true, provides the most support for the argument in the editorial?",
+    "answerChoices": {
+      "A": "Teenagers start releasing melatonin later at night and stop releasing it later in the morning than do young children.",
+      "B": "Sleepy teenagers are tardy for school more frequently than teenagers who are well rested when the school day begins.",
+      "C": "Teenagers who work at jobs during the day spend more time driving than do teenagers who attend high school during the day.",
+      "D": "Many of the car accidents involving teenage drivers in Granville occurred in the evening rather than in the morning.",
+      "E": "Car accidents involving teenage drivers rose in the region surrounding Granville during the time they declined in Granville."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Lucinda will soon be attending National University as an engineering major. At National University, most residents of Western Hall are engineering majors. Therefore, Lucinda will probably live in Western Hall.",
+    "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning most similar to that exhibited by the argument above?",
+    "answerChoices": {
+      "A": "A major shopping mall is now being constructed in our city. Most cities with major shopping malls are regional economic hubs. Therefore, our city will probably become a regional economic hub.",
+      "B": "Cities that are regional economic hubs generally experience tremendous economic growth at some point. Our city is a regional economic hub that has never experienced tremendous economic growth. Thus it will probably experience tremendous economic growth in the future.",
+      "C": "Cities that are regional economic hubs always have excellent transportation systems. It is widely agreed that our city’s transportation system is inadequate. Therefore, our city will probably never become a regional economic hub.",
+      "D": "A major shopping mall was built in our city ten years ago, and our city has experienced tremendous economic growth since then. Therefore, most cities in which major shopping malls are built will experience tremendous economic growth shortly afterward.",
+      "E": "Most cities that are regional economic hubs contain major shopping malls. A major shopping mall is now being constructed in our city. Therefore, our city will probably become a regional economic hub."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Oceanographer: To substantially reduce the amount of carbon dioxide in Earth’s atmosphere, carbon dioxide should be captured and pumped deep into the oceans, where it would dissolve. The cool, dense water in ocean depths takes centuries to mix with the warmer water near the surface, so any carbon dioxide pumped deep into oceans would be trapped there for centuries.",
+    "questionStem": "Which one of the following is an assumption that the oceanographer’s argument requires?",
+    "answerChoices": {
+      "A": "Carbon dioxide will dissolve much more thoroughly if it is pumped into cold water than it will if it is pumped into warmer water.",
+      "B": "Evaporation of warmer ocean water near an ocean’s surface does not generally release into the atmosphere large amounts of the carbon dioxide dissolved in the evaporating water.",
+      "C": "Carbon dioxide dissolved in cool, dense water in ocean depths will not escape back into Earth’s atmosphere a long time before the water in which that carbon dioxide is dissolved mixes with warmer water near the surface.",
+      "D": "It is the density of the water in the ocean depths that plays the main role in the trapping of the carbon dioxide.",
+      "E": "Carbon dioxide should be pumped into ocean depths to reduce the amount of carbon dioxide in the atmosphere only if the carbon dioxide pumped into ocean depths would be trapped there for hundreds of years."
+    },
+    "correctAnswer": "C"
+  }
+]

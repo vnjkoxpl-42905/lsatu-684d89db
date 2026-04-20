@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 1,
+    "questionType": "Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Community organizer: Before last year’s community cleanup, only 77 of the local residents signed up to participate, but then well over 100 actually participated. This year, 85 residents have signed up to participate. Since our community cleanup will be a success if we have at least 100 participants, we can be confident that this year’s cleanup will be a success.",
+    "questionStem": "The reasoning in the community organizer’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "generalizes about the outcome of an event based on a single observation of a similar situation",
+      "B": "takes for granted that people who participated in last year’s cleanup will participate this year",
+      "C": "confuses a condition that is required for an outcome with one that is sufficient for that outcome",
+      "D": "overlooks the possibility that the cleanup will attract participants who are not residents in the community",
+      "E": "defines a term in such a way as to ensure that whatever the outcome, it will be considered a positive outcome"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 2,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Bell: Commentators in the media are wrong to criticize the policies Klein implemented. Although her policies are unpopular, they avoided an impending catastrophe. Klein is just the person we need making important decisions in the future.\nSoltan: Klein’s policies have been effective, but politics matters. In the future, important decisions will need to be made, and she will not have the political support to make them. So she should step down.",
+    "questionStem": "Bell and Soltan disagree with each other about which one of the following?",
+    "answerChoices": {
+      "A": "Klein’s policies have been effective.",
+      "B": "Klein’s policies are unpopular.",
+      "C": "Klein should step down.",
+      "D": "There are important decisions to be made in the future.",
+      "E": "Klein’s policies were implemented in the face of an impending catastrophe."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 3,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "Psychologist: In our study, participants who were offered the opportunity to purchase a coffee mug were not willing to pay more than $5. If, however, they were given a very similar mug and asked immediately afterwards how much they would be willing to sell it for, most of them held out for more than $5.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+    "answerChoices": {
+      "A": "A person’s assessment of the value of an object depends on his or her evaluation of the inherent properties of the object.",
+      "B": "People are usually unable to judge the value of an object when they have possessed it for a long period of time.",
+      "C": "The amount a person is willing to spend on an object is determined by the amount that object sold for in the past.",
+      "D": "People tend to value an object that they do not own less than they value a very similar object that they already own.",
+      "E": "People are more likely to undervalue objects they have been given than objects they have purchased."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 4,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Ecologist: Before finding a mate, male starlings decorate their nests with fragments of aromatic plants rich in compounds known to kill parasitic insects. Since these parasites are potentially harmful to nestlings, some researchers have hypothesized that the function of these decorations is nestling protection. However, males cease to incorporate such greenery once egg laying starts, which suggests instead that the function of the decorations is to attract females.",
+    "questionStem": "Which one of the following, if true, most strengthens the support for the ecologist’s conclusion?",
+    "answerChoices": {
+      "A": "Adult starlings are able to defend themselves against parasitic insects.",
+      "B": "Male starlings do not decorate their nests in areas with unusually small populations of parasitic insects.",
+      "C": "Nestlings grow faster in nests that incorporate aromatic plants than in nests that do not.",
+      "D": "Male starlings tend to decorate their nests with a greater number of aromatic plants when a caged female is positioned adjacent to the nest.",
+      "E": "The compounds in the aromatic plants used by the male starlings to decorate their nests are harmless to nestlings."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 5,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "A commission has been formed to report on the nation’s preparedness for a major natural disaster. The commission’s report will not be effective unless the commission speaks with a unified voice. Since individual members of the commission have repeatedly expressed their own opinions about disaster preparedness in the news media well in advance of completion of the report, it will not be effective.",
+    "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Commission members who have expressed their opinions about disaster preparedness in the news media have also emphasized their commitment to producing an effective report.",
+      "B": "News organizations should not provide a platform for members of the commission to express their opinions about disaster preparedness if doing so will undermine the effectiveness of the commission’s report.",
+      "C": "The commission will be able to speak with a uniform voice only if individual members’ opinions about disaster preparedness are not made public before the report is completed.",
+      "D": "If commission members had not expressed their opinions about disaster preparedness in the news media before the report was completed, there would have been much public speculation about what those views were.",
+      "E": "The commission’s report will not be effective if some of the commission members already had opinions about the nation’s disaster preparedness even before the commission was formed."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 6,
+    "questionType": "Principle",
+    "questionDifficulty": 2,
+    "stimulus": "Engineer: Wide roads free of obstructions have been shown to encourage drivers to take more risks. Likewise, a technical fix to slow or reverse global warming by blocking out a portion of the sun’s rays would encourage more carbon dioxide emissions, which might cause more global warming in the future.",
+    "questionStem": "The engineer’s argument can most reasonably be interpreted as invoking which one of the following principles?",
+    "answerChoices": {
+      "A": "Conditions that create a feeling of security also encourage risk taking.",
+      "B": "Problems created by humans require human-created solutions.",
+      "C": "Technical fixes are inevitably temporary.",
+      "D": "Technical fixes cannot discourage risk-taking behavior.",
+      "E": "The longer a problem goes unresolved, the worse it becomes."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Although some animals exhibit a mild skin reaction to urushiol, an oil produced by plants such as poison oak and poison ivy, it appears that only humans develop painful rashes from touching it. In fact, wood rats even use branches from the poison oak plant to build their nests. Therefore, urushiol probably did not evolve in these plants as a chemical defense.",
+    "questionStem": "Which one of the following, if true, adds the most support for the conclusion of the argument?",
+    "answerChoices": {
+      "A": "Wood rats build their nests using dead, brittle branches, not live ones.",
+      "B": "A number of different animals use poison oak and poison ivy as food sources.",
+      "C": "It is common for plants to defend themselves by producing chemical substances.",
+      "D": "In approximately 85 percent of the human population, very small amounts of urushiol can cause a rash.",
+      "E": "Poison oak and poison ivy grow particularly well in places where humans have altered natural forest ecosystems."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 8,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 2,
+    "stimulus": "Politician: Some cities have reversed the decay of aging urban areas by providing tax incentives and zoning variances that encourage renovation and revitalization in selected areas. But such legislation should not be commended. Its principal beneficiaries have turned out to be well-to-do professionals who could afford the cost of restoring deteriorating buildings; the long-term residents these programs were intended to help now face displacement due to increased rent and taxes.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the politician’s criticism?",
+    "answerChoices": {
+      "A": "Evaluation of legislation should take into account actual results, not intentions alone.",
+      "B": "The wealthier members of a community should not have undue influence on its governance.",
+      "C": "A community’s tax laws and zoning regulations should apply equally to all individuals within selected areas.",
+      "D": "Legislation that is not to anyone’s benefit should not be commended.",
+      "E": "Laws that give advantage to the well-to-do can also benefit society as a whole."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Pundit: It is good to have national leaders voted out of office after a few years. The reason is that reforms are generally undertaken early in a new government. If leaders do not act quickly to solve a problem and it becomes an issue later, then they must either deny that there is a problem or deny that anything could have been done about it; otherwise, they will have to admit responsibility for the persistence of the problem.",
+    "questionStem": "Which one of the following most accurately expresses the main conclusion of the pundit’s argument?",
+    "answerChoices": {
+      "A": "If national leaders who fail to solve problems are voted out of office after a few years, new leaders will be more motivated to solve problems.",
+      "B": "National leaders who stay in power too long tend to deny responsibility for problems that they could have dealt with earlier.",
+      "C": "National leaders are most likely to undertake reforms early in a new government.",
+      "D": "National leaders who immediately respond to problems upon taking office should be given enough time to succeed at solving them.",
+      "E": "National leaders should be removed from office every few years by the voting in of new leaders."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Farmer: Agricultural techniques such as crop rotation that do not use commercial products may solve agricultural problems at least as well as any technique, such as pesticide application, that does use such products. Nonetheless, no private for-profit corporation will sponsor research that is unlikely to lead to marketable products. Thus, for the most part, only government-sponsored research investigates agricultural techniques that do not use commercial products.",
+    "questionStem": "Which one of the following, if true, most strengthens the farmer’s argument?",
+    "answerChoices": {
+      "A": "The government sponsors at least some investigations of agricultural techniques that are considered likely to solve agricultural problems and do not use commercial products.",
+      "B": "For almost any agricultural problem, there is at least one agricultural technique that does not use commercial products but that would solve that agricultural problem.",
+      "C": "Investigations of agricultural techniques are rarely sponsored by individuals or by any entity other than private for-profit corporations or the government.",
+      "D": "Most if not all investigations of agricultural techniques that use commercial products are sponsored by private for-profit corporations.",
+      "E": "Most if not all government-sponsored agricultural research investigates agricultural techniques that do not use commercial products."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 11,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "University spokesperson: Most of the students surveyed at the university said they would prefer that the current food vendor be replaced with a different food vendor next year. Several vendors have publicly expressed interest in working for the university. For a variety of reasons, however, the only alternative to the current vendor is Hall Dining Services, which served as the university’s food vendor up until this past year. Since, other things being equal, the preferences of the majority of students should be adhered to, we should rehire Hall Dining next year.",
+    "questionStem": "The spokesperson’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that the students surveyed were unaware that only Hall Dining Services could be hired if the current vendor were not hired",
+      "B": "relies on a sample that is likely to be unrepresentative",
+      "C": "overlooks the possibility that student preference is not the only factor to be considered when it comes to deciding which food vendor the university should hire",
+      "D": "overlooks the possibility that there is disagreement among students concerning the issue of food vendors",
+      "E": "argues that a certain action ought to be undertaken merely on the grounds that it would be popular"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 3,
+    "stimulus": "On average, cats fed canned cat food eat fewer ounces of food per day than do cats fed dry cat food; the canned food contains more calories per ounce than does the dry food. Nonetheless, feeding a cat canned cat food typically costs more per day than does feeding it dry cat food.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "On average, cats fed canned cat food eat more calories per day than do cats fed dry cat food.",
+      "B": "Typically, cats are fed either canned cat food or dry cat food, or both.",
+      "C": "How much it costs to feed a cat a given kind of food depends only on how many calories per ounce that food contains.",
+      "D": "On average, it costs no less to feed a cat that eats fewer ounces of food per day than it does to feed a cat that eats more ounces of food per day.",
+      "E": "Canned cat food typically costs more per ounce than does dry cat food."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "The Frauenkirche in Dresden, a historic church destroyed by bombing in World War II, has been reconstructed to serve as a place for church services and cultural events. The foundation doing the reconstruction took extraordinary care to return the church to its original form. It is a puzzle, then, why the foundation chose not to rebuild the eighteenth-century baroque organ originally designed for the church and instead built a modern organ, even though a donor had offered to pay the full cost of rebuilding the original.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the puzzle described above?",
+    "answerChoices": {
+      "A": "An eighteenth-century baroque organ cannot adequately produce much of the organ music now played in church services and concerts.",
+      "B": "The organ originally designed for the church had some features that modern organs lack.",
+      "C": "The donation for rebuilding the original eighteenth-century baroque organ was designated for that purpose alone.",
+      "D": "By the time the church was destroyed in World War II, the eighteenth-century baroque organ had been modified several times.",
+      "E": "In the eighteenth century, the organ played an important role in church services at the Frauenkirche."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Principle: A government should reduce taxes on imports if doing so would financially benefit many consumers in its domestic economy. There is a notable exception, however: it should never reduce import taxes if one or more of its domestic industries would be significantly harmed by the added competition.\nConclusion: The government should not reduce taxes on textile imports.",
+    "questionStem": "Which one of the following is a statement from which the conclusion can be properly drawn using the principle?",
+    "answerChoices": {
+      "A": "Reducing taxes on textile imports would not financially benefit many consumers in the domestic economy.",
+      "B": "Reducing taxes on textile imports would financially benefit some consumers in the domestic economy but would not benefit the domestic textile industry.",
+      "C": "The domestic textile industry faces significant competition in many of its export markets.",
+      "D": "The domestic textile industry and consumers in the domestic economy would benefit less from reductions in taxes on textile imports than they would from other measures.",
+      "E": "The added competition produced by any reduction of taxes on imports would significantly harm the domestic textile industry."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Global warming has contributed to a rise in global sea level not only because it causes glaciers and ice sheets to melt, but also simply because when water is heated its volume increases. But this rise in global sea level is less than it otherwise would be, since over the years artificial reservoirs have been built all around the world that collectively contain a great deal of water that would otherwise reach the sea.",
+    "questionStem": "Which one of the following can most reasonably be concluded on the basis of the information above?",
+    "answerChoices": {
+      "A": "The exact magnitude of the rise in global sea level is in dispute.",
+      "B": "Rises in global sea level that occurred before the world’s reservoirs were built are difficult to explain.",
+      "C": "Little is known about the contribution of global warming to the rise in global sea level.",
+      "D": "The amount of water in the world’s reservoirs is about equal to the amount of water that results from the melting of glaciers and ice sheets.",
+      "E": "The amount of water that results from the melting of glaciers and ice sheets cannot be determined by looking at the rise in global sea level alone."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Last year, a software company held a contest to generate ideas for their new logo. According to the rules, everyone who entered the contest would receive several prizes, including a T-shirt with the company’s new logo. Juan has a T-shirt with the company’s new logo, so he must have entered the contest.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "infers a causal relationship when the evidence only supports a correlation",
+      "B": "takes a condition that is sufficient for a particular outcome as one that is necessary for that outcome",
+      "C": "infers that every member of a group has a feature in common on the grounds that the group as a whole has that feature",
+      "D": "has a premise that presupposes the truth of the conclusion",
+      "E": "constructs a generalization on the basis of a single instance"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 17,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "When expert witnesses give testimony, jurors often do not understand the technical information and thereby are in no position to evaluate such testimony. Although expert witnesses on opposite sides often make conflicting claims, the expert witnesses on both sides frequently seem competent, leaving the jury unable to assess the reliability of their testimonies.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "There should be limits placed on how much technical information can be considered by both sides in preparing a legal case.",
+      "B": "Jury decisions in cases involving expert witness testimonies are not always determined by the reliability of those testimonies.",
+      "C": "Jurors who understand the technical information presented in a case can usually assess its legal implications accurately.",
+      "D": "Jury members should generally be selected on the basis of their technical expertise.",
+      "E": "Expert witnesses who testify on opposite sides in legal cases are likely to agree in their evaluations of technical claims."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 18,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Tax reformer: The proposed tax reform legislation is being criticized by political groups on the right for being too specific and by political groups on the left for being too vague. Since one and the same statement cannot be both too specific and too vague, the criticisms just go to show that the legislation is framed just as it should be.",
+    "questionStem": "Which one of the following is an assumption on which the argument depends?",
+    "answerChoices": {
+      "A": "It is rare for political groups both on the right and on the left to criticize a particular tax reform proposal.",
+      "B": "Even an overly specific or vague tax reform proposal can be implemented in a way that produces beneficial results.",
+      "C": "The proposed legislation has not been criticized by any group that does not identify itself with the political right or the political left.",
+      "D": "The proposed legislation as it is framed was not meant to satisfy either political groups on the right or political groups on the left.",
+      "E": "The proposed legislation is not made up of a set of statements some of which are overly specific and some of which are overly vague."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 19,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "The recent concert was probably not properly promoted. Wells, who is quite knowledgeable about the concert business, was certain that it would sell out unless it was poorly promoted. But the concert did not sell out.",
+    "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Dr. Smith, a well-trained cardiologist, said the patient would probably survive the heart transplant if it were performed by a highly skilled surgeon. Thus, since the patient did not survive the surgery, it probably was not properly performed.",
+      "B": "Professor Willis, who is quite knowledgeable about organic chemistry, said that the sample probably did not contain any organic compounds. So, the sample probably is not labeled correctly, for if it were, it would contain organic compounds.",
+      "C": "My neighbor, who is an experienced home renovator, said the damage to the wall would not be noticeable if it were properly repaired. Thus, the repair to the wall probably was not properly done, since one can still notice the damage.",
+      "D": "The builder said that the school’s roof would not require repairs for years, unless it is damaged in a storm. The roof is already leaking. Thus, since there have been no major storms, the builder was probably wrong.",
+      "E": "Professor Yanakita, who is an expert on the subject, said that the tests would find lead in the soil if they were properly conducted. So, since the tests did find lead in the soil, they probably were properly conducted."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Economist: Global recessions can never be prevented, for they could be prevented only if they were predictable. Yet economists, using the best techniques at their disposal, consistently fail to accurately predict global recessions.",
+    "questionStem": "The economist’s argument is most vulnerable to the criticism that it",
+    "answerChoices": {
+      "A": "presupposes in a premise the conclusion that it purports to establish",
+      "B": "fails to establish that economists claim to be able to accurately predict global recessions",
+      "C": "treats the predictability of an event, which is required for the event to be preventable, as a characteristic that assures its prevention",
+      "D": "fails to address the possibility that the techniques available to economists for the prediction of global recessions will significantly improve",
+      "E": "implicitly bases an inference that something will not occur solely on the information that its occurrence is not predictable"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 21,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 3,
+    "stimulus": "Letter to the editor: When your newspaper reported the (admittedly extraordinary) claim by Mr. Hanlon that he saw an alien spaceship, the tone of your article was very skeptical despite the fact that Hanlon has over the years proved to be a trusted member of the community. If Hanlon claimed to have observed a rare natural phenomenon like a large meteor, your article would not have been skeptical. So your newspaper exhibits an unjustified bias.",
+    "questionStem": "The argument in the letter conflicts with which one of the following principles?",
+    "answerChoices": {
+      "A": "If a claim is extraordinary, it should not be presented uncritically unless it is backed by evidence of an extraordinarily high standard.",
+      "B": "One should be skeptical of claims that are based upon testimonial evidence that is acquired only through an intermediary source.",
+      "C": "If a media outlet has trusted a source in the past and the source has a good reputation, the outlet should continue to trust that source.",
+      "D": "People who think they observe supernatural phenomena should not publicize that fact unless they can present corroborating evidence.",
+      "E": "A newspaper should not publish a report unless it is confirmed by an independent source."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 22,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Fish with teeth specialized for scraping algae occur in both Flower Lake and Blue Lake. Some biologists argue that because such specialized characteristics are rare, fish species that have them should be expected to be closely related. If they are closely related, then the algae-scraping specialization evolved only once. But genetic tests show that the two algae-scraping species, although possibly related, are not closely related. Thus, the algae-scraping specialization evolved more than once.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "infers a cause merely from a correlation",
+      "B": "infers that just because the evidence for a particular claim has not yet been confirmed, that claim is false",
+      "C": "takes a sufficient condition as a necessary one",
+      "D": "infers merely because something was likely to occur that it did occur",
+      "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 23,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "The constitution of Country F requires that whenever the government sells a state-owned entity, it must sell that entity for the highest price it can command on the open market. The constitution also requires that whenever the government sells a state-owned entity, it must ensure that citizens of Country F will have majority ownership of the resulting company for at least one year after the sale.",
+    "questionStem": "The government of Country F must violate at least one of the constitutional requirements described above if it is faced with which one of the following situations?",
+    "answerChoices": {
+      "A": "The government will sell StateAir, a state-owned airline. The highest bid received was from a corporation that was owned entirely by citizens of Country F when the bid was received. Shortly after the bid was received, however, noncitizens purchased a minority share in the corporation.",
+      "B": "The government has agreed to sell National Silver, a state-owned mine, to a corporation. Although citizens of Country F have majority ownership of the corporation, most of the corporation’s operations and sales take place in other countries.",
+      "C": "The government will sell PetroNat, a state-owned oil company. World Oil Company has made one of the highest offers for PetroNat, but World Oil’s ownership structure is so complex that the government cannot determine whether citizens of Country F have majority ownership.",
+      "D": "The government will sell National Telephone, a state-owned utility. The highest bid received was from a company in which citizens of Country F have majority ownership but noncitizens own a minority share. However, the second-highest bid, from a consortium of investors all of whom are citizens of Country F, was almost as high as the highest bid.",
+      "E": "The government will sell StateRail, a state-owned railway. The government must place significant restrictions on who can purchase StateRail to ensure that citizens of Country F will gain majority ownership. However, any such restrictions will reduce the price the government receives for StateRail."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 24,
+    "questionType": "Weaken",
+    "questionDifficulty": 4,
+    "stimulus": "The makers of Activite, a natural dietary supplement, claim that it promotes energy and mental alertness. To back up their claim, they offer a month’s supply of Activite free to new customers. Clearly, Activite must be effective, since otherwise it would not be in the company’s interest to make such an offer.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "The nutrients in Activite can all be obtained from a sufficiently varied and well-balanced diet.",
+      "B": "There are less expensive dietary supplements on the market that are just as effective as Activite.",
+      "C": "A month is not a sufficient length of time for most dietary supplements to be fully effective.",
+      "D": "The makers of Activite charge a handling fee that is considerably more than what it costs them to pack and ship their product.",
+      "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 25,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "Of the citizens who disapprove of the prime minister’s overall job performance, most disapprove because of the prime minister’s support for increasing the income tax. However, Theresa believes that the income tax should be increased. So Theresa probably approves of the prime minister’s overall job performance.",
+    "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most parallel to that in the argument above?",
+    "answerChoices": {
+      "A": "Of the people who support allowing limited logging in the Grizzly National Forest, most support it because they think it will reduce the risk of fire in the forest. Andy thinks that limited logging will not reduce the risk of fire in the forest, so he probably opposes allowing limited logging there.",
+      "B": "Of the people who expect the population in the area to increase over the next ten years, most think that an expected population increase is a good reason to build a new school. Bonita does not expect the population to increase over the next ten years, so she probably does not favor building a new school.",
+      "C": "Of the people who believe that the overall economy has improved, most believe it because they believe that their own financial situation has improved. Chung believes that the economy has worsened, so he probably believes that his own financial situation has worsened.",
+      "D": "Of the people who oppose funding a study to determine the feasibility of building a light rail line in the Loffoch Valley, most also believe that the Valley Freeway should be built. Donna opposes increasing funding for a study, so she probably supports building the Valley Freeway.",
+      "E": "Of the people who believe that there will be a blizzard tomorrow, most believe it because of the weather report on the Channel 9 news. Eduardo believes that there will be a blizzard tomorrow, so he probably saw the weather report on the Channel 9 news."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 4,
+    "questionNumber": 26,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Bird watcher: The decrease in the mourning-dove population in this area is probably a result of the loss of nesting habitat. Many mourning doves had formerly nested in the nearby orchards, but after overhead sprinklers were installed in the orchards last year, the doves ceased building nests there.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Mourning doves were recently designated a migratory game species, meaning that they can be legally hunted.",
+      "B": "The trees in the nearby orchards were the only type of trees in the area attractive to nesting mourning doves.",
+      "C": "Blue jays that had nested in the orchards also ceased doing so after the sprinklers were installed.",
+      "D": "Many residents of the area fill their bird feeders with canola or wheat, which are appropriate seeds for attracting mourning doves.",
+      "E": "Mourning doves often nest in fruit trees."
+    },
+    "correctAnswer": "B"
+  }
+]

@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 1,
+    "stimulus": "A nonprofit organization concerned with a social issue sent out a fund-raising letter to 5,000 people. The letter was accompanied by a survey soliciting recipients’ opinions. Of the 300 respondents, 283 indicated in the survey that they agreed with the organization’s position on the social issue. This suggests that most of the 5,000 people to whom the letter was sent agreed with that position.",
+    "questionStem": "The argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It draws a conclusion about a population from observations of a subgroup that is quite likely to be unrepresentative of that population in certain relevant respects.",
+      "B": "It takes for granted that most individuals do not vary significantly in the opinions they would express on a given issue if surveyed regarding that issue on different occasions.",
+      "C": "It relies on the accuracy of a survey made under conditions in which it is probable that most of the responses to that survey did not correctly reflect the opinions of the respondents.",
+      "D": "It uses evidence about an opinion held by the majority of a population in an attempt to justify a conclusion regarding the opinion of a small part of that population.",
+      "E": "It takes for granted that the fund-raising letter had some influence on the opinions of most of the people who received it."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "An unstable climate was probably a major cause of the fall of the Roman empire. Tree-ring analysis shows that Europe’s climate underwent extreme fluctuations between 250 A.D. and 550 A.D., a period that encompasses Rome’s decline and fall. This highly variable climate surely hurt food production, which made the empire harder to rule and defend.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Political failures within the Roman empire during its last years led to conflicts that hampered agricultural production.",
+      "B": "The areas of the Roman empire that had the greatest climatic instability between 250 A.D. and 550 A.D. did not experience unusual levels of unrest during that period.",
+      "C": "Poor farming practices led to depleted soil in many parts of Europe during the last years of the Roman empire.",
+      "D": "During periods when the Roman empire was thriving, Europe consistently experienced weather that was favorable for agriculture.",
+      "E": "Total food production in Europe was likely greater in the years around 550 A.D. than in the years around 250 A.D."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 1,
+    "stimulus": "Sales manager: Having spent my entire career in sales, most of that time as a sales manager for a large computer company, I know that natural superstar salespeople are rare. But many salespeople can perform like superstars if they have a good manager. Therefore, companies should _______.",
+    "questionStem": "Which one of the following most logically completes the sales manager’s argument?",
+    "answerChoices": {
+      "A": "devote more effort to training than to evaluating salespeople",
+      "B": "devote more effort to finding good managers than to finding natural superstar salespeople",
+      "C": "keep to a minimum the number of salespeople for which a manager is responsible",
+      "D": "promote more natural superstar salespeople to management positions",
+      "E": "reward superstar performance more than superstar talent"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 2,
+    "stimulus": "According to economists, people’s tendency to purchase a given commodity is inversely proportional to its price. When new techniques produced cheaper steel, more steel was purchased. Nevertheless, once machine-produced lace became available, at much lower prices than the handcrafted variety, lace no longer served to advertise its wearers’ wealth and the lace market collapsed. Obviously, then, there are exceptions to the economists’ general rule.",
+    "questionStem": "The claim that more steel was purchased when it could be manufactured more cheaply plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is described as inadequate evidence for the falsity of the argument’s conclusion.",
+      "B": "It is described as an exception to a generalization for which the argument offers evidence.",
+      "C": "It is used to illustrate the generalization that, according to the argument, does not hold in all cases.",
+      "D": "It is the evidence that, according to the argument, led economists to embrace a false hypothesis.",
+      "E": "It is cited as one of several reasons for modifying a general assumption made by economists."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 1,
+    "stimulus": "Resident: Data indicates that 30 percent of the houses in our town have inadequate site drainage and 30 percent have structural defects that could make them unsafe. Hence, at least 60 percent of our town’s houses have some kind of problem that threatens their integrity.",
+    "questionStem": "The reasoning in the resident’s argument is flawed in that the argument overlooks the possibility that",
+    "answerChoices": {
+      "A": "the town has a relatively small number of houses",
+      "B": "inadequate site drainage can make a house unsafe",
+      "C": "structural defects are often easier to fix than inadequate site drainage",
+      "D": "many houses in the town have neither inadequate site drainage nor structural defects that could make them unsafe",
+      "E": "some of the houses that have structural defects that could make them unsafe also have inadequate site drainage"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "The decisions that one makes can profoundly affect one’s life years later. So one should not regret the missed opportunities of youth, for had one decided instead to seize one’s of these opportunities, one would not have some of the close personal relationships one currently has. And everyone deeply cherishes their close personal relationships.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "One should not regret making a decision unless a different decision would have resulted in one having a greater number of close personal relationships.",
+      "B": "One should not regret making a decision if it helped to bring about something that one cherishes.",
+      "C": "One should not regret making a decision that had little effect on one’s life.",
+      "D": "People who regret the missed opportunities of youth should cherish their close personal relationships more deeply.",
+      "E": "People with few close personal relationships should cherish the ones they have."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "The Kuna, a people native to several Panamanian islands, generally have a low incidence of high blood pressure. But Kuna who have moved to the Panamanian mainland do not have a low incidence of high blood pressure. Kuna who live on the islands, unlike those who live on the mainland, typically drink several cups of cocoa a day. This cocoa is minimally processed and thus high in flavonoids.",
+    "questionStem": "Of the following, which one is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Foods high in flavonoids are not readily available on the Panamanian mainland.",
+      "B": "Kuna who live on the islands drink cocoa because they believe that it is beneficial to their health.",
+      "C": "The Kuna have a genetic predisposition to low blood pressure.",
+      "D": "Kuna who live on the Panamanian mainland generally have higher blood pressure than other people who live on the mainland.",
+      "E": "Drinking several cups of flavonoid-rich cocoa per day tends to prevent high blood pressure."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Argument Evaluation",
+    "questionDifficulty": 2,
+    "stimulus": "Numerous studies suggest that when scientific evidence is presented in a trial, jurors regard that evidence as more credible than they would if they had encountered the same evidence outside of the courtroom context. Legal theorists have hypothesized that this effect is primarily due to the fact that judges prescreen scientific evidence and allow only credible scientific evidence to be presented in the courtroom.",
+    "questionStem": "Which one of the following would be most useful to know in order to evaluate the legal theorists’ hypothesis?",
+    "answerChoices": {
+      "A": "whether jurors typically know that judges have appraised the scientific evidence presented at trial",
+      "B": "whether jurors’ reactions to scientific evidence presented at trial are influenced by other members of the jury",
+      "C": "how jurors determine the credibility of an expert witness who is presenting scientific evidence in a trial",
+      "D": "whether jurors typically draw upon their own scientific knowledge when weighing scientific evidence presented at trial",
+      "E": "how jurors respond to situations in which different expert witnesses give conflicting assessments of scientific evidence"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Organized word-of-mouth marketing campaigns are driven by product boosters who extol a product to friends and acquaintances. A study found that these campaigns are more successful when the product booster openly admits to being part of an organized marketing campaign. This is surprising because one of the purported advantages of word-of-mouth campaigns is that consumers take a less skeptical stance toward word-of-mouth messages than toward mass-media advertisements.",
+    "questionStem": "Which one of the following, if true, most helps to explain the surprising finding?",
+    "answerChoices": {
+      "A": "Word-of-mouth marketing campaigns are generally used for specialty products that are not well suited to being marketed through mass-media advertisements.",
+      "B": "Those who tend to be the most receptive to mass-media marketing campaigns are also the least likely to be influenced by knowledge of a product booster’s affiliation.",
+      "C": "Most people who work as product boosters in word-of-mouth marketing campaigns have themselves been recruited through a word-of-mouth process.",
+      "D": "Most word-of-mouth marketing campaigns cost far less than marketing campaigns that rely on mass-media advertisements.",
+      "E": "When a word-of-mouth product booster admits his or her affiliation, it fosters a more relaxed and in-depth discussion of the marketed product."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Consultant: If Whalley sticks with her current platform in the upcoming election, then she will lose to her opponent by a few percentage points among voters under 50, while beating him by a bigger percentage among voters 50 and over. Therefore, sticking with her current platform will allow her to win the election.",
+    "questionStem": "The consultant’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "There is no change Whalley could make to her platform that would win over more voters under 50 than it would lose voters 50 and over.",
+      "B": "The issues that most concern voters under 50 are different from those that most concern voters 50 and over.",
+      "C": "If Whalley changes her platform, her opponent will not change his platform in response.",
+      "D": "There will be more voters in the election who are 50 and over than there will be voters under 50.",
+      "E": "Whalley would change her platform if she thought it would give her a better chance to win."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Must Be False",
+    "questionDifficulty": 3,
+    "stimulus": "From 1880 to 2000 Britain’s economy grew fivefold, but emissions of carbon dioxide, a greenhouse gas, were the same on a per capita basis in Britain in 2000 as they were in 1880.",
+    "questionStem": "The claims made above are incompatible with which one of the following generalizations?",
+    "answerChoices": {
+      "A": "A decrease in per capita emissions of carbon dioxide never occurs during a period of economic growth.",
+      "B": "Countries whose economies are growing slowly or not at all usually cannot afford to enact laws restricting carbon dioxide emissions.",
+      "C": "Economic growth initially leads to increased per capita emissions of greenhouse gases, but eventually new technologies are developed that tend to reduce these emissions.",
+      "D": "As the world’s population grows, emissions of greenhouse gases will increase proportionately.",
+      "E": "Economic growth always increases household income and consumption, which inevitably increases per capita emissions of carbon dioxide."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Advertisement: When you need a will, consulting a lawyer is much more expensive than using do-it-yourself software. And you get a valid will either way. However, when you’re ill, you aren’t satisfied with simply getting some valid prescription or other; what you pay your doctor for is the doctor’s expert advice concerning your particular illness. Similarly, what you pay a lawyer for is to tailor your will to your particular circumstances. Clearly, when you need a will, a lawyer’s expert advice is always worth paying for.",
+    "questionStem": "Which one of the following is an assumption required by the argument presented in the advertisement?",
+    "answerChoices": {
+      "A": "A lawyer’s knowledge and level of expertise is at least as complex as that of a doctor.",
+      "B": "Do-it-yourself software cannot tailor a person’s will to meet that person’s particular circumstances as well as a lawyer can.",
+      "C": "Many people who prepare their wills using do-it-yourself software are not satisfied with the results.",
+      "D": "In the majority of cases, valid wills do not adequately meet the needs of the persons for whom the wills were prepared.",
+      "E": "There is some way for an ill person to get a valid prescription without first consulting a doctor."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "Pollution is a problem wherever there are people who are indifferent to their environment, and nature’s balance is harmed wherever there is pollution. So wherever there are people who are indifferent to their environment, nature’s balance is harmed.",
+    "questionStem": "The reasoning in which one of the following arguments is most similar to that in the argument above?",
+    "answerChoices": {
+      "A": "Any dessert with chocolate is high in calories, and any dessert high in calories is fattening. So any dessert with chocolate is fattening.",
+      "B": "Every dessert with chocolate is high in calories, and every fattening dessert is also high in calories. So any dessert with chocolate is fattening.",
+      "C": "Any dessert that is high in calories has chocolate in it, and any dessert that is is high in calories is fattening. So every dessert with chocolate is fattening.",
+      "D": "Every dessert with chocolate is high in calories, and every dessert that is high in calories is fattening. So every fattening dessert has chocolate in it.",
+      "E": "Any dessert with chocolate is high in calories, and many desserts that are high in calories are fattening. So many desserts with chocolate are fattening."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 2,
+    "stimulus": "Seventeenth-century proponents of the philosophical school of thought known as mechanism produced numerous arguments that sought to use the principles of mechanism to establish the superiority of monarchies over all other systems of government. This proliferation of arguments has been construed as evidence that the principles of mechanism themselves are in tension with democracy. But it is more likely that the principles of mechanism support democracy and that the arguments multiplied because none of them worked.",
+    "questionStem": "The claim that the proliferation of arguments has been construed as evidence that the principles of mechanism themselves are in tension with democracy plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It states a principle that the argument seeks to establish.",
+      "B": "It describes a general phenomenon that the argument seeks to explain.",
+      "C": "It introduces a hypothesis that the argument challenges.",
+      "D": "It provides evidence in support of the conclusion of the argument.",
+      "E": "It expresses the conclusion of the argument."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "A good manager must understand people and be able to defuse tense situations. But anyone who is able to defuse tense situations must understand people. Since Ishiko is able to defuse tense situations, she must be a good manager.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "confuses a quality that shows an understanding of people with a quality that is necessary for understanding people",
+      "B": "confuses a quality that usually correlates with being a good manager with a quality that results from being a good manager",
+      "C": "confuses qualities necessary for being a good manager with qualities that guarantee being a good manager",
+      "D": "overlooks the possibility that different managers defuse tense situations in different ways",
+      "E": "takes for granted that because all good managers have a certain quality, Ishiko must have that quality"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Paradox",
+    "questionDifficulty": 4,
+    "stimulus": "Babblers, a bird species, live in large cooperative groups. Each member attempts to defend the group by sounding a loud barklike call when it spots a predator, inciting the others to bark too. Babblers, however, are extremely well camouflaged and could usually feed safely, unnoticed by predators. These predators, indeed, generally become aware of the presence of babblers only because of their shrill barks, which continue long after most members of the group have been able to take cover and which signal the group’s approximate location to the predators.",
+    "questionStem": "Which one of the following, if true, would most help to explain the babblers’ strange behavior?",
+    "answerChoices": {
+      "A": "Babblers fly much faster than the predators that prey upon them.",
+      "B": "Babblers’ predators are generally intimidated by large numbers of babblers.",
+      "C": "There is more than one type of predator that preys upon babblers.",
+      "D": "Babblers’ predators have very good eyesight but relatively weak hearing.",
+      "E": "Animals that live in close proximity to babblers are also preyed upon by the predators that prey upon babblers."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 4,
+    "stimulus": "Photographs show an area of Europa, a moon of Jupiter, where the icy surface appears to have buckled as a result of turbulent water moving underneath. This photographic evidence indicates that there is a warm sea beneath Europa’s icy surface. The presence of such a sea is thought by scientists to be a primary factor in the early development of life, so there is reason to believe that there may be life on Europa.",
+    "questionStem": "The claim that there is a warm sea beneath Europa’s icy surface figures in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It is a subsidiary conclusion used by the argument to support its overall conclusion.",
+      "B": "It is the overall conclusion of the argument.",
+      "C": "It is used to discredit a theory that the argument disputes.",
+      "D": "It is the only consideration presented in support of the argument’s overall conclusion.",
+      "E": "It is presented as support for a subsidiary conclusion drawn in the argument."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Identify The Conclusion",
+    "questionDifficulty": 5,
+    "stimulus": "For consumers, the most enjoyable emotional experience garnered from shopping is feeling lucky. Retailers use this fact to their advantage, but too often they resort to using advertised price cuts to promote their wares. Promotions of this sort might make bargain-minded consumers feel lucky, but they cut into profit margins and undermine customer loyalty.",
+    "questionStem": "Which one of the following most accurately describes the overall conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Feeling lucky is the most enjoyable emotional experience garnered from shopping.",
+      "B": "Retailers take advantage of the fact that shoppers enjoy feeling lucky.",
+      "C": "Advertised price cuts are overused as a means of gaining retail sales.",
+      "D": "Using advertised price cuts to promote retail products reduces profit margins and undermines customer loyalty.",
+      "E": "Making consumers feel lucky is usually not a good formula for retail success."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Role in Argument",
+    "questionDifficulty": 4,
+    "stimulus": "Jurist: To ensure that a legal system remains just, it is important to guarantee that lawbreaking does not give lawbreakers an unfair advantage over law abiders. Thus, notwithstanding any other goals that criminal punishment may serve, it should certainly attempt to ensure that criminal wrongdoing remains profitless.",
+    "questionStem": "The jurist’s claim that it is important to guarantee that lawbreaking does not give lawbreakers an unfair advantage over law abiders functions in the argument in which one of the following ways?",
+    "answerChoices": {
+      "A": "It states a condition that, if fulfilled, will ensure that a legal system remains just.",
+      "B": "It expresses a principle that is offered as support for the conclusion.",
+      "C": "It is a conclusion for which the only support offered is the claim that the legal system serves multiple goals.",
+      "D": "It is a premise presented as support for the claim that the most important goal of criminal punishment is to ensure that criminal wrongdoing remains profitless.",
+      "E": "It is presented as refuting an argument that criminal punishment has goals other than guaranteeing that lawbreaking remains profitless."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "The company president says that significant procedural changes were made before either she or Yeung was told about them. But, according to Grimes, the contract requires that either the company president or any lawyer in the company’s legal department be told about proposed procedural changes before they are made. Thus, unless what Grimes or the company president said is incorrect, the contract was violated.",
+    "questionStem": "The argument’s conclusion can be properly inferred if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Yeung is a lawyer in the company’s legal department.",
+      "B": "Neither Grimes nor Yeung was told about the procedural changes until after they were made.",
+      "C": "No lawyer in the company’s legal department was told about the procedural changes until after they were made.",
+      "D": "If the company’s president was told about the procedural changes before they were made, then the contract was not violated.",
+      "E": "If no lawyer in the company’s legal department was told about the procedural changes before they were made, then the contract was violated."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Strengthen",
+    "questionDifficulty": 4,
+    "stimulus": "Journalist: People whose diets contain a relatively large amount of iron are significantly more likely to develop Parkinson’s disease than are those whose diets contain less of this mineral. Limiting one’s intake of meats, seafood, and other foods rich in iron should thus reduce one’s chances of contracting this disease.",
+    "questionStem": "Which one of the following, if true, most strengthens the journalist’s reasoning?",
+    "answerChoices": {
+      "A": "Most people who have a genetic predisposition to Parkinson’s disease have no more iron in their diets than people without the predisposition.",
+      "B": "Many of the vegetables regularly consumed by vegetarians who do not contract Parkinson’s disease are as rich in iron as meat and seafood.",
+      "C": "Children and adolescents require a much larger amount of iron in their diets than do mature adults.",
+      "D": "The iron in some foods is much less easily absorbed by the body than the iron contained in other foods.",
+      "E": "The amounts of iron-rich foods consumed by people starts to decline beginning at age 50."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Must Be False",
+    "questionDifficulty": 2,
+    "stimulus": "Riverdale’s Modern Party Chairperson: Maples, the Modern Party candidate, would be a better mayor than his opponent, Tannett, who is a member of the Traditionalist Party. Every member of the Modern Party is better qualified to be mayor than is any member of the Traditionalist Party.",
+    "questionStem": "If the statements of Riverdale’s Modern Party Chairperson are true, each of the following could be true except:",
+    "answerChoices": {
+      "A": "Maples has the least seniority of any member of Riverdale’s Modern Party and was recently ousted from the Traditionalist Party.",
+      "B": "Tannett would be a better mayor than would any other member of Riverdale’s Traditionalist Party.",
+      "C": "Few residents of Riverdale believe that Maples would be a better mayor than Tannett.",
+      "D": "Of all the members of Riverdale’s Modern Party, Maples would be the worst mayor.",
+      "E": "Tannett is better qualified to be mayor than is Riverdale’s Modern Party Chairperson."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Argument Evaluation",
+    "questionDifficulty": 5,
+    "stimulus": "Businessperson: Because the parking area directly in front of the building was closed for maintenance today, I was late to my meeting. If the maintenance had been done on a different day, I would have gotten to the meeting on time. After finding out that I could not park in that area it took me 15 minutes to find an available parking space, making me a few minutes late.",
+    "questionStem": "The answer to which one of the following questions would be most useful to know in order to evaluate the reasoning in the businessperson’s argument?",
+    "answerChoices": {
+      "A": "What were the reasons for performing maintenance on the parking area directly in front of the building on that particular day?",
+      "B": "Were any other of the meeting attendees also late to the meeting because they had difficulty finding parking?",
+      "C": "What are the parking patterns in the building’s vicinity on days when the parking area in front of the building is open?",
+      "D": "Does the businessperson have a tendency to be late to meetings?",
+      "E": "Was it particularly important that the businessperson not be late to this meeting?"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 5,
+    "stimulus": "For a work to be rightly thought of as world literature, it must be received and interpreted within the writer’s own national tradition and within external national traditions. A work counts as being interpreted within a national tradition if authors from that tradition use the work in at least one of three ways: as a positive model for the development of their own tradition, as a negative case of a decadent tendency that must be consciously avoided, or as an image of radical otherness that prompts refinement of the home tradition.",
+    "questionStem": "The statements above, if true, most strongly support which one of the following?",
+    "answerChoices": {
+      "A": "A work of literature cannot be well received within an external national tradition if it is not well received within the writer’s own national tradition.",
+      "B": "A work of world literature offers more to readers within external national traditions than it offers to readers within the writer’s national tradition.",
+      "C": "A work should not be thought of as world literature if it is more meaningful to readers from the writer’s national tradition than it is to readers from external national traditions.",
+      "D": "A work of world literature is always influenced by works outside of the writer’s national tradition.",
+      "E": "A work is not part of world literature if it affects the development of only one national tradition."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "At Morris University this semester, most of the sociology majors are taking Introduction to Social Psychology, but most of the psychology majors are not. Hence, there must be more sociology majors than psychology majors enrolled in the class.",
+    "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following?",
+    "answerChoices": {
+      "A": "Most of the paintings on display at the Metro Art Museum are from the twentieth century, but most of the paintings the Metro Art Museum owns are from the nineteenth century. It follows that the museum owns few if any of the twentieth-century paintings it displays.",
+      "B": "In an opinion poll of Silver Falls residents, more said they were in favor of increased spending on roads than said they were in favor of increased spending on parks. So most Silver Falls residents must be in favor of spending more on roads but opposed to spending more on parks.",
+      "C": "In the San Felipe city arboretum, most of the trees are of local rather than exotic species. Therefore, in the San Felipe area, there must be more trees of local species than of exotic species.",
+      "D": "Most of the vegetables available at the Valley Food Co-op are organic, but most of the vegetables available at the Jumbo Supermarket are not. Thus, more organic vegetables are available at Valley Food than are available at Jumbo.",
+      "E": "The Acme Realty website has photos of most of the houses, but of fewer than half of the condominiums, that Acme is offering for sale. So Acme must have more houses than condominiums for sale."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "Film director: Although the production costs of my latest film are very high, there is little risk that the film studio will not recover these costs. Even if the film is unpopular, much of the money is being spent to develop innovative special-effects technology that could be used in future films.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Because the film studio owns the new technology, the studio will be able to control its use in any future films.",
+      "B": "Films that introduce innovative special-effects technologies generally draw large audiences of people who are curious about the new effects.",
+      "C": "The production costs of this film are so high that, even if the film is popular, it is unlikely that the film’s ticket sales will offset those costs.",
+      "D": "In the past, many innovative special-effects technologies were abandoned after the films for which they were developed proved to be unpopular.",
+      "E": "The use of the new special-effects technology would lower the production costs of other films that use it."
+    },
+    "correctAnswer": "D"
+  }
+]

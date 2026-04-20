@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 2,
+    "stimulus": "Minh: This film director’s newest works are very predictable. He’s pillaging his own catalog, but with diminishing returns. Each film is simply a repetition of his earlier ones.\nNatalie: You mistake the films’ startling sameness for evidence of a lack of creativity. It would be more accurate to say that he ultimately creates strong new works from the same core elements, and these works are thus original.",
+    "questionStem": "The dialogue most strongly supports the claim that Minh and Natalie agree on the truth of which one of the following statements about the director’s newest works?",
+    "answerChoices": {
+      "A": "They share many features with his earlier films.",
+      "B": "They constitute evidence that he is pillaging his own catalog.",
+      "C": "They are nothing more than repetitions of the director’s earlier films.",
+      "D": "They are less original than his earlier films.",
+      "E": "They provide evidence of the director’s creativity."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Campaign manager: In campaign speeches, our candidate has been reluctant to reveal all the unpleasant consequences of the policies he endorses, but this lapse can be justified. There is no way to get elected while being fully candid. And it is vitally important that our candidate get a chance to help implement a political agenda that is very positive.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the campaign manager’s argument?",
+    "answerChoices": {
+      "A": "Ethically questionable acts can sometimes be justified by their good consequences.",
+      "B": "It is better to fail while behaving ethically than to succeed by resorting to unethical measures.",
+      "C": "Legitimate ends obtained through illegitimate means become illegitimate.",
+      "D": "It is possible to accomplish one’s agenda even if one is not trusted.",
+      "E": "Voters can best be trusted to make good decisions when they are fully informed."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Columnist: Although it is our civic duty to protect the population against hazards to public health, we should not reroute high-tension power lines away from heavily populated areas. This is because our limited resources should be devoted to protecting the population only against well-substantiated threats to public health.",
+    "questionStem": "The conclusion of the columnist’s argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Public health would be damaged by the loss of electric power.",
+      "B": "Proponents of expensive safety measures with respect to high-tension power lines ignore economic realities.",
+      "C": "Scientific evidence exists for causal links between various modern practices and threats to public health.",
+      "D": "No investigation of the effects of high-tension power lines has established any health threat to people.",
+      "E": "Rerouting high-tension power lines away from heavily populated areas would hinder our ability to study the effects of power lines on people."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "The coat patterns of large cat species correspond to the habitats in which those species live and hunt. Species with spotted coats are at home in trees and dappled forests, while species living in the open plains, such as lions, have plain coats. The only anomaly is the cheetah, a spotted cat that lives in the open savannah.",
+    "questionStem": "Which one of the following, if true, most helps to explain the anomaly described above?",
+    "answerChoices": {
+      "A": "Unlike all other large cat species, cheetahs’ hunting strategy does not rely on stealth but instead relies purely on speed.",
+      "B": "Of all the large cat species, cheetahs most often have their prey stolen from them by larger predators.",
+      "C": "Because they have wide paws with semiretractable claws, cheetahs are not able to climb upright trees.",
+      "D": "Unlike lions, cheetahs are typically solitary hunters.",
+      "E": "Unlike all other large cat species, cheetahs are unable to roar."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "As the current information explosion forces the print media, television, and the Internet to compete for public attention and for advertiser and subscriber dollars, journalistic standards are lowered. Consequently, we are increasingly bombarded with inaccurate and trivial information.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion of the argument?",
+    "answerChoices": {
+      "A": "The drawbacks of the information explosion now outweigh its benefits.",
+      "B": "People are more and more subjected to insignificant and unreliable information.",
+      "C": "Journalistic standards have fallen in recent years.",
+      "D": "One result of the current information explosion is fierce competition among the print media, television, and the Internet for both money and public attention.",
+      "E": "If journalists returned to earlier journalistic standards, the significance and reliability of news stories would increase."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "The best way to increase the blood supply in the city of Pulaski is to encourage more donations by people who are regular blood donors. A study conducted in two other cities—Moorestown and Fredricksburg—indicates that it is difficult and expensive to attract first-time blood donors, and that many sporadic donors are reluctant to give more often. But officials in those cities had considerable success convincing many of their cities’ regular donors to increase their donation frequency.",
+    "questionStem": "Which one of the following, if true, would do most to undermine the conclusion of the argument above?",
+    "answerChoices": {
+      "A": "Increasing blood donation by regular donors in Moorestown and Fredricksburg produced a significant increase in the blood supply in those cities.",
+      "B": "The pool of potential blood donors in Moorestown and Fredricksburg contained proportionally fewer frequent blood donors than does the pool of potential donors in the city of Pulaski.",
+      "C": "A follow-up study in Moorestown and Fredricksburg showed that long-term frequency of blood donation among regular donors remained higher after the promotional campaign than it had been before the campaign.",
+      "D": "In the city of Pulaski, the number of sporadic blood donors is significantly greater than the number of regular blood donors.",
+      "E": "Almost all of the regular blood donors in the city of Pulaski are already giving blood as frequently as is medically safe."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "questionDifficulty": 2,
+    "stimulus": "Advertisement: Honey Oat Puffs cereal is made with whole-grain oats. Health experts agree that whole-grain oats are among the most healthful foods, far more healthful than most of the foods in a typical diet. So most people would have more healthful diets if they ate Honey Oat Puffs for breakfast.",
+    "questionStem": "The reasoning in the advertisement’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "infers that a food will have a certain property simply because one of the food’s ingredients has that property",
+      "B": "treats a property that is sufficient to make a food healthful as a property that a food must have in order to be healthful",
+      "C": "confuses two distinct meanings of the word “healthful”",
+      "D": "concludes that a food contributes to health simply because that food tends to be part of the diets of healthy people",
+      "E": "contains a premise that presupposes the truth of the conclusion"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Role",
+    "questionDifficulty": 5,
+    "stimulus": "Astronomer: Conditions in our solar system have probably favored the emergence of life more than conditions in most other solar systems of similar age. Any conceivable form of life depends on the presence of adequate amounts of chemical elements heavier than hydrogen and helium, and our sun has an unusually high abundance of these heavier elements for its age.",
+    "questionStem": "Which one of the following most accurately describes the role played in the astronomer’s argument by the claim that any conceivable form of life depends on chemical elements heavier than hydrogen and helium?",
+    "answerChoices": {
+      "A": "It is a statement for which no evidence is provided and that is part of the evidence offered for the argument’s only conclusion.",
+      "B": "It is a statement for which no evidence is provided and that is offered as support for another statement that in turn is offered as support for the conclusion of the argument as a whole.",
+      "C": "It is a statement for which some evidence is provided and that itself is offered as support for the conclusion of the argument as a whole.",
+      "D": "It is the conclusion of the argument as a whole and is supported by another statement for which support is offered.",
+      "E": "It is one of two conclusions in the argument, neither of which is offered as support for the other."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 4,
+    "stimulus": "Political organizer: Our group needs to assemble at least 30 volunteers if Marcia Garson is to have a chance of winning the election, since she will win only if the public is fully informed about her record. To fully inform the public, at least 30 of our people must campaign for her, but we simply cannot afford to pay people for this work.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the political organizer’s argument?",
+    "answerChoices": {
+      "A": "Marcia Garson will probably not be elected.",
+      "B": "The political organizer’s group cannot afford to pay people to campaign for Marcia Garson.",
+      "C": "If winning the election is to be a possibility for Marcia Garson, the political organizer’s group needs to bring together at least 30 volunteers.",
+      "D": "If the public is not fully informed about Marcia Garson’s record, she will not win the election.",
+      "E": "At least 30 people from the political organizer’s group need to campaign for Marcia Garson in order to fully inform the public about her record."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Giant ground sloths began disappearing from the Americas about 10,000 years ago, around the time that the last ice age ended, and are now extinct worldwide. Scientists had thought that these sloths failed to adapt to climate changes, but they are now coming to believe that it was the arrival of human beings shortly before that ice age ended that was responsible for the sloths’ disappearance.",
+    "questionStem": "Which one of the following, if true, provides the most support for the scientists’ new belief?",
+    "answerChoices": {
+      "A": "Scientists have not found any physical evidence to support the idea that giant ground sloths were hunted to extinction.",
+      "B": "Species of smaller tree-dwelling sloths continue to live throughout South and Central America.",
+      "C": "Their large size made the giant ground sloths less adaptable than most other ground mammals.",
+      "D": "Giant ground sloths are not the only large mammals that began to disappear from the Americas around 10,000 years ago.",
+      "E": "One type of giant ground sloth survived on isolated islands until human beings arrived there well after the last ice age."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Studies have shown that those who take daily doses of vitamin C are less likely to contract colds than are those who do not. Thus, if a person contracts a cold, he or she probably does not take daily doses of vitamin C.",
+    "questionStem": "The questionable reasoning in the argument above most closely parallels that in which one of the following?",
+    "answerChoices": {
+      "A": "To be classified as a hurricane, a tropical storm in the Atlantic Ocean must have sustained wind speeds of over 74 miles (119 kilometers) per hour. So tropical storms with sustained wind speeds at about that level are not hurricanes.",
+      "B": "Everyone who ate the tuna salad prepared in the cafeteria has contracted botulism. So those who ate other dishes prepared in the cafeteria will probably also get this disease.",
+      "C": "Laboratory rats given an extremely low-calorie diet live up to 20 percent longer than do those given a more ordinary diet. So most people could extend their life spans by eating a great deal less than they usually do.",
+      "D": "People who train diligently to play poker can achieve a certain level of proficiency, so those players owe their success to hard work alone.",
+      "E": "Automobile engines that undergo regular oil changes are more likely to be problem free than are those that do not. So automobiles with engine problems probably have not had regular oil changes."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "The Discourses, a work attributed to the ancient Stoic philosopher Epictetus, is believed to have been compiled from Epictetus’s lectures by his student Arrian. Some claim that Arrian himself authored The Discourses and falsely attributed authorship to Epictetus. That is, however, highly unlikely. Epictetus’s views were well known by his contemporaries in Roman society; if Arrian tried to pass off his own views as Epictetus’s, this deception would soon be exposed.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "The Discourses would have received very little attention in Roman society if that work had not been attributed to Epictetus.",
+      "B": "Some of the philosophy that modern scholars believe Arrian subscribed to can be found in The Discourses.",
+      "C": "Arrian in some ways modeled himself on the historian Xenophon, who had written works that he falsely attributed to the philosopher Socrates.",
+      "D": "Arrian had high status in Roman society, which he knew would be undermined if he were shown to be dishonest.",
+      "E": "During his long career, Arrian was a soldier, a consul of Rome, and a governor in Turkey."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "A study tested the performance of 70 pilots, half of whom chose to go on a reduced-calorie diet. Those who did not diet performed well, while pilots who were dieting performed worse, although they had performed well before they started their diets. The average level of impairment for the dieters was approximately equal to that caused by consuming two alcoholic drinks on an empty stomach.",
+    "questionStem": "Each of the following, if true, contributes to an explanation of the study results described above except:",
+    "answerChoices": {
+      "A": "Dieters often become preoccupied with worries about their weight losses and calorie intakes.",
+      "B": "Many of the pilots, including both dieters and nondieters, consumed alcohol before the tests, and dieting increases vulnerability to alcohol’s effects.",
+      "C": "Reduced-calorie dieting makes most people more vulnerable to irritability and fatigue.",
+      "D": "Many of the pilots chose to go on the diet because they were curious about whether one’s weight affects one’s piloting skills.",
+      "E": "Whereas alcohol has no effect on the level of glucose (a nutrient vital to brain function) in the bloodstream, dieting lowers the glucose level."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Guam has 40 times more spiders than nearby islands have. Biologists argue that this is a consequence of the accidental 1940s introduction into Guam of the brown tree snake, which by the 1980s had eliminated ten of twelve native bird species. The biologists attribute the spider population’s increase to the loss of bird species, because many birds prey on spiders and some use spiderwebs in constructing nests.",
+    "questionStem": "Which one of the following, if true, most strengthens the biologists’ conclusion?",
+    "answerChoices": {
+      "A": "Birds compete with spiders for insect prey.",
+      "B": "The biologists counted spiderwebs as a means of estimating the spider population.",
+      "C": "Spiderwebs are more prevalent on Guam than on nearby islands.",
+      "D": "The two bird species remaining on Guam have proliferated since the arrival of the brown tree snakes.",
+      "E": "Brown tree snakes have proven difficult to eradicate on Guam."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "If the glee club pays cash today to rent the equipment it needs for next Saturday’s party, its usual rental agency will accept a much lower price than the club would pay for renting the equipment next Saturday. The club’s party committee knows the costs involved but nonetheless will wait until next Saturday to pay. The committee clearly cares little about saving money.",
+    "questionStem": "Which one of the following assumptions is required by the argument above?",
+    "answerChoices": {
+      "A": "At least some influential members of the club’s party committee are interested in the savings available by renting the equipment today rather than renting it next Saturday.",
+      "B": "Most members of the club’s party committee are aware of the glee club’s financial situation.",
+      "C": "At least one rental agency will not accept a lower price for equipment rental today than it would accept next Saturday.",
+      "D": "The club’s party committee has a number of responsibilities that take priority over saving money.",
+      "E": "There is enough cash available to the glee club today to pay for the equipment rental at today’s lower price."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Must Be False",
+    "questionDifficulty": 4,
+    "stimulus": "If a novelist is popular he or she can vividly imagine large numbers of characters, each with a personality and attitudes that are completely different from those of the others and from those of the novelist. Such a writer also will be capable of empathizing with people who have goals completely different from his or her own and so will have some doubts about the genuine value of his or her own desires.",
+    "questionStem": "If the statements above are true then each of the following could also be true except:",
+    "answerChoices": {
+      "A": "Some novelists who can vividly imagine large numbers of characters with attitudes and personalities completely different from those of the others are not popular.",
+      "B": "Some novelists are incapable of empathizing with people whose goals are completely different from their own.",
+      "C": "Some people who lack the ability to empathize with those who have goals completely different from their own are popular novelists.",
+      "D": "No people who have doubts about the value of their own desires are incapable of empathizing with people who have goals that are completely different from their own.",
+      "E": "Most writers who have doubts about the value of what they desire are popular novelists."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Weaken",
+    "questionDifficulty": 3,
+    "stimulus": "After monitoring blood levels of lycopene (a nutrient found in some fruits and vegetables) in 1,000 middle-aged study participants over a 12-year period, researchers found that participants with low levels of lycopene were more than twice as likely as those with high levels to have a stroke during that period. Clearly, lycopene reduces the risk of stroke.",
+    "questionStem": "Which one of the following, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Most fruits and vegetables that are rich in lycopene also contain high levels of several other nutrients that are thought likely to reduce the risk of stroke.",
+      "B": "Countries in which people consume substantial quantities of lycopene-rich fruits and vegetables generally have lower rates of stroke than other countries.",
+      "C": "Middle-aged people typically have lower lycopene levels than young adults.",
+      "D": "Study participants with high levels of lycopene consumed, on average, twice the quantity of fruits and vegetables as those with low levels of lycopene.",
+      "E": "There was wide variation in lycopene levels among study participants."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "In order to cut costs and thereby maximize his profit, Mr. Kapp used inferior materials in constructing the library. Whether legal or not, it was clearly wrong for him to do so. For, as an experienced and knowledgeable builder, he must have realized that his action would put people at serious risk.",
+    "questionStem": "The argument’s conclusion is properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Any knowledgeable and experienced builder would realize that using the inferior construction materials that Mr. Kapp used would put people at serious risk.",
+      "B": "An action can be wrong from a moral standpoint without necessarily being illegal.",
+      "C": "Mr. Kapp made a large profit from the construction and sale of the building.",
+      "D": "It is wrong to knowingly put people at serious risk for the sake of profit.",
+      "E": "Mr. Kapp either knew or ought to have known that using the inferior materials he used to build the library would put people at serious risk."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Most movie critics believe that sentimentality detracts from aesthetic value. But these critics are wrong, since the reason they hold this belief is that sentimentality pervades so many movies that its absence makes a movie more interesting to frequent movie-goers like themselves. It is like someone whose food is usually prepared with a certain type of flavoring concluding that the flavoring itself detracts from the quality of the food.",
+    "questionStem": "The reasoning in the argument is flawed in that the argument",
+    "answerChoices": {
+      "A": "is based solely on an inappropriate appeal to authority",
+      "B": "rejects a position merely on the grounds that someone who argues for it has an ulterior motive",
+      "C": "takes a necessary condition for a movie’s being of high aesthetic value to be a sufficient condition for this",
+      "D": "concludes that a view is false merely on the grounds of how people came to believe it",
+      "E": "takes what is sufficient for diminishing the quality of a work to be necessary for doing so"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Role",
+    "questionDifficulty": 5,
+    "stimulus": "Business owner: Although allowing coal mining in our region would create new jobs, we can expect the number of jobs in the region to decrease overall if it is permitted. Many local businesses depend on our region’s natural beauty, and the heavy industrial activity of coal mining would force most of them to close.",
+    "questionStem": "Which one of the following most accurately describes the role played in the business owner’s argument by the claim that many local businesses depend on the region’s natural beauty?",
+    "answerChoices": {
+      "A": "It is given as direct evidence for a statement that is used to support the argument’s overall conclusion.",
+      "B": "It is a premise that is offered as direct support for the overall conclusion of the argument.",
+      "C": "It is an intermediate conclusion offered as direct support for the argument’s main conclusion.",
+      "D": "It is the overall conclusion drawn in the argument.",
+      "E": "It is a hypothesis for which evidence is explicitly offered, but it is not itself intended to support the argument’s overall conclusion."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Columnist: Obviously, money helps one satisfy one’s desires. However, people become less happy as they become more wealthy. For, though wealth allows one to satisfy desires one would not otherwise be able to, it invariably creates an even greater number of desires that will not be satisfied.",
+    "questionStem": "Which one of the following, if true, most strengthens the columnist’s argument?",
+    "answerChoices": {
+      "A": "Extreme wealth impedes the attainment of the highest level of happiness.",
+      "B": "The fewer unfulfilled desires one has, the happier one is.",
+      "C": "One’s happiness tends not to increase each time a desire is satisfied.",
+      "D": "There are very few wealthy people who would not prefer to be wealthier.",
+      "E": "Satisfying one’s desires is not the only relevant factor to one’s happiness."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 5,
+    "stimulus": "Laurie: In a democracy, public art should bring people together either by expressing a consensus on a subject or by helping people to reconcile their differences and to recognize that no single opinion is definitive. Since contemporary public art creates only acrimony, it has failed in its task.\nElsa: If people hold radically different opinions, public art should emphasize that. No art form can do the impossible, which is what you are asking for.",
+    "questionStem": "Laurie’s and Elsa’s statements provide the most support for holding that they disagree about",
+    "answerChoices": {
+      "A": "what types of public art are most characteristic of contemporary democracies",
+      "B": "whether it is possible in a democracy to create public art that people with radically different opinions can enjoy and support",
+      "C": "what the criterion of success for public art in a democracy should be",
+      "D": "whether contemporary public art creates only acrimony",
+      "E": "whether it is wise for contemporary public art to help achieve a consensus on a subject"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 3,
+    "stimulus": "Environmental ethicist: Since whooping cranes, unlike sandhill cranes, are endangered as a species, the survival of any one whooping crane is much more important to the preservation of its species than the survival of any one sandhill crane is to the preservation of its species. Hence, we have a greater duty to protect the life of an individual whooping crane than we do to protect the life of an individual sandhill crane.",
+    "questionStem": "The environmental ethicist’s reasoning conforms most closely to which one of the following principles?",
+    "answerChoices": {
+      "A": "Any duty to protect the life of an individual organism is entirely independent of the duty to protect the species to which that organism belongs.",
+      "B": "The more important the survival of individual members is to the preservation of a species, the greater the duty to protect the lives of that species’ individual members.",
+      "C": "The fewer species an endangered species is closely related to, the greater the duty to protect that species.",
+      "D": "There is a greater duty to protect a species as a whole than there is to protect any individual member of that species.",
+      "E": "There is a greater duty to protect one individual organism over another only if the former organism is a member of an endangered species and the latter organism is not."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Must Be True",
+    "questionDifficulty": 3,
+    "stimulus": "All of the one-way streets in the city have dedicated bike lanes. City buses do not travel on any street with a dedicated bike lane. Parking is allowed only on streets that do not have a dedicated bike lane. City bus number nine travels the full length of Batchelder Avenue.",
+    "questionStem": "If the statements above are true, which one of the following must also be true?",
+    "answerChoices": {
+      "A": "Batchelder Avenue is a one-way street.",
+      "B": "Batchelder Avenue is not a one-way street.",
+      "C": "Parking is allowed on Batchelder Avenue.",
+      "D": "Parking is not allowed on Batchelder Avenue.",
+      "E": "Parking is not allowed on any street on which buses do not travel."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 4,
+    "stimulus": "Ecological terms like “invasive species” invoke human cultural standards like belonging, citizenship, fair play, and morality and apply them to the natural world. These terms can influence ecologists’ opinions of certain organisms before any data is gathered about their ecological impact. To prevent this, they should avoid using such terms.",
+    "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
+    "answerChoices": {
+      "A": "Police should not use terms like “thief” when talking to suspects no matter how strong the evidence of their guilt, since suspects are officially innocent until they have been convicted by a court.",
+      "B": "Environmental regulators should not argue publicly that particular substances are harmful, since the government’s decisions about which substances are harmful should be made by legislators.",
+      "C": "Opinion writers should avoid using overly unflattering language to describe their opponents’ views on controversial issues, since such language often leads readers simply to discount the views of the writer that uses it.",
+      "D": "Software developers should refrain from using psychological terms to describe the performance of their programs, since this could influence their expectations about how those programs will handle unanticipated inputs.",
+      "E": "People should be careful when attributing motives to another person in order to explain that person’s behavior, since psychological studies suggest that such attributions are frequently incorrect."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "Employee: Vernon’s behavior in last month’s incident was certainly unprofessional enough that our company was justified in firing him. But several higher-ranking employees whose behavior in the incident was just as unprofessional haven’t been fired and are treated as employees in good standing. So for the sake of consistency, the company must give Vernon his job back.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the employee’s argument?",
+    "answerChoices": {
+      "A": "illicitly using a key term in different senses during the course of the argument",
+      "B": "confusing behavior that is sufficient to justify an action with behavior that is required to justify that action",
+      "C": "offering as its primary evidence a premise that is equivalent to the argument’s conclusion",
+      "D": "treating behavior that can sometimes result in a certain consequence as behavior that always results in that consequence",
+      "E": "inferring that one specific response to a problem is necessary without considering another equally supported response"
+    },
+    "correctAnswer": "E"
+  }
+]

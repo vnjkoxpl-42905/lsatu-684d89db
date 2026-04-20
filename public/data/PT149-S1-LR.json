@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Weaken",
+    "questionDifficulty": 1,
+    "stimulus": "The mayoral race in Bensburg is a choice between Chu, a prodevelopment candidate, and Lewis, who favors placing greater limits on development. Prodevelopment candidates have won in the last six mayoral elections. Thus, Chu will probably defeat Lewis.",
+    "questionStem": "Which one of the following statements, if true, most weakens the argument?",
+    "answerChoices": {
+      "A": "Lewis has extensive experience in national politics, but not in city politics.",
+      "B": "Prodevelopment mayoral candidates in Bensburg generally attract more financial backing for their campaigns.",
+      "C": "Bensburg is facing serious new problems that most voters attribute to overdevelopment.",
+      "D": "Lewis once worked as an aide to a prodevelopment mayor of Bensburg.",
+      "E": "Chu was not thought of as a prodevelopment politician before this election."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Misinterpretation",
+    "questionDifficulty": 2,
+    "stimulus": "Rose: Let’s not see the movie Winter Fields. I caught a review of it in the local paper and it was the worst review I’ve read in years.\nChester: I don’t understand why that might make you not want to see the movie. And besides, nothing in that paper is particularly well written.",
+    "questionStem": "Rose: Let’s not see the movie Winter Fields. I caught a review of it in the local paper and it was the worst review I’ve read in years.\nChester: I don’t understand why that might make you not want to see the movie. And besides, nothing in that paper is particularly well written.\nChester’s response suggests that he misinterpreted which one of the following expressions used by Rose?",
+    "answerChoices": {
+      "A": "see the movie",
+      "B": "caught a review",
+      "C": "local paper",
+      "D": "worst review",
+      "E": "in years"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Point at Issue",
+    "questionDifficulty": 1,
+    "stimulus": "Enrique: The city’s transit authority does not have enough money to operate for the next twelve months without cutting service or increasing fares, and the federal government has so far failed to provide additional funding. Nonetheless, the transit authority should continue operating without service cuts or fare increases until it has exhausted its funds. At that point, the federal government will be willing to provide funding to save the authority.\nCynthia: If the transit authority tries that maneuver, the federal government will probably just let the authority go out of business. The transit authority cannot risk allowing that to happen.",
+    "questionStem": "The dialogue most strongly supports the claim that Enrique and Cynthia disagree over whether",
+    "answerChoices": {
+      "A": "the transit authority should continue operating without cutting service or increasing fares until it has exhausted its funds",
+      "B": "the federal government should provide additional funding to the transit authority",
+      "C": "it would be better for the transit authority to cut services than it would be to raise fares",
+      "D": "the federal government is willing to provide additional funding to the transit authority now",
+      "E": "the transit authority can afford to operate for the next twelve months without cutting service even if it does not receive additional funding"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "A survey published in a leading medical journal in the early 1970s found that the more frequently people engaged in aerobic exercise, the lower their risk of lung disease tended to be. Since other surveys have confirmed these results, it must be the case that aerobic exercise has a significant beneficial effect on people’s health.",
+    "questionStem": "The reasoning above is questionable because the argument",
+    "answerChoices": {
+      "A": "ignores anecdotal evidence and bases its conclusion entirely on scientific research",
+      "B": "considers only surveys published in one particular medical journal",
+      "C": "concludes merely from the fact that two things are correlated that one causes the other",
+      "D": "presumes, without providing justification, that anyone who does not have lung disease is in good health",
+      "E": "fails to consider that even infrequent aerobic exercise may have some beneficial effect on people’s health"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Researchers examined 100 people suffering from herniated disks in their backs. Five of them were found to have a defect in a particular gene. The researchers also examined 100 people who had no problems with the disks in their backs; none had the genetic defect. They concluded that the genetic defect increases the likelihood of herniated disks.",
+    "questionStem": "Which one of the following, if true, most strengthens the researchers’ reasoning?",
+    "answerChoices": {
+      "A": "The researchers also examined a group of 100 people who did not have the defective gene; 80 were found to have herniated disks in their backs.",
+      "B": "When the researchers examined a group of 100 people with the defective gene, they found that 2 of them had herniated disks in their backs.",
+      "C": "When the researchers examined the families of the 5 subjects who had the defective gene, they found that 30 family members also had the defective gene, and each of them suffered from herniated disks.",
+      "D": "Another team of researchers examined a different group of 100 people who suffered from herniated disks, and they found that none of them had the defective gene.",
+      "E": "When the researchers examined the family of one of the subjects who did not suffer from herniated disks, they found 30 family members who did not have the defective gene, and 20 of them suffered from herniated disks."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "The only vehicles that have high resale values are those that are well maintained. Thus any well-maintained vehicle has a high resale value.",
+    "questionStem": "The flawed nature of the argument can most effectively be demonstrated by noting that, by parallel reasoning, we could argue that",
+    "answerChoices": {
+      "A": "since none of the plants in this garden have been pruned before, no plant in this garden needs pruning",
+      "B": "since the best mediators have the longest track records, the worst mediators have the shortest track records",
+      "C": "since only those who desire to become astronauts actually become astronauts, that desire must be the most important factor involved in determining who will become an astronaut",
+      "D": "since all city dwellers prefer waterfalls to traffic jams, anyone who prefers waterfalls to traffic jams is a city dweller",
+      "E": "since one’s need for medical care decreases as one’s health improves, a person who is in an excellent state of health has no need of medical care"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Point at Issue",
+    "questionDifficulty": 2,
+    "stimulus": "Rita: No matter how you look at them, your survey results are misleading. Since people generally lie on such surveys, the numbers you collected are serious underestimates.\nHiro: I have no doubt that people lie on surveys of this type. The question is whether some people lie more than others. While the raw numbers surely underestimate what I’m trying to measure, the relative rates those numbers represent are probably close to being accurate.",
+    "questionStem": "Rita and Hiro disagree over whether",
+    "answerChoices": {
+      "A": "the survey results are misleading regardless of how they are interpreted",
+      "B": "people tend to lie on certain kinds of surveys",
+      "C": "a different type of measure than a survey would produce results that are less misleading",
+      "D": "the raw numbers collected are serious underestimates",
+      "E": "the number of people surveyed was adequate for the survey’s purpose"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Method of Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "Lopez: Our university is not committed to liberal arts, as evidenced by its decision to close the classics department. The study of classical antiquity is crucial to the liberal arts, and it has been so since the Renaissance.\nWarrington: Although the study of classical works is essential to the liberal arts, a classics department isn’t, since other departments often engage in that study.",
+    "questionStem": "Warrington’s argument proceeds by",
+    "answerChoices": {
+      "A": "offering additional reasons in favor of the conclusion of Lopez’s argument",
+      "B": "claiming that the reasoning in Lopez’s argument rests on an illicit appeal to tradition",
+      "C": "mounting a direct challenge to the conclusion of Lopez’s argument",
+      "D": "responding to a possible objection to the reasoning in Lopez’s argument",
+      "E": "presenting a consideration in order to undermine the reasoning in Lopez’s argument"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 5,
+    "stimulus": "Ted, a senior employee, believes he is underpaid and attempts to compensate by routinely keeping short hours, though it is obvious to everyone that he still makes some valuable, unique, and perhaps irreplaceable contributions. Tatiana, Ted’s supervisor, is aware of the deficit in Ted’s performance, and realizes other workers work harder than they should to make up for it. Nevertheless, Tatiana decides that she should not request that Ted be replaced.",
+    "questionStem": "Which one of the following principles, if valid, most help to justify Tatiana’s decision?",
+    "answerChoices": {
+      "A": "Supervisors should request that an employee be replaced only if they know that all the work done by that employee can be performed equally well by another employee.",
+      "B": "Employers should compensate all their employees in a way that is adequate in relation to the value of the contributions they make.",
+      "C": "Only someone with greater authority than a particular employee’s supervisor is entitled to decide whether that employee should be replaced.",
+      "D": "Workers in a work setting should regard themselves as jointly responsible for the work to be performed.",
+      "E": "An employee’s contributions in the workplace are not always a function of the amount of time spent on the job."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Paradox",
+    "questionDifficulty": 4,
+    "stimulus": "One adaptation that enables an animal species to survive despite predation by other species is effective camouflage. Yet some prey species with few or no other adaptations to counteract predation have endured for a long time with black-and-white coloration that seems unlikely to provide effective camouflage.",
+    "questionStem": "Which one of the following, if true, most contributes to a resolution of the apparent discrepancy mentioned above?",
+    "answerChoices": {
+      "A": "Most species with black-and-white coloration are more populous than the species that prey upon them.",
+      "B": "No form of camouflage is completely effective against all kinds of predators.",
+      "C": "Animals of many predatory species do not perceive color or pattern in the same manner as humans do.",
+      "D": "Conspicuous black-and-white areas help animals of the same species avoid encounters with one another.",
+      "E": "Black-and-white coloration is not as great a liability against predators at night as it is during the day."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 1,
+    "stimulus": "Lecturer: If I say, “I tried to get my work done on time,” the meanings of my words do not indicate that I didn’t get it done on time. But usually you would correctly understand me to be saying that I didn’t. After all, if I had gotten my work done on time, I would instead just say, “I got my work done on time.” And this example is typical of how conversation works.",
+    "questionStem": "The lecturer’s statements, if true, most strongly support which one of the following statements?",
+    "answerChoices": {
+      "A": "Understanding what people say often requires more than just understanding the meanings of the words they use.",
+      "B": "It is unusual for English words to function in communication in the way that “tried” does.",
+      "C": "Understanding what people use a word to mean often requires detecting their nonverbal cues.",
+      "D": "Speakers often convey more information in conversation than they intend to convey.",
+      "E": "Listeners cannot reasonably be expected to have the knowledge typically required for successful communication."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "Legislator: The recently passed highway bill is clearly very unpopular with voters. After all, polls predict that the majority party, which supported the bill’s passage, will lose more than a dozen seats in the upcoming election.",
+    "questionStem": "The reasoning in the legislator’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "gives no reason to think that the predicted election outcome would be different if the majority party had not supported the bill",
+      "B": "focuses on the popularity of the bill to the exclusion of its merit",
+      "C": "infers that the bill is unpopular from a claim that presupposes its unpopularity",
+      "D": "takes for granted that the bill is unpopular just because the legislator wishes it to be unpopular",
+      "E": "bases its conclusion on the views of voters without establishing their relevant expertise on the issues involved"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Must Be True",
+    "questionDifficulty": 4,
+    "stimulus": "Songwriters get much of the money they earn from their songs from radio airplay. A hit song is played thousands of times, and the songwriter is paid for each play. Only a fraction of songwriters actually achieve a hit, however, and even fewer manage to write several. Writers of hit songs are often asked to write songs for movie sound tracks, but they sometimes decline, because although such songs frequently become hits, their writers receive single up-front payments rather than continued revenues from radio airplay.",
+    "questionStem": "If the statements above are true, which one of the following must be true?",
+    "answerChoices": {
+      "A": "Any songwriter who receives revenue from radio airplay has written a hit song.",
+      "B": "All songwriters who write songs for movie sound tracks have had their songs played on the radio thousands of times.",
+      "C": "Some songs written for movie sound tracks are played on the radio thousands of times.",
+      "D": "Most songwriters prefer the possibility of continued income to single up-front payments for their songs.",
+      "E": "Some songwriters earn money solely from the radio airplay of their songs."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Debate coach: Britta’s command of the historical facts was better than Robert’s, and that led to the distinct impression that Britta won the debate. But it’s also important to evaluate how reasonable the debaters’ arguments were, regardless of their ability to bring the facts to bear in those arguments. When you take that into consideration, Robert’s debate performance was as good as Britta’s.",
+    "questionStem": "The debate coach’s argument depends on the assumption that",
+    "answerChoices": {
+      "A": "Britta’s arguments were quite unreasonable",
+      "B": "Robert’s arguments were more reasonable than Britta’s",
+      "C": "good debate performances require very reasonable arguments",
+      "D": "neither Britta nor Robert was in full command of the facts",
+      "E": "winning a debate requires having a good command of the facts"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Physicists attempting to create new kinds of atoms often do so by fusing together two existing atoms. For such fusion to occur, the two atoms must collide with enough energy—that is, at high enough speeds—to overcome the electromagnetic force by which atoms repel each other. But if the energy with which two atoms collide greatly exceeds the minimum required for the fusion to take place, the excess energy will be converted into heat, making the resulting new atom very hot. And the hotter the atom is, the greater the chance that it will immediately split apart again.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "When physicists create new kinds of atoms by fusing together two existing atoms, the new atoms usually split apart again immediately.",
+      "B": "If a new atom produced by the collision of two other atoms immediately splits apart again, then the collision did not produce enough energy to overcome the electromagnetic force by which atoms repel each other.",
+      "C": "The stronger the electromagnetic force by which two atoms repel each other, the hotter any new atom will be that is created by the fusion of those two atoms.",
+      "D": "Whenever two existing atoms are made to collide and fuse together into a new atom, little energy is produced in the collision unless the new atom immediately splits apart.",
+      "E": "If two atoms collide with considerably more energy than is needed for fusion to take place, the new atom will be likely to immediately split apart again."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "Fremont: Simpson is not a viable candidate for chief executive of Pod Oil because he has no background in the oil industry.\nGalindo: I disagree. An oil industry background is no guarantee of success. Look no further than Pod Oil’s last chief executive, who had decades of oil industry experience but steered the company to the brink of bankruptcy.",
+    "questionStem": "Galindo’s argument is flawed in that it",
+    "answerChoices": {
+      "A": "fails to justify its presumption that Fremont’s objection is based on personal bias",
+      "B": "fails to distinguish between relevant experience and irrelevant experience",
+      "C": "rests on a confusion between whether an attribute is necessary for success and whether that attribute is sufficient for success",
+      "D": "bases a conclusion that an attribute is always irrelevant to success on evidence that it is sometimes irrelevant to success",
+      "E": "presents only one instance of a phenomenon as the basis for a broad generalization about that phenomenon"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Discharges of lightning from a volcanic ash cloud occur only when the cloud’s highest point exceeds an altitude of 5 kilometers. Those discharges become progressively more frequent as the ash cloud moves higher still. Weather radar can measure the altitude of ash clouds, but it is not available in all parts of the world. Hence lightning discharge data can sometimes be our only reliable indicator of the altitude of ash clouds.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "The highest point of any volcanic ash cloud will eventually exceed an altitude of 5 kilometers.",
+      "B": "Lightning discharges can be detected in some regions in which weather radar is unavailable.",
+      "C": "Weather radar is no less accurate in determining the altitude of volcanic ash clouds than it is in determining the altitude of regular clouds.",
+      "D": "A volcanic ash cloud whose highest point exceeds an altitude of 5 kilometers is likely to be at least partly beyond the reach of weather radar.",
+      "E": "Lightning discharges are no more frequent for large volcanic ash clouds than for small volcanic ash clouds."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "If the standards committee has a quorum, then the general assembly will begin at 6:00 P.M. today. If the awards committee has a quorum, then the general assembly will begin at 7:00 P.M. today.",
+    "questionStem": "If the statements above are true, which one of the following statements follows logically from the statements above?",
+    "answerChoices": {
+      "A": "If the general assembly does not begin at 6:00 P.M. today, then the awards committee has a quorum.",
+      "B": "If the standards committee does not have a quorum, then the awards committee has a quorum.",
+      "C": "If the general assembly begins at 6:00 P.M. today, then the standards committee has a quorum.",
+      "D": "If the general assembly does not begin at 7:00 P.M. today, then the standards committee has a quorum.",
+      "E": "If the standards committee has a quorum, then the awards committee does not have a quorum."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Paradox",
+    "questionDifficulty": 4,
+    "stimulus": "One of the things lenders do in evaluating the risk of a potential borrower defaulting on a loan is to consider the potential borrower’s credit score. In general, the higher the credit score, the less the risk of default. Yet for mortgage loans, the proportion of defaults is much higher for borrowers with the highest credit scores than for other borrowers.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?",
+    "answerChoices": {
+      "A": "Mortgage lenders are much less likely to consider risk factors other than credit score when evaluating borrowers with the highest credit scores.",
+      "B": "Credit scores reported to mortgage lenders are based on collections of data that sometimes include errors or omit relevant information.",
+      "C": "A potential borrower’s credit score is based in part on the potential borrower’s past history in paying off debts in full and on time.",
+      "D": "For most consumers, a mortgage is a much larger loan than any other loan the consumer obtains.",
+      "E": "Most potential borrowers have credit scores that are neither very low nor very high."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 4,
+    "stimulus": "Computer modeling of reasoning tasks is far easier than computer modeling of other cognitive tasks, such as the processing of sense images. Computers can defeat chess champions, but cannot see. So, it appears that we understand the analytical capabilities of our minds much better than we understand our senses.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "The degree of difficulty of constructing computer models of cognitive tasks is a good index of the degree of difficulty of performing those tasks.",
+      "B": "The better we understand a computer’s ability to perform a type of task, the better we will understand our own ability to perform it.",
+      "C": "A computer’s defeat of a chess champion should count as an indication that the computer possesses true intelligence.",
+      "D": "The less difficult it is to construct a computer model of a process the better understood is that process.",
+      "E": "We should not underestimate the usefulness of computer modeling to the study of human cognition."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Archaeologist: Our team discovered 5,000-year-old copper tools near a Canadian river, in a spot that offered easy access to the raw materials for birchbark canoes—birch, cedar, and spruce trees. The tools are of a sort used by the region’s Aboriginal people in making birchbark canoes in more recent times. It is likely therefore that Aboriginal people in Canada built birchbark canoes 5,000 years ago.",
+    "questionStem": "The archaeologist’s argument depends on the assumption that the copper tools that were found",
+    "answerChoices": {
+      "A": "had no trade value 5,000 years ago",
+      "B": "were present in the region 5,000 years ago",
+      "C": "were designed to be used on material from birch, cedar, and spruce trees only",
+      "D": "were the only kind of tool that would have been used for canoe making 5,000 years ago",
+      "E": "are not known to have been used by the region’s Aboriginal people for any task other than canoe making"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "Advertisement: Hypnosis videos work to alter behavior by subliminally directing the subconscious to act in certain ways. Directions to the subconscious must, however, be repeated many times in order to be effective. Hypnosis videos from Mesmosis, Inc. induce a hypnotic state and then issue an initial command to the subject’s subconscious to experience each subsequent instruction as if it had been repeated 1,000 times. Because of the initial instruction, the subsequent instructions on Mesmosis videos are extremely effective—it is as if they had actually been repeated 1,000 times!",
+    "questionStem": "The advertisement’s reasoning is most vulnerable to criticism on the grounds that the advertisement",
+    "answerChoices": {
+      "A": "overlooks a requirement that it states for the effectiveness of directions to the subconscious",
+      "B": "takes for granted that the effectiveness of a direction to the subconscious is always directly proportional to the number of times the direction is repeated",
+      "C": "concludes that hypnosis is the most effective technique for altering behavior without considering evidence supporting other techniques",
+      "D": "draws a conclusion that simply restates a claim presented in support of that conclusion",
+      "E": "concludes that hypnosis videos will be effective simply because they have never been proven to be ineffective"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "The traditional view of the Roman emperor Caligula as a cruel and insane tyrant has been challenged by some modern historians. They point out that little documentation of Caligula’s alleged cruelty or outrageous behavior survives from the time of his reign and that the histories that have come down to us were written by his enemies.",
+    "questionStem": "Which one of the following, if true, adds the most support for the challenge from the modern historians?",
+    "answerChoices": {
+      "A": "There is less documentation of any sort from Caligula’s reign than from the reigns of most other Roman emperors of Caligula’s era.",
+      "B": "People who have lived under someone regarded as a cruel tyrant are more likely to view that person unfavorably than favorably.",
+      "C": "The specific outrageous acts attributed to Caligula in Roman documentation are very similar to acts attributed in earlier writings to other rulers alleged to be cruel tyrants.",
+      "D": "The little documentation that survives from Caligula’s reign indicates that the Roman people believed Caligula to be crueler than other emperors who were widely thought to be tyrants.",
+      "E": "There is ample documentation of modern tyrants being responsible for outrageous acts worse than those attributed to Caligula."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 4,
+    "stimulus": "Critics of a plan to create new building sites from land that currently lies under only 5 meters of water claim that it will reduce the habitat area available to a local subpopulation of dolphins. It is true that the dolphins never enter water more than 30 meters deep, and the current area of habitation is bounded on one side by land and everywhere else by water that is considerably deeper than that. Nevertheless, the critics are mistaken, because _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "the dolphins’ current habitat area is large enough to support a dolphin population several times the size of the current one",
+      "B": "the dolphins do not inhabit water that is less than 10 meters deep",
+      "C": "the most serious threat to the dolphin subpopulation is not habitat reduction but disease and ocean pollution",
+      "D": "the average depth of water in the dolphins’ habitat area is 25 meters",
+      "E": "a short distance from the dolphins’ habitat area, the ocean floor drops to a depth of 100 meters"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT149",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "Any popular television series that is groundbreaking is critically acclaimed. But not all popular television series are critically acclaimed. Thus, not all popular television series are groundbreaking.",
+    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "If articles use specialized technical terminology, they are not widely read. So, since all academic works use specialized technical terminology, articles are not widely read if they are academic works.",
+      "B": "Professor Attah gives students high grades if she thinks their work is greatly improved. So, since she gives some of her students high grades, she thinks those students’ work is greatly improved.",
+      "C": "If a biography is unbiased, it contains embarrassing facts about its subject. So, since not all biographies contain embarrassing facts about their subjects, not all biographies are unbiased.",
+      "D": "Mr. Schwartz is polite to anyone who is polite to him. So, since all of his colleagues are polite to him, it must be that he is polite to all his colleagues.",
+      "E": "If a book is worth reading, it is worth buying. So, since not all books are worth reading, not all books are worth buying."
+    },
+    "correctAnswer": "D"
+  }
+]

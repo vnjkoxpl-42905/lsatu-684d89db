@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 1,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "Treat training consists of rewarding dogs with edible treats whenever they respond appropriately to commands. Most dogs will quickly learn what they need to do to receive a treat, so this appears to be an effective training method. However, most dogs who have been treat-trained will not obey commands unless they are shown a treat. Since you cannot always have treats on hand, you should instead use praise and verbal correction to train your dog.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
+    "answerChoices": {
+      "A": "The more quickly a dog learns to respond to a stimulus, the more likely it is that the owner will continue to use that stimulus.",
+      "B": "The more often a dog is given a stimulus, the more likely it is that the dog will obey its owner’s command even when the owner does not provide that stimulus.",
+      "C": "A dog should be trained by the method that results in a high obedience rate in at least some circumstances.",
+      "D": "A dog should be trained to respond to a stimulus that its owner can supply in all situations.",
+      "E": "A dog should not be trained by a method that has not proven to be effective for any other dogs."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 2,
+    "questionType": "Weaken",
+    "questionDifficulty": 3,
+    "stimulus": "Archaeologist: For 2,000 years the ancient Sumerians depended on irrigation to sustain the agriculture that fed their civilization. But eventually irrigation built up in the soil toxic levels of the salts and other impurities left behind when water evaporates. When its soil became unable to support agriculture, Sumerian civilization collapsed. A similar fate is thus likely to befall modern civilizations that continue to rely heavily on irrigation for agriculture.",
+    "questionStem": "Which one of the following, if true, most weakens the archaeologist’s argument?",
+    "answerChoices": {
+      "A": "Most modern civilizations could not feed themselves through agriculture without relying heavily on irrigation.",
+      "B": "Factors unrelated to the use of irrigation would probably have caused Sumerian civilization to collapse sooner or later.",
+      "C": "Many modern farmers use irrigation techniques that avoid the buildup of salts and other toxic impurities in the soil.",
+      "D": "Many modern civilizations do not rely to any significant extent on irrigation for agriculture.",
+      "E": "The soil of ancient Sumeria already contained some toxic salts and other impurities before the Sumerians started using irrigation for agriculture."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 3,
+    "questionType": "Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Researcher: Dinosaur fossils come in various forms, including mineralized bones and tracks in dried mud flats. However, mineralized dinosaur bones and dinosaur tracks in dried mud flats are rarely found together. This isn’t surprising, because creatures that scavenged dinosaur carcasses most likely frequented mud flats to find food.",
+    "questionStem": "Which one of the following, if true, would most strengthen the researcher’s argument?",
+    "answerChoices": {
+      "A": "Dinosaur tracks are also found in locations other than mud flats.",
+      "B": "Scavengers commonly drag a carcass away from the site where it was found.",
+      "C": "Researchers have found more fossil dinosaur tracks than fossil dinosaur bones.",
+      "D": "Dinosaur fossils other than mineralized bone or tracks in dried mud flats are quite common.",
+      "E": "It takes longer for bone to mineralize than it takes for tracks to dry in mud flats."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 4,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 1,
+    "stimulus": "Electric stovetop burners would cause fewer fires if their highest temperature were limited to 350°C (662°F), which provides more than enough heat for efficient and effective cooking. The lowest temperature at which cooking oil and most common fibers ignite is 387°C, and electric burners on high go well above 700°C.",
+    "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
+    "answerChoices": {
+      "A": "Electric stovetop burners would cause fewer fires if their highest temperature were limited to 350°C.",
+      "B": "A maximum temperature of 350°C provides more than enough heat for efficient and effective cooking.",
+      "C": "The lowest ignition temperature for cooking oil and most common fibers is 387°C.",
+      "D": "Electric burners on high go well above 700°C.",
+      "E": "Electric stovetop burners cause fires because they go well above 700°C when set on high."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 5,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Jenkins maintains that the movie Firepower was not intended to provoke antisocial behavior, arguing that, on the contrary, it is in the interest of Firepower’s director to prevent such behavior. Yet Jenkins’s conclusion must be rejected, because the movie has clearly produced antisocial behavior among many of those who have seen it.",
+    "questionStem": "The reasoning in the argument is flawed in that it",
+    "answerChoices": {
+      "A": "rejects an argument on the grounds that it was offered by a person who was biased",
+      "B": "concludes from a mere correlation between certain phenomena that those phenomena are causally related",
+      "C": "infers that something is true of a whole solely on the grounds that it is true of a part of the whole",
+      "D": "overlooks the possibility that people can act in a way that is contrary to their expressed interest",
+      "E": "concludes from the mere fact that an action had a certain effect that the effect was intended by the person who performed the action"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 6,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "The word “loophole” is a loaded, partisan word, one that implies wrongdoing and scandal. When “loophole” creeps into news stories, they start to read like editorials. So news reporters should not use the term “loophole” in their stories unless they provide evidence of wrongdoing.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
+    "answerChoices": {
+      "A": "Making use of a loophole never constitutes wrongdoing or scandal.",
+      "B": "Editorials should meet the same journalistic standards as news stories.",
+      "C": "News stories need to give evidence to back up any suggestions of misconduct.",
+      "D": "Editorial writers should be free to use loaded, partisan words.",
+      "E": "News reporters should not report on wrongdoing and scandal that is not a matter of public interest."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 7,
+    "questionType": "Strengthen",
+    "questionDifficulty": 2,
+    "stimulus": "Expert: Some people claim that, since food production has thus far increased faster than population has, there is no need to be concerned about widespread food shortages. These people fail to recognize that the planet’s resources allow for food to be produced at only a few times the current amount, beyond which no increase in production will be possible. Thus, widespread food shortages are inevitable.",
+    "questionStem": "Which one of the following, if true, most strengthens the expert’s reasoning?",
+    "answerChoices": {
+      "A": "The world’s food resources, though limited, are renewable.",
+      "B": "Food resources from the world’s oceans will eventually be fully utilized.",
+      "C": "The world’s population has recently remained fairly stable because of falling birth rates.",
+      "D": "Periodic regional food shortages have occurred at least briefly throughout history.",
+      "E": "Population will continue to grow at least briefly when food production has reached its maximum level."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 8,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "In the earliest video games, the player typically controlled the movements of a simple icon on the screen. But in newer video games, players often control the movements of detailed human figures—a feature possible because of the greater technical sophistication of these games. It is hard for players to identify with these figures, since the players can see that the figures represent other people. Thus, in this respect the technical sophistication of the newer video games often makes them less compelling to players.",
+    "questionStem": "The conclusion of the argument can be properly drawn if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "There are no newer, more technically sophisticated video games in which the player controls the movements of a simple icon on the screen.",
+      "B": "Most early video games in which the player controlled a simple icon on the screen were in other respects less compelling to players than newer video games.",
+      "C": "The technical sophistication necessary for creating detailed human figures in video games cannot in itself make those video games fully compelling even to players who identify with those figures.",
+      "D": "When players cannot easily identify with the figure or icon whose movements they control in a video game, they usually find that game less compelling than it otherwise would be.",
+      "E": "If some aspect of a video game’s technical sophistication makes it less compelling to players, then that video game contains a human figure with whom it is difficult for players to identify."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 9,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "There are many agricultural regions in North America where the growing season is long enough to allow pumpkin production well into autumn with no risk of frost. Nonetheless, pumpkin production in North America is concentrated in regions with long, cold winters, where the growing season is delayed and pumpkin crops are exposed to risk of damage or destruction by early autumn frosts.",
+    "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
+    "answerChoices": {
+      "A": "Pumpkins are usually grown to reach maturity in autumn.",
+      "B": "Pumpkins depend on bees for pollination, and bees are active only in warm weather.",
+      "C": "More pumpkins are sold to consumers in regions of North America with long growing seasons than to those in regions with short growing seasons.",
+      "D": "Prolonged cold temperatures kill soil-borne fungus and other sources of disease that would kill or seriously damage pumpkins.",
+      "E": "Most of the pumpkin seed used by growers in North America is produced in areas where the growing season is long, and plants used for seed production are protected in greenhouses."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 10,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "Council chair: The traditional code of parliamentary procedure contains a large number of obscure, unnecessary rules, which cause us to quibble interminably over procedural details and so to appear unworthy of public confidence. Admittedly, the code is entrenched and widely accepted. But success in our endeavors depends on the public’s having confidence in our effectiveness. Therefore, it is imperative that we adopt the alternate code, which has been in successful use elsewhere for several years.",
+    "questionStem": "Which one of the following, if true, most seriously undermines the chair’s conclusion?",
+    "answerChoices": {
+      "A": "The council’s use of the problematic rules in the traditional code is intermittent.",
+      "B": "Those who have adopted the alternate code sometimes attempt to use it to obscure their opponents’ understanding of procedures.",
+      "C": "Revision of the traditional code is underway that will eliminate the problematic rules.",
+      "D": "It is not always reasonable to adopt a different code in order to maintain the public’s confidence.",
+      "E": "The alternate code contains few provisions that have thus far been criticized as obscure or unnecessary."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 11,
+    "questionType": "Paradox",
+    "questionDifficulty": 2,
+    "stimulus": "Businesses frequently use customer surveys in an attempt to improve sales and increase profits. However, a recent study of the effectiveness of these surveys found that among a group of businesses that sold similar products, profits declined in most of the businesses that used surveys during the course of the study but not in most of the businesses that did not use any surveys during the course of the study.",
+    "questionStem": "Which one of the following, if true, most helps to explain why the profits of businesses that did not use customer surveys did not decline while the profits of those that used surveys did decline?",
+    "answerChoices": {
+      "A": "When one business increases its profits, its competitors often report a decline in profits.",
+      "B": "Some businesses routinely use customer surveys.",
+      "C": "Most businesses of the kind included in the study generally administer customer surveys only as a response to complaints by customers.",
+      "D": "Customers who complete surveys do not always respond accurately to all the questions on the survey.",
+      "E": "Some of the businesses included in the study did not analyze the results of the customer surveys they conducted."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 12,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Humans’ emotional tendencies are essentially unchanged from those of the earliest members of our species. Accordingly, although technology makes possible a wider range of individual and societal choices than in centuries past, humans are generally unable to choose more wisely.",
+    "questionStem": "The argument depends on assuming which one of the following?",
+    "answerChoices": {
+      "A": "Humans have undergone no significant changes since the origin of the species.",
+      "B": "Humans who make wise choices are generally in control of their emotions.",
+      "C": "Human history cannot make humans any wiser unless humans are emotionally disposed to heed the lessons of history.",
+      "D": "Regardless of the range of choices available to humans, they choose on the basis of their emotions alone.",
+      "E": "Humans would now be able to make wiser choices than in centuries past only if an essential change had taken place in humans’ emotional dispositions."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 13,
+    "questionType": "Role",
+    "questionDifficulty": 4,
+    "stimulus": "Some ornithologists believe that many species of songbirds are threatened by deforestation. Yet they also claim that, despite recent reforestation, matters continue to worsen, since it is fragmentation of forest rather than reduction of forest size that endangers songbird species. The introduction of open spaces and corridors in forests reduces the distance of songbird nests from unforested areas and thus reduces the songbirds’ natural shield from predators.",
+    "questionStem": "The claim that there has recently been reforestation plays which one of the following roles in the ornithologists’ argument?",
+    "answerChoices": {
+      "A": "It is used as evidence that various species of songbirds will continue to be threatened with extinction.",
+      "B": "It is presented as a claim that is rejected by ornithologists who present declining songbird populations as evidence of deforestation.",
+      "C": "It is presented as a phenomenon that is compatible with the ornithologists’ claim that the threat to songbirds continues to worsen.",
+      "D": "It is used as evidence that songbirds’ predators will continue to have a habitat and so will continue to pose a threat to songbirds.",
+      "E": "It is presented as evidence for the claim that songbirds’ predators are threatened by extinction unless they have open spaces and corridors that give them access to their prey."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 14,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Researchers recently studied the relationship between diet and mood, using a diverse sample of 1,000 adults. It was found that those who ate the most chocolate were the most likely to feel depressed. Therefore, by reducing excessive chocolate consumption, adults can almost certainly improve their mood.",
+    "questionStem": "The argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It improperly infers from the fact that a substance causally contributes to a condition that a reduction in the consumption of the substance is likely to eliminate that condition.",
+      "B": "It draws a conclusion about the population as a whole on the basis of a sample that is unlikely to be representative of that population.",
+      "C": "It draws a conclusion about a causal relationship between two phenomena from evidence that merely suggests that there is a correlation between those phenomena.",
+      "D": "It confuses a condition that is necessary for establishing the truth of the conclusion with a condition that is sufficient for establishing the truth of the conclusion.",
+      "E": "Its conclusion is worded too vaguely to evaluate the degree to which the premises support the truth of the conclusion."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 15,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "Among the many temptations of the digital age, manipulation of photographs has proved particularly troublesome for science. Recently, a journal of cellular biology began using a software tool to examine the digital images submitted along with articles for publication. It discovered that dozens of authors had submitted digital images that had been manipulated in ways that violated the journal’s guidelines. Clearly, scientific fraud is a widespread problem among the authors submitting to that journal.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "The scientists who submitted manipulated images were aware that the journal used software to examine digital images for evidence of manipulation.",
+      "B": "The journal requires that all articles submitted for publication include digital images.",
+      "C": "Scientific fraud is possible in the field of cellular biology only if the research is documented with digital images.",
+      "D": "Many of the scientists who submitted articles with manipulated images did so in order to misrepresent the information conveyed by those images.",
+      "E": "Scientific fraud is a widespread problem only among scientists who submit articles to journals of cellular biology."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "questionDifficulty": 5,
+    "stimulus": "There are already more great artworks in the world than any human being could appreciate in a lifetime, works capable of satisfying virtually any taste imaginable. Thus, contemporary artists, all of whom believe that their works enable many people to feel more aesthetically fulfilled than they otherwise could, are mistaken.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "overlooks the possibility that not all contemporary artists believe that their works enable many people to feel more aesthetically fulfilled than they otherwise could",
+      "B": "presumes, without providing justification, that most human beings are inclined to take the time to appreciate many great artworks",
+      "C": "presumes, without providing justification, that the value of an artwork depends on the degree to which human beings appreciate it",
+      "D": "overlooks the possibility that the work of at least one contemporary artist is appreciated by many people whose access to the great majority of other artworks is severely restricted",
+      "E": "presumes, without providing justification, that the number and variety of great artworks already in the world affects the amount of aesthetic fulfillment derivable from any contemporary artwork."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 17,
+    "questionType": "Must Be True",
+    "questionDifficulty": 3,
+    "stimulus": "The government health service has said that it definitely will not pay for patients to take the influenza medicine Antinfia until the drug’s manufacturer, PharmCo, provides detailed information about Antinfia’s cost-effectiveness. PharmCo has responded that obtaining such information would require massive clinical trials. These trials cannot be performed until the drug is in widespread circulation, something that will happen only if the government health service pays for Antinfia.",
+    "questionStem": "If the statements of both the government health service and PharmCo are true, which one of the following is most likely to also be true?",
+    "answerChoices": {
+      "A": "The government health service never pays for any medicine unless that medicine has been shown to be cost-effective.",
+      "B": "Antinfia will never be in widespread circulation.",
+      "C": "If the government health service does not pay for Antinfia, then many patients will pay for Antinfia themselves.",
+      "D": "The government health service should pay for patients to take Antinfia.",
+      "E": "Antinfia is not cost-effective."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 18,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Journalist: Scientists took blood samples from two large, diverse groups of volunteers. All the volunteers in one group reported that they enjoyed eating vegetables, whereas all those in the other group disliked vegetables. When the blood samples from the group that disliked vegetables were analyzed, it was discovered that all the volunteers in that group had a gene in common, the XRV2G gene. This strongly suggests that a dislike of vegetables is, at least in some cases, genetically determined.",
+    "questionStem": "The journalist’s argument is most vulnerable to criticism on which one of the following grounds?",
+    "answerChoices": {
+      "A": "It presumes that all human traits are genetically determined.",
+      "B": "It overlooks the possibility that the volunteers in one or both of the two groups may not have been representative of the human population as a whole in one or more respects.",
+      "C": "It overlooks the possibility that even when one phenomenon always produces another phenomenon, the latter phenomenon may often be present when the former is absent.",
+      "D": "It overlooks the possibility that even if a dislike of vegetables is genetically determined, it may be strongly influenced by genes other than the XRV2G gene.",
+      "E": "It takes for granted that the volunteers in the group that enjoyed eating vegetables did not also all have the XRV2G gene in common."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 19,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 3,
+    "stimulus": "Ana: On libertarian principles, I oppose the proposed smoking ban. It is not the government’s business to prevent people from doing things that harm only themselves.\nPankaj: But keep in mind that the ban would apply only to smoking in public places. People could still smoke all they want in private.",
+    "questionStem": "The dialogue provides the most support for the claim that Ana and Pankaj disagree over whether",
+    "answerChoices": {
+      "A": "it is the government’s business to prevent people from harming themselves",
+      "B": "government should be restrained by libertarian principles",
+      "C": "the proposed smoking ban is intended to prevent harm only to smokers themselves",
+      "D": "the proposed ban would prohibit smoking in public places",
+      "E": "there are cases in which government should attempt to regulate private behavior"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 20,
+    "questionType": "Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Agricultural scientist: Wild apples are considerably smaller than cultivated apples found in supermarkets. In one particular region, archaeologists have looked for remains of cultivated apples dating from 5,000 years ago, around the time people first started cultivating fruit. But the only remains of apples that archaeologists have found from this period are from fruits the same size as the wild apples native to the region. So apples were probably not cultivated in this region 5,000 years ago.",
+    "questionStem": "The agricultural scientist’s argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "fails to consider that even if a plant was not cultivated in a given region at a specific time, it may have been cultivated in nearby regions at that time",
+      "B": "fails to consider that plants that have been cultivated for only a short time may tend to resemble their wild counterparts much more closely than plants that have been cultivated for a long time",
+      "C": "takes for granted that all apples are either the size of wild apples or the size of the cultivated apples now found in supermarkets",
+      "D": "employs a premise that is incompatible with the conclusion it is supposed to justify",
+      "E": "uses a claim that presupposes the truth of its main conclusion as part of the justification for that conclusion"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 21,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Genuine happiness consists not in pleasurable feelings but instead in one’s sense of approval of one’s character and projects. Thus the happy life, in fact, tends to be the good life, where the good life is understood not—as it usually is these days—as a life of material well-being but rather as a morally virtuous life.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "A morally virtuous life requires the rejection of material well-being.",
+      "B": "People who approve of their own character and projects tend to lead morally virtuous lives.",
+      "C": "Approval of one’s own character and projects tends not to result in pleasurable feelings.",
+      "D": "Attaining happiness is the real goal of people who strive for material well-being.",
+      "E": "Material well-being does not increase one’s sense of approval of one’s character and projects."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 22,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "The return of organic wastes to the soil is a good solution to waste disposal problems only if the wastes are nontoxic and not too much energy is expended in transporting them. In small-scale organic farming, the wastes are nontoxic and not too much energy is expended in transporting them. Hence, returning organic wastes to the soil is a good way for small-scale organic farms to solve their waste disposal problems.",
+    "questionStem": "Which one of the following exhibits flawed reasoning most similar to the flawed reasoning exhibited by the argument above?",
+    "answerChoices": {
+      "A": "Plants thrive if they get an abundance of moisture, light, and nutrients. In greenhouses, plants get an optimal combination of all three, which is why commercially produced plants are so healthy when you first buy them.",
+      "B": "When every country has equal access to markets, which will be the case 20 years from now, globalization of markets will provide a way for each country to optimize its use of resources. So, globalization of markets will show the desired results 20 years from now.",
+      "C": "To be viable, a business idea must be clear, cost-effective, practical, and responsive to a market demand. Your idea for a website information service has all these properties, so it is viable.",
+      "D": "Those competitors—and only those—who meet all of the following criteria are eligible for the award: they must be under 19 years of age, be in secondary school, and have played the sport for at least the two years immediately preceding the competition. You meet all the criteria, so you are eligible.",
+      "E": "A meal is nutritious only if it includes both carbohydrates and protein. Almost 80 percent of the calories in what I ate for lunch were from fat, so what I ate for lunch was not nutritious."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 23,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Scientist: Some colonies of bacteria produce antibiotic molecules called phenazines, which they use to fend off other bacteria. We hypothesize that phenazines also serve as molecular pipelines that give interior bacteria access to essential nutrients in the environment surrounding the colony.",
+    "questionStem": "Which one of the following, if true, provides the most support for the scientist’s hypothesis?",
+    "answerChoices": {
+      "A": "Bacteria colonies that do not produce phenazines form wrinkled surfaces, thus increasing the number of bacteria that are in direct contact with the surrounding environment.",
+      "B": "The rate at which a bacteria colony produces phenazines is determined by the number of foreign bacteria in the environment immediately surrounding the colony.",
+      "C": "When bacteria colonies that do not produce phenazines are buried in nutrient-rich soil, they grow as quickly as colonies that do produce phenazines.",
+      "D": "Bacteria colonies that produce phenazines are better able to fend off other bacteria than are bacteria colonies that do not produce phenazines.",
+      "E": "Within bacteria colonies that produce phenazines, interior bacteria are more likely to die than are bacteria along the edges."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 24,
+    "questionType": "Must Be True",
+    "questionDifficulty": 4,
+    "stimulus": "Library preservationist: Due to the continual physical deterioration of the medieval manuscripts in our library’s collection, we have decided to restore most of our medieval manuscripts that are of widely acknowledged cultural significance, though this means that some medieval manuscripts whose authenticity is suspect will be restored. However, only manuscripts whose safety can be ensured during the restoration process will be restored, and manuscripts that are not frequently consulted by researchers will not be restored.",
+    "questionStem": "If all of the library preservationist’s statements are true, which one of the following must be true of the medieval manuscripts in the library’s collection?",
+    "answerChoices": {
+      "A": "Some of the medieval manuscripts whose authenticity is suspect are frequently consulted by researchers.",
+      "B": "All of the medieval manuscripts widely acknowledged to be of cultural significance are manuscripts whose safety can be ensured during the restoration process.",
+      "C": "All of the medieval manuscripts whose safety can be ensured during the restoration process are frequently consulted by researchers.",
+      "D": "The medieval manuscripts most susceptible to deterioration are those most frequently consulted by researchers.",
+      "E": "None of the medieval manuscripts that are rarely consulted by researchers is widely acknowledged to be of cultural significance."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 25,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Direct-mail advertising usually consists of advertisements for products to be purchased from the home, so the perception that it is bad for the environment is misguided. Because of direct-mail advertising, millions of people buy products by phone or online—products whose purchase would otherwise require the use of a car, thus adding pollutants to the air.",
+    "questionStem": "Which one of the following, if true, would most strengthen the argument?",
+    "answerChoices": {
+      "A": "Although the primary intent of most direct-mail advertisers is to convince people to buy products from their homes, direct mail can also lead to increased sales in stores by customers who prefer to see a product prior to purchasing it.",
+      "B": "Most of the products purchased in response to direct-mail advertisements would be purchased even without the direct-mail advertisements.",
+      "C": "A person who receives and reads a direct-mail advertisement is more likely to purchase the product advertised than is a person who reads an advertisement for a product in a magazine that they subscribe to.",
+      "D": "Usually, a company that sends out direct-mail advertisements has good reason to think that the person to whom the advertisement is sent would be more interested in the product than would the average person.",
+      "E": "Products purchased as the result of direct-mail advertising comprise an increasingly large portion of the consumer products purchased each year."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT148",
+    "sectionNumber": 3,
+    "questionNumber": 26,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "The older a country is, the more likely it is to be ruled by a monarch. Thus, since most countries are not ruled by monarchs, if a country is particularly new it is probably not ruled by a monarch.",
+    "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it was probably not based on a novel.",
+      "B": "Most novels are not made into movies. However, the more popular a movie is, the more likely it is that the movie was based on a novel. Thus, if a novel is particularly popular, it will probably be made into a movie.",
+      "C": "Most novels are not made into movies. Moreover, if a novel is particularly unpopular, it will probably not be made into a movie. Thus, the more popular a novel is, the more likely it is to be made into a movie.",
+      "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it will probably not be made into a movie.",
+      "E": "Most novels are not made into movies. Moreover, the more complex a novel’s plot, the less likely the novel is to be made into a movie. Thus, if a novel has a particularly simple plot, it will probably be made into a movie."
+    },
+    "correctAnswer": "D"
+  }
+]

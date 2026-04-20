@@ -1,0 +1,427 @@
+[
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 1,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 1,
+    "stimulus": "Grecia: The survey that we are conducting needs to track employment status by age, so respondents should be asked to indicate their age.\nHidalgo: We don’t need results that provide employment status figures for every single age. So we should instead ask respondents merely to identify the age range that they fall into.",
+    "questionStem": "Which one of the following principles, if valid, most justifies Hidalgo’s stance?",
+    "answerChoices": {
+      "A": "Surveys gathering information for a specific purpose should not collect more detailed personal information than is necessary to achieve the purpose.",
+      "B": "Survey respondents should not be asked a particular question if they are unlikely to answer accurately.",
+      "C": "Sensitive personal information should be gathered only if a secure means of storing that information is available.",
+      "D": "Surveys should be allowed to gather any information that might be needed to meet their purposes.",
+      "E": "Surveys should gather detailed personal information only if survey respondents are first told about how that information will be used."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 2,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 2,
+    "stimulus": "In 1893, an excavation led by Wilhelm Dörpfeld uncovered an ancient city he believed to be Troy, the site of the war described in Homer’s epic poem the Iliad. But that belief cannot be correct. In the Iliad, the Trojan War lasted ten years, but a city as small as the one uncovered by Dörpfeld’s team could not have withstood a siege lasting ten years.",
+    "questionStem": "Which one of the following is an assumption required by the argument?",
+    "answerChoices": {
+      "A": "In 1893, scholars knew of no other ancient city that could have been Troy.",
+      "B": "The Iliad does not provide any clues about the specific location of Troy.",
+      "C": "Dörpfeld’s team found no evidence in the city they excavated that a siege had occurred there.",
+      "D": "The city excavated by Dörpfeld’s team had many features that scholars of the time believed Troy had.",
+      "E": "The Iliad accurately represents the duration of the Trojan War."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 3,
+    "questionType": "Method of Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Flynn: Allowing people to collect large damage awards when they successfully sue corporations that produce dangerous products clearly benefits consumers, since the possibility of large awards gives corporations a strong incentive to reduce safety risks associated with their products.\nGarcia: Without sensible limits, damage awards can be so high that corporations are destroyed. As a result, employees lose their jobs and the productivity of the corporation is lost. This harms the economy and thus harms consumers.",
+    "questionStem": "Garcia responds to Flynn’s argument by",
+    "answerChoices": {
+      "A": "arguing that the policy supported in Flynn’s argument could have undesirable consequences",
+      "B": "providing evidence that undermines one of the premises of Flynn’s argument",
+      "C": "comparing Flynn’s argument to an obviously flawed argument that has the same logical structure",
+      "D": "contending that Flynn’s argument could be used to support a policy that is inconsistent with the policy that Flynn advocates",
+      "E": "providing an alternative explanation for a situation described in Flynn’s argument"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 4,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Monroe: Our organization’s project has been a failure. Our stated goal was to reduce as much as possible the number of homes in the community that lack electricity. Now, at the project’s conclusion, approximately 2,000 homes are still without electricity.\nWilkerson: But before the project began, over 5,000 homes in the community had no electricity. Surely bringing electricity to around 3,000 homes counts as a success for the project.",
+    "questionStem": "Monroe and Wilkerson disagree over the truth of which one of the following?",
+    "answerChoices": {
+      "A": "Approximately 2,000 homes in the community are still without electricity.",
+      "B": "Before the organization’s project began, over 5,000 homes in the community had no electricity.",
+      "C": "The organization’s project must be considered a failure if any home in the community has no electricity.",
+      "D": "The stated goal of the project was to reduce as much as possible the number of homes in the community that lack electricity.",
+      "E": "Leaving approximately 2,000 homes in the community without electricity at the conclusion of the project counts as a failure for the project."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 5,
+    "questionType": "Method of Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Researchers asked 100 fifty-year-olds and 100 twenty-year-olds whether they gave blood. Because nearly twice as many fifty-year-olds as twenty-year-olds reported that they sometimes gave blood, the researchers concluded that, on average, fifty-year-olds are more altruistic than twenty-year-olds. But there is reason for skepticism. Many people hesitate to admit that their behavior does not conform to societal expectations.",
+    "questionStem": "The reasoning above calls into question a conclusion drawn from statistical data by",
+    "answerChoices": {
+      "A": "showing that the data are based on an unrepresentative sample",
+      "B": "offering an alternative explanation of some of the data",
+      "C": "showing that one cannot directly observe altruism",
+      "D": "criticizing the motives of the researchers",
+      "E": "offering a specific counterexample"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 6,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 1,
+    "stimulus": "Mario: I see that the only rug store in Glendale has gone out of business. Evidently there’s little demand for rugs in Glendale. So if you’re planning to open a new business there, rugs would be one product to avoid.\nRenate: It’s true that the store is gone, but its closing had little to do with the product it sold. All this means is that the market for rugs in Glendale is now wide open.",
+    "questionStem": "The dialogue provides the most support for the claim that Mario and Renate disagree over whether",
+    "answerChoices": {
+      "A": "the rug store in Glendale sold rugs of inferior quality",
+      "B": "it is a good idea to open a rug store in Glendale",
+      "C": "it is possible to determine the market for rugs in Glendale",
+      "D": "any other stores have gone out of business in Glendale",
+      "E": "rug stores can close because of insufficient demand for rugs"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 7,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "Editorialist: The city council is considering increasing the amount of air traffic allowed at the airport beyond its original design capacity. Several council members say that this increase would not decrease safety as it would be accompanied by the purchase of the latest safety technology. But in fact it would decrease safety. Numerous studies conducted 30 years ago show that safety was reduced at every airport where the permitted level of traffic was increased beyond the airport’s original design capacity, even when those airports made use of the latest safety technology.",
+    "questionStem": "Which one of the following most accurately describes a flaw in the editorialist’s argument?",
+    "answerChoices": {
+      "A": "The argument draws a conclusion on the basis of a general statement that has in turn been inferred from a very limited number of particular instances.",
+      "B": "The argument fails to consider the possibility that whether an airport can allow more air traffic than it was originally designed for without reducing safety depends largely on what the latest technology is.",
+      "C": "The argument fails to consider the possibility that the city council members who support the increase are aware of the studies that were conducted 30 years ago.",
+      "D": "The argument confuses an absence of evidence for the claim that the airport can safely permit air traffic in excess of its original design capacity with the existence of evidence against this claim.",
+      "E": "The argument fails to consider that a slight increase in safety risks might be acceptable if it yields overriding benefits of another kind."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 8,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 3,
+    "stimulus": "Philosopher: It has been argued that because particular moral codes differ between cultures, morality must be entirely a product of culture and cannot be grounded in some universal human nature. This argument is flawed. Research suggests that certain moral attitudes, such as disapproval of unfairness and cruelty, are shared across all cultures. And just as certain universal tastes like sweetness and saltiness can, in different cultural contexts, provide the basis for many different cuisines, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "moral codes tend to be based in the specific contexts in which they arise",
+      "B": "the moral codes of most cultures resemble each other in many respects",
+      "C": "a variety of moral codes can be based in shared moral attitudes",
+      "D": "it is possible to understand the basis of the moral codes of different cultures",
+      "E": "moral attitudes can be adapted to suit the moral codes of many different cultures"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 9,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 2,
+    "stimulus": "In a recent field study of prairie plants, the more plant species a prairie plot had, the more vigorously the plants grew and the better the soil retained nutrients. Thus, having more plant species improves a prairie’s ability to support plant life.",
+    "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "infers of two correlated phenomena, X and Y, that X causes Y without considering whether Y causes X",
+      "B": "fails to describe the mechanism by which productivity is supposedly increased",
+      "C": "takes for granted that the characteristics of one prairie plot could reveal something about the characteristics of other prairie plots",
+      "D": "bases a general conclusion on data that is likely to be unrepresentative",
+      "E": "takes an increase in number to indicate an increase in proportion"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 10,
+    "questionType": "Weaken",
+    "questionDifficulty": 3,
+    "stimulus": "Anthropologist: In an experiment, two groups of undergraduates were taught how to create one of the types of stone tools that the Neanderthals made in prehistoric times. One group was taught using both demonstrations and elaborate verbal explanations, whereas the other group learned by silent example alone. The two groups showed a significant difference neither in the speed with which they acquired the toolmaking skills nor in the level of proficiency they reached. This shows that Neanderthals could just as well have created their sophisticated tools even if they had no language.",
+    "questionStem": "Which one of the following, if true, most weakens the anthropologist’s argument?",
+    "answerChoices": {
+      "A": "Apart from the sophistication of their stone tools, there is a great deal of evidence suggesting that Neanderthals possessed some form of language.",
+      "B": "The students who were taught with verbal explanations were allowed to discuss the toolmaking techniques among themselves, whereas the students who learned by silent example were not.",
+      "C": "The tools that the undergraduates were taught to make were much simpler and easier to make than most types of tools created by Neanderthals.",
+      "D": "The instructor who taught the group of students who learned by silent example alone was much less proficient at making the stone tools than was the instructor who taught the other group of students.",
+      "E": "The tools created by Neanderthals were much less sophisticated than the tools created by anatomically modern humans who almost certainly possessed language and lived at the same time as the Neanderthals."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 11,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 5,
+    "stimulus": "Modest amounts of exercise can produce a dramatic improvement in cardiovascular health. One should exercise most days of the week, but one need only do the equivalent of half an hour of brisk walking on those days to obtain cardiovascular health benefits. More vigorous exercise is more effective, but a strenuous workout is not absolutely necessary.",
+    "questionStem": "Which one of the following is most strongly supported by the statements above?",
+    "answerChoices": {
+      "A": "Having a strenuous workout most days of the week can produce a dramatic improvement in cardiovascular health.",
+      "B": "Doing the equivalent of an hour of brisk walking two or three times a week generally produces dramatic improvements in cardiovascular health.",
+      "C": "It is possible to obtain at least as great an improvement in cardiovascular health from doing the equivalent of half an hour of brisk walking most days of the week as from having a strenuous workout most days of the week.",
+      "D": "Aside from exercise, there is no way of improving one’s cardiovascular health.",
+      "E": "To obtain a dramatic improvement in one’s cardiovascular health, one must exercise strenuously at least occasionally."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 12,
+    "questionType": "Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Sartore is a better movie reviewer than Kelly. A movie review should help readers determine whether or not they are apt to enjoy the movie, and a person who is likely to enjoy a particular movie is much more likely to realize this by reading a review by Sartore than a review by Kelly, even though Sartore is more likely to give a movie an unfavorable review than a favorable one.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "Sartore has technical knowledge of film, whereas Kelly is merely a fan.",
+      "B": "Most of Kelly’s movie reviews are unfavorable to the movie being reviewed.",
+      "C": "One who is apt not to enjoy a particular movie is more likely to realize this by reading a review by Sartore than a review by Kelly.",
+      "D": "Reading a movie review by Sartore will usually help one to enjoy the movie more than one otherwise would have.",
+      "E": "Most of the movies that Sartore reviews are also reviewed by Kelly."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 13,
+    "questionType": "Most Strongly Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Specially bred aquarium fish with brilliant coloration and unusual body shapes may be popular with connoisseurs, but they are inferior to ordinary fish. Hampered by their elaborate tails or strangely shaped fins, the specially bred fish cannot reach food as quickly as can the ordinary fish that compete with them for food, and so they are often underfed. Also, they do not breed true; most offspring of the specially bred fish lack the elaborate tails and brilliant coloration of their parents.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Specially bred aquarium fish must receive special care if they are to survive.",
+      "B": "Connoisseurs are not interested in dull-colored, simply shaped fish.",
+      "C": "Most specially bred aquarium fish are purchased by connoisseurs.",
+      "D": "Ordinary fish tend not to have elaborate tails or strangely shaped fins.",
+      "E": "Strangely shaped fins and elaborate tails interfere with a fish’s ability to reproduce."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 14,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Ethicist: The general principle—if one ought to do something then one can do it—does not always hold true. This may be seen by considering an example. Suppose someone promises to meet a friend at a certain time, but—because of an unforeseen traffic jam—it is impossible to do so.",
+    "questionStem": "Which one of the following is an assumption required by the ethicist’s argument?",
+    "answerChoices": {
+      "A": "If a person failed to do something she or he ought to have done, then that person failed to do something that she or he promised to do.",
+      "B": "Only an event like an unforeseen traffic jam could excuse a person from the obligation to keep a promise.",
+      "C": "If there is something that a person ought not do, then it is something that that person is capable of not doing.",
+      "D": "The obligation created by a promise is not relieved by the fact that the promise cannot be kept.",
+      "E": "If an event like an unforeseen traffic jam interferes with someone’s keeping a promise, then that person should not have made the promise to begin with."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 15,
+    "questionType": "Principle Conform",
+    "questionDifficulty": 4,
+    "stimulus": "The production of leather and fur for clothing is labor intensive, which means that these materials have tended to be expensive. But as fashion has moved away from these materials, their prices have dropped, while prices of some materials that require less labor in their production and are more fashionable have risen.",
+    "questionStem": "The situation described above conforms most closely to which one of the following generalizations?",
+    "answerChoices": {
+      "A": "The price of any manufactured good depends more on how fashionable that good is than on the materials it is made from.",
+      "B": "It is more important for the materials used in the manufacture of clothing to be fashionable than it is for them to be practical.",
+      "C": "Materials that require relatively little labor in their production tend to be fashionable.",
+      "D": "The appearance of a manufactured good is the only thing that determines whether it is fashionable.",
+      "E": "Cultural trends tend to be an important determinant of the prices of materials used in manufacturing."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 16,
+    "questionType": "Complete the Argument",
+    "questionDifficulty": 4,
+    "stimulus": "In most of this forest, the expected outbreak of tree-eating tussock moths should not be countered. After all, the moth is beneficial where suppression of forest fires, for example, has left the forest unnaturally crowded with immature trees, and _______.",
+    "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
+    "answerChoices": {
+      "A": "more than half of the forest is unnaturally crowded with immature trees",
+      "B": "mature trees are usually the first to be eaten by tussock moths",
+      "C": "usually a higher proportion of mature trees than of immature ones are destroyed in forest fires",
+      "D": "the expected outbreak of tussock moths will almost certainly occur if no attempt is made to counter it",
+      "E": "there are no completely effective countermeasures against the moth"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 17,
+    "questionType": "Paradox",
+    "questionDifficulty": 4,
+    "stimulus": "In order to relieve traffic congestion, the city of Gastner built a new highway linking several of the city’s suburbs to the downtown area. However, the average commute time for workers in downtown Gastner increased after the new highway opened.",
+    "questionStem": "Which one of the following, if true, most helps to explain the increase in average commute time?",
+    "answerChoices": {
+      "A": "Most people who work in the downtown area of Gastner commute from one of the city’s suburbs.",
+      "B": "The location of the new highway is most convenient for people who commute to and from Gastner’s largest suburbs.",
+      "C": "Shortly after the new highway was opened, several suburban roads connecting to the new highway were upgraded with new stoplights.",
+      "D": "At the same time the new highway was being built, road repair work was being done on important streets leading to downtown Gastner.",
+      "E": "In Gastner’s downtown area, traffic on the roads near the new highway became more congested after the new highway was opened."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 18,
+    "questionType": "Principle Justify",
+    "questionDifficulty": 3,
+    "stimulus": "Office worker: I have two equally important projects that remain undone. The first one is late already, and if I devote time to finishing it, then I won’t have time to finish the second one before its deadline. Admittedly, there’s no guarantee that I can finish the second project on time even if I devote all of my time to it, but I should nonetheless devote all of my time to the second one.",
+    "questionStem": "Which one of the following principles, if valid, most helps to justify the office worker’s reasoning?",
+    "answerChoices": {
+      "A": "It is better to focus one’s time on a single project than to split one’s time between two projects.",
+      "B": "It is better to finish one of two projects than to risk failing to finish both projects.",
+      "C": "It is better to first finish those projects that must be done than to interrupt them with projects that are merely optional.",
+      "D": "It is better not to worry about having failed to finish a project on time than to allow such worry to interfere with finishing a competing project on time.",
+      "E": "It is better to attempt to finish a project on time than to attempt to finish a late project that does not have higher priority."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 19,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Science teacher: An abstract knowledge of science is very seldom useful for the decisions that adults typically make in their daily lives. But the skills taught in secondary school should be useful for making such decisions. Therefore, secondary school science courses should teach students to evaluate science-based arguments regarding practical issues, such as health and public policy, instead of or perhaps in addition to teaching more abstract aspects of science.",
+    "questionStem": "Which one of the following is an assumption the science teacher’s argument requires?",
+    "answerChoices": {
+      "A": "Secondary schools should teach only those skills that are the most useful for the decisions that adults typically make in their daily lives.",
+      "B": "Teaching secondary school students the more abstract aspects of science is at least as important as teaching them to evaluate science-based arguments regarding practical issues.",
+      "C": "Adults who have an abstract knowledge of science are no better at evaluating science-based arguments regarding practical issues than are adults who have no knowledge of science at all.",
+      "D": "No secondary school science courses currently teach students how to evaluate science-based arguments regarding practical issues.",
+      "E": "The ability to evaluate science-based arguments regarding practical issues is sometimes useful in making the decisions that adults typically make in their daily lives."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 20,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 3,
+    "stimulus": "Lyle: Admittedly, modernizing the language of premodern plays lessens their aesthetic quality, but such modernizing remains valuable for teaching history, since it makes the plays accessible to students who would otherwise never enjoy them.\nCarl: But such modernizing prevents students from understanding fully what the plays said to premodern audiences. Thus, modernizing plays is of no use for teaching history, because students cannot gain deep knowledge of the past from modernized plays.",
+    "questionStem": "Which one of the following most accurately expresses a point of disagreement between Lyle and Carl?",
+    "answerChoices": {
+      "A": "whether modernizing the language of premodern plays results in plays that have different pedagogical value than the originals",
+      "B": "whether the loss in aesthetic quality that results from modernizing the language of premodern plays lessens the plays’ usefulness for teaching history",
+      "C": "whether the highest form of aesthetic enjoyment of premodern plays comes from seeing them as they were originally performed",
+      "D": "whether increasing the accessibility of premodern plays through modernizing their language is valuable for teaching history",
+      "E": "whether using plays with modernized language to teach history requires that there be some loss in the aesthetic quality of the plays"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 21,
+    "questionType": "Flawed Parallel Reasoning",
+    "questionDifficulty": 5,
+    "stimulus": "Most kinds of soil contain clay, and virtually every kind of soil contains either sand or organic material, or both. Therefore, there must be some kinds of soil that contain both clay and sand and some that contain both clay and organic material.",
+    "questionStem": "The pattern of flawed reasoning in which one of the following arguments is most parallel to that in the argument above?",
+    "answerChoices": {
+      "A": "Most pharmacies sell cosmetics. Virtually every pharmacy sells shampoo or toothpaste, or both. Therefore, if there are pharmacies that sell both cosmetics and toothpaste, there must also be some that sell both cosmetics and shampoo.",
+      "B": "Undoubtedly, most pharmacies sell cosmetics, for almost all pharmacies sell either shampoo or toothpaste, or both, and there are some pharmacies that sell both cosmetics and shampoo and some that sell both cosmetics and toothpaste.",
+      "C": "Most pharmacies sell cosmetics. Nearly all pharmacies sell shampoo or toothpaste, or both. Therefore, unless there are some pharmacies that sell both cosmetics and toothpaste, there must be some that sell both cosmetics and shampoo.",
+      "D": "Virtually every pharmacy sells shampoo also sells toothpaste. Most pharmacies sell cosmetics. Therefore, there must be some pharmacies that sell both cosmetics and toothpaste and some that sell both cosmetics and shampoo.",
+      "E": "Nearly all pharmacies sell either shampoo or toothpaste, or both. Therefore, since most pharmacies sell cosmetics, there must be some pharmacies that sell both cosmetics and toothpaste and some that sell both cosmetics and shampoo."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 22,
+    "questionType": "Flawed Reasoning",
+    "questionDifficulty": 3,
+    "stimulus": "In 2005, an environmental group conducted a study measuring the levels of toxic chemicals in the bodies of eleven volunteers. Scientifically valid inferences could not be drawn from the study because of the small sample size, but the results were interesting nonetheless. Among the subjects tested, younger subjects showed much lower levels of PCBs—toxic chemicals that were banned in the 1970s. This proves that the regulation banning PCBs was effective in reducing human exposure to those chemicals.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes an inconsistent stance regarding the status of the inferences that can be drawn from the study",
+      "B": "overlooks the possibility that two or more chemicals produce the same effects",
+      "C": "concludes that a generalization has been proven true merely on the grounds that it has not been proven false",
+      "D": "takes something to be the cause of a reduction when it could have been an effect of that reduction",
+      "E": "does not consider the possibility that PCBs have detrimental effects on human health several years after exposure"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 23,
+    "questionType": "Parallel Reasoning",
+    "questionDifficulty": 4,
+    "stimulus": "A spy fails by being caught, and it is normally only through being caught that spies reveal their methods. The successful spy is never caught. So the available data are skewed: One can learn a lot about what makes a spy fail but very little about what makes a spy succeed.",
+    "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
+    "answerChoices": {
+      "A": "Of those who participated in the marathon, some succeeded and others failed. But those who did not participate at all neither succeeded nor failed, since both success and failure require participation.",
+      "B": "People who are aware of their motives can articulate them. But unconscious motives are usually impossible to acknowledge. So people are more likely to hear about other people’s conscious motives than their unconscious ones.",
+      "C": "It is unclear whether the company’s venture succeeded, because the criteria for its success are undefined. But if the venture had had a measurable goal, then it would have been possible to judge its success.",
+      "D": "A teacher is someone who teaches. In addition, there are people who teach but are not called teachers. So while the number of those called teachers is large, the number of those who teach is even larger.",
+      "E": "Because someone intervened in the conflict, the effects of that intervention can be discerned. But since no one can investigate what does not happen, it is impossible to discern what would have happened had someone not intervened."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 24,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 3,
+    "stimulus": "Families with underage children make up much of the population, but because only adults can vote, lawmakers in democracies pay too little attention to the interests of these families. To remedy this, parents should be given additional votes to cast on behalf of their underage children. Families with underage children would thus receive fair representation.",
+    "questionStem": "The argument requires assuming which one of the following principles?",
+    "answerChoices": {
+      "A": "The amount of attention that lawmakers give to a group’s interests should be directly proportional to the number of voters in that group.",
+      "B": "Parents should not be given responsibility for making a decision on their child’s behalf unless their child is not mature enough to decide wisely.",
+      "C": "The parents of underage children should always consider the best interests of their children when they vote.",
+      "D": "It is not fair for lawmakers to favor the interests of people who have the vote over the interests of people who do not have the vote.",
+      "E": "A group of people can be fairly represented in a democracy even if some members of that group can vote on behalf of others in that group."
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT146",
+    "sectionNumber": 1,
+    "questionNumber": 25,
+    "questionType": "Weaken",
+    "questionDifficulty": 3,
+    "stimulus": "Critic: The Gazette-Standard newspaper recently increased its editorial staff to avoid factual errors. But this clearly is not working. Compared to its biggest competitor, the Gazette-Standard currently runs significantly more corrections acknowledging factual errors.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the critic’s argument?",
+    "answerChoices": {
+      "A": "The Gazette-Standard pays its editorial staff lower salaries than its biggest competitor pays its editorial staff.",
+      "B": "The Gazette-Standard has been in business considerably longer than has its biggest competitor.",
+      "C": "The Gazette-Standard more actively follows up reader complaints about errors in the paper than does its biggest competitor.",
+      "D": "The Gazette-Standard’s articles are each checked by more editors than are the articles of its biggest competitor.",
+      "E": "The increase in the Gazette-Standard’s editorial staff has been offset by a decrease in the reporting staff at the newspaper."
+    },
+    "correctAnswer": "C"
+  }
+]

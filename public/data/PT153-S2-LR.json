@@ -1,0 +1,444 @@
+[
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 1,
+    "questionType": "Most Supported",
+    "questionDifficulty": 1,
+    "stimulus": "In situations where it is difficult to make informed decisions about products, consumers should be provided with the relevant information. The difficulty of determining whether a food product contained nutritious ingredients was resolved by requiring food manufacturers to print nutritional information on their products’ packaging. Similarly, many consumers are interested in conserving energy, and since there is no easy way for consumers to determine how much energy was required to manufacture a product, _______.",
+    "questionStem": "Which one of the following most logically completes the argument?",
+    "answerChoices": {
+      "A": "consumers who are informed of the amount of energy used to produce a product should choose energy efficient products",
+      "B": "manufacturers should use less energy while producing products",
+      "C": "providing consumers with information about the energy used to produce a product would reduce the impact of fossil fuels on our lives and economy",
+      "D": "consumers should demand products that require less energy to produce",
+      "E": "manufacturers should be required to label their products with information about the amount of energy used to produce those products"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 2,
+    "questionType": "Paradox",
+    "questionDifficulty": 1,
+    "stimulus": "Biologist: Some small animals will instinctively go limp, “playing dead” when caught by a predator. But it is hard to see how playing dead can have survival value in this situation. The predator means to eat the animal just the same, whether or not it plays dead.",
+    "questionStem": "Which one of the following, if true, would most help to resolve the apparent paradox described by the biologist?",
+    "answerChoices": {
+      "A": "Many small animal species will play dead when surprised by a loud noise or unexpected movement.",
+      "B": "Predators often leave their food in a hiding place rather than eating it immediately.",
+      "C": "A small animal is more likely to play dead when caught by a predator if the predator species is common in the area.",
+      "D": "Most predators prey upon a variety of species, not all of which play dead when caught.",
+      "E": "Many small animal species that do not play dead are capable of fighting off predators."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 3,
+    "questionType": "Evaluate",
+    "questionDifficulty": 1,
+    "stimulus": "Food columnist: Only 2 percent of imported seafood is subjected to health safety inspections. So if you want to increase the likelihood that the seafood you buy will be safe to eat, you should buy only domestic seafood.",
+    "questionStem": "The answer to which one of the following questions would most help in evaluating the food columnist’s argument?",
+    "answerChoices": {
+      "A": "Do the health safety inspections detect all health risks present in the seafood that is inspected?",
+      "B": "What kinds of health risks can seafood pose?",
+      "C": "What percentage of imported food other than seafood is subjected to health safety inspections?",
+      "D": "What percentage of domestic food other than seafood is subjected to health safety inspections?",
+      "E": "What percentage of domestic seafood is subjected to health safety inspections?"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 4,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 1,
+    "stimulus": "Dog owner: In general, large dogs need less intensive exercise than smaller dogs to stay fit. A dog that is not exercised at the level of intensity it needs is more apt to be troublesome than one that is. So for any apartment dweller who has limited time to give a dog exercise but who wants to have a dog, a large dog is less likely to be troublesome than a small one.",
+    "questionStem": "Which one of the following is an assumption the dog owner’s argument requires?",
+    "answerChoices": {
+      "A": "An apartment dweller who has limited time to exercise a dog is unlikely to want to own a dog.",
+      "B": "Providing a dog with more intensive exercise requires more time than providing a dog with less intensive exercise.",
+      "C": "At least some apartment dwellers who have limited time to exercise a dog should not own a dog.",
+      "D": "Of dogs owned by apartment dwellers, those that live in large apartments are less likely to be troublesome than those that live in small apartments.",
+      "E": "In general, the more often a dog gets exercise, the more likely it is that the dog will stay fit."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 5,
+    "questionType": "Most Supported",
+    "questionDifficulty": 2,
+    "stimulus": "One theory concerning the importance of vitamin C in the human diet holds that vitamin C plays a crucial role in the production and maintenance of the body’s supply of collagen, an important protein occurring almost exclusively in connective tissue and bones. For this reason, some doctors believe that vitamin C can be useful in treating the symptoms of some common illnesses.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Some doctors believe that there are illnesses that affect the state of connective tissue or bones.",
+      "B": "Some doctors believe that vitamin C is the only substance that produces and maintains collagen.",
+      "C": "Some doctors believe that strengthening connective tissue and bones increases the body’s ability to use certain vitamins.",
+      "D": "Some doctors believe that use of vitamin C is the most effective treatment for certain common illnesses.",
+      "E": "Some doctors believe that any illness that can be ameliorated with vitamin C causes deterioration of connective tissue and bones."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 6,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 1,
+    "stimulus": "Principle: If someone makes an error, it is unethical for a coworker to use that error to his or her own advantage.\nApplication: Because Mark used his coworker Rashmi’s clients’ e-mail addresses to advance his own career, his action was unethical.",
+    "questionStem": "Which one of the following, if true, most helps to justify the above application of the principle?",
+    "answerChoices": {
+      "A": "Mark had the e-mail addresses of Rashmi’s clients only because he had copied them from Rashmi’s directory while she was at lunch.",
+      "B": "A coworker of Rashmi and Mark had access to Rashmi’s clients’ e-mail addresses and shared them with Mark.",
+      "C": "Rashmi offered to help Mark develop a client base by sharing her own clients’ e-mail addresses with him.",
+      "D": "Mark had access to Rashmi’s clients’ e-mail addresses only because she unintentionally left them visible in an e-mail that she sent to both Mark and her clients.",
+      "E": "Mark happened upon a list of many of the e-mail addresses of Rashmi’s clients while conducting market research."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 7,
+    "questionType": "Flaw",
+    "questionDifficulty": 1,
+    "stimulus": "Kevin: My barber shop sells an herbal supplement that, according to my barber, helps prevent baldness because it contains an enzyme that blocks the formation of a chemical compound that causes people to lose hair.\nSabine: That’s simply not true. The fact is, your barber makes money by convincing people to buy that product.",
+    "questionStem": "Sabine’s argument is most vulnerable to criticism on the grounds that it",
+    "answerChoices": {
+      "A": "discounts scientifically plausible evidence merely because the person offering it is not a scientist",
+      "B": "takes for granted that a product will be harmful if it is sold on the basis of an unsubstantiated claim",
+      "C": "rejects an explanation without proposing an alternative explanation",
+      "D": "draws a conclusion about someone’s motives for making a particular claim without providing evidence that any such claim was actually made",
+      "E": "rejects a claim merely because the person making the claim stands to benefit by doing so"
+    },
+    "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 8,
+    "questionType": "Principle Strengthen",
+    "questionDifficulty": 3,
+    "stimulus": "Analyst: When Johnson attacked his opponent by quoting her out of context, his campaign defended this attack by claiming that the quote was even more politically damaging to her in context. But those who run his campaign clearly do not believe this. They have since had plenty of chances to refer to the quote in its proper context but continue to quote it out of context.",
+    "questionStem": "Which one of the following principles, if valid, most strongly supports the analyst’s reasoning above?",
+    "answerChoices": {
+      "A": "In criticizing an opponent, political campaigns will pursue the line of attack they believe to be most politically damaging.",
+      "B": "In criticizing an opponent, political campaigns do not use techniques that they would find objectionable if used against their candidate.",
+      "C": "In criticizing an opponent, political campaigns are expected by voters to make sure that the quotes to which these campaigns refer are not taken out of context.",
+      "D": "In criticizing an opponent, political campaigns will not be strongly criticized as long as the words attributed to their opponent were actually said by their opponent.",
+      "E": "In criticizing an opponent, political campaigns will avoid using techniques that leave their candidate open to effective counterattacks."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 9,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 2,
+    "stimulus": "Ellen: A group of economists and ecologists recently estimated the economic value of Earth’s biosphere’s “essential services,” such as climate regulation, food, and water supplies, at $33 trillion annually. We should therefore make protection of the biosphere a high priority.\nSantiago: I’m uncomfortable with the idea of calculating the biosphere’s dollar value in order to justify protecting it. Such an approach implies that the biosphere’s most important value lies in the “services” it provides us.",
+    "questionStem": "On the basis of their dialogue, it can most reasonably be concluded that Ellen and Santiago disagree over the truth of which one of the following statements?",
+    "answerChoices": {
+      "A": "Estimating the dollar value of the biosphere’s essential services is an appropriate way of providing a rationale for making protection of the biosphere a high priority.",
+      "B": "The biosphere’s most important value lies in something other than the services it provides to human beings.",
+      "C": "Calculating the dollar value of the biosphere’s essential services is the most effective way to ensure that protecting the biosphere is treated as a matter of urgency.",
+      "D": "The idea that the dollar value of the biosphere’s essential services can be accurately calculated is unrealistic.",
+      "E": "Calculating the dollar value of the biosphere’s essential services implies that the biosphere’s most important value lies in the services it provides to human beings."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 10,
+    "questionType": "Paradox",
+    "questionDifficulty": 4,
+    "stimulus": "Researchers have found that most people’s bodies make an enzyme, CYP2A6, that plays a crucial role in eliminating nicotine, the addictive drug in cigarettes, from the body. Smokers whose bodies make the most common form of this enzyme tend to smoke more than those whose bodies make some other form of it. Why? Well, the faster nicotine is eliminated from one’s body, the sooner one will crave another cigarette, and _______.",
+    "questionStem": "Which one of the following, if true, most effectively completes the explanation above?",
+    "answerChoices": {
+      "A": "the most common form of CYP2A6 is the one that most rapidly eliminates nicotine from the body",
+      "B": "most people whose bodies make the rarest form of CYP2A6 do not smoke at all",
+      "C": "if one’s body does not make CYP2A6, nicotine will still be eliminated, although very slowly",
+      "D": "the greater the quantity of CYP2A6 that one’s body makes, the faster nicotine will be eliminated",
+      "E": "helping to eliminate nicotine is not the only function that CYP2A6 serves"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 11,
+    "questionType": "Most Supported",
+    "questionDifficulty": 2,
+    "stimulus": "Unlike other mechanical devices, the clock did not evolve from the simple to the complex. The earliest clocks were also the most complicated. This is because early clocks were used primarily to predict astronomical phenomena, though the mechanisms they used for this purpose incidentally enabled one to keep track of time. Gradually the timekeeping functions became more important and the astronomical ones diminished.",
+    "questionStem": "Which one of the following is most strongly supported by the information above?",
+    "answerChoices": {
+      "A": "Present-day clocks are of no use in the prediction of astronomical phenomena.",
+      "B": "The mechanisms used to predict astronomical phenomena in at least some clocks were more complicated than most more recent mechanisms used for this function.",
+      "C": "Clocks used only for keeping time do not differ appreciably in their mechanical complexity.",
+      "D": "The mechanisms that the earliest clocks used to predict astronomical phenomena were more complicated than the mechanisms used for timekeeping functions in some more recent clocks.",
+      "E": "Interest in predicting astronomical phenomena has declined steadily since the invention of the first mechanical clocks."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 12,
+    "questionType": "Agree/Disagree",
+    "questionDifficulty": 3,
+    "stimulus": "Regina: The additional revenue obtained from leasing government-owned toll bridges to private investors will be allocated to the transportation budget, so the leases will not be used to reduce shortfalls in other budget areas.\nAmal: But allocating new revenue to transportation will free up existing transportation funds for use in other areas. Thus, the new revenue will nonetheless help reduce budget shortfalls in other areas.",
+    "questionStem": "Regina and Amal disagree over whether",
+    "answerChoices": {
+      "A": "there will be shortfalls in budget areas other than transportation",
+      "B": "the amount of money currently allocated to transportation is adequate",
+      "C": "new revenue from leasing government-owned toll bridges should be allocated to transportation",
+      "D": "new revenue allocated to transportation will result in existing transportation funds being reallocated to other areas",
+      "E": "leasing government-owned toll bridges to private investors will be financially beneficial to the government"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 13,
+    "questionType": "Weaken",
+    "questionDifficulty": 2,
+    "stimulus": "The use of ordinary dictionaries in interpreting the law is justified in the same way that chemists use the periodic table. The periodic table is a convenient source of agreed-upon background information that can be usefully applied to the problem on which a chemist is working. In the same way, ordinary dictionaries can be useful to a legal interpreter in resolving terminological issues.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "The periodic table lists the properties of the elements, and presents them in a pattern to represent relations between them, while an ordinary dictionary mostly just gives an alphabetical ordering to the words it defines.",
+      "B": "There is wide agreement about the data on the periodic table, while disagreements between the definitions in different ordinary dictionaries are likely to be relevant to legal interpretation.",
+      "C": "The use of a periodic table as a reference source actually came much later in history than the use of ordinary dictionaries to describe the meanings of words.",
+      "D": "The periodic table contains only a relatively small amount of information that could, in theory, be memorized, while the information in an ordinary dictionary is likely to be too large for any one person to know all at once.",
+      "E": "The periodic table is used primarily by chemists, while ordinary dictionaries are not used primarily by legal scholars and legal interpreters."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 14,
+    "questionType": "Main Conclusion",
+    "questionDifficulty": 2,
+    "stimulus": "Biologists are mistaken in thinking that the fossil record provides direct evidence of the course of human evolution. Fossils cannot be interpreted objectively: the physical characteristics by which they are classified invariably reflect the models the paleontologists wish to test. For example, classifying a pelvis as human because it supported an upright posture requires taking for granted that bipedalism distinguished early hominids from apes.",
+    "questionStem": "Which one of the following most accurately expresses the overall conclusion of the argument?",
+    "answerChoices": {
+      "A": "No early apes had pelvises that would support an upright posture.",
+      "B": "The claims made by evolutionary theorists cannot be objectively tested.",
+      "C": "The fossil remains of some early hominids are difficult to distinguish from those of apes.",
+      "D": "The fossil record does not directly reveal the course of human evolution.",
+      "E": "Paleontologists’ classifications of fossils are always influenced by the theories that these scientists are testing."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 15,
+    "questionType": "Most Supported",
+    "questionDifficulty": 2,
+    "stimulus": "The better we understand the behavior and ecological niche of an endangered species, the better chance we have of saving it. And the more individuals of a species we study, the better we understand it. Therefore, _______.",
+    "questionStem": "Which one of the following most reasonably completes the argument?",
+    "answerChoices": {
+      "A": "many endangered species will become extinct before we have the knowledge that is necessary to save them",
+      "B": "continued reduction of wildlife habitat will make the preservation of many endangered species impossible",
+      "C": "knowledge that contributes to saving endangered species becomes harder to get as species become more endangered",
+      "D": "to save endangered species it is more important to acquire the right kind of knowledge than to take action",
+      "E": "the impact of human study of endangered species is sometimes more harmful than beneficial"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 16,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Art may make the world more beautiful, but one should choose a career in some profession other than art. Whether and how much artists get paid is determined by subjective evaluations by viewers or audiences of their work. It is unacceptable for one’s pay to be determined by subjective evaluations of one’s work.",
+    "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
+    "answerChoices": {
+      "A": "takes for granted that people should choose careers solely on the basis of how much they pay",
+      "B": "takes for granted that a work of art will be considered beautiful either by everyone or by no one",
+      "C": "overlooks the possibility that one’s pay in any profession involves a certain degree of subjective evaluation",
+      "D": "overlooks the possibility that some artists are paid very well",
+      "E": "treats a criterion that must be satisfied in order for a career choice to be a good one as a criterion that will ensure that a career choice is a good one"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 17,
+    "questionType": "Role",
+    "questionDifficulty": 4,
+    "stimulus": "Critic: Vampires have traditionally been symbols of pure evil. Recently there has been a trend in entertainment of humanizing vampires. This is unfortunate. The overall trend in entertainment toward moral complexity is a good thing. But evil exists in the world, and the vampire myth is one of the most powerful representations of that.",
+    "questionStem": "The claim that the overall trend in entertainment toward moral complexity is a good thing plays which one of the following roles in the critic’s argument?",
+    "answerChoices": {
+      "A": "It states a principle used to support the conclusion of the argument.",
+      "B": "It places limits on how broadly the conclusion of the argument should be generalized.",
+      "C": "It justifies the need for the argument’s being given.",
+      "D": "It provides a hypothesis that is rejected in the conclusion of the argument.",
+      "E": "It is the conclusion of the argument."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 18,
+    "questionType": "Strengthen",
+    "questionDifficulty": 5,
+    "stimulus": "Some killer whales eat fish exclusively, but others also eat seals. Different groups of killer whales “chatter” in distinct dialects, and the dialects of seal-eating killer whales are recognizably different from those of killer whales that do not eat seals. Harbor seals use their ability to distinguish between different killer-whale dialects to avoid seal-eating killer whales. Marine biologists hypothesize that young harbor seals start with an aversion to all killer whales but then learn to ignore those that do not eat seals.",
+    "questionStem": "Which one of the following, if true, provides the strongest support for the biologists’ hypothesis?",
+    "answerChoices": {
+      "A": "Killer whales that eat seals also eat other marine mammals that are similar in size to seals.",
+      "B": "Unlike harbor seals, which can hear killer-whale chatter even at great distances, most fish cannot hear that chatter, even close at hand.",
+      "C": "When mature harbor seals first listen to the recorded chatter of killer whales that eat only fish but whose dialect is unfamiliar, the seals rapidly swim away from the sound.",
+      "D": "Young harbor seals show no natural aversion to any seal predators other than killer whales.",
+      "E": "If a fish-eating killer whale mistakenly attacks a harbor seal, that seal, if it survives, will subsequently avoid all killer whales that chatter in the attacker’s dialect, but other harbor seals will not."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 19,
+    "questionType": "Flaw",
+    "questionDifficulty": 3,
+    "stimulus": "Trainer: An athlete developed lower back pain after a strenuous athletic competition. For several days, she tried to overcome the pain by daily stretching, but the pain continued. Then, on the advice of a friend, she used a heating pad. Within a few days the pain was gone. This shows that the use of heating pads is generally more effective at relieving lower back pain than stretching is.",
+    "questionStem": "The trainer’s argument is vulnerable to criticism on each of the following grounds except:",
+    "answerChoices": {
+      "A": "It fails to consider that even if the use of heating pads is more effective at relieving lower back pain than stretching is, it may be much less effective at helping to heal the underlying injury responsible for the pain.",
+      "B": "It fails to consider the fact that lower back pain resulting from athletic competitions often disappears after several days regardless of any attempts to relieve it.",
+      "C": "It fails to consider that the athlete’s experience regarding the effectiveness of different methods of relieving lower back pain may not have been representative of that of the general population.",
+      "D": "It overlooks the possibility that the effectiveness of different methods of relieving lower back pain may vary substantially depending on the underlying cause of the lower back pain.",
+      "E": "It overlooks the possibility that there might be ways of stretching that are much more effective at relieving lower back pain than were the ways the athlete tried."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 20,
+    "questionType": "Role",
+    "questionDifficulty": 2,
+    "stimulus": "Some literary theorists argue that since literary works are expressions of ideology, it is naive to view them as embodying a distinct aesthetic value to a greater or lesser degree. But these theorists evaluate particular literary works as being ideological expressions that are more or less interesting and successful. Therefore, these theorists succumb to the view they wish to undermine.",
+    "questionStem": "The claim that the literary theorists evaluate particular literary works as being ideological expressions that are more or less interesting and successful plays which one of the following roles in the argument?",
+    "answerChoices": {
+      "A": "It is presented as evidence for the conclusion that it is naive to view literary works as embodying a distinct aesthetic value to a greater or lesser degree.",
+      "B": "It is presented as evidence against the claim that it is naive to view literary works as embodying a distinct aesthetic value to a greater or lesser degree.",
+      "C": "It is a conclusion for which the claim that it is naive to maintain that literary works embody a distinct aesthetic value to a greater or lesser degree is offered as evidence.",
+      "D": "It is presented as evidence for the conclusion that the literary theorists succumb to the view they wish to undermine.",
+      "E": "It is presented as evidence against the claim that literary works are expressions of ideology."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 21,
+    "questionType": "Must Be True",
+    "questionDifficulty": 5,
+    "stimulus": "City official: Landowners must clear the snow from the sidewalks along the edge of their property by 24 hours after the end of a snowstorm. The city has the right to clear any sidewalk that is still covered more than 24 hours after a snowstorm’s end, and whenever it does so, it will bill the landowner for the service. All landowners whose sidewalks have not been cleared within 48 hours of the end of a snowstorm will receive citations, which always result in fines unless the landowners can demonstrate extenuating circumstances.",
+    "questionStem": "If all of the official’s statements are true, which one of the following must be true?",
+    "answerChoices": {
+      "A": "If the city clears a sidewalk of snow 50 hours after the end of a snowstorm, the owner will be billed for the service and will receive a citation.",
+      "B": "All landowners who fail to clear their sidewalks by 24 hours after the end of a snowstorm will be billed by the city for snow removal.",
+      "C": "All sidewalks in the city will be cleared of snow within 50 hours of the end of a snowstorm.",
+      "D": "Nearly all landowners who do not clear their sidewalks within 48 hours after the end of a snowstorm will be fined.",
+      "E": "Landowners who can demonstrate extenuating circumstances will not be billed by the city for snow removal service."
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 22,
+    "questionType": "Necessary Assumption",
+    "questionDifficulty": 4,
+    "stimulus": "Critic: Almost all of the paintings from our city’s art movement share two characteristics: bold brushwork and a sharp contrast of light and shadow. The only ones that do not share these characteristics are abstract paintings, which—because they are nonrepresentational—do not depict light or shadow. However, the most famous painting from our city—Blue Irises—cannot be considered part of the city’s art movement. For while this painting displays bold brushwork, it does not exhibit a sharp contrast of light and shadow.",
+    "questionStem": "Which one of the following is an assumption required by the critic’s argument?",
+    "answerChoices": {
+      "A": "In spite of its title, Blue Irises is nonrepresentational.",
+      "B": "Blue Irises does not depict any shadows at all.",
+      "C": "Blue Irises is not an abstract painting.",
+      "D": "All of the nonrepresentational paintings ever produced in the critic’s city display bold brushwork.",
+      "E": "All of the paintings from the critic’s city with a sharp contrast of light and shadow emerged from the city’s art movement."
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 23,
+    "questionType": "Parallel",
+    "questionDifficulty": 3,
+    "stimulus": "Critic: Journalists should have reasonable knowledge of statistics. If not, they can make errors that misinform the public. For example, based on a clearly flawed interpretation of polling data, one journalist erroneously reported that a certain candidate would win an election.",
+    "questionStem": "The pattern of reasoning in the critic’s argument is most similar to that in which one of the following arguments?",
+    "answerChoices": {
+      "A": "Before being issued a driver’s license, an applicant should demonstrate an understanding of the environmental effects of driving a fossil fuel-powered car and be aware of the steps that drivers can take to lessen that impact. Otherwise, there will be an unlimited increase in the amount of carbon dioxide released into the atmosphere.",
+      "B": "All elementary schools should have recess time. Otherwise, children can incur health risks due to insufficient exercise. As a case in point, in a school that had eliminated recess in favor of increased academic hours, the students were less physically fit than before the elimination of recess.",
+      "C": "International travelers should have to be processed through border security at each frontier they cross. The inconvenience this might cause is something travelers must tolerate. Otherwise, safety would be sacrificed for mere convenience.",
+      "D": "All public officials should study ethics prior to or while holding their official position. The study of ethics would enable officials to anticipate the moral pitfalls that characterize public service as well as to withstand the tendency to use public service for private gain.",
+      "E": "Toy manufacturers should be required to record the place and date a toy was made on the toy itself. Otherwise, if the information is recorded on the package only, the purchaser can easily discard the package, thus losing this information, which would make it impossible to respond to manufacturer recalls."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 24,
+    "questionType": "Sufficient Assumption",
+    "questionDifficulty": 5,
+    "stimulus": "Editorialist: Landis, one of this city’s top elected officials, recently spent $10,000 to redecorate his office. Many people believe that if Landis used city funds, then he misused public money, thereby violating his official duties. But Landis is guilty of such violation regardless of the money’s source. Spending $10,000 so frivolously is clearly immoral when so many people in our city live in poverty.",
+    "questionStem": "The editorialist’s conclusion follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "The money Landis used was not his own money.",
+      "B": "It is immoral to spend money on luxury items when there are people who lack basic necessities.",
+      "C": "Landis knew about or participated in the decision to redecorate his office.",
+      "D": "Every public official has an official duty never to perform immoral actions.",
+      "E": "Had Landis not spent the money redecorating the office, it would have been used to help alleviate poverty in the city."
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 25,
+    "questionType": "Parallel Flaw",
+    "questionDifficulty": 4,
+    "stimulus": "Katelin says that we will be hit by a major snowstorm tomorrow. So she probably believes that tomorrow’s antique car show will be canceled, for it will certainly not be held if we are hit by a major snowstorm.",
+    "questionStem": "The questionable pattern of reasoning in the argument above is most closely parallel to that in which one of the following?",
+    "answerChoices": {
+      "A": "Jorge says that given today’s pollution levels, many species of migratory birds will become extinct. Thus, he probably believes that the extinctions will occur, since it is widely known that pollution might not be reduced at all.",
+      "B": "Bo says that the soil in his backyard is poorly drained, and since raspberry bushes will not grow well in soil that is poorly drained, Bo probably believes that raspberry bushes will not grow well in his backyard.",
+      "C": "Wanda says that no form of coercive force is ever justified. Thus, since most people who say this believe that government should be abolished, Wanda probably believes that government should be abolished.",
+      "D": "My chemistry professor says that most chemists are good at math. So, my chemistry professor might believe that most chemists are good at chess, since most people who are good at math are also good at chess.",
+      "E": "Dr. Bowder says that eating garlic increases one’s alertness. So, since she knows that whatever improves one’s circulation increases one’s alertness, Dr. Bowder probably believes that eating garlic increases one’s circulation."
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "practiceTest": "PT153",
+    "sectionNumber": 2,
+    "questionNumber": 26,
+    "questionType": "Weaken",
+    "questionDifficulty": 5,
+    "stimulus": "People should patronize businesses that meet high ethical standards, and the news media should help them to patronize those businesses. Therefore, when a business performs a notably ethical action, the news media should publicize that fact, for hearing of a business’s ethical conduct is often enough to motivate people to patronize that business.",
+    "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
+    "answerChoices": {
+      "A": "Some businesses that have high ethical standards do not actually meet those standards.",
+      "B": "Meeting high ethical standards is primarily a matter of refraining from unethical behavior.",
+      "C": "It is relatively easy for a business to meet its ethical standards if it does not set them very high.",
+      "D": "The news media is more likely to publicize a business’s unethical conduct than it is to publicize a business’s ethical conduct.",
+      "E": "Some businesses that meet high ethical standards would not do so if they could not remain profitable while meeting those standards."
+    },
+    "correctAnswer": "B"
+  }
+]
