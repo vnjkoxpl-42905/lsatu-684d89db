@@ -8,20 +8,18 @@ interface NodeDef {
   id: NodeId;
   label: string;
   theta: number;
-  anchor: "start" | "middle" | "end";
-  labelOffsetX: number;
-  labelOffsetY: number;
   onClick: () => void;
 }
 
 const VIEWBOX = 800;
 const CENTER = 400;
-const RADIUS = 320;
-const INNER_R = 110;
-const LABEL_FONT_PX = 11;
-const LABEL_TRACKING_EM = 0.25;
+const RADIUS = 300;
+const INNER_R = 96;
+const LABEL_OFFSET = 46; // perpendicular distance from ring to label baseline
+const LABEL_FONT_PX = 10;
+const LABEL_TRACKING_EM = 0.28;
 
-function polar(theta: number, r = RADIUS) {
+function polar(theta: number, r: number) {
   return {
     x: CENTER + r * Math.cos(theta - Math.PI / 2),
     y: CENTER + r * Math.sin(theta - Math.PI / 2),
@@ -43,28 +41,18 @@ export default function FoyerHeroRing() {
         id: "smart",
         label: "SMART DRILL",
         theta: 0,
-        anchor: "middle",
-        labelOffsetX: 0,
-        labelOffsetY: -28,
         onClick: () => navigate("/drill"),
       },
       {
         id: "ask",
         label: "ASK",
         theta: (2 * Math.PI) / 3,
-        anchor: "start",
-        labelOffsetX: 20,
-        labelOffsetY: 6,
         onClick: () => toast.info("Your AI coach is coming soon"),
       },
       {
         id: "resume",
         label: "RESUME",
         theta: (4 * Math.PI) / 3,
-        anchor: "end",
-        labelOffsetX: -20,
-        labelOffsetY: 6,
-        // TODO(F-future): wire to useLastSession hook once built.
         onClick: () => navigate("/drill"),
       },
     ],
@@ -79,38 +67,48 @@ export default function FoyerHeroRing() {
     <div className="relative flex w-full items-center justify-center">
       <svg
         viewBox={`0 0 ${VIEWBOX} ${VIEWBOX}`}
-        className="aspect-square w-full max-w-[640px] text-foreground"
+        className="aspect-square w-full max-w-[560px] text-foreground"
         role="img"
         aria-label="Foyer actions"
       >
+        {/* Outer ghost ring */}
         <circle
           cx={CENTER}
           cy={CENTER}
           r={RADIUS}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.4}
+          strokeOpacity={0.25}
         />
+        {/* Inner echo */}
         <circle
           cx={CENTER}
           cy={CENTER}
           r={INNER_R}
           className="fill-none stroke-border"
           strokeWidth={1}
-          strokeOpacity={0.3}
+          strokeOpacity={0.18}
         />
 
         {nodes.map((n) => {
-          const p = polar(n.theta);
+          const dot = polar(n.theta, RADIUS);
+          const labelPoint = polar(n.theta, RADIUS + LABEL_OFFSET);
           const isActive = activeId === n.id;
-          const labelX = p.x + n.labelOffsetX;
-          const labelY = p.y + n.labelOffsetY;
+
+          // Anchor based on horizontal position
+          const cos = Math.cos(n.theta - Math.PI / 2);
+          let anchor: "start" | "middle" | "end" = "middle";
+          if (cos > 0.3) anchor = "start";
+          else if (cos < -0.3) anchor = "end";
+
+          const labelX = labelPoint.x;
+          const labelY = labelPoint.y + 3; // baseline nudge
           const uLen = underlineLen(n.label);
-          const uY = labelY + 6;
+          const uY = labelY + 5;
           const uX1 =
-            n.anchor === "middle"
+            anchor === "middle"
               ? labelX - uLen / 2
-              : n.anchor === "start"
+              : anchor === "start"
                 ? labelX
                 : labelX - uLen;
           const uX2 = uX1 + uLen;
@@ -134,19 +132,19 @@ export default function FoyerHeroRing() {
               }}
               className="cursor-pointer outline-none"
             >
-              {/* Invisible hit target widens the clickable area */}
+              {/* Wide invisible hit target spanning dot + label */}
               <circle
-                cx={p.x}
-                cy={p.y}
-                r={44}
+                cx={(dot.x + labelX) / 2}
+                cy={(dot.y + labelY) / 2}
+                r={56}
                 fill="transparent"
                 pointerEvents="all"
               />
-              {/* Soft glow behind active dot */}
+              {/* Soft halo behind active dot */}
               <circle
-                cx={p.x}
-                cy={p.y}
-                r={26}
+                cx={dot.x}
+                cy={dot.y}
+                r={22}
                 className="fill-primary"
                 fillOpacity={isActive ? 0.18 : 0}
                 style={{
@@ -155,29 +153,35 @@ export default function FoyerHeroRing() {
                 }}
                 pointerEvents="none"
               />
+              {/* Dot anchor */}
               <circle
-                cx={p.x}
-                cy={p.y}
-                r={6}
+                cx={dot.x}
+                cy={dot.y}
+                r={isActive ? 5 : 3.5}
                 className="fill-foreground"
+                style={{ transition: "r 200ms ease" }}
                 pointerEvents="none"
               />
+              {/* Label */}
               <text
                 x={labelX}
                 y={labelY}
-                textAnchor={n.anchor}
+                textAnchor={anchor}
                 className="fill-foreground"
+                fillOpacity={isActive ? 1 : 0.7}
                 style={{
                   fontSize: LABEL_FONT_PX,
                   letterSpacing: `${LABEL_TRACKING_EM}em`,
                   textTransform: "uppercase",
                   fontWeight: 500,
                   userSelect: "none",
+                  transition: "fill-opacity 200ms ease",
                 }}
                 pointerEvents="none"
               >
                 {n.label}
               </text>
+              {/* Active underline */}
               <line
                 x1={uX1}
                 x2={uX2}
