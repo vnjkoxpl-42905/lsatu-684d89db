@@ -53,12 +53,21 @@ export type Database = {
       attempts: {
         Row: {
           app_version: string | null
+          br_answer: string | null
+          br_changed: boolean | null
+          br_delta: string | null
+          br_marked: boolean | null
+          br_outcome: string | null
+          br_rationale: string | null
+          br_selected: boolean | null
+          br_time_ms: number | null
           class_id: string
           confidence: number | null
           correct: boolean
           id: string
           level: number
           mode: string
+          pre_answer: string | null
           pt: number
           qid: string
           qnum: number
@@ -72,12 +81,21 @@ export type Database = {
         }
         Insert: {
           app_version?: string | null
+          br_answer?: string | null
+          br_changed?: boolean | null
+          br_delta?: string | null
+          br_marked?: boolean | null
+          br_outcome?: string | null
+          br_rationale?: string | null
+          br_selected?: boolean | null
+          br_time_ms?: number | null
           class_id: string
           confidence?: number | null
           correct: boolean
           id?: string
           level: number
           mode: string
+          pre_answer?: string | null
           pt: number
           qid: string
           qnum: number
@@ -91,12 +109,21 @@ export type Database = {
         }
         Update: {
           app_version?: string | null
+          br_answer?: string | null
+          br_changed?: boolean | null
+          br_delta?: string | null
+          br_marked?: boolean | null
+          br_outcome?: string | null
+          br_rationale?: string | null
+          br_selected?: boolean | null
+          br_time_ms?: number | null
           class_id?: string
           confidence?: number | null
           correct?: boolean
           id?: string
           level?: number
           mode?: string
+          pre_answer?: string | null
           pt?: number
           qid?: string
           qnum?: number
@@ -112,6 +139,12 @@ export type Database = {
       }
       blind_review_sessions: {
         Row: {
+          br_confirmed_count: number | null
+          br_corrected_count: number | null
+          br_items_count: number | null
+          br_median_time_ms: number | null
+          br_regret_count: number | null
+          br_stuck_count: number | null
           class_id: string
           completed_at: string | null
           confidence_ratings: Json | null
@@ -122,9 +155,16 @@ export type Database = {
           pt: number | null
           reviewed_answers: Json | null
           section: number | null
+          session_id: string | null
           started_at: string | null
         }
         Insert: {
+          br_confirmed_count?: number | null
+          br_corrected_count?: number | null
+          br_items_count?: number | null
+          br_median_time_ms?: number | null
+          br_regret_count?: number | null
+          br_stuck_count?: number | null
           class_id: string
           completed_at?: string | null
           confidence_ratings?: Json | null
@@ -135,9 +175,16 @@ export type Database = {
           pt?: number | null
           reviewed_answers?: Json | null
           section?: number | null
+          session_id?: string | null
           started_at?: string | null
         }
         Update: {
+          br_confirmed_count?: number | null
+          br_corrected_count?: number | null
+          br_items_count?: number | null
+          br_median_time_ms?: number | null
+          br_regret_count?: number | null
+          br_stuck_count?: number | null
           class_id?: string
           completed_at?: string | null
           confidence_ratings?: Json | null
@@ -148,6 +195,7 @@ export type Database = {
           pt?: number | null
           reviewed_answers?: Json | null
           section?: number | null
+          session_id?: string | null
           started_at?: string | null
         }
         Relationships: []
@@ -679,10 +727,16 @@ export type Database = {
       }
       section_history: {
         Row: {
+          avg_time_ms: number | null
           blind_review_percent: number | null
           blind_review_score: number | null
+          br_delta: number | null
           br_percent: number | null
           br_score: number | null
+          br_total: number | null
+          br_used: boolean | null
+          by_difficulty_json: Json | null
+          by_qtype_json: Json | null
           class_id: string
           completed_at: string | null
           created_at: string | null
@@ -697,13 +751,20 @@ export type Database = {
           time_taken_ms: number
           total_questions: number
           total_time_ms: number | null
+          unanswered_count: number | null
           user_id: string | null
         }
         Insert: {
+          avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
+          br_delta?: number | null
           br_percent?: number | null
           br_score?: number | null
+          br_total?: number | null
+          br_used?: boolean | null
+          by_difficulty_json?: Json | null
+          by_qtype_json?: Json | null
           class_id: string
           completed_at?: string | null
           created_at?: string | null
@@ -718,13 +779,20 @@ export type Database = {
           time_taken_ms?: number
           total_questions?: number
           total_time_ms?: number | null
+          unanswered_count?: number | null
           user_id?: string | null
         }
         Update: {
+          avg_time_ms?: number | null
           blind_review_percent?: number | null
           blind_review_score?: number | null
+          br_delta?: number | null
           br_percent?: number | null
           br_score?: number | null
+          br_total?: number | null
+          br_used?: boolean | null
+          by_difficulty_json?: Json | null
+          by_qtype_json?: Json | null
           class_id?: string
           completed_at?: string | null
           created_at?: string | null
@@ -739,6 +807,7 @@ export type Database = {
           time_taken_ms?: number
           total_questions?: number
           total_time_ms?: number | null
+          unanswered_count?: number | null
           user_id?: string | null
         }
         Relationships: []
