@@ -148,7 +148,10 @@ export default function RadialOrbitalTimeline({
         {/* Orbit ring — Apple-like layered depth, razor thin */}
         <div className="absolute w-[420px] h-[420px] rounded-full border border-border/30 backdrop-blur-sm shadow-[0_0_60px_rgba(255,255,255,0.08)]" />
         <div className="absolute w-[400px] h-[400px] rounded-full border border-border/60" />
-        <div className="absolute w-[400px] h-[400px] rounded-full border border-dashed border-border/25" />
+        <div
+          className="absolute w-[400px] h-[400px] rounded-full border border-dashed border-border/25"
+          style={{ animation: "spin 60s linear infinite" }}
+        />
         <div className="absolute w-[384px] h-[384px] rounded-full border border-border/35" />
 
         {timelineData.map((item, index) => {
