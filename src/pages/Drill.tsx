@@ -1475,7 +1475,7 @@ function DrillContent() {
     if (!user) return;
 
     try {
-      const sessionId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const sessionId = crypto.randomUUID();
 
       // Calculate summary stats
       const correctedCount = results.filter(r => !session.attempts.get(r.qid)?.correct && r.correct).length;
@@ -1541,6 +1541,7 @@ function DrillContent() {
         });
       }
     } catch (error) {
+      toast.error('Failed to save blind review results. Please try again.');
       console.error('Error saving BR results:', error);
     }
   };
