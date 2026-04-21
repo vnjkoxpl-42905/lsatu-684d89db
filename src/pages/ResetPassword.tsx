@@ -35,53 +35,102 @@ export default function ResetPassword() {
 
   // Check for a valid recovery session on mount
   React.useEffect(() => {
+    let cancelled = false;
+    let settled = false;
+
+    const markValid = (email: string) => {
+      if (cancelled || settled) return;
+      settled = true;
+      setRecoveryEmail(email);
+      setHasSession(true);
+      setIsInvalid(false);
+      setChecking(false);
+    };
+
+    const markInvalid = () => {
+      if (cancelled || settled) return;
+      settled = true;
+      setIsInvalid(true);
+      setChecking(false);
+    };
+
+    // Listen for PASSWORD_RECOVERY / SIGNED_IN events from supabase's
+    // built-in detectSessionInUrl handler. This fires when supabase
+    // automatically processes ?code= (PKCE) or #access_token= links.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if ((event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user?.email) {
+        markValid(session.user.email);
+      }
+    });
+
     const init = async () => {
       try {
+        // 1) Already have a session? (most common path — supabase's
+        // detectSessionInUrl ran before we mounted)
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user?.email) {
-          setRecoveryEmail(session.user.email);
-          setHasSession(true);
-          setChecking(false);
+          markValid(session.user.email);
           return;
         }
 
-        // Try extracting tokens from hash
-        const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+        const url = new URL(window.location.href);
+
+        // 2) PKCE flow: ?code=... in the query string
+        const code = url.searchParams.get('code');
+        if (code) {
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+          if (!error && data.session?.user?.email) {
+            // Clean the code out of the URL so a refresh / re-mount can't reuse it
+            url.searchParams.delete('code');
+            window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+            markValid(data.session.user.email);
+            return;
+          }
+          markInvalid();
+          return;
+        }
+
+        // 3) Implicit flow: #access_token=...&refresh_token=...
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
         const accessToken = hashParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token');
+        const errorCode = hashParams.get('error_code') || url.searchParams.get('error_code');
+
+        if (errorCode) {
+          markInvalid();
+          return;
+        }
 
         if (accessToken && refreshToken) {
           const { data, error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
           });
-          if (error || !data.session) {
-            setIsInvalid(true);
-          } else {
-            setRecoveryEmail(data.session.user.email || '');
-            setHasSession(true);
+          if (!error && data.session?.user?.email) {
+            window.history.replaceState(null, '', url.pathname + url.search);
+            markValid(data.session.user.email);
+            return;
           }
-        } else {
-          setIsInvalid(true);
+          markInvalid();
+          return;
         }
+
+        // 4) No tokens in URL, no existing session — wait briefly for the
+        // auth listener (detectSessionInUrl can be async), then give up.
+        setTimeout(() => {
+          if (!settled) markInvalid();
+        }, 1500);
       } catch {
-        setIsInvalid(true);
+        markInvalid();
       }
-      setChecking(false);
     };
 
     init();
 
-    // Also listen for PASSWORD_RECOVERY event
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY' && session) {
-        setRecoveryEmail(session.user.email || '');
-        setHasSession(true);
-        setIsInvalid(false);
-        setChecking(false);
-      }
-    });
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
