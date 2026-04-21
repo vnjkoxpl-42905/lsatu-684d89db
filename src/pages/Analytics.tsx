@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useClassId } from '@/hooks/useClassId';
 import { questionBank } from '@/lib/questionLoader';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
@@ -36,6 +37,7 @@ const Analytics = () => {
   const [data, setData] = React.useState<AnalyticsData | null>(null);
   const [opportunities, setOpportunities] = React.useState<OpportunityArea[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const { classId, loading: classIdLoading } = useClassId();
   const opportunitiesRef = useScrollAnimation();
   const performanceRef = useScrollAnimation();
 
@@ -50,8 +52,10 @@ const Analytics = () => {
       navigate('/auth');
       return;
     }
+    if (classIdLoading || !classId) return;
     loadAnalytics();
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, classId, classIdLoading]);
 
   const loadAnalytics = async () => {
     try {
@@ -63,6 +67,7 @@ const Analytics = () => {
       const { data: attempts, error } = await supabase
         .from('attempts')
         .select('qtype, level, correct, timestamp_iso')
+        .eq('class_id', classId)
         .gte('timestamp_iso', thirtyDaysAgo.toISOString())
         .order('timestamp_iso', { ascending: false });
 

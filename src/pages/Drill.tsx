@@ -25,6 +25,7 @@ import { EnhancedBlindReview } from '@/components/drill/EnhancedBlindReview';
 import { PracticeSetResults } from '@/components/drill/PracticeSetResults';
 import { TimerProvider, useTimerContextSafe } from '@/contexts/TimerContext';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
+import { useClassId } from '@/hooks/useClassId';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { questionBank } from '@/lib/questionLoader';
 import { AdaptiveEngine } from '@/lib/adaptiveEngine';
@@ -141,8 +142,7 @@ function DrillContent() {
   const [totalPoolSize, setTotalPoolSize] = React.useState(0);
   const [availablePoolSize, setAvailablePoolSize] = React.useState(0);
   const [poolExhausted, setPoolExhausted] = React.useState(false);
-  const [classId, setClassId] = React.useState<string>('');
-  const [classIdLoading, setClassIdLoading] = React.useState(true);
+  const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
   const currentViewId = React.useRef<string | null>(null);
 
@@ -162,31 +162,7 @@ function DrillContent() {
   // BR only for Full Section and Type Drill modes
   const brEnabled = session?.mode === 'full-section' || session?.mode === 'type-drill';
 
-  // Get class_id for question pool tracking
-  React.useEffect(() => {
-    const fetchClassId = async () => {
-      if (!user) return;
-      
-      const { data: student } = await supabase
-        .from('students')
-        .select('class_id')
-        .eq('user_id', user.id)
-        .maybeSingle();
-      
-      if (student?.class_id) {
-        setClassId(student.class_id);
-      } else {
-        // No student row yet — the AuthContext provisioner may still be running.
-        // Fall back to the auth UUID so answers are never silently dropped.
-        console.warn('No student record found for user, falling back to user.id as class_id:', user.id);
-        setClassId(user.id);
-      }
-      setClassIdLoading(false);
-    };
-
-    fetchClassId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]); // depend on stable ID, not the whole user object reference
+  // class_id resolved via useClassId() hook above (F1.10).
 
   // Initialize session with question pool filtering
   React.useEffect(() => {

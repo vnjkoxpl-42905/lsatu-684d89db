@@ -17,6 +17,7 @@ import { QuestionPoolService } from '@/lib/questionPoolService';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
+import { useClassId } from '@/hooks/useClassId';
 import { getLevelProgress } from '@/lib/gamification';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -148,33 +149,28 @@ export default function Profile() {
   const { settings, updateSettings } = useUserSettings();
   const [stats, setStats] = React.useState<StatsData | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const { classId, loading: classIdLoading } = useClassId();
 
   // ── Auth guard + data load ────────────────────────────────────────────────
   React.useEffect(() => {
     if (!user) { navigate('/auth'); return; }
-    loadProfile();
-  }, [user, navigate]);
+    if (classIdLoading || !classId) return;
+    loadProfile(classId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, navigate, classId, classIdLoading]);
 
-  const loadProfile = async () => {
-    if (!user) return;
+  const loadProfile = async (classIdArg: string) => {
+    if (!user || !classIdArg) return;
     try {
-      const { data: student } = await supabase
-        .from('students')
-        .select('class_id')
-        .eq('user_id', user.id)
+      const { data: profileStats } = await supabase
+        .from('profiles')
+        .select(
+          'xp_total, streak_current, overall_answered, overall_correct, class_id, level, longest_streak',
+        )
+        .eq('class_id', classIdArg)
         .maybeSingle();
 
-      if (student?.class_id) {
-        const { data: profileStats } = await supabase
-          .from('profiles')
-          .select(
-            'xp_total, streak_current, overall_answered, overall_correct, class_id, level, longest_streak',
-          )
-          .eq('class_id', student.class_id)
-          .maybeSingle();
-
-        if (profileStats) setStats(profileStats);
-      }
+      if (profileStats) setStats(profileStats);
     } catch (err) {
       console.error('Error loading profile:', err);
     } finally {

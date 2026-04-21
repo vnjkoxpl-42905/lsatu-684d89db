@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Trophy, TrendingUp, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useClassId } from '@/hooks/useClassId';
 import { cn } from '@/lib/utils';
 
 interface SectionRecord {
@@ -20,19 +21,20 @@ interface SectionRecord {
 
 export function RecentPerformanceWidget() {
   const { user } = useAuth();
+  const { classId, loading: classIdLoading } = useClassId();
   const [records, setRecords] = useState<SectionRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (classIdLoading) return;
     fetchRecentPerformance();
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, classId, classIdLoading]);
 
   const fetchRecentPerformance = async () => {
-    if (!user) return;
+    if (!user || !classId) return;
 
     try {
-      const classId = user.id;
-
       const { data, error } = await supabase
         .from('section_history')
         .select('id, pt, section, initial_score, initial_total, initial_percent, br_score, br_percent, created_at, total_time_ms')

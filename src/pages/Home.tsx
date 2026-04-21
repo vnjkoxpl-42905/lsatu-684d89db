@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { RecentPerformanceWidget } from '@/components/dashboard/RecentPerformanceWidget';
+import { useClassId } from '@/hooks/useClassId';
 import { SectionSelector } from '@/components/drill/SectionSelector';
 import { QuestionPicker } from '@/components/drill/QuestionPicker';
 import { NaturalDrillCreator } from '@/components/drill/NaturalDrillCreator';
@@ -105,6 +106,7 @@ export default function Home() {
   const [sparklineData, setSparklineData] = React.useState<
     Array<{ date: string; count: number }>
   >([]);
+  const { classId, loading: classIdLoading } = useClassId();
 
   // Auth guard
   React.useEffect(() => {
@@ -115,7 +117,7 @@ export default function Home() {
 
   // Load user stats
   React.useEffect(() => {
-    if (!user) return;
+    if (!user || classIdLoading || !classId) return;
 
     const loadStats = async () => {
       const thirtyDaysAgo = new Date();
@@ -124,7 +126,7 @@ export default function Home() {
       const { data: attempts } = await supabase
         .from('attempts')
         .select('correct, timestamp_iso')
-        .eq('class_id', user.id)
+        .eq('class_id', classId)
         .gte('timestamp_iso', thirtyDaysAgo.toISOString());
 
       if (attempts && attempts.length > 0) {
@@ -161,7 +163,7 @@ export default function Home() {
     };
 
     loadStats();
-  }, [user]);
+  }, [user, classId, classIdLoading]);
 
   const getFirstName = () => {
     if (!user) return 'there';
