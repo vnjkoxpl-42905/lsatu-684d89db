@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
         runtimeCaching: [
           {
             urlPattern: /^\/data\/.*\.json$/,
-            handler: "CacheFirst",
+            handler: "StaleWhileRevalidate",
             options: {
               cacheName: "question-data",
               expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 7 },

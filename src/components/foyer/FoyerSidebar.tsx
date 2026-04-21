@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -29,14 +29,21 @@ export interface FoyerSidebarProps {
   displayName?: string | null;
 }
 
-const NAV_ITEMS = [
-  { to: "/classroom", label: "Classroom", Icon: GraduationCap },
-  { to: "/waj", label: "Ask Joshua", Icon: MessagesSquare },
-  { to: "/flagged", label: "Flagged", Icon: Flag },
-  { to: "/practice", label: "Practice", Icon: Dumbbell },
-  { to: "/bootcamps", label: "Bootcamps", Icon: Flame },
-  { to: "/analytics", label: "Analytics", Icon: BarChart3 },
-  { to: "/schedule", label: "Schedule", Icon: CalendarDays },
+type NavItem = {
+  to: string;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  flag: PermissionFlag;
+};
+
+const NAV_ITEMS: readonly NavItem[] = [
+  { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
+  { to: "/waj", label: "Ask Joshua", Icon: MessagesSquare, flag: "has_waj_access" },
+  { to: "/flagged", label: "Flagged", Icon: Flag, flag: "has_flagged_access" },
+  { to: "/practice", label: "Practice", Icon: Dumbbell, flag: "has_practice_access" },
+  { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
+  { to: "/analytics", label: "Analytics", Icon: BarChart3, flag: "has_analytics_access" },
+  { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
 ] as const;
 
 function emailFallback(email: string | undefined): string {
@@ -90,7 +97,7 @@ export default function FoyerSidebar({ displayName }: FoyerSidebarProps) {
       </div>
 
       <nav className="flex flex-col">
-        {NAV_ITEMS.map(({ to, label, Icon }) => (
+        {NAV_ITEMS.filter((item) => permissions.is_admin || permissions[item.flag]).map(({ to, label, Icon }) => (
           <NavLink
             key={to}
             to={to}
