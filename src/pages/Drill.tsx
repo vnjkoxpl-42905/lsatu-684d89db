@@ -548,7 +548,12 @@ function DrillContent() {
       }
       const resolvedClassId = classId || user?.id || '';
       if (!resolvedClassId) {
-        console.error('Cannot save attempt: no class_id and no user.id available');
+        console.error('[drill:saveAttempt] no class_id and no user.id', {
+          userId: user?.id,
+          email: user?.email,
+          qid: attemptData.qid,
+          mode: attemptData.mode,
+        });
         return false;
       }
       const { error } = await (supabase as any).from('attempts').insert({
@@ -569,12 +574,22 @@ function DrillContent() {
       });
 
       if (error) {
-        console.error('Failed to save attempt to database:', error);
+        console.error('[drill:saveAttempt] supabase insert failed', {
+          userId: user?.id,
+          qid: attemptData.qid,
+          mode: attemptData.mode,
+          error,
+        });
         return false;
       }
       return true;
     } catch (err) {
-      console.error('Error saving attempt:', err);
+      console.error('[drill:saveAttempt] threw', {
+        userId: user?.id,
+        qid: attemptData.qid,
+        mode: attemptData.mode,
+        err,
+      });
       return false;
     }
   };
@@ -582,9 +597,10 @@ function DrillContent() {
   const commitSessionAttempts = async (
     attempts: DrillSession['attempts'],
     mode: DrillMode
-  ): Promise<{ saved: number; failed: number }> => {
+  ): Promise<{ saved: number; failed: number; wajFailed: number }> => {
     let saved = 0;
     let failed = 0;
+    let wajFailed = 0;
     for (const [qid, attempt] of attempts) {
       const question = questionBank.getQuestion(qid);
       if (!question || !attempt.selectedAnswer) continue;
@@ -619,11 +635,17 @@ function DrillContent() {
             confidence_1_5: null,
           });
         } catch (error) {
-          console.error('Failed to log to WAJ:', error);
+          wajFailed++;
+          console.error('[drill:waj:log] commit row failed', {
+            userId: user?.id,
+            qid,
+            mode,
+            error,
+          });
         }
       }
     }
-    return { saved, failed };
+    return { saved, failed, wajFailed };
   };
 
   const handleWAJSave = async (review: { whyWrong: string; whyEliminated: string; plan: string }) => {
@@ -632,7 +654,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
     
     // Save to attempts database (final attempt after review)
-    await saveAttemptToDatabase({
+    const saved = await saveAttemptToDatabase({
       qid: currentQuestion.qid,
       correct: false,
       time_ms: timeMs,
@@ -642,6 +664,13 @@ function DrillContent() {
       mode: session.mode,
       selected_answer: selectedAnswer,
     });
+    if (!saved) {
+      if (!classId && !user?.id) {
+        toast.error("Your session is out of sync. Please refresh the page or sign back in.");
+      } else {
+        toast.error("Couldn't save your answer. Check your connection and try the next question.");
+      }
+    }
     if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
     // Save to WAJ database with real review data
@@ -666,7 +695,13 @@ function DrillContent() {
         },
       });
     } catch (error) {
-      console.error('Failed to log to WAJ:', error);
+      console.error('[drill:waj:log] review save failed', {
+        userId: user?.id,
+        qid: currentQuestion.qid,
+        mode: session.mode,
+        error,
+      });
+      toast.error("Your answer was saved, but the journal entry didn't log. Let Joshua know if this keeps happening.");
     }
 
     // Update session
@@ -711,7 +746,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
 
     // Save attempt to database (no confidence for non-adaptive)
-    await saveAttemptToDatabase({
+    const saved = await saveAttemptToDatabase({
       qid: currentQuestion.qid,
       correct,
       time_ms: timeMs,
@@ -721,6 +756,13 @@ function DrillContent() {
       mode: session.mode,
       selected_answer: ans,
     });
+    if (!saved) {
+      if (!classId && !user?.id) {
+        toast.error("Your session is out of sync. Please refresh the page or sign back in.");
+      } else {
+        toast.error("Couldn't save your answer. Check your connection and try the next question.");
+      }
+    }
     await flushReplay(currentQuestion.qid, session.mode);
     if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
@@ -761,7 +803,7 @@ function DrillContent() {
     // After wrong answer in adaptive mode, save attempt FIRST then show Joshua's feedback
     if (!correct && session.mode === 'adaptive') {
       // SAVE ATTEMPT FIRST
-      await saveAttemptToDatabase({
+      const saved = await saveAttemptToDatabase({
         qid: currentQuestion.qid,
         correct: false,
         time_ms: timeMs,
@@ -771,6 +813,13 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
+      if (!saved) {
+        if (!classId && !user?.id) {
+          toast.error("Your session is out of sync. Please refresh the page or sign back in.");
+        } else {
+          toast.error("Couldn't save your answer. Check your connection and try the next question.");
+        }
+      }
       await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
@@ -825,7 +874,7 @@ function DrillContent() {
       }
     } else {
       // Correct answer - save and show solution with Next button (don't auto-advance)
-      await saveAttemptToDatabase({
+      const saved = await saveAttemptToDatabase({
         qid: currentQuestion.qid,
         correct: true,
         time_ms: timeMs,
@@ -835,6 +884,13 @@ function DrillContent() {
         mode: session.mode,
         selected_answer: selectedAnswer,
       });
+      if (!saved) {
+        if (!classId && !user?.id) {
+          toast.error("Your session is out of sync. Please refresh the page or sign back in.");
+        } else {
+          toast.error("Couldn't save your answer. Check your connection and try the next question.");
+        }
+      }
       await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
@@ -879,7 +935,13 @@ function DrillContent() {
           confidence_1_5: null,
         });
       } catch (error) {
-        console.error('Failed to log to WAJ:', error);
+        console.error('[drill:waj:log] logCorrectAnswer failed', {
+          userId: user?.id,
+          qid: currentQuestion.qid,
+          mode: session.mode,
+          error,
+        });
+        toast.error("Your answer was saved, but the journal entry didn't log. Let Joshua know if this keeps happening.");
       }
 
       setSession({ ...session, attempts: newAttempts });
@@ -1015,9 +1077,12 @@ function DrillContent() {
       attemptsWithTiming.set(qid, { ...attempt, timeMs: totalTimeMs });
     }
 
-    const { failed } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
+    const { failed, wajFailed } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
     if (failed > 0) {
       toast.error(`Failed to save ${failed} attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
+    }
+    if (wajFailed > 0) {
+      toast.error(`${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`);
     }
 
     // Show results
@@ -1082,9 +1147,12 @@ function DrillContent() {
     };
 
     // Persist per-question attempts to DB (F2.15)
-    const { failed } = await commitSessionAttempts(updatedAttempts, 'full-section');
+    const { failed, wajFailed } = await commitSessionAttempts(updatedAttempts, 'full-section');
     if (failed > 0) {
       toast.error(`Failed to save ${failed} question attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
+    }
+    if (wajFailed > 0) {
+      toast.error(`${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`);
     }
 
     // Build automatic review set based on rules (using updated session)
