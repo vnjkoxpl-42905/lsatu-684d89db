@@ -5,18 +5,16 @@
  * idempotently. Opens the Google Picker using an inline OAuth token client, so
  * callers never see or store the access token. No Supabase auth changes.
  *
- * Required env:
- *   VITE_GOOGLE_CLIENT_ID - Google OAuth client ID (for GIS token client)
- *   VITE_GOOGLE_API_KEY   - Google API key (developer key for Picker)
- *
- * Usage:
- *   await loadGooglePickerApi();
- *   openPicker((files) => {
- *     // insert to drive_files here
- *   });
+ * Credentials are public-by-design (Client ID is shown in OAuth URLs; browser
+ * API keys are meant for client bundles). Security is enforced by Google via
+ * Authorized JavaScript origins (OAuth client) and HTTP referrer restrictions
+ * (API key) configured in Google Cloud Console.
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+const GOOGLE_CLIENT_ID = "713853007100-eb2du7s87d926tfld7hd4h3h6ve2g7eb.apps.googleusercontent.com";
+const GOOGLE_API_KEY = "AIzaSyCeCBNn23LhP71Jby-lhKq_4nammNqZiO4";
 
 export type PickedFile = {
   id: string;
@@ -80,16 +78,8 @@ export function loadGooglePickerApi(): Promise<void> {
 const DRIVE_FILE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 
 export function openPicker(onPick: (files: PickedFile[]) => void): void {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY as string | undefined;
-
-  if (!clientId || clientId === "placeholder" || !apiKey || apiKey === "placeholder") {
-    console.error(
-      "[googleDrive] VITE_GOOGLE_CLIENT_ID / VITE_GOOGLE_API_KEY are not set. " +
-      "Fill them in Lovable env settings before using the picker.",
-    );
-    return;
-  }
+  const clientId = GOOGLE_CLIENT_ID;
+  const apiKey = GOOGLE_API_KEY;
 
   if (!window.google?.accounts?.oauth2 || !window.google?.picker) {
     console.error("[googleDrive] openPicker called before loadGooglePickerApi resolved.");

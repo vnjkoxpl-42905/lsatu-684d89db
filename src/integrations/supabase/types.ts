@@ -460,32 +460,48 @@ export type Database = {
       message_attachments: {
         Row: {
           created_at: string
+          drive_file_id: string | null
           file_name: string
           file_size: number
           id: string
+          kind: string
           message_id: string
           mime_type: string
-          storage_path: string
+          storage_path: string | null
+          web_view_link: string | null
         }
         Insert: {
           created_at?: string
+          drive_file_id?: string | null
           file_name: string
           file_size?: number
           id?: string
+          kind?: string
           message_id: string
           mime_type: string
-          storage_path: string
+          storage_path?: string | null
+          web_view_link?: string | null
         }
         Update: {
           created_at?: string
+          drive_file_id?: string | null
           file_name?: string
           file_size?: number
           id?: string
+          kind?: string
           message_id?: string
           mime_type?: string
-          storage_path?: string
+          storage_path?: string | null
+          web_view_link?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "message_attachments_drive_file_id_fkey"
+            columns: ["drive_file_id"]
+            isOneToOne: false
+            referencedRelation: "drive_files"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "message_attachments_message_id_fkey"
             columns: ["message_id"]

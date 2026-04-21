@@ -25,10 +25,13 @@ export interface Conversation {
 export interface MessageAttachment {
   id: string;
   message_id: string;
-  storage_path: string;
+  storage_path: string | null;
   file_name: string;
   file_size: number;
   mime_type: string;
+  kind?: 'storage' | 'drive' | null;
+  web_view_link?: string | null;
+  drive_file_id?: string | null;
 }
 
 export interface Message {
@@ -182,7 +185,7 @@ export function useConversationMessages(conversationId: string | null) {
         .in('message_id', ids);
       for (const a of atts ?? []) {
         const arr = attMap.get(a.message_id) ?? [];
-        arr.push(a);
+        arr.push(a as MessageAttachment);
         attMap.set(a.message_id, arr);
       }
     }
