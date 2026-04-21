@@ -8,6 +8,7 @@ import {
   CalendarDays,
   MessagesSquare,
   Flag,
+  BookOpen,
   Settings,
   User as UserIcon,
   Shield,
@@ -33,7 +34,8 @@ type NavItem = {
   to: string;
   label: string;
   Icon: React.ComponentType<{ className?: string }>;
-  flag: PermissionFlag;
+  flag?: PermissionFlag;
+  adminOnly?: boolean;
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
@@ -44,6 +46,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/analytics", label: "Analytics", Icon: BarChart3, flag: "has_analytics_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
+  { to: "/admin/homework", label: "Homework", Icon: BookOpen, adminOnly: true },
 ] as const;
 
 function emailFallback(email: string | undefined): string {
@@ -97,7 +100,10 @@ export default function FoyerSidebar({ displayName }: FoyerSidebarProps) {
       </div>
 
       <nav className="flex flex-col">
-        {NAV_ITEMS.filter((item) => permissions.is_admin || permissions[item.flag]).map(({ to, label, Icon }) => (
+        {NAV_ITEMS.filter((item) => {
+          if (item.adminOnly) return permissions.is_admin;
+          return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
+        }).map(({ to, label, Icon }) => (
           <NavLink
             key={to}
             to={to}

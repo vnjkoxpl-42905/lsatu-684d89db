@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { Button } from '@/components/ui/button';
@@ -61,13 +61,37 @@ const adaptiveEngine = new AdaptiveEngine();
 function DrillContent() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { settings } = useUserSettings();
   const { isLoading: qbLoading } = useQuestionBank();
-  const state = location.state as { 
-    mode: DrillMode; 
+
+  // Homework assignments pass mode + qids + assignmentId via URL params so the
+  // context survives page refresh. Existing callers use location.state. URL
+  // params take priority; fall back to state when absent.
+  const assignmentId = searchParams.get('assignmentId');
+  const state = React.useMemo<{
+    mode: DrillMode;
     config?: FullSectionConfig | TypeDrillConfig;
-  };
+  }>(() => {
+    const urlMode = searchParams.get('mode');
+    if (urlMode) {
+      const qidsParam = searchParams.get('qids') ?? '';
+      const qids = qidsParam.split(',').map((s) => s.trim()).filter(Boolean);
+      const config: TypeDrillConfig = {
+        qtypes: [],
+        difficulties: [],
+        pts: [],
+        count: qids.length,
+        selectedQids: qids,
+      };
+      return { mode: urlMode as DrillMode, config };
+    }
+    return (location.state || {}) as {
+      mode: DrillMode;
+      config?: FullSectionConfig | TypeDrillConfig;
+    };
+  }, [searchParams, location.state]);
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -150,6 +174,9 @@ function DrillContent() {
   const eventsRef = React.useRef<eventWithTime[]>([]);
   const stopRecordingRef = React.useRef<(() => void) | null>(null);
   const lastRecordedQidRef = React.useRef<string | null>(null);
+
+  // Homework assignment: dedupe the status='in_progress' write per mount.
+  const assignmentStartedRef = React.useRef(false);
 
   // Practice-set mode state
   const [isPracticeSetMode, setIsPracticeSetMode] = React.useState(false);
@@ -311,6 +338,31 @@ function DrillContent() {
       adaptiveEngine.hydrateFromDB(classId);
     }
   }, [classId, !!session]);
+
+  // Homework: mark assignment as in_progress on first question render.
+  React.useEffect(() => {
+    if (!assignmentId || !session || !currentQuestion || !user || assignmentStartedRef.current) return;
+    assignmentStartedRef.current = true;
+    (async () => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any)
+          .from('homework_assignments')
+          .update({ status: 'in_progress', started_at: new Date().toISOString() })
+          .eq('id', assignmentId)
+          .eq('student_id', user.id)
+          .eq('status', 'assigned');
+        if (error) throw error;
+      } catch (err) {
+        console.error('[drill:assignment:start] update failed', {
+          userId: user.id,
+          assignmentId,
+          err,
+        });
+        // No user-facing toast — drill works regardless. Completion failure is the one we surface.
+      }
+    })();
+  }, [assignmentId, session?.mode, currentQuestion?.qid, user?.id]);
 
   // Track question views whenever currentQuestion changes
   React.useEffect(() => {
@@ -1083,6 +1135,39 @@ function DrillContent() {
     }
     if (wajFailed > 0) {
       toast.error(`${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`);
+    }
+
+    // Homework assignment: write status=completed + score.
+    if (assignmentId && user) {
+      const total = session.questionQueue.length;
+      const correct = Array.from(session.attempts.values()).filter(
+        (a) => a.selectedAnswer && a.correct,
+      ).length;
+      const score = total > 0 ? Math.round((correct / total) * 10000) / 100 : 0;
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any)
+          .from('homework_assignments')
+          .update({
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+            score,
+          })
+          .eq('id', assignmentId)
+          .eq('student_id', user.id);
+        if (error) throw error;
+        toast.success(`Homework complete — ${score.toFixed(0)}%`, {
+          action: { label: 'Classroom', onClick: () => navigate('/classroom') },
+        });
+      } catch (err) {
+        console.error('[drill:assignment:complete] update failed', {
+          userId: user.id,
+          assignmentId,
+          score,
+          err,
+        });
+        toast.error("Couldn't mark your assignment complete. Your attempts saved; let Joshua know.");
+      }
     }
 
     // Show results

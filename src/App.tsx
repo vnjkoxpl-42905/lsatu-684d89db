@@ -27,6 +27,10 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
+const Homework = React.lazy(() => import("./pages/admin/Homework"));
+const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
+const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
+const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -79,6 +83,25 @@ const App = () => {
                 <DriveFiles />
               </React.Suspense>
             } />
+            <Route path="/admin/homework" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                <Homework />
+              </React.Suspense>
+            } />
+            <Route path="/admin/homework/new" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                <QuestionBankProvider>
+                  <HomeworkNew />
+                </QuestionBankProvider>
+              </React.Suspense>
+            } />
+            <Route path="/admin/homework/:setId" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                <QuestionBankProvider>
+                  <HomeworkDetail />
+                </QuestionBankProvider>
+              </React.Suspense>
+            } />
 
             {/* Inbox — messaging, no question bank needed */}
             <Route path="/inbox" element={
@@ -111,6 +134,13 @@ const App = () => {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
+                  } />
+                  <Route path="/classroom/:assignmentId" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomAssignmentDetail />
+                      </React.Suspense>
+                    </ProtectedRoute>
                   } />
                   <Route path="/schedule" element={
                     <ProtectedRoute flag="has_schedule_access"><Schedule /></ProtectedRoute>
