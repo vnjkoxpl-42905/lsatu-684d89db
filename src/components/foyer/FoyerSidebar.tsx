@@ -6,6 +6,8 @@ import {
   Flame,
   BarChart3,
   CalendarDays,
+  MessagesSquare,
+  Flag,
   Settings,
   User as UserIcon,
   Shield,
@@ -29,6 +31,8 @@ export interface FoyerSidebarProps {
 
 const NAV_ITEMS = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap },
+  { to: "/waj", label: "Ask Joshua", Icon: MessagesSquare },
+  { to: "/flagged", label: "Flagged", Icon: Flag },
   { to: "/practice", label: "Practice", Icon: Dumbbell },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame },
   { to: "/analytics", label: "Analytics", Icon: BarChart3 },
