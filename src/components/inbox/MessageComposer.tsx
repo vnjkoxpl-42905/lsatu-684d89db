@@ -75,7 +75,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const send = async () => {
     if (!user) return;
     const text = body.trim();
-    if (!text && !file) return;
+    if (!text && !file && driveAttachments.length === 0) return;
     setSending(true);
 
     try {
@@ -94,6 +94,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         if (upErr) throw upErr;
         const { error: attErr } = await supabase.from('message_attachments').insert({
           message_id: msg.id,
+          kind: 'storage',
           storage_path: path,
           file_name: file.name,
           file_size: file.size,
@@ -102,8 +103,24 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         if (attErr) throw attErr;
       }
 
+      if (driveAttachments.length > 0) {
+        const rows = driveAttachments.map((d) => ({
+          message_id: msg.id,
+          kind: 'drive',
+          storage_path: null,
+          drive_file_id: d.id,
+          web_view_link: d.web_view_link,
+          file_name: d.file_name,
+          file_size: 0,
+          mime_type: d.mime_type ?? 'application/vnd.google-apps.unknown',
+        }));
+        const { error: dErr } = await supabase.from('message_attachments').insert(rows);
+        if (dErr) throw dErr;
+      }
+
       setBody('');
       setFile(null);
+      setDriveAttachments([]);
       setPolished(null);
       if (fileRef.current) fileRef.current.value = '';
       onSent?.();
@@ -114,6 +131,8 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
     }
   };
 
+  const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
+
   return (
     <div className="border-t border-border bg-background p-3 space-y-2">
       {file && (
@@ -123,6 +142,26 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <button onClick={() => setFile(null)} className="text-muted-foreground hover:text-foreground">
             <X className="w-4 h-4" />
           </button>
+        </div>
+      )}
+      {driveAttachments.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {driveAttachments.map((d) => (
+            <div
+              key={d.id}
+              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md border border-border bg-muted/40 text-xs max-w-full"
+            >
+              <Cloud className="w-3 h-3 text-muted-foreground shrink-0" />
+              <span className="truncate max-w-[180px]">{d.file_name}</span>
+              <button
+                onClick={() => removeDriveFile(d.id)}
+                className="text-muted-foreground hover:text-foreground shrink-0"
+                aria-label={`Remove ${d.file_name}`}
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
         </div>
       )}
       {polished !== null && (
@@ -176,6 +215,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         >
           <Paperclip className="w-4 h-4" />
         </Button>
+        {showDrive && (
+          <DriveAttachmentPicker onAttach={addDriveFiles} disabled={sending} />
+        )}
         {showPolish && (
           <Button
             variant="ghost"
@@ -201,7 +243,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           rows={1}
           className="min-h-[44px] max-h-32 resize-none flex-1"
         />
-        <Button onClick={send} disabled={sending || (!body.trim() && !file)} size="icon" aria-label="Send">
+        <Button onClick={send} disabled={sending || !canSend} size="icon" aria-label="Send">
           <Send className="w-4 h-4" />
         </Button>
       </div>
