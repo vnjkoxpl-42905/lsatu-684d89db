@@ -1,39 +1,55 @@
 
 
-Add the HextaUI animated theme toggler with the circular view-transition reveal effect, but adapted to drive the existing `ThemeContext` (which uses an inverted `light` class on `<html>` + `lsatu-theme` localStorage key). Bypassing the context would desync every other component.
+## Plan: hardcode Google Drive credentials + ship full picker → inbox flow
+
+### Why hardcode instead of env vars
+Both values are public by design (Client ID appears in OAuth URLs; browser API keys are meant for client bundles). Security is enforced server-side by Google via origin/referrer allowlists you configure in Google Cloud Console, not by hiding the strings. This removes the manual Workspace Settings step entirely and unblocks the rest of the work.
 
 ### Files
 
-**1. New — `src/components/ui/animated-theme-toggler.tsx`**
-- `"use client"` directive omitted (Vite, not Next).
-- Uses `useTheme()` from `@/contexts/ThemeContext` instead of reading/writing `document.documentElement` directly.
-- `darkMode = theme === 'dark'`.
-- `onToggle`:
-  - Feature-detect `document.startViewTransition`. If unsupported (Firefox/Safari older), just call `toggleTheme()` and return — graceful fallback.
-  - If supported: `await document.startViewTransition(() => flushSync(() => toggleTheme())).ready`, then run the circular `clipPath` animation from the button center using `Math.hypot` to find max reach distance, 700ms ease-in-out on `::view-transition-new(root)`.
-- Render a `<button ref>` with Framer Motion `AnimatePresence` swapping `Sun` (when dark) / `Moon` (when light) icons with the snippet's rotate+scale+opacity transition (~0.33s).
-- Remove hard-coded `text-white` / `text-black` — use `text-foreground` so it reads on both themes; `className` prop still merges via `cn`.
-- Default visual: rounded-full, p-2, focus rings off (matches snippet aesthetic).
+**1. Edit `src/lib/googleDrive.ts`**
+Replace the `import.meta.env.VITE_GOOGLE_*` reads with hardcoded constants at the top of the file:
+```ts
+const GOOGLE_CLIENT_ID = "713853007100-eb2du7s87d926tfld7hd4h3h6ve2g7eb.apps.googleusercontent.com";
+const GOOGLE_API_KEY   = "AIzaSyCeCBNn23LhP71Jby-lhKq_4nammNqZiO4";
+```
+Drop the `placeholder` guard (no longer reachable). Picker now works immediately on `/admin/drive-files`.
 
-**2. Edit — `src/components/ThemeToggle.tsx`**
-- Re-export the new animated toggler so every existing usage (`ThemeToggle` is imported by Foyer, Bootcamps, AbstractionBootcamp, etc.) automatically gets the new behavior with no other file changes:
-  ```tsx
-  export { AnimatedThemeToggler as ThemeToggle } from '@/components/ui/animated-theme-toggler';
-  ```
-- Keeps the same component name + `className` prop API, so all call sites keep working.
+**2. DB migration — extend `message_attachments` to carry Drive references**
+- Add `kind text not null default 'storage'` (`'storage'` | `'drive'`)
+- Add `drive_file_id uuid references public.drive_files(id) on delete set null`
+- Add `web_view_link text` (denormalized — survives admin deleting the library row)
+- Make `storage_path` nullable
+- Update INSERT RLS: allow rows where either `storage_path` OR `web_view_link` is set (admin via `has_role`)
 
-### Why this approach
+**3. New `src/components/inbox/DriveAttachmentPicker.tsx`**
+Admin-only Cloud icon button + popover. Lists current admin's `drive_files` rows, search filter, multi-select checkboxes, "Attach N file(s)". Empty state links to `/admin/drive-files`. Tiny helper line: "Make sure these files are shared in Drive (Anyone with link, or with each student)."
 
-- Single source of truth preserved: `ThemeContext` still owns state + persistence. The animated toggler is purely presentation + view-transition orchestration.
-- Zero call-site churn: every header that already renders `<ThemeToggle />` instantly gets the circular reveal animation.
-- Works in non-Chromium browsers (View Transitions API still partial) via feature-detect fallback — theme still toggles, just without the radial wipe.
-- No new dependencies (`framer-motion`, `lucide-react` already installed).
+**4. Edit `src/components/inbox/MessageComposer.tsx`**
+- Show Cloud button only when `permissions.is_admin` (mirrors `showPolish`)
+- Add `driveAttachments: DriveFileRow[]` state, render as removable chips
+- On send: after message insert, bulk insert `message_attachments` rows with `kind='drive'`, `drive_file_id`, `web_view_link`, `file_name`, `mime_type`, `file_size: 0`, `storage_path: null`
+- Existing PDF upload + Polish flow untouched
+
+**5. Edit `src/components/inbox/AttachmentCard.tsx`**
+Branch on `kind`:
+- `'storage'`: existing signed-URL flow
+- `'drive'`: open `web_view_link` in new tab, render Cloud icon + "Google Drive" subtitle (no size)
+
+**6. Edit `src/hooks/useInbox.ts`**
+Extend `MessageAttachment` interface with nullable `kind`, `web_view_link`, `drive_file_id`. No query changes.
 
 ### Verification
+- `/admin/drive-files`: Connect → Picker opens → select files → appear in library (works without any env-var setup)
+- `/inbox` as admin: Cloud button visible → picker lists library files → select → chips appear → Send
+- Student inbox: message shows "Google Drive" attachment card → click opens Drive in new tab
+- Existing PDF upload + Polish unchanged
+- Non-admin users do not see Cloud button
+- Deleting a `drive_files` row leaves already-sent messages intact
 
-- `/foyer` header: clicking the theme toggle triggers a circular reveal expanding from the button, swapping Sun↔Moon icons with rotate/scale.
-- Theme actually flips (sidebar, ring, dock all re-skin) and persists across reload (`lsatu-theme` in localStorage).
-- All other pages using `<ThemeToggle />` (Bootcamps, AbstractionBootcamp, etc.) inherit the same animation.
-- No console errors in Chrome; falls back to instant toggle in Firefox/Safari without errors.
-- Icon visible in both light and dark modes (uses `text-foreground`).
+### One-time manual prerequisite (you, ~2 min, in Google Cloud Console)
+Lock the credentials to your domains BEFORE this code goes live, otherwise anyone copying them from the bundle could rack up your Google quota:
+1. Credentials → OAuth client → Authorized JavaScript origins: add the 4 domains above
+2. Credentials → API key → Application restrictions = HTTP referrers, add the 4 domains with `/*`; API restrictions = Picker API + Drive API only
+3. Save
 
