@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react';
-import { Paperclip, Send, X, FileText, Sparkles } from 'lucide-react';
+import { Paperclip, Send, X, FileText, Sparkles, Cloud } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { toast } from 'sonner';
+import { DriveAttachmentPicker, type DriveFileRow } from './DriveAttachmentPicker';
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
@@ -14,12 +15,27 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const permissions = useUserPermissions();
   const [body, setBody] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [driveAttachments, setDriveAttachments] = useState<DriveFileRow[]>([]);
   const [sending, setSending] = useState(false);
   const [polishing, setPolishing] = useState(false);
   const [polished, setPolished] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const showPolish = !permissions.loading && permissions.is_admin;
+  const isAdmin = !permissions.loading && permissions.is_admin;
+  const showPolish = isAdmin;
+  const showDrive = isAdmin;
+
+  const addDriveFiles = (picks: DriveFileRow[]) => {
+    setDriveAttachments((prev) => {
+      const map = new Map(prev.map((p) => [p.id, p]));
+      for (const p of picks) map.set(p.id, p);
+      return Array.from(map.values());
+    });
+  };
+
+  const removeDriveFile = (id: string) => {
+    setDriveAttachments((prev) => prev.filter((d) => d.id !== id));
+  };
 
   const pickFile = (f: File | null) => {
     if (!f) return;
