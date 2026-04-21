@@ -25,10 +25,13 @@ export interface Conversation {
 export interface MessageAttachment {
   id: string;
   message_id: string;
-  storage_path: string;
+  storage_path: string | null;
   file_name: string;
   file_size: number;
   mime_type: string;
+  kind?: 'storage' | 'drive' | null;
+  web_view_link?: string | null;
+  drive_file_id?: string | null;
 }
 
 export interface Message {
