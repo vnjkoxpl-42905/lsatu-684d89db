@@ -355,6 +355,39 @@ export type Database = {
         }
         Relationships: []
       }
+      drive_files: {
+        Row: {
+          admin_user_id: string
+          file_name: string
+          google_file_id: string
+          id: string
+          mime_type: string | null
+          picked_at: string
+          thumbnail_url: string | null
+          web_view_link: string
+        }
+        Insert: {
+          admin_user_id: string
+          file_name: string
+          google_file_id: string
+          id?: string
+          mime_type?: string | null
+          picked_at?: string
+          thumbnail_url?: string | null
+          web_view_link: string
+        }
+        Update: {
+          admin_user_id?: string
+          file_name?: string
+          google_file_id?: string
+          id?: string
+          mime_type?: string | null
+          picked_at?: string
+          thumbnail_url?: string | null
+          web_view_link?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           class_id: string
