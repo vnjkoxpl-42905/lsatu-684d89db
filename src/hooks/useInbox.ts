@@ -185,7 +185,7 @@ export function useConversationMessages(conversationId: string | null) {
         .in('message_id', ids);
       for (const a of atts ?? []) {
         const arr = attMap.get(a.message_id) ?? [];
-        arr.push(a);
+        arr.push(a as MessageAttachment);
         attMap.set(a.message_id, arr);
       }
     }
