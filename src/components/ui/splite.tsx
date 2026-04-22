@@ -46,7 +46,7 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
           </div>
         }
       >
-        <Spline scene={scene} className={className} />
+        {(<Spline scene={scene} className={className} />) as any}
       </Suspense>
     </SplineErrorBoundary>
   )
