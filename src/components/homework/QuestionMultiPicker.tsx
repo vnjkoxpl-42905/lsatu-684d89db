@@ -62,6 +62,16 @@ export default function QuestionMultiPicker({
     if (skipped > 0) {
       console.warn("[QuestionMultiPicker] skipped malformed questions", { skipped });
     }
+    console.debug("[QMP] grouped built", {
+      isLoading,
+      skipped,
+      ptCount: map.size,
+      firstPt: map.keys().next().value,
+      firstPtSections:
+        map.size > 0
+          ? Array.from(map.get(map.keys().next().value as number)?.keys() ?? [])
+          : [],
+    });
     return map;
   }, [isLoading]);
 
@@ -83,14 +93,32 @@ export default function QuestionMultiPicker({
   }, [grouped, selectedPt, selectedSection]);
 
   const handlePtChange = (v: string) => {
+    console.debug("[QMP] handlePtChange", { v, prev: selectedPt });
     setSelectedPt(v);
     setSelectedSection("");
     setSelectedQnum("");
   };
 
   const handleSectionChange = (v: string) => {
+    console.debug("[QMP] handleSectionChange", {
+      v,
+      prev: selectedSection,
+      selectedPt,
+      sectionOptionsLen: sectionOptions.length,
+    });
     setSelectedSection(v);
     setSelectedQnum("");
+  };
+
+  const handleQnumChange = (v: string) => {
+    console.debug("[QMP] handleQnumChange", {
+      v,
+      prev: selectedQnum,
+      selectedPt,
+      selectedSection,
+      qnumOptionsLen: qnumOptions.length,
+    });
+    setSelectedQnum(v);
   };
 
   const resolvedQid = React.useMemo(() => {
@@ -102,6 +130,12 @@ export default function QuestionMultiPicker({
   const canAdd = !!resolvedQid && !alreadyAdded && !isLoading;
 
   const handleAdd = () => {
+    console.debug("[QMP] handleAdd", {
+      resolvedQid,
+      alreadyAdded,
+      canAdd,
+      valueLen: value.length,
+    });
     if (!resolvedQid || alreadyAdded) return;
     onChange([...value, resolvedQid]);
     setSelectedQnum(""); // leave Test/Section sticky for fast next-pick
@@ -165,7 +199,7 @@ export default function QuestionMultiPicker({
           <Select
             key={`${selectedPt}-${selectedSection}`}
             value={selectedQnum}
-            onValueChange={setSelectedQnum}
+            onValueChange={handleQnumChange}
             disabled={isLoading || !selectedSection}
           >
             <SelectTrigger className="h-9 text-sm">

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useHomeworkSets } from "@/hooks/useHomeworkSets";
 import QuestionMultiPicker from "@/components/homework/QuestionMultiPicker";
+import { BUILD_SHA } from "@/lib/buildInfo";
 
 export default function HomeworkNew() {
   const navigate = useNavigate();
@@ -62,6 +63,12 @@ export default function HomeworkNew() {
           </button>
           <BookOpen className="w-5 h-5 text-sky-400/70" />
           <h1 className="text-lg font-semibold tracking-tight">New Homework Set</h1>
+          <span
+            className="ml-auto font-mono text-[10px] text-zinc-600 tracking-wider"
+            title={`Build ${BUILD_SHA}`}
+          >
+            build {BUILD_SHA}
+          </span>
         </div>
       </div>
 

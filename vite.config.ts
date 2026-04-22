@@ -1,14 +1,31 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { execSync } from "child_process";
 import { componentTagger } from "lovable-tagger";
 import { VitePWA } from "vite-plugin-pwa";
+
+function resolveBuildSha(): string {
+  if (process.env.VITE_BUILD_SHA) return process.env.VITE_BUILD_SHA;
+  try {
+    return execSync("git rev-parse --short HEAD").toString().trim();
+  } catch {
+    return "unknown";
+  }
+}
+
+const BUILD_SHA = resolveBuildSha();
+const BUILD_TIME = new Date().toISOString();
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: process.env.PORT ? Number(process.env.PORT) : 8080,
+  },
+  define: {
+    __BUILD_SHA__: JSON.stringify(BUILD_SHA),
+    __BUILD_TIME__: JSON.stringify(BUILD_TIME),
   },
   plugins: [
     react(),
