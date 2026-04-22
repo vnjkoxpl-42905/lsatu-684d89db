@@ -29,13 +29,12 @@ export default function HomeworkNew() {
   if (permLoading) return null;
   if (!is_admin) return null;
 
-  const canSave = title.trim().length > 0 && !submitting;
-
   const handleSave = async () => {
-    if (!canSave) return;
+    if (submitting) return;
     setSubmitting(true);
+    const resolvedTitle = title.trim() || "Untitled set";
     const row = await create({
-      title: title.trim(),
+      title: resolvedTitle,
       description: description.trim() || null,
       question_qids: qids,
     });
@@ -107,7 +106,11 @@ export default function HomeworkNew() {
           >
             Cancel
           </Button>
-          <Button onClick={handleSave} disabled={!canSave}>
+          <Button
+            onClick={handleSave}
+            disabled={submitting}
+            title={submitting ? "Saving..." : undefined}
+          >
             {submitting ? "Saving..." : "Save set"}
           </Button>
         </div>

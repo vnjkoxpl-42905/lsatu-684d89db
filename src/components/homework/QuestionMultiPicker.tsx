@@ -130,6 +130,7 @@ export default function QuestionMultiPicker({
         <div className="space-y-1.5">
           <span className={labelClass}>Section</span>
           <Select
+            key={selectedPt}
             value={selectedSection}
             onValueChange={handleSectionChange}
             disabled={isLoading || !selectedPt}
