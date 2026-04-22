@@ -2,8 +2,8 @@
 import { Suspense, lazy, Component, ReactNode } from 'react'
 
 // Retry dynamic import once, then hard-reload to bust stale chunk cache
-const Spline = lazy(() =>
-  import('@splinetool/react-spline').catch((err) => {
+const Spline = lazy<any>(() =>
+  import('@splinetool/react-spline').catch((err: unknown) => {
     console.warn('[Spline] dynamic import failed, retrying…', err)
     return import('@splinetool/react-spline').catch((err2) => {
       console.error('[Spline] retry failed, reloading to clear stale chunks', err2)
