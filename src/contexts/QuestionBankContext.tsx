@@ -10,11 +10,14 @@ interface QuestionBankContextType {
 const QuestionBankContext = createContext<QuestionBankContextType | undefined>(undefined);
 
 export function QuestionBankProvider({ children }: { children: ReactNode }) {
-  const [manifest, setManifest] = useState<QuestionManifest | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [manifest, setManifest] = useState<QuestionManifest | null>(
+    questionBank.isReady() ? questionBank.getManifest() : null
+  );
+  const [isLoading, setIsLoading] = useState(!questionBank.isReady());
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (questionBank.isReady()) return;
     const loadBank = async () => {
       try {
         await questionBank.load();

@@ -438,8 +438,22 @@ export class QuestionBank {
     byDifficulty: {},
     sections: [],
   };
+  private loadPromise: Promise<void> | null = null;
+
+  isReady(): boolean {
+    return this.questions.size > 0;
+  }
 
   async load(): Promise<void> {
+    if (this.isReady()) return;
+    if (this.loadPromise) return this.loadPromise;
+    this.loadPromise = this.doLoad().finally(() => {
+      if (!this.isReady()) this.loadPromise = null;
+    });
+    return this.loadPromise;
+  }
+
+  private async doLoad(): Promise<void> {
     for (const filename of JSON_FILES) {
       try {
         const response = await fetch(filename);
