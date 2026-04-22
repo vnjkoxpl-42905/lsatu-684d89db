@@ -1,12 +1,5 @@
 import * as React from "react";
-import { Plus, X } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Plus, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { questionBank } from "@/lib/questionLoader";
@@ -17,6 +10,14 @@ import { cn } from "@/lib/utils";
  * Test and Section remain single-select. Question tier is an "Add" action
  * that pushes the picked qid into the parent-held array. Selection order is
  * preserved. Each chip has a per-chip remove button.
+ *
+ * Implementation note: we use native <select> here deliberately. Radix
+ * Select previously produced silent click-through failures on some
+ * browser/PWA combinations where the trigger never reflected the picked
+ * value. Native selects bypass portals, z-index, touch-event, and
+ * controlled-component-race concerns entirely. Cosmetic polish traded for
+ * bulletproof reliability. [QMP] logs retained to triage any future
+ * regression.
  */
 
 interface QuestionMultiPickerProps {
@@ -41,18 +42,17 @@ export default function QuestionMultiPicker({
     if (isLoading) return map;
     let skipped = 0;
     for (const q of questionBank.getAllQuestions()) {
-      if (
-        typeof q.pt !== "number" ||
-        typeof q.section !== "number" ||
-        typeof q.qnum !== "number"
-      ) {
+      const pt = Number(q.pt);
+      const section = Number(q.section);
+      const qnum = Number(q.qnum);
+      if (!Number.isFinite(pt) || !Number.isFinite(section) || !Number.isFinite(qnum)) {
         skipped++;
         continue;
       }
-      if (!map.has(q.pt)) map.set(q.pt, new Map());
-      const sectionMap = map.get(q.pt)!;
-      if (!sectionMap.has(q.section)) sectionMap.set(q.section, []);
-      sectionMap.get(q.section)!.push(q.qnum);
+      if (!map.has(pt)) map.set(pt, new Map());
+      const sectionMap = map.get(pt)!;
+      if (!sectionMap.has(section)) sectionMap.set(section, []);
+      sectionMap.get(section)!.push(qnum);
     }
     for (const sectionMap of map.values()) {
       for (const qnums of sectionMap.values()) {
@@ -148,71 +148,79 @@ export default function QuestionMultiPicker({
   const labelClass =
     "text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium";
 
+  const selectClass =
+    "w-full h-9 rounded-md border border-zinc-800 bg-zinc-900 text-zinc-100 text-sm px-3 pr-8 appearance-none focus:outline-none focus:ring-2 focus:ring-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed";
+
   return (
     <div className={cn("space-y-4", className)}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="space-y-1.5">
           <span className={labelClass}>Test</span>
-          <Select
-            value={selectedPt}
-            onValueChange={handlePtChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue
-                placeholder={isLoading ? "Loading questions..." : "Select a test"}
-              />
-            </SelectTrigger>
-            <SelectContent>
+          <div className="relative">
+            <select
+              value={selectedPt}
+              onChange={(e) => handlePtChange(e.target.value)}
+              disabled={isLoading}
+              className={selectClass}
+              aria-label="Select a test"
+            >
+              <option value="" disabled>
+                {isLoading ? "Loading questions..." : "Select a test"}
+              </option>
               {ptOptions.map((pt) => (
-                <SelectItem key={pt} value={String(pt)}>
+                <option key={pt} value={String(pt)}>
                   PT {pt}
-                </SelectItem>
+                </option>
               ))}
-            </SelectContent>
-          </Select>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          </div>
         </div>
 
         <div className="space-y-1.5">
           <span className={labelClass}>Section</span>
-          <Select
-            key={selectedPt}
-            value={selectedSection}
-            onValueChange={handleSectionChange}
-            disabled={isLoading || !selectedPt}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue placeholder="Select a section" />
-            </SelectTrigger>
-            <SelectContent>
+          <div className="relative">
+            <select
+              value={selectedSection}
+              onChange={(e) => handleSectionChange(e.target.value)}
+              disabled={isLoading || !selectedPt}
+              className={selectClass}
+              aria-label="Select a section"
+            >
+              <option value="" disabled>
+                Select a section
+              </option>
               {sectionOptions.map((s) => (
-                <SelectItem key={s} value={String(s)}>
+                <option key={s} value={String(s)}>
                   Section {s}
-                </SelectItem>
+                </option>
               ))}
-            </SelectContent>
-          </Select>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          </div>
         </div>
 
         <div className="space-y-1.5">
           <span className={labelClass}>Question</span>
-          <Select
-            key={`${selectedPt}-${selectedSection}`}
-            value={selectedQnum}
-            onValueChange={handleQnumChange}
-            disabled={isLoading || !selectedSection}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue placeholder="Select a question" />
-            </SelectTrigger>
-            <SelectContent>
+          <div className="relative">
+            <select
+              value={selectedQnum}
+              onChange={(e) => handleQnumChange(e.target.value)}
+              disabled={isLoading || !selectedSection}
+              className={selectClass}
+              aria-label="Select a question"
+            >
+              <option value="" disabled>
+                Select a question
+              </option>
               {qnumOptions.map((q) => (
-                <SelectItem key={q} value={String(q)}>
+                <option key={q} value={String(q)}>
                   Question {q}
-                </SelectItem>
+                </option>
               ))}
-            </SelectContent>
-          </Select>
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+          </div>
         </div>
       </div>
 
