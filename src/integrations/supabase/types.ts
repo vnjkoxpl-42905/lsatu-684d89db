@@ -457,6 +457,95 @@ export type Database = {
         }
         Relationships: []
       }
+      homework_assignments: {
+        Row: {
+          assigned_by: string
+          class_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          question_qids: string[]
+          score: number | null
+          set_description: string | null
+          set_id: string | null
+          set_title: string
+          started_at: string | null
+          status: string
+          student_id: string
+        }
+        Insert: {
+          assigned_by: string
+          class_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          question_qids: string[]
+          score?: number | null
+          set_description?: string | null
+          set_id?: string | null
+          set_title: string
+          started_at?: string | null
+          status?: string
+          student_id: string
+        }
+        Update: {
+          assigned_by?: string
+          class_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          question_qids?: string[]
+          score?: number | null
+          set_description?: string | null
+          set_id?: string | null
+          set_title?: string
+          started_at?: string | null
+          status?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "homework_assignments_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "homework_sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      homework_sets: {
+        Row: {
+          class_id: string
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          question_qids: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          question_qids?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          question_qids?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       message_attachments: {
         Row: {
           created_at: string
