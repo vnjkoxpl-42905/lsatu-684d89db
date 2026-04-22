@@ -61,19 +61,19 @@ export default function HomeworkDetail() {
       (description || "") !== (set.description || "") ||
       JSON.stringify(qids) !== JSON.stringify(set.question_qids));
 
-  const canSave = dirty && title.trim().length > 0 && !saving;
+  const canSave = dirty && title.trim().length > 0 && qids.length > 0 && !saving;
 
   const handleSave = async () => {
     if (!canSave || !setId) return;
     setSaving(true);
-    const row = await update(setId, {
+    const { data: row, error } = await update(setId, {
       title: title.trim(),
       description: description.trim() || null,
       question_qids: qids,
     });
     setSaving(false);
     if (!row) {
-      toast.error("Couldn't save changes.");
+      toast.error(error || "Couldn't save changes.", { duration: 10000 });
       return;
     }
     toast.success("Set updated.");
@@ -82,9 +82,9 @@ export default function HomeworkDetail() {
 
   const handleDelete = async () => {
     if (!setId) return;
-    const ok = await remove(setId);
+    const { ok, error } = await remove(setId);
     if (!ok) {
-      toast.error("Couldn't delete the set.");
+      toast.error(error || "Couldn't delete the set.", { duration: 10000 });
       return;
     }
     toast.success("Set deleted.");
@@ -180,7 +180,19 @@ export default function HomeworkDetail() {
               </div>
               <QuestionMultiPicker value={qids} onChange={setQids} />
               <div className="flex items-center justify-end">
-                <Button onClick={handleSave} disabled={!canSave}>
+                <Button
+                  onClick={handleSave}
+                  disabled={!canSave}
+                  title={
+                    saving
+                      ? "Saving..."
+                      : qids.length === 0
+                        ? "Add at least one question."
+                        : !dirty
+                          ? "No changes to save."
+                          : undefined
+                  }
+                >
                   {saving ? "Saving..." : "Save changes"}
                 </Button>
               </div>
