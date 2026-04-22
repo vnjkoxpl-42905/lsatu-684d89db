@@ -39,7 +39,16 @@ export default function QuestionMultiPicker({
   const grouped = React.useMemo(() => {
     const map = new Map<number, Map<number, number[]>>();
     if (isLoading) return map;
+    let skipped = 0;
     for (const q of questionBank.getAllQuestions()) {
+      if (
+        typeof q.pt !== "number" ||
+        typeof q.section !== "number" ||
+        typeof q.qnum !== "number"
+      ) {
+        skipped++;
+        continue;
+      }
       if (!map.has(q.pt)) map.set(q.pt, new Map());
       const sectionMap = map.get(q.pt)!;
       if (!sectionMap.has(q.section)) sectionMap.set(q.section, []);
@@ -49,6 +58,9 @@ export default function QuestionMultiPicker({
       for (const qnums of sectionMap.values()) {
         qnums.sort((a, b) => a - b);
       }
+    }
+    if (skipped > 0) {
+      console.warn("[QuestionMultiPicker] skipped malformed questions", { skipped });
     }
     return map;
   }, [isLoading]);
@@ -151,6 +163,7 @@ export default function QuestionMultiPicker({
         <div className="space-y-1.5">
           <span className={labelClass}>Question</span>
           <Select
+            key={`${selectedPt}-${selectedSection}`}
             value={selectedQnum}
             onValueChange={setSelectedQnum}
             disabled={isLoading || !selectedSection}

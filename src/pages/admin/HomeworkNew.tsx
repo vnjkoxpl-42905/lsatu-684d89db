@@ -13,7 +13,7 @@ import QuestionMultiPicker from "@/components/homework/QuestionMultiPicker";
 export default function HomeworkNew() {
   const navigate = useNavigate();
   const { is_admin, loading: permLoading } = useUserPermissions();
-  const { create } = useHomeworkSets();
+  const { create, classIdReady } = useHomeworkSets();
 
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -33,14 +33,16 @@ export default function HomeworkNew() {
     if (submitting) return;
     setSubmitting(true);
     const resolvedTitle = title.trim() || "Untitled set";
-    const row = await create({
+    const { data: row, error } = await create({
       title: resolvedTitle,
       description: description.trim() || null,
       question_qids: qids,
     });
     setSubmitting(false);
     if (!row) {
-      toast.error("Couldn't save the set. Try again.");
+      toast.error(error || "Couldn't save the set. Try again.", {
+        duration: 10000,
+      });
       return;
     }
     toast.success("Set created.");
@@ -108,8 +110,16 @@ export default function HomeworkNew() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={submitting}
-            title={submitting ? "Saving..." : undefined}
+            disabled={submitting || !classIdReady || qids.length === 0}
+            title={
+              submitting
+                ? "Saving..."
+                : !classIdReady
+                  ? "Loading class..."
+                  : qids.length === 0
+                    ? "Add at least one question."
+                    : undefined
+            }
           >
             {submitting ? "Saving..." : "Save set"}
           </Button>
