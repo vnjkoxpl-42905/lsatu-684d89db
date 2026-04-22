@@ -46,7 +46,8 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
           </div>
         }
       >
-        {(<Spline scene={scene} className={className} />) as any}
+        {/* @ts-ignore - lazy fallback returns stub on chunk failure */}
+        <Spline scene={scene} className={className} />
       </Suspense>
     </SplineErrorBoundary>
   )
