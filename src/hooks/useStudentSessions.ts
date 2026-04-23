@@ -34,7 +34,10 @@ export function useStudentSessions(studentId: string) {
         .select("*")
         .eq("student_id", studentId)
         .order("scheduled_at", { ascending: false });
-      if (error) throw error;
+      if (error) {
+        console.error("[useStudentSessions] fetch failed:", error);
+        throw error;
+      }
       return (data ?? []) as StudentSession[];
     },
   });

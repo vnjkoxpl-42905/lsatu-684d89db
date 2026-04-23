@@ -18,7 +18,7 @@ interface Props {
  * Rows are keyed by `class_id`, matching every other TA surface.
  */
 export default function HubStudentList({ selectedId, onSelect }: Props) {
-  const { rows, loading, error } = useHubStudents();
+  const { rows, loading, error, refresh } = useHubStudents();
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -52,9 +52,18 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
             Loading…
           </div>
         ) : error ? (
-          <div className="p-4 text-sm text-red-400 flex items-start gap-2">
-            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>Failed to load students.</span>
+          <div className="p-4 space-y-2">
+            <div className="text-sm text-red-400 flex items-start gap-2">
+              <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>Failed to load students.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => refresh()}
+              className="text-[11px] text-zinc-400 hover:text-zinc-100 underline underline-offset-2"
+            >
+              Retry
+            </button>
           </div>
         ) : filtered.length === 0 ? (
           <div className="p-4 text-sm text-zinc-500">

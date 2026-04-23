@@ -39,7 +39,10 @@ export function useStudentContext(studentId: string) {
         .select("*")
         .eq("student_id", studentId)
         .order("created_at", { ascending: false });
-      if (error) throw error;
+      if (error) {
+        console.error("[useStudentContext] fetch failed:", error);
+        throw error;
+      }
       return (data ?? []) as StudentContextItem[];
     },
   });

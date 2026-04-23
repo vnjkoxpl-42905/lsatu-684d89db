@@ -88,8 +88,21 @@ export function useHubStudents() {
         "admin-manage-users",
         { method: "GET" }
       );
-      if (error) throw error;
-      return (data ?? []) as ManagedUserRow[];
+      if (error) {
+        console.error("[useHubStudents] admin-manage-users failed:", error);
+        throw error;
+      }
+      const rows = (data ?? []) as ManagedUserRow[];
+      // Data-integrity surface: a profile row without a matching auth.users
+      // entry comes back with email === "unknown". Log so ops can spot it.
+      const orphans = rows.filter((r) => r.email === "unknown");
+      if (orphans.length > 0) {
+        console.warn(
+          "[useHubStudents] profiles without auth.users match:",
+          orphans.map((r) => r.class_id)
+        );
+      }
+      return rows;
     },
   });
 
@@ -101,7 +114,13 @@ export function useHubStudents() {
       const { data, error } = await (supabase as any).rpc(
         "get_assignment_counts_per_student"
       );
-      if (error) throw error;
+      if (error) {
+        console.error(
+          "[useHubStudents] get_assignment_counts_per_student failed:",
+          error
+        );
+        throw error;
+      }
       return (data ?? []) as AssignmentCountsRow[];
     },
   });
