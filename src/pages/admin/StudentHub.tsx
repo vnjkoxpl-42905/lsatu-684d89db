@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -78,14 +78,31 @@ export default function StudentHub() {
     });
   }, []);
 
-  // Global Cmd/Ctrl+[ toggles the left panel on desktop. Lets Joshua
-  // reclaim horizontal room on narrow laptops without reaching for the
-  // mouse. Mobile is unaffected (aside is display:none there anyway).
+  // Ref to `setTab` so the keyboard handler can pick up the latest
+  // callback without re-mounting the listener on every render. `setTab`
+  // itself changes identity whenever setSearchParams does (which is
+  // often), so a deps-based listener would churn.
+  const setTabRef = useRef<((tab: HubTab) => void) | null>(null);
+
+  // Global hub-wide keyboard shortcuts (desktop-focused; mobile gestures
+  // handle their own surface):
+  //   Cmd/Ctrl+[     — collapse/expand left panel
+  //   Cmd/Ctrl+1..3  — switch right-panel tab (overview/notes/library)
+  // Mobile breakpoint still honors these; there's no hotkey-to-tab-
+  // switch conflict because the mobile sheet uses gestures.
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "[") {
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (e.key === "[") {
         e.preventDefault();
         toggleLeftCollapsed();
+        return;
+      }
+      if (e.key === "1" || e.key === "2" || e.key === "3") {
+        const tab: HubTab =
+          e.key === "1" ? "overview" : e.key === "2" ? "notes" : "library";
+        e.preventDefault();
+        setTabRef.current?.(tab);
       }
     };
     window.addEventListener("keydown", handler);
@@ -116,6 +133,11 @@ export default function StudentHub() {
     },
     [setSearchParams]
   );
+
+  // Keep the keyboard-handler's ref pointed at the latest setTab.
+  useEffect(() => {
+    setTabRef.current = setTab;
+  }, [setTab]);
 
   useEffect(() => {
     if (!loading && !is_admin) navigate("/foyer", { replace: true });
