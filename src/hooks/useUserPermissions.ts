@@ -14,6 +14,7 @@ export interface UserPermissions {
   has_flagged_access: boolean;
   has_chat_access: boolean;
   has_export_access: boolean;
+  has_ta_access: boolean;
   is_admin: boolean;
   loading: boolean;
 }
@@ -29,6 +30,7 @@ const ACCESS_FLAGS = [
   "has_flagged_access",
   "has_chat_access",
   "has_export_access",
+  "has_ta_access",
 ] as const;
 
 export type PermissionFlag = (typeof ACCESS_FLAGS)[number];
@@ -65,6 +67,7 @@ export function useUserPermissions(): UserPermissions {
     has_flagged_access: false,
     has_chat_access: false,
     has_export_access: false,
+    has_ta_access: false,
     is_admin: false,
   });
   const [loading, setLoading] = useState(true);
