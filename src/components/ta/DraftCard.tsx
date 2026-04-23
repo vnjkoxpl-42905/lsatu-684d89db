@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { DraftPayload } from "@/hooks/useTAChat";
+import { notifyStudentOfTAAssignment } from "@/lib/taNotify";
 
 interface Props {
   interactionId: string;
@@ -36,7 +37,7 @@ export default function DraftCard({
     if (!user) return;
     setBusy("approve");
     try {
-      const { error: insertErr } = await (supabase as any)
+      const { data: inserted, error: insertErr } = await (supabase as any)
         .from("ta_assignments")
         .insert({
           student_id: studentId,
@@ -56,7 +57,17 @@ export default function DraftCard({
         .eq("id", interactionId);
       if (updErr) throw updErr;
 
-      toast.success("Assignment created");
+      const notify = await notifyStudentOfTAAssignment({
+        adminUserId: user.id,
+        studentId,
+        title: draft.title || "Untitled",
+        assignmentId: (inserted as { id: string }).id,
+      });
+      if (!notify.ok) {
+        toast.warning("Assignment created, but inbox notification failed");
+      } else {
+        toast.success("Assignment created and student notified");
+      }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Approve failed");
     } finally {
