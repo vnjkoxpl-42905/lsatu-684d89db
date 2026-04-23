@@ -33,6 +33,11 @@ function parseTab(raw: string | null): HubTab {
 const LS_SELECTED_KEY = "ta-selected-student";
 const LS_LEFT_COLLAPSED_KEY = "hub-left-collapsed";
 
+// URL-sync debounce window. Below perception threshold for "URL feels
+// in sync" with the UI, above the keystroke-burst interval for rapid
+// arrow-key navigation through the student list.
+const URL_SYNC_DEBOUNCE_MS = 150;
+
 export default function StudentHub() {
   const navigate = useNavigate();
   const { is_admin, loading } = useUserPermissions();
@@ -84,6 +89,26 @@ export default function StudentHub() {
   // often), so a deps-based listener would churn.
   const setTabRef = useRef<((tab: HubTab) => void) | null>(null);
 
+  // Per-field debounce timers for URL sync. UI state updates immediately
+  // (snappy arrow-key nav), but setSearchParams fires only after the
+  // user settles for URL_SYNC_DEBOUNCE_MS. Prevents history.replaceState
+  // churn when scrubbing the student list.
+  const selectedUrlTimer = useRef<number | null>(null);
+  const tabUrlTimer = useRef<number | null>(null);
+
+  // Clear any pending URL writes on unmount so React doesn't warn
+  // about setState on an unmounted component.
+  useEffect(() => {
+    return () => {
+      if (selectedUrlTimer.current !== null) {
+        window.clearTimeout(selectedUrlTimer.current);
+      }
+      if (tabUrlTimer.current !== null) {
+        window.clearTimeout(tabUrlTimer.current);
+      }
+    };
+  }, []);
+
   // Global hub-wide keyboard shortcuts (desktop-focused; mobile gestures
   // handle their own surface):
   //   Cmd/Ctrl+[     — collapse/expand left panel
@@ -120,16 +145,21 @@ export default function StudentHub() {
   const setTab = useCallback(
     (next: HubTab) => {
       setTabState(next);
-      setSearchParams(
-        (prev) => {
-          const copy = new URLSearchParams(prev);
-          if (next === "overview") copy.delete("tab");
-          else copy.set("tab", next);
-          return copy;
-        },
-        { replace: true }
-      );
       track("hub_tab_switched", { tab: next });
+      if (tabUrlTimer.current !== null) {
+        window.clearTimeout(tabUrlTimer.current);
+      }
+      tabUrlTimer.current = window.setTimeout(() => {
+        setSearchParams(
+          (prev) => {
+            const copy = new URLSearchParams(prev);
+            if (next === "overview") copy.delete("tab");
+            else copy.set("tab", next);
+            return copy;
+          },
+          { replace: true }
+        );
+      }, URL_SYNC_DEBOUNCE_MS);
     },
     [setSearchParams]
   );
@@ -152,25 +182,32 @@ export default function StudentHub() {
   }, [urlStudent, selected]);
 
   // Mirror selection into URL + localStorage. `replace` keeps the
-  // browser history clean across student-switches.
+  // browser history clean; setSearchParams debounces so rapid arrow-key
+  // scrubbing doesn't spam history.replaceState (see W#1 / Commit 3).
   const setSelected = useCallback(
     (next: string | null) => {
       setSelectedState(next);
-      setSearchParams(
-        (prev) => {
-          const copy = new URLSearchParams(prev);
-          if (next) copy.set("student", next);
-          else copy.delete("student");
-          return copy;
-        },
-        { replace: true }
-      );
       try {
         if (next) localStorage.setItem(LS_SELECTED_KEY, next);
       } catch {
         /* ignore quota errors */
       }
       if (next) track("hub_student_switched", { student_id: next });
+
+      if (selectedUrlTimer.current !== null) {
+        window.clearTimeout(selectedUrlTimer.current);
+      }
+      selectedUrlTimer.current = window.setTimeout(() => {
+        setSearchParams(
+          (prev) => {
+            const copy = new URLSearchParams(prev);
+            if (next) copy.set("student", next);
+            else copy.delete("student");
+            return copy;
+          },
+          { replace: true }
+        );
+      }, URL_SYNC_DEBOUNCE_MS);
     },
     [setSearchParams]
   );
