@@ -4,6 +4,7 @@ import {
   Image as ImageIcon,
   FileText,
   StickyNote,
+  CalendarClock,
   Loader2,
   X,
 } from "lucide-react";
@@ -26,6 +27,25 @@ import {
   useDeleteStudentContext,
   type StudentContextItem,
 } from "@/hooks/useStudentContext";
+import {
+  useLogStudentSession,
+  type SessionStatus,
+} from "@/hooks/useStudentSessions";
+
+const SESSION_STATUSES: { value: SessionStatus; label: string }[] = [
+  { value: "completed", label: "Completed" },
+  { value: "scheduled", label: "Scheduled" },
+  { value: "cancelled", label: "Cancelled" },
+  { value: "no_show", label: "No-show" },
+];
+
+function toLocalDatetimeInput(d: Date): string {
+  // datetime-local expects YYYY-MM-DDTHH:mm in *local* time (no timezone).
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
 
 interface Props {
   studentId: string;
@@ -60,12 +80,21 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
   const [transcriptTitle, setTranscriptTitle] = useState("");
   const [transcriptBody, setTranscriptBody] = useState("");
 
+  const [sessionOpen, setSessionOpen] = useState(false);
+  const [sessionWhen, setSessionWhen] = useState(() =>
+    toLocalDatetimeInput(new Date())
+  );
+  const [sessionStatus, setSessionStatus] = useState<SessionStatus>("completed");
+  const [sessionDuration, setSessionDuration] = useState("60");
+  const [sessionNotes, setSessionNotes] = useState("");
+
   const { data: items = [] } = useStudentContext(studentId);
   const uploadFile = useUploadStudentContextFile();
   const addNote = useAddStudentContextNote();
   const remove = useDeleteStudentContext();
+  const logSession = useLogStudentSession();
 
-  const busy = uploadFile.isPending || addNote.isPending;
+  const busy = uploadFile.isPending || addNote.isPending || logSession.isPending;
   const studentLabel = studentName?.trim() || "this student";
 
   const handleFilePick = async (
@@ -147,6 +176,43 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
     }
   };
 
+  const handleSessionSubmit = async () => {
+    const whenRaw = sessionWhen.trim();
+    if (!whenRaw) {
+      toast.error("Session date is required");
+      return;
+    }
+    const when = new Date(whenRaw);
+    if (Number.isNaN(when.getTime())) {
+      toast.error("Invalid session date");
+      return;
+    }
+    const durationNum = sessionDuration.trim()
+      ? Number(sessionDuration)
+      : null;
+    if (durationNum !== null && (!Number.isFinite(durationNum) || durationNum < 0)) {
+      toast.error("Duration must be a positive number");
+      return;
+    }
+    try {
+      await logSession.mutateAsync({
+        studentId,
+        scheduledAt: when.toISOString(),
+        status: sessionStatus,
+        durationMinutes: durationNum,
+        notes: sessionNotes.trim() || null,
+      });
+      toast.success(`Logged session for ${studentLabel}`);
+      setSessionOpen(false);
+      setSessionNotes("");
+      setSessionWhen(toLocalDatetimeInput(new Date()));
+      setSessionStatus("completed");
+      setSessionDuration("60");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Save failed");
+    }
+  };
+
   const handleRemove = async (item: StudentContextItem) => {
     try {
       await remove.mutateAsync({
@@ -185,6 +251,12 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
           icon={StickyNote}
           label="Add notes"
           onClick={() => setNoteOpen(true)}
+          disabled={busy}
+        />
+        <AttachmentButton
+          icon={CalendarClock}
+          label="Log session"
+          onClick={() => setSessionOpen(true)}
           disabled={busy}
         />
         {busy && (
@@ -291,6 +363,81 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
             <Button onClick={handleTranscriptSubmit} disabled={busy}>
               {busy ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
               Save transcript
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={sessionOpen}
+        onOpenChange={(next) => {
+          if (busy) return;
+          setSessionOpen(next);
+        }}
+      >
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Log session</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm text-zinc-400">When</label>
+                <Input
+                  type="datetime-local"
+                  value={sessionWhen}
+                  onChange={(e) => setSessionWhen(e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm text-zinc-400">Status</label>
+                <select
+                  value={sessionStatus}
+                  onChange={(e) =>
+                    setSessionStatus(e.target.value as SessionStatus)
+                  }
+                  className="w-full rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-100"
+                >
+                  {SESSION_STATUSES.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm text-zinc-400">Duration (minutes)</label>
+              <Input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={sessionDuration}
+                onChange={(e) => setSessionDuration(e.target.value)}
+                placeholder="60"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm text-zinc-400">Notes (optional)</label>
+              <Textarea
+                value={sessionNotes}
+                onChange={(e) => setSessionNotes(e.target.value)}
+                rows={5}
+                placeholder="What was covered, what was assigned, follow-ups…"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setSessionOpen(false)}
+              disabled={busy}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSessionSubmit} disabled={busy}>
+              {busy ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Save session
             </Button>
           </DialogFooter>
         </DialogContent>
