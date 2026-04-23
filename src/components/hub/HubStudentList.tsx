@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Loader2, Search, User } from "lucide-react";
-import { formatDistanceToNowStrict } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { formatRelativeShort } from "@/lib/time";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
 
 interface Props {
@@ -177,11 +177,7 @@ function StudentRow({
   onClick,
   onHover,
 }: RowProps) {
-  const lastSeen = student.last_seen_at
-    ? formatDistanceToNowStrict(new Date(student.last_seen_at), {
-        addSuffix: true,
-      })
-    : "Never";
+  const lastSeen = formatRelativeShort(student.last_seen_at);
 
   return (
     <li data-cursor={index}>

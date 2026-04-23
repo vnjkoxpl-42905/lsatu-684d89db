@@ -10,8 +10,8 @@ import {
   Shield,
   Loader2,
 } from "lucide-react";
-import { formatDistanceToNowStrict } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
+import { formatRelativeShort } from "@/lib/time";
 import {
   useAdminTAAssignmentsForStudent,
   type StudentTAAssignment,
@@ -121,11 +121,7 @@ export default function StudentOverview({ studentId }: Props) {
     );
   }
 
-  const lastSeen = student.last_seen_at
-    ? formatDistanceToNowStrict(new Date(student.last_seen_at), {
-        addSuffix: true,
-      })
-    : "Never";
+  const lastSeen = formatRelativeShort(student.last_seen_at);
 
   const activeFlags = FLAG_KEYS.filter((k) => Boolean(student[k]));
 
@@ -336,9 +332,7 @@ function AssignmentsSection({ studentId }: { studentId: string }) {
 function AssignmentRow({ assignment }: { assignment: StudentTAAssignment }) {
   const badge = STATUS_BADGE[assignment.status];
   const when = assignment.assigned_at
-    ? formatDistanceToNowStrict(new Date(assignment.assigned_at), {
-        addSuffix: true,
-      })
+    ? formatRelativeShort(assignment.assigned_at)
     : "";
   return (
     <li className="rounded-md border border-zinc-800 bg-zinc-900/40 px-2.5 py-1.5">

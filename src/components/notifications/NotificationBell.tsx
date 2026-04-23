@@ -7,7 +7,7 @@ import {
   GraduationCap,
   MessageSquare,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatRelativeShort } from "@/lib/time";
 import {
   motion,
   useMotionValue,
@@ -147,9 +147,7 @@ export default function NotificationBell({ mouseX }: Props) {
                         </div>
                       )}
                       <div className="text-[11px] text-muted-foreground mt-0.5">
-                        {formatDistanceToNow(new Date(n.created_at), {
-                          addSuffix: true,
-                        })}
+                        {formatRelativeShort(n.created_at)}
                       </div>
                     </div>
                     {!n.read && (

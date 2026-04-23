@@ -11,6 +11,7 @@ import {
   ChevronDown, ChevronUp, Crown, UserCheck, UserX
 } from "lucide-react";
 import { toast } from "sonner";
+import { formatRelativeShort } from "@/lib/time";
 
 interface ManagedUser {
   class_id: string;
@@ -74,18 +75,9 @@ const ALL_FLAG_KEYS = FLAG_GROUPS.flatMap(g => g.flags.map(f => f.key));
 const ALL_FLAG_LABELS: Record<string, string> = {};
 FLAG_GROUPS.forEach(g => g.flags.forEach(f => { ALL_FLAG_LABELS[f.key] = f.label; }));
 
-function timeAgo(iso: string | null): string {
-  if (!iso) return "Never";
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 7) return `${days}d ago`;
-  return `${Math.floor(days / 7)}w ago`;
-}
+// Relative time rendering delegated to src/lib/time.ts so the admin
+// dashboard, hub, and notification bell all read the same way.
+const timeAgo = formatRelativeShort;
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
