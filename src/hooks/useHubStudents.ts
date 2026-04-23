@@ -7,21 +7,24 @@ import { useInbox } from "@/hooks/useInbox";
  * Single source of truth for the Student Hub's left panel. Combines three
  * sources into one per-student row:
  *
- * 1. Profiles + email + role + feature flags — via the `admin-manage-users`
- *    Edge Function (same call the /admin dashboard makes). Service-role
- *    inside the function cross-joins profiles with auth.users to pull email.
+ * 1. Profiles + email + role + feature flags — via `admin-manage-users`
+ *    Edge Function, cached for 5 min so student switching is free. The
+ *    Edge Function cross-joins profiles with auth.users to pull email.
  *
- * 2. Assignment counts (assigned/viewed/completed) — one bulk select on
- *    `ta_assignments` bucketed client-side. Cheaper than per-student
- *    queries and scales fine up to a few thousand assignments.
+ * 2. Assignment counts (assigned/viewed/completed) — via the
+ *    `get_assignment_counts_per_student` RPC, which aggregates server-side
+ *    and returns one row per student. Previously we pulled the whole
+ *    ta_assignments table and bucketed in JS.
  *
- * 3. Unread-from-student dot — derived from `useInbox()` which already
- *    computes a per-conversation `unread` flag for the logged-in admin.
- *    A conversation's "other participant" user_id is the student.
+ * 3. Unread-from-student dot — derived from `useInbox()`, which computes
+ *    a per-conversation `unread` flag for the logged-in admin. The
+ *    "other participant" user_id is the student.
  *
- * Returned rows are keyed by `class_id` (the canonical student identifier
- * everywhere else in the TA codebase).
+ * Rows are keyed by `class_id` (canonical student identifier everywhere
+ * else in the TA codebase).
  */
+
+const HUB_STALE_MS = 5 * 60 * 1000; // 5 minutes
 
 export interface HubStudentRow {
   class_id: string;
@@ -49,8 +52,6 @@ export interface HubStudentRow {
   has_unread_from_student: boolean;
 }
 
-type AssignmentStatus = "assigned" | "viewed" | "completed";
-
 interface ManagedUserRow {
   class_id: string;
   display_name: string | null;
@@ -70,9 +71,18 @@ interface ManagedUserRow {
   has_ta_access: boolean;
 }
 
+interface AssignmentCountsRow {
+  student_id: string;
+  assigned: number;
+  viewed: number;
+  completed: number;
+  total: number;
+}
+
 export function useHubStudents() {
   const usersQuery = useQuery<ManagedUserRow[]>({
     queryKey: ["hub-managed-users"],
+    staleTime: HUB_STALE_MS,
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke(
         "admin-manage-users",
@@ -83,20 +93,16 @@ export function useHubStudents() {
     },
   });
 
-  const assignmentsQuery = useQuery<
-    Array<{ student_id: string; status: AssignmentStatus }>
-  >({
+  const countsQuery = useQuery<AssignmentCountsRow[]>({
     queryKey: ["hub-assignment-counts"],
+    staleTime: HUB_STALE_MS,
     queryFn: async () => {
       // Cast until Lovable regenerates src/integrations/supabase/types.ts.
-      const { data, error } = await (supabase as any)
-        .from("ta_assignments")
-        .select("student_id, status");
+      const { data, error } = await (supabase as any).rpc(
+        "get_assignment_counts_per_student"
+      );
       if (error) throw error;
-      return (data ?? []) as Array<{
-        student_id: string;
-        status: AssignmentStatus;
-      }>;
+      return (data ?? []) as AssignmentCountsRow[];
     },
   });
 
@@ -104,26 +110,10 @@ export function useHubStudents() {
 
   const rows = useMemo<HubStudentRow[]>(() => {
     const users = usersQuery.data ?? [];
-    const assignments = assignmentsQuery.data ?? [];
+    const counts = countsQuery.data ?? [];
 
-    // Bucket assignment counts by student.
-    const counts = new Map<
-      string,
-      { total: number; assigned: number; viewed: number; completed: number }
-    >();
-    for (const a of assignments) {
-      const bucket = counts.get(a.student_id) ?? {
-        total: 0,
-        assigned: 0,
-        viewed: 0,
-        completed: 0,
-      };
-      bucket.total += 1;
-      if (a.status === "assigned") bucket.assigned += 1;
-      else if (a.status === "viewed") bucket.viewed += 1;
-      else if (a.status === "completed") bucket.completed += 1;
-      counts.set(a.student_id, bucket);
-    }
+    const countsByStudent = new Map<string, AssignmentCountsRow>();
+    for (const c of counts) countsByStudent.set(c.student_id, c);
 
     // Build a set of student user_ids that have unread messages waiting
     // for the admin. A conversation with unread=true means the last
@@ -142,35 +132,71 @@ export function useHubStudents() {
       // them from the Student Hub list.
       .filter((u) => u.role !== "admin")
       .map((u) => {
-        const c = counts.get(u.class_id) ?? {
-          total: 0,
-          assigned: 0,
-          viewed: 0,
-          completed: 0,
-        };
+        const c = countsByStudent.get(u.class_id);
         return {
           ...u,
-          assignments_total: c.total,
-          assignments_assigned: c.assigned,
-          assignments_viewed: c.viewed,
-          assignments_completed: c.completed,
+          assignments_total: c?.total ?? 0,
+          assignments_assigned: c?.assigned ?? 0,
+          assignments_viewed: c?.viewed ?? 0,
+          assignments_completed: c?.completed ?? 0,
           has_unread_from_student: unreadStudents.has(u.class_id),
         };
       });
-  }, [usersQuery.data, assignmentsQuery.data, conversations]);
+  }, [usersQuery.data, countsQuery.data, conversations]);
 
   return {
     rows,
-    loading: usersQuery.isLoading || assignmentsQuery.isLoading,
-    error: usersQuery.error ?? assignmentsQuery.error ?? null,
+    loading: usersQuery.isLoading || countsQuery.isLoading,
+    error: usersQuery.error ?? countsQuery.error ?? null,
     refresh: () => {
       usersQuery.refetch();
-      assignmentsQuery.refetch();
+      countsQuery.refetch();
     },
   };
 }
 
-/** Lookup helper: single row by class_id. Returns undefined if absent. */
+/**
+ * Memoized single-row lookup. Stable object reference as long as `rows`
+ * and `studentId` are stable — avoids churn in downstream consumers.
+ */
+export function useSelectedHubStudent(
+  studentId: string | null
+): HubStudentRow | undefined {
+  const { rows } = useHubStudents();
+  return useMemo(() => {
+    if (!studentId) return undefined;
+    return rows.find((r) => r.class_id === studentId);
+  }, [rows, studentId]);
+}
+
+/**
+ * Narrow per-student email lookup via the `get_student_email` RPC.
+ * Use this when the caller hasn't already loaded the full hub roster
+ * (e.g. deep-linked Overview before the list query resolves). Falls
+ * back to NULL if the caller is not an admin (RPC body enforces).
+ */
+export function useStudentEmail(studentId: string | null) {
+  return useQuery<string | null>({
+    queryKey: ["hub-student-email", studentId],
+    enabled: !!studentId,
+    staleTime: HUB_STALE_MS,
+    queryFn: async () => {
+      if (!studentId) return null;
+      // Cast until Lovable regenerates src/integrations/supabase/types.ts.
+      const { data, error } = await (supabase as any).rpc(
+        "get_student_email",
+        { _student_id: studentId }
+      );
+      if (error) throw error;
+      return (data as string | null) ?? null;
+    },
+  });
+}
+
+/**
+ * Legacy helper retained for any callers that already have `rows` in
+ * scope. Prefer `useSelectedHubStudent` in new code.
+ */
 export function selectHubStudent(
   rows: HubStudentRow[],
   studentId: string | null

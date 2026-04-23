@@ -13,8 +13,8 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import StudentTAAssignmentsStrip from "@/components/ta/StudentTAAssignmentsStrip";
 import {
-  useHubStudents,
-  selectHubStudent,
+  useSelectedHubStudent,
+  useStudentEmail,
   type HubStudentRow,
 } from "@/hooks/useHubStudents";
 
@@ -59,8 +59,15 @@ const FLAG_KEYS: (keyof HubStudentRow)[] = [
  * query + collapse state.
  */
 export default function StudentOverview({ studentId }: Props) {
-  const { rows, loading: studentsLoading } = useHubStudents();
-  const student = selectHubStudent(rows, studentId);
+  const student = useSelectedHubStudent(studentId);
+  const studentsLoading = !student && !!studentId;
+
+  // Narrow per-student RPC: used as a fallback when the roster's email
+  // field is empty/"unknown" (profile row without a matching auth.users
+  // entry, or caller without admin role at roster-fetch time).
+  const needsEmailFallback =
+    !!student && (!student.email || student.email === "unknown");
+  const emailFallback = useStudentEmail(needsEmailFallback ? studentId : null);
 
   const { data: attemptsCount, isLoading: attemptsLoading } = useQuery<number>({
     queryKey: ["hub-overview-attempts", studentId],
@@ -117,11 +124,16 @@ export default function StudentOverview({ studentId }: Props) {
 
   const activeFlags = FLAG_KEYS.filter((k) => Boolean(student[k]));
 
+  const resolvedEmail =
+    student.email && student.email !== "unknown"
+      ? student.email
+      : emailFallback.data ?? null;
+
   return (
     <div className="flex flex-col divide-y divide-border/30">
       <ProfileCard
         name={student.display_name?.trim() || "Unnamed student"}
-        email={student.email ?? null}
+        email={resolvedEmail}
         role={student.role}
         lastSeen={lastSeen}
       />
