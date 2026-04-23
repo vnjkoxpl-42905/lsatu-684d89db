@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,7 +27,8 @@ export interface StudentSession {
 const sessionsTable = () => (supabase as any).from("student_sessions");
 
 export function useStudentSessions(studentId: string) {
-  return useQuery<StudentSession[]>({
+  const qc = useQueryClient();
+  const query = useQuery<StudentSession[]>({
     queryKey: ["student-sessions", studentId],
     enabled: !!studentId,
     queryFn: async () => {
@@ -41,6 +43,32 @@ export function useStudentSessions(studentId: string) {
       return (data ?? []) as StudentSession[];
     },
   });
+
+  // Realtime: defensive symmetry with useStudentContext. Sessions are
+  // mutated far less often, but cross-tab freshness is free.
+  useEffect(() => {
+    if (!studentId) return;
+    const channel = supabase
+      .channel(`student-sessions-${studentId}-${Math.random().toString(36).slice(2)}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "student_sessions",
+          filter: `student_id=eq.${studentId}`,
+        },
+        () => {
+          qc.invalidateQueries({ queryKey: ["student-sessions", studentId] });
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [studentId, qc]);
+
+  return query;
 }
 
 export interface LogSessionInput {
