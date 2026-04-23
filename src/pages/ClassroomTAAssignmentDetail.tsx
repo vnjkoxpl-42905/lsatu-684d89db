@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { ArrowLeft, Check, GraduationCap, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, Download, GraduationCap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -46,6 +46,23 @@ export default function ClassroomTAAssignmentDetail() {
   const { user } = useAuth();
   const { assignment, loading, refresh } = useStudentTAAssignment(assignmentId);
   const [completing, setCompleting] = React.useState(false);
+  const [downloading, setDownloading] = React.useState(false);
+
+  const onDownload = async () => {
+    if (!assignment) return;
+    setDownloading(true);
+    try {
+      const { downloadAssignmentPdf } = await import("@/lib/taPdf");
+      await downloadAssignmentPdf({
+        title: assignment.title,
+        contentHtml: assignment.content_html || "",
+      });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "PDF download failed");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   React.useEffect(() => {
     if (!user) navigate("/auth");
@@ -135,8 +152,21 @@ export default function ClassroomTAAssignmentDetail() {
               dangerouslySetInnerHTML={{ __html: sanitized }}
             />
 
-            {assignment.status !== "completed" && (
-              <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
+              <Button
+                onClick={onDownload}
+                disabled={downloading}
+                size="sm"
+                variant="outline"
+              >
+                {downloading ? (
+                  <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                ) : (
+                  <Download className="h-3.5 w-3.5 mr-1.5" />
+                )}
+                Download PDF
+              </Button>
+              {assignment.status !== "completed" && (
                 <Button onClick={onComplete} disabled={completing} size="sm">
                   {completing ? (
                     <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
@@ -145,8 +175,8 @@ export default function ClassroomTAAssignmentDetail() {
                   )}
                   Mark complete
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
       </main>
