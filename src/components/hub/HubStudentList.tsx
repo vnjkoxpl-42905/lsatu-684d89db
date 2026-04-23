@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatRelativeShort } from "@/lib/time";
+import { track } from "@/lib/analytics";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
 
 interface Props {
@@ -45,6 +46,18 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
   useEffect(() => {
     if (cursor >= filtered.length) setCursor(0);
   }, [filtered.length, cursor]);
+
+  // Fire hub_search_used when the query settles (~500ms of no typing).
+  // Skip empty strings (including the Esc-to-clear path) so we don't
+  // emit noise events every time the admin clears the field.
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    const handle = window.setTimeout(() => {
+      track("hub_search_used", { query_length: trimmed.length });
+    }, 500);
+    return () => window.clearTimeout(handle);
+  }, [query]);
 
   // Sync cursor to the currently selected row when it's in view so
   // arrow keys start from "where we are" rather than top-of-list.
