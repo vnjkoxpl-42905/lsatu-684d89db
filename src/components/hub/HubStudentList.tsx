@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Loader2, Search, User } from "lucide-react";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Input } from "@/components/ui/input";
@@ -15,11 +15,20 @@ interface Props {
  * each row with last-seen, assignment counts, and an unread pip without
  * changing the selector used by FloatingTAWidget.
  *
+ * Keyboard:
+ *   - Cmd/Ctrl+K    focus the search input
+ *   - Arrow Up/Down move a virtual cursor through the filtered list
+ *   - Enter         select the cursor row
+ *   - Esc (search)  clear the query
+ *
  * Rows are keyed by `class_id`, matching every other TA surface.
  */
 export default function HubStudentList({ selectedId, onSelect }: Props) {
   const { rows, loading, error, refresh } = useHubStudents();
   const [query, setQuery] = useState("");
+  const [cursor, setCursor] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -31,15 +40,77 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
     });
   }, [rows, query]);
 
+  // Reset cursor when the filtered list shrinks or changes significantly.
+  useEffect(() => {
+    if (cursor >= filtered.length) setCursor(0);
+  }, [filtered.length, cursor]);
+
+  // Sync cursor to the currently selected row when it's in view so
+  // arrow keys start from "where we are" rather than top-of-list.
+  useEffect(() => {
+    if (!selectedId) return;
+    const idx = filtered.findIndex((s) => s.class_id === selectedId);
+    if (idx >= 0) setCursor(idx);
+    // Intentionally only when selectedId or filter changes materially.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId, filtered.length]);
+
+  // Scroll cursor row into view as it moves.
+  useEffect(() => {
+    const el = listRef.current?.querySelector<HTMLLIElement>(
+      `[data-cursor="${cursor}"]`
+    );
+    el?.scrollIntoView({ block: "nearest" });
+  }, [cursor]);
+
+  // Global Cmd/Ctrl+K → focus the search input when the hub is mounted.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (filtered.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setCursor((i) => (i + 1) % filtered.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setCursor((i) => (i - 1 + filtered.length) % filtered.length);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const target = filtered[cursor];
+      if (target) onSelect(target.class_id);
+    }
+  };
+
   return (
-    <div className="flex h-full flex-col">
+    <div
+      className="flex h-full flex-col"
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+    >
       <div className="p-3 border-b border-zinc-800">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
           <Input
+            ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search students"
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && query) {
+                e.preventDefault();
+                setQuery("");
+              }
+            }}
+            placeholder="Search students (⌘K)"
             className="pl-9"
           />
         </div>
@@ -70,13 +141,16 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
             {query ? "No matching students." : "No students yet."}
           </div>
         ) : (
-          <ul className="divide-y divide-zinc-800">
-            {filtered.map((s) => (
+          <ul ref={listRef} className="divide-y divide-zinc-800">
+            {filtered.map((s, i) => (
               <StudentRow
                 key={s.class_id}
+                index={i}
                 student={s}
                 active={s.class_id === selectedId}
+                cursor={i === cursor}
                 onClick={() => onSelect(s.class_id)}
+                onHover={() => setCursor(i)}
               />
             ))}
           </ul>
@@ -87,12 +161,22 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
 }
 
 interface RowProps {
+  index: number;
   student: HubStudentRow;
   active: boolean;
+  cursor: boolean;
   onClick: () => void;
+  onHover: () => void;
 }
 
-function StudentRow({ student, active, onClick }: RowProps) {
+function StudentRow({
+  index,
+  student,
+  active,
+  cursor,
+  onClick,
+  onHover,
+}: RowProps) {
   const lastSeen = student.last_seen_at
     ? formatDistanceToNowStrict(new Date(student.last_seen_at), {
         addSuffix: true,
@@ -100,14 +184,17 @@ function StudentRow({ student, active, onClick }: RowProps) {
     : "Never";
 
   return (
-    <li>
+    <li data-cursor={index}>
       <button
         type="button"
         onClick={onClick}
+        onMouseEnter={onHover}
         className={cn(
           "w-full text-left px-3 py-2.5 flex items-start gap-2.5 text-sm transition border-l-2",
           active
             ? "bg-zinc-800/70 text-zinc-100 border-l-amber-400"
+            : cursor
+            ? "bg-zinc-900/70 text-zinc-100 border-l-transparent"
             : "text-zinc-300 hover:bg-zinc-900/60 border-l-transparent"
         )}
       >

@@ -1,6 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ChevronDown, ChevronUp, Command, Menu, Users } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Command,
+  Menu,
+  Users,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +29,7 @@ function parseTab(raw: string | null): HubTab {
 }
 
 const LS_SELECTED_KEY = "ta-selected-student";
+const LS_LEFT_COLLAPSED_KEY = "hub-left-collapsed";
 
 export default function StudentHub() {
   const navigate = useNavigate();
@@ -44,6 +54,39 @@ export default function StudentHub() {
   );
   const [mobileSelectorOpen, setMobileSelectorOpen] = useState(false);
   const [mobileContextOpen, setMobileContextOpen] = useState(false);
+  const [leftCollapsed, setLeftCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(LS_LEFT_COLLAPSED_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleLeftCollapsed = useCallback(() => {
+    setLeftCollapsed((v) => {
+      const next = !v;
+      try {
+        localStorage.setItem(LS_LEFT_COLLAPSED_KEY, next ? "1" : "0");
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, []);
+
+  // Global Cmd/Ctrl+[ toggles the left panel on desktop. Lets Joshua
+  // reclaim horizontal room on narrow laptops without reaching for the
+  // mouse. Mobile is unaffected (aside is display:none there anyway).
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "[") {
+        e.preventDefault();
+        toggleLeftCollapsed();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [toggleLeftCollapsed]);
 
   // URL → state when the URL tab changes (back/forward navigation).
   useEffect(() => {
@@ -198,20 +241,49 @@ export default function StudentHub() {
 
       <main className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto px-0 md:px-4 md:py-3 flex flex-col md:flex-row gap-0 md:gap-3">
         {/* Left panel */}
-        <aside
-          className={cn(
-            "hidden md:flex shrink-0 w-[280px] flex-col",
-            "border border-zinc-800 rounded-lg overflow-hidden"
-          )}
-        >
-          <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2">
-            <Users className="h-4 w-4 text-zinc-400" />
-            <span className="text-sm font-medium">Students</span>
-          </div>
-          <div className="flex-1 min-h-0">
-            <HubStudentList selectedId={selected} onSelect={handleSelect} />
-          </div>
-        </aside>
+        {leftCollapsed ? (
+          <aside
+            className={cn(
+              "hidden md:flex shrink-0 w-[36px] flex-col items-center",
+              "border border-zinc-800 rounded-lg py-2 gap-2"
+            )}
+          >
+            <button
+              type="button"
+              onClick={toggleLeftCollapsed}
+              className="p-1 rounded hover:bg-zinc-800 text-zinc-400 hover:text-zinc-100"
+              aria-label="Expand student list (⌘[)"
+              title="Expand (⌘[)"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <Users className="h-4 w-4 text-zinc-500" />
+          </aside>
+        ) : (
+          <aside
+            className={cn(
+              "hidden md:flex shrink-0 w-[280px] flex-col",
+              "border border-zinc-800 rounded-lg overflow-hidden"
+            )}
+          >
+            <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2">
+              <Users className="h-4 w-4 text-zinc-400" />
+              <span className="text-sm font-medium">Students</span>
+              <button
+                type="button"
+                onClick={toggleLeftCollapsed}
+                className="ml-auto p-1 rounded hover:bg-zinc-800 text-zinc-500 hover:text-zinc-100"
+                aria-label="Collapse student list (⌘[)"
+                title="Collapse (⌘[)"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="flex-1 min-h-0">
+              <HubStudentList selectedId={selected} onSelect={handleSelect} />
+            </div>
+          </aside>
+        )}
 
         {/* Center panel: chat */}
         <section
