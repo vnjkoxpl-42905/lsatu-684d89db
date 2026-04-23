@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import HubStudentList from "@/components/hub/HubStudentList";
 import HubContextPanel, { type HubTab } from "@/components/hub/HubContextPanel";
 import TAChatView from "@/components/ta/TAChatView";
+import { track } from "@/lib/analytics";
 
 const VALID_TABS: HubTab[] = ["overview", "notes", "library"];
 
@@ -70,6 +71,7 @@ export default function StudentHub() {
       } catch {
         /* ignore */
       }
+      track("hub_panel_collapsed", { panel: "left", collapsed: next });
       return next;
     });
   }, []);
@@ -108,6 +110,7 @@ export default function StudentHub() {
         },
         { replace: true }
       );
+      track("hub_tab_switched", { tab: next });
     },
     [setSearchParams]
   );
@@ -143,6 +146,7 @@ export default function StudentHub() {
       } catch {
         /* ignore quota errors */
       }
+      if (next) track("hub_student_switched", { student_id: next });
     },
     [setSearchParams]
   );

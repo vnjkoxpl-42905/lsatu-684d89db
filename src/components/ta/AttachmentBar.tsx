@@ -32,6 +32,7 @@ import {
   type SessionStatus,
 } from "@/hooks/useStudentSessions";
 import StudentNoteDialog from "@/components/hub/StudentNoteDialog";
+import { track } from "@/lib/analytics";
 
 const SESSION_STATUSES: { value: SessionStatus; label: string }[] = [
   { value: "completed", label: "Completed" },
@@ -107,6 +108,11 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
         file,
         contextType,
       });
+      track("hub_upload_attached", {
+        student_id: studentId,
+        context_type: contextType,
+        size: file.size,
+      });
       toast.success(`Added ${title} to ${studentLabel}'s context`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
@@ -149,6 +155,11 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
           source: "upload",
         });
       }
+      track("hub_upload_attached", {
+        student_id: studentId,
+        context_type: "transcript",
+        mode: transcriptMode,
+      });
       toast.success(`Added transcript to ${studentLabel}'s context`);
       setTranscriptOpen(false);
       setTranscriptTitle("");
@@ -184,6 +195,10 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
         status: sessionStatus,
         durationMinutes: durationNum,
         notes: sessionNotes.trim() || null,
+      });
+      track("hub_session_logged", {
+        student_id: studentId,
+        status: sessionStatus,
       });
       toast.success(`Logged session for ${studentLabel}`);
       setSessionOpen(false);

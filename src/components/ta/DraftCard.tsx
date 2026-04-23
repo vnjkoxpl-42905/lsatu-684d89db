@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import type { DraftPayload } from "@/hooks/useTAChat";
 import { notifyStudentOfTAAssignment } from "@/lib/taNotify";
+import { track } from "@/lib/analytics";
 
 interface Props {
   interactionId: string;
@@ -84,6 +85,13 @@ export default function DraftCard({
           error: notifErr,
         });
       }
+
+      track("hub_draft_approved", {
+        student_id: studentId,
+        assignment_id: assignmentId,
+        inbox_ok: notify.ok,
+        bell_ok: !notifErr,
+      });
 
       if (!notify.ok || notifErr) {
         toast.warning("Assignment created, notification(s) partially failed");

@@ -12,6 +12,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useAddStudentContextNote } from "@/hooks/useStudentContext";
+import { track } from "@/lib/analytics";
 
 interface Props {
   open: boolean;
@@ -50,6 +51,7 @@ export default function StudentNoteDialog({
         title,
         body,
       });
+      track("hub_note_created", { student_id: studentId });
       toast.success(
         `Added note to ${studentName?.trim() || "this student"}'s context`
       );
