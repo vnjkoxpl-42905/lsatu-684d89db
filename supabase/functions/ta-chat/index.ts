@@ -265,7 +265,11 @@ Deno.serve(async (req) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-pro",
+          // Gemini 3 Flash Preview — best-value flash tier in the Gemini 3 line.
+          // Fast + cheap, strong enough for TA reasoning over student analytics
+          // and library context. Upgrade to gemini-3.1-pro-preview only if quality
+          // regresses on draft generation.
+          model: "google/gemini-3-flash-preview",
           messages: messagesForModel,
         }),
       }
