@@ -36,6 +36,7 @@ const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
 const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
 const TAPage = React.lazy(() => import("./pages/admin/TA"));
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
+const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -154,6 +155,13 @@ const App = () => {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
+                  } />
+                  <Route path="/classroom/ta/:assignmentId" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomTAAssignmentDetail />
+                      </React.Suspense>
+                    </ProtectedRoute>
                   } />
                   <Route path="/classroom/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access">

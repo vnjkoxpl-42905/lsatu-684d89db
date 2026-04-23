@@ -123,3 +123,122 @@ export function useStudentAssignment(assignmentId: string | undefined): {
 
   return { assignment, loading, error, refresh };
 }
+
+// --- TA assignments --------------------------------------------------------
+// ta_assignments is populated by DraftCard's approve flow. RLS on the table
+// restricts students to rows where student_id = auth.uid(); admins have full
+// CRUD. Kept in this file per the Gap 1 brief so callers have one import.
+
+export type TAAssignmentStatus = "assigned" | "viewed" | "completed";
+
+export interface StudentTAAssignment {
+  id: string;
+  student_id: string;
+  interaction_id: string | null;
+  title: string;
+  content_html: string;
+  asset_ids: string[];
+  pdf_url: string | null;
+  status: TAAssignmentStatus;
+  assigned_by: string;
+  assigned_at: string;
+  viewed_at: string | null;
+  completed_at: string | null;
+  created_at: string;
+}
+
+const TA_STATUS_ORDER: Record<TAAssignmentStatus, number> = {
+  assigned: 0,
+  viewed: 1,
+  completed: 2,
+};
+
+export function useStudentTAAssignments(): {
+  assignments: StudentTAAssignment[];
+  loading: boolean;
+  error: string | null;
+  refresh: () => Promise<void>;
+} {
+  const { user } = useAuth();
+  const [assignments, setAssignments] = useState<StudentTAAssignment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error: err } = await (supabase as any)
+      .from("ta_assignments")
+      .select("*")
+      .eq("student_id", user.id)
+      .order("assigned_at", { ascending: false });
+    if (err) {
+      console.error("[ta:assign:student:list] failed", {
+        userId: user.id,
+        error: err,
+      });
+      setError(err.message);
+      setAssignments([]);
+    } else {
+      const rows = (data || []) as StudentTAAssignment[];
+      rows.sort((a, b) => {
+        const s = TA_STATUS_ORDER[a.status] - TA_STATUS_ORDER[b.status];
+        if (s !== 0) return s;
+        return new Date(b.assigned_at).getTime() - new Date(a.assigned_at).getTime();
+      });
+      setAssignments(rows);
+      setError(null);
+    }
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    if (user) void refresh();
+  }, [user, refresh]);
+
+  return { assignments, loading, error, refresh };
+}
+
+export function useStudentTAAssignment(assignmentId: string | undefined): {
+  assignment: StudentTAAssignment | null;
+  loading: boolean;
+  error: string | null;
+  refresh: () => Promise<void>;
+} {
+  const { user } = useAuth();
+  const [assignment, setAssignment] = useState<StudentTAAssignment | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    if (!user || !assignmentId) return;
+    setLoading(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error: err } = await (supabase as any)
+      .from("ta_assignments")
+      .select("*")
+      .eq("id", assignmentId)
+      .eq("student_id", user.id)
+      .maybeSingle();
+    if (err) {
+      console.error("[ta:assign:student:get] failed", {
+        userId: user.id,
+        assignmentId,
+        error: err,
+      });
+      setError(err.message);
+      setAssignment(null);
+    } else {
+      setAssignment((data as StudentTAAssignment) || null);
+      setError(null);
+    }
+    setLoading(false);
+  }, [user, assignmentId]);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  return { assignment, loading, error, refresh };
+}
