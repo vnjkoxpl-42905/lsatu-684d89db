@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle, Loader2, Search, User } from "lucide-react";
+import { AlertTriangle, Search, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatRelativeShort } from "@/lib/time";
 import { useHubStudents, type HubStudentRow } from "@/hooks/useHubStudents";
@@ -118,10 +119,17 @@ export default function HubStudentList({ selectedId, onSelect }: Props) {
 
       <div className="flex-1 overflow-y-auto">
         {loading ? (
-          <div className="flex items-center justify-center py-8 text-zinc-500">
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            Loading…
-          </div>
+          <ul className="divide-y divide-zinc-800" aria-label="Loading students">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <li key={i} className="px-3 py-2.5 flex items-center gap-2.5">
+                <Skeleton className="h-7 w-7 rounded-full" />
+                <div className="flex-1 space-y-1.5">
+                  <Skeleton className="h-3 w-1/2" />
+                  <Skeleton className="h-2.5 w-1/3" />
+                </div>
+              </li>
+            ))}
+          </ul>
         ) : error ? (
           <div className="p-4 space-y-2">
             <div className="text-sm text-red-400 flex items-start gap-2">

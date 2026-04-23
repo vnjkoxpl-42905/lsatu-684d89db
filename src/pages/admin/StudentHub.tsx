@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import HubStudentList from "@/components/hub/HubStudentList";
 import HubContextPanel, { type HubTab } from "@/components/hub/HubContextPanel";
 import TAChatView from "@/components/ta/TAChatView";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { track } from "@/lib/analytics";
 
 const VALID_TABS: HubTab[] = ["overview", "notes", "library"];
@@ -50,6 +51,7 @@ export default function StudentHub() {
       return null;
     }
   });
+  const isMobile = useIsMobile();
   const [tab, setTabState] = useState<HubTab>(() =>
     parseTab(searchParams.get("tab"))
   );
@@ -303,47 +305,50 @@ export default function StudentHub() {
           )}
         </section>
 
-        {/* Right panel (desktop): tabbed context */}
-        <aside
-          className={cn(
-            "hidden md:flex shrink-0 w-[360px] flex-col",
-            "rounded-lg overflow-hidden",
-            "backdrop-blur-xl bg-background/60 border border-border/40"
-          )}
-        >
-          <HubContextPanel
-            studentId={selected}
-            studentName={selectedName}
-            tab={tab}
-            onTabChange={setTab}
-          />
-        </aside>
-
-        {/* Right panel (mobile): collapsible section below chat */}
-        <div className="md:hidden border-t border-zinc-800">
-          <button
-            type="button"
-            onClick={() => setMobileContextOpen((v) => !v)}
-            className="w-full flex items-center justify-between px-4 py-2.5 bg-zinc-900/40 hover:bg-zinc-900/70 transition-colors"
-          >
-            <span className="text-sm font-medium">Context</span>
-            {mobileContextOpen ? (
-              <ChevronUp className="h-4 w-4 text-zinc-500" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-zinc-500" />
+        {/* Right panel — mounted once; presentation swaps via matchMedia.
+            Keeps TanStack Query + realtime subscriptions alive across
+            viewport changes and halves the render cost on mobile. */}
+        {isMobile ? (
+          <div className="border-t border-zinc-800">
+            <button
+              type="button"
+              onClick={() => setMobileContextOpen((v) => !v)}
+              className="w-full flex items-center justify-between px-4 py-2.5 bg-zinc-900/40 hover:bg-zinc-900/70 transition-colors"
+            >
+              <span className="text-sm font-medium">Context</span>
+              {mobileContextOpen ? (
+                <ChevronUp className="h-4 w-4 text-zinc-500" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-zinc-500" />
+              )}
+            </button>
+            {mobileContextOpen && (
+              <div className="h-[60vh] border-t border-zinc-800">
+                <HubContextPanel
+                  studentId={selected}
+                  studentName={selectedName}
+                  tab={tab}
+                  onTabChange={setTab}
+                />
+              </div>
             )}
-          </button>
-          {mobileContextOpen && (
-            <div className="h-[60vh] border-t border-zinc-800">
-              <HubContextPanel
-            studentId={selected}
-            studentName={selectedName}
-            tab={tab}
-            onTabChange={setTab}
-          />
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <aside
+            className={cn(
+              "shrink-0 w-[360px] flex flex-col",
+              "rounded-lg overflow-hidden",
+              "backdrop-blur-xl bg-background/60 border border-border/40"
+            )}
+          >
+            <HubContextPanel
+              studentId={selected}
+              studentName={selectedName}
+              tab={tab}
+              onTabChange={setTab}
+            />
+          </aside>
+        )}
       </main>
     </div>
   );
