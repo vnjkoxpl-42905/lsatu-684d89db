@@ -55,7 +55,9 @@ export default function FloatingTAWidget() {
   );
 
   if (!authReady || !user || permsLoading) return null;
-  if (!is_admin || !has_ta_access) return null;
+  // Admins always get the widget; has_ta_access is for any future non-admin
+  // staff role. Mirrors ProtectedRoute's `is_admin || flag` convention.
+  if (!is_admin && !has_ta_access) return null;
 
   const openFullPage = () => {
     setOpen(false);
