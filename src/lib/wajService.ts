@@ -60,7 +60,7 @@ export async function logWrongAnswer(params: {
   };
 
   // Check if entry exists
-  const { data: existing } = await (supabase as any)
+  const { data: existing } = await supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', params.class_id)
@@ -71,7 +71,7 @@ export async function logWrongAnswer(params: {
     // Append to history
     const currentHistory = (existing.history_json as unknown as WAJHistoryItem[]) || [];
     const newHistory = [...currentHistory, historyItem];
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('wrong_answer_journal')
       .update({
         history_json: newHistory as unknown as any,
@@ -85,7 +85,7 @@ export async function logWrongAnswer(params: {
     if (error) throw error;
   } else {
     // Create new entry
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('wrong_answer_journal')
       .insert({
         class_id: params.class_id,
@@ -119,7 +119,7 @@ export async function logCorrectAnswer(params: {
   confidence_1_5: number | null;
 }) {
   // Only update if there's an existing WAJ entry (meaning they got it wrong before)
-  const { data: existing } = await (supabase as any)
+  const { data: existing } = await supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', params.class_id)
@@ -138,7 +138,7 @@ export async function logCorrectAnswer(params: {
 
     const currentHistory = (existing.history_json as unknown as WAJHistoryItem[]) || [];
     const newHistory = [...currentHistory, historyItem];
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('wrong_answer_journal')
       .update({
         history_json: newHistory as unknown as any,
@@ -159,7 +159,7 @@ export async function getWAJEntries(class_id: string, filters?: {
   pt?: number;
   last_status?: 'wrong' | 'right';
 }) {
-  let query = (supabase as any)
+  let query: any = supabase
     .from('wrong_answer_journal')
     .select('*')
     .eq('class_id', class_id)

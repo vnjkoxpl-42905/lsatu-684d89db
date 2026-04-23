@@ -64,9 +64,7 @@ export default function DriveFiles() {
 
   const loadRows = useCallback(async () => {
     if (!user) return;
-    // TODO: drop `as any` after next supabase type regen (drive_files table)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from("drive_files")
       .select("*")
       .eq("admin_user_id", user.id)
@@ -95,9 +93,7 @@ export default function DriveFiles() {
         thumbnail_url: f.thumbnailUrl || null,
         web_view_link: f.url,
       }));
-      // TODO: drop `as any` after next supabase type regen (drive_files table)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("drive_files")
         .upsert(inserts, { onConflict: "admin_user_id,google_file_id", ignoreDuplicates: true });
       if (error) {
@@ -129,9 +125,7 @@ export default function DriveFiles() {
 
   const handleRemove = useCallback(
     async (id: string) => {
-      // TODO: drop `as any` after next supabase type regen (drive_files table)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("drive_files")
         .delete()
         .eq("id", id);
