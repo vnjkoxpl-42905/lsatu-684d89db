@@ -57,14 +57,36 @@ export default function DraftCard({
         .eq("id", interactionId);
       if (updErr) throw updErr;
 
+      const assignmentId = (inserted as { id: string }).id;
+
       const notify = await notifyStudentOfTAAssignment({
         adminUserId: user.id,
         studentId,
         title: draft.title || "Untitled",
-        assignmentId: (inserted as { id: string }).id,
+        assignmentId,
       });
-      if (!notify.ok) {
-        toast.warning("Assignment created, but inbox notification failed");
+
+      // Bell notification. Non-blocking: if this fails the inbox message
+      // already landed, so the student still gets a signal.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: notifErr } = await (supabase as any)
+        .from("notifications")
+        .insert({
+          user_id: studentId,
+          type: "assignment",
+          title: `New assignment: ${draft.title || "Untitled"}`,
+          link: `/classroom/ta/${assignmentId}`,
+        });
+      if (notifErr) {
+        console.error("[ta:notify:bell] failed", {
+          studentId,
+          assignmentId,
+          error: notifErr,
+        });
+      }
+
+      if (!notify.ok || notifErr) {
+        toast.warning("Assignment created, notification(s) partially failed");
       } else {
         toast.success("Assignment created and student notified");
       }

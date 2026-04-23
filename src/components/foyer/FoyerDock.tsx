@@ -1,6 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { Inbox, Bell, LifeBuoy } from "lucide-react";
+import { Inbox, LifeBuoy } from "lucide-react";
 import { toast } from "sonner";
 import {
   motion,
@@ -10,6 +10,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useInbox } from "@/hooks/useInbox";
+import NotificationBell from "@/components/notifications/NotificationBell";
 
 interface DockItemProps {
   mouseX: MotionValue<number>;
@@ -85,13 +86,7 @@ export default function FoyerDock() {
         <Inbox className="h-5 w-5" aria-hidden />
       </DockItem>
 
-      <DockItem
-        mouseX={mouseX}
-        onClick={() => toast.info("Notifications coming soon")}
-        ariaLabel="Notifications"
-      >
-        <Bell className="h-5 w-5" aria-hidden />
-      </DockItem>
+      <NotificationBell mouseX={mouseX} />
 
       <DockItem
         mouseX={mouseX}
