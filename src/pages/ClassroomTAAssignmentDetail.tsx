@@ -1,13 +1,16 @@
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { ArrowLeft, GraduationCap } from "lucide-react";
+import { ArrowLeft, Check, GraduationCap, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import {
+  markTAAssignmentCompleted,
+  markTAAssignmentViewed,
   useStudentTAAssignment,
   type TAAssignmentStatus,
 } from "@/hooks/useStudentAssignments";
@@ -41,11 +44,38 @@ export default function ClassroomTAAssignmentDetail() {
   const navigate = useNavigate();
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const { user } = useAuth();
-  const { assignment, loading } = useStudentTAAssignment(assignmentId);
+  const { assignment, loading, refresh } = useStudentTAAssignment(assignmentId);
+  const [completing, setCompleting] = React.useState(false);
 
   React.useEffect(() => {
     if (!user) navigate("/auth");
   }, [user, navigate]);
+
+  // Auto-transition assigned -> viewed the first time a student opens the
+  // detail page. markTAAssignmentViewed is no-op for non-"assigned" rows.
+  const viewedFiredRef = React.useRef<string | null>(null);
+  React.useEffect(() => {
+    if (!assignment) return;
+    if (viewedFiredRef.current === assignment.id) return;
+    if (assignment.status !== "assigned") return;
+    viewedFiredRef.current = assignment.id;
+    void markTAAssignmentViewed(assignment.id).then((r) => {
+      if (r.ok) void refresh();
+    });
+  }, [assignment, refresh]);
+
+  const onComplete = async () => {
+    if (!assignment) return;
+    setCompleting(true);
+    const r = await markTAAssignmentCompleted(assignment.id);
+    if (r.ok) {
+      toast.success("Marked complete");
+      await refresh();
+    } else {
+      toast.error(r.error ?? "Failed to mark complete");
+    }
+    setCompleting(false);
+  };
 
   const sanitized = React.useMemo(
     () => (assignment ? DOMPurify.sanitize(assignment.content_html || "") : ""),
@@ -104,6 +134,19 @@ export default function ClassroomTAAssignmentDetail() {
               className="rounded-xl bg-card border border-border px-6 py-5 prose prose-sm dark:prose-invert max-w-none prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-headings:mt-4 prose-headings:mb-2"
               dangerouslySetInnerHTML={{ __html: sanitized }}
             />
+
+            {assignment.status !== "completed" && (
+              <div className="flex justify-end">
+                <Button onClick={onComplete} disabled={completing} size="sm">
+                  {completing ? (
+                    <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                  ) : (
+                    <Check className="h-3.5 w-3.5 mr-1.5" />
+                  )}
+                  Mark complete
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </main>

@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import StudentSelector from "@/components/ta/StudentSelector";
+import StudentTAAssignmentsStrip from "@/components/ta/StudentTAAssignmentsStrip";
 import TAChatView from "@/components/ta/TAChatView";
 
 const LS_KEY = "ta-selected-student";
@@ -121,7 +122,10 @@ export default function TA() {
 
         <section className="flex-1 min-w-0 border-t md:border border-zinc-800 md:rounded-lg overflow-hidden flex flex-col">
           {selected ? (
-            <TAChatView studentId={selected} studentName={selectedName} />
+            <>
+              <StudentTAAssignmentsStrip studentId={selected} />
+              <TAChatView studentId={selected} studentName={selectedName} />
+            </>
           ) : (
             <div className="flex-1 flex items-center justify-center text-center p-8">
               <div className="max-w-sm space-y-2">

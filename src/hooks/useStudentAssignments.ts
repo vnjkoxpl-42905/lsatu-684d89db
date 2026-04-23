@@ -200,6 +200,86 @@ export function useStudentTAAssignments(): {
   return { assignments, loading, error, refresh };
 }
 
+/**
+ * Admin-scoped list of a specific student's TA assignments.
+ * RLS on `ta_assignments` grants admins full read; students only see their own.
+ */
+export function useAdminTAAssignmentsForStudent(studentId: string | null | undefined): {
+  assignments: StudentTAAssignment[];
+  loading: boolean;
+  error: string | null;
+  refresh: () => Promise<void>;
+} {
+  const [assignments, setAssignments] = useState<StudentTAAssignment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = useCallback(async () => {
+    if (!studentId) {
+      setAssignments([]);
+      return;
+    }
+    setLoading(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error: err } = await (supabase as any)
+      .from("ta_assignments")
+      .select("*")
+      .eq("student_id", studentId)
+      .order("assigned_at", { ascending: false });
+    if (err) {
+      console.error("[ta:assign:admin:list] failed", { studentId, error: err });
+      setError(err.message);
+      setAssignments([]);
+    } else {
+      setAssignments((data || []) as StudentTAAssignment[]);
+      setError(null);
+    }
+    setLoading(false);
+  }, [studentId]);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  return { assignments, loading, error, refresh };
+}
+
+export async function markTAAssignmentViewed(
+  assignmentId: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    // Only transition assigned -> viewed; leave completed rows alone.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
+      .from("ta_assignments")
+      .update({ status: "viewed", viewed_at: new Date().toISOString() })
+      .eq("id", assignmentId)
+      .eq("status", "assigned");
+    if (error) throw error;
+    return { ok: true };
+  } catch (e) {
+    console.error("[ta:assign:student:mark-viewed] failed", { assignmentId, error: e });
+    return { ok: false, error: e instanceof Error ? e.message : "mark-viewed failed" };
+  }
+}
+
+export async function markTAAssignmentCompleted(
+  assignmentId: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
+      .from("ta_assignments")
+      .update({ status: "completed", completed_at: new Date().toISOString() })
+      .eq("id", assignmentId);
+    if (error) throw error;
+    return { ok: true };
+  } catch (e) {
+    console.error("[ta:assign:student:mark-completed] failed", { assignmentId, error: e });
+    return { ok: false, error: e instanceof Error ? e.message : "mark-completed failed" };
+  }
+}
+
 export function useStudentTAAssignment(assignmentId: string | undefined): {
   assignment: StudentTAAssignment | null;
   loading: boolean;
