@@ -47,9 +47,7 @@ export function useStudentAssignments(): UseStudentAssignmentsResult {
   const refresh = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    // TODO: drop `as any` after next supabase type regen (homework_assignments)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("homework_assignments")
       .select("*")
       .eq("student_id", user.id)
@@ -95,8 +93,7 @@ export function useStudentAssignment(assignmentId: string | undefined): {
   const refresh = useCallback(async () => {
     if (!user || !assignmentId) return;
     setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("homework_assignments")
       .select("*")
       .eq("id", assignmentId)
