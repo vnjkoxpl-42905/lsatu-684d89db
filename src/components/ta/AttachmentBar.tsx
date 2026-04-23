@@ -31,6 +31,7 @@ import {
   useLogStudentSession,
   type SessionStatus,
 } from "@/hooks/useStudentSessions";
+import StudentNoteDialog from "@/components/hub/StudentNoteDialog";
 
 const SESSION_STATUSES: { value: SessionStatus; label: string }[] = [
   { value: "completed", label: "Completed" },
@@ -72,8 +73,6 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
   const transcriptFileRef = useRef<HTMLInputElement>(null);
 
   const [noteOpen, setNoteOpen] = useState(false);
-  const [noteTitle, setNoteTitle] = useState("");
-  const [noteBody, setNoteBody] = useState("");
 
   const [transcriptOpen, setTranscriptOpen] = useState(false);
   const [transcriptMode, setTranscriptMode] = useState<TranscriptMode>("paste");
@@ -157,22 +156,6 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
       if (transcriptFileRef.current) transcriptFileRef.current.value = "";
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
-    }
-  };
-
-  const handleNoteSubmit = async () => {
-    try {
-      await addNote.mutateAsync({
-        studentId,
-        title: noteTitle,
-        body: noteBody,
-      });
-      toast.success(`Added note to ${studentLabel}'s context`);
-      setNoteOpen(false);
-      setNoteTitle("");
-      setNoteBody("");
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Save failed");
     }
   };
 
@@ -443,55 +426,12 @@ export default function AttachmentBar({ studentId, studentName }: Props) {
         </DialogContent>
       </Dialog>
 
-      <Dialog
+      <StudentNoteDialog
         open={noteOpen}
-        onOpenChange={(next) => {
-          if (busy) return;
-          setNoteOpen(next);
-          if (!next) {
-            setNoteTitle("");
-            setNoteBody("");
-          }
-        }}
-      >
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Add notes</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3">
-            <div className="space-y-1.5">
-              <label className="text-sm text-zinc-400">Title</label>
-              <Input
-                value={noteTitle}
-                onChange={(e) => setNoteTitle(e.target.value)}
-                placeholder="e.g. Prep style, parents contacted"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-sm text-zinc-400">Notes</label>
-              <Textarea
-                value={noteBody}
-                onChange={(e) => setNoteBody(e.target.value)}
-                rows={8}
-                placeholder="Anything the TA should know about this student…"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="ghost"
-              onClick={() => setNoteOpen(false)}
-              disabled={busy}
-            >
-              Cancel
-            </Button>
-            <Button onClick={handleNoteSubmit} disabled={busy}>
-              {busy ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Save note
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        onOpenChange={setNoteOpen}
+        studentId={studentId}
+        studentName={studentName}
+      />
     </div>
   );
 }

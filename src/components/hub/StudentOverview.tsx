@@ -1,0 +1,267 @@
+import { useQuery } from "@tanstack/react-query";
+import {
+  GraduationCap,
+  Mail,
+  CalendarDays,
+  Clock,
+  BarChart3,
+  AlertTriangle,
+  Activity,
+  Shield,
+} from "lucide-react";
+import { formatDistanceToNowStrict } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import StudentTAAssignmentsStrip from "@/components/ta/StudentTAAssignmentsStrip";
+import {
+  useHubStudents,
+  selectHubStudent,
+  type HubStudentRow,
+} from "@/hooks/useHubStudents";
+
+interface Props {
+  studentId: string | null;
+}
+
+const FLAG_LABELS: Record<string, string> = {
+  has_bootcamp_access: "Bootcamps",
+  has_classroom_access: "Classroom",
+  has_analytics_access: "Analytics",
+  has_schedule_access: "Schedule",
+  has_practice_access: "Practice",
+  has_drill_access: "Drill",
+  has_waj_access: "WAJ",
+  has_flagged_access: "Flagged",
+  has_chat_access: "Chat",
+  has_export_access: "Export",
+  has_ta_access: "TA",
+};
+
+const FLAG_KEYS: (keyof HubStudentRow)[] = [
+  "has_practice_access",
+  "has_drill_access",
+  "has_bootcamp_access",
+  "has_classroom_access",
+  "has_analytics_access",
+  "has_schedule_access",
+  "has_waj_access",
+  "has_flagged_access",
+  "has_chat_access",
+  "has_export_access",
+  "has_ta_access",
+];
+
+/**
+ * Overview tab. Pulls the student's row out of the shared useHubStudents
+ * cache (already loaded for the left panel, so this reuses data) and
+ * fetches two lightweight counts (attempts, WAJ) per student.
+ *
+ * The ta_assignments detail strip is mounted unchanged — it has its own
+ * query + collapse state.
+ */
+export default function StudentOverview({ studentId }: Props) {
+  const { rows, loading: studentsLoading } = useHubStudents();
+  const student = selectHubStudent(rows, studentId);
+
+  const { data: attemptsCount, isLoading: attemptsLoading } = useQuery<number>({
+    queryKey: ["hub-overview-attempts", studentId],
+    enabled: !!studentId,
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("attempts")
+        .select("*", { count: "exact", head: true })
+        .eq("class_id", studentId as string);
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  const { data: wajCount, isLoading: wajLoading } = useQuery<number>({
+    queryKey: ["hub-overview-waj", studentId],
+    enabled: !!studentId,
+    queryFn: async () => {
+      // Mirror the ta-chat edge function: wrong_answer_journal is filtered
+      // by class_id on the admin side too.
+      const { count, error } = await supabase
+        .from("wrong_answer_journal")
+        .select("*", { count: "exact", head: true })
+        .eq("class_id", studentId as string);
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  if (!studentId) {
+    return (
+      <EmptyState icon={GraduationCap} message="Select a student to view their profile." />
+    );
+  }
+
+  if (studentsLoading && !student) {
+    return <EmptyState message="Loading…" />;
+  }
+
+  if (!student) {
+    return (
+      <EmptyState
+        icon={AlertTriangle}
+        message="Student not found in the managed user list."
+      />
+    );
+  }
+
+  const lastSeen = student.last_seen_at
+    ? formatDistanceToNowStrict(new Date(student.last_seen_at), {
+        addSuffix: true,
+      })
+    : "Never";
+
+  const activeFlags = FLAG_KEYS.filter((k) => Boolean(student[k]));
+
+  return (
+    <div className="flex flex-col divide-y divide-border/30">
+      <ProfileCard
+        name={student.display_name?.trim() || "Unnamed student"}
+        email={student.email ?? null}
+        role={student.role}
+        lastSeen={lastSeen}
+      />
+
+      <section className="p-4">
+        <div className="text-[11px] uppercase tracking-wider text-zinc-500 mb-2">
+          Assignments
+        </div>
+        <StudentTAAssignmentsStrip studentId={studentId} />
+      </section>
+
+      <section className="p-4 space-y-3">
+        <div className="text-[11px] uppercase tracking-wider text-zinc-500">
+          Quick analytics
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard
+            icon={Activity}
+            label="Practice attempts"
+            value={attemptsLoading ? "…" : (attemptsCount ?? 0).toLocaleString()}
+          />
+          <StatCard
+            icon={BarChart3}
+            label="WAJ items"
+            value={wajLoading ? "…" : (wajCount ?? 0).toLocaleString()}
+          />
+        </div>
+      </section>
+
+      <section className="p-4 space-y-2">
+        <div className="text-[11px] uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+          <Shield className="h-3 w-3" />
+          Active feature flags
+        </div>
+        {activeFlags.length === 0 ? (
+          <div className="text-[12px] text-zinc-500">
+            No feature flags enabled.
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {activeFlags.map((k) => (
+              <span
+                key={k}
+                className="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-[11px] text-zinc-300"
+              >
+                {FLAG_LABELS[k] ?? String(k)}
+              </span>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function ProfileCard({
+  name,
+  email,
+  role,
+  lastSeen,
+}: {
+  name: string;
+  email: string | null;
+  role: string;
+  lastSeen: string;
+}) {
+  return (
+    <section className="p-4 space-y-2">
+      <div className="flex items-center gap-2.5">
+        <div className="h-10 w-10 rounded-full bg-zinc-800 flex items-center justify-center">
+          <GraduationCap className="h-5 w-5 text-zinc-400" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-medium text-zinc-100 truncate">{name}</div>
+          <div className="text-[11px] text-zinc-500 truncate">
+            {role === "admin" ? "Admin" : "Student"}
+          </div>
+        </div>
+      </div>
+      <dl className="space-y-1 pt-1">
+        {email && email !== "unknown" && (
+          <MetaRow icon={Mail} label="Email" value={email} />
+        )}
+        <MetaRow icon={Clock} label="Last seen" value={lastSeen} />
+      </dl>
+    </section>
+  );
+}
+
+function MetaRow({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Mail;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center gap-2 text-[12px]">
+      <Icon className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+      <span className="text-zinc-500 w-20 shrink-0">{label}</span>
+      <span className="text-zinc-300 truncate">{value}</span>
+    </div>
+  );
+}
+
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Activity;
+  label: string;
+  value: string | number;
+}) {
+  return (
+    <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+      <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 uppercase tracking-wider">
+        <Icon className="h-3 w-3" />
+        {label}
+      </div>
+      <div className="mt-1 text-lg font-semibold text-zinc-100">{value}</div>
+    </div>
+  );
+}
+
+function EmptyState({
+  icon: Icon = CalendarDays,
+  message,
+}: {
+  icon?: typeof CalendarDays;
+  message: string;
+}) {
+  return (
+    <div className="flex items-center justify-center h-full p-8 text-center">
+      <div className="max-w-xs space-y-2">
+        <Icon className="h-8 w-8 text-zinc-600 mx-auto" />
+        <div className="text-sm text-zinc-500">{message}</div>
+      </div>
+    </div>
+  );
+}

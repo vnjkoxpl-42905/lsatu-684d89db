@@ -34,7 +34,7 @@ const Homework = React.lazy(() => import("./pages/admin/Homework"));
 const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
 const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
 const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
-const TAPage = React.lazy(() => import("./pages/admin/TA"));
+const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
 import Inbox from "./pages/Inbox";
