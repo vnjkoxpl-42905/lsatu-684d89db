@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronUp, Command, Menu, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
@@ -8,8 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import HubStudentList from "@/components/hub/HubStudentList";
-import HubContextPanel from "@/components/hub/HubContextPanel";
+import HubContextPanel, { type HubTab } from "@/components/hub/HubContextPanel";
 import TAChatView from "@/components/ta/TAChatView";
+
+const VALID_TABS: HubTab[] = ["overview", "notes", "library"];
+
+function parseTab(raw: string | null): HubTab {
+  return (VALID_TABS as string[]).includes(raw ?? "")
+    ? (raw as HubTab)
+    : "overview";
+}
 
 const LS_SELECTED_KEY = "ta-selected-student";
 
@@ -17,27 +25,100 @@ export default function StudentHub() {
   const navigate = useNavigate();
   const { is_admin, loading } = useUserPermissions();
 
-  const [selected, setSelected] = useState<string | null>(() => {
+  // URL is the source of truth for selection + active tab (bookmarkable,
+  // shareable, survives refresh). localStorage stays as a fallback so a
+  // cold load without params lands on the last selected student.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlStudent = searchParams.get("student");
+
+  const [selected, setSelectedState] = useState<string | null>(() => {
+    if (urlStudent) return urlStudent;
     try {
       return localStorage.getItem(LS_SELECTED_KEY);
     } catch {
       return null;
     }
   });
+  const [tab, setTabState] = useState<HubTab>(() =>
+    parseTab(searchParams.get("tab"))
+  );
   const [mobileSelectorOpen, setMobileSelectorOpen] = useState(false);
   const [mobileContextOpen, setMobileContextOpen] = useState(false);
+
+  // URL → state when the URL tab changes (back/forward navigation).
+  useEffect(() => {
+    const urlTab = parseTab(searchParams.get("tab"));
+    if (urlTab !== tab) setTabState(urlTab);
+    // Only react to URL, not to local state (setTab handles forward sync).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const setTab = useCallback(
+    (next: HubTab) => {
+      setTabState(next);
+      setSearchParams(
+        (prev) => {
+          const copy = new URLSearchParams(prev);
+          if (next === "overview") copy.delete("tab");
+          else copy.set("tab", next);
+          return copy;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
 
   useEffect(() => {
     if (!loading && !is_admin) navigate("/foyer", { replace: true });
   }, [loading, is_admin, navigate]);
 
+  // If the URL has a student param and it differs from state (e.g.
+  // back/forward navigation), adopt the URL.
   useEffect(() => {
-    try {
-      if (selected) localStorage.setItem(LS_SELECTED_KEY, selected);
-    } catch {
-      /* ignore quota errors */
+    if (urlStudent && urlStudent !== selected) {
+      setSelectedState(urlStudent);
     }
-  }, [selected]);
+  }, [urlStudent, selected]);
+
+  // Mirror selection into URL + localStorage. `replace` keeps the
+  // browser history clean across student-switches.
+  const setSelected = useCallback(
+    (next: string | null) => {
+      setSelectedState(next);
+      setSearchParams(
+        (prev) => {
+          const copy = new URLSearchParams(prev);
+          if (next) copy.set("student", next);
+          else copy.delete("student");
+          return copy;
+        },
+        { replace: true }
+      );
+      try {
+        if (next) localStorage.setItem(LS_SELECTED_KEY, next);
+      } catch {
+        /* ignore quota errors */
+      }
+    },
+    [setSearchParams]
+  );
+
+  // Seed URL from localStorage-only state on first mount (no param yet).
+  useEffect(() => {
+    if (selected && !urlStudent) {
+      setSearchParams(
+        (prev) => {
+          const copy = new URLSearchParams(prev);
+          copy.set("student", selected);
+          return copy;
+        },
+        { replace: true }
+      );
+    }
+    // Intentionally only on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // The left panel already fetches everything we need via useHubStudents,
   // but this fallback lookup keeps the TA chat header responsive before
@@ -154,7 +235,12 @@ export default function StudentHub() {
             "backdrop-blur-xl bg-background/60 border border-border/40"
           )}
         >
-          <HubContextPanel studentId={selected} studentName={selectedName} />
+          <HubContextPanel
+            studentId={selected}
+            studentName={selectedName}
+            tab={tab}
+            onTabChange={setTab}
+          />
         </aside>
 
         {/* Right panel (mobile): collapsible section below chat */}
@@ -173,7 +259,12 @@ export default function StudentHub() {
           </button>
           {mobileContextOpen && (
             <div className="h-[60vh] border-t border-zinc-800">
-              <HubContextPanel studentId={selected} studentName={selectedName} />
+              <HubContextPanel
+            studentId={selected}
+            studentName={selectedName}
+            tab={tab}
+            onTabChange={setTab}
+          />
             </div>
           )}
         </div>

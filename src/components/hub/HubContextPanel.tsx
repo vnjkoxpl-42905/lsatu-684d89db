@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Tabs,
   TabsContent,
@@ -10,30 +9,35 @@ import StudentOverview from "./StudentOverview";
 import StudentNotes from "./StudentNotes";
 import LibraryBrowser from "./LibraryBrowser";
 
+export type HubTab = "overview" | "notes" | "library";
+
 interface Props {
   studentId: string | null;
   studentName?: string | null;
   className?: string;
+  tab: HubTab;
+  onTabChange: (tab: HubTab) => void;
 }
-
-type HubTab = "overview" | "notes" | "library";
 
 /**
  * Right-panel shell. Hosts the three hub tabs with underline-style
  * indicators (overriding the default shadcn pill look). The library tab
  * is intentionally not student-scoped — same content for every selection.
+ *
+ * Active tab is lifted to the parent so StudentHub can sync it to the URL.
  */
 export default function HubContextPanel({
   studentId,
   studentName,
   className,
+  tab,
+  onTabChange,
 }: Props) {
-  const [tab, setTab] = useState<HubTab>("overview");
 
   return (
     <Tabs
       value={tab}
-      onValueChange={(v) => setTab(v as HubTab)}
+      onValueChange={(v) => onTabChange(v as HubTab)}
       className={cn("flex flex-col h-full min-h-0", className)}
     >
       <TabsList
