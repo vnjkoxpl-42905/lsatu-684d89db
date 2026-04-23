@@ -8,10 +8,15 @@ import {
   AlertTriangle,
   Activity,
   Shield,
+  Loader2,
 } from "lucide-react";
 import { formatDistanceToNowStrict } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
-import StudentTAAssignmentsStrip from "@/components/ta/StudentTAAssignmentsStrip";
+import {
+  useAdminTAAssignmentsForStudent,
+  type StudentTAAssignment,
+  type TAAssignmentStatus,
+} from "@/hooks/useStudentAssignments";
 import {
   useSelectedHubStudent,
   useStudentEmail,
@@ -138,12 +143,7 @@ export default function StudentOverview({ studentId }: Props) {
         lastSeen={lastSeen}
       />
 
-      <section className="p-4">
-        <div className="text-[11px] uppercase tracking-wider text-zinc-500 mb-2">
-          Assignments
-        </div>
-        <StudentTAAssignmentsStrip studentId={studentId} />
-      </section>
+      <AssignmentsSection studentId={studentId} />
 
       <section className="p-4 space-y-3">
         <div className="text-[11px] uppercase tracking-wider text-zinc-500">
@@ -275,5 +275,91 @@ function EmptyState({
         <div className="text-sm text-zinc-500">{message}</div>
       </div>
     </div>
+  );
+}
+
+const STATUS_BADGE: Record<TAAssignmentStatus, { label: string; cls: string }> = {
+  assigned: { label: "Assigned", cls: "bg-zinc-800 text-zinc-300" },
+  viewed: { label: "Viewed", cls: "bg-amber-500/15 text-amber-300" },
+  completed: { label: "Completed", cls: "bg-emerald-500/15 text-emerald-300" },
+};
+
+/**
+ * Flat assignment list (replaces the collapsed StudentTAAssignmentsStrip
+ * for the Overview tab — the strip stayed collapsed by default and
+ * duplicated the count pill already shown in the left-list row).
+ * Sorted newest-first via the existing hook; renders at most 20 rows
+ * with an "and N more" tail so the tab doesn't grow unbounded.
+ */
+function AssignmentsSection({ studentId }: { studentId: string }) {
+  const { assignments, loading } = useAdminTAAssignmentsForStudent(studentId);
+  const HEAD = 20;
+  const head = assignments.slice(0, HEAD);
+  const rest = Math.max(0, assignments.length - HEAD);
+
+  return (
+    <section className="p-4 space-y-2">
+      <div className="flex items-center gap-2">
+        <div className="text-[11px] uppercase tracking-wider text-zinc-500">
+          Assignments
+        </div>
+        {assignments.length > 0 && (
+          <span className="text-[11px] text-zinc-500">
+            · {assignments.length}
+          </span>
+        )}
+      </div>
+      {loading && assignments.length === 0 ? (
+        <div className="flex items-center gap-2 text-[12px] text-zinc-500">
+          <Loader2 className="h-3.5 w-3.5 animate-spin" /> Loading…
+        </div>
+      ) : assignments.length === 0 ? (
+        <div className="text-[12px] text-zinc-500">
+          No TA assignments yet.
+        </div>
+      ) : (
+        <ul className="space-y-1">
+          {head.map((a) => (
+            <AssignmentRow key={a.id} assignment={a} />
+          ))}
+          {rest > 0 && (
+            <li className="text-[11px] text-zinc-500 pt-1">
+              and {rest} more…
+            </li>
+          )}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+function AssignmentRow({ assignment }: { assignment: StudentTAAssignment }) {
+  const badge = STATUS_BADGE[assignment.status];
+  const when = assignment.assigned_at
+    ? formatDistanceToNowStrict(new Date(assignment.assigned_at), {
+        addSuffix: true,
+      })
+    : "";
+  return (
+    <li className="rounded-md border border-zinc-800 bg-zinc-900/40 px-2.5 py-1.5">
+      <div className="flex items-start gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="text-[12.5px] text-zinc-100 truncate">
+            {assignment.title}
+          </div>
+          {when && (
+            <div className="text-[10.5px] text-zinc-500 mt-0.5">{when}</div>
+          )}
+        </div>
+        <span
+          className={
+            "shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium " +
+            badge.cls
+          }
+        >
+          {badge.label}
+        </span>
+      </div>
+    </li>
   );
 }

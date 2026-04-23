@@ -75,6 +75,18 @@ export default function HubContextPanel({
   );
 }
 
+/**
+ * Underline-style tab trigger that intentionally overrides shadcn's
+ * default pill variant. The base TabsTrigger (src/components/ui/tabs.tsx)
+ * applies these on data-[state=active]:
+ *   - bg-background         — we reset to bg-transparent
+ *   - text-foreground       — we reset to text-zinc-100
+ *   - shadow-sm             — we reset to shadow-none
+ * plus rounded-sm, which we override with rounded-none.
+ *
+ * If shadcn ever adds NEW active-state classes upstream, they'll bleed
+ * through silently. Re-check this list after any shadcn Tabs upgrade.
+ */
 function UnderlineTrigger({
   value,
   children,
@@ -87,8 +99,10 @@ function UnderlineTrigger({
       value={value}
       className={cn(
         "relative rounded-none border-0 px-3 py-2.5 text-[12px] font-medium",
+        // Reset shadcn pill defaults:
         "bg-transparent data-[state=active]:bg-transparent",
         "data-[state=active]:shadow-none",
+        // Our color + underline styling:
         "text-zinc-500 data-[state=active]:text-zinc-100 hover:text-zinc-300",
         "after:absolute after:left-2 after:right-2 after:bottom-0 after:h-0.5",
         "after:bg-transparent data-[state=active]:after:bg-amber-400",
