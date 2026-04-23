@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import DraftCard from "./DraftCard";
 import SlashCommandPalette from "./SlashCommandPalette";
 import TypingDots from "./TypingDots";
+import AttachmentBar from "./AttachmentBar";
 import { SLASH_COMMANDS, filterSlashCommands, type SlashCommand } from "./slashCommands";
 
 interface Props {
@@ -219,6 +220,8 @@ export default function TAChatView({ studentId, studentName }: Props) {
       </div>
 
       <div className="border-t border-zinc-800 p-3 bg-zinc-950 shrink-0 space-y-2">
+        <AttachmentBar studentId={studentId} studentName={studentName} />
+
         {showChips && (
           <div className="flex flex-wrap gap-1.5">
             {SLASH_COMMANDS.map((cmd) => {
