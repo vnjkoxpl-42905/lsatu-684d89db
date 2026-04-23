@@ -1,15 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import { Loader2, Send, AlertTriangle } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { AlertTriangle, Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { useTAChat, type TAInteraction } from "@/hooks/useTAChat";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import DraftCard from "./DraftCard";
+import SlashCommandPalette from "./SlashCommandPalette";
+import TypingDots from "./TypingDots";
+import { SLASH_COMMANDS, filterSlashCommands, type SlashCommand } from "./slashCommands";
 
 interface Props {
   studentId: string;
   studentName?: string | null;
 }
+
+const TEXTAREA_MIN_PX = 60;
+const TEXTAREA_MAX_PX = 200;
 
 function Bubble({ interaction }: { interaction: TAInteraction }) {
   const isAdmin = interaction.role === "admin";
@@ -37,14 +44,60 @@ function Bubble({ interaction }: { interaction: TAInteraction }) {
 export default function TAChatView({ studentId, studentName }: Props) {
   const { interactions, isLoading, error, send } = useTAChat(studentId);
   const [input, setInput] = useState("");
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteIndex, setPaletteIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [interactions.length]);
+  }, [interactions.length, send.isPending]);
+
+  // Auto-resize textarea between TEXTAREA_MIN_PX and TEXTAREA_MAX_PX. Runs
+  // synchronously on input change so there is no visible layout jump.
+  useLayoutEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = `${TEXTAREA_MIN_PX}px`;
+    const next = Math.min(
+      Math.max(el.scrollHeight, TEXTAREA_MIN_PX),
+      TEXTAREA_MAX_PX
+    );
+    el.style.height = `${next}px`;
+  }, [input]);
+
+  const filtered = paletteOpen
+    ? filterSlashCommands(input.startsWith("/") ? input.slice(1).split(/\s/)[0] ?? "" : "")
+    : SLASH_COMMANDS;
+
+  const applyCommand = (cmd: SlashCommand) => {
+    setInput(cmd.prefill);
+    setPaletteOpen(false);
+    setPaletteIndex(0);
+    // Re-focus and place caret at end so admin can edit immediately.
+    requestAnimationFrame(() => {
+      const el = textareaRef.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(cmd.prefill.length, cmd.prefill.length);
+    });
+  };
+
+  const handleInputChange = (next: string) => {
+    setInput(next);
+    // Open palette when value starts with "/" and we haven't hit a space on
+    // the first token. Close once the admin has moved past `/command ` (space
+    // terminator) so typing real text afterwards doesn't keep the menu up.
+    if (next.startsWith("/") && !next.slice(1).includes(" ")) {
+      setPaletteOpen(true);
+      setPaletteIndex(0);
+    } else {
+      setPaletteOpen(false);
+    }
+  };
 
   const handleSend = async (text?: string) => {
     const msg = (text ?? input).trim();
@@ -52,6 +105,7 @@ export default function TAChatView({ studentId, studentName }: Props) {
     try {
       const result = await send.mutateAsync(msg);
       if (!text) setInput("");
+      setPaletteOpen(false);
       if (result.parse_error === "malformed_draft") {
         toast.warning("TA response had a malformed draft — raw text saved.");
       }
@@ -63,6 +117,37 @@ export default function TAChatView({ studentId, studentName }: Props) {
   const handleRevise = async (instructions: string) => {
     await handleSend(`Revise the draft: ${instructions}`);
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (paletteOpen && filtered.length > 0) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setPaletteIndex((i) => (i + 1) % filtered.length);
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setPaletteIndex((i) => (i - 1 + filtered.length) % filtered.length);
+        return;
+      }
+      if (e.key === "Tab" || (e.key === "Enter" && !e.metaKey && !e.ctrlKey)) {
+        e.preventDefault();
+        applyCommand(filtered[paletteIndex]);
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setPaletteOpen(false);
+        return;
+      }
+    }
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const showChips = !input && !send.isPending;
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -91,7 +176,9 @@ export default function TAChatView({ studentId, studentName }: Props) {
           </div>
         ) : interactions.length === 0 ? (
           <div className="text-center text-sm text-zinc-500 py-12">
-            No messages yet. Ask the TA about this student.
+            No messages yet. Ask the TA about this student, or type
+            <span className="text-zinc-300"> / </span>
+            for commands.
           </div>
         ) : (
           interactions.map((i) => {
@@ -121,28 +208,59 @@ export default function TAChatView({ studentId, studentName }: Props) {
         )}
         {send.isPending && (
           <div className="flex justify-start">
-            <div className="rounded-lg px-3 py-2 text-sm bg-zinc-800 text-zinc-400 inline-flex items-center">
-              <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-              TA is thinking…
+            <div className="max-w-[85%] space-y-1">
+              <div className="text-[10px] uppercase tracking-wider text-zinc-500 px-1">
+                TA
+              </div>
+              <TypingDots />
             </div>
           </div>
         )}
       </div>
 
-      <div className="border-t border-zinc-800 p-3 bg-zinc-950 shrink-0">
-        <div className="flex items-end gap-2">
-          <Textarea
+      <div className="border-t border-zinc-800 p-3 bg-zinc-950 shrink-0 space-y-2">
+        {showChips && (
+          <div className="flex flex-wrap gap-1.5">
+            {SLASH_COMMANDS.map((cmd) => {
+              const Icon = cmd.icon;
+              return (
+                <button
+                  key={cmd.id}
+                  type="button"
+                  onClick={() => applyCommand(cmd)}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900",
+                    "px-2.5 py-1 text-[11px] text-zinc-300",
+                    "hover:bg-zinc-800 hover:text-zinc-100 transition-colors"
+                  )}
+                  aria-label={`${cmd.label} — ${cmd.description}`}
+                >
+                  <Icon className="h-3 w-3" aria-hidden />
+                  <span>{cmd.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="relative flex items-end gap-2">
+          <SlashCommandPalette
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Ask the TA (⌘/Ctrl+Enter to send)"
+            open={paletteOpen}
+            activeIndex={paletteIndex}
+            onActiveIndexChange={setPaletteIndex}
+            onSelect={applyCommand}
+            onClose={() => setPaletteOpen(false)}
+          />
+          <Textarea
+            ref={textareaRef}
+            value={input}
+            onChange={(e) => handleInputChange(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask the TA (⌘/Ctrl+Enter to send · / for commands)"
             rows={1}
-            className="min-h-[44px] max-h-32 resize-none flex-1"
+            style={{ height: `${TEXTAREA_MIN_PX}px` }}
+            className="resize-none flex-1 leading-relaxed"
             disabled={send.isPending}
           />
           <Button
