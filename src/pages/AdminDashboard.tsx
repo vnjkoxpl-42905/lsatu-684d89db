@@ -28,6 +28,7 @@ interface ManagedUser {
   has_flagged_access: boolean;
   has_chat_access: boolean;
   has_export_access: boolean;
+  has_ta_access: boolean;
 }
 
 interface Analytics {
@@ -64,6 +65,7 @@ const FLAG_GROUPS = [
       { key: "has_flagged_access", label: "Flagged" },
       { key: "has_chat_access", label: "Chat" },
       { key: "has_export_access", label: "Export" },
+      { key: "has_ta_access", label: "TA" },
     ],
   },
 ] as const;

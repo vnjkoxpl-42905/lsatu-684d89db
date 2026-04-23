@@ -10,6 +10,7 @@ import FoyerDock from "@/components/foyer/FoyerDock";
 import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import FloatingTAWidget from "@/components/ta/FloatingTAWidget";
 
 const FIND_NODE_ID = 3;
 
@@ -134,6 +135,8 @@ export default function AcademyFoyer() {
           }}
         />
       </main>
+
+      <FloatingTAWidget />
     </div>
   );
 }

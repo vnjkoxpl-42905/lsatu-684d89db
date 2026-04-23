@@ -16,6 +16,7 @@ const ALL_FLAGS = [
   "has_flagged_access",
   "has_chat_access",
   "has_export_access",
+  "has_ta_access",
 ];
 
 async function verifyAdmin(req: Request) {

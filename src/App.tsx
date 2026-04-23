@@ -30,6 +30,8 @@ const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
 const Homework = React.lazy(() => import("./pages/admin/Homework"));
 const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
 const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
+const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
+const TAPage = React.lazy(() => import("./pages/admin/TA"));
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -101,6 +103,20 @@ const App = () => {
                   <HomeworkDetail />
                 </QuestionBankProvider>
               </React.Suspense>
+            } />
+            <Route path="/admin/library" element={
+              <ProtectedRoute flag="has_ta_access">
+                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                  <TeachingLibrary />
+                </React.Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ta" element={
+              <ProtectedRoute flag="has_ta_access">
+                <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                  <TAPage />
+                </React.Suspense>
+              </ProtectedRoute>
             } />
 
             {/* Inbox — messaging, no question bank needed */}
