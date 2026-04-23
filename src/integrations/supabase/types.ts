@@ -650,6 +650,7 @@ export type Database = {
           has_practice_access: boolean
           has_schedule_access: boolean
           has_seen_tour: boolean
+          has_ta_access: boolean
           has_waj_access: boolean
           last_practice_date: string | null
           last_seen_at: string | null
@@ -679,6 +680,7 @@ export type Database = {
           has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
+          has_ta_access?: boolean
           has_waj_access?: boolean
           last_practice_date?: string | null
           last_seen_at?: string | null
@@ -708,6 +710,7 @@ export type Database = {
           has_practice_access?: boolean
           has_schedule_access?: boolean
           has_seen_tour?: boolean
+          has_ta_access?: boolean
           has_waj_access?: boolean
           last_practice_date?: string | null
           last_seen_at?: string | null
