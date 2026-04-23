@@ -58,17 +58,58 @@ interface AssetMatch {
   rank: number;
 }
 
-const SYSTEM_PROMPT = `You are a Teaching Assistant for LSAT U, an LSAT prep course run by Joshua. You help Joshua prepare and assign work to individual students. You have access to the current student's performance data and a permanent teaching library.
+interface StudentContextRow {
+  id: string;
+  context_type: "file" | "screenshot" | "transcript" | "note" | "external_score";
+  title: string;
+  content_text: string | null;
+  source: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string;
+}
+
+interface StudentSessionRow {
+  id: string;
+  scheduled_at: string;
+  status: "scheduled" | "completed" | "cancelled" | "no_show";
+  duration_minutes: number | null;
+  notes: string | null;
+  transcript_id: string | null;
+}
+
+// Per-item truncation budgets. Transcripts are narrative and benefit from
+// more context; files and notes are typically denser/structured, so a
+// tighter cap protects the overall prompt budget.
+const CONTEXT_CAP_TRANSCRIPT = 4000;
+const CONTEXT_CAP_DEFAULT    = 1500;
+const CONTEXT_MAX_ITEMS      = 10;
+const SESSIONS_MAX_ITEMS     = 6;
+
+const SYSTEM_PROMPT = `You are a Teaching Assistant for LSAT U, an LSAT prep course run by Joshua. You help Joshua prepare and assign work to individual students. You have access to the current student's performance data, a permanent teaching library, per-student external context (files, screenshots, transcripts, notes), and a log of past/upcoming tutoring sessions.
 
 RULES:
 1. Only suggest assignments or study plans when Joshua explicitly asks.
 2. Only create new content (questions, explanations, worksheets) when Joshua explicitly requests it.
 3. Always present a draft and ask for approval before assigning anything to a student.
 4. When you search the library, cite which assets you are pulling from by title.
-5. Be direct and concise. No filler, no hedging, no em-dashes.
-6. When proposing an assignment, emit the draft as JSON wrapped in <<<DRAFT>>>...<<<END>>> with keys "title" (string), "content_html" (safe inline HTML, no scripts or external resources), "asset_ids" (array of UUID strings for the assets you used). Always include a short plain-English explanation BEFORE the draft block so Joshua can skim.
-7. If Joshua approves, rejects, or asks a question after a prior draft was shown, respond with plain text only — do not emit another draft block unless asked to revise or create a new one.
-8. Never write content for the student to read; your audience is Joshua. Assignment content inside draft blocks IS for students and must be written accordingly.`;
+5. When you rely on STUDENT CONTEXT (transcripts, uploaded notes, screenshots), cite the item by title so Joshua can verify.
+6. Be direct and concise. No filler, no hedging, no em-dashes.
+7. When proposing an assignment, emit the draft as JSON wrapped in <<<DRAFT>>>...<<<END>>> with keys "title" (string), "content_html" (safe inline HTML, no scripts or external resources), "asset_ids" (array of UUID strings for the assets you used). Always include a short plain-English explanation BEFORE the draft block so Joshua can skim.
+8. If Joshua approves, rejects, or asks a question after a prior draft was shown, respond with plain text only — do not emit another draft block unless asked to revise or create a new one.
+9. Never write content for the student to read; your audience is Joshua. Assignment content inside draft blocks IS for students and must be written accordingly.
+
+PREP MODE:
+When Joshua asks you to prepare for the next session (e.g. "/prep" intent, or the message explicitly asks for a session briefing), do NOT emit a draft block. Instead output a structured briefing with these sections in order, using plain markdown headings:
+- Next session: the upcoming scheduled session if one exists, or "no upcoming session on file".
+- Since last session: what assignments were completed/overdue, notable activity deltas.
+- Analytics shifts: improved and declined areas since the last logged session.
+- WAJ highlights: top 2-3 unresolved items worth discussing.
+- Transcript recap: one-paragraph summary of the most recent transcript if one exists.
+- External context: any uploaded files/screenshots/notes relevant to the briefing.
+- Suggested agenda: 3-5 bullets for what to cover, ordered by priority.
+- Discussion prompts: 3 open-ended questions tailored to this student.
+- Single most important follow-up from the last session.
+Keep each section tight; Joshua will read this right before the session.`;
 
 async function verifyAdmin(req: Request) {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -109,6 +150,58 @@ function json(data: unknown, status = 200) {
 function clamp(str: string, n: number) {
   if (!str) return "";
   return str.length > n ? str.slice(0, n) + "…" : str;
+}
+
+function formatStudentContext(items: StudentContextRow[]): string {
+  if (!items.length) return "No external context on file for this student.";
+  return items
+    .slice(0, CONTEXT_MAX_ITEMS)
+    .map((it) => {
+      const cap =
+        it.context_type === "transcript"
+          ? CONTEXT_CAP_TRANSCRIPT
+          : CONTEXT_CAP_DEFAULT;
+      const body = it.content_text
+        ? clamp(it.content_text, cap)
+        : it.context_type === "screenshot"
+        ? "(image — no text extracted)"
+        : "(no text content)";
+      const when = new Date(it.created_at).toISOString().slice(0, 10);
+      return `- [${it.context_type}] "${clamp(it.title, 120)}" (${when})\n  ${body}`;
+    })
+    .join("\n\n");
+}
+
+function formatSessions(sessions: StudentSessionRow[]): string {
+  if (!sessions.length) return "No tutoring sessions logged.";
+  const now = Date.now();
+  const upcoming = sessions
+    .filter((s) => s.status === "scheduled" && new Date(s.scheduled_at).getTime() > now)
+    .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())[0];
+  const past = sessions
+    .filter((s) => s.status !== "scheduled" || new Date(s.scheduled_at).getTime() <= now)
+    .slice(0, SESSIONS_MAX_ITEMS);
+
+  const lines: string[] = [];
+  if (upcoming) {
+    lines.push(
+      `Next session (scheduled): ${upcoming.scheduled_at} · duration ${
+        upcoming.duration_minutes ?? "?"
+      } min`
+    );
+  } else {
+    lines.push("Next session: none scheduled.");
+  }
+  if (past.length) {
+    lines.push("Recent sessions:");
+    for (const s of past) {
+      const when = s.scheduled_at;
+      const dur = s.duration_minutes != null ? `${s.duration_minutes}m` : "?m";
+      const note = s.notes ? ` — ${clamp(s.notes, 200)}` : "";
+      lines.push(`  - ${when} · ${s.status} · ${dur}${note}`);
+    }
+  }
+  return lines.join("\n");
 }
 
 function summarizeAnalytics(attempts: AttemptRow[], waj: WAJRow[], asg: AssignmentRow[]) {
@@ -185,38 +278,58 @@ Deno.serve(async (req) => {
     }
 
     // Parallel context loads.
-    const [profileRes, attemptsRes, wajRes, asgRes, historyRes, libraryRes] =
-      await Promise.all([
-        admin
-          .from("profiles")
-          .select("display_name")
-          .eq("class_id", studentId)
-          .maybeSingle(),
-        admin
-          .from("attempts")
-          .select("qtype, section, is_correct, timestamp_iso")
-          .eq("class_id", studentId)
-          .order("timestamp_iso", { ascending: false })
-          .limit(200),
-        admin
-          .from("wrong_answer_journal")
-          .select("qid, qtype, last_status")
-          .eq("class_id", studentId)
-          .limit(50),
-        admin
-          .from("ta_assignments")
-          .select("title, status, assigned_at")
-          .eq("student_id", studentId)
-          .order("assigned_at", { ascending: false })
-          .limit(10),
-        admin
-          .from("ta_interactions")
-          .select("id, role, message, draft_content, draft_status, created_at")
-          .eq("student_id", studentId)
-          .order("created_at", { ascending: false })
-          .limit(20),
-        admin.rpc("search_teaching_assets", { q: message, max_rows: 5 }),
-      ]);
+    const [
+      profileRes,
+      attemptsRes,
+      wajRes,
+      asgRes,
+      historyRes,
+      libraryRes,
+      contextRes,
+      sessionsRes,
+    ] = await Promise.all([
+      admin
+        .from("profiles")
+        .select("display_name")
+        .eq("class_id", studentId)
+        .maybeSingle(),
+      admin
+        .from("attempts")
+        .select("qtype, section, is_correct, timestamp_iso")
+        .eq("class_id", studentId)
+        .order("timestamp_iso", { ascending: false })
+        .limit(200),
+      admin
+        .from("wrong_answer_journal")
+        .select("qid, qtype, last_status")
+        .eq("class_id", studentId)
+        .limit(50),
+      admin
+        .from("ta_assignments")
+        .select("title, status, assigned_at")
+        .eq("student_id", studentId)
+        .order("assigned_at", { ascending: false })
+        .limit(10),
+      admin
+        .from("ta_interactions")
+        .select("id, role, message, draft_content, draft_status, created_at")
+        .eq("student_id", studentId)
+        .order("created_at", { ascending: false })
+        .limit(20),
+      admin.rpc("search_teaching_assets", { q: message, max_rows: 5 }),
+      admin
+        .from("student_context")
+        .select("id, context_type, title, content_text, source, metadata, created_at")
+        .eq("student_id", studentId)
+        .order("created_at", { ascending: false })
+        .limit(CONTEXT_MAX_ITEMS),
+      admin
+        .from("student_sessions")
+        .select("id, scheduled_at, status, duration_minutes, notes, transcript_id")
+        .eq("student_id", studentId)
+        .order("scheduled_at", { ascending: false })
+        .limit(20),
+    ]);
 
     const studentName = (profileRes.data as { display_name?: string } | null)?.display_name ?? "this student";
     const analytics = summarizeAnalytics(
@@ -244,7 +357,26 @@ Deno.serve(async (req) => {
           .join("\n")
       : "No relevant library assets matched this query.";
 
-    const contextHeader = `STUDENT: ${studentName} (id: ${studentId})\n\nANALYTICS:\n${analytics}\n\nRELEVANT LIBRARY ASSETS:\n${clamp(libraryBlock, 8000)}`;
+    const studentContextRows =
+      (contextRes.data as StudentContextRow[] | null) ?? [];
+    const sessionRows =
+      (sessionsRes.data as StudentSessionRow[] | null) ?? [];
+    const studentContextBlock = formatStudentContext(studentContextRows);
+    const sessionsBlock = formatSessions(sessionRows);
+
+    const contextHeader = `STUDENT: ${studentName} (id: ${studentId})
+
+ANALYTICS:
+${analytics}
+
+SESSIONS:
+${sessionsBlock}
+
+STUDENT CONTEXT (per-student external artifacts — files, transcripts, notes, screenshots):
+${clamp(studentContextBlock, 24000)}
+
+RELEVANT LIBRARY ASSETS:
+${clamp(libraryBlock, 8000)}`;
 
     const messagesForModel: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
       { role: "system", content: SYSTEM_PROMPT },
