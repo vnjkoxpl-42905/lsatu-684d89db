@@ -21,7 +21,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
-import MainConclusionRole from "./pages/MainConclusionRole";
+
 import Abstraction from "./pages/Abstraction";
 import Structure from "./pages/Structure";
 import Schedule from "./pages/Schedule";
@@ -197,9 +197,7 @@ const App = () => {
                   <Route path="/bootcamp/causation-station" element={
                     <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/main-conclusion-role" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionRole /></ProtectedRoute>
-                  } />
+                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/structure" replace />} />
                   <Route path="/bootcamp/abstraction" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
                   } />

@@ -26,16 +26,6 @@ const BOOTCAMPS = [
     accentClass: 'bg-sky-500/10 border-sky-500/20',
   },
   {
-    id: 'main-conclusion-role',
-    title: 'Main Conclusion & Role',
-    emoji: '🎯',
-    description:
-      'Master the art of identifying main conclusions and understanding the role of each sentence in an LR stimulus. Learn to separate premises from conclusions, spot indicator words, analyze logical gaps, and handle peripheral elements like concessions and opposing views.',
-    stats: ['6 Modules', 'Interactive X-Ray', 'Quizzes'],
-    route: '/bootcamp/main-conclusion-role',
-    accentClass: 'bg-violet-500/10 border-violet-500/20',
-  },
-  {
     id: 'abstraction',
     title: 'Abstract',
     emoji: '🧬',
