@@ -45,6 +45,16 @@ const BOOTCAMPS = [
     route: '/bootcamp/abstraction',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
+  {
+    id: 'structure',
+    title: 'Structure',
+    emoji: '⚖️',
+    description:
+      "Master the Main Conclusion question type end-to-end. 12 sequenced lessons covering argument anatomy, the 2-Part Check, FABS, rebuttal structure, and Trojan Horse concessions. Live LSAT-format simulator with Coach's Note feedback. Trap Master deep-dives on all 7 wrong-answer traits.",
+    stats: ['12 Lessons', '6 Questions', '7 Traits'],
+    route: '/bootcamp/structure',
+    accentClass: 'bg-amber-500/10 border-amber-500/20',
+  },
 ] as const;
 
 export default function BootcampsPage() {
