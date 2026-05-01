@@ -6,7 +6,7 @@
  * Persistence layer keys on user.id, so each LSAT U student gets their own bootcamp
  * progress under their Supabase UUID.
  *
- * Auth gate is enforced one level up in src/pages/MainConclusionBootcamp.tsx — if
+ * Auth gate is enforced one level up in src/pages/IntroToLrBootcamp.tsx — if
  * useAuth returns null user, that page redirects to /auth before this hook runs.
  *
  * The bootcamp's User Zod schema stays (used by other modules); we project the
