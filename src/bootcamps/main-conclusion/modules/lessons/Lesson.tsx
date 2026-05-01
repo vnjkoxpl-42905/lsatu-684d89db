@@ -11,6 +11,8 @@ import { CakeOnBlocks } from '@/bootcamps/main-conclusion/components/argument-st
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { PhaseRunner } from '@/bootcamps/main-conclusion/components/phase-runner/PhaseRunner';
+import { getPhasedLesson } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 import type { LessonId, NamedToolId, ReferenceId } from '@/bootcamps/main-conclusion/types/source-slots';
 
 interface LessonData {
@@ -75,6 +77,23 @@ export function Lesson(): JSX.Element {
   }
 
   const completed = progress?.completed_lessons.includes(data.id) ?? false;
+
+  // Phased lessons render via the PhaseRunner (briefing → demo → attempt → reveal → coach → checkpoint).
+  // Lessons not in the phased registry fall back to the legacy prose renderer below.
+  const phased = getPhasedLesson(data.number);
+  if (phased) {
+    return (
+      <PhaseRunner
+        studentEyebrow={phased.studentEyebrow}
+        title={phased.title}
+        hook={phased.hook}
+        phases={phased.phases}
+        completed={completed}
+        backHref="/bootcamp/intro-to-lr/lessons"
+        onComplete={handleMarkComplete}
+      />
+    );
+  }
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto" data-lesson-id={data.id}>
