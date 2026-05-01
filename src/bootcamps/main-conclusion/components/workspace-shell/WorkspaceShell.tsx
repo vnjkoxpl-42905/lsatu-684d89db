@@ -98,7 +98,7 @@ function FloatingActions({ onOpenPalette, onOpenTutor }: { onOpenPalette: () => 
 
 function deriveSurfaceId(pathname: string): string | null {
   // Strip the bootcamp base prefix so absolute and nested deployments both work.
-  const stripped = pathname.replace(/^\/bootcamp\/structure-v2/, '');
+  const stripped = pathname.replace(/^\/bootcamp\/(?:structure|structure-v2)/, '');
   if (stripped.startsWith('/lessons/')) {
     const n = stripped.split('/').pop();
     return n ? `MC-LSN-${n}` : null;

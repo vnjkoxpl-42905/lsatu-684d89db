@@ -1046,3 +1046,59 @@ export const DRILL_3_4_STAGE_3: FamilyQuestion[] = [
       'Opposing view (industry skepticism) → "tell a different story" pivot → corrective evidence. Rebuttal family.',
   },
 ];
+
+// ── Drill 3.4 · Rebuttal vs First-Sentence (Stage 4 — Canonical 20 subset) ───
+// 5 picks from the canonical 20 (MCFIRST). Balanced 3 First-sentence + 2 Rebuttal,
+// chosen to span the trait surface: clean recommendation opener (Q1), declarative-
+// claim opener (Q19), since-clause-leading first-sentence that smells rebuttal-shaped
+// (Q20), rhetorical-question rebuttal (Q12), so-called dismissal rebuttal (Q14).
+// Stimulus text is sourced verbatim from src/bootcamps/main-conclusion/data/mcfirst.extracted.json.
+// Joshua may revise this subset; current selection authored autonomously 2026-05-01
+// per "take liberty" directive.
+export const DRILL_3_4_STAGE_4: FamilyQuestion[] = [
+  {
+    id: 'D34-S4-Q1',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'The vision test for obtaining a driver’s license should not be limited to measuring the adequacy of vision in daylight conditions, as is the current practice. Many people whose daylight vision is adequate have night vision that is inadequate for safe night driving. Most car accidents occur at night, and inadequate vision plays a role in 80 percent of these accidents.',
+    family: 'First-sentence',
+    rationale:
+      'MC-SIM-Q1. Recommendation opener ("should not be limited to") → two lines of empirical support. First-sentence family.',
+  },
+  {
+    id: 'D34-S4-Q2',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Some people believe that witnessing violence in movies will discharge aggressive energy. Does watching someone else eat fill one’s own stomach?',
+    family: 'Rebuttal',
+    rationale:
+      'MC-SIM-Q12. Opposing view stated → rhetorical question used as the corrective. The rhetorical question IS the rebuttal claim. Rebuttal family.',
+  },
+  {
+    id: 'D34-S4-Q3',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'So-called environmentalists have argued that the proposed Golden Lake Development would interfere with bird-migration patterns. However, the fact that these same people have raised environmental objections to virtually every development proposal brought before the council in recent years indicates that their expressed concern for bird migration patterns is nothing but a mask for their antidevelopment, antiprogress agenda. Their claim, therefore, should be dismissed without further consideration.',
+    family: 'Rebuttal',
+    rationale:
+      'MC-SIM-Q14. Opposing view ("environmentalists have argued") → "however" pivot → ad hominem dismissal. The "their claim should be dismissed" line is the corrective conclusion. Rebuttal family.',
+  },
+  {
+    id: 'D34-S4-Q4',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'There is no mystery as to why figurative painting revived in the late 1970s. People want to look at recognizable images. Sorting out art theories reflected in abstract paintings is no substitute for the sense of empathy that comes from looking at a realistic painting of a figure in a landscape. Perhaps members of the art-viewing public resented abstract art because they felt that its lack of realistic subject matter was a rejection of the viewers and their world.',
+    family: 'First-sentence',
+    rationale:
+      'MC-SIM-Q19. Declarative claim ("there is no mystery as to why...") opens; subsequent sentences are the explanation. First-sentence family.',
+  },
+  {
+    id: 'D34-S4-Q5',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Since multinational grain companies operate so as to maximize profits, they cannot be relied on to initiate economic changes that would reform the world’s food-distribution system. Although it is true that the actions of multinational companies sometimes do result in such economic change, this result is incidental, arising not from the desire for reform but from the desire to maximize profits. The maximization of profits normally depends on a stable economic environment, one that discourages change.',
+    family: 'First-sentence',
+    rationale:
+      'MC-SIM-Q20. The "since"-clause is a premise; the main clause ("they cannot be relied on...") is the conclusion. The "although it is true" concession that follows is structural support, not a pivot. First-sentence family — wildcard pick because the "since" + later concession surface tempts a Rebuttal misread.',
+  },
+];

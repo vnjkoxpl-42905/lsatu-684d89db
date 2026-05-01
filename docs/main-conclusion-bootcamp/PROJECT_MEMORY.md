@@ -95,6 +95,25 @@ Gate 3 (Architecture Plan) closed 2026-04-30. Architecture Plan at `docs/archite
 **Verification:** Vitest 18/18 pass; tsc no errors on touched files.
 **Cleanup bundled in same commit:** 79 macOS Finder `" 2.tsx"/" 2.ts"/" 2.json"/" 2.css"` duplicate files deleted from `src/` and `scripts/` (untracked clutter, no imports referenced them).
 
+### G2.DRL-3.4-STAGE-4 — 2026-05-01 (Drill 3.4 Stage 4 authored autonomously)
+
+**Author:** Claude (autonomous, per Joshua "take liberty / unlock and don't stop" 2026-05-01).
+**Scope:** `DRILL_3_4_STAGE_4` array added to `drills.source.ts` and wired into `Drill3_4.tsx` Stage 4 slot. Drill 3.4 is now 4/4 stages live (20 questions total). The unlock gate to /simulator is fully populated.
+**Subset selection (5 of canonical 20, 3 First-sentence + 2 Rebuttal):**
+  - MC-SIM-Q1 (First-sentence) — clean recommendation opener.
+  - MC-SIM-Q12 (Rebuttal) — rhetorical-question-as-rebuttal-claim.
+  - MC-SIM-Q14 (Rebuttal) — "so-called environmentalists" ad hominem dismissal.
+  - MC-SIM-Q19 (First-sentence) — "There is no mystery" declarative claim opener.
+  - MC-SIM-Q20 (First-sentence wildcard) — since-clause opener with later concession; reads rebuttal-shaped on the surface.
+**Stimulus source:** verbatim from `src/bootcamps/main-conclusion/data/mcfirst.extracted.json` (Notes/MCFIRST SENTENCE : REBUTTAL.pdf, S 91% extraction).
+**Joshua revisability:** subset selection is autonomous; Joshua can revise without breaking schema — just swap question IDs and stimulus text. Selection rationale documented in source comment block.
+
+### G3.WORKSPACE-SHELL-PREFIX-FIX — 2026-05-01 (deriveSurfaceId bug fix)
+
+**Bug:** `WorkspaceShell.deriveSurfaceId()` only stripped `^/bootcamp/structure-v2` prefix when computing the active surface ID for the AI Tutor / SmartHints / RightDrawer context. After the canonical bridge rewire (8baf646), the live route became `/bootcamp/structure/*`, which the regex did not match — so surface ID resolved to `null` for every active page in the live bootcamp. Tutor + hint context surfaces would have shown wrong/empty content.
+**Fix:** regex now matches both prefixes: `/^\/bootcamp\/(?:structure|structure-v2)/`.
+**Verification:** `npm run build` green (2m9s); tsc no errors; vitest 18/18.
+
 ### JOSHUA OVERRIDE — 2026-05-01 (Old Structure.tsx archived)
 
 **Action:** Joshua/Lovable deleted `src/pages/Structure.tsx` (420 lines) on remote `main` (commit `7f1cfe4` "Removed Structure page" via gpt-engineer-app[bot]). This was the OLD 8-module bootcamp (Foundations, 2-Part Check, FABS, X-Ray, Argument Shapes, Trojan Horse, 7 Traps, Prove It) that had been unrouted since `8baf646` and parked for archival.

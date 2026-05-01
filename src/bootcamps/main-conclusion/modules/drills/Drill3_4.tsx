@@ -13,6 +13,7 @@ import {
   DRILL_3_4_STAGE_1,
   DRILL_3_4_STAGE_2,
   DRILL_3_4_STAGE_3,
+  DRILL_3_4_STAGE_4,
   type FamilyQuestion,
 } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
@@ -39,7 +40,12 @@ const stages: Stage<FamilyQuestion>[] = [
     hint: 'Balanced mix. Read the structure, not the surface — late pivots and concession openers will try to fool you.',
     questions: DRILL_3_4_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 4, title: 'Canonical 20', hint: 'Stage 4 reuses MC-SIM-Q1–Q20 at C.10.', questions: [] },
+  {
+    number: 4,
+    title: 'Canonical 20',
+    hint: 'Five real LSAT stimuli from MCFIRST. The unlock gate. Read the structure — the surface will fight you.',
+    questions: DRILL_3_4_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
 ];
 
 export function Drill3_4() {
