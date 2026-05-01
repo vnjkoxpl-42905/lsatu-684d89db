@@ -1,35 +1,46 @@
-## Problem
+# Bootcamp navigation — diagnosis + fix
 
-Clicking lesson 1.1 (or any lesson row) inside the Main Conclusion bootcamp navigates to `/lessons/1.1`, which hits the global 404 page. Same bug exists in the command palette (Cmd-K) lesson entries.
+## What's actually happening (live test results)
 
-## Root cause
+I just clicked through `/bootcamp/structure` in the preview. Routing **is** working:
 
-The bootcamp is mounted at `/bootcamp/structure/*` in `src/App.tsx`. Internally it tracks unlock state using **logical route IDs** like `/lessons/1.1` (see `lib/ordering.ts`, `useModuleProgress.unlocked_routes`). Two render sites mistakenly pass that logical ID directly to `<Link to>`/`href`, instead of prefixing it with `/bootcamp/structure`. React Router treats it as an absolute path → top-level 404.
+- M1 "Lessons" card → `/bootcamp/structure/lessons` ✓ (page renders)
+- Sidebar "Lessons / Reference / Drills / Simulator / Hard Sentences / Diagnostics" → all absolute paths, correctly mounted ✓
+- Lesson 1.1 row → `/bootcamp/structure/lessons/1.1` ✓ (full lesson content renders)
 
-The sidebar (`LeftRail.tsx`), `ModuleIndex.tsx`, and most other internal links are already correct (they use `/bootcamp/structure/...` or relative paths). Only two files are wrong, plus one helper that builds a recommendation `href`.
+So the routes themselves are fine. **What looks broken is the gating layer**: every lesson except 1.1 shows a 🔒 and is `pointer-events-none`, and several module entry points (Simulator, parts of Diagnostics) sit behind `<LockedRoute>`. To you that reads as "the buttons don't work" — but they're disabled on purpose by the progress system in `useModuleProgress`, which only seeds `/lessons/1.1` into `unlocked_routes` until a user "completes" 1.1.
 
-## Fix (3 small edits, no logic changes)
+### Why the M1–M6 cards looked dead before
+The Module Index cards use **relative** `to="lessons"` links. Earlier sessions added a `/bootcamp/structure` prefix only to the *lesson rows*, not the cards — but React Router resolves the relative path against the index route's URL, so they actually do work. The two surfaces that were genuinely broken were the lesson rows, the command palette, and the diagnostics capstone link — all already fixed in the previous turn.
 
-1. **`src/bootcamps/main-conclusion/modules/lessons/LessonsIndex.tsx`**
-   - Line 31: change `to={`/lessons/${l.number}`}` → `to={`/bootcamp/structure/lessons/${l.number}`}`.
-   - Keep line 27 unchanged (`unlocked_routes` stores the logical `/lessons/...` ID — that's correct).
+## What you're asking for
 
-2. **`src/bootcamps/main-conclusion/components/command-palette/CommandPalette.tsx`** (line 44)
-   - Change `href: `/lessons/${l.number}`` → `href: `/bootcamp/structure/lessons/${l.number}``.
-   - (Verify the palette's navigation handler does `navigate(href)` — if it does, this is the only change needed.)
+> "I want all of those in this bootcamp to be routed to info / base buttons and lesson and such"
 
-3. **`src/bootcamps/main-conclusion/lib/diagnostics.ts`** (line 122)
-   - Change `href: '/lessons/1.13'` → `href: '/bootcamp/structure/lessons/1.13'` so the "go to capstone" recommendation routes correctly.
+Translation: every card on the index, every sidebar item, and every lesson row should actually take you somewhere with real content — no locks, no dead-ends — so you (and Joshua) can review the whole bootcamp end-to-end.
 
-## Out of scope (intentionally not changing)
+## Plan
 
-- `lib/ordering.ts`, `useModuleProgress`, `WorkspaceShell.tsx` path-stripping, and `Lesson.tsx`'s `markLessonComplete(...)` call — these all use `/lessons/...` as a **logical ID** for progress/unlock storage. Renaming them would force a data migration of existing `unlocked_routes` rows. Leaving them alone.
-- Test file `lib/__tests__/ordering.test.ts` — asserts the logical IDs, still valid.
+### 1. Open all lessons by default
+File: `src/bootcamps/main-conclusion/hooks/useModuleProgress.ts`
+Seed `unlocked_routes` with every lesson path (`/lessons/1.1` … `/lessons/1.13`) plus the M2–M6 entry points, instead of only `/lessons/1.1`. Keep `completed_lessons` empty so the progress UI still reflects real completion.
 
-## Verification
+### 2. Bypass `<LockedRoute>` while previewing
+File: `src/bootcamps/main-conclusion/components/workspace-shell/LockedRoute.tsx`
+Add an env / build-time flag (default ON for now) that lets the route render its children even when the gate isn't met. This unlocks Simulator, Trap Master, Hard Mode, etc.
 
-After the edits:
-- Navigate to `/bootcamp/structure` → click "Lesson 1.1" → lands on `/bootcamp/structure/lessons/1.1` and renders the lesson (no 404).
-- Locked lessons (1.2+) remain greyed out and non-clickable (unchanged).
-- Cmd-K palette → search a lesson → opens the correct URL.
-- Diagnostics "go to capstone" link routes to the capstone page.
+### 3. Make the Module Index cards use absolute paths
+File: `src/bootcamps/main-conclusion/modules/ModuleIndex.tsx`
+Change `to: 'lessons'` → `to: '/bootcamp/structure/lessons'` (and the same for the other 5). They work today via relative resolution, but absolute paths are robust against any future re-mount and match the sidebar pattern.
+
+### 4. Audit the remaining sub-indexes
+Files: `ReferenceIndex.tsx`, `DrillsIndex.tsx`, `SimulatorShell.tsx`, `HardSentencesIndex.tsx`, `DiagnosticsIndex.tsx`
+Spot-check each `<Link to=...>` and convert any stray relative paths to the `/bootcamp/structure/...` form so every button on every sub-page is guaranteed to land on a real route.
+
+### 5. Verify in the browser
+Click each M1–M6 card, each sidebar item, and at least one row inside each module. Confirm no 🔒, no 404, no "Navigate to /bootcamp/structure" bounce.
+
+## Out of scope
+- No changes to the data model, Supabase schema, or `students_safe`.
+- No design changes — purely wiring/gating.
+- The "complete a lesson to unlock the next" logic stays in code; we're just pre-seeding the unlock set so the whole bootcamp is walkable now.
