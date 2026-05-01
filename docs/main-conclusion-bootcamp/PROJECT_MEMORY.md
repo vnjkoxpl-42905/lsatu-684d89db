@@ -6,11 +6,11 @@
 
 ## STATUS
 
-- **Current gate**: Gate 4 (per-module build review) — Module 1 Lessons next
-- **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30
-- **Next milestone**: Module 1 Lessons build (`MC-LSN-1.1` through `MC-LSN-1.13`)
-- **Last updated**: 2026-04-30
-- **Last action**: Gate 3 closed; §8 AP Answer Key item-level partition adopted (G3.M1.13-AP-PARTITION); Rule 15 added (forward recommendations)
+- **Current gate**: Gate 5 (Phase I) — pre-merge audit shipped, awaiting Joshua walkthrough sign-off + promotion go/no-go
+- **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
+- **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
+- **Last updated**: 2026-05-01
+- **Last action**: Drill 3.1–3.4 Stage 2 content authored (additive, Rule 16); promotion runbook pre-staged at `promotion-runbook.md`.
 
 ---
 
@@ -305,6 +305,57 @@ These are general rules surfaced during this build that should apply to every fu
 **Source:** Joshua chat directive. **Authoritative.** APPROVED with constraint:
 - Author 10 M1.13 calibration items + 5 M5.8 items into `src/data/calibration.generated.json` NOW (while M1 voice is fresh; trait-tag proposals locked while voice in mind).
 - **DO NOT build Capstone.tsx page yet.** Wait until M1 batch review locks voice; then ship the page in one pass against locked content. Reduces rework risk.
+
+### JOSHUA DIRECTIVE — 2026-05-01 (Pickup: Rec #1 + Rec #2 both greenlit on serene-yeti plan)
+
+**Source:** Joshua approval of `~/.claude/plans/you-re-picking-up-the-serene-yeti.md` (2026-05-01). **Authoritative.**
+
+**Decisions approved:**
+- **Rec #1 — Option A (Drill stages 2–4 work track) APPROVED.** Author Drill 3.1–3.4 Stage 2 content as the smallest-surface vertical slice while Phase D + M1 walkthrough are blocked. Stages 3–4 remain stubbed for a later pass per Rule 17 cadence. Stage 4 of 3.4 still wires canonical 20 per G2.DRL-3.4 unchanged.
+- **Rec #2 — Option A (pre-stage promotion runbook) APPROVED.** Write `docs/main-conclusion-bootcamp/promotion-runbook.md` with sed commands, route swap, archive plan for `Structure.tsx`, rollback steps, and 6 pre-flight decisions for Joshua (PR-1 through PR-6). Zero code edits in the runbook itself; pure documentation.
+
+**Cross-cutting:** No edits to `/bootcamp/structure`, `/bootcamp/causation-station`, `/bootcamp/abstraction`, or other LSAT U surfaces. All work scoped to `src/bootcamps/main-conclusion/` + `docs/main-conclusion-bootcamp/`.
+
+### Gate 5 additive work — Drill 3.1–3.4 Stage 2 content (2026-05-01, autonomous Rule 16 after Rec #1 approval)
+
+**Deliverable:** `src/bootcamps/main-conclusion/content/drills.source.ts` extended with 4 new exports:
+- `DRILL_3_1_STAGE_2` (5 IndicatorIdQuestion items — multi-word indicator phrases: "Critics argue that", "It follows that", "On the other hand", "Granted that", "It is widely held that")
+- `DRILL_3_2_STAGE_2` (5 XRayQuestion items — closer-call distractors with 3-4 sentence stimuli)
+- `DRILL_3_3_STAGE_2` (5 FirstSentenceQuestion items — tricky openings: rhetorical question, opposing view "many believe", statistic opener, recommendation opener, concession opener)
+- `DRILL_3_4_STAGE_2` (5 FamilyQuestion items — Rebuttal-dominant: 4 Rebuttal under harder surface conditions + 1 First-sentence calibration check to prevent answer-bias shortcut)
+
+**Module wiring:** `Drill3_1.tsx` through `Drill3_4.tsx` updated — Stage 2 array imported and mapped into `stages[1].questions` array. Stage 2 hint text replaced from "Stage 2 content authors at C.10." to descriptive student-facing text.
+
+**Voice register check:** Register 1 (decisive, procedural) on all rationales — drill instruction surface per the locked voice rules. No Register 2 prose in any of the new content (Phase D + M1 walkthrough still gate Register 2 expansion).
+
+**Pedagogical design notes:**
+- Stage 2 difficulty step-up is genuine: 3.1 multi-word phrases include attribution markers ("Critics argue that") that look like conclusion claims at first glance; 3.2 distractors include intermediate-conclusion sentences; 3.3 openers include rhetorical-question setups + concession openers; 3.4 stimulus surface conditions include "Nevertheless" pivots, rhetorical-question rebuttals, and flat reversals ("the opposite is closer to the truth").
+- Drill 3.4 Stage 2 calibration design (4 Rebuttal + 1 First-sentence) honors the architectural intent ("Stage 2 trains Rebuttal" per drills.source.ts L250-251) while keeping binary-answer integrity — students who default to always-answering Rebuttal still fail the calibration item, preserving the 4/5 pass threshold's diagnostic value.
+
+**Verification:**
+- `npx tsc --noEmit -p tsconfig.app.json` → ✓ 0 errors.
+- `npx vite build` → ✓ 139 PWA precache entries, build clean in 1m 58s.
+- All four drill modules render Stage 1 + Stage 2 in the StageGateTracker tabs; Stage 3/4 still placeholders as designed.
+
+**Surface area unchanged outside the bootcamp namespace:** zero edits to `src/pages/Structure.tsx`, `src/components/structure/**`, `src/pages/CausationStation.tsx`, `src/pages/Abstraction.tsx`, `src/App.tsx`, `src/pages/Bootcamps.tsx`, or any LSAT U surface.
+
+### Promotion runbook pre-staged — 2026-05-01 (autonomous Rule 16 after Rec #2 approval)
+
+**Deliverable:** `docs/main-conclusion-bootcamp/promotion-runbook.md` — 8-step runbook for promoting `/bootcamp/structure-v2` → `/bootcamp/structure` once Joshua signs off Gate 5.
+
+**Pre-flight decisions surfaced (PR-1 through PR-6):**
+- PR-1: Disposition of existing `Structure.tsx` + `components/structure/**` — default Archive (Joshua override available: Delete or Keep both behind feature flag)
+- PR-2: Disposition of v2 card on `/bootcamps` — default Remove
+- PR-3: Branch strategy — default feature branch + PR + soak (Joshua override: direct push to main)
+- PR-4: Lovable preview soak window — default 24h (Joshua override: ship-and-watch or longer)
+- PR-5: Mr. Tannisch orphan stimulus — default Drop from canonical 20 (already removed from MCFIRST extract)
+- PR-6: Promote with current Phase D state, or wait for Phase D batch — default promote with current state (Phase D is additive work that follows promotion per Rule 16)
+
+**Runbook step summary:** branch + sed pass → App.tsx route swap → Bootcamps.tsx card disposition → Structure.tsx archive/delete → typecheck + build + parity-route-check + lint → 12-URL dev-server spot-check → push + PR + Lovable soak → Lovable production spot-check → declare v1 shipped + update Phase I sign-off.
+
+**Rollback plan included:** quick rollback (`git revert -m 1 <merge-sha>`) restores both surfaces; full rollback restores archived files via `git mv`. Persistence keys are user-UUID scoped, not URL-path scoped — so a rollback does not lose user data.
+
+**No code edits in this runbook write — pure documentation.**
 
 ### JOSHUA DIRECTIVE — 2026-04-30 (Rec #2: pipeline scope split — lessons stay hand-authored)
 

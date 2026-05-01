@@ -1,7 +1,8 @@
 /**
  * Drill content — sample-tier authoring for Phase C engine wiring.
- * Stages 1 of each Stage-Gate drill are authored with 5 representative items.
- * Stages 2-4 carry stub items pending Joshua's authoring pass at C.10.
+ * Stage 1 (3.1–3.4) authored at Phase C.
+ * Stage 2 (3.1–3.4) authored at Gate 5 additive pass (2026-05-01).
+ * Stages 3–4 stub pending future C.10 authoring (Stage 4 of 3.4 reuses canonical 20).
  *
  * This file is hand-authored. Pipeline parity-verifies it like lessons + calibration
  * (per JOSHUA DIRECTIVE 2026-04-30 scope split).
@@ -289,6 +290,212 @@ export const DRILL_3_4_STAGE_1: FamilyQuestion[] = [
       'Ranked-choice voting deserves wider adoption. It reduces the spoiler effect, encourages broader campaigns, and tends to elect more consensus-favored candidates.',
     family: 'First-sentence',
     rationale: 'Recommendation first; three support clauses follow.',
+  },
+];
+
+// ── Drill 3.1 · Indicator Word ID (Stage 2 — multi-word phrases) ─────────────
+export const DRILL_3_1_STAGE_2: IndicatorIdQuestion[] = [
+  {
+    id: 'D31-S2-Q1',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Critics argue that the proposal would gut local oversight. The data, however, tells a different story.',
+    highlighted_word: 'Critics argue that',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'opposing',
+    rationale: '"Critics argue that" attributes a view to others — flag it as opposing, not the author’s claim.',
+  },
+  {
+    id: 'D31-S2-Q2',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'The pilot reduced wait times in every test corridor. It follows that the program should be expanded city-wide.',
+    highlighted_word: 'It follows that',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'conclusion',
+    rationale: '"It follows that" introduces what the author derives from the prior support — a conclusion marker.',
+  },
+  {
+    id: 'D31-S2-Q3',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Critics call the policy a giveaway to insiders. On the other hand, it has measurably reduced backlog at three intake centers.',
+    highlighted_word: 'On the other hand',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'pivot',
+    rationale: '"On the other hand" pivots from the opposing view to the author’s actual position.',
+  },
+  {
+    id: 'D31-S2-Q4',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Granted that the rollout had real coordination problems, the program’s long-term outcomes still justify continued funding.',
+    highlighted_word: 'Granted that',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'concession',
+    rationale: '"Granted that" is a concession — the author briefly inhabits the critics’ point before pivoting.',
+  },
+  {
+    id: 'D31-S2-Q5',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'It is widely held that remote work hurts productivity. The companies that have measured it most carefully report otherwise.',
+    highlighted_word: 'It is widely held that',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'opposing',
+    rationale: '"It is widely held that" frames a popular view the author is about to push back on — opposing.',
+  },
+];
+
+// ── Drill 3.2 · X-Ray Drill (Stage 2 — closer-call distractors) ──────────────
+export const DRILL_3_2_STAGE_2: XRayQuestion[] = [
+  {
+    id: 'D32-S2-Q1',
+    prompt: 'Which sentence is the conclusion?',
+    stimulus:
+      'The arts council should be defunded. Its grant program has shrunk three years running. Most of its remaining staff have moved to private foundations. The council itself has missed its last two annual reports.',
+    candidates: [
+      { letter: 'A', text: 'The arts council should be defunded.', is_correct: true },
+      { letter: 'B', text: 'Its grant program has shrunk three years running.', is_correct: false },
+      { letter: 'C', text: 'Most of its remaining staff have moved to private foundations.', is_correct: false },
+      { letter: 'D', text: 'The council itself has missed its last two annual reports.', is_correct: false },
+    ],
+    rationale: 'Recommendation first. The next three sentences are decline-evidence used to support the call.',
+  },
+  {
+    id: 'D32-S2-Q2',
+    prompt: 'Which sentence is the conclusion?',
+    stimulus:
+      'It is true that the safety record of light-rail systems has improved. But the underlying engineering tradeoffs have not changed. The proposed extension should not move forward as designed.',
+    candidates: [
+      { letter: 'A', text: 'It is true that the safety record of light-rail systems has improved.', is_correct: false },
+      { letter: 'B', text: 'But the underlying engineering tradeoffs have not changed.', is_correct: false },
+      { letter: 'C', text: 'The proposed extension should not move forward as designed.', is_correct: true },
+    ],
+    rationale: 'Concession → pivot → claim. Sentence three is the recommendation.',
+  },
+  {
+    id: 'D32-S2-Q3',
+    prompt: 'Which sentence is the conclusion?',
+    stimulus:
+      'Standardized achievement scores correlate with family income. They do not correlate as strongly with later workplace performance. So treating them as a primary admissions filter overweights one signal at the expense of better ones.',
+    candidates: [
+      { letter: 'A', text: 'Standardized achievement scores correlate with family income.', is_correct: false },
+      { letter: 'B', text: 'They do not correlate as strongly with later workplace performance.', is_correct: false },
+      { letter: 'C', text: 'Treating them as a primary admissions filter overweights one signal at the expense of better ones.', is_correct: true },
+    ],
+    rationale: 'Two premises set up the claim. The "so" sentence is the conclusion.',
+  },
+  {
+    id: 'D32-S2-Q4',
+    prompt: 'Which sentence is the conclusion?',
+    stimulus:
+      'Many believe a steeper carbon tax would slow the economy. They are reading the data backwards. Jurisdictions that raised the rate fastest also posted the strongest GDP growth.',
+    candidates: [
+      { letter: 'A', text: 'Many believe a steeper carbon tax would slow the economy.', is_correct: false },
+      { letter: 'B', text: 'They are reading the data backwards.', is_correct: true },
+      { letter: 'C', text: 'Jurisdictions that raised the rate fastest also posted the strongest GDP growth.', is_correct: false },
+    ],
+    rationale: 'Opposing view → flat rebuttal → support. The flat rebuttal is the claim.',
+  },
+  {
+    id: 'D32-S2-Q5',
+    prompt: 'Which sentence is the conclusion?',
+    stimulus:
+      'Vaccination rates in the district have dropped four years running. Pediatric exemption requests are up nearly threefold over the same period. Public-health funding to the schools should be conditioned on closing the exemption loopholes.',
+    candidates: [
+      { letter: 'A', text: 'Vaccination rates in the district have dropped four years running.', is_correct: false },
+      { letter: 'B', text: 'Pediatric exemption requests are up nearly threefold over the same period.', is_correct: false },
+      { letter: 'C', text: 'Public-health funding to the schools should be conditioned on closing the exemption loopholes.', is_correct: true },
+    ],
+    rationale: 'Two trend premises support the recommendation in the third sentence.',
+  },
+];
+
+// ── Drill 3.3 · First-Sentence Reading (Stage 2 — tricky openings) ───────────
+export const DRILL_3_3_STAGE_2: FirstSentenceQuestion[] = [
+  {
+    id: 'D33-S2-Q1',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'How long can a city pretend its transit system is solvent? Fares have not risen in twelve years, ridership has fallen, and reserves are nearly gone. The honest answer is: not much longer.',
+    is_first_sentence_conclusion: false,
+    rationale: 'Rhetorical question opener — it sets up the claim. The actual conclusion is the final sentence.',
+  },
+  {
+    id: 'D33-S2-Q2',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'Many parents believe phonics-only reading instruction is outdated. The evidence does not back them up; structured phonics outperforms whole-language methods on every controlled measure.',
+    is_first_sentence_conclusion: false,
+    rationale: 'First sentence is the opposing view. The author’s claim begins with "The evidence does not back them up."',
+  },
+  {
+    id: 'D33-S2-Q3',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'Eighty percent of pedestrian fatalities in this city occur on six corridors. Those corridors should be the first to receive lower posted limits and protected crossings.',
+    is_first_sentence_conclusion: false,
+    rationale: 'First sentence is a statistic — that’s support. The recommendation follows in sentence two.',
+  },
+  {
+    id: 'D33-S2-Q4',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'The grant program should be wound down. Its three pilot cycles missed every benchmark, its administrative overhead exceeds its disbursements, and no peer foundation has copied the model.',
+    is_first_sentence_conclusion: true,
+    rationale: 'Recommendation first; three reasons follow.',
+  },
+  {
+    id: 'D33-S2-Q5',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'Granted, the new building has aesthetic merit. But it will permanently overshadow a public park, displace twenty-eight rent-stabilized units, and stress an already overloaded grid. The variance should be denied.',
+    is_first_sentence_conclusion: false,
+    rationale: 'First sentence is a concession. The conclusion is the final sentence.',
+  },
+];
+
+// ── Drill 3.4 · Rebuttal vs First-Sentence (Stage 2 — Rebuttal-dominant) ─────
+// Calibration design: 4 Rebuttal items + 1 First-sentence calibration check.
+// Tests rebuttal recognition under harder surface conditions (rhetorical-question rebuttal,
+// late pivot, "nevertheless"/"and yet" pivots, opposing-view openings without an explicit
+// "they are mistaken"). The single First-sentence item prevents the answer-bias shortcut.
+export const DRILL_3_4_STAGE_2: FamilyQuestion[] = [
+  {
+    id: 'D34-S2-Q1',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Many in the industry argue the new compliance rule will drive small operators out of the market. The actual filings tell a different story: small-operator share has held steady in the three jurisdictions where the rule is already in force.',
+    family: 'Rebuttal',
+    rationale: 'Opposing view → corrective claim → support. Rebuttal family.',
+  },
+  {
+    id: 'D34-S2-Q2',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'It is true that ranked-choice ballots take longer to tabulate. Nevertheless, the method delivers winners with broader majority support and reduces the spoiler effect that plain plurality systems chronically generate.',
+    family: 'Rebuttal',
+    rationale: 'Concession → "nevertheless" pivot → defense of the method. Rebuttal family.',
+  },
+  {
+    id: 'D34-S2-Q3',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Coastal infrastructure spending should be doubled over the next decade. Sea-level projections have steepened, the existing seawalls are already past their design life, and the cost of repair after a major storm dwarfs the cost of upgrade now.',
+    family: 'First-sentence',
+    rationale: 'Recommendation first; three lines of support follow. First-sentence family.',
+  },
+  {
+    id: 'D34-S2-Q4',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'How could a watchdog journal accept a six-figure grant from the very industry it covers and still claim to report independently? It cannot. The journal’s editorial firewall has not survived this arrangement.',
+    family: 'Rebuttal',
+    rationale: 'Rhetorical question floats the opposing position; the author rejects it. Rebuttal family.',
+  },
+  {
+    id: 'D34-S2-Q5',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Defenders of the current zoning code call it the city’s last protection against sprawl. The opposite is closer to the truth — the code as written has produced sprawl by forcing low-density development outward into farmland.',
+    family: 'Rebuttal',
+    rationale: 'Opposing view → flat reversal ("the opposite is closer to the truth") → support. Rebuttal family.',
   },
 ];
 

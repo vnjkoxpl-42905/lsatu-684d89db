@@ -9,7 +9,7 @@ import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/compon
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
-import { DRILL_3_4_STAGE_1, type FamilyQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import { DRILL_3_4_STAGE_1, DRILL_3_4_STAGE_2, type FamilyQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,12 @@ const stages: Stage<FamilyQuestion>[] = [
     hint: 'Read the stimulus. Choose the family.',
     questions: DRILL_3_4_STAGE_1.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 2, title: 'Rebuttal-only set', hint: 'Stage 2 authors at C.10.', questions: [] },
+  {
+    number: 2,
+    title: 'Rebuttal-dominant set',
+    hint: 'Most items here are Rebuttal under harder surface conditions. One First-sentence calibration item is mixed in.',
+    questions: DRILL_3_4_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
   { number: 3, title: 'Mixed family', hint: 'Stage 3 authors at C.10.', questions: [] },
   { number: 4, title: 'Canonical 20', hint: 'Stage 4 reuses MC-SIM-Q1–Q20 at C.10.', questions: [] },
 ];

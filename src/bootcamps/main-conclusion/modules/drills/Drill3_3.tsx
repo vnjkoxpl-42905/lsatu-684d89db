@@ -5,7 +5,7 @@
 import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/components/stage-gate/StageGateTracker';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { DRILL_3_3_STAGE_1, type FirstSentenceQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import { DRILL_3_3_STAGE_1, DRILL_3_3_STAGE_2, type FirstSentenceQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
@@ -16,7 +16,12 @@ const stages: Stage<FirstSentenceQuestion>[] = [
     hint: 'Read the stimulus. Is the first sentence the conclusion?',
     questions: DRILL_3_3_STAGE_1.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 2, title: 'Tricky openings', hint: 'Stage 2 content authors at C.10.', questions: [] },
+  {
+    number: 2,
+    title: 'Tricky openings',
+    hint: 'The first sentence may look like a claim — read all the way through before answering.',
+    questions: DRILL_3_3_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
   { number: 3, title: 'Concession openers', hint: 'Stage 3 content authors at C.10.', questions: [] },
   { number: 4, title: 'Mixed', hint: 'Stage 4 content authors at C.10.', questions: [] },
 ];
