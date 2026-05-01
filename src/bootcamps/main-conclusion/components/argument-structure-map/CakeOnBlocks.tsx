@@ -55,13 +55,20 @@ export function CakeOnBlocks({
   return (
     <figure
       className={cn(
-        'relative w-full max-w-[420px] mx-auto',
-        'bg-surface rounded-5 p-4',
-        'border border-[rgb(var(--border)/0.08)]',
+        'relative isolate w-full max-w-[420px] mx-auto',
+        'rounded-5 p-5 overflow-hidden',
+        'bg-[image:var(--grad-surface-soft)]',
+        'border border-[rgb(var(--border)/0.10)]',
+        'shadow-[var(--shadow-2)]',
         className,
       )}
       aria-label={ariaLabel}
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-40 w-72 rounded-full opacity-40 blur-3xl"
+        style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.18), transparent 70%)' }}
+      />
       <svg
         viewBox="0 0 320 220"
         role="img"
