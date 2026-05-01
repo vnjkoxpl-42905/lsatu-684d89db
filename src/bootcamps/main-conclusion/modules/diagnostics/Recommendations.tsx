@@ -11,6 +11,7 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function Recommendations() {
   const d = useDiagnostics();
@@ -29,14 +30,12 @@ export function Recommendations() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.3</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Recommendations</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Targeted next moves, ranked by leverage. Surfaces from your trait performance, your SRS queue,
-          and the calibration seed.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="MC-DIA-6.3"
+        title="Recommendations"
+        description="Targeted next moves, ranked by leverage. Surfaces from your trait performance, your SRS queue, and the calibration seed."
+        compact
+      />
 
       {recs.length === 0 ? (
         <Card variant="elev">

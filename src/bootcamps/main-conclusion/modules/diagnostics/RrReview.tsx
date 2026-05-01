@@ -9,6 +9,7 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function RrReview() {
   const d = useDiagnostics();
@@ -22,13 +23,12 @@ export function RrReview() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.4</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">R&amp;R Review</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Your recorded restatements from Drill 3.8. Review transcripts. Flag patterns.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="MC-DIA-6.4"
+        title="R&amp;R Review"
+        description="Your recorded restatements from Drill 3.8. Review transcripts. Flag patterns."
+        compact
+      />
 
       {d.rrRecordings.length === 0 ? (
         <EmptyState

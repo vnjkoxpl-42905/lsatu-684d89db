@@ -16,6 +16,7 @@ import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function SrsQueue() {
   const d = useDiagnostics();
@@ -55,18 +56,19 @@ export function SrsQueue() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.7</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">SRS Queue</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Spaced-repetition queue (SM-2). Grade your recall on each item; the algorithm schedules the
-          next review.
-        </p>
-        <div className="mt-3 flex gap-2">
-          <Badge tone="accent">{dueItems.length} due</Badge>
-          <Badge tone="neutral">{upcoming.length} upcoming</Badge>
-        </div>
-      </header>
+      <PageHeader
+        eyebrow="MC-DIA-6.7"
+        title="SRS Queue"
+        description="Spaced-repetition queue (SM-2). Grade your recall on each item; the algorithm schedules the next review."
+        actions={
+          <>
+            <Badge tone="accent" dot pulse={dueItems.length > 0}>
+              {dueItems.length} due
+            </Badge>
+            <Badge tone="neutral">{upcoming.length} upcoming</Badge>
+          </>
+        }
+      />
 
       {d.srsItems.length === 0 ? (
         <EmptyState

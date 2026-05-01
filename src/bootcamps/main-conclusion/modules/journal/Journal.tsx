@@ -12,6 +12,8 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Textarea } from '@/bootcamps/main-conclusion/components/primitives/Input';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
+import { Save } from 'lucide-react';
 
 export function Journal() {
   const user = useUser();
@@ -51,16 +53,14 @@ export function Journal() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Journal</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Notes</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Open from any surface via the right drawer. Persists locally.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+      <PageHeader
+        eyebrow="Journal"
+        title="Notes"
+        description="Open from any surface via the right drawer. Persists locally."
+      />
 
-      <Card variant="surface">
+      <Card variant="surface" className="mb-6">
         <Textarea
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
@@ -68,25 +68,35 @@ export function Journal() {
           className="min-h-[10rem]"
         />
         <div className="mt-3 flex justify-end">
-          <Button onClick={save} disabled={!draft.trim()}>
+          <Button
+            onClick={save}
+            disabled={!draft.trim()}
+            leftIcon={<Save className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
             Save entry
           </Button>
         </div>
       </Card>
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">History</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-3">History</h2>
         {entries === null ? (
-          <LoadingSkeleton lines={3} className="mt-3" />
+          <LoadingSkeleton variant="card" />
         ) : entries.length === 0 ? (
-          <p className="font-mc-serif text-body-prose text-ink-soft mt-3">No entries yet.</p>
+          <Card variant="ghost">
+            <p className="font-mc-serif text-body-prose text-ink-soft text-center">No entries yet.</p>
+          </Card>
         ) : (
-          <ul className="mt-3 space-y-3">
+          <ul className="space-y-3">
             {entries.map((e) => (
               <li key={e.id}>
                 <Card variant="surface">
-                  <p className="font-mc-mono text-mono text-ink-faint">{new Date(e.created_at).toLocaleString()}</p>
-                  <p className="font-mc-serif text-body-prose text-ink mt-2 whitespace-pre-wrap">{e.body_md}</p>
+                  <p className="font-mc-mono text-mono text-ink-faint">
+                    {new Date(e.created_at).toLocaleString()}
+                  </p>
+                  <p className="font-mc-serif text-body-prose text-ink mt-2 whitespace-pre-wrap leading-relaxed">
+                    {e.body_md}
+                  </p>
                 </Card>
               </li>
             ))}

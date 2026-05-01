@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -30,14 +31,12 @@ export function Drill3_9() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DRL-3.9</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Nested Claims</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Multi-conclusion stimuli. Find the main one. Intermediate conclusions exist to support it.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DRL-3.9"
+        title="Nested Claims"
+        description="Multi-conclusion stimuli. Find the main one. Intermediate conclusions exist to support it."
+      />
 
       <Card variant="surface">
         <p className="font-mc-mono text-mono text-ink-faint">

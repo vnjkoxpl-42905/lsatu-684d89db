@@ -11,6 +11,25 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { Modal } from '@/bootcamps/main-conclusion/components/primitives/Modal';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Toggle } from '@/bootcamps/main-conclusion/components/primitives/Toggle';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
+import { Download, Trash2, Palette, Activity, Keyboard, Database } from 'lucide-react';
+import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+
+const KBD = cn(
+  'inline-flex h-5 min-w-[20px] items-center justify-center rounded-[5px] px-1',
+  'bg-[rgb(var(--surface-elev))] border border-[rgb(var(--border)/0.14)]',
+  'shadow-[inset_0_-1px_0_rgb(0_0_0/0.4),0_1px_0_rgb(255_255_255/0.04)]',
+  'font-mc-mono text-[10px] font-semibold text-ink-soft',
+);
+
+function SectionHeading({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <h2 className={cn('font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent inline-flex items-center gap-2')}>
+      {icon}
+      {label}
+    </h2>
+  );
+}
 
 export function Settings() {
   const user = useUser();
@@ -48,59 +67,75 @@ export function Settings() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Settings</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Preferences</h1>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+      <PageHeader eyebrow="Settings" title="Preferences" />
 
-      <Card variant="surface">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Theme</h2>
-        <p className="font-mc-serif text-body text-ink mt-2">
-          Dark only in v1. Light mode lives in the v1.5 backlog.
-        </p>
-        <div className="mt-3">
-          <Badge tone="accent">dark</Badge>
-        </div>
-      </Card>
+      <div className="space-y-4">
+        <Card variant="surface">
+          <SectionHeading icon={<Palette className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />} label="Theme" />
+          <p className="font-mc-serif text-body-prose text-ink mt-2 leading-relaxed">
+            Dark only in v1. Light mode lives in the v1.5 backlog.
+          </p>
+          <div className="mt-3">
+            <Badge tone="accent" dot>dark</Badge>
+          </div>
+        </Card>
 
-      <Card variant="surface">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Motion</h2>
-        <p className="font-mc-serif text-body text-ink mt-2">
-          Animations follow OS prefers-reduced-motion by default. Override here.
-        </p>
-        <div className="mt-3">
-          <Toggle id="reduce-motion" checked={reduceMotion} onChange={setReduceMotion} label="Reduce motion (override)" />
-        </div>
-      </Card>
+        <Card variant="surface">
+          <SectionHeading icon={<Activity className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />} label="Motion" />
+          <p className="font-mc-serif text-body-prose text-ink mt-2 leading-relaxed">
+            Animations follow OS prefers-reduced-motion by default. Override here.
+          </p>
+          <div className="mt-3">
+            <Toggle
+              id="reduce-motion"
+              checked={reduceMotion}
+              onChange={setReduceMotion}
+              label="Reduce motion (override)"
+            />
+          </div>
+        </Card>
 
-      <Card variant="surface">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Keyboard shortcuts</h2>
-        <ul className="mt-3 space-y-1 font-mc-mono text-mono text-ink">
-          <li>⌘K / Ctrl+K — Command palette (any surface ID)</li>
-          <li>Esc — Close drawer / palette / modal</li>
-          <li>↑↓ — Navigate palette results</li>
-          <li>Enter — Open selected result</li>
-        </ul>
-      </Card>
+        <Card variant="surface">
+          <SectionHeading
+            icon={<Keyboard className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />}
+            label="Keyboard shortcuts"
+          />
+          <ul className="mt-3 space-y-1.5 font-mc-mono text-mono text-ink">
+            <li className="flex items-center gap-2"><kbd className={KBD}>⌘K</kbd> <span className="text-ink-faint">/</span> <kbd className={KBD}>Ctrl+K</kbd> — Command palette</li>
+            <li className="flex items-center gap-2"><kbd className={KBD}>⌘J</kbd> <span className="text-ink-faint">/</span> <kbd className={KBD}>Ctrl+J</kbd> — AI Tutor</li>
+            <li className="flex items-center gap-2"><kbd className={KBD}>Esc</kbd> — Close drawer / palette / modal</li>
+            <li className="flex items-center gap-2"><kbd className={KBD}>↑</kbd> <kbd className={KBD}>↓</kbd> — Navigate palette results</li>
+            <li className="flex items-center gap-2"><kbd className={KBD}>⏎</kbd> — Open selected result</li>
+          </ul>
+        </Card>
 
-      <Card variant="surface">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Data</h2>
-        <p className="font-mc-serif text-body text-ink mt-2">
-          Export all your local data as JSON, or reset everything to start fresh.
-        </p>
-        <div className="mt-3 flex gap-2">
-          <Button variant="subtle" onClick={exportAll}>
-            Export all (JSON)
-          </Button>
-          <Button variant="danger" onClick={() => setConfirmReset(true)}>
-            Reset everything
-          </Button>
-        </div>
-      </Card>
+        <Card variant="surface">
+          <SectionHeading icon={<Database className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />} label="Data" />
+          <p className="font-mc-serif text-body-prose text-ink mt-2 leading-relaxed">
+            Export all your local data as JSON, or reset everything to start fresh.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button
+              variant="subtle"
+              onClick={exportAll}
+              leftIcon={<Download className="h-3.5 w-3.5" strokeWidth={2.2} />}
+            >
+              Export all (JSON)
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => setConfirmReset(true)}
+              leftIcon={<Trash2 className="h-3.5 w-3.5" strokeWidth={2.2} />}
+            >
+              Reset everything
+            </Button>
+          </div>
+        </Card>
+      </div>
 
       <Modal open={confirmReset} onClose={() => setConfirmReset(false)} title="Reset all data?">
-        <p className="font-mc-serif text-body-prose text-ink">
+        <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
           Wipes all lessons completed, drill progress, simulator attempts, calibration, journal entries,
           SRS queue, and recordings. Cannot be undone.
         </p>
@@ -108,7 +143,11 @@ export function Settings() {
           <Button variant="subtle" onClick={() => setConfirmReset(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={resetAll}>
+          <Button
+            variant="danger"
+            onClick={resetAll}
+            leftIcon={<Trash2 className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
             Yes, wipe everything
           </Button>
         </div>

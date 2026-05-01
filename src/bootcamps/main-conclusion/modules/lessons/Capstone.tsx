@@ -12,6 +12,7 @@ import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { M5_CAPSTONE, type CapstoneItem, type CapstoneChoice } from '@/bootcamps/main-conclusion/content/m5-capstone.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
@@ -58,19 +59,20 @@ function M1CapstoneCorrectOnly() {
   const cf = calibration as CalibrationFile;
   const items = cf.items.filter((i) => i.calibration_module === 'M1');
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto">
-      <header className="mb-6">
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-LSN-1.13</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Lesson 1.13 · Capstone</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-3">
-          Ten calibration items. Sourced outside the canonical 20 and outside Module 3 drills, so this
-          measures learning rather than recognition. Distractors author at Phase B/D.
-        </p>
-        <div className="mt-3 flex items-center gap-2">
-          <Badge tone="warn">correct-only mode</Badge>
-          <span className="font-mc-mono text-mono text-ink-faint">{items.length} items</span>
-        </div>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+      <PageHeader
+        eyebrow="MC-LSN-1.13"
+        title="Lesson 1.13 · Capstone"
+        description="Ten calibration items. Sourced outside the canonical 20 and outside Module 3 drills, so this measures learning rather than recognition. Distractors author at Phase B/D."
+        actions={
+          <>
+            <Badge tone="warn" dot>
+              correct-only mode
+            </Badge>
+            <Badge tone="neutral">{items.length} items</Badge>
+          </>
+        }
+      />
       <ol className="space-y-3">
         {items.map((item, i) => (
           <li key={item.id}>
@@ -151,10 +153,16 @@ function M5CapstoneView() {
       (q) => q.choices.find((c) => c.letter === picks[q.id])?.is_correct,
     ).length;
     return (
-      <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
-        <Card variant="elev" className="border-l-4 border-l-[rgb(var(--success)/0.50)]">
-          <Badge tone="success">capstone complete</Badge>
-          <h1 className="font-mc-serif text-h1 font-semibold mt-2">M5.8 · {correctCount} / {total}</h1>
+      <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
+        <Card
+          variant="elev"
+          accent
+          className="border-l-4 border-l-[rgb(var(--success)/0.50)] shadow-[0_24px_48px_-12px_rgb(0_0_0/0.6),0_0_24px_-4px_rgb(16_185_129/0.20)]"
+        >
+          <Badge tone="success" dot pulse>
+            capstone complete
+          </Badge>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 leading-tight">M5.8 · {correctCount} / {total}</h1>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
             Cluster-decomposition results recorded. Trait performance feeds the M6 Diagnostics dashboard.
           </p>
@@ -183,20 +191,19 @@ function M5CapstoneView() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-HS-5.8</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Hard Sentences · Capstone</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Five cluster-decomposition items. Strip the specifiers; pick the core.
-        </p>
-        <div className="mt-2 flex items-center gap-2">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
+      <PageHeader
+        eyebrow="MC-HS-5.8"
+        title="Hard Sentences · Capstone"
+        description="Five cluster-decomposition items. Strip the specifiers; pick the core."
+        compact
+      />
+      <div className="flex items-center gap-2">
           <Chip tone="accent">cluster-decomposition</Chip>
           <span className="font-mc-mono text-mono text-ink-faint">
             Question {index + 1} of {M5_CAPSTONE.length}
           </span>
         </div>
-      </header>
       <CapstoneQuestionView item={item} pickedLetter={picks[item.id] ?? null} onPick={record} onNext={next} isLast={isLast} />
     </article>
   );

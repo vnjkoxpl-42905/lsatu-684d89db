@@ -11,6 +11,8 @@ import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/Em
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
+import { Printer } from 'lucide-react';
 
 type Block =
   | { kind: 'p'; text: string }
@@ -121,28 +123,37 @@ export function ReferenceSection() {
   const isQrc = section.id === 'MC-REF-2.J';
 
   return (
-    <article className={`px-6 py-10 max-w-prose mx-auto ${isQrc ? 'print-card' : ''}`}>
-      <header className="mb-6">
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">{section.id}</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">{section.title}</h1>
-        {isQrc ? (
-          <button
-            onClick={() => window.print()}
-            className="print-hide mt-3 inline-flex items-center gap-2 rounded-3 px-3 py-1.5 bg-[rgb(var(--accent)/0.18)] text-mc-accent border border-[rgb(var(--accent)/0.40)] hover:bg-[rgb(var(--accent)/0.26)] font-mc-mono text-mono"
-          >
-            Print this card
-          </button>
-        ) : null}
-        <div className="mt-2 flex items-center gap-2">
-          <Badge tone={section.status === 'authored' ? 'success' : 'warn'}>{section.status}</Badge>
-          <span className="font-mc-mono text-mono text-ink-faint">voice: {String(section.voice_register)}</span>
-        </div>
-        {section.hook ? (
-          <p className="font-mc-serif text-body-prose text-ink-soft italic mt-4 border-l-2 border-l-[rgb(var(--accent)/0.40)] pl-3">
-            {section.hook}
-          </p>
-        ) : null}
-      </header>
+    <article className={`px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto ${isQrc ? 'print-card' : ''}`}>
+      <PageHeader
+        eyebrow={section.id}
+        title={section.title}
+        description={
+          section.hook ? (
+            <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
+              {section.hook}
+            </span>
+          ) : undefined
+        }
+        actions={
+          <>
+            <Badge tone={section.status === 'authored' ? 'success' : 'warn'} dot>
+              {section.status}
+            </Badge>
+            <Badge tone="neutral">voice · {String(section.voice_register)}</Badge>
+          </>
+        }
+      />
+      {isQrc ? (
+        <Button
+          variant="subtle"
+          size="sm"
+          leftIcon={<Printer className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          onClick={() => window.print()}
+          className="print-hide -mt-6 mb-8"
+        >
+          Print this card
+        </Button>
+      ) : null}
       {section.blocks && section.blocks.length > 0 ? (
         <div className="space-y-4">
           {section.blocks.map((b, i) => (
@@ -186,11 +197,8 @@ export function NamedToolEntry() {
     );
   }
   return (
-    <article className="px-6 py-10 max-w-prose mx-auto">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">{tool.id}</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">{tool.name}</h1>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto">
+      <PageHeader eyebrow={tool.id} title={tool.name} compact />
       <section className="mt-6">
         <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">What it is</h2>
         <p className="font-mc-serif text-body-prose text-ink mt-1">{tool.what}</p>

@@ -4,18 +4,21 @@
  */
 
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function Philosophy() {
   return (
-    <article className="px-6 py-10 max-w-prose mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.1</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Philosophy</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft italic mt-4 border-l-2 border-l-[rgb(var(--accent)/0.40)] pl-3">
-          A diagnostic is a mirror, not a prison. It tells you what you are doing. It does not tell you
-          who you are.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DIA-6.1"
+        title="Philosophy"
+        description={
+          <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
+            A diagnostic is a mirror, not a prison. It tells you what you are doing. It does not tell you
+            who you are.
+          </span>
+        }
+      />
 
       <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
         Most prep apps gatekeep first. They ask you a question on day one, run a number on you, and tell

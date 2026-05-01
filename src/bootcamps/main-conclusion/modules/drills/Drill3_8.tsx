@@ -13,6 +13,7 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { Textarea } from '@/bootcamps/main-conclusion/components/primitives/Input';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { DRILL_3_8_PASSAGES } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
@@ -49,14 +50,14 @@ export function Drill3_8() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DRL-3.8</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">R&amp;R Drill · Read &amp; Restate</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Read the passage. Cover it. Rephrase from memory. Apply the Skeptic's Ear Check.
-        </p>
-        <div className="mt-3 flex gap-2">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DRL-3.8"
+        title="R&amp;R Drill · Read &amp; Restate"
+        description="Read the passage. Cover it. Rephrase from memory. Apply the Skeptic’s Ear Check."
+        compact
+      />
+      <div className="flex flex-wrap gap-2">
           <Chip tone="neutral">passage {pIndex + 1} / {DRILL_3_8_PASSAGES.length}</Chip>
           {isMobile ? (
             <Chip tone="background">mobile · text-only</Chip>
@@ -66,7 +67,6 @@ export function Drill3_8() {
             <Chip tone="background">no Web Speech API · text fallback</Chip>
           )}
         </div>
-      </header>
 
       {stage === 'read' && (
         <ReadStage passage={passage} onContinue={() => setStage('rephrase')} />

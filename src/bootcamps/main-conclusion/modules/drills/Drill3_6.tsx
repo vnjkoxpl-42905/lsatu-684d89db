@@ -11,6 +11,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Textarea } from '@/bootcamps/main-conclusion/components/primitives/Input';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -37,15 +38,12 @@ export function Drill3_6() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DRL-3.6</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Design the Conclusion</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          A premise pair from the dragon-and-broom universe. Write one valid conclusion and one
-          invalid-but-tempting one. Stay inside the universe — the evaluator catches outside-knowledge imports.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DRL-3.6"
+        title="Design the Conclusion"
+        description="A premise pair from the dragon-and-broom universe. Write one valid conclusion and one invalid-but-tempting one. Stay inside the universe — the evaluator catches outside-knowledge imports."
+      />
 
       <Card variant="elev">
         <p className="font-mc-mono text-mono text-ink-faint">

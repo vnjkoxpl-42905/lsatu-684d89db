@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { CakeOnBlocks } from '@/bootcamps/main-conclusion/components/argument-structure-map/CakeOnBlocks';
@@ -31,15 +32,12 @@ export function Drill3_5() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DRL-3.5</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Chain Mapping</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Decompose the stimulus. Premise(s) support the intermediate conclusion (when present); the
-          intermediate supports the main. Cake on blocks: pull a block and the cake collapses.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DRL-3.5"
+        title="Chain Mapping"
+        description="Decompose the stimulus. Premise(s) support the intermediate conclusion (when present); the intermediate supports the main. Cake on blocks: pull a block and the cake collapses."
+      />
 
       <CakeOnBlocks />
 

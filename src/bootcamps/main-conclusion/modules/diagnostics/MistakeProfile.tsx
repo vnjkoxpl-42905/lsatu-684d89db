@@ -9,6 +9,7 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function MistakeProfile() {
   const d = useDiagnostics();
@@ -46,10 +47,7 @@ export function MistakeProfile() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.6</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Mistake Profile</h1>
-      </header>
+      <PageHeader eyebrow="MC-DIA-6.6" title="Mistake Profile" compact />
 
       <section>
         <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Top traps you fall for</h2>

@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { Input } from '@/bootcamps/main-conclusion/components/primitives/Input';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
@@ -44,14 +45,12 @@ export function Drill3_7() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DRL-3.7</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Pronoun Replacement</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Rewrite the candidate conclusion replacing the highlighted pronoun with its antecedent.
-        </p>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
+      <PageHeader
+        eyebrow="MC-DRL-3.7"
+        title="Pronoun Replacement"
+        description="Rewrite the candidate conclusion replacing the highlighted pronoun with its antecedent."
+      />
 
       <Card variant="surface">
         <p className="font-mc-mono text-mono text-ink-faint">

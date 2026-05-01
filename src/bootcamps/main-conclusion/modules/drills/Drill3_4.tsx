@@ -55,7 +55,7 @@ export function Drill3_4() {
   const [completed, setCompleted] = useState(false);
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
         <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">Unlock gate</div>
         <p className="font-mc-serif text-body-prose text-ink mt-1">

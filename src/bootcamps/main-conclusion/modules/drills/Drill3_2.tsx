@@ -46,7 +46,7 @@ export function Drill3_2() {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <StageGateTracker
         drillId="MC-DRL-3.2"
         stages={stages}

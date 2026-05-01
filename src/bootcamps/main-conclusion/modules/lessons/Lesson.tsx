@@ -8,6 +8,9 @@ import { TABLES, LessonProgress } from '@/bootcamps/main-conclusion/persistence/
 import { newId, now } from '@/bootcamps/main-conclusion/lib/ids';
 import { useDrawer } from '@/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell';
 import { CakeOnBlocks } from '@/bootcamps/main-conclusion/components/argument-structure-map/CakeOnBlocks';
+import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
+import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import type { LessonId, NamedToolId, ReferenceId } from '@/bootcamps/main-conclusion/types/source-slots';
 
 interface LessonData {
@@ -74,18 +77,36 @@ export function Lesson(): JSX.Element {
   const completed = progress?.completed_lessons.includes(data.id) ?? false;
 
   return (
-    <article className="px-6 py-10 desktop:px-12 desktop:py-14 max-w-[840px] mx-auto" data-lesson-id={data.id}>
-      {/* Layer 1 — Route header */}
-      <header className="mb-8">
-        <div className="flex items-center gap-3">
-          <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">Lesson {data.number}</span>
-          <span className="font-mc-mono text-label uppercase tracking-wider text-ink-faint">{data.id}</span>
-          {completed && (
-            <span className="font-mc-mono text-label uppercase tracking-wider text-mc-success">✓ completed</span>
-          )}
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto" data-lesson-id={data.id}>
+      <header className="relative isolate mb-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+        />
+        <div className="relative">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              />
+              Lesson {data.number}
+            </div>
+            <span className="font-mc-mono text-mono text-ink-faint">{data.id}</span>
+            {completed && (
+              <Badge tone="success" dot>
+                completed
+              </Badge>
+            )}
+          </div>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
+            {data.title}
+          </h1>
+          <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
+            {data.hook}
+          </p>
         </div>
-        <h1 className="font-mc-serif text-display font-semibold mt-2 leading-tight">{data.title}</h1>
-        <p className="font-mc-serif text-h3 mt-3 text-ink-soft italic">{data.hook}</p>
       </header>
 
       {/* Layer 2 — Register-2 prose with inline named-tool + reference callouts */}
@@ -125,9 +146,21 @@ export function Lesson(): JSX.Element {
       </div>
 
       {/* Layer 4 — Checkpoint question */}
-      <section className="mt-12 px-6 py-6 rounded-5 bg-bg-2 border border-[rgb(var(--border)/0.08)]" aria-labelledby="checkpoint-heading">
-        <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent">Checkpoint</div>
-        <h2 id="checkpoint-heading" className="font-mc-serif text-h2 font-semibold mt-2">{data.checkpoint.prompt}</h2>
+      <section
+        className="relative isolate mt-12 px-6 py-7 rounded-5 overflow-hidden bg-[image:var(--grad-surface-elev)] border border-[color:var(--border-accent-soft)] shadow-[var(--shadow-2),var(--glow-accent-soft)]"
+        aria-labelledby="checkpoint-heading"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+        />
+        <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent inline-flex items-center gap-2">
+          <span aria-hidden="true" className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]" />
+          Checkpoint
+        </div>
+        <h2 id="checkpoint-heading" className="font-mc-serif text-h2 font-semibold mt-2 text-ink leading-tight">
+          {data.checkpoint.prompt}
+        </h2>
         <ul className="mt-4 space-y-2" role="radiogroup" aria-label="Checkpoint options">
           {data.checkpoint.options.map((opt) => {
             const picked = checkpointPicked === opt.id;
@@ -220,21 +253,29 @@ export function Lesson(): JSX.Element {
 
       {/* Mark complete + next */}
       <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
-        <button
-          type="button"
-          onClick={handleMarkComplete}
-          disabled={completed}
-          className={[
-            'px-5 py-2.5 rounded-3 font-mc-mono text-mono transition-colors duration-150 ease-eased',
-            completed
-              ? 'bg-[rgb(var(--success)/0.10)] text-mc-success cursor-default'
-              : 'bg-mc-accent text-bg hover:bg-mc-accent-hover',
-          ].join(' ')}
+        {completed ? (
+          <Button
+            variant="subtle"
+            disabled
+            leftIcon={<Check className="h-3.5 w-3.5" strokeWidth={2.4} />}
+            className="!opacity-100 !cursor-default !pointer-events-none border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.10)] text-[rgb(var(--success))]"
+          >
+            Lesson marked complete
+          </Button>
+        ) : (
+          <Button
+            onClick={handleMarkComplete}
+            rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
+            Mark lesson complete
+          </Button>
+        )}
+        <Link
+          to="/bootcamp/intro-to-lr/lessons"
+          className="inline-flex items-center gap-1.5 font-mc-mono text-mono text-ink-soft hover:text-mc-accent transition-colors duration-150 ease-eased focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-2"
         >
-          {completed ? '✓ Lesson marked complete' : 'Mark lesson complete →'}
-        </button>
-        <Link to="/bootcamp/intro-to-lr/lessons" className="font-mc-mono text-mono text-ink-soft hover:text-ink">
-          ← Back to Lessons
+          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden="true" />
+          Back to Lessons
         </Link>
       </div>
     </article>

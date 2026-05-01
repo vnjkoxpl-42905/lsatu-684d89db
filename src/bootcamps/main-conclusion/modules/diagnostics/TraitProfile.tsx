@@ -11,6 +11,7 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 interface Trait {
   id: string;
@@ -38,13 +39,12 @@ export function TraitProfile() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.5</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Trait Diagnostic</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-2">
-          Seven traits. Sorted by which trips you up most. Tap a trait to read the deep-dive.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="MC-DIA-6.5"
+        title="Trait Diagnostic"
+        description="Seven traits. Sorted by which trips you up most. Tap a trait to read the deep-dive."
+        compact
+      />
 
       <ul className="space-y-3">
         {sorted.map((s) => {

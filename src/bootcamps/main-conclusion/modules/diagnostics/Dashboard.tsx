@@ -16,6 +16,7 @@ import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { LoadingSkeleton } from '@/bootcamps/main-conclusion/components/primitives/LoadingSkeleton';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 
 export function Dashboard() {
   const d = useDiagnostics();
@@ -32,10 +33,7 @@ export function Dashboard() {
 
   return (
     <article className="px-6 py-10 max-w-3xl mx-auto space-y-6">
-      <header>
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">MC-DIA-6.2</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Dashboard</h1>
-      </header>
+      <PageHeader eyebrow="MC-DIA-6.2" title="Dashboard" compact />
 
       {!seed.attempted ? (
         <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
