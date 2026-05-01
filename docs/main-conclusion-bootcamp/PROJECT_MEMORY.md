@@ -95,6 +95,13 @@ Gate 3 (Architecture Plan) closed 2026-04-30. Architecture Plan at `docs/archite
 **Verification:** Vitest 18/18 pass; tsc no errors on touched files.
 **Cleanup bundled in same commit:** 79 macOS Finder `" 2.tsx"/" 2.ts"/" 2.json"/" 2.css"` duplicate files deleted from `src/` and `scripts/` (untracked clutter, no imports referenced them).
 
+### JOSHUA OVERRIDE — 2026-05-01 (Old Structure.tsx archived)
+
+**Action:** Joshua/Lovable deleted `src/pages/Structure.tsx` (420 lines) on remote `main` (commit `7f1cfe4` "Removed Structure page" via gpt-engineer-app[bot]). This was the OLD 8-module bootcamp (Foundations, 2-Part Check, FABS, X-Ray, Argument Shapes, Trojan Horse, 7 Traps, Prove It) that had been unrouted since `8baf646` and parked for archival.
+**Why authoritative:** Per Rule 14 + memory `feedback_lovable_is_canonical.md`: gpt-engineer-app[bot] commits are JOSHUA OVERRIDE. Joshua took the archival decision himself via Lovable rather than in chat.
+**Verification:** No imports referenced `./pages/Structure` anywhere in `src/` after the delete (grep clean). New bootcamp at `src/bootcamps/main-conclusion/` + `MainConclusionBootcamp.tsx` is now the only Structure-themed surface in the tree.
+**Pending consideration:** `src/components/structure/**` (the OLD bootcamp's component directory) is likely also dead. If Joshua wants that swept too, surface it next session.
+
 ### Pending decisions (blocking Gate 3 close)
 
 | ID | Question | Status |
