@@ -10,7 +10,7 @@
 - **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
 - **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
 - **Last updated**: 2026-05-01
-- **Last action**: Vitest CI verified — 18/18 tests pass (1 LSAT U example + 17 bootcamp). Test infra was already wired in package.json + vitest.config.ts; no setup work needed. Joshua's blocked/deferred decisions logged below.
+- **Last action**: SPA fallback fix — Joshua hit 404 on `/bootcamp/structure/*` deep links. Added `public/_redirects` (Netlify SPA fallback) + `navigateFallback: "/index.html"` to PWA workbox config. Routes themselves were correct; the host had no fallback rule.
 
 ---
 
@@ -325,6 +325,26 @@ These are general rules surfaced during this build that should apply to every fu
 - **OLD `Structure.tsx` archival** — defer until live bridge verified on Lovable preview. Joshua greenlights once `/bootcamp/structure` confirmed rendering the new bootcamp.
 
 **Revert-watch armed:** if Lovable autopilot reverts the bridge a second time within 10 minutes of Lovable preview sync, Claude does NOT re-push. Surface immediately so Joshua can paste explicit Lovable prompt manually. Rule 14 acknowledgement applies to any Joshua edits during the walkthrough.
+
+### Gate 5 fix — SPA fallback for /bootcamp/structure/* deep links (2026-05-01, Joshua-reported 404)
+
+**Symptom:** During walkthrough Joshua got 404 on `/bootcamp/structure/*` deep links on Lovable preview.
+
+**Diagnosis (route table is correct, host is missing fallback):**
+1. App.tsx route registration verified correct: `/bootcamp/structure/*` (line 207) splat-mounts `MainConclusionBootcamp`; `/bootcamp/structure-v2` and `/bootcamp/structure-v2/*` redirect to `/bootcamp/structure`. Bootcamp internal `<Routes>` uses relative paths (index, lessons, lessons/:lessonId, drills, drills/:drillId, etc.) which resolve correctly under the parent splat.
+2. Repo had no Netlify SPA fallback config (`public/_redirects`, `netlify.toml`, `vercel.json`, `_headers` all absent). Lovable deploys to Netlify — without `/* /index.html 200`, any direct deep-link or page refresh on a non-root URL returns 404 because Netlify can't find a static file at that path before React Router can take over.
+3. Vite PWA workbox config had `navigateFallbackDenylist` but no `navigateFallback` — SW wouldn't serve `index.html` as nav fallback for subsequent visits either.
+
+**Fix applied (defense in depth):**
+- Created `public/_redirects` with `/*    /index.html   200` — primary fix; tells Netlify to serve index.html for any URL without a static file match.
+- Updated `vite.config.ts` PWA workbox config: added `navigateFallback: "/index.html"` and expanded `navigateFallbackDenylist` to `[/^\/~oauth/, /^\/api\//, /\.[^/]+$/]` so SW falls back to index.html for app routes but still passes through OAuth callbacks, API calls, and file-extension requests.
+
+**Verification:**
+- `npx vite build` → ✓ clean (139 PWA precache entries).
+- `dist/_redirects` shipped (24 bytes).
+- `dist/sw.js` confirmed contains `NavigationRoute` registered with `createHandlerBoundToURL("/index.html")` and the corrected denylist.
+
+**Why this didn't manifest before:** when navigating in-app (clicking from `/foyer` to `/bootcamp/structure`), React Router handles the transition client-side without hitting the host. The 404 only fires on direct URL entry, browser refresh, or first visit by URL — exactly the walkthrough pattern. The fix unlocks all deep-link scenarios.
 
 ### JOSHUA DIRECTIVE — 2026-05-01 (Recommendation answers: both held)
 

@@ -50,7 +50,8 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallbackDenylist: [/^\/~oauth/],
+        navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//, /\.[^/]+$/],
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
