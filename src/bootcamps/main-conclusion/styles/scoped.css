@@ -12,7 +12,7 @@
  * the `:root` selector replaced by `.mc-bootcamp` and `body` rules folded in.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
 .mc-bootcamp {
   /* Brand */
@@ -86,6 +86,21 @@
   --shadow-2: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6);
   --shadow-3: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7);
 
+  /* Premium tokens (Phase 0 redesign) */
+  --shadow-lift: 0 0 0 1px rgb(232 208 139 / 0.18), 0 16px 40px -12px rgb(0 0 0 / 0.7), 0 4px 16px -4px rgb(232 208 139 / 0.08);
+  --shadow-press: 0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5);
+  --glow-accent-soft: 0 0 24px -4px rgb(232 208 139 / 0.18);
+  --glow-accent-strong: 0 0 32px -2px rgb(232 208 139 / 0.36);
+  --grad-surface-soft: linear-gradient(180deg, rgb(26 30 43 / 0.85) 0%, rgb(18 21 30 / 0.95) 100%);
+  --grad-surface-elev: linear-gradient(180deg, rgb(32 36 50 / 0.9) 0%, rgb(22 26 38 / 0.95) 100%);
+  --grad-accent-soft: linear-gradient(135deg, rgb(232 208 139 / 0.12) 0%, rgb(197 160 89 / 0.06) 100%);
+  --grad-accent-strong: linear-gradient(135deg, rgb(242 223 154 / 0.32) 0%, rgb(197 160 89 / 0.16) 100%);
+  --grad-shimmer: linear-gradient(110deg, transparent 0%, rgb(255 255 255 / 0.06) 40%, rgb(232 208 139 / 0.10) 50%, rgb(255 255 255 / 0.06) 60%, transparent 100%);
+  --grad-card-highlight: linear-gradient(180deg, rgb(255 255 255 / 0.06) 0%, transparent 24%);
+  --border-accent-soft: rgb(232 208 139 / 0.18);
+  --border-accent-mid: rgb(232 208 139 / 0.32);
+  --border-accent-strong: rgb(232 208 139 / 0.50);
+
   /* Bootcamp surface — dark always, regardless of LSAT U theme. */
   background: rgb(var(--bg));
   color: rgb(var(--ink));
@@ -107,10 +122,72 @@
 
 /* ── Bootcamp component classes ───────────────────────────────────────── */
 .mc-bootcamp .lesson-prose {
-  font-family: ui-serif, 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+  font-family: 'Fraunces', ui-serif, 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+  font-feature-settings: 'liga' 1, 'kern' 1;
   font-size: var(--t-body-prose);
   line-height: 1.7;
   max-width: 64ch;
+}
+
+/* Premium primitive utilities (Phase 0 redesign) */
+@keyframes mc-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes mc-shine-sweep {
+  0% { transform: translateX(-120%) skewX(-12deg); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateX(220%) skewX(-12deg); opacity: 0; }
+}
+@keyframes mc-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(232 208 139 / 0.0); }
+  50% { box-shadow: 0 0 24px 0 rgb(232 208 139 / 0.32); }
+}
+@keyframes mc-thumb-tap {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.mc-bootcamp .mc-shimmer {
+  background: var(--grad-shimmer);
+  background-size: 200% 100%;
+  animation: mc-shimmer 1.6s ease-in-out infinite;
+}
+.mc-bootcamp .mc-card-highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--grad-card-highlight);
+  border-radius: inherit;
+  opacity: 0.7;
+  transition: opacity var(--d-mid) var(--ease);
+}
+.mc-bootcamp .mc-card-highlight:hover::before { opacity: 1; }
+.mc-bootcamp .mc-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.mc-bootcamp .mc-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(110deg, transparent 0%, rgb(255 255 255 / 0.18) 50%, transparent 100%);
+  transform: translateX(-120%) skewX(-12deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.mc-bootcamp .mc-shine:hover::after {
+  animation: mc-shine-sweep 0.85s var(--ease) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-bootcamp .mc-shimmer { animation: none; }
+  .mc-bootcamp .mc-shine:hover::after { animation: none; }
 }
 .mc-bootcamp .lesson-prose p + p { margin-top: var(--s-4); }
 .mc-bootcamp .lesson-prose strong,

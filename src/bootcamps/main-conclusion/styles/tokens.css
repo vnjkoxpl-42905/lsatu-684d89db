@@ -82,6 +82,21 @@
   --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-2: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6);
   --shadow-3: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+
+  /* Premium tokens (Phase 0 redesign) */
+  --shadow-lift: 0 0 0 1px rgb(232 208 139 / 0.18), 0 16px 40px -12px rgb(0 0 0 / 0.7), 0 4px 16px -4px rgb(232 208 139 / 0.08);
+  --shadow-press: 0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5);
+  --glow-accent-soft: 0 0 24px -4px rgb(232 208 139 / 0.18);
+  --glow-accent-strong: 0 0 32px -2px rgb(232 208 139 / 0.36);
+  --grad-surface-soft: linear-gradient(180deg, rgb(26 30 43 / 0.85) 0%, rgb(18 21 30 / 0.95) 100%);
+  --grad-surface-elev: linear-gradient(180deg, rgb(32 36 50 / 0.9) 0%, rgb(22 26 38 / 0.95) 100%);
+  --grad-accent-soft: linear-gradient(135deg, rgb(232 208 139 / 0.12) 0%, rgb(197 160 89 / 0.06) 100%);
+  --grad-accent-strong: linear-gradient(135deg, rgb(242 223 154 / 0.32) 0%, rgb(197 160 89 / 0.16) 100%);
+  --grad-shimmer: linear-gradient(110deg, transparent 0%, rgb(255 255 255 / 0.06) 40%, rgb(232 208 139 / 0.10) 50%, rgb(255 255 255 / 0.06) 60%, transparent 100%);
+  --grad-card-highlight: linear-gradient(180deg, rgb(255 255 255 / 0.06) 0%, transparent 24%);
+  --border-accent-soft: rgb(232 208 139 / 0.18);
+  --border-accent-mid: rgb(232 208 139 / 0.32);
+  --border-accent-strong: rgb(232 208 139 / 0.50);
 }
 
 @media (prefers-reduced-motion: reduce) {

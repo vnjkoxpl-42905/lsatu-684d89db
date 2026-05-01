@@ -14,12 +14,13 @@ const blank = () => ({
 });
 
 describe('module ordering', () => {
-  it('initial unlocks include lessons/1.1, reference, drills index — but NOT simulator', () => {
+  it('preview-mode initial unlocks seed every module surface (review-mode bypass per CLAUDE.md)', () => {
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/lessons/1.1');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/reference');
     expect(INITIAL_UNLOCKED_ROUTES).toContain('/drills');
-    expect(INITIAL_UNLOCKED_ROUTES).not.toContain('/simulator');
-    expect(INITIAL_UNLOCKED_ROUTES).not.toContain('/simulator/bank');
+    // Preview mode: simulator surfaces are seeded (LockedRoute also bypasses gates via BOOTCAMP_PREVIEW_OPEN).
+    expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator');
+    expect(INITIAL_UNLOCKED_ROUTES).toContain('/simulator/bank');
   });
 
   it('every /simulator/* route requires Drill 3.4', () => {

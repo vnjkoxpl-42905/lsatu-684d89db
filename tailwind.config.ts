@@ -121,7 +121,7 @@ export default {
       fontFamily: {
         /* MC bootcamp font stacks — only consumed by classes inside .mc-bootcamp */
         "mc-sans": ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
-        "mc-serif": ['ui-serif', 'Iowan Old Style', '"Apple Garamond"', 'Georgia', 'serif'],
+        "mc-serif": ['Fraunces', 'ui-serif', 'Iowan Old Style', '"Apple Garamond"', 'Georgia', 'serif'],
         "mc-mono": ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       fontSize: {
@@ -185,6 +185,18 @@ export default {
             transform: "translate(-50%,-40%) scale(1)",
           },
         },
+        "mc-shimmer-sweep": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        "mc-zoom-fade-in": {
+          from: { opacity: "0", transform: "scale(0.96)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "mc-tooltip-in": {
+          from: { opacity: "0", transform: "translateY(-4px) scale(0.96)" },
+          to: { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -194,6 +206,9 @@ export default {
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
         "lift": "lift 0.2s ease-out forwards",
         spotlight: "spotlight 2s ease .75s 1 forwards",
+        "mc-shimmer-sweep": "mc-shimmer-sweep 1.6s ease-in-out infinite",
+        "mc-zoom-fade-in": "mc-zoom-fade-in 180ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "mc-tooltip-in": "mc-tooltip-in 150ms cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
