@@ -99,11 +99,6 @@ export default function BootcampsPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-foreground">{bc.title}</h3>
-                  {('badge' in bc && bc.badge) && (
-                    <span className="text-[9px] uppercase tracking-[0.2em] font-semibold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
-                      {bc.badge}
-                    </span>
-                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1 max-w-xl leading-relaxed">
                   {bc.description}
