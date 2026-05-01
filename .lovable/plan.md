@@ -1,50 +1,35 @@
-# Lovable autopilot plan — ACTIVE (2026-05-01)
+## Problem
 
-## Source of truth
+Clicking lesson 1.1 (or any lesson row) inside the Main Conclusion bootcamp navigates to `/lessons/1.1`, which hits the global 404 page. Same bug exists in the command palette (Cmd-K) lesson entries.
 
-The new Main Conclusion bootcamp lives at `src/bootcamps/main-conclusion/` (105 files) and is wrapped by `src/pages/MainConclusionBootcamp.tsx`. It is mounted at `/bootcamp/structure/*` via `src/App.tsx`. **This is canonical and approved by Joshua (2026-05-01).**
+## Root cause
 
-The OLD bootcamp at `src/pages/Structure.tsx` + `src/components/structure/**` is **no longer routed**. Source files remain on disk pending a separate archival decision. **DO NOT re-route `/bootcamp/structure` to the old `Structure.tsx`.**
+The bootcamp is mounted at `/bootcamp/structure/*` in `src/App.tsx`. Internally it tracks unlock state using **logical route IDs** like `/lessons/1.1` (see `lib/ordering.ts`, `useModuleProgress.unlocked_routes`). Two render sites mistakenly pass that logical ID directly to `<Link to>`/`href`, instead of prefixing it with `/bootcamp/structure`. React Router treats it as an absolute path → top-level 404.
 
-## Current canonical route table (do not change without Joshua's explicit chat directive)
+The sidebar (`LeftRail.tsx`), `ModuleIndex.tsx`, and most other internal links are already correct (they use `/bootcamp/structure/...` or relative paths). Only two files are wrong, plus one helper that builds a recommendation `href`.
 
-- `/bootcamp/structure/*` → `MainConclusionBootcamp` (the new bootcamp). The splat `/*` is REQUIRED for the bootcamp's nested module routes (lessons, drills, simulator, hard-sentences, diagnostics, journal, settings, reference) to work.
-- `/bootcamp/structure-v2` → `Navigate to /bootcamp/structure replace` (legacy alias).
-- `/bootcamp/structure-v2/*` → `Navigate to /bootcamp/structure replace` (legacy alias for nested deep links).
-- `/bootcamp/main-conclusion-role` → `Navigate to /bootcamp/structure replace` (legacy alias).
-- `/bootcamp/causation-station` → `CausationStation` (unchanged, untouched).
-- `/bootcamp/abstraction` → `Abstraction` (unchanged, untouched).
+## Fix (3 small edits, no logic changes)
 
-## SPA fallback (do not remove)
+1. **`src/bootcamps/main-conclusion/modules/lessons/LessonsIndex.tsx`**
+   - Line 31: change `to={`/lessons/${l.number}`}` → `to={`/bootcamp/structure/lessons/${l.number}`}`.
+   - Keep line 27 unchanged (`unlocked_routes` stores the logical `/lessons/...` ID — that's correct).
 
-The repo deploys to Netlify (Lovable's host). For BrowserRouter deep-link refresh to work, two things must be in place:
+2. **`src/bootcamps/main-conclusion/components/command-palette/CommandPalette.tsx`** (line 44)
+   - Change `href: `/lessons/${l.number}`` → `href: `/bootcamp/structure/lessons/${l.number}``.
+   - (Verify the palette's navigation handler does `navigate(href)` — if it does, this is the only change needed.)
 
-1. `public/_redirects` contains `/*    /index.html   200` — Netlify SPA fallback. Required.
-2. `vite.config.ts` PWA workbox config has `navigateFallback: "/index.html"` plus `navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//, /\.[^/]+$/]` — service worker fallback for repeat visits. Required.
+3. **`src/bootcamps/main-conclusion/lib/diagnostics.ts`** (line 122)
+   - Change `href: '/lessons/1.13'` → `href: '/bootcamp/structure/lessons/1.13'` so the "go to capstone" recommendation routes correctly.
 
-Both are defense-in-depth for deep-link 404s. Removing either re-introduces the bug Joshua hit on 2026-05-01 (404 on `/bootcamp/structure/*` deep links).
+## Out of scope (intentionally not changing)
 
-## What NOT to do
+- `lib/ordering.ts`, `useModuleProgress`, `WorkspaceShell.tsx` path-stripping, and `Lesson.tsx`'s `markLessonComplete(...)` call — these all use `/lessons/...` as a **logical ID** for progress/unlock storage. Renaming them would force a data migration of existing `unlocked_routes` rows. Leaving them alone.
+- Test file `lib/__tests__/ordering.test.ts` — asserts the logical IDs, still valid.
 
-- ❌ Do NOT re-import `Structure` from `./pages/Structure` into `App.tsx`.
-- ❌ Do NOT redirect `/bootcamp/structure` to `/bootcamp/structure-v2`.
-- ❌ Do NOT remove the `MainConclusionBootcamp` import from `App.tsx`.
-- ❌ Do NOT change `path="/bootcamp/structure/*"` to `path="/bootcamp/structure"` (must keep the splat).
-- ❌ Do NOT delete `public/_redirects`.
-- ❌ Do NOT strip `navigateFallback` from `vite.config.ts`.
-- ❌ Do NOT modify the Bootcamps card to point at the old Structure description (8 modules: Foundations, 2-Part Check, FABS, X-Ray, Argument Shapes, Trojan Horse, 7 Traps, Prove It). The card now describes the NEW bootcamp (6 modules, 12 lessons, 9 drills, simulator, hard sentences, diagnostics, SM-2 SRS).
-- ❌ Do NOT delete `src/bootcamps/main-conclusion/`, `src/pages/MainConclusionBootcamp.tsx`, `scripts/main-conclusion/`, or `docs/main-conclusion-bootcamp/` — these are the bootcamp's source of truth.
+## Verification
 
-## Historical context (do not act on this; reference only)
-
-An earlier version of this plan instructed Lovable autopilot to do the opposite of the above. That plan was wrong — it misidentified which bootcamp was canonical. The Lovable commits `9b35eb8`, `163be27`, `6954151`, `be79274` ("Fixed structure bootcamp route") executed that wrong plan and were rewound by Claude in commit `8baf646` after Joshua confirmed the new bootcamp is canonical. This plan file replaces the old one entirely.
-
-## Out of scope for autopilot (Joshua-only decisions)
-
-- Drill 3.4 Stage 4 canonical-20 subset selection.
-- M4 distractor seeds (Q11 Mosston rebuttal + Q20 grain-companies wildcard).
-- OLD `Structure.tsx` + `src/components/structure/**` archival (move to `src/_archived/`).
-- M1 voice walkthrough on Lessons 1.1–1.12.
-- Phase D distractor batch authoring (gated on M4 seeds).
-- Trap Master worst-case examples (gated on Phase D trait lock).
-- Light-mode theme for the bootcamp (currently dark-only by spec).
+After the edits:
+- Navigate to `/bootcamp/structure` → click "Lesson 1.1" → lands on `/bootcamp/structure/lessons/1.1` and renders the lesson (no 404).
+- Locked lessons (1.2+) remain greyed out and non-clickable (unchanged).
+- Cmd-K palette → search a lesson → opens the correct URL.
+- Diagnostics "go to capstone" link routes to the capstone page.
