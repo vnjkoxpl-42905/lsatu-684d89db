@@ -15,7 +15,7 @@ export function MistakeProfile() {
   const d = useDiagnostics();
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={6} />
       </div>
     );
@@ -46,11 +46,11 @@ export function MistakeProfile() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader eyebrow="MC-DIA-6.6" title="Mistake Profile" compact />
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Top traps you fall for</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Top traps you fall for</h2>
         <ul className="mt-3 space-y-2">
           {topTraps.map((t) => (
             <li key={t.trait}>
@@ -69,7 +69,7 @@ export function MistakeProfile() {
       </section>
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">By surface</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">By surface</h2>
         <ul className="mt-3 space-y-2">
           {Array.from(bySurface.entries()).map(([surface, hits]) => (
             <li key={surface}>

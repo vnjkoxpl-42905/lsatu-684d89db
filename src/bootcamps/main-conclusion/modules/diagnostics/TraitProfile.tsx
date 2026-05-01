@@ -23,7 +23,7 @@ export function TraitProfile() {
   const d = useDiagnostics();
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={6} />
       </div>
     );
@@ -38,7 +38,7 @@ export function TraitProfile() {
   });
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <PageHeader
         eyebrow="MC-DIA-6.5"
         title="Trait Diagnostic"

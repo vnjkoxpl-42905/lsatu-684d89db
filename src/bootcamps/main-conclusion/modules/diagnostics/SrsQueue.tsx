@@ -25,7 +25,7 @@ export function SrsQueue() {
 
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={6} />
       </div>
     );
@@ -55,7 +55,7 @@ export function SrsQueue() {
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
         eyebrow="MC-DIA-6.7"
         title="SRS Queue"
@@ -80,7 +80,7 @@ export function SrsQueue() {
 
       {dueItems.length > 0 ? (
         <section>
-          <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Due now</h2>
+          <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Due now</h2>
           <ul className="mt-3 space-y-3">
             {dueItems.map((item) => (
               <li key={item.id}>
@@ -113,7 +113,7 @@ export function SrsQueue() {
 
       {upcoming.length > 0 ? (
         <section>
-          <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Upcoming</h2>
+          <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Upcoming</h2>
           <ul className="mt-3 space-y-2">
             {upcoming.map((item) => (
               <li key={item.id}>

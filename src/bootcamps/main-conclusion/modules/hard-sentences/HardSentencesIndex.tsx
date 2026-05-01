@@ -11,6 +11,7 @@ import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ClusterDecomposer, type ClusterSentence } from '@/bootcamps/main-conclusion/components/cluster-decomposer/ClusterDecomposer';
 import { HARD_SECTIONS, type Block, type HardSection } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
+import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const CAPSTONE: { id: string; number: string; title: string; route: string } = {
@@ -207,20 +208,24 @@ export function HardSentenceSection() {
   }
   const isDecomposer = sec.number === '5.7';
   return (
-    <article className="px-6 py-10 max-w-prose mx-auto">
-      <header className="mb-6">
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">{sec.id}</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">
-          {sec.number} · {sec.title}
-        </h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft italic mt-4 border-l-2 border-l-[rgb(var(--accent)/0.40)] pl-3">
-          {sec.hook}
-        </p>
-        <div className="mt-3 flex gap-2">
-          <Badge tone="success">authored</Badge>
-          <span className="font-mc-mono text-mono text-ink-faint">voice: {String(sec.voice_register)}</span>
-        </div>
-      </header>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto">
+      <PageHeader
+        eyebrow={sec.id}
+        title={`${sec.number} · ${sec.title}`}
+        description={
+          <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
+            {sec.hook}
+          </span>
+        }
+        actions={
+          <>
+            <Badge tone="success" dot>
+              authored
+            </Badge>
+            <Badge tone="neutral">voice · {String(sec.voice_register)}</Badge>
+          </>
+        }
+      />
       <div className="space-y-4">
         {sec.blocks.map((b, i) => (
           <RenderBlock key={i} block={b} />

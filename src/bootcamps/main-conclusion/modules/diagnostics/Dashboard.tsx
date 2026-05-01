@@ -22,7 +22,7 @@ export function Dashboard() {
   const d = useDiagnostics();
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={6} />
       </div>
     );
@@ -32,7 +32,7 @@ export function Dashboard() {
   const modules = moduleViews(d.progress);
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-6">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-6">
       <PageHeader eyebrow="MC-DIA-6.2" title="Dashboard" compact />
 
       {!seed.attempted ? (
@@ -49,7 +49,7 @@ export function Dashboard() {
       ) : null}
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Module progress</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Module progress</h2>
         <ul className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
           {modules.map((m) => (
             <li key={m.module}>
@@ -69,7 +69,7 @@ export function Dashboard() {
       </section>
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Trait heatmap</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Trait heatmap</h2>
         <ul className="mt-3 grid gap-2 sm:grid-cols-7 grid-cols-4">
           {traits.map((t) => (
             <li key={t.trait}>
@@ -83,7 +83,7 @@ export function Dashboard() {
       </section>
 
       <section>
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Calibration seed</h2>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Calibration seed</h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <Card variant="surface">
             <div className="font-mc-mono text-mono text-ink-faint">M1.13</div>

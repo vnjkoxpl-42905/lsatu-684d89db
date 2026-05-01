@@ -15,14 +15,14 @@ export function RrReview() {
   const d = useDiagnostics();
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={5} />
       </div>
     );
   }
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-4">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <PageHeader
         eyebrow="MC-DIA-6.4"
         title="R&amp;R Review"

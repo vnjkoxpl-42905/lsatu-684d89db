@@ -17,7 +17,7 @@ export function Recommendations() {
   const d = useDiagnostics();
   if (d.loading) {
     return (
-      <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
         <LoadingSkeleton lines={6} />
       </div>
     );
@@ -29,7 +29,7 @@ export function Recommendations() {
   const recs = buildRecommendations(traits, dueCount, d.calibrationAttempts.length > 0);
 
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto space-y-5">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
         eyebrow="MC-DIA-6.3"
         title="Recommendations"
