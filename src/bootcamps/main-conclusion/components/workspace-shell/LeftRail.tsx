@@ -2,12 +2,12 @@ import { NavLink } from 'react-router-dom';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const sections: Array<{ label: string; to: string; tag: string }> = [
-  { label: 'Lessons', to: '/bootcamp/structure-v2/lessons', tag: 'M1' },
-  { label: 'Reference', to: '/bootcamp/structure-v2/reference', tag: 'M2' },
-  { label: 'Drills', to: '/bootcamp/structure-v2/drills', tag: 'M3' },
-  { label: 'Simulator', to: '/bootcamp/structure-v2/simulator', tag: 'M4' },
-  { label: 'Hard Sentences', to: '/bootcamp/structure-v2/hard-sentences', tag: 'M5' },
-  { label: 'Diagnostics', to: '/bootcamp/structure-v2/diagnostics', tag: 'M6' },
+  { label: 'Lessons', to: '/bootcamp/structure/lessons', tag: 'M1' },
+  { label: 'Reference', to: '/bootcamp/structure/reference', tag: 'M2' },
+  { label: 'Drills', to: '/bootcamp/structure/drills', tag: 'M3' },
+  { label: 'Simulator', to: '/bootcamp/structure/simulator', tag: 'M4' },
+  { label: 'Hard Sentences', to: '/bootcamp/structure/hard-sentences', tag: 'M5' },
+  { label: 'Diagnostics', to: '/bootcamp/structure/diagnostics', tag: 'M6' },
 ];
 
 export function LeftRail(): JSX.Element {

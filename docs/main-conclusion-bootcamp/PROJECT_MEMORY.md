@@ -10,7 +10,7 @@
 - **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
 - **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
 - **Last updated**: 2026-05-01
-- **Last action**: JOSHUA OVERRIDE detected — Lovable editor reverted bridge route; v2 surface unwired. Drill 3.1–3.4 Stage 2 + promotion runbook landed earlier in session (PR #28 squash-merged), but the rendering surface no longer exists. Awaiting clarification: soft pause vs soft rollback.
+- **Last action**: New Main Conclusion bootcamp re-wired at `/bootcamp/structure` per Joshua's screenshot-confirmed intent. Old `Structure.tsx` no longer routed; left on disk for separate archival pass.
 
 ---
 
@@ -306,7 +306,27 @@ These are general rules surfaced during this build that should apply to every fu
 - Author 10 M1.13 calibration items + 5 M5.8 items into `src/data/calibration.generated.json` NOW (while M1 voice is fresh; trait-tag proposals locked while voice in mind).
 - **DO NOT build Capstone.tsx page yet.** Wait until M1 batch review locks voice; then ship the page in one pass against locked content. Reduces rework risk.
 
-### JOSHUA OVERRIDE — 2026-05-01 (Lovable editor: bridge route reverted; v2 surface unwired)
+### JOSHUA DIRECTIVE — 2026-05-01 (Re-wire: new bootcamp at /bootcamp/structure was the intent all along)
+
+**Source:** Joshua chat clarification + screenshot of the new bootcamp Module Index ("The most salvageable question type ever" headline, M1–M6 cards, dark-mode left rail). **Authoritative.**
+
+**Clarification:** The 2026-05-01 Lovable-editor commits ("Fixed structure bootcamp route") were NOT a deliberate decision to keep the old `Structure.tsx` live — they were a regression that pointed `/bootcamp/structure` at the old 8-module bootcamp instead of the new Main Conclusion bootcamp at `src/bootcamps/main-conclusion/`. Joshua's intent: the new bootcamp is canonical and lives at `/bootcamp/structure`. Rule 14 still applies to gpt-engineer-app[bot] commits, but acknowledgement-not-absorption means surfacing the conflict and asking — which I did — and Joshua's answer here unwinds the regression.
+
+**Re-wire shipped:**
+- `src/App.tsx`: removed `Structure` import; added `MainConclusionBootcamp` import; route `/bootcamp/structure/*` now mounts `MainConclusionBootcamp` (with splat for nested module routes); `/bootcamp/structure-v2` + `/*` redirects preserved.
+- `src/bootcamps/main-conclusion/**` + `src/pages/MainConclusionBootcamp.tsx`: every hardcoded `/bootcamp/structure-v2/*` absolute path sed-rewritten to `/bootcamp/structure/*` (29 occurrences across LeftRail.tsx, LockedRoute.tsx, Placeholder.tsx, SimulatorShell.tsx, Dashboard.tsx, HardSentencesIndex.tsx, Drill3_4.tsx, Lesson.tsx, ReferenceSection.tsx, routes.tsx comment, MainConclusionBootcamp.tsx comment).
+- `src/pages/Bootcamps.tsx`: card title "Structure" → "Main Conclusion / Argument Structure"; description rewritten to describe the new bootcamp (6 modules, 12 lessons + capstone, 9 drills with Stage-Gate, Simulator + Trap Master, Hard Sentences cluster decomposer, SM-2 SRS); stats `['8 Modules', 'Gated Progression', 'Simulator']` → `['6 Modules', '86 Surfaces', 'SM-2 SRS']`.
+
+**Untouched:** OLD `src/pages/Structure.tsx` + `src/components/structure/**` — left on disk, no longer routed. Archival is a separate cleanup pass per Rule 16 once Lovable preview confirms the new bootcamp renders.
+
+**Verification:**
+- `npx tsc --noEmit -p tsconfig.app.json` → ✓ 0 errors.
+- `npx vite build` → ✓ 139 PWA precache entries, build clean in 1m 44s.
+- Internal grep: 0 lingering `/bootcamp/structure-v2/` references in bootcamp source (after sed).
+
+**Out of scope:** OLD Structure.tsx archival, BRIDGE_HANDOFF.md / gate-5-audit.md / promotion-runbook.md doc updates, Drill 3.1–3.3 Stage 3/4 content authoring, Phase D distractor batch.
+
+### JOSHUA OVERRIDE — 2026-05-01 (Lovable editor: bridge route reverted; v2 surface unwired) [REWOUND ABOVE]
 
 **Source:** Lovable editor commits `9b35eb8` / `163be27` / `6954151` / `be79274` (2026-05-01 08:45-08:47 UTC, gpt-engineer-app[bot] co-authored vnjkoxpl-42905). Commit message on the merge: **"Fixed structure bootcamp route"**. **Authoritative.**
 

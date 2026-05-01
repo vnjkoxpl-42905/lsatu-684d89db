@@ -1,8 +1,8 @@
 /**
- * /bootcamp/structure-v2 — Main Conclusion bootcamp (preview).
+ * /bootcamp/structure — Main Conclusion bootcamp (preview).
  *
  * Bridge wrapper for the in-progress Claude-built bootcamp. Lives at the
- * temporary `/bootcamp/structure-v2` slot so it can be developed and previewed
+ * temporary `/bootcamp/structure` slot so it can be developed and previewed
  * alongside the existing `/bootcamp/structure` (Structure.tsx) without
  * breaking it. Promotion is a one-line route swap in App.tsx.
  *

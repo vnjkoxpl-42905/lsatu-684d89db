@@ -43,7 +43,7 @@ export function Dashboard() {
           <h2 className="font-mc-serif text-h2 font-semibold mt-2">No data yet</h2>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
             The dashboard activates after your first M1.13 calibration attempt.{' '}
-            <Link to="/bootcamp/structure-v2/lessons/1.13" className="text-mc-accent hover:underline">
+            <Link to="/bootcamp/structure/lessons/1.13" className="text-mc-accent hover:underline">
               Take the calibration →
             </Link>
           </p>
@@ -103,13 +103,13 @@ export function Dashboard() {
       </section>
 
       <section className="flex flex-wrap gap-2">
-        <Link to="/bootcamp/structure-v2/diagnostics/recommendations">
+        <Link to="/bootcamp/structure/diagnostics/recommendations">
           <Chip tone="accent">Recommendations →</Chip>
         </Link>
-        <Link to="/bootcamp/structure-v2/diagnostics/srs">
+        <Link to="/bootcamp/structure/diagnostics/srs">
           <Chip tone="accent">SRS queue →</Chip>
         </Link>
-        <Link to="/bootcamp/structure-v2/diagnostics/trait-profile">
+        <Link to="/bootcamp/structure/diagnostics/trait-profile">
           <Chip tone="accent">Trait profile →</Chip>
         </Link>
       </section>

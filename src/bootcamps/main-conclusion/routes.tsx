@@ -2,7 +2,7 @@
  * Main Conclusion bootcamp routes — adapted for nested mounting inside LSAT U.
  *
  * Original used createBrowserRouter (data router). LSAT U mounts via BrowserRouter
- * + nested <Routes> under the parent path /bootcamp/structure-v2/*, so this file
+ * + nested <Routes> under the parent path /bootcamp/structure/*, so this file
  * exports a <BootcampRoutes /> component that renders the nested route tree.
  *
  * All paths are relative; the parent route's `*` wildcard matches against them.

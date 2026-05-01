@@ -26,7 +26,7 @@ import Abstraction from "./pages/Abstraction";
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
-import Structure from "./pages/Structure";
+import MainConclusionBootcamp from "./pages/MainConclusionBootcamp";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -204,8 +204,8 @@ const App = () => {
                   <Route path="/bootcamp/abstraction" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/structure" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><Structure /></ProtectedRoute>
+                  <Route path="/bootcamp/structure/*" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionBootcamp /></ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -37,11 +37,11 @@ const BOOTCAMPS = [
   },
   {
     id: 'structure',
-    title: 'Structure',
+    title: 'Main Conclusion / Argument Structure',
     emoji: '🛠️',
     description:
-      'Master Main Conclusion identification through 8 sequential modules: Foundations, the 2-Part Conclusion Check, FABS premise quartet, X-Ray the Structure, Argument Shapes, Trojan Horse Concession, the 7 Traps, and a Prove It simulator. Gated progression with embedded interactive checkpoints.',
-    stats: ['8 Modules', 'Gated Progression', 'Simulator'],
+      'Six modules, gate-driven, calibration after teaching. 12 voice-led lessons + capstone; Reference + Indicator Vault; 9 drills with Stage-Gate engine; 20-question Simulator with Trap Master 7-trait diagnostic; Hard Sentences cluster decomposer; Diagnostics dashboard with SM-2 spaced repetition. Unlock cascade starts at Lesson 1.1.',
+    stats: ['6 Modules', '86 Surfaces', 'SM-2 SRS'],
     route: '/bootcamp/structure',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },

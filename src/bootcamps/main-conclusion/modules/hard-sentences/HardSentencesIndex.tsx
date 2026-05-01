@@ -149,7 +149,7 @@ export function HardSentenceSection() {
         title="Hard Sentences section not found"
         body="Section IDs are 5.1–5.7. Use /hard-sentences/capstone for the capstone."
         cta={
-          <Link to="/bootcamp/structure-v2/hard-sentences">
+          <Link to="/bootcamp/structure/hard-sentences">
             <Button variant="subtle">← Back to Hard Sentences</Button>
           </Link>
         }
