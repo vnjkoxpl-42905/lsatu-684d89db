@@ -26,7 +26,7 @@ import Abstraction from "./pages/Abstraction";
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
-import MainConclusionBootcamp from "./pages/MainConclusionBootcamp";
+import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -198,14 +198,17 @@ const App = () => {
                   <Route path="/bootcamp/causation-station" element={
                     <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/structure" replace />} />
-                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamp/structure" replace />} />
-                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamp/structure" replace />} />
+                  {/* Legacy bootcamp slugs → Intro to LR */}
+                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
+                  <Route path="/bootcamp/structure" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
+                  <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
+                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
+                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
                   <Route path="/bootcamp/abstraction" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/structure/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionBootcamp /></ProtectedRoute>
+                  <Route path="/bootcamp/intro-to-lr/*" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><IntroToLrBootcamp /></ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
