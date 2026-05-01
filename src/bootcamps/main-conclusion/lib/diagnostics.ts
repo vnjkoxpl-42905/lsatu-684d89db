@@ -119,7 +119,7 @@ export function buildRecommendations(
       kind: 'drill',
       title: 'Take the M1.13 calibration',
       reason: 'Your dashboard shows nothing until the first calibration attempt seeds it.',
-      href: '/lessons/1.13',
+      href: '/bootcamp/structure/lessons/1.13',
       priority: 1,
     });
   }
