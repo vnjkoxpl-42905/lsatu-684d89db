@@ -41,17 +41,17 @@ export function CommandPalette({ open, onClose }: Props) {
   const items = useMemo<Item[]>(() => {
     const all: Item[] = [];
     for (const l of lessons as Array<{ id: string; number: string; title: string }>) {
-      all.push({ id: l.id, title: `${l.number} · ${l.title}`, group: 'Lesson', href: `/bootcamp/structure/lessons/${l.number}` });
+      all.push({ id: l.id, title: `${l.number} · ${l.title}`, group: 'Lesson', href: `/lessons/${l.number}` });
     }
     for (const d of DRILLS) all.push({ id: d.id, title: `${d.number} · ${d.title}`, group: 'Drill', href: d.route });
     for (const r of refs as Array<{ id: string; title: string; route: string }>)
-      all.push({ id: r.id, title: r.title, group: 'Reference', href: `/bootcamp/structure${r.route}` });
+      all.push({ id: r.id, title: r.title, group: 'Reference', href: r.route });
     for (const nt of namedTools as Array<{ id: string; name: string }>)
-      all.push({ id: nt.id, title: nt.name, group: 'Named tool', href: `/bootcamp/structure/reference/named-tools/${nt.id}` });
+      all.push({ id: nt.id, title: nt.name, group: 'Named tool', href: `/reference/named-tools/${nt.id}` });
     for (const q of sim as Array<{ id: string; number: number; title: string }>)
-      all.push({ id: q.id, title: `Q${q.number} · ${q.title}`, group: 'Simulator', href: `/bootcamp/structure/simulator/bank` });
+      all.push({ id: q.id, title: `Q${q.number} · ${q.title}`, group: 'Simulator', href: `/simulator/bank` });
     for (const t of traps as Array<{ id: string; name: string }>)
-      all.push({ id: t.id, title: t.name, group: 'Trap', href: `/bootcamp/structure/simulator/trap-master/${t.id}` });
+      all.push({ id: t.id, title: t.name, group: 'Trap', href: `/simulator/trap-master/${t.id}` });
     for (const h of HARD_SECTIONS)
       all.push({ id: h.id, title: `${h.number} · ${h.title}`, group: 'Hard Sentences', href: h.route });
     for (const s of DIAG_SECTIONS)

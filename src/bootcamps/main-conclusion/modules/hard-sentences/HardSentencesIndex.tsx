@@ -15,7 +15,7 @@ const CAPSTONE: { id: string; number: string; title: string; route: string } = {
   id: 'MC-HS-5.8',
   number: '5.8',
   title: 'Capstone (5 calibration items)',
-  route: '/bootcamp/structure/hard-sentences/capstone',
+  route: '/hard-sentences/capstone',
 };
 
 export function HardSentencesIndex() {

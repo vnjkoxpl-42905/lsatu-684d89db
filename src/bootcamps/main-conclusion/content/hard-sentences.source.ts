@@ -3,7 +3,7 @@
  * Hand-authored at Phase E, 2026-05-01. Voice register 2 (whimsical/metaphor-led)
  * for prose; Register 1 for procedural callouts and the verdict-style summaries.
  *
- * Source: spec.html §5 + Notes/Cluster Sentences Review.docx (S) + Joshua’s
+ * Source: spec.html §5 + Notes/Cluster Sentences Review.docx (S) + Joshua's
  * Alex/Jordan walkthrough (S).
  */
 
@@ -33,7 +33,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.1',
     number: '5.1',
     title: 'Why Hard Sentences',
-    route: '/bootcamp/structure/hard-sentences/5.1',
+    route: '/hard-sentences/5.1',
     voice_register: 2,
     hook: 'Some LSAT sentences are not difficult. They are accreted. Layers of qualification, possessive, and parenthetical have grown over the core like coral on a sunken statue.',
     blocks: [
@@ -63,7 +63,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.2',
     number: '5.2',
     title: 'What is a Cluster',
-    route: '/bootcamp/structure/hard-sentences/5.2',
+    route: '/hard-sentences/5.2',
     voice_register: 2,
     hook: 'A cluster is a sentence with a core thought wrapped in specifiers. The specifiers are the wrap. The thought is the gift.',
     blocks: [
@@ -100,7 +100,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.3',
     number: '5.3',
     title: 'Specifiers',
-    route: '/bootcamp/structure/hard-sentences/5.3',
+    route: '/hard-sentences/5.3',
     voice_register: 'mixed',
     hook: 'Six kinds of specifier. Each clings to the core in its own way. Once you can name them, you can remove them.',
     blocks: [
@@ -143,7 +143,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.4',
     number: '5.4',
     title: 'Alex / Jordan walkthrough',
-    route: '/bootcamp/structure/hard-sentences/5.4',
+    route: '/hard-sentences/5.4',
     voice_register: 2,
     hook: 'Two students. One sentence. One panicked, one composed. Watch what happens when Jordan stops trying to hold every clause in mind at once.',
     blocks: [
@@ -178,7 +178,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.5',
     number: '5.5',
     title: 'Optional vs Core',
-    route: '/bootcamp/structure/hard-sentences/5.5',
+    route: '/hard-sentences/5.5',
     voice_register: 'mixed',
     hook: 'Some specifiers ARE the conclusion. Knowing which is the difference between right and wrong on the test.',
     blocks: [
@@ -209,7 +209,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.6',
     number: '5.6',
     title: 'Practice',
-    route: '/bootcamp/structure/hard-sentences/5.6',
+    route: '/hard-sentences/5.6',
     voice_register: 1,
     hook: 'Five sentences. Strip each to its core. The Cluster Decomposer is in the next section if you want a guided pass first.',
     blocks: [
@@ -278,7 +278,7 @@ export const HARD_SECTIONS: HardSection[] = [
     id: 'MC-HS-5.7',
     number: '5.7',
     title: 'Cluster Decomposer',
-    route: '/bootcamp/structure/hard-sentences/5.7',
+    route: '/hard-sentences/5.7',
     voice_register: 1,
     hook: 'Tap a specifier to lift it off. Watch the core surface.',
     blocks: [
