@@ -10,7 +10,7 @@
 - **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
 - **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
 - **Last updated**: 2026-05-01
-- **Last action**: Drill 3.1–3.3 Stages 3 + 4 content authored (additive, Rule 16). Stale handoff docs (BRIDGE_HANDOFF.md, gate-5-audit.md, promotion-runbook.md) reconciled to current `/bootcamp/structure` state.
+- **Last action**: Vitest CI verified — 18/18 tests pass (1 LSAT U example + 17 bootcamp). Test infra was already wired in package.json + vitest.config.ts; no setup work needed. Joshua's blocked/deferred decisions logged below.
 
 ---
 
@@ -305,6 +305,40 @@ These are general rules surfaced during this build that should apply to every fu
 **Source:** Joshua chat directive. **Authoritative.** APPROVED with constraint:
 - Author 10 M1.13 calibration items + 5 M5.8 items into `src/data/calibration.generated.json` NOW (while M1 voice is fresh; trait-tag proposals locked while voice in mind).
 - **DO NOT build Capstone.tsx page yet.** Wait until M1 batch review locks voice; then ship the page in one pass against locked content. Reduces rework risk.
+
+### JOSHUA DIRECTIVE — 2026-05-01 (Walkthrough autopilot: vitest CI approved, 2 deferred, 3 parked, revert-watch armed)
+
+**Source:** Joshua chat directive while walking the live `/bootcamp/structure` Lovable preview. **Authoritative.**
+
+**Approved (Claude takes autonomously):**
+- Wire vitest + jsdom + testing-library into LSAT U `package.json` so the bootcamp's 17 unit tests run in CI.
+
+**Deferred to v1.5:**
+- Markdown rendering in Journal entries.
+
+**Blocked:**
+- Trap Master worst-case examples (3 per trait × 7 = 21 examples). Wait until Phase D distractor traits are locked.
+
+**Parked for Joshua to land separately:**
+- **Drill 3.4 Stage 4 subset** — Joshua picks 5 from canonical 20 with trait diversity (T1, T3, T5, T7 + 1 wildcard). Specific item numbers provided after walkthrough.
+- **M4 distractor seeds** — Joshua authors 8 distractor templates into `docs/main-conclusion-bootcamp/m4-seed-request.md` within next 24 hours (Q11 Mosston rebuttal + Q20 grain-companies wildcard). Phase D fires when seeds land.
+- **OLD `Structure.tsx` archival** — defer until live bridge verified on Lovable preview. Joshua greenlights once `/bootcamp/structure` confirmed rendering the new bootcamp.
+
+**Revert-watch armed:** if Lovable autopilot reverts the bridge a second time within 10 minutes of Lovable preview sync, Claude does NOT re-push. Surface immediately so Joshua can paste explicit Lovable prompt manually. Rule 14 acknowledgement applies to any Joshua edits during the walkthrough.
+
+### Gate 5 additive — vitest CI verification (2026-05-01, autonomous Rule 16 after walkthrough directive)
+
+**Result:** Vitest CI is **already fully wired**. No new code needed.
+
+- `package.json` already had `"test": "vitest run"` + `"test:watch": "vitest"` scripts and devDeps for `vitest@^3.2.4`, `jsdom@^20.0.3`, `@testing-library/react@^16.0.0`, `@testing-library/jest-dom@^6.6.0`.
+- `vitest.config.ts` exists at root: jsdom env, `src/**/*.{test,spec}.{ts,tsx}` include glob, `./src/test/setup.ts` setup file (matchMedia shim + jest-dom matchers).
+- Run: `npm test` → 4 test files, 18 tests, all pass in 2.76s.
+  - `src/test/example.test.ts` (1) — LSAT U example
+  - `src/bootcamps/main-conclusion/lib/__tests__/ordering.test.ts` (7) — Drill 3.4 unlock contract + lesson cascade + purity
+  - `src/bootcamps/main-conclusion/lib/__tests__/srs.test.ts` (6) — SM-2 algorithm
+  - `src/bootcamps/main-conclusion/lib/ai-templates/__tests__/whimsical-evaluator.test.ts` (4) — Drill 3.6 evaluator
+
+**Implication:** the bootcamp's 17 unit tests already run on `npm test` in this repo. CI integration (e.g. GitHub Actions running `npm test` on PR/push) is a separate Lovable infra question — out of scope unless Joshua wants a workflow file added.
 
 ### Gate 5 additive — Drill 3.1–3.3 Stages 3 + 4 content + handoff doc reconciliation (2026-05-01, autonomous Rule 16)
 
