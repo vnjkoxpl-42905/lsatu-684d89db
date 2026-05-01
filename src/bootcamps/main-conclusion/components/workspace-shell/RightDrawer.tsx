@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { DrawerPayload } from './WorkspaceShell';
 import namedTools from '@/bootcamps/main-conclusion/data/named-tools.generated.json';
@@ -34,8 +36,8 @@ interface Props {
 }
 
 /**
- * Right Drawer — opens in place. ESC closes. No URL change. 180ms slide.
- * Per architecture-plan.md §1.2 + §9 lock.
+ * Right Drawer — opens in place. ESC closes. No URL change.
+ * Premium: backdrop blur, framer-motion slide+fade, refined close affordance.
  */
 export function RightDrawer({ payload, onClose }: Props): JSX.Element {
   useEffect(() => {
@@ -49,49 +51,88 @@ export function RightDrawer({ payload, onClose }: Props): JSX.Element {
   const open = payload != null;
 
   return (
-    <>
-      <div
-        aria-hidden={!open}
-        className={cn(
-          'fixed inset-0 pointer-events-none transition-opacity duration-180 ease-eased',
-          open ? 'opacity-100' : 'opacity-0',
-        )}
-        style={{ background: 'rgb(0 0 0 / 0.06)' }}
-      />
-      <aside
-        role="dialog"
-        aria-modal="false"
-        aria-hidden={!open}
-        className={cn(
-          'fixed top-0 right-0 h-full w-[420px] max-w-full bg-surface-elev border-l border-[rgb(var(--border)/0.08)]',
-          'shadow-[var(--shadow-3)] transition-transform duration-180 ease-eased',
-          'phone:w-full',
-          open ? 'translate-x-0' : 'translate-x-full',
-        )}
-      >
-        <header className="flex items-center justify-between px-6 py-4 border-b border-[rgb(var(--border)/0.08)]">
-          <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint">
-            {payload?.mode === 'named-tool' ? 'Named tool' : payload?.mode === 'reference' ? 'Reference' : ''}
-          </div>
-          <button
+    <AnimatePresence>
+      {open ? (
+        <>
+          <motion.button
+            key="rd-backdrop"
             type="button"
+            aria-label="Close drawer"
             onClick={onClose}
-            className="font-mc-mono text-mono text-ink-soft hover:text-ink"
-            aria-label="Close drawer (Esc)"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px] cursor-default"
+          />
+          <motion.aside
+            key="rd-panel"
+            role="dialog"
+            aria-modal="false"
+            initial={{ x: '100%', opacity: 0.6 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+            className={cn(
+              'right-drawer fixed top-0 right-0 z-50 h-full w-[440px] max-w-full',
+              'phone:w-full',
+              'bg-[image:var(--grad-surface-elev)]',
+              'border-l border-[color:var(--border-accent-soft)]',
+              'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+            )}
           >
-            ESC ✕
-          </button>
-        </header>
-        <div className="px-6 py-5 overflow-y-auto h-[calc(100%-57px)]">
-          {payload?.mode === 'named-tool' && (
-            <NamedToolDrawerBody toolId={payload.named_tool_id} />
-          )}
-          {payload?.mode === 'reference' && (
-            <ReferenceDrawerBody referenceId={payload.reference_id} />
-          )}
-        </div>
-      </aside>
-    </>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+            />
+            <header
+              className={cn(
+                'flex items-center justify-between px-6 py-4',
+                'border-b border-[rgb(var(--border)/0.08)]',
+                'bg-[rgb(var(--surface)/0.6)] backdrop-blur-md',
+              )}
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+                />
+                <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent">
+                  {payload?.mode === 'named-tool'
+                    ? 'Named tool'
+                    : payload?.mode === 'reference'
+                    ? 'Reference'
+                    : ''}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close drawer (Esc)"
+                className={cn(
+                  'inline-flex h-8 items-center gap-1.5 rounded-full px-2.5',
+                  'bg-transparent text-ink-faint hover:text-ink hover:bg-[rgb(var(--ink)/0.06)]',
+                  'border border-[rgb(var(--border)/0.08)] hover:border-[rgb(var(--border)/0.16)]',
+                  'font-mc-mono text-mono transition-colors duration-150 ease-eased',
+                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
+                )}
+              >
+                <span className="text-ink-faint">ESC</span>
+                <X className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden="true" />
+              </button>
+            </header>
+            <div className="px-6 py-5 overflow-y-auto h-[calc(100%-65px)]">
+              {payload?.mode === 'named-tool' && (
+                <NamedToolDrawerBody toolId={payload.named_tool_id} />
+              )}
+              {payload?.mode === 'reference' && (
+                <ReferenceDrawerBody referenceId={payload.reference_id} />
+              )}
+            </div>
+          </motion.aside>
+        </>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
@@ -105,8 +146,8 @@ function NamedToolDrawerBody({ toolId }: { toolId: string }): JSX.Element {
       <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent">
         {tool.id}
       </div>
-      <h2 className="font-mc-serif text-h2 font-semibold mt-2">{tool.name}</h2>
-      <p className="text-body-prose font-mc-serif mt-4">{tool.what}</p>
+      <h2 className="font-mc-serif text-h2 font-semibold mt-2 text-ink">{tool.name}</h2>
+      <p className="text-body-prose font-mc-serif mt-4 text-ink-soft leading-relaxed">{tool.what}</p>
       <h3 className="font-mc-mono text-label uppercase tracking-wider text-ink-faint mt-6 mb-2">
         Where it lives
       </h3>
@@ -138,7 +179,7 @@ function ReferenceDrawerBody({ referenceId }: { referenceId: string }): JSX.Elem
   return (
     <article data-reference-id={section.id}>
       <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent">{section.id}</div>
-      <h2 className="font-mc-serif text-h2 font-semibold mt-2">{section.title}</h2>
+      <h2 className="font-mc-serif text-h2 font-semibold mt-2 text-ink">{section.title}</h2>
       {section.hook ? (
         <p className="font-mc-serif text-body-prose mt-3 text-ink-soft italic">{section.hook}</p>
       ) : null}
@@ -159,10 +200,16 @@ function DrawerBlock({ block }: { block: Block }): JSX.Element {
     case 'p':
       return <p className="font-mc-serif text-body-prose text-ink leading-relaxed">{block.text}</p>;
     case 'h2':
-      return <h3 className="font-mc-serif text-h3 font-semibold mt-4">{block.text}</h3>;
+      return <h3 className="font-mc-serif text-h3 font-semibold mt-4 text-ink">{block.text}</h3>;
     case 'callout':
       return (
-        <div className="rounded-3 bg-[rgb(var(--surface))] border-l-2 border-l-[rgb(var(--accent)/0.50)] p-3">
+        <div
+          className={cn(
+            'rounded-3 p-3 border-l-2 border-l-[color:var(--border-accent-strong)]',
+            'bg-[rgb(var(--surface)/0.6)]',
+            'border border-[rgb(var(--border)/0.08)]',
+          )}
+        >
           <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">{block.label}</div>
           <p className="font-mc-serif text-body text-ink mt-1.5">{block.body}</p>
         </div>
@@ -183,7 +230,13 @@ function DrawerBlock({ block }: { block: Block }): JSX.Element {
       );
     case 'example':
       return (
-        <div className="rounded-3 bg-[rgb(var(--surface))] border-l-2 border-l-[rgb(var(--role-premise)/0.50)] p-3">
+        <div
+          className={cn(
+            'rounded-3 p-3 border-l-2 border-l-[rgb(var(--role-premise)/0.50)]',
+            'bg-[rgb(var(--surface)/0.6)]',
+            'border border-[rgb(var(--border)/0.08)]',
+          )}
+        >
           <div className="font-mc-mono text-mono uppercase tracking-wider text-[rgb(var(--role-premise))]">
             Example · {block.label}
           </div>
