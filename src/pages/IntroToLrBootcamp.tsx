@@ -1,10 +1,9 @@
 /**
- * /bootcamp/structure — Main Conclusion bootcamp (preview).
+ * /bootcamp/intro-to-lr — Intro to LR bootcamp.
  *
- * Bridge wrapper for the in-progress Claude-built bootcamp. Lives at the
- * temporary `/bootcamp/structure` slot so it can be developed and previewed
- * alongside the existing `/bootcamp/structure` (Structure.tsx) without
- * breaking it. Promotion is a one-line route swap in App.tsx.
+ * Renamed from "Main Conclusion / Argument Structure" → "Intro to LR" so old
+ * cached builds and stale bookmarks can no longer collide with the new
+ * bootcamp UI. The previous /bootcamp/structure path now redirects here.
  *
  * Scope:
  *   - Auth gate via useAuth() — redirects to /auth if not signed in.
@@ -20,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { BootcampRoutes } from '@/bootcamps/main-conclusion/routes';
 
-export default function MainConclusionBootcamp() {
+export default function IntroToLrBootcamp() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
