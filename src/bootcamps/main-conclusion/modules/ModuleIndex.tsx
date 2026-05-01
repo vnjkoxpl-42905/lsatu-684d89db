@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const BC = '/bootcamp/structure';
+const BC = '/bootcamp/intro-to-lr';
 const modules = [
   { id: 'M1', name: 'Lessons', to: `${BC}/lessons`, desc: '12 voice-led lessons + capstone calibration. Voice register 2 (whimsical) for prose; register 1 (decisive) for callouts.' },
   { id: 'M2', name: 'Reference + Indicator Vault', to: `${BC}/reference`, desc: 'Glanceable companion. The Indicator Vault, FABS, the 2-Part Conclusion Check. Always accessible.' },

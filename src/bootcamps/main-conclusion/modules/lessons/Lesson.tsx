@@ -59,7 +59,7 @@ export function Lesson(): JSX.Element {
       <div className="px-6 py-12 max-w-prose mx-auto">
         <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint">Not found</div>
         <h1 className="font-mc-serif text-h1 mt-2">Lesson {routeId} not in v1.</h1>
-        <Link to="/bootcamp/structure/lessons" className="text-mc-accent font-mc-mono text-mono mt-4 inline-block">← Back to Lessons</Link>
+        <Link to="/bootcamp/intro-to-lr/lessons" className="text-mc-accent font-mc-mono text-mono mt-4 inline-block">← Back to Lessons</Link>
       </div>
     );
   }
@@ -233,7 +233,7 @@ export function Lesson(): JSX.Element {
         >
           {completed ? '✓ Lesson marked complete' : 'Mark lesson complete →'}
         </button>
-        <Link to="/bootcamp/structure/lessons" className="font-mc-mono text-mono text-ink-soft hover:text-ink">
+        <Link to="/bootcamp/intro-to-lr/lessons" className="font-mc-mono text-mono text-ink-soft hover:text-ink">
           ← Back to Lessons
         </Link>
       </div>

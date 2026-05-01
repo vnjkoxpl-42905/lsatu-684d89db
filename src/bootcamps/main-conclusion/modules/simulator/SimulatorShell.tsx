@@ -39,7 +39,7 @@ export function SimulatorOverview() {
       </header>
       <ul className="grid gap-2 sm:grid-cols-2">
         <li>
-          <Link to="/bootcamp/structure/simulator/bank" className="block">
+          <Link to="/bootcamp/intro-to-lr/simulator/bank" className="block">
             <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors">
               <h2 className="font-mc-serif text-h3 font-semibold">Question bank →</h2>
               <p className="font-mc-serif text-body-prose text-ink-soft mt-1">All 20 questions in canonical order.</p>
@@ -47,7 +47,7 @@ export function SimulatorOverview() {
           </Link>
         </li>
         <li>
-          <Link to="/bootcamp/structure/simulator/trap-master" className="block">
+          <Link to="/bootcamp/intro-to-lr/simulator/trap-master" className="block">
             <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors">
               <h2 className="font-mc-serif text-h3 font-semibold">Trap Master →</h2>
               <p className="font-mc-serif text-body-prose text-ink-soft mt-1">Seven trap traits with deep-dive pages.</p>
@@ -55,7 +55,7 @@ export function SimulatorOverview() {
           </Link>
         </li>
         <li>
-          <Link to="/bootcamp/structure/simulator/hard-mode" className="block">
+          <Link to="/bootcamp/intro-to-lr/simulator/hard-mode" className="block">
             <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors">
               <h2 className="font-mc-serif text-h3 font-semibold">Hard mode →</h2>
               <p className="font-mc-serif text-body-prose text-ink-soft mt-1">Five hardest questions per your performance.</p>

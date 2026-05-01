@@ -86,7 +86,7 @@ export function CommandPalette({ open, onClose }: Props) {
       } else if (e.key === 'Enter') {
         const item = filtered[highlight];
         if (item) {
-          const dest = item.href.startsWith('/bootcamp/structure') ? item.href : `/bootcamp/structure${item.href}`;
+          const dest = item.href.startsWith('/bootcamp/intro-to-lr') ? item.href : `/bootcamp/intro-to-lr${item.href}`;
           navigate(dest);
           onClose();
         }
@@ -123,7 +123,7 @@ export function CommandPalette({ open, onClose }: Props) {
                 <button
                   onMouseEnter={() => setHighlight(i)}
                   onClick={() => {
-                    const dest = item.href.startsWith('/bootcamp/structure') ? item.href : `/bootcamp/structure${item.href}`;
+                    const dest = item.href.startsWith('/bootcamp/intro-to-lr') ? item.href : `/bootcamp/intro-to-lr${item.href}`;
                     navigate(dest);
                     onClose();
                   }}

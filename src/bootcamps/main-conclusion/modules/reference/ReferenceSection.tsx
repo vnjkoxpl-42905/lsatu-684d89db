@@ -110,7 +110,7 @@ export function ReferenceSection() {
         title="Reference section not found"
         body="That route didn't resolve to a known reference. Head back to the index."
         cta={
-          <Link to="/bootcamp/structure/reference">
+          <Link to="/bootcamp/intro-to-lr/reference">
             <Button variant="subtle">← Back to Reference</Button>
           </Link>
         }
@@ -178,7 +178,7 @@ export function NamedToolEntry() {
         title="Named tool not found"
         body="Check the URL — IDs are like NT-FABS or NT-Stage-Gate-Tracker."
         cta={
-          <Link to="/bootcamp/structure/reference">
+          <Link to="/bootcamp/intro-to-lr/reference">
             <Button variant="subtle">← Back to Reference</Button>
           </Link>
         }

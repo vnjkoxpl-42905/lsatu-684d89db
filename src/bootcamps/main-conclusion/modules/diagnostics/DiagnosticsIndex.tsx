@@ -72,7 +72,7 @@ export function DiagnosticsIndex() {
       <ul className="grid gap-3 sm:grid-cols-2">
         {DIAG_SECTIONS.map((s) => (
           <li key={s.id}>
-            <Link to={s.route.startsWith('/bootcamp/structure') ? s.route : `/bootcamp/structure${s.route}`} className="block">
+            <Link to={s.route.startsWith('/bootcamp/intro-to-lr') ? s.route : `/bootcamp/intro-to-lr${s.route}`} className="block">
               <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors">
                 <div className="font-mc-mono text-mono text-ink-faint">{s.id}</div>
                 <h3 className="font-mc-serif text-h3 font-semibold mt-1">{s.title}</h3>
