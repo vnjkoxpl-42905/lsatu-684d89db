@@ -14,9 +14,9 @@ export function LeftRail(): JSX.Element {
   return (
     <aside className="border-r border-[rgb(var(--border)/0.08)] bg-bg-2 phone:hidden">
       <div className="px-4 py-6">
-        <div className="font-mc-serif text-h3 font-semibold text-mc-accent">Main Conclusion</div>
+        <div className="font-mc-serif text-h3 font-semibold text-mc-accent">Intro to LR</div>
         <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint mt-1">
-          Argument Structure Bootcamp
+          Logical Reasoning Bootcamp
         </div>
       </div>
       <nav className="px-2">
