@@ -1,0 +1,96 @@
+{
+  "$comment": "Smoke-test artifact from Gate 4 Step 1. Captures the Read-tool native PDF extraction of Homework/AP Answer Key (1).pdf at 2026-04-30. Used to validate the three Step 1 checks (item count, extraction confidence, schema fit). Step 2 wires pdfjs-dist + vision-model OCR fallback to reproduce this output programmatically.",
+  "target_file": "/Users/joshuaf/Documents/Claude/02_PROJECTS/lsat-u/Curriculum/Main Conclusion/Homework/AP Answer Key (1).pdf",
+  "extracted_at": "2026-04-30",
+  "extractor": "Read-tool native PDF text extraction (text-based PDF; no OCR required)",
+  "page_count": 4,
+  "items": [
+    {
+      "item_number": 2,
+      "topic": "blue light / screens / circadian rhythm",
+      "stimulus_present": true,
+      "stimulus_excerpt": "Research has shown that blue light emitted from screens can affect sleep patterns by disrupting the body's natural circadian rhythm. Consequently, experts recommend minimizing screen exposure before bedtime. However, given that many people rely on screens for evening activities such as reading or watching videos, it's challenging to implement this advice. As a result, using blue light filtering technologies or glasses can be a practical solution.",
+      "claim_count": 4,
+      "has_full_breakdown": true,
+      "role_tags_inline": false,
+      "page": 1
+    },
+    {
+      "item_number": 3,
+      "topic": "smart city technologies / privacy",
+      "stimulus_present": true,
+      "claim_count": 3,
+      "has_full_breakdown": true,
+      "role_tags_inline": false,
+      "page": 1
+    },
+    {
+      "item_number": 4,
+      "topic": "blockchain / financial systems / regulatory frameworks",
+      "stimulus_present": true,
+      "claim_count": 5,
+      "has_full_breakdown": true,
+      "role_tags_inline": false,
+      "page": 1,
+      "page_continued": 2
+    },
+    {
+      "item_number": 5,
+      "topic": "short-term rental services / Airbnb / housing",
+      "stimulus_present": true,
+      "claim_count": 4,
+      "has_full_breakdown": true,
+      "role_tags_inline": false,
+      "page": 2
+    },
+    {
+      "item_number": 6,
+      "topic": "biodiversity / ecological preservation",
+      "stimulus_present": true,
+      "claim_count": 6,
+      "has_full_breakdown": true,
+      "role_tags_inline": true,
+      "role_tag_examples": ["(Concession)"],
+      "page": 2,
+      "page_continued": 3
+    },
+    {
+      "item_number": 7,
+      "topic": "antibiotic resistance / holistic approaches",
+      "stimulus_present": true,
+      "claim_count": 0,
+      "has_full_breakdown": false,
+      "role_tags_inline": false,
+      "page": 3,
+      "anomaly": "Stimulus only; no numbered claim breakdown follows. Excluded from partition by Step 1 remediation."
+    },
+    {
+      "item_number": 8,
+      "topic": "universal healthcare / financial burden",
+      "stimulus_present": true,
+      "claim_count": 5,
+      "has_full_breakdown": true,
+      "role_tags_inline": true,
+      "role_tag_examples": ["(Opposing viewpoint)", "(Supporting premise)", "(Premise 1)", "(Premise 2)", "(Main conclusion)"],
+      "page": 3
+    },
+    {
+      "item_number": 9,
+      "topic": "Michael Jordan vs LeBron James / basketball GOAT",
+      "stimulus_present": true,
+      "claim_count": 5,
+      "has_full_breakdown": true,
+      "role_tags_inline": true,
+      "role_tag_examples": ["(Background Information)", "(Opposing Viewpoint)", "(Intermediate Conclusion)", "(Supporting Premise for Intermediate Conclusion)", "(Main Conclusion)"],
+      "page": 4,
+      "note": "Strong intermediate-conclusion structure. Strong T7 (IC trap) target."
+    }
+  ],
+  "totals": {
+    "numbered_items_present": 8,
+    "items_with_full_breakdown": 7,
+    "items_with_inline_role_tags": 3,
+    "item_1_present": false,
+    "item_1_anomaly": "Item 1 is not in this answer key file. Likely lives in the question-side file Homework/Argument parts exercise (1).pdf or is presented as a teaching example outside the numbered set."
+  }
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "id": "NT-FABS",
+    "name": "FABS",
+    "what": "Premise/support indicator quartet — For, After all, Because, Since. When you see one, what comes after it is evidence; the conclusion is right next door.",
+    "where": [
+      "MC-REF-2.C",
+      "MC-LSN-1.3",
+      "MC-LSN-1.10"
+    ],
+    "source": "Notes/main_conclusion_role_merged_note.pdf (S) + Notes/Indicator word list .pdf (A)"
+  },
+  {
+    "id": "NT-2-Part-Conclusion-Check",
+    "name": "2-Part Conclusion Check",
+    "what": "Verification protocol. (1) Sounds like the author's opinion? (2) Supported by at least one explicit claim? Both must be yes. The one tool that doesn't lie.",
+    "where": [
+      "MC-REF-2.B",
+      "MC-LSN-1.11",
+      "MC-REF-2.J"
+    ],
+    "source": "Notes/Main conclusion (recap)_dup1.pdf (S) + Notes/Main Conclusion Synopsis.pdf (S)"
+  },
+  {
+    "id": "NT-Upside-Down-Argument",
+    "name": "Upside Down Argument",
+    "what": "The LSAT pattern of putting the conclusion before its support — vs school's 'conclusion goes last' rule. In more than 90% of Main Conclusion questions, the conclusion is NOT the final claim.",
+    "where": [
+      "MC-LSN-1.4"
+    ],
+    "source": "Notes/Main Conclusion Synopsis.pdf (S)"
+  },
+  {
+    "id": "NT-Trojan-Horse-Concession",
+    "name": "Trojan Horse Concession",
+    "what": "Concessions look like agreement but are setting up the rebuttal. Words like granted / although / while / despite signal the author is about to step back briefly and then push forward harder.",
+    "where": [
+      "MC-LSN-1.8",
+      "MC-REF-2.I"
+    ],
+    "source": "argumentslr prototype framing + Joshua's concession content (Argument Core & Periph.pdf, A)"
+  },
+  {
+    "id": "NT-Pre-Phrase-Goal",
+    "name": "Pre-Phrase Goal",
+    "what": "Pronoun-replacement protocol. Replace 'such laws' / 'this position' / 'they' with the actual reference language before stating the conclusion to yourself. Then compare to answer choices.",
+    "where": [
+      "MC-LSN-1.10",
+      "MC-REF-2.H",
+      "MC-DRL-3.7"
+    ],
+    "source": "Notes/Main Conclusion Synopsis.pdf (S)"
+  },
+  {
+    "id": "NT-Skeptic-Ear-Check",
+    "name": "Skeptic's Ear Check",
+    "what": "R&R prompt — 'What's the simplest question or challenge to this statement?' — asked after each rephrase.",
+    "where": [
+      "MC-DRL-3.8"
+    ],
+    "source": "Homework/R&R Drill Stage 2 Instructions (1).pdf (S)"
+  },
+  {
+    "id": "NT-Stegosaurus-Interrogation",
+    "name": "Stegosaurus Interrogation",
+    "what": "Diagnostic technique for telling premises, conclusions, and intermediate conclusions apart by asking 'How do I know that?' If the answer is 'because of this other sentence' you've found support.",
+    "where": [
+      "MC-LSN-1.7",
+      "MC-DRL-3.5"
+    ],
+    "source": "Notes/Intermediate conclusion and Hybrid argument notes _dup1.docx (S)"
+  },
+  {
+    "id": "NT-Indicator-Vault",
+    "name": "Indicator Vault",
+    "what": "The 6-category color-coded lookup for indicator words. Conclusion / Premise (FABS) / Pivot / Opinion / Opposing / Concession. Memorize them. Tattoo them if you have to.",
+    "where": [
+      "MC-REF-2.A"
+    ],
+    "source": "Naming new for build (lifted from MC Companion's UI label) + Notes/Indicator word list .pdf (A)"
+  },
+  {
+    "id": "NT-Coach-Note",
+    "name": "Coach's Note",
+    "what": "Per-question explanation card. Three parts: Structure map · Core move · Per-answer audit (each wrong answer tagged with a one-word verdict — 'Too strong' / 'Stay narrow' / 'Out of scope').",
+    "where": [
+      "MC-SIM-4.5"
+    ],
+    "source": "Notes/_scan_Main conclusion part 1.pdf + part 2.pdf (S, masterclass) + argumentslr framing"
+  },
+  {
+    "id": "NT-R-R-Drill",
+    "name": "R&R Drill (Read & Restate)",
+    "what": "Methodology — read piece, cover, rephrase from memory, Skeptic's Ear Check, cumulative recall, full recollection. Desktop with live mic; mobile = text-only fallback in v1.",
+    "where": [
+      "MC-DRL-3.8"
+    ],
+    "source": "Homework/R&R Drill Stage 2 Instructions (1).pdf (S)"
+  },
+  {
+    "id": "NT-X-Ray-Scan",
+    "name": "X-Ray Scan",
+    "what": "Toggle reveal of role colors over a quote/stimulus block. Premise/conclusion/opposing/indicator highlighted by --role-* tokens.",
+    "where": [
+      "MC-DRL-3.2",
+      "MC-LSN-1.1 through 1.8 quote blocks",
+      "MC-SIM-4.5"
+    ],
+    "source": "logicalreasoningfoundation.netlify.app prototype (S codebase)"
+  },
+  {
+    "id": "NT-Trap-Master",
+    "name": "Trap Master",
+    "what": "The 7-trait diagnostic system. Every wrong answer in the Simulator is tagged with one of the 7 traits — surfacing which traps a student keeps falling for.",
+    "where": [
+      "MC-SIM-4.3",
+      "MC-DIA-6.3"
+    ],
+    "source": "Notes/Advanced- MP Question Traps_dup1.docx (A) + masterclass workbooks (S)"
+  },
+  {
+    "id": "NT-Stage-Gate-Tracker",
+    "name": "Stage-Gate Tracker",
+    "what": "Universal drill wrapper. 4 stages × 5 questions, score 4/5 to unlock next, auto-save, PDF export. Drill 3.4 completion gates the Module 4 Simulator.",
+    "where": [
+      "MC-DRL-3.4 (and applied to all Module 3 drills as universal frame)",
+      "MC-DIA-6.2"
+    ],
+    "source": "mainconclusionrebuttalvsfirst.netlify.app (S codebase, lifted verbatim)"
+  },
+  {
+    "id": "NT-Pronoun-Reference-Library",
+    "name": "Pronoun & Reference Library",
+    "what": "The list of words to scan for in candidate conclusions: this / that / they / such / these / those / this position / such laws / etc. Replace before saying the conclusion.",
+    "where": [
+      "MC-REF-2.H"
+    ],
+    "source": "New naming for content from Notes/Main Conclusion Synopsis.pdf (S) + role_merged.pdf (S)"
+  },
+  {
+    "id": "NT-Concession-Decoder",
+    "name": "Concession Decoder",
+    "what": "Structural reveal: Concession → Pivot → Author's claim → Support. When the author appears to grant ground, brace — the actual claim follows the pivot.",
+    "where": [
+      "MC-REF-2.I"
+    ],
+    "source": "New naming for content from Notes/Argument Core & Periph_dup1.pdf (A) + Indicator word list .pdf (A)"
+  }
+]

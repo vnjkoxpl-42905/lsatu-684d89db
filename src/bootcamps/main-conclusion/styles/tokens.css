@@ -1,0 +1,93 @@
+/*
+ * Design tokens — locked at Gate 3 per docs/architecture-plan.md §3.1 (referenced
+ * from spec.html §3.1.1). Color values stored as `R G B` triplets so Tailwind
+ * `<alpha-value>` slots compose cleanly (see tailwind.config.ts).
+ *
+ * Voice-to-typography rule (Gate 1 + spec §3.1.2):
+ *   Register 2 (whimsical) → serif. Register 1 (decisive) → sans + mono callouts.
+ *   Lessons module reads in serif (--t-body-prose); Reference + Simulator audits in sans/mono.
+ *
+ * Aspiring Attorneys gold (#E8D08B) is the *only* warm-accent color in v1.
+ * Dark-mode-only for v1 (G1.7); tokens are role-based for future light-mode swap.
+ */
+
+:root {
+  /* Brand */
+  --accent: 232 208 139;          /* #E8D08B — Aspiring Gold */
+  --accent-hover: 242 223 154;    /* #F2DF9A */
+  --accent-deep: 197 160 89;      /* #C5A059 */
+  --accent-dim: 232 208 139;      /* used at low alpha for chip backgrounds */
+
+  /* Surfaces (dark-mode default) */
+  --bg: 5 7 10;                    /* #05070a */
+  --bg-2: 11 17 32;                /* #0b1120 */
+  --surface: 18 21 30;             /* #12151e */
+  --surface-elev: 26 30 43;        /* #1a1e2b */
+  --border: 255 255 255;           /* used at 0.08 alpha */
+
+  /* Ink */
+  --ink: 241 245 249;              /* #f1f5f9 — high-contrast text */
+  --ink-soft: 203 213 225;         /* #cbd5e1 */
+  --ink-faint: 148 163 184;        /* #94a3b8 */
+
+  /* Argument-structure roles (spec §3.1.1 — locked) */
+  --role-conclusion: 16 185 129;   /* #10b981 green */
+  --role-premise: 96 165 250;      /* #60a5fa blue */
+  --role-pivot: 249 115 22;        /* #f97316 orange */
+  --role-opposing: 168 85 247;     /* #a855f7 purple */
+  --role-concession: 250 204 21;   /* #facc15 yellow */
+  --role-background: 148 163 184;  /* #94a3b8 slate */
+
+  /* Semantic / state */
+  --success: 16 185 129;
+  --warn: 250 204 21;
+  --error: 239 68 68;              /* #ef4444 */
+  --info: 56 189 248;              /* #38bdf8 */
+
+  /* Type scale (mirrored in tailwind.config.ts as fontSize tokens) */
+  --t-display: 36px;
+  --t-h1: 28px;
+  --t-h2: 21px;
+  --t-h3: 17px;
+  --t-body: 14px;
+  --t-body-prose: 15px;
+  --t-small: 12.5px;
+  --t-mono: 11.5px;
+  --t-label: 10.5px;
+
+  /* Spacing (4px base; mirrored in tailwind.config.ts) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Radius */
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-5: 14px;
+  --r-8: 24px;
+  --r-full: 9999px;
+
+  /* Motion (150-220ms, eased; no spring; respect prefers-reduced-motion) */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-fast: 150ms;
+  --d-mid: 180ms;
+  --d-slow: 220ms;
+
+  /* Shadow elevations */
+  --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --shadow-3: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-fast: 0ms;
+    --d-mid: 0ms;
+    --d-slow: 0ms;
+  }
+}

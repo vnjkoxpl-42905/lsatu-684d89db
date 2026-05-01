@@ -1,0 +1,1255 @@
+{
+  "generator_version": "0.1.0-gate4-step3",
+  "generated_at": "2026-05-01T04:51:35.782Z",
+  "entries": [
+    {
+      "id": "NT-FABS",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.763Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-2-Part-Conclusion-Check",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.763Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Upside-Down-Argument",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.763Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Trojan-Horse-Concession",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.763Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Pre-Phrase-Goal",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Skeptic-Ear-Check",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Stegosaurus-Interrogation",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Indicator-Vault",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Coach-Note",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-R-R-Drill",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-X-Ray-Scan",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Trap-Master",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Stage-Gate-Tracker",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Pronoun-Reference-Library",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.764Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "NT-Concession-Decoder",
+      "kind": "named-tool",
+      "source_paths": [
+        "src/content/named-tools.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/named-tools.source.ts": "7aee7e73c27bccaf"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/named-tools.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-conclusion",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-premise-FABS",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-pivot",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-opinion",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-opposing",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "IND-concession",
+      "kind": "indicator",
+      "source_paths": [
+        "src/content/indicators.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/indicators.source.ts": "2f9ed54d86d6c453"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/indicator-vault.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T1",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T2",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T3",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.765Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T4",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T5",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T6",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "T7",
+      "kind": "trap",
+      "source_paths": [
+        "src/content/traps.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/traps.source.ts": "836571c534d3964b"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/traps.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.A",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.B",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.C",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.766Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.D",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.767Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.E",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.767Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.F",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.767Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.G",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.767Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.H",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.767Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.I",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.768Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.J",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.768Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-REF-2.K",
+      "kind": "reference",
+      "source_paths": [
+        "src/content/references.source.ts"
+      ],
+      "source_hashes": {
+        "src/content/references.source.ts": "23b3771f8b24e4a9"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.768Z",
+      "output_path": "src/data/references.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q1",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.768Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q2",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.769Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q3",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.769Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q4",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.769Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q5",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.769Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q6",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.770Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q7",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.770Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q8",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.770Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q9",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.770Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q10",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.771Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q11",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.771Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q12",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.771Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q13",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.772Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q14",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.772Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q15",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.772Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q16",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.772Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q17",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.773Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q18",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.773Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q19",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.773Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-SIM-Q20",
+      "kind": "simulator-question",
+      "source_paths": [
+        "src/content/simulator.source.ts",
+        "src/data/mcfirst.extracted.json"
+      ],
+      "source_hashes": {
+        "src/content/simulator.source.ts": "2472746c0892b519",
+        "src/data/mcfirst.extracted.json": "6f31fe2a26403290"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.773Z",
+      "output_path": "src/data/simulator.generated.json",
+      "parity_status": "imported"
+    },
+    {
+      "id": "MC-LSN-1.1",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.776Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.2",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.776Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.3",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.776Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.4",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.777Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.5",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.777Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.6",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.777Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.7",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.778Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.8",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.778Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.9",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.778Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.10",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.778Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.11",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.779Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-LSN-1.12",
+      "kind": "lesson",
+      "source_paths": [
+        "src/data/lessons.generated.json (hand-authored)"
+      ],
+      "source_hashes": {
+        "src/data/lessons.generated.json": "d4c8a4660f804abd"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.779Z",
+      "output_path": "src/data/lessons.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q1",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q2",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q3",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q4",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q5",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q6",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.780Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q7",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.781Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q8",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.781Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q9",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.781Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M1-Q10",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.781Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M5-Q1",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.781Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M5-Q2",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.782Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M5-Q3",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.782Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M5-Q4",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.782Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    },
+    {
+      "id": "MC-CAL-M5-Q5",
+      "kind": "calibration",
+      "source_paths": [
+        "src/data/calibration.generated.json (hand-authored seed)"
+      ],
+      "source_hashes": {
+        "src/data/calibration.generated.json": "e7fa3347387fe86f"
+      },
+      "importer_version": "0.1.0-gate4-step3",
+      "generated_at": "2026-05-01T04:51:35.782Z",
+      "output_path": "src/data/calibration.generated.json",
+      "parity_status": "parity-verified"
+    }
+  ],
+  "parity_check_summary": {
+    "lessons_verified": 12,
+    "verbatim_assets_verified": 25,
+    "drift_warnings": []
+  }
+}
