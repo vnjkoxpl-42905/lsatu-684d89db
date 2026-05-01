@@ -43,7 +43,7 @@ export function ReferenceIndex() {
           {sections.map((s) => (
             <li key={s.id}>
               <Link
-                to={s.route}
+                to={`/bootcamp/structure${s.route}`}
                 className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-3"
               >
                 <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors duration-150">
@@ -68,7 +68,7 @@ export function ReferenceIndex() {
           {tools.map((t) => (
             <li key={t.id} className="flex items-baseline gap-3">
               <Link
-                to={`/reference/named-tools/${t.id}`}
+                to={`/bootcamp/structure/reference/named-tools/${t.id}`}
                 className="font-mc-serif text-body-prose text-mc-accent hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-2"
               >
                 {t.name}
