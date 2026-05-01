@@ -15,6 +15,8 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { RoleLabeler } from '@/bootcamps/main-conclusion/components/role-labeler/RoleLabeler';
+import { IndicatorTagger } from '@/bootcamps/main-conclusion/components/indicator-tagger/IndicatorTagger';
+import { ConclusionPicker } from '@/bootcamps/main-conclusion/components/conclusion-picker/ConclusionPicker';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { Phase, Role } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 
@@ -320,13 +322,30 @@ function PhaseBody({
               {phase.prompt}
             </p>
           </Card>
-          <RoleLabeler
-            key={`attempt-${phaseIndex}`}
-            segments={phase.task.segments}
-            allowedRoles={phase.task.allowedRoles}
-            rationale={phase.task.rationale}
-            onComplete={() => onAttemptComplete()}
-          />
+          {phase.task.kind === 'role-label' ? (
+            <RoleLabeler
+              key={`attempt-${phaseIndex}-rl`}
+              segments={phase.task.segments}
+              allowedRoles={phase.task.allowedRoles}
+              rationale={phase.task.rationale}
+              onComplete={() => onAttemptComplete()}
+            />
+          ) : phase.task.kind === 'indicator-tag' ? (
+            <IndicatorTagger
+              key={`attempt-${phaseIndex}-it`}
+              sentence={phase.task.sentence}
+              targets={phase.task.targets}
+              allowedCategories={phase.task.allowedCategories}
+              onComplete={() => onAttemptComplete()}
+            />
+          ) : (
+            <ConclusionPicker
+              key={`attempt-${phaseIndex}-cp`}
+              stimulus={phase.task.stimulus}
+              candidates={phase.task.candidates}
+              onComplete={() => onAttemptComplete()}
+            />
+          )}
         </div>
       );
 

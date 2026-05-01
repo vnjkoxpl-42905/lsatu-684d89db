@@ -27,14 +27,27 @@ describe('phased lessons', () => {
     }
   });
 
-  it('every attempt phase has rationale for every segment', () => {
+  it('every attempt phase has complete rationale for every choice', () => {
     for (const lesson of Object.values(PHASED_LESSONS)) {
       const attempt = lesson.phases.find((p): p is Extract<Phase, { kind: 'attempt' }> => p.kind === 'attempt');
       expect(attempt).toBeDefined();
       if (!attempt) continue;
-      for (const seg of attempt.task.segments) {
-        expect(attempt.task.rationale[seg.id]).toBeTruthy();
-        expect(attempt.task.allowedRoles).toContain(seg.correct);
+      const t = attempt.task;
+      if (t.kind === 'role-label') {
+        for (const seg of t.segments) {
+          expect(t.rationale[seg.id]).toBeTruthy();
+          expect(t.allowedRoles).toContain(seg.correct);
+        }
+      } else if (t.kind === 'indicator-tag') {
+        for (const tgt of t.targets) {
+          expect(tgt.rationale).toBeTruthy();
+          expect(t.allowedCategories).toContain(tgt.correct);
+          expect(t.sentence).toContain(tgt.word);
+        }
+      } else if (t.kind === 'conclusion-pick') {
+        const mainCount = t.candidates.filter((c) => c.is_main).length;
+        expect(mainCount).toBe(1);
+        for (const c of t.candidates) expect(c.rationale).toBeTruthy();
       }
     }
   });
@@ -60,8 +73,16 @@ describe('phased lessons', () => {
         }
         if (p.kind === 'attempt') {
           visible.push(p.title, p.prompt);
-          for (const s of p.task.segments) visible.push(s.text);
-          for (const r of Object.values(p.task.rationale)) visible.push(r);
+          if (p.task.kind === 'role-label') {
+            for (const s of p.task.segments) visible.push(s.text);
+            for (const r of Object.values(p.task.rationale)) visible.push(r);
+          } else if (p.task.kind === 'indicator-tag') {
+            visible.push(p.task.sentence);
+            for (const tgt of p.task.targets) visible.push(tgt.word, tgt.rationale);
+          } else if (p.task.kind === 'conclusion-pick') {
+            visible.push(p.task.stimulus);
+            for (const c of p.task.candidates) visible.push(c.text, c.rationale);
+          }
         }
         if (p.kind === 'reveal') visible.push(p.title, p.body);
         if (p.kind === 'coach') {
