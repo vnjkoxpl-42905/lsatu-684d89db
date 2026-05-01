@@ -23,7 +23,7 @@ import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
 import Abstraction from "./pages/Abstraction";
-import Structure from "./pages/Structure";
+
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import MainConclusionBootcamp from "./pages/MainConclusionBootcamp";
