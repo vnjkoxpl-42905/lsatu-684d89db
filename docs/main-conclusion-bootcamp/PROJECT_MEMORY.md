@@ -10,7 +10,7 @@
 - **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
 - **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
 - **Last updated**: 2026-05-01
-- **Last action**: Drill 3.1–3.4 Stage 2 content authored (additive, Rule 16); promotion runbook pre-staged at `promotion-runbook.md`.
+- **Last action**: JOSHUA OVERRIDE detected — Lovable editor reverted bridge route; v2 surface unwired. Drill 3.1–3.4 Stage 2 + promotion runbook landed earlier in session (PR #28 squash-merged), but the rendering surface no longer exists. Awaiting clarification: soft pause vs soft rollback.
 
 ---
 
@@ -305,6 +305,27 @@ These are general rules surfaced during this build that should apply to every fu
 **Source:** Joshua chat directive. **Authoritative.** APPROVED with constraint:
 - Author 10 M1.13 calibration items + 5 M5.8 items into `src/data/calibration.generated.json` NOW (while M1 voice is fresh; trait-tag proposals locked while voice in mind).
 - **DO NOT build Capstone.tsx page yet.** Wait until M1 batch review locks voice; then ship the page in one pass against locked content. Reduces rework risk.
+
+### JOSHUA OVERRIDE — 2026-05-01 (Lovable editor: bridge route reverted; v2 surface unwired)
+
+**Source:** Lovable editor commits `9b35eb8` / `163be27` / `6954151` / `be79274` (2026-05-01 08:45-08:47 UTC, gpt-engineer-app[bot] co-authored vnjkoxpl-42905). Commit message on the merge: **"Fixed structure bootcamp route"**. **Authoritative.**
+
+**What changed:**
+- `src/App.tsx`: removed `MainConclusionBootcamp` import; `/bootcamp/structure` now mounts old `Structure.tsx` (live 8-module bootcamp); `/bootcamp/structure-v2` and `/bootcamp/structure-v2/*` now redirect to `/bootcamp/structure`.
+- `src/pages/Bootcamps.tsx`: removed the "Structure (Preview)" v2 card; existing card relabeled "Structure" pointing at `/bootcamp/structure` (old 8-module description restored).
+- Net effect: the entire Main Conclusion bootcamp at `src/bootcamps/main-conclusion/` (105 files) + `src/pages/MainConclusionBootcamp.tsx` is orphaned from the route table. Source files are preserved; routes are gone.
+
+**Conflicts surfaced (per Rule 14):**
+- `BRIDGE_HANDOFF.md` "Final state at handoff" table is stale.
+- `gate-5-audit.md` Phase I sign-off has no live surface to walk.
+- `promotion-runbook.md` (pre-staged earlier today) is now obsolete — nothing to promote.
+- Drill 3.1–3.4 Stage 2 content shipped in PR #28 (commit `7c9ff13`) is orphaned source; the route to render it does not exist on main.
+
+**Disposition:** AWAITING JOSHUA CLARIFICATION. Two interpretations:
+1. Soft pause — keep v2 source; rewire later.
+2. Soft rollback — archive/remove v2 source.
+
+Until clarified: no further drill content authoring, no docs that assume the v2 route is live. Stage 2 content remains in source but is currently unreachable.
 
 ### JOSHUA DIRECTIVE — 2026-05-01 (Pickup: Rec #1 + Rec #2 both greenlit on serene-yeti plan)
 
