@@ -4,12 +4,14 @@
  */
 
 import { Link, useParams } from 'react-router-dom';
+import { ArrowRight, Award } from 'lucide-react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ClusterDecomposer, type ClusterSentence } from '@/bootcamps/main-conclusion/components/cluster-decomposer/ClusterDecomposer';
 import { HARD_SECTIONS, type Block, type HardSection } from '@/bootcamps/main-conclusion/content/hard-sentences.source';
+import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const CAPSTONE: { id: string; number: string; title: string; route: string } = {
   id: 'MC-HS-5.8',
@@ -21,32 +23,79 @@ const CAPSTONE: { id: string; number: string; title: string; route: string } = {
 export function HardSentencesIndex() {
   const all: Array<HardSection | typeof CAPSTONE> = [...HARD_SECTIONS, CAPSTONE];
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto">
-      <header className="mb-6">
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Module 5</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Hard Sentences</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-3">
-          The cluster-sentence decomposer. Specifier chains. The Alex/Jordan walkthrough.
-        </p>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+      <header className="relative isolate mb-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+        />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+            />
+            Module 5
+          </div>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
+            Hard Sentences
+          </h1>
+          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
+            The cluster-sentence decomposer. Specifier chains. The Alex/Jordan walkthrough.
+          </p>
+        </div>
       </header>
       <ul className="grid gap-3">
-        {all.map((s) => (
-          <li key={s.id}>
-            <Link to={s.route} className="block">
-              <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-mc-mono text-mono text-ink-faint">{s.id}</div>
-                    <h3 className="font-mc-serif text-h3 font-semibold mt-1">
-                      {s.number} · {s.title}
-                    </h3>
+        {all.map((s) => {
+          const isCapstone = s.id === CAPSTONE.id;
+          return (
+            <li key={s.id}>
+              <Link
+                to={s.route}
+                className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+              >
+                <Card variant="surface" interactive accent={isCapstone}>
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={cn(
+                        'shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full font-mc-mono text-body font-semibold',
+                        isCapstone
+                          ? 'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-mid)] shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.10)]'
+                          : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
+                      )}
+                    >
+                      {isCapstone ? <Award className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" /> : s.number}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="font-mc-mono text-mono text-ink-faint">{s.id}</span>
+                        {isCapstone ? (
+                          <Badge tone="accent" dot>
+                            capstone · 5 calibration items
+                          </Badge>
+                        ) : null}
+                      </div>
+                      <h3
+                        className={cn(
+                          'font-mc-serif text-h3 font-semibold mt-1 leading-tight',
+                          'transition-colors duration-150 ease-eased',
+                          'text-ink group-hover:text-mc-accent',
+                        )}
+                      >
+                        {s.number} · {s.title}
+                      </h3>
+                    </div>
+                    <ArrowRight
+                      className="shrink-0 h-4 w-4 text-ink-faint transition-all duration-220 ease-eased group-hover:text-mc-accent group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
                   </div>
-                  {s.id === CAPSTONE.id ? <Badge tone="accent">capstone</Badge> : null}
-                </div>
-              </Card>
-            </Link>
-          </li>
-        ))}
+                </Card>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </article>
   );

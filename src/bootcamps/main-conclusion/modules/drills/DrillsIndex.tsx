@@ -4,8 +4,10 @@
  */
 
 import { Link } from 'react-router-dom';
+import { ArrowRight, Zap } from 'lucide-react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
+import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 interface DrillRow {
   id: string;
@@ -24,34 +26,82 @@ export const DRILLS: DrillRow[] = [
   { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping', route: '/drills/3.5', blurb: 'Premise → intermediate conclusion → main conclusion. Map the chain.' },
   { id: 'MC-DRL-3.6', number: '3.6', title: 'Design the Conclusion', route: '/drills/3.6', blurb: 'Whimsical premise pair. Design a valid conclusion and an invalid one.' },
   { id: 'MC-DRL-3.7', number: '3.7', title: 'Pronoun Replacement', route: '/drills/3.7', blurb: 'Replace this/that/such/those before stating the conclusion to yourself.' },
-  { id: 'MC-DRL-3.8', number: '3.8', title: 'R&R Drill (Read & Restate)', route: '/drills/3.8', blurb: 'Read piece, cover, rephrase. Skeptic’s Ear Check between stages.' },
+  { id: 'MC-DRL-3.8', number: '3.8', title: 'R&R Drill (Read & Restate)', route: '/drills/3.8', blurb: "Read piece, cover, rephrase. Skeptic’s Ear Check between stages." },
   { id: 'MC-DRL-3.9', number: '3.9', title: 'Nested Claims', route: '/drills/3.9', blurb: 'Multi-conclusion stimuli. Find the main one.' },
 ];
 
 export function DrillsIndex() {
   return (
-    <article className="px-6 py-10 max-w-3xl mx-auto">
-      <header className="mb-6">
-        <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Module 3</div>
-        <h1 className="font-mc-serif text-h1 font-semibold mt-1">Drills</h1>
-        <p className="font-mc-serif text-body-prose text-ink-soft mt-3">
-          Nine drills. Drill 3.4 unlocks the Simulator.
-        </p>
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+      <header className="relative isolate">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+        />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+            />
+            Module 3
+          </div>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
+            Drills
+          </h1>
+          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
+            Nine drills, stratified by mechanic. Each drill is its own Stage-Gate.{' '}
+            <span className="text-mc-accent">Drill 3.4</span> unlocks the Simulator.
+          </p>
+        </div>
       </header>
-      <ul className="grid gap-3">
+
+      <ul className="mt-10 grid gap-3">
         {DRILLS.map((d) => (
           <li key={d.id}>
-            <Link to={d.route.startsWith('/bootcamp/intro-to-lr') ? d.route : `/bootcamp/intro-to-lr${d.route}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-3">
-              <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors duration-150">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="font-mc-mono text-mono text-ink-faint">{d.id}</div>
-                    <h3 className="font-mc-serif text-h3 font-semibold mt-1">
-                      {d.number} · {d.title}
-                    </h3>
-                    <p className="font-mc-serif text-body-prose text-ink-soft mt-2">{d.blurb}</p>
+            <Link
+              to={d.route.startsWith('/bootcamp/intro-to-lr') ? d.route : `/bootcamp/intro-to-lr${d.route}`}
+              className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+            >
+              <Card variant="surface" interactive accent={d.gates_simulator}>
+                <div className="flex items-start gap-4">
+                  <div
+                    className={cn(
+                      'shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full font-mc-mono text-body font-semibold',
+                      d.gates_simulator
+                        ? 'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-mid)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]'
+                        : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
+                    )}
+                  >
+                    {d.number}
                   </div>
-                  {d.gates_simulator ? <Badge tone="accent">unlocks Simulator</Badge> : null}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="font-mc-mono text-mono text-ink-faint">{d.id}</span>
+                      {d.gates_simulator ? (
+                        <Badge tone="accent" dot pulse>
+                          <Zap className="h-3 w-3 -ml-0.5" strokeWidth={2.2} aria-hidden="true" />
+                          unlocks simulator
+                        </Badge>
+                      ) : null}
+                    </div>
+                    <h3
+                      className={cn(
+                        'font-mc-serif text-h3 font-semibold mt-1 leading-tight transition-colors duration-150 ease-eased',
+                        'text-ink group-hover:text-mc-accent',
+                      )}
+                    >
+                      {d.title}
+                    </h3>
+                    <p className="font-mc-serif text-body-prose text-ink-soft mt-2 leading-relaxed">
+                      {d.blurb}
+                    </p>
+                  </div>
+                  <ArrowRight
+                    className="shrink-0 h-4 w-4 mt-1 text-ink-faint transition-all duration-220 ease-eased group-hover:text-mc-accent group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                 </div>
               </Card>
             </Link>
