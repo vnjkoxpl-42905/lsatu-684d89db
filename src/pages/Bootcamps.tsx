@@ -36,15 +36,14 @@ const BOOTCAMPS = [
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
   {
-    id: 'structure-v2',
-    title: 'Structure (Preview)',
+    id: 'structure',
+    title: 'Structure',
     emoji: '🛠️',
     description:
-      'In active development. New end-to-end build: 12 lessons, 11 reference sections, 9 drills with Stage-Gate engine, 20-question Simulator with full Coach\'s Notes, Hard Sentences cluster decomposer, Diagnostics dashboard with SM-2 spaced repetition, AI Tutor, Cmd+K palette. Preview of work-in-progress; expect rough edges.',
-    stats: ['86 Surfaces', '6 Modules', 'Preview'],
-    route: '/bootcamp/structure-v2',
-    accentClass: 'bg-amber-500/10 border-amber-500/30',
-    badge: 'PREVIEW',
+      'Master Main Conclusion identification through 8 sequential modules: Foundations, the 2-Part Conclusion Check, FABS premise quartet, X-Ray the Structure, Argument Shapes, Trojan Horse Concession, the 7 Traps, and a Prove It simulator. Gated progression with embedded interactive checkpoints.',
+    stats: ['8 Modules', 'Gated Progression', 'Simulator'],
+    route: '/bootcamp/structure',
+    accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
 ] as const;
 

@@ -26,7 +26,7 @@ import Abstraction from "./pages/Abstraction";
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
-import MainConclusionBootcamp from "./pages/MainConclusionBootcamp";
+import Structure from "./pages/Structure";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -198,15 +198,14 @@ const App = () => {
                   <Route path="/bootcamp/causation-station" element={
                     <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/structure-v2" replace />} />
+                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/structure" replace />} />
+                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamp/structure" replace />} />
+                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamp/structure" replace />} />
                   <Route path="/bootcamp/abstraction" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
                   } />
-                  <Route path="/bootcamp/structure" element={<Navigate to="/bootcamp/structure-v2" replace />} />
-                  {/* Main Conclusion bootcamp preview (in active development).
-                      Lives parallel to /bootcamp/structure; promotion is a route swap. */}
-                  <Route path="/bootcamp/structure-v2/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionBootcamp /></ProtectedRoute>
+                  <Route path="/bootcamp/structure" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><Structure /></ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

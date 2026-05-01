@@ -1,55 +1,32 @@
+## What went wrong
 
+The previous turns confused two different pages:
 
-## Plan: hardcode Google Drive credentials + ship full picker → inbox flow
+1. **`src/pages/Structure.tsx`** — the actual updated Structure bootcamp. 8 modules: Foundations, 2-Part Check, FABS, X-Ray the Structure, Argument Shapes, Trojan Horse, 7 Traps, Prove It · Simulator. This is the one you want to keep.
+2. **`src/pages/MainConclusionBootcamp.tsx`** (mounted under `/bootcamp/structure-v2/*`) — the older Main Conclusion bootcamp, which the card on the Bootcamps page was mislabeled as "Structure (Preview)". This is what's currently rendering when you click into Structure, because `/bootcamp/structure` was redirected to `/bootcamp/structure-v2`.
 
-### Why hardcode instead of env vars
-Both values are public by design (Client ID appears in OAuth URLs; browser API keys are meant for client bundles). Security is enforced server-side by Google via origin/referrer allowlists you configure in Google Cloud Console, not by hiding the strings. This removes the manual Workspace Settings step entirely and unblocks the rest of the work.
+So you're seeing the old Main Conclusion bootcamp under what looks like a Structure URL.
 
-### Files
+## Fix
 
-**1. Edit `src/lib/googleDrive.ts`**
-Replace the `import.meta.env.VITE_GOOGLE_*` reads with hardcoded constants at the top of the file:
-```ts
-const GOOGLE_CLIENT_ID = "713853007100-eb2du7s87d926tfld7hd4h3h6ve2g7eb.apps.googleusercontent.com";
-const GOOGLE_API_KEY   = "AIzaSyCeCBNn23LhP71Jby-lhKq_4nammNqZiO4";
-```
-Drop the `placeholder` guard (no longer reachable). Picker now works immediately on `/admin/drive-files`.
+**1. `src/App.tsx`**
+- Re-import `Structure` from `./pages/Structure`.
+- Replace the redirect `/bootcamp/structure → /bootcamp/structure-v2` with a real route that renders `<Structure />` (gated by `has_bootcamp_access`).
+- Remove the `/bootcamp/structure-v2/*` route and the `MainConclusionBootcamp` import (no longer used in the bootcamps surface).
+- Update the legacy `/bootcamp/main-conclusion-role` redirect to point to `/bootcamp/structure` instead of `/bootcamp/structure-v2`.
 
-**2. DB migration — extend `message_attachments` to carry Drive references**
-- Add `kind text not null default 'storage'` (`'storage'` | `'drive'`)
-- Add `drive_file_id uuid references public.drive_files(id) on delete set null`
-- Add `web_view_link text` (denormalized — survives admin deleting the library row)
-- Make `storage_path` nullable
-- Update INSERT RLS: allow rows where either `storage_path` OR `web_view_link` is set (admin via `has_role`)
+**2. `src/pages/Bootcamps.tsx`**
+- Replace the `structure-v2` card with a single `structure` entry:
+  - id: `structure`
+  - title: `Structure`
+  - route: `/bootcamp/structure`
+  - Remove the `PREVIEW` badge and the "in active development" copy. Use accurate stats reflecting the 8-module Structure page.
 
-**3. New `src/components/inbox/DriveAttachmentPicker.tsx`**
-Admin-only Cloud icon button + popover. Lists current admin's `drive_files` rows, search filter, multi-select checkboxes, "Attach N file(s)". Empty state links to `/admin/drive-files`. Tiny helper line: "Make sure these files are shared in Drive (Anyone with link, or with each student)."
+**3. No deletions yet**
+- Leave `src/pages/MainConclusionBootcamp.tsx` and `src/bootcamps/main-conclusion/` on disk for now (they're large and may have shared assets). They simply won't be routed to. If you confirm later, we can delete them in a follow-up.
 
-**4. Edit `src/components/inbox/MessageComposer.tsx`**
-- Show Cloud button only when `permissions.is_admin` (mirrors `showPolish`)
-- Add `driveAttachments: DriveFileRow[]` state, render as removable chips
-- On send: after message insert, bulk insert `message_attachments` rows with `kind='drive'`, `drive_file_id`, `web_view_link`, `file_name`, `mime_type`, `file_size: 0`, `storage_path: null`
-- Existing PDF upload + Polish flow untouched
+## Result
 
-**5. Edit `src/components/inbox/AttachmentCard.tsx`**
-Branch on `kind`:
-- `'storage'`: existing signed-URL flow
-- `'drive'`: open `web_view_link` in new tab, render Cloud icon + "Google Drive" subtitle (no size)
-
-**6. Edit `src/hooks/useInbox.ts`**
-Extend `MessageAttachment` interface with nullable `kind`, `web_view_link`, `drive_file_id`. No query changes.
-
-### Verification
-- `/admin/drive-files`: Connect → Picker opens → select files → appear in library (works without any env-var setup)
-- `/inbox` as admin: Cloud button visible → picker lists library files → select → chips appear → Send
-- Student inbox: message shows "Google Drive" attachment card → click opens Drive in new tab
-- Existing PDF upload + Polish unchanged
-- Non-admin users do not see Cloud button
-- Deleting a `drive_files` row leaves already-sent messages intact
-
-### One-time manual prerequisite (you, ~2 min, in Google Cloud Console)
-Lock the credentials to your domains BEFORE this code goes live, otherwise anyone copying them from the bundle could rack up your Google quota:
-1. Credentials → OAuth client → Authorized JavaScript origins: add the 4 domains above
-2. Credentials → API key → Application restrictions = HTTP referrers, add the 4 domains with `/*`; API restrictions = Picker API + Drive API only
-3. Save
-
+- `/bootcamp/structure` renders the real, updated 8-module Structure bootcamp from `Structure.tsx`.
+- The Bootcamps list shows three entries: Causation Station, Abstract, Structure.
+- The old Main Conclusion content stops appearing anywhere in the bootcamp flow.
