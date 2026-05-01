@@ -86,6 +86,15 @@ Gate 3 (Architecture Plan) closed 2026-04-30. Architecture Plan at `docs/archite
 
 **Cross-cutting:** Rule 14 applied to every Joshua edit during Lesson 1.1 review. Rule 15 applied at every gate boundary or material decision point. **No production code on Modules 2–6 until Module 1 Lesson 1.1 is locked.**
 
+### G2.DRL-3.4-STAGE-3 — 2026-05-01 (Drill 3.4 Stage 3 authored)
+
+**Author:** Claude (autonomous, per Joshua "go as far as possible without my help" 2026-05-01).
+**Scope:** `DRILL_3_4_STAGE_3` array added to `src/bootcamps/main-conclusion/content/drills.source.ts` and wired into `src/bootcamps/main-conclusion/modules/drills/Drill3_4.tsx` Stage 3 slot.
+**Content:** 5 questions, balanced 3 Rebuttal + 2 First-sentence under subtle conditions (late "look closer" / "tell a different story" pivots, "granted" concession opener, recommendation/endorsement opener that reads corrective). No dominance bias — students must read structure, not surface.
+**What stays parked:** Stage 4 (canonical-20 subset) — Joshua-only per G2.DRL-3.4. Drill 3.4 is now 3/4 stages live (15/20 non-canonical questions); Stage 4 still requires Joshua to pick T1, T3, T5, T7 + wildcard from MC-SIM-Q1–Q20.
+**Verification:** Vitest 18/18 pass; tsc no errors on touched files.
+**Cleanup bundled in same commit:** 79 macOS Finder `" 2.tsx"/" 2.ts"/" 2.json"/" 2.css"` duplicate files deleted from `src/` and `scripts/` (untracked clutter, no imports referenced them).
+
 ### Pending decisions (blocking Gate 3 close)
 
 | ID | Question | Status |

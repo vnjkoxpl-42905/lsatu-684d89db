@@ -993,3 +993,56 @@ export const DRILL_3_9_QUESTIONS: NestedClaimsQuestion[] = [
     rationale: 'D is the recommendation. C is intermediate. A and B are bottom premises.',
   },
 ];
+
+// ── Drill 3.4 · Rebuttal vs First-Sentence (Stage 3 — Mixed family) ──────────
+// Balanced 3 Rebuttal + 2 First-sentence under subtle conditions: late pivots,
+// embedded concessions, recommendation openers that read corrective, and
+// corrective claims that read like flat declarations. No dominant family
+// signal — students must read the structure, not the surface.
+export const DRILL_3_4_STAGE_3: FamilyQuestion[] = [
+  {
+    id: 'D34-S3-Q1',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'The municipal bond program has performed exactly as projected: revenues are within two percent of forecast, default rates are negligible, and the rating agencies have held their position. Critics calling for a pause have nothing in the numbers to point to.',
+    family: 'First-sentence',
+    rationale:
+      'The first sentence is the claim ("performed exactly as projected"). Three lines of support follow. The closing jab at critics is decoration, not the conclusion. First-sentence family.',
+  },
+  {
+    id: 'D34-S3-Q2',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Proponents of the four-day work week point to a handful of pilot studies showing productivity gains. Look closer. Those pilots self-selected for firms already running below capacity, and once the schedule was extended to firms with normal utilization, output fell.',
+    family: 'Rebuttal',
+    rationale:
+      '"Look closer" is the pivot. The author rejects the proponents’ reading of the evidence and supports the rejection. Rebuttal family.',
+  },
+  {
+    id: 'D34-S3-Q3',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'The committee’s draft framework for AI procurement is the right starting point. It assumes risk tiers, requires red-team disclosure, and forces vendors to publish post-deployment incident data — three things every prior framework left optional.',
+    family: 'First-sentence',
+    rationale:
+      'Recommendation/endorsement first; three reasons follow. The "three things every prior framework left optional" line is comparative support, not a rebuttal. First-sentence family.',
+  },
+  {
+    id: 'D34-S3-Q4',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'Granted, the new high-speed rail corridor will not be profitable on operating revenue alone for at least a decade. That fact does not condemn the project; rail rarely pays in the early years, and the freight relief and emissions reduction are worth the bridging cost on their own.',
+    family: 'Rebuttal',
+    rationale:
+      'Concession opener → "that fact does not condemn the project" pivot → defense. Rebuttal family. (The first sentence is the conceded position, not the claim.)',
+  },
+  {
+    id: 'D34-S3-Q5',
+    prompt: 'Which family does this stimulus belong to?',
+    stimulus:
+      'A strain of skepticism running through the trade press holds that the new battery chemistry will plateau short of grid-scale viability. The third-party cell tests released this month tell a different story: cycle life and energy density both exceeded the targets the chemistry was supposed to plateau below.',
+    family: 'Rebuttal',
+    rationale:
+      'Opposing view (industry skepticism) → "tell a different story" pivot → corrective evidence. Rebuttal family.',
+  },
+];
