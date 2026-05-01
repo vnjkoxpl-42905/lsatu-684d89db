@@ -16,6 +16,10 @@ export function LockedRoute({
   children: JSX.Element;
 }): JSX.Element {
   const { progress } = useModuleProgress();
+  // Preview mode: bypass the gate so reviewers can walk every surface end-to-end.
+  // Flip BOOTCAMP_PREVIEW_OPEN to false to restore strict unlock-cascade behavior.
+  const BOOTCAMP_PREVIEW_OPEN = true;
+  if (BOOTCAMP_PREVIEW_OPEN) return children;
   if (!progress) return <></>;
   const accessible = progress.unlocked_routes.includes(routeId);
   if (accessible) return children;

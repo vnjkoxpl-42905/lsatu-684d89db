@@ -31,21 +31,51 @@ export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   },
 };
 
-/** Initial unlocks for a brand-new student. */
+/** Initial unlocks for a brand-new student.
+ *  Preview mode: every lesson, drill, reference section, and module entry point is open
+ *  so reviewers can walk the full bootcamp without completing the gate cascade.
+ */
 export const INITIAL_UNLOCKED_ROUTES: string[] = [
   '/',
+  // M1 — every lesson
   '/lessons',
-  '/lessons/1.1',
+  ...Array.from({ length: 13 }, (_, i) => `/lessons/1.${i + 1}`),
+  // M2 — every reference + named tool surface
   '/reference',
   '/reference/indicators',
   '/reference/2-part-check',
   '/reference/fabs',
-  '/reference/named-tools',
+  '/reference/stimulus-tendencies',
+  '/reference/conclusion-types',
+  '/reference/rebuttal-structure',
+  '/reference/three-traps',
+  '/reference/pronoun-library',
+  '/reference/concession-decoder',
   '/reference/quick-card',
+  '/reference/companion-mode',
+  '/reference/named-tools',
+  // M3 — every drill
   '/drills',
-  '/drills/3.1',
+  ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
+  // M4 — Simulator (still passes through LockedRoute, which is bypassed in preview)
+  '/simulator',
+  '/simulator/bank',
+  '/simulator/trap-master',
+  '/simulator/hard-mode',
+  '/simulator/answer-key-views',
+  // M5 — Hard Sentences
+  '/hard-sentences',
+  '/hard-sentences/capstone',
+  // M6 — Diagnostics
   '/diagnostics',
   '/diagnostics/philosophy',
+  '/diagnostics/dashboard',
+  '/diagnostics/recommendations',
+  '/diagnostics/rr-review',
+  '/diagnostics/trait-profile',
+  '/diagnostics/mistake-profile',
+  '/diagnostics/srs',
+  // Cross-cutting
   '/journal',
   '/settings',
 ];

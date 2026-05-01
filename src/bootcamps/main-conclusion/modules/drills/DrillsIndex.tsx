@@ -41,7 +41,7 @@ export function DrillsIndex() {
       <ul className="grid gap-3">
         {DRILLS.map((d) => (
           <li key={d.id}>
-            <Link to={d.route} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-3">
+            <Link to={d.route.startsWith('/bootcamp/structure') ? d.route : `/bootcamp/structure${d.route}`} className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-3">
               <Card variant="surface" className="hover:border-[rgb(var(--accent)/0.30)] transition-colors duration-150">
                 <div className="flex items-start justify-between gap-3">
                   <div>

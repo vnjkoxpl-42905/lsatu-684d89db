@@ -74,7 +74,7 @@ export function TraitProfile() {
                     ) : null}
                   </div>
                 </div>
-                <Link to={`/simulator/trap-master/${s.trait}`} className="font-mc-mono text-mono text-mc-accent hover:underline mt-3 inline-block">
+                <Link to={`/bootcamp/structure/simulator/trap-master/${s.trait}`} className="font-mc-mono text-mono text-mc-accent hover:underline mt-3 inline-block">
                   Read trait deep-dive →
                 </Link>
               </Card>
