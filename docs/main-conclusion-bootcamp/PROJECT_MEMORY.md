@@ -326,6 +326,15 @@ These are general rules surfaced during this build that should apply to every fu
 
 **Revert-watch armed:** if Lovable autopilot reverts the bridge a second time within 10 minutes of Lovable preview sync, Claude does NOT re-push. Surface immediately so Joshua can paste explicit Lovable prompt manually. Rule 14 acknowledgement applies to any Joshua edits during the walkthrough.
 
+### JOSHUA DIRECTIVE — 2026-05-01 (Recommendation answers: both held)
+
+**Source:** Joshua chat directive ("1. b  2.b"). **Authoritative.**
+
+- **Rec 1 (GitHub Actions test workflow): HELD** — Option B chosen. No `.github/workflows/test.yml` to be added. Tests run locally on demand; Lovable bypasses gates anyway. Revisit only if Joshua explicitly asks.
+- **Rec 2 (Drill 3.5–3.7 question expansion): HELD** — Option B chosen. Wait for M1 voice-lock walkthrough before authoring Drill 3.6 (Register 2 territory). When voice locks, expansion bundles 3.5 + 3.6 + 3.7 in one push.
+
+Both items: future sessions should NOT re-propose without new evidence (e.g. a regression Actions would have caught, or M1 voice-lock landing).
+
 ### Gate 5 additive — vitest CI verification (2026-05-01, autonomous Rule 16 after walkthrough directive)
 
 **Result:** Vitest CI is **already fully wired**. No new code needed.
