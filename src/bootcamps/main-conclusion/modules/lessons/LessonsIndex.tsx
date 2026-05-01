@@ -29,7 +29,7 @@ export function LessonsIndex(): JSX.Element {
           return (
             <li key={l.id} className="py-4">
               <Link
-                to={`/bootcamp/structure/lessons/${l.number}`}
+                to={`/bootcamp/intro-to-lr/lessons/${l.number}`}
                 className={[
                   'flex items-baseline justify-between gap-4 group',
                   unlocked ? 'hover:text-mc-accent' : 'opacity-40 cursor-not-allowed pointer-events-none',

@@ -25,7 +25,7 @@ export function Placeholder({
       {inventoryHint && (
         <p className="font-mc-mono text-mono text-ink-faint mt-4">{inventoryHint}</p>
       )}
-      <Link to="/bootcamp/structure" className="font-mc-mono text-mono text-mc-accent mt-6 inline-block">← Module index</Link>
+      <Link to="/bootcamp/intro-to-lr" className="font-mc-mono text-mono text-mc-accent mt-6 inline-block">← Module index</Link>
     </div>
   );
 }

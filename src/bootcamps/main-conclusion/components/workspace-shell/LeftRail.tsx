@@ -2,21 +2,21 @@ import { NavLink } from 'react-router-dom';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const sections: Array<{ label: string; to: string; tag: string }> = [
-  { label: 'Lessons', to: '/bootcamp/structure/lessons', tag: 'M1' },
-  { label: 'Reference', to: '/bootcamp/structure/reference', tag: 'M2' },
-  { label: 'Drills', to: '/bootcamp/structure/drills', tag: 'M3' },
-  { label: 'Simulator', to: '/bootcamp/structure/simulator', tag: 'M4' },
-  { label: 'Hard Sentences', to: '/bootcamp/structure/hard-sentences', tag: 'M5' },
-  { label: 'Diagnostics', to: '/bootcamp/structure/diagnostics', tag: 'M6' },
+  { label: 'Lessons', to: '/bootcamp/intro-to-lr/lessons', tag: 'M1' },
+  { label: 'Reference', to: '/bootcamp/intro-to-lr/reference', tag: 'M2' },
+  { label: 'Drills', to: '/bootcamp/intro-to-lr/drills', tag: 'M3' },
+  { label: 'Simulator', to: '/bootcamp/intro-to-lr/simulator', tag: 'M4' },
+  { label: 'Hard Sentences', to: '/bootcamp/intro-to-lr/hard-sentences', tag: 'M5' },
+  { label: 'Diagnostics', to: '/bootcamp/intro-to-lr/diagnostics', tag: 'M6' },
 ];
 
 export function LeftRail(): JSX.Element {
   return (
     <aside className="border-r border-[rgb(var(--border)/0.08)] bg-bg-2 phone:hidden">
       <div className="px-4 py-6">
-        <div className="font-mc-serif text-h3 font-semibold text-mc-accent">Main Conclusion</div>
+        <div className="font-mc-serif text-h3 font-semibold text-mc-accent">Intro to LR</div>
         <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint mt-1">
-          Argument Structure Bootcamp
+          Logical Reasoning Bootcamp
         </div>
       </div>
       <nav className="px-2">

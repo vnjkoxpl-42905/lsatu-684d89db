@@ -82,7 +82,7 @@ export function Drill3_4() {
           <p className="font-mc-serif text-body-prose text-ink mt-2">
             The Question Simulator is now accessible. Twenty canonical questions, seven trap traits.
           </p>
-          <Button onClick={() => navigate('/bootcamp/structure/simulator')} className="mt-3">
+          <Button onClick={() => navigate('/bootcamp/intro-to-lr/simulator')} className="mt-3">
             Go to Simulator →
           </Button>
         </Card>

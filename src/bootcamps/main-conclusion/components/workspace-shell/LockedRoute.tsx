@@ -24,12 +24,12 @@ export function LockedRoute({
   const accessible = progress.unlocked_routes.includes(routeId);
   if (accessible) return children;
   const req = ROUTE_REQUIREMENTS[routeId];
-  if (!req) return <Navigate to="/bootcamp/structure" replace />;
+  if (!req) return <Navigate to="/bootcamp/intro-to-lr" replace />;
   return (
     <LockedState
       blockedBy={req.blocker}
       unlockHint={req.hint}
-      gotoBlockerHref={`/bootcamp/structure/drills/${req.blocker.replace('MC-DRL-', '')}`}
+      gotoBlockerHref={`/bootcamp/intro-to-lr/drills/${req.blocker.replace('MC-DRL-', '')}`}
     />
   );
 }

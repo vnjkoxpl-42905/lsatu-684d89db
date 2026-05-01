@@ -3,7 +3,7 @@
  *
  * All bootcamp tokens + base rules are wrapped under `.mc-bootcamp` so they do
  * NOT leak into the rest of LSAT U. The bootcamp's outermost <div> in
- * src/pages/MainConclusionBootcamp.tsx applies className="mc-bootcamp".
+ * src/pages/IntroToLrBootcamp.tsx applies className="mc-bootcamp".
  *
  * Tailwind directives live in src/index.css (LSAT U). This file only ships
  * scoped tokens + bootcamp-specific component classes.
