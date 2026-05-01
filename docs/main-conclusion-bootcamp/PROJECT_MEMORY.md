@@ -10,7 +10,7 @@
 - **Last gate closed**: Gate 3 (Architecture Plan), 2026-04-30. Gates 4 + Phases A–H shipped autonomously per Rule 16.
 - **Next milestone**: Joshua Gate 5 walkthrough → promotion of `/bootcamp/structure-v2` → `/bootcamp/structure`
 - **Last updated**: 2026-05-01
-- **Last action**: New Main Conclusion bootcamp re-wired at `/bootcamp/structure` per Joshua's screenshot-confirmed intent. Old `Structure.tsx` no longer routed; left on disk for separate archival pass.
+- **Last action**: Drill 3.1–3.3 Stages 3 + 4 content authored (additive, Rule 16). Stale handoff docs (BRIDGE_HANDOFF.md, gate-5-audit.md, promotion-runbook.md) reconciled to current `/bootcamp/structure` state.
 
 ---
 
@@ -305,6 +305,37 @@ These are general rules surfaced during this build that should apply to every fu
 **Source:** Joshua chat directive. **Authoritative.** APPROVED with constraint:
 - Author 10 M1.13 calibration items + 5 M5.8 items into `src/data/calibration.generated.json` NOW (while M1 voice is fresh; trait-tag proposals locked while voice in mind).
 - **DO NOT build Capstone.tsx page yet.** Wait until M1 batch review locks voice; then ship the page in one pass against locked content. Reduces rework risk.
+
+### Gate 5 additive — Drill 3.1–3.3 Stages 3 + 4 content + handoff doc reconciliation (2026-05-01, autonomous Rule 16)
+
+**Deliverable A — Drill content:** `src/bootcamps/main-conclusion/content/drills.source.ts` extended with 6 new exports (5 questions each, 30 total):
+- `DRILL_3_1_STAGE_3` — mixed signals (Although / Some commentators insist / Hence / But / In my view)
+- `DRILL_3_1_STAGE_4` — speed run (Therefore / Because / Detractors say / Yet / Admittedly)
+- `DRILL_3_2_STAGE_3` — multi-claim with intermediate-conclusion temptations (refined-sugar diabetes chain, road extension chain, licensing-rule rebuttal, three-line evidence convergence, archival meeting)
+- `DRILL_3_2_STAGE_4` — speed run (2-3 sentence stimuli)
+- `DRILL_3_3_STAGE_3` — concession openers ("It is true that…", "Granted…", "While…" patterns)
+- `DRILL_3_3_STAGE_4` — speed run (two-sentence stimuli, mixed claim positions)
+
+**Module wiring:** Drill3_1.tsx through Drill3_3.tsx imports + stage definitions extended for stages 3 + 4. All four stages now wired in 3.1, 3.2, 3.3. Drill 3.4 stages 3 + 4 still placeholder (Stage 4 reserved for canonical-20 wire-up per G2.DRL-3.4).
+
+**Voice register check:** R1 throughout. All rationales decisive, single-sentence, no metaphor. Speed-run rationales further compressed to fragment-scale (e.g. "'Therefore' — conclusion marker.") to match Stage 4 cadence.
+
+**Pedagogical design notes:**
+- Stage 3 (mixed/concession) tests recognition under ambiguity; Stage 4 (speed run) tests automaticity.
+- 3.1 Stage 4 deliberately includes one "opinion" item ("In my view") in Stage 3 to teach the author-stance signal — distinct from "opposing" attribution.
+- 3.2 Stage 3 includes two genuine intermediate-conclusion chains (refined-sugar, road-extension) so students learn to traverse to the *final* claim, not stop at the chain mid-point.
+- 3.3 Stage 3 features four distinct concession surface patterns ("It is true that", "Granted", "While", and an embedded concession in a recommendation-first frame) to break any single-pattern shortcut.
+
+**Deliverable B — Doc reconciliation:**
+- `BRIDGE_HANDOFF.md`: TL;DR + route table + Final-state table all updated to reflect `/bootcamp/structure` as canonical (commit `8baf646`); v2 surface noted as legacy redirect alias.
+- `gate-5-audit.md`: header date stamp + Phase I status updated; `/simulator` references rewritten to `/bootcamp/structure/simulator`.
+- `promotion-runbook.md`: marked OBSOLETE (promotion happened in `8baf646`); preserved for historical reference + as a template for future topic-bootcamp promotions; OLD Structure.tsx archival flagged as the only outstanding follow-up.
+
+**Verification:**
+- `npx tsc --noEmit -p tsconfig.app.json` → ✓ 0 errors.
+- `npx vite build` → ✓ 139 PWA precache entries, build clean in 1m 3s.
+
+**Out of scope:** OLD Structure.tsx archival (separate cleanup pass), Drill 3.4 Stages 3 + 4 (Stage 4 reserves canonical 20 per G2.DRL-3.4), Drill 3.5–3.9 stage expansion, Phase D distractor batch (still blocked on M4 seeds).
 
 ### JOSHUA DIRECTIVE — 2026-05-01 (Re-wire: new bootcamp at /bootcamp/structure was the intent all along)
 

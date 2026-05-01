@@ -1,8 +1,10 @@
 # Promotion Runbook — `/bootcamp/structure-v2` → `/bootcamp/structure`
 
-**Status:** Pre-staged (2026-05-01). Awaits Joshua Gate 5 walkthrough sign-off + go/no-go.
-**Estimated time to execute:** ~30 minutes including post-deploy spot-check.
-**Authoritative scope:** swap the v2 preview surface into the main `/bootcamp/structure` URL and decide the disposition of the existing 8-module Structure bootcamp at `src/pages/Structure.tsx`.
+> **STATUS — OBSOLETE (2026-05-01).** The promotion happened in commit `8baf646`. The new Main Conclusion bootcamp is live at `/bootcamp/structure`; `/bootcamp/structure-v2` is a redirect alias. This runbook is preserved for historical reference and as a template for future topic-bootcamp promotions. **Do not re-execute** — the route is already where it needs to be.
+
+**Status:** OBSOLETE. Pre-staged 2026-05-01; superseded by direct push the same day.
+**Original scope:** swap the v2 preview surface into the main `/bootcamp/structure` URL and decide the disposition of the existing 8-module Structure bootcamp at `src/pages/Structure.tsx`.
+**Outstanding follow-up from this runbook:** the OLD `Structure.tsx` + `src/components/structure/**` are still on disk, no longer routed. Archival is a separate cleanup pass when Joshua greenlights it.
 
 ---
 

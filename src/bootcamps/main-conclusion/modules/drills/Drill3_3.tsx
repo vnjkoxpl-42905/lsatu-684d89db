@@ -5,7 +5,13 @@
 import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/components/stage-gate/StageGateTracker';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { DRILL_3_3_STAGE_1, DRILL_3_3_STAGE_2, type FirstSentenceQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import {
+  DRILL_3_3_STAGE_1,
+  DRILL_3_3_STAGE_2,
+  DRILL_3_3_STAGE_3,
+  DRILL_3_3_STAGE_4,
+  type FirstSentenceQuestion,
+} from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
@@ -22,8 +28,18 @@ const stages: Stage<FirstSentenceQuestion>[] = [
     hint: 'The first sentence may look like a claim — read all the way through before answering.',
     questions: DRILL_3_3_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 3, title: 'Concession openers', hint: 'Stage 3 content authors at C.10.', questions: [] },
-  { number: 4, title: 'Mixed', hint: 'Stage 4 content authors at C.10.', questions: [] },
+  {
+    number: 3,
+    title: 'Concession openers',
+    hint: 'Stimuli that begin with a concession ("Granted", "It is true that") before the actual claim.',
+    questions: DRILL_3_3_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
+  {
+    number: 4,
+    title: 'Speed run',
+    hint: 'Two-sentence stimuli. Decide quickly.',
+    questions: DRILL_3_3_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
 ];
 
 export function Drill3_3() {

@@ -1,7 +1,8 @@
 # Gate 5 — Pre-merge audit (Phase I)
 
 **Generated:** 2026-05-01
-**Status:** Awaiting Joshua walkthrough sign-off
+**Last updated:** 2026-05-01 — bootcamp now live at `/bootcamp/structure` (commit `8baf646`)
+**Status:** Awaiting Joshua walkthrough sign-off on the live `/bootcamp/structure` Lovable preview
 
 ## Phase ledger
 
@@ -45,7 +46,7 @@
 
 ### 4. Module ordering enforcement
 
-- ✓ Drill 3.4 → unlocks `/simulator/*` architecturally (not just UX-suggested)
+- ✓ Drill 3.4 → unlocks `/bootcamp/structure/simulator/*` architecturally (not just UX-suggested)
 - ✓ 7 ordering tests pass (`src/lib/__tests__/ordering.test.ts`)
 - ✓ Lessons cascade: 1.N → 1.N+1 (within M1)
 - ✓ M2 Reference + M6 Diagnostics always-accessible

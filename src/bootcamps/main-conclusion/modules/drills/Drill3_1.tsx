@@ -7,7 +7,13 @@ import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/compon
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
-import { DRILL_3_1_STAGE_1, DRILL_3_1_STAGE_2, type IndicatorIdQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import {
+  DRILL_3_1_STAGE_1,
+  DRILL_3_1_STAGE_2,
+  DRILL_3_1_STAGE_3,
+  DRILL_3_1_STAGE_4,
+  type IndicatorIdQuestion,
+} from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
@@ -24,8 +30,18 @@ const stages: Stage<IndicatorIdQuestion>[] = [
     hint: 'Read the sentence. Tap the category for the highlighted phrase.',
     questions: DRILL_3_1_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 3, title: 'Mixed signals', hint: 'Stage 3 content authors at C.10.', questions: [] },
-  { number: 4, title: 'Speed run', hint: 'Stage 4 content authors at C.10.', questions: [] },
+  {
+    number: 3,
+    title: 'Mixed signals',
+    hint: 'Sentences with multiple cues. Read the whole context before choosing.',
+    questions: DRILL_3_1_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
+  {
+    number: 4,
+    title: 'Speed run',
+    hint: 'Compressed sentences. Aim for sub-3-second decisions.',
+    questions: DRILL_3_1_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
 ];
 
 const TONE_BY_CAT: Record<string, 'conclusion' | 'premise' | 'pivot' | 'opposing' | 'concession' | 'background' | 'accent'> = {

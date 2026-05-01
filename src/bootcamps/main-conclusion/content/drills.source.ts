@@ -499,6 +499,312 @@ export const DRILL_3_4_STAGE_2: FamilyQuestion[] = [
   },
 ];
 
+// ── Drill 3.1 · Indicator Word ID (Stage 3 — mixed signals) ──────────────────
+// Tests recognition when multiple indicator-class words appear in the same sentence
+// or when an opener mimics one role while playing another.
+export const DRILL_3_1_STAGE_3: IndicatorIdQuestion[] = [
+  {
+    id: 'D31-S3-Q1',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Although the program had setbacks in its first year, its second-year metrics now exceed forecast.',
+    highlighted_word: 'Although',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'concession',
+    rationale: '"Although" is a concession opener — the author briefly grants the setback before pivoting to the favorable metric.',
+  },
+  {
+    id: 'D31-S3-Q2',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Some commentators insist the policy works. The post-rollout data flatly contradicts them.',
+    highlighted_word: 'Some commentators insist',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'opposing',
+    rationale: '"Some commentators insist" attributes the claim to others — opposing view, not the author’s.',
+  },
+  {
+    id: 'D31-S3-Q3',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'The bridge inspection logs document fifteen failures over five years. Hence, the structure should be condemned.',
+    highlighted_word: 'Hence',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'conclusion',
+    rationale: '"Hence" is a conclusion marker — the recommendation follows directly from the logged failures.',
+  },
+  {
+    id: 'D31-S3-Q4',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'Some say the policy is a waste. But the policy has saved the city six million in audit fees.',
+    highlighted_word: 'But',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'pivot',
+    rationale: '"But" pivots from the opposing view to the author’s defense of the policy.',
+  },
+  {
+    id: 'D31-S3-Q5',
+    prompt: 'Which category does the highlighted phrase belong to?',
+    text: 'In my view, the proposal trades short-term savings for long-term structural risk.',
+    highlighted_word: 'In my view',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'opinion',
+    rationale: '"In my view" flags the author’s own stance — opinion, not opposing.',
+  },
+];
+
+// ── Drill 3.1 · Indicator Word ID (Stage 4 — speed run) ──────────────────────
+// Compressed stimuli, single-clause sentences. Built for sub-3-second decisions.
+export const DRILL_3_1_STAGE_4: IndicatorIdQuestion[] = [
+  {
+    id: 'D31-S4-Q1',
+    prompt: 'Category?',
+    text: 'Therefore, the audit findings should be reopened.',
+    highlighted_word: 'Therefore',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'conclusion',
+    rationale: '"Therefore" — conclusion marker.',
+  },
+  {
+    id: 'D31-S4-Q2',
+    prompt: 'Category?',
+    text: 'Because the trial sample was self-selected, the result generalizes poorly.',
+    highlighted_word: 'Because',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'premise',
+    rationale: '"Because" — support marker.',
+  },
+  {
+    id: 'D31-S4-Q3',
+    prompt: 'Category?',
+    text: 'Detractors say the rule is unworkable. They are wrong.',
+    highlighted_word: 'Detractors say',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'opposing',
+    rationale: '"Detractors say" — opposing-view attribution.',
+  },
+  {
+    id: 'D31-S4-Q4',
+    prompt: 'Category?',
+    text: 'Yet the underlying problem remains.',
+    highlighted_word: 'Yet',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'pivot',
+    rationale: '"Yet" — pivot.',
+  },
+  {
+    id: 'D31-S4-Q5',
+    prompt: 'Category?',
+    text: 'Admittedly, the proposal carries political risk; even so, the program is essential.',
+    highlighted_word: 'Admittedly',
+    category_options: ['conclusion', 'premise', 'pivot', 'concession', 'opposing', 'opinion'],
+    correct_category: 'concession',
+    rationale: '"Admittedly" — concession.',
+  },
+];
+
+// ── Drill 3.2 · X-Ray Drill (Stage 3 — multi-claim with intermediate) ────────
+export const DRILL_3_2_STAGE_3: XRayQuestion[] = [
+  {
+    id: 'D32-S3-Q1',
+    prompt: 'Which sentence is the main conclusion?',
+    stimulus:
+      'A diet high in refined sugar can make a person overweight. Being overweight predisposes a person to adult-onset diabetes. So it is inaccurate to say that refined sugar cannot cause adult-onset diabetes.',
+    candidates: [
+      { letter: 'A', text: 'A diet high in refined sugar can make a person overweight.', is_correct: false },
+      { letter: 'B', text: 'Being overweight predisposes a person to adult-onset diabetes.', is_correct: false },
+      { letter: 'C', text: 'It is inaccurate to say that refined sugar cannot cause adult-onset diabetes.', is_correct: true },
+    ],
+    rationale: 'A and B chain into B; C is the rebuttal claim the chain supports. C is the main conclusion.',
+  },
+  {
+    id: 'D32-S3-Q2',
+    prompt: 'Which sentence is the main conclusion?',
+    stimulus:
+      'The proposed road extension would cut commute times by 15 minutes per traveler. Reduced commutes correlate with higher productivity. Higher productivity benefits regional employers. Hence the extension should be approved.',
+    candidates: [
+      { letter: 'A', text: 'The proposed road extension would cut commute times by 15 minutes per traveler.', is_correct: false },
+      { letter: 'B', text: 'Reduced commutes correlate with higher productivity.', is_correct: false },
+      { letter: 'C', text: 'Higher productivity benefits regional employers.', is_correct: false },
+      { letter: 'D', text: 'The extension should be approved.', is_correct: true },
+    ],
+    rationale: 'A → B → C is the support chain. D is the recommendation the chain serves.',
+  },
+  {
+    id: 'D32-S3-Q3',
+    prompt: 'Which sentence is the main conclusion?',
+    stimulus:
+      'Critics argue the new licensing rule is overreach. The rule does not change who can practice — it only standardizes how malpractice claims are reported. So the criticism misreads the rule’s scope.',
+    candidates: [
+      { letter: 'A', text: 'Critics argue the new licensing rule is overreach.', is_correct: false },
+      { letter: 'B', text: 'The rule does not change who can practice — it only standardizes how malpractice claims are reported.', is_correct: false },
+      { letter: 'C', text: 'The criticism misreads the rule’s scope.', is_correct: true },
+    ],
+    rationale: 'Opposing view → corrective premise → claim. C is the author’s point.',
+  },
+  {
+    id: 'D32-S3-Q4',
+    prompt: 'Which sentence is the main conclusion?',
+    stimulus:
+      'Three rounds of independent testing produced consistent results. The results withstood adversarial review by competing labs. The methodology has now been adopted by two regulatory bodies. The protocol should be considered settled science.',
+    candidates: [
+      { letter: 'A', text: 'Three rounds of independent testing produced consistent results.', is_correct: false },
+      { letter: 'B', text: 'The results withstood adversarial review by competing labs.', is_correct: false },
+      { letter: 'C', text: 'The methodology has now been adopted by two regulatory bodies.', is_correct: false },
+      { letter: 'D', text: 'The protocol should be considered settled science.', is_correct: true },
+    ],
+    rationale: 'Three lines of evidence converge on the final claim. D is the conclusion.',
+  },
+  {
+    id: 'D32-S3-Q5',
+    prompt: 'Which sentence is the main conclusion?',
+    stimulus:
+      'A thorough archival search has turned up no record of the meeting. The two participants who would have attended both deny it occurred. Therefore, the meeting almost certainly did not happen, and any account that depends on it is unreliable.',
+    candidates: [
+      { letter: 'A', text: 'A thorough archival search has turned up no record of the meeting.', is_correct: false },
+      { letter: 'B', text: 'The two participants who would have attended both deny it occurred.', is_correct: false },
+      { letter: 'C', text: 'The meeting almost certainly did not happen, and any account that depends on it is unreliable.', is_correct: true },
+    ],
+    rationale: 'Two premises support the compound claim in C. The claim is the conclusion.',
+  },
+];
+
+// ── Drill 3.2 · X-Ray Drill (Stage 4 — speed run) ────────────────────────────
+export const DRILL_3_2_STAGE_4: XRayQuestion[] = [
+  {
+    id: 'D32-S4-Q1',
+    prompt: 'Conclusion?',
+    stimulus: 'The fund should be liquidated. Its returns have lagged for six years.',
+    candidates: [
+      { letter: 'A', text: 'The fund should be liquidated.', is_correct: true },
+      { letter: 'B', text: 'Its returns have lagged for six years.', is_correct: false },
+    ],
+    rationale: 'Recommendation, then evidence.',
+  },
+  {
+    id: 'D32-S4-Q2',
+    prompt: 'Conclusion?',
+    stimulus: 'Cost matters. But the proposal will save more than it spends. Adopt it.',
+    candidates: [
+      { letter: 'A', text: 'Cost matters.', is_correct: false },
+      { letter: 'B', text: 'The proposal will save more than it spends.', is_correct: false },
+      { letter: 'C', text: 'Adopt it.', is_correct: true },
+    ],
+    rationale: 'Concession → support → recommendation.',
+  },
+  {
+    id: 'D32-S4-Q3',
+    prompt: 'Conclusion?',
+    stimulus: 'Many think the bill is too narrow. They miss the bigger structural problem the bill leaves untouched.',
+    candidates: [
+      { letter: 'A', text: 'Many think the bill is too narrow.', is_correct: false },
+      { letter: 'B', text: 'They miss the bigger structural problem the bill leaves untouched.', is_correct: true },
+    ],
+    rationale: 'Opposing view → corrective claim.',
+  },
+  {
+    id: 'D32-S4-Q4',
+    prompt: 'Conclusion?',
+    stimulus: 'Energy prices have stabilized. Inventories have rebuilt. The shortage is over.',
+    candidates: [
+      { letter: 'A', text: 'Energy prices have stabilized.', is_correct: false },
+      { letter: 'B', text: 'Inventories have rebuilt.', is_correct: false },
+      { letter: 'C', text: 'The shortage is over.', is_correct: true },
+    ],
+    rationale: 'Two trend premises support the conclusion.',
+  },
+  {
+    id: 'D32-S4-Q5',
+    prompt: 'Conclusion?',
+    stimulus: 'Since the witness has recanted, the conviction cannot stand on the witness’s testimony alone.',
+    candidates: [
+      { letter: 'A', text: 'The witness has recanted.', is_correct: false },
+      { letter: 'B', text: 'The conviction cannot stand on the witness’s testimony alone.', is_correct: true },
+    ],
+    rationale: '"Since" introduces support; the claim follows.',
+  },
+];
+
+// ── Drill 3.3 · First-Sentence Reading (Stage 3 — concession openers) ────────
+export const DRILL_3_3_STAGE_3: FirstSentenceQuestion[] = [
+  {
+    id: 'D33-S3-Q1',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'It is true that the licensing process is slow. But the slowness is what keeps unqualified practitioners out of the field, and rushing it would compromise public safety.',
+    is_first_sentence_conclusion: false,
+    rationale: 'First sentence is a concession. The defense after "But" is the actual claim.',
+  },
+  {
+    id: 'D33-S3-Q2',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'The state should phase out tax incentives for stadium construction. Studies of comparable subsidies show no measurable impact on regional employment, and the public cost typically exceeds projections by a wide margin.',
+    is_first_sentence_conclusion: true,
+    rationale: 'Recommendation in sentence one; two lines of support follow.',
+  },
+  {
+    id: 'D33-S3-Q3',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'Granted, the older codebase ran more reliably. But it also accumulated technical debt the team could no longer service safely. The migration was the right call.',
+    is_first_sentence_conclusion: false,
+    rationale: 'Concession → pivot → claim. The conclusion is the final sentence.',
+  },
+  {
+    id: 'D33-S3-Q4',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'No reasonable reading of the contract supports the buyer’s interpretation. The disputed clause is unambiguous on its face, and the surrounding sections reinforce, rather than narrow, its meaning.',
+    is_first_sentence_conclusion: true,
+    rationale: 'Strong claim first; two lines of textual support follow.',
+  },
+  {
+    id: 'D33-S3-Q5',
+    prompt: 'Is the first sentence the conclusion?',
+    stimulus:
+      'While the new pesticide kills target insects efficiently, it also accumulates in the soil and disrupts beneficial microorganisms. For agricultural use it is a poor trade.',
+    is_first_sentence_conclusion: false,
+    rationale: 'First sentence is a concession (efficiency granted); the verdict in sentence two is the conclusion.',
+  },
+];
+
+// ── Drill 3.3 · First-Sentence Reading (Stage 4 — speed run) ─────────────────
+export const DRILL_3_3_STAGE_4: FirstSentenceQuestion[] = [
+  {
+    id: 'D33-S4-Q1',
+    prompt: 'First sentence the conclusion?',
+    stimulus: 'The deal should not close. Two of the three financing conditions remain unmet.',
+    is_first_sentence_conclusion: true,
+    rationale: 'Claim first; support second.',
+  },
+  {
+    id: 'D33-S4-Q2',
+    prompt: 'First sentence the conclusion?',
+    stimulus: 'Public-opinion polls have favored the candidate for three weeks. The challenger is unlikely to recover before the vote.',
+    is_first_sentence_conclusion: false,
+    rationale: 'Polling evidence first; prediction second.',
+  },
+  {
+    id: 'D33-S4-Q3',
+    prompt: 'First sentence the conclusion?',
+    stimulus: 'Critics call the protocol unsafe. The trial data does not support that label.',
+    is_first_sentence_conclusion: false,
+    rationale: 'Opposing view first; rebuttal second.',
+  },
+  {
+    id: 'D33-S4-Q4',
+    prompt: 'First sentence the conclusion?',
+    stimulus: 'The committee should reject the nomination. Documented conflicts of interest disqualify the nominee.',
+    is_first_sentence_conclusion: true,
+    rationale: 'Recommendation first; reason second.',
+  },
+  {
+    id: 'D33-S4-Q5',
+    prompt: 'First sentence the conclusion?',
+    stimulus: 'It is widely held that newer is better. In language acquisition, older immersion methods consistently outperform.',
+    is_first_sentence_conclusion: false,
+    rationale: 'Opposing view first; corrective claim second.',
+  },
+];
+
 // ── Drill 3.5 · Chain Mapping samples ────────────────────────────────────────
 export const DRILL_3_5_QUESTIONS: ChainMappingQuestion[] = [
   {

@@ -5,7 +5,13 @@
 import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/components/stage-gate/StageGateTracker';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { DRILL_3_2_STAGE_1, DRILL_3_2_STAGE_2, type XRayQuestion } from '@/bootcamps/main-conclusion/content/drills.source';
+import {
+  DRILL_3_2_STAGE_1,
+  DRILL_3_2_STAGE_2,
+  DRILL_3_2_STAGE_3,
+  DRILL_3_2_STAGE_4,
+  type XRayQuestion,
+} from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
@@ -22,8 +28,18 @@ const stages: Stage<XRayQuestion>[] = [
     hint: 'Read the stimulus. Pick the conclusion sentence — distractors are stronger here.',
     questions: DRILL_3_2_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
-  { number: 3, title: 'Speed run', hint: 'Stage 3 content authors at C.10.', questions: [] },
-  { number: 4, title: 'Mixed difficulty', hint: 'Stage 4 content authors at C.10.', questions: [] },
+  {
+    number: 3,
+    title: 'Multi-claim with intermediate',
+    hint: 'Some stimuli have an intermediate conclusion that supports the main one. Pick the main conclusion only.',
+    questions: DRILL_3_2_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
+  {
+    number: 4,
+    title: 'Speed run',
+    hint: 'Compressed stimuli. Pick the conclusion fast.',
+    questions: DRILL_3_2_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+  },
 ];
 
 export function Drill3_2() {

@@ -1,6 +1,7 @@
 # Main Conclusion Bootcamp — Bridge Handoff
 
 **Generated:** 2026-05-01
+**Last updated:** 2026-05-01 (post-promotion: bootcamp now lives at `/bootcamp/structure`)
 **Author:** Claude Code (Opus 4.7, 1M context)
 **For:** Joshua (contact@aspiringattorneys.com) + future Claude Code sessions
 
@@ -8,14 +9,15 @@
 
 ## TL;DR
 
-The in-progress Claude-built Main Conclusion bootcamp has been bridged into the LSAT U repo as a parallel preview surface at `/bootcamp/structure-v2`. The existing `/bootcamp/structure` (the 8-module guided bootcamp in `Structure.tsx`) is **untouched**.
+The Main Conclusion bootcamp is **live at `/bootcamp/structure`** as of commit `8baf646`. The OLD 8-module `Structure.tsx` is no longer routed (file remains on disk, pending archival).
 
 - **Repo:** https://github.com/vnjkoxpl-42905/lsatu-684d89db
-- **Branch merged:** `feat/bootcamp-main-conclusion-bridge` → `main`
-- **Merge commit on main:** `b8331cfaecea4f828226bed56b85d06cd86dcebd`
+- **Latest re-wire commit:** `8baf646` (2026-05-01) — `fix(mc-bootcamp): re-wire new Main Conclusion bootcamp at /bootcamp/structure`
+- **Earlier bridge merge (historical):** `b8331cf` (2026-05-01) — bridge originally landed at `/bootcamp/structure-v2`; route revised to `/bootcamp/structure` after a 2026-05-01 Lovable-editor regression was rewound.
 - **Build:** ✓ `npx vite build` clean (139 PWA entries)
 - **Typecheck:** ✓ `npx tsc --noEmit` 0 errors
 - **Lovable:** auto-syncs from `main` (1–3 min from push to live)
+- **Active URL:** `/bootcamp/structure` (canonical) · `/bootcamp/structure-v2` redirects to it (legacy alias)
 
 ---
 
@@ -113,12 +115,14 @@ docs/main-conclusion-bootcamp/        ← Project history (do NOT overwrite root
 
 | URL | Component | Status |
 |---|---|---|
-| `/bootcamps` | `pages/Bootcamps.tsx` | Modified — fourth card added |
-| `/bootcamp/structure` | `pages/Structure.tsx` | **Unchanged** — live 8-module bootcamp |
-| `/bootcamp/structure-v2/*` | `pages/MainConclusionBootcamp.tsx` → `BootcampRoutes` | **NEW** — preview surface |
-| `/bootcamp/main-conclusion-role` | `Navigate to="/bootcamp/structure"` | Unchanged |
+| `/bootcamps` | `pages/Bootcamps.tsx` | Card describes the new Main Conclusion bootcamp |
+| `/bootcamp/structure/*` | `pages/MainConclusionBootcamp.tsx` → `BootcampRoutes` | **CANONICAL** — new bootcamp lives here |
+| `/bootcamp/structure-v2` | `Navigate to="/bootcamp/structure"` | Legacy alias; redirects to canonical URL |
+| `/bootcamp/structure-v2/*` | `Navigate to="/bootcamp/structure"` | Legacy alias |
+| `/bootcamp/main-conclusion-role` | `Navigate to="/bootcamp/structure"` | Legacy alias |
 | `/bootcamp/causation-station` | `pages/CausationStation.tsx` | Unchanged |
 | `/bootcamp/abstraction` | `pages/Abstraction.tsx` | Unchanged |
+| **Old `Structure.tsx`** | (no route) | **No longer mounted.** Source remains at `src/pages/Structure.tsx` + `src/components/structure/**` pending archival. |
 
 ### Bootcamp internal routes (under `/bootcamp/structure-v2/`)
 
@@ -442,13 +446,13 @@ The bootcamp's `PROJECT_MEMORY.md` (now at `docs/main-conclusion-bootcamp/PROJEC
 
 | Surface | State |
 |---|---|
-| `/bootcamp/structure` (live) | Untouched — 8-module guided bootcamp |
-| `/bootcamp/structure-v2` (preview) | Live, in active development |
-| `main` branch on origin | Up to date — `b8331cf` |
-| Feature branch | `feat/bootcamp-main-conclusion-bridge` preserved locally |
+| `/bootcamp/structure` (live) | New Main Conclusion bootcamp — 6 modules, 12 lessons, 9 drills, simulator, hard sentences, diagnostics |
+| `/bootcamp/structure-v2` (legacy) | Redirects to `/bootcamp/structure` |
+| Old `Structure.tsx` (8-module guided) | No longer routed; source files remain on disk for separate archival pass |
+| `main` branch on origin | `8baf646` (re-wire) post-`b8331cf` (original bridge) |
 | Lovable | Auto-syncs from main |
 | Build | ✓ |
 | Typecheck | ✓ |
-| All four pre-existing bootcamps | Unchanged |
+| `/bootcamp/causation-station` + `/bootcamp/abstraction` | Unchanged |
 
 End of handoff.
