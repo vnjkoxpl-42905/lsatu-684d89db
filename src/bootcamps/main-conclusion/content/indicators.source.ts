@@ -1,0 +1,57 @@
+/**
+ * Indicator Vault — TS source authored from spec.html §2.A + Notes/Indicator word list .pdf (A) + role_merged.pdf (S, table form).
+ * 6 categories with color tokens mapped to design system.
+ */
+
+import type { IndicatorCategoryT } from './schemas';
+
+export const INDICATOR_VAULT: IndicatorCategoryT[] = [
+  {
+    id: 'IND-conclusion',
+    name: 'Conclusion Indicators',
+    color_token: '--role-conclusion',
+    description: "These flag the author's main claim. When you see one, ask: what comes after it? That's almost certainly the conclusion.",
+    words: ['so', 'thus', 'hence', 'therefore', 'it follows', 'it follows that', 'as a result', 'consequently', 'this shows that', 'this indicates that', 'accordingly', 'conclude'],
+    example: '"Eddie was seen near the bank holding an empty gas can. **Therefore**, Eddie is the arsonist."',
+  },
+  {
+    id: 'IND-premise-FABS',
+    name: 'Premise Indicators (FABS)',
+    color_token: '--role-premise',
+    description: 'These flag the support. When you see one, what comes after it is evidence — and the conclusion is right next door, either before or after.',
+    words: ['for', 'after all', 'because', 'since', 'as', 'given that', 'as indicated by', 'and (factual data)'],
+    example: '"You should try boba, **because** you like tea." / "...**after all**, you like tea." / "...**since** you like tea." / "...**for** you like tea."',
+  },
+  {
+    id: 'IND-pivot',
+    name: 'Pivot Indicators',
+    color_token: '--role-pivot',
+    description: "These mark a turn. The author was just saying one thing (or describing somebody else's view), and now they're switching. The author's true claim is on the far side of the pivot.",
+    words: ['but', 'yet', 'however', 'nevertheless', 'nonetheless', 'on the other hand'],
+    example: '"Some people say tomatoes are vegetables. **But** tomatoes have seeds, so they are fruit."',
+  },
+  {
+    id: 'IND-opinion',
+    name: 'Opinion Indicators',
+    color_token: '--accent',
+    description: 'Words that mark a sentence as a judgment, not a fact. Opinions are usually the conclusion. Watch for them.',
+    words: ['should', 'ought', 'must', 'clearly', 'obviously', 'evidently', 'apparently', 'probably', 'likely', 'essential', 'misguided'],
+    example: '"Implementing a new recycling program in our community is **essential**." (Opinion → almost certainly the conclusion.)',
+  },
+  {
+    id: 'IND-opposing',
+    name: 'Opposing Viewpoint Indicators',
+    color_token: '--role-opposing',
+    description: 'These attribute a claim to someone else, often before the author pushes back. When you see one, expect a pivot. The pushback is the conclusion.',
+    words: ['some people say', "it's commonly believed", 'some economists believe', 'some biologists', 'critics argue that', 'most people think', 'many people argue', '[someone] contends that'],
+    example: '"**Some critics argue** that higher taxes on the wealthy would discourage investment. **However**, data reveals high taxation often coincides with economic growth."',
+  },
+  {
+    id: 'IND-concession',
+    name: 'Concession Indicators',
+    color_token: '--role-concession',
+    description: 'These mark a Trojan Horse moment. The author appears to grant a point. They\'re setting up the rebuttal. Brace for the real claim immediately after.',
+    words: ['although', 'while', 'despite', 'granted', 'naturally', 'though it is true', 'yes, it is true that', 'admittedly'],
+    example: '"**Granted**, the new transit policy did reduce traffic downtown. But the cost overruns make it impossible to scale."',
+  },
+];

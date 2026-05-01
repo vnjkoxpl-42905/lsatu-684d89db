@@ -1,0 +1,193 @@
+/*
+ * Scoped Main Conclusion bootcamp styles.
+ *
+ * All bootcamp tokens + base rules are wrapped under `.mc-bootcamp` so they do
+ * NOT leak into the rest of LSAT U. The bootcamp's outermost <div> in
+ * src/pages/MainConclusionBootcamp.tsx applies className="mc-bootcamp".
+ *
+ * Tailwind directives live in src/index.css (LSAT U). This file only ships
+ * scoped tokens + bootcamp-specific component classes.
+ *
+ * Source: forks of src/bootcamps/main-conclusion/styles/{tokens,base}.css with
+ * the `:root` selector replaced by `.mc-bootcamp` and `body` rules folded in.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+.mc-bootcamp {
+  /* Brand */
+  --accent: 232 208 139;
+  --accent-hover: 242 223 154;
+  --accent-deep: 197 160 89;
+  --accent-dim: 232 208 139;
+
+  /* Surfaces (dark-mode default) */
+  --bg: 5 7 10;
+  --bg-2: 11 17 32;
+  --surface: 18 21 30;
+  --surface-elev: 26 30 43;
+  --border: 255 255 255;
+
+  /* Ink */
+  --ink: 241 245 249;
+  --ink-soft: 203 213 225;
+  --ink-faint: 148 163 184;
+
+  /* Argument-structure roles */
+  --role-conclusion: 16 185 129;
+  --role-premise: 96 165 250;
+  --role-pivot: 249 115 22;
+  --role-opposing: 168 85 247;
+  --role-concession: 250 204 21;
+  --role-background: 148 163 184;
+
+  /* Semantic / state */
+  --success: 16 185 129;
+  --warn: 250 204 21;
+  --error: 239 68 68;
+  --info: 56 189 248;
+
+  /* Type scale */
+  --t-display: 36px;
+  --t-h1: 28px;
+  --t-h2: 21px;
+  --t-h3: 17px;
+  --t-body: 14px;
+  --t-body-prose: 15px;
+  --t-small: 12.5px;
+  --t-mono: 11.5px;
+  --t-label: 10.5px;
+
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Radius */
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-5: 14px;
+  --r-8: 24px;
+  --r-full: 9999px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-fast: 150ms;
+  --d-mid: 180ms;
+  --d-slow: 220ms;
+
+  /* Shadows */
+  --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --shadow-3: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+
+  /* Bootcamp surface — dark always, regardless of LSAT U theme. */
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-bootcamp {
+    --d-fast: 0ms;
+    --d-mid: 0ms;
+    --d-slow: 0ms;
+  }
+}
+
+/* ── Bootcamp component classes ───────────────────────────────────────── */
+.mc-bootcamp .lesson-prose {
+  font-family: ui-serif, 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+  font-size: var(--t-body-prose);
+  line-height: 1.7;
+  max-width: 64ch;
+}
+.mc-bootcamp .lesson-prose p + p { margin-top: var(--s-4); }
+.mc-bootcamp .lesson-prose strong,
+.mc-bootcamp .lesson-prose b { font-weight: 600; color: rgb(var(--ink)); }
+.mc-bootcamp .lesson-prose em { font-style: italic; }
+
+.mc-bootcamp .named-tool-inline {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: var(--t-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgb(var(--accent));
+  text-transform: none;
+  padding: 1px 6px;
+  border-radius: var(--r-2);
+  background: rgb(var(--accent) / 0.10);
+  cursor: pointer;
+  transition: background var(--d-fast) var(--ease);
+}
+.mc-bootcamp .named-tool-inline:hover { background: rgb(var(--accent) / 0.16); }
+.mc-bootcamp .named-tool-inline:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+.mc-bootcamp :focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: var(--r-2);
+}
+
+.mc-bootcamp ::selection {
+  background: rgb(var(--accent) / 0.28);
+  color: rgb(var(--ink));
+}
+
+.mc-bootcamp .skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: rgb(var(--accent));
+  color: rgb(var(--bg));
+  padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-3);
+  font-weight: 600;
+  z-index: 100;
+}
+.mc-bootcamp .skip-link:focus { left: var(--s-4); top: var(--s-4); }
+
+/* ── Print: Quick Reference Card ──────────────────────────────────────── */
+@media print {
+  @page { size: letter; margin: 0.4in; }
+  .mc-bootcamp,
+  .mc-bootcamp * {
+    background: #fff !important;
+    color: #0a0a0a !important;
+  }
+  .mc-bootcamp .left-rail,
+  .mc-bootcamp .right-drawer,
+  .mc-bootcamp header[role="banner"],
+  .mc-bootcamp nav,
+  .mc-bootcamp .skip-link,
+  .mc-bootcamp .print-hide { display: none !important; }
+  .mc-bootcamp .print-card,
+  .mc-bootcamp .print-card * {
+    background: #fff !important;
+    color: #0a0a0a !important;
+    border-color: #999 !important;
+    box-shadow: none !important;
+  }
+  .mc-bootcamp .print-card .font-mono { color: #555 !important; }
+  .mc-bootcamp .print-card a { text-decoration: none !important; }
+  .mc-bootcamp .print-card { padding: 0 !important; }
+  .mc-bootcamp .print-card .max-w-prose { max-width: none !important; }
+  .mc-bootcamp .print-card .qrc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4in; }
+  .mc-bootcamp .print-card h1 { font-size: 18pt; }
+  .mc-bootcamp .print-card h2 { font-size: 11pt; }
+  .mc-bootcamp .print-card p,
+  .mc-bootcamp .print-card li { font-size: 9.5pt; line-height: 1.35; }
+}

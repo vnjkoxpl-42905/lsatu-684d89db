@@ -26,6 +26,7 @@ import Abstraction from "./pages/Abstraction";
 import Structure from "./pages/Structure";
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
+import MainConclusionBootcamp from "./pages/MainConclusionBootcamp";
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -203,6 +204,11 @@ const App = () => {
                   } />
                   <Route path="/bootcamp/structure" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Structure /></ProtectedRoute>
+                  } />
+                  {/* Main Conclusion bootcamp preview (in active development).
+                      Lives parallel to /bootcamp/structure; promotion is a route swap. */}
+                  <Route path="/bootcamp/structure-v2/*" element={
+                    <ProtectedRoute flag="has_bootcamp_access"><MainConclusionBootcamp /></ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

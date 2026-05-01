@@ -1,3 +1,6 @@
+/* Main Conclusion bootcamp scoped styles (active only inside .mc-bootcamp). */
+@import "./bootcamps/main-conclusion/styles/scoped.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

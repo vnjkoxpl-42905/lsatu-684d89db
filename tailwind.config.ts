@@ -68,6 +68,34 @@ export default {
         "accent-bronze": "hsl(var(--accent-bronze))",
         "accent-warm": "hsl(var(--accent-warm))",
         "glow-bronze": "hsl(var(--glow-bronze))",
+
+        /* ── Main Conclusion bootcamp tokens (scoped to .mc-bootcamp) ─────────
+         * These resolve only inside .mc-bootcamp ancestors, where the matching
+         * RGB-triplet CSS vars are defined (src/bootcamps/main-conclusion/styles/scoped.css).
+         * `mc-` prefix avoids collision with LSAT U's HSL-based shadcn tokens (accent, border).
+         * Unprefixed bootcamp-only names (bg, surface, ink, role-*, success/warn/error/info)
+         * are added as-is — they don't collide with anything in LSAT U.
+         */
+        "mc-accent": "rgb(var(--accent) / <alpha-value>)",
+        "mc-accent-hover": "rgb(var(--accent-hover) / <alpha-value>)",
+        "mc-accent-deep": "rgb(var(--accent-deep) / <alpha-value>)",
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        "bg-2": "rgb(var(--bg-2) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        "surface-elev": "rgb(var(--surface-elev) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        "ink-soft": "rgb(var(--ink-soft) / <alpha-value>)",
+        "ink-faint": "rgb(var(--ink-faint) / <alpha-value>)",
+        "role-conclusion": "rgb(var(--role-conclusion) / <alpha-value>)",
+        "role-premise": "rgb(var(--role-premise) / <alpha-value>)",
+        "role-pivot": "rgb(var(--role-pivot) / <alpha-value>)",
+        "role-opposing": "rgb(var(--role-opposing) / <alpha-value>)",
+        "role-concession": "rgb(var(--role-concession) / <alpha-value>)",
+        "role-background": "rgb(var(--role-background) / <alpha-value>)",
+        "mc-success": "rgb(var(--success) / <alpha-value>)",
+        "mc-warn": "rgb(var(--warn) / <alpha-value>)",
+        "mc-error": "rgb(var(--error) / <alpha-value>)",
+        "mc-info": "rgb(var(--info) / <alpha-value>)",
       },
       backdropBlur: {
         glass: "12px",
@@ -84,6 +112,43 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        /* MC bootcamp numeric radii (no LSAT U conflict) */
+        "2": "4px",
+        "3": "8px",
+        "5": "14px",
+        "8": "24px",
+      },
+      fontFamily: {
+        /* MC bootcamp font stacks — only consumed by classes inside .mc-bootcamp */
+        "mc-sans": ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+        "mc-serif": ['ui-serif', 'Iowan Old Style', '"Apple Garamond"', 'Georgia', 'serif'],
+        "mc-mono": ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
+      fontSize: {
+        /* MC bootcamp type scale (net-new names; no LSAT U conflict) */
+        display: ['36px', { lineHeight: '1.1', fontWeight: '700' }],
+        h1: ['28px', { lineHeight: '1.2', fontWeight: '600' }],
+        h2: ['21px', { lineHeight: '1.25', fontWeight: '600' }],
+        h3: ['17px', { lineHeight: '1.3', fontWeight: '600' }],
+        body: ['14px', '1.6'],
+        'body-prose': ['15px', '1.7'],
+        small: ['12.5px', '1.55'],
+        mono: ['11.5px', { lineHeight: '1.5', fontWeight: '600' }],
+        label: ['10.5px', { lineHeight: '1.4', fontWeight: '700', letterSpacing: '0.06em' }],
+      },
+      screens: {
+        /* MC bootcamp breakpoints (net-new names) */
+        phone: { max: '600px' },
+        tablet: { min: '601px', max: '900px' },
+        desktop: { min: '901px' },
+      },
+      transitionDuration: {
+        '150': '150ms',
+        '180': '180ms',
+        '220': '220ms',
+      },
+      transitionTimingFunction: {
+        eased: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         "accordion-down": {

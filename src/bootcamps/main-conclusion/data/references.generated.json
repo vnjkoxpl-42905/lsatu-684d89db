@@ -1,0 +1,500 @@
+[
+  {
+    "id": "MC-REF-2.A",
+    "title": "The Indicator Vault",
+    "route": "/reference/indicators",
+    "voice_register": 1,
+    "source": "Notes/Indicator word list .pdf (A) + Notes/main_conclusion_role_merged_note.pdf (S, table form) + Notes/Keyword.pdf (B)",
+    "status": "authored",
+    "hook": "Six categories. The whole reading job is faster once you can name the role of every signal word in front of you.",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "The Indicator Vault is the lookup. The six color-coded categories above each carry one job: tell you what role the next clause will play. When the eye spots the word, the brain commits the role before you finish the sentence."
+      },
+      {
+        "kind": "callout",
+        "label": "How to use it",
+        "body": "Read once. Highlight the indicator. Predict the role of what follows. Confirm. Move on. Three seconds per indicator becomes one as the categories internalize."
+      },
+      {
+        "kind": "h2",
+        "text": "Cross-reference"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "FABS — the four premise indicators get their own page (2.C). They appear so often they earn the spotlight.",
+          "Concession words (granted, although, while) get the Concession Decoder treatment (2.I). They look like agreement and are not.",
+          "Pivot words (but, however, yet) flip a concession into the author’s real claim. The pivot is where the conclusion lands."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "Memorize the six. The drills (3.1, 3.2) repeat them until the categories become reflex."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.B",
+    "title": "The 2-Part Conclusion Check",
+    "route": "/reference/2-part-check",
+    "voice_register": 1,
+    "source": "Notes/Main conclusion (recap)_dup1.pdf (S) + Notes/Main Conclusion Synopsis.pdf (S)",
+    "status": "authored",
+    "hook": "The one tool that does not lie. Two questions. Both must be yes.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "The check"
+      },
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Does the sentence sound like the author’s opinion — a claim that someone could disagree with?",
+          "Is the sentence supported by at least one other explicit claim in the stimulus?"
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "Both must be yes. If either is no, the candidate is not the main conclusion. A factual statement fails part one. An unsupported assertion fails part two. A claim the author concedes from someone else fails part one."
+      },
+      {
+        "kind": "callout",
+        "label": "Why this works",
+        "body": "A conclusion is, by definition, the load-bearing claim of the argument. It is held by the author and supported by something else in the text. Two conditions, no exceptions."
+      },
+      {
+        "kind": "example",
+        "label": "Failure mode",
+        "body": "Students often pick the most prominent statistic in the stimulus. A statistic is rarely the conclusion — it is almost always support. Run the 2-Part Check. If you can’t name what supports the statistic, it is not the conclusion."
+      },
+      {
+        "kind": "p",
+        "text": "Apply this on every Main Conclusion question. After enough reps, the check runs in your head before you reach the answer choices."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.C",
+    "title": "FABS — the support indicator quartet",
+    "route": "/reference/fabs",
+    "voice_register": 1,
+    "source": "Notes/main_conclusion_role_merged_note.pdf (S) + Notes/Indicator word list .pdf (A)",
+    "status": "authored",
+    "hook": "For. After all. Because. Since. Whatever follows is support — and the conclusion is right next door.",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "FABS is a memory peg for the four most common premise indicators in LSAT stimuli. Each one introduces a clause that does support work. The conclusion lives next to that clause — usually immediately before, sometimes immediately after."
+      },
+      {
+        "kind": "table",
+        "columns": [
+          "Word",
+          "Role",
+          "Where the conclusion sits"
+        ],
+        "rows": [
+          [
+            "For",
+            "Premise indicator",
+            "In the clause before \"for\""
+          ],
+          [
+            "After all",
+            "Premise indicator (background reason)",
+            "Usually in the prior sentence"
+          ],
+          [
+            "Because",
+            "Premise indicator",
+            "In the clause before \"because\""
+          ],
+          [
+            "Since",
+            "Premise indicator",
+            "In the clause before \"since\" — even when \"since\" leads the sentence"
+          ]
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "The since trap",
+        "body": "When a stimulus opens with \"Since...\", the support is up front and the conclusion follows. MC-SIM-Q20 is the canonical example. Train on it."
+      },
+      {
+        "kind": "example",
+        "label": "Read it backwards",
+        "body": "Sentence: \"We should ban the policy, since it has failed in three pilot programs.\" → Find FABS (\"since\") → Support: \"it has failed in three pilot programs.\" → Conclusion: \"We should ban the policy.\""
+      },
+      {
+        "kind": "p",
+        "text": "FABS is decisive in 80% of stimuli. The other 20% need the 2-Part Check (2.B) and Stimulus Tendencies (2.D). Master FABS first."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.D",
+    "title": "Stimulus Tendencies — where LSAC hides the conclusion",
+    "route": "/reference/stimulus-tendencies",
+    "voice_register": 1,
+    "source": "Notes/Main Conclusion Synopsis.pdf (S) + Notes/Main conclusion (recap)_dup1.pdf (S)",
+    "status": "authored",
+    "hook": "School teaches you the conclusion goes last. The LSAT teaches you it usually does not.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "Where the main conclusion actually lives"
+      },
+      {
+        "kind": "table",
+        "columns": [
+          "Position",
+          "Frequency",
+          "Family"
+        ],
+        "rows": [
+          [
+            "First sentence",
+            "~45%",
+            "First-sentence family"
+          ],
+          [
+            "Second sentence after a \"but\"/\"however\" pivot",
+            "~30%",
+            "Rebuttal family"
+          ],
+          [
+            "After a since-clause that opens the stimulus",
+            "~10%",
+            "Wildcard"
+          ],
+          [
+            "Anywhere else",
+            "~15%",
+            "Mixed"
+          ]
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "The number that matters",
+        "body": "In more than 90% of Main Conclusion questions, the conclusion is NOT the final claim. The Upside Down Argument pattern is the rule, not the exception."
+      },
+      {
+        "kind": "h2",
+        "text": "The two families"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "First-sentence family: author states the claim, rest of the stimulus supports it.",
+          "Rebuttal family: author concedes a position, pivots (\"but\", \"however\"), states the actual claim, supports it."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "Drill 3.4 trains both. The Simulator (Module 4) sorts every canonical question into one family or the other."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.E",
+    "title": "The Five Types of Conclusions",
+    "route": "/reference/conclusion-types",
+    "voice_register": 1,
+    "source": "Notes/Skeletal Breakdown LR (1)_dup1.pdf (A)",
+    "status": "authored",
+    "hook": "Conclusions come in five shapes. Knowing the shape narrows the answer choices.",
+    "blocks": [
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Recommendation — \"X should do Y.\" Often signaled by should, ought, must.",
+          "Prediction — \"X will Y.\" Often signaled by will, is going to, is likely to.",
+          "Causal claim — \"X causes Y.\" Or X is responsible for Y, X explains Y.",
+          "Comparative judgment — \"X is better/worse/preferable to Y.\"",
+          "Interpretive claim — \"X means/implies/shows that Y.\" Common in literary or analytical stimuli."
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "Why type matters",
+        "body": "The correct answer matches the type of the author’s claim. A recommendation never resolves to a factual prediction. A causal claim never resolves to a recommendation. Type-mismatch is one of the cleanest tells in the answer choices."
+      },
+      {
+        "kind": "example",
+        "label": "Type-mismatch in distractors",
+        "body": "Stimulus argues a recommendation. Answer choice C reads as a prediction (\"the policy will succeed\"). C is wrong on type alone, before you even check the content."
+      },
+      {
+        "kind": "p",
+        "text": "When two answer choices both restate the conclusion, the one whose grammatical type matches the stimulus wins. Train this in Drill 3.7."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.F",
+    "title": "The Rebuttal Structure",
+    "route": "/reference/rebuttal-structure",
+    "voice_register": 1,
+    "source": "Notes/main_conclusion_role_merged_note.pdf (S) + Notes/Skeletal Breakdown LR (1)_dup1.pdf (A)",
+    "status": "authored",
+    "hook": "Concession → Pivot → Author’s claim → Support. The four-beat skeleton of every rebuttal stimulus.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "The four beats"
+      },
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Concession — the author grants something. \"Granted, X.\" \"It is true that X.\" \"While X is true.\"",
+          "Pivot — the author turns. \"But.\" \"However.\" \"Yet.\" \"Nonetheless.\"",
+          "Author’s claim — the actual conclusion. This is the load-bearing sentence.",
+          "Support — premises that prop up the claim."
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "The trick",
+        "body": "The concession often sounds like a thesis. It’s a Trojan horse — it sounds bold because the author is briefly inhabiting the opposing view. Wait for the pivot. The conclusion is on the other side."
+      },
+      {
+        "kind": "example",
+        "label": "MC-SIM-Q11 (Letter to the editor)",
+        "body": "\"I was shocked to learn that Judge Mosston was convicted of criminal assault. Nevertheless, despite his conviction, Mosston should not be forced to resign as judge. He has a long record of community service...\"  Concession: \"shocked... convicted.\" Pivot: \"Nevertheless.\" Conclusion: \"Mosston should not be forced to resign.\" Support: community service record."
+      },
+      {
+        "kind": "p",
+        "text": "11 of the canonical 20 are Rebuttal-family. Drill 3.4 stage 2 trains nothing but rebuttal recognition."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.G",
+    "title": "The Three Incorrect-Answer Trap Types (legacy gateway)",
+    "route": "/reference/three-traps",
+    "voice_register": 1,
+    "source": "Notes/Main Conclusion Synopsis.pdf (S) + Notes/Advanced- MP Question Traps_dup1.docx (A)",
+    "status": "authored",
+    "hook": "A starter taxonomy. The full Trap Master expands these to seven traits — but the three patterns underneath every wrong answer live here.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "The three patterns"
+      },
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Premise as conclusion — the answer lifts a support sentence and floats it as the claim. The most common trap on First-sentence stimuli.",
+          "Out of scope — the answer generalizes the claim or imports a topic the stimulus did not address.",
+          "Too strong — the answer says something the author would agree with but in a stronger form (more universal, more certain, more specific) than the stimulus warrants."
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "How this maps to the seven Trap Master traits",
+        "body": "T1 absorbs Too strong. T2 absorbs Premise as conclusion. T6 absorbs Out of scope. T3, T4, T5, T7 add finer distinctions. Start with three. Graduate to seven once those click."
+      },
+      {
+        "kind": "p",
+        "text": "On every wrong answer, name the pattern. \"Premise-as-conclusion\" — done, move on. The naming itself is the diagnostic."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.H",
+    "title": "Pronoun & Reference Library",
+    "route": "/reference/pronoun-library",
+    "voice_register": 1,
+    "source": "Notes/Main Conclusion Synopsis.pdf (S) + Notes/main_conclusion_role_merged_note.pdf (S)",
+    "status": "authored",
+    "hook": "Replace the pronoun before you say the conclusion to yourself. Then check the answer choices.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "Words to scan for"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "this · that · these · those",
+          "they · them · their · its",
+          "such · this position · this view · these laws · such laws",
+          "the policy · the recommendation · the practice (when the antecedent isn’t named in the same sentence)"
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "The Pre-Phrase Goal",
+        "body": "When you formulate the conclusion in your own words before checking answers, you must replace every pronoun with the actual reference language from the stimulus. Otherwise the answer choices will look more similar than they are."
+      },
+      {
+        "kind": "example",
+        "label": "Why replacement matters",
+        "body": "Conclusion (with pronoun): \"This position should not stand.\" Without replacement, three answer choices look right. With replacement: \"The view that Mosston should resign should not stand.\" Now only one answer matches."
+      },
+      {
+        "kind": "p",
+        "text": "Drill 3.7 trains pronoun replacement on the canonical 20 stimuli. After ten reps it becomes automatic."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.I",
+    "title": "The Concession Decoder",
+    "route": "/reference/concession-decoder",
+    "voice_register": 1,
+    "source": "Notes/Argument Core & Periph_dup1.pdf (A) + Notes/Skeletal Breakdown LR (1)_dup1.pdf (A) + Notes/Indicator word list .pdf (A)",
+    "status": "authored",
+    "hook": "Concessions look like agreement. They are setting up the rebuttal.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "Concession words"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "granted",
+          "admittedly",
+          "although",
+          "while",
+          "despite",
+          "even though",
+          "it is true that",
+          "of course",
+          "no doubt"
+        ]
+      },
+      {
+        "kind": "callout",
+        "label": "What concessions do",
+        "body": "They temporarily inhabit the opposing view. The author is signaling: \"I see what you would object with — let me name it briefly so I can refute it.\" The actual claim follows the pivot."
+      },
+      {
+        "kind": "h2",
+        "text": "The structural reveal"
+      },
+      {
+        "kind": "p",
+        "text": "Concession → Pivot → Author’s claim → Support. When you see a concession word, the conclusion is not the next sentence. It is the sentence after the pivot."
+      },
+      {
+        "kind": "example",
+        "label": "In practice",
+        "body": "\"Granted, the program has had setbacks. But its long-term outcomes have justified the investment, and continued funding is warranted.\"  Concession: \"setbacks.\" Pivot: \"But.\" Conclusion: \"continued funding is warranted.\" The \"long-term outcomes\" sentence is support."
+      },
+      {
+        "kind": "p",
+        "text": "On every Rebuttal-family stimulus, find the concession first. The conclusion is downstream of the pivot. Always."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.J",
+    "title": "Quick Reference Card (printable)",
+    "route": "/reference/quick-card",
+    "voice_register": 1,
+    "source": "(composite — single page; spec.html L1969)",
+    "status": "authored",
+    "hook": "One page. Print it. Tape it to the desk.",
+    "blocks": [
+      {
+        "kind": "h2",
+        "text": "The 2-Part Conclusion Check"
+      },
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Does it sound like the author’s opinion?",
+          "Is it supported by at least one explicit claim?"
+        ]
+      },
+      {
+        "kind": "h2",
+        "text": "FABS"
+      },
+      {
+        "kind": "p",
+        "text": "For · After all · Because · Since. Whatever follows is support; the conclusion is next door."
+      },
+      {
+        "kind": "h2",
+        "text": "The two families"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "First-sentence: claim first, support after.",
+          "Rebuttal: concession → pivot → claim → support."
+        ]
+      },
+      {
+        "kind": "h2",
+        "text": "The seven trap traits"
+      },
+      {
+        "kind": "list",
+        "items": [
+          "T1 — Too strong (specifies a remedy or universal the author did not commit to)",
+          "T2 — Premise as conclusion (lifts a support sentence)",
+          "T3 — Concession as conclusion (Trojan horse — sounds like the claim, the author is conceding)",
+          "T4 — Half the claim (captures part, drops the operative phrase)",
+          "T5 — Restated stimulus (paraphrases neutrally without identifying the load-bearing claim)",
+          "T6 — Out of scope (generalizes or imports a foreign topic)",
+          "T7 — Intermediate conclusion (a sub-claim that supports the main one but is not the main one)"
+        ]
+      },
+      {
+        "kind": "h2",
+        "text": "Pre-Phrase Protocol"
+      },
+      {
+        "kind": "list",
+        "ordered": true,
+        "items": [
+          "Read the stimulus.",
+          "Find the conclusion (FABS / 2-Part Check / family-recognition).",
+          "State it in your own words. Replace every pronoun with the antecedent.",
+          "Compare the answer choices."
+        ]
+      },
+      {
+        "kind": "p",
+        "text": "Print double-sided. Register 1 on this side. The Indicator Vault (six categories with example words) on the other."
+      }
+    ]
+  },
+  {
+    "id": "MC-REF-2.K",
+    "title": "Reference-as-Companion (capstone — implicit)",
+    "route": "/reference/companion-mode",
+    "voice_register": 1,
+    "source": "(behavior — RightDrawer overlay handler; not a standalone page)",
+    "status": "authored",
+    "hook": "The Reference is not a destination. It is a companion that pops in beside whatever you are working on.",
+    "blocks": [
+      {
+        "kind": "p",
+        "text": "Open any reference section while inside a lesson, drill, or simulator question and it surfaces in the right drawer in place — no URL change, no scroll loss. Press Esc to dismiss. The companion exists so you never have to leave the work to look something up."
+      },
+      {
+        "kind": "callout",
+        "label": "How to invoke",
+        "body": "Cmd+K opens the command palette. Type any inventory ID (MC-REF-2.B, NT-FABS, T3) and the matching surface drops into the right drawer. The keyboard cheat sheet in Settings lists every shortcut."
+      },
+      {
+        "kind": "p",
+        "text": "This is not a feature. It is the architectural posture: the curriculum is the surface, the reference is the air, and you should never feel the seam between them."
+      }
+    ]
+  }
+]
