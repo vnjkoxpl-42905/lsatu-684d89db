@@ -24,7 +24,8 @@ export function LessonsIndex(): JSX.Element {
       <ul className="mt-10 divide-y divide-[rgb(var(--border)/0.08)]">
         {all.map((l) => {
           const completed = progress?.completed_lessons.includes(l.id) ?? false;
-          const unlocked = progress?.unlocked_routes.includes(`/lessons/${l.number}`) ?? false;
+          // Preview mode: every lesson is walkable. Mirrors LockedRoute bypass.
+          const unlocked = true;
           return (
             <li key={l.id} className="py-4">
               <Link

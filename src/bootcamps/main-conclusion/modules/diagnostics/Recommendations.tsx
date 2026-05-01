@@ -57,7 +57,7 @@ export function Recommendations() {
                   </div>
                   <Badge tone={r.priority === 1 ? 'accent' : 'neutral'}>P{r.priority}</Badge>
                 </div>
-                <Link to={r.href} className="inline-block mt-3">
+                <Link to={r.href.startsWith('/bootcamp/structure') ? r.href : `/bootcamp/structure${r.href}`} className="inline-block mt-3">
                   <Button size="sm">Go →</Button>
                 </Link>
               </Card>
