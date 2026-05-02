@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { execSync } from "child_process";
 import { componentTagger } from "lovable-tagger";
-import { VitePWA } from "vite-plugin-pwa";
 
 function resolveBuildSha(): string {
   if (process.env.VITE_BUILD_SHA) return process.env.VITE_BUILD_SHA;
@@ -16,6 +15,14 @@ function resolveBuildSha(): string {
 
 const BUILD_SHA = resolveBuildSha();
 const BUILD_TIME = new Date().toISOString();
+
+// NOTE: vite-plugin-pwa was previously enabled here. It registered a Workbox
+// service worker that aggressively cached the app shell + every JS bundle.
+// That cache kept serving the retired "Structure" bootcamp UI long after the
+// source was removed, which is why old/ghost screens kept reappearing for
+// returning users. We have removed the plugin and ship a kill-switch worker
+// at /sw.js + /service-worker.js (see public/) so devices that still have the
+// old SW installed will purge their caches and unregister on next visit.
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -30,43 +37,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    VitePWA({
-      registerType: "autoUpdate",
-      devOptions: { enabled: false },
-      includeAssets: ["pwa-192x192.png", "pwa-512x512.png"],
-      manifest: {
-        name: "LSAT U",
-        short_name: "LSAT U",
-        description: "Master the LSAT with adaptive practice drills",
-        theme_color: "#000000",
-        background_color: "#000000",
-        display: "standalone",
-        start_url: "/foyer",
-        icons: [
-          { src: "/pwa-192x192.png", sizes: "192x192", type: "image/png" },
-          { src: "/pwa-512x512.png", sizes: "512x512", type: "image/png" },
-          { src: "/pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
-        ],
-      },
-      workbox: {
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//, /\.[^/]+$/],
-        skipWaiting: true,
-        clientsClaim: true,
-        cleanupOutdatedCaches: true,
-        runtimeCaching: [
-          {
-            urlPattern: /^\/data\/.*\.json$/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "question-data",
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 7 },
-            },
-          },
-        ],
-      },
-    }),
   ].filter(Boolean),
   resolve: {
     alias: {

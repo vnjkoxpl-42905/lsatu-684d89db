@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
+import { BUILD_SHA, BUILD_TIME } from '@/lib/buildInfo';
 
 function IL({ children }: { children: React.ReactNode }) {
   return (
@@ -82,6 +83,12 @@ export default function BootcampsPage() {
           <h1 className="text-lg font-semibold text-foreground">Bootcamps</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Focused skill-building programs to sharpen specific LSAT reasoning abilities.
+          </p>
+          <p
+            className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mt-2 select-text"
+            title={`Build ${BUILD_SHA} · ${BUILD_TIME}`}
+          >
+            build {BUILD_SHA}
           </p>
         </div>
 
