@@ -9,6 +9,7 @@
 import { useMemo, useState } from 'react';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { ChipPicker, type ChipOption } from '@/bootcamps/main-conclusion/components/chip-picker/ChipPicker';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { IndicatorCategory } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 
@@ -42,6 +43,21 @@ const CATEGORY_DOT: Record<IndicatorCategory, string> = {
   opinion: 'bg-[rgb(var(--accent))]',
   opposing: 'bg-[rgb(var(--role-opposing))]',
   concession: 'bg-[rgb(var(--role-concession))]',
+};
+
+const CATEGORY_PICK_CLASS: Record<IndicatorCategory, string> = {
+  conclusion:
+    'border-[rgb(var(--role-conclusion)/0.50)] bg-[rgb(var(--role-conclusion)/0.10)] text-[rgb(var(--role-conclusion))]',
+  premise:
+    'border-[rgb(var(--role-premise)/0.50)] bg-[rgb(var(--role-premise)/0.10)] text-[rgb(var(--role-premise))]',
+  pivot:
+    'border-[rgb(var(--role-pivot)/0.50)] bg-[rgb(var(--role-pivot)/0.10)] text-[rgb(var(--role-pivot))]',
+  opinion:
+    'border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.10)] text-mc-accent',
+  opposing:
+    'border-[rgb(var(--role-opposing)/0.50)] bg-[rgb(var(--role-opposing)/0.10)] text-[rgb(var(--role-opposing))]',
+  concession:
+    'border-[rgb(var(--role-concession)/0.50)] bg-[rgb(var(--role-concession)/0.10)] text-[rgb(var(--role-concession))]',
 };
 
 const CATEGORY_PILL_REVEAL: Record<IndicatorCategory, string> = {
@@ -193,28 +209,25 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
               ? `Pick a category for "${targets.find((t) => t.id === selectedId)?.word}"`
               : 'Tap a highlighted phrase above to label it'}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {allowedCategories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => pick(cat)}
-                disabled={!selectedId}
-                className={cn(
-                  'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5',
-                  'font-mc-mono text-mono uppercase tracking-wider',
-                  'bg-[rgb(var(--surface-elev))] text-ink-soft border-[rgb(var(--border)/0.10)]',
-                  'transition-[background,color,border-color] duration-150 ease-eased',
-                  'hover:text-ink hover:border-[color:var(--border-accent-soft)]',
-                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
-                  'disabled:opacity-40 disabled:pointer-events-none',
-                )}
-              >
-                <span aria-hidden="true" className={cn('h-1.5 w-1.5 rounded-full', CATEGORY_DOT[cat])} />
-                {CATEGORY_LABEL[cat]}
-              </button>
-            ))}
-          </div>
+          <ChipPicker<IndicatorCategory>
+            ariaLabel="Indicator categories"
+            disabled={!selectedId}
+            value={selectedId ? picks[selectedId] : null}
+            onChange={(next) => {
+              if (!selectedId) return;
+              if (next === null) {
+                setPicks((p) => ({ ...p, [selectedId]: null }));
+                return;
+              }
+              pick(next);
+            }}
+            options={allowedCategories.map((cat): ChipOption<IndicatorCategory> => ({
+              value: cat,
+              label: CATEGORY_LABEL[cat],
+              dotClass: CATEGORY_DOT[cat],
+              pickedClass: CATEGORY_PICK_CLASS[cat],
+            }))}
+          />
         </div>
       ) : null}
 

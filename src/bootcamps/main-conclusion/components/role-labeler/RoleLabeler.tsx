@@ -11,6 +11,7 @@
 import { useState } from 'react';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { ChipPicker, type ChipOption } from '@/bootcamps/main-conclusion/components/chip-picker/ChipPicker';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 export type Role = 'conclusion' | 'premise' | 'background';
@@ -43,6 +44,12 @@ const ROLE_PICK_CLASS: Record<Role, string> = {
     'border-[rgb(var(--role-background)/0.40)] bg-[rgb(var(--role-background)/0.10)] text-[rgb(var(--role-background))]',
 };
 
+const ROLE_DOT_CLASS: Record<Role, string> = {
+  conclusion: 'bg-[rgb(var(--role-conclusion))]',
+  premise: 'bg-[rgb(var(--role-premise))]',
+  background: 'bg-[rgb(var(--role-background))]',
+};
+
 const ROLE_REVEAL_CLASS: Record<Role, string> = {
   conclusion:
     'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)] text-ink',
@@ -57,15 +64,6 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
     Object.fromEntries(segments.map((s) => [s.id, null])),
   );
   const [submitted, setSubmitted] = useState(false);
-
-  /**
-   * Click the same chip twice → clears. Click a different chip → swaps.
-   * No way to be "stuck" on a wrong label without an escape.
-   */
-  function setRole(segId: string, role: Role) {
-    if (submitted) return;
-    setPicks((p) => ({ ...p, [segId]: p[segId] === role ? null : role }));
-  }
 
   function reset() {
     setPicks(Object.fromEntries(segments.map((s) => [s.id, null])));
@@ -129,42 +127,21 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
                   ) : null}
                 </div>
 
-                <div className="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label={`Role for sentence ${i + 1}`}>
-                  {allowedRoles.map((role) => {
-                    const isPicked = picked === role;
-                    return (
-                      <button
-                        key={role}
-                        type="button"
-                        role="radio"
-                        aria-checked={isPicked}
-                        disabled={submitted}
-                        onClick={() => setRole(seg.id, role)}
-                        title={isPicked ? 'Click again to clear' : undefined}
-                        className={cn(
-                          'inline-flex items-center gap-1.5 rounded-full border px-3 py-1',
-                          'font-mc-mono text-mono uppercase tracking-wider',
-                          'transition-[background,color,border-color] duration-150 ease-eased',
-                          'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
-                          'disabled:cursor-default',
-                          isPicked
-                            ? ROLE_PICK_CLASS[role]
-                            : 'bg-[rgb(var(--surface-elev))] text-ink-faint border-[rgb(var(--border)/0.10)] hover:text-ink hover:border-[color:var(--border-accent-soft)]',
-                        )}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={cn(
-                            'h-1.5 w-1.5 rounded-full',
-                            role === 'conclusion' && 'bg-[rgb(var(--role-conclusion))]',
-                            role === 'premise' && 'bg-[rgb(var(--role-premise))]',
-                            role === 'background' && 'bg-[rgb(var(--role-background))]',
-                          )}
-                        />
-                        {ROLE_LABEL[role]}
-                      </button>
-                    );
-                  })}
+                <div className="mt-3">
+                  <ChipPicker<Role>
+                    ariaLabel={`Role for sentence ${i + 1}`}
+                    disabled={submitted}
+                    value={picked}
+                    onChange={(next) =>
+                      setPicks((p) => ({ ...p, [seg.id]: next }))
+                    }
+                    options={allowedRoles.map((role): ChipOption<Role> => ({
+                      value: role,
+                      label: ROLE_LABEL[role],
+                      dotClass: ROLE_DOT_CLASS[role],
+                      pickedClass: ROLE_PICK_CLASS[role],
+                    }))}
+                  />
                 </div>
 
                 {submitted ? (
