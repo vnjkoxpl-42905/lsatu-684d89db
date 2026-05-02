@@ -1,70 +1,78 @@
-# Why the old "STRUCTURE" page keeps coming back
+## What’s happening
 
-## Diagnosis (the actual cause)
+I checked the current app code and the old **"Structure"** bootcamp card/page from your screenshot is **not** in the active source anymore.
 
-The screenshot you keep seeing (sidebar with `Foundations / The 2-Part Check / FABS · The Premise Quartet / X-Ray the Structure / Argument Shapes / Trojan Horse Concession / The 7 Traps / Prove It · Simulator`, plus "Bootcamp progress: 0%", "CHECK-IN", "Finalize Module") **does not exist anywhere in the current codebase**. I searched every file — no component renders that UI anymore.
+What is still true today:
+- `src/pages/Bootcamps.tsx` only defines the active card as **Intro to LR**.
+- `src/App.tsx` still keeps legacy aliases like `/bootcamp/structure` and `/bootcamp/structure-v2` alive.
+- The published site is still shipping a real `sw.js` service worker.
 
-What's actually wired today:
-- `App.tsx` route `/bootcamp/structure/*` → `MainConclusionBootcamp` → `BootcampRoutes` (the new Claude-built bootcamp with Lessons 1.1–1.13, Reference, Drills, Simulator, Hard Sentences, Diagnostics).
-- The old `src/pages/Structure.tsx` was already deleted earlier in this thread.
+That means the reason this old version “comes back” is:
+1. A previously-installed browser/app service worker still controls navigation.
+2. It serves an old cached app shell and old JS bundle.
+3. That old bundle still contains the retired **Structure** UI.
+4. Because the old bundle is what loads first, the newer cache-busting code in `src/main.tsx` is not reliable enough to rescue the session.
 
-So why is the old UI still showing? **It's being served by a stale Service Worker (PWA) cache.**
+So the root cause is **stale PWA/service-worker caching**, not the current bootcamp source itself.
 
-The project uses `vite-plugin-pwa` with `registerType: "autoUpdate"`, `skipWaiting`, and `clientsClaim`. `src/main.tsx` only unregisters the SW when the host is `id-preview--*` or `lovableproject.com`. On the **published domains** (`lsatu.lovable.app`, `www.lsatprep.study`, `lsatprep.study`) the SW stays active and keeps serving the previous deploy's `index.html` + JS bundles from cache — which still contain the old Structure module markup baked in. Hard reload doesn't always evict it because the SW intercepts the navigation.
+## Plan
 
-That's why it "keeps returning" no matter how many times we fix the route in code: the user's browser literally never downloads our new build.
+### 1) Kill the stale service worker for real
+- Add a **kill-switch worker** at the old worker path(s):
+  - `public/sw.js`
+  - `public/service-worker.js` (defensive, in case any device registered that path)
+- The kill-switch will:
+  - claim all clients
+  - delete all Cache Storage entries
+  - force controlled windows to navigate once with a cache-busting param
+  - unregister itself
 
-## The fix — two parts
+This is the important missing piece. It cleans up devices that are already trapped on the old shell.
 
-### Part 1: Kill the stale cache permanently
+### 2) Stop shipping the behavior that caused this
+- Remove or disable `vite-plugin-pwa` in `vite.config.ts`.
+- Keep the app as a normal web app, or manifest-only if installability is still desired.
+- Simplify `src/main.tsx` so it only keeps lightweight service-worker cleanup guards where needed, instead of relying on build-SHA mismatch logic alone.
 
-1. Add a published-host branch to `src/main.tsx` so the SW is also unregistered (and caches purged) when an outdated bundle is detected. Specifically: on every load, if the registered SW's scriptURL differs from the current build, unregister it and `caches.keys()` → `caches.delete()` everything, then reload once.
-2. Make this safe for the production PWA: gate the auto-purge so it only fires when the app detects an old build SHA (compare `__BUILD_SHA__` against a value stamped into the SW). Avoids an infinite reload loop.
-3. Bump the SW by re-registering with the new `BUILD_SHA` so all current users get the new bundle on their next visit without manual cache clearing.
+This prevents the ghost version from reappearing later.
 
-User-side, one-time: I'll also add a tiny "Force refresh" link in the bootcamp's error/empty state so anyone still stuck can self-recover.
+### 3) Retire the old “Structure” slug completely
+- Update `src/App.tsx` so the legacy routes do **not** behave like a live bootcamp alias anymore:
+  - `/bootcamp/structure`
+  - `/bootcamp/structure/*`
+  - `/bootcamp/structure-v2`
+  - `/bootcamp/structure-v2/*`
+  - `/bootcamp/main-conclusion-role`
+- Redirect those to `/bootcamps` instead of silently forwarding into **Intro to LR**.
 
-### Part 2: Rename the bootcamp to "Intro to LR" so this can never confuse anyone again
+That way the old name is clearly dead and cannot keep being mistaken for the active bootcamp.
 
-Rename target: **"Intro to LR"** (was: "Main Conclusion / Argument Structure").
+### 4) Re-audit active UI so changes only apply to the correct bootcamp
+- Re-check active launch targets in:
+  - `src/pages/Bootcamps.tsx`
+  - `src/App.tsx`
+  - `src/bootcamps/main-conclusion/components/workspace-shell/LeftRail.tsx`
+  - any active bootcamp labels/routes under `src/bootcamps/main-conclusion/`
+- Confirm that only **Intro to LR** is user-facing for this bootcamp family.
+- Remove any remaining user-facing `Structure` / `Main Conclusion` labels from active surfaces if any remain.
 
-Route + identifier rename: `/bootcamp/structure` → `/bootcamp/intro-to-lr`.
+### 5) Add a small verification marker so we can confirm the stale shell is gone
+- Surface a tiny build/version label on a safe page like `/bootcamps` or in the bootcamp shell.
+- Use the existing `src/lib/buildInfo.ts` values.
 
-Files to update:
+This gives a fast visual way to tell whether the user is seeing the current build or an old cached one.
 
-- `src/App.tsx`
-  - Add `<Route path="/bootcamp/intro-to-lr/*" element={…MainConclusionBootcamp…} />`.
-  - Keep `/bootcamp/structure/*` and `/bootcamp/structure-v2/*` as **`<Navigate>` redirects** to `/bootcamp/intro-to-lr` so any old bookmark, link, or cached HTML still lands on the right place.
-  - Rename the import: `MainConclusionBootcamp` → `IntroToLrBootcamp` (file rename below).
-- `src/pages/MainConclusionBootcamp.tsx` → rename file to `src/pages/IntroToLrBootcamp.tsx`. Update the doc comment header to say "/bootcamp/intro-to-lr — Intro to LR bootcamp".
-- `src/pages/Bootcamps.tsx`
-  - Change the card: `id: 'intro-to-lr'`, `title: 'Intro to LR'`, `route: '/bootcamp/intro-to-lr'`.
-  - Update emoji/description if you want; otherwise leave the description alone.
-- `src/bootcamps/main-conclusion/` — keep the folder name (internal, no user impact) but update every hardcoded `'/bootcamp/structure'` prefix to `'/bootcamp/intro-to-lr'`. Affected files (from the prior fix pass):
-  - `modules/lessons/LessonsIndex.tsx`
-  - `modules/ModuleIndex.tsx`
-  - `modules/reference/ReferenceIndex.tsx`
-  - `modules/drills/DrillsIndex.tsx`
-  - `modules/diagnostics/DiagnosticsIndex.tsx`
-  - `modules/diagnostics/TraitProfile.tsx`
-  - `modules/diagnostics/Recommendations.tsx`
-  - `lib/diagnostics.ts`
-  - `components/command-palette/CommandPalette.tsx`
-- `WorkspaceShell` header label (the "STRUCTURE" chip in the top bar): change to "INTRO TO LR".
-- Any sidebar/heading that says "MAIN CONCLUSION": change to "INTRO TO LR".
+### 6) QA the exact failure paths
+I’ll verify these routes after the fix:
+- `/bootcamps` shows the current bootcamp list only
+- `/bootcamp/intro-to-lr` opens the correct bootcamp
+- `/bootcamp/structure` no longer opens as a real bootcamp route
+- published/custom-domain behavior no longer resurfaces the retired Structure UI
 
-I will leave the internal folder `src/bootcamps/main-conclusion/` untouched — renaming a folder this deep risks breaking dozens of imports for zero user benefit. Only the **route, page name, sidebar label, and bootcamp card** change. That's all the user ever sees.
+## Technical details
 
-## What you'll see after this ships
+- The current `__BUILD_SHA__` comparison in `src/main.tsx` helps only **after the new JS bundle runs**.
+- In your case, the problem is that some browsers are still loading the **old cached shell first**, so that logic may never get a chance to execute.
+- That is why the proper fix is the **kill-switch service worker**, plus retiring the old route alias.
 
-1. On next deploy, every browser that loads the app will detect the new build SHA, purge the old SW + caches, and download fresh JS. The ghost "STRUCTURE / Foundations / Finalize Module" UI dies for good.
-2. The bootcamp card on `/bootcamps` says **Intro to LR** and routes to `/bootcamp/intro-to-lr`.
-3. Any old link to `/bootcamp/structure` redirects forward, so nothing breaks.
-4. The header chip and sidebar say **INTRO TO LR**.
-
-## Technical notes
-
-- I won't touch `vite-plugin-pwa`'s config beyond what's needed for the cache-busting check. The PWA still works offline; we just stop serving truly stale bundles.
-- `public/_redirects` is irrelevant on Lovable hosting (per Lovable docs) and won't be touched.
-- The internal data files (`lessons.generated.json`, `manifest.generated.json`, etc.) reference no route prefixes, so the rename is safe.
-- I'll grep for any remaining `bootcamp/structure` string after the edits to make sure nothing dangling links back to the old path.
+Once approved, I’ll implement this cleanup so the old Structure version is gone and can’t keep hijacking people back into the wrong bootcamp.
