@@ -45,11 +45,11 @@ const ROLE_PICK_CLASS: Record<Role, string> = {
 
 const ROLE_REVEAL_CLASS: Record<Role, string> = {
   conclusion:
-    'bg-[rgb(var(--role-conclusion)/0.16)] border-l-4 border-l-[rgb(var(--role-conclusion))] text-ink',
+    'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)] text-ink',
   premise:
-    'bg-[rgb(var(--role-premise)/0.14)] border-l-4 border-l-[rgb(var(--role-premise))] text-ink',
+    'bg-[rgb(var(--role-premise)/0.14)] border border-[rgb(var(--role-premise)/0.30)] text-ink',
   background:
-    'bg-[rgb(var(--role-background)/0.10)] border-l-4 border-l-[rgb(var(--role-background))] text-ink-soft',
+    'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)] text-ink-soft',
 };
 
 export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: Props): JSX.Element {
@@ -94,8 +94,12 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
               <div
                 className={cn(
                   'rounded-3 border p-4 transition-colors duration-180 ease-eased',
-                  !submitted && 'bg-[image:var(--grad-surface-soft)] border-[rgb(var(--border)/0.10)]',
-                  submitted && ROLE_REVEAL_CLASS[seg.correct],
+                  submitted
+                    ? ROLE_REVEAL_CLASS[seg.correct]
+                    : cn(
+                        'bg-[image:var(--grad-surface-soft)]',
+                        picked ? 'border-[color:var(--border-accent-soft)]' : 'border-[rgb(var(--border)/0.10)]',
+                      ),
                 )}
               >
                 <div className="flex items-baseline gap-3">
@@ -207,7 +211,9 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
             </span>
             {cleanRead
               ? 'Clean read. The structure is in your hands now.'
-              : 'Not a grade. A calibration. Read the per-sentence notes above before you continue.'}
+              : correctCount === 0
+                ? 'Every sentence slipped. Not a grade. A calibration. Read the notes above slowly.'
+                : 'Not a grade. A calibration. Read the per-sentence notes above before you continue.'}
           </p>
           <Button
             variant="subtle"
