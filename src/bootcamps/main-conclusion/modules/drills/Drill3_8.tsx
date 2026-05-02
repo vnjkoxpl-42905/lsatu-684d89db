@@ -76,7 +76,7 @@ export function Drill3_8() {
       )}
       {stage === 'skeptic' && <SkepticStage onContinue={nextPassage} />}
       {stage === 'done' && (
-        <Card variant="elev" className="border-l-4 border-l-[rgb(var(--success)/0.50)]">
+        <Card variant="elev" className="border border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.04)]">
           <Badge tone="success">drill complete</Badge>
           <p className="font-mc-serif text-body-prose text-ink mt-2">All passages reviewed. Recordings persist locally.</p>
         </Card>

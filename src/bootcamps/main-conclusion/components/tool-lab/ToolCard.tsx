@@ -48,7 +48,7 @@ export function ToolCard({ tool }: Props): JSX.Element {
       </div>
 
       {tool.example ? (
-        <p className="font-mc-serif text-body text-ink-soft italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 leading-relaxed">
+        <p className="font-mc-serif text-body text-ink-soft italic border-l border-l-[color:var(--border-accent-strong)] pl-3 leading-relaxed">
           {tool.example}
         </p>
       ) : null}
@@ -158,10 +158,10 @@ function TryPick({ item }: { item: Extract<ToolCardData['try_it'], { kind: 'pick
       {pickedOpt ? (
         <div
           className={cn(
-            'rounded-3 px-3 py-2 border-l-4',
+            'rounded-3 px-3 py-2 border',
             pickedOpt.correct
-              ? 'bg-[rgb(var(--success)/0.06)] border-l-[rgb(var(--success))]'
-              : 'bg-[rgb(var(--warn)/0.06)] border-l-[rgb(var(--warn))]',
+              ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
+              : 'bg-[rgb(var(--warn)/0.06)] border-[rgb(var(--warn)/0.40)]',
           )}
         >
           <p className="font-mc-serif text-body text-ink leading-relaxed">
@@ -243,10 +243,10 @@ function TryTagOrNot({
       {submitted ? (
         <div
           className={cn(
-            'rounded-3 px-3 py-2 border-l-4',
+            'rounded-3 px-3 py-2 border',
             correct
-              ? 'bg-[rgb(var(--success)/0.06)] border-l-[rgb(var(--success))]'
-              : 'bg-[rgb(var(--warn)/0.06)] border-l-[rgb(var(--warn))]',
+              ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
+              : 'bg-[rgb(var(--warn)/0.06)] border-[rgb(var(--warn)/0.40)]',
           )}
         >
           <p className="font-mc-serif text-body text-ink leading-relaxed">

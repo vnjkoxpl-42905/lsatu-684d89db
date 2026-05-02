@@ -205,9 +205,9 @@ function DrawerBlock({ block }: { block: Block }): JSX.Element {
       return (
         <div
           className={cn(
-            'rounded-3 p-3 border-l-2 border-l-[color:var(--border-accent-strong)]',
-            'bg-[rgb(var(--surface)/0.6)]',
-            'border border-[rgb(var(--border)/0.08)]',
+            'rounded-3 p-3',
+            'bg-[rgb(var(--accent)/0.06)]',
+            'border border-[color:var(--border-accent-soft)]',
           )}
         >
           <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">{block.label}</div>
@@ -232,9 +232,9 @@ function DrawerBlock({ block }: { block: Block }): JSX.Element {
       return (
         <div
           className={cn(
-            'rounded-3 p-3 border-l-2 border-l-[rgb(var(--role-premise)/0.50)]',
-            'bg-[rgb(var(--surface)/0.6)]',
-            'border border-[rgb(var(--border)/0.08)]',
+            'rounded-3 p-3',
+            'bg-[rgb(var(--role-premise)/0.06)]',
+            'border border-[rgb(var(--role-premise)/0.30)]',
           )}
         >
           <div className="font-mc-mono text-mono uppercase tracking-wider text-[rgb(var(--role-premise))]">

@@ -260,7 +260,7 @@ export function HardSentenceSection() {
         eyebrow="Hard Sentences"
         title={sec.title}
         description={
-          <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
+          <span className="italic border-l border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
             {sec.hook}
           </span>
         }

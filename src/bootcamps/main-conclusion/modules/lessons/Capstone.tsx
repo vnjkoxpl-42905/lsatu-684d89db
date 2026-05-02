@@ -153,14 +153,14 @@ function M5CapstoneView() {
         <Card
           variant="elev"
           accent
-          className="border-l-4 border-l-[rgb(var(--success)/0.50)] shadow-[0_24px_48px_-12px_rgb(0_0_0/0.6),0_0_24px_-4px_rgb(16_185_129/0.20)]"
+          className="border border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.04)] shadow-[0_24px_48px_-12px_rgb(0_0_0/0.6),0_0_24px_-4px_rgb(16_185_129/0.20)]"
         >
           <Badge tone="success" dot pulse>
             capstone complete
           </Badge>
-          <h1 className="font-mc-serif text-display font-semibold mt-3 leading-tight">M5.8 · {correctCount} / {total}</h1>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 leading-tight">{correctCount} of {total} clean</h1>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
-            Cluster-decomposition results recorded. Trait performance feeds the M6 Diagnostics dashboard.
+            Cluster-decomposition results recorded. Trait performance feeds the Diagnostics dashboard.
           </p>
           <Button onClick={() => { setIndex(0); setPicks({}); setCompleted(false); }} className="mt-3">
             Retake

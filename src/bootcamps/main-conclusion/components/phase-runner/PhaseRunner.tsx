@@ -46,10 +46,10 @@ const PHASE_LABEL: Record<Phase['kind'], string> = {
 
 const ROLE_DEMO_CLASS: Record<Role, string> = {
   conclusion:
-    'bg-[rgb(var(--role-conclusion)/0.16)] border-l-4 border-l-[rgb(var(--role-conclusion))]',
-  premise: 'bg-[rgb(var(--role-premise)/0.14)] border-l-4 border-l-[rgb(var(--role-premise))]',
+    'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)]',
+  premise: 'bg-[rgb(var(--role-premise)/0.14)] border border-[rgb(var(--role-premise)/0.30)]',
   background:
-    'bg-[rgb(var(--role-background)/0.10)] border-l-4 border-l-[rgb(var(--role-background))]',
+    'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)]',
 };
 
 const ROLE_DEMO_TAG: Record<Role, string> = {
@@ -214,7 +214,7 @@ function Hero({
         <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
           {title}
         </h1>
-        <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
+        <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
           {hook}
         </p>
       </div>
@@ -401,7 +401,7 @@ function PhaseBody({
 
     case 'coach':
       return (
-        <Card variant="elev" className="border-l-4 border-l-[color:var(--border-accent-strong)]">
+        <Card variant="elev" className="border border-[color:var(--border-accent-strong)] bg-[rgb(var(--accent)/0.04)]">
           <h2 className="font-mc-serif text-h2 font-semibold text-ink leading-tight">{phase.title}</h2>
           <CoachRow label="Structure map" body={phase.structure_map} />
           <CoachRow label="Core move" body={phase.core_move} />
@@ -485,10 +485,10 @@ function CheckpointPhase({
       {picked ? (
         <div
           className={cn(
-            'mt-4 rounded-3 px-4 py-3 border-l-4',
+            'mt-4 rounded-3 px-4 py-3 border',
             picked.correct
-              ? 'bg-[rgb(var(--success)/0.06)] border-l-[rgb(var(--success))]'
-              : 'bg-[rgb(var(--error)/0.06)] border-l-[rgb(var(--error))]',
+              ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
+              : 'bg-[rgb(var(--error)/0.06)] border-[rgb(var(--error)/0.40)]',
           )}
         >
           <div

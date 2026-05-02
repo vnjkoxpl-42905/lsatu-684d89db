@@ -229,7 +229,7 @@ export function AiTutor({ surfaceId, onClose }: Props) {
                   </ul>
                 </section>
               ) : (
-                <Card variant="elev" className="border-l-4 border-l-[rgb(var(--warn)/0.50)]">
+                <Card variant="elev" className="border border-[rgb(var(--warn)/0.40)] bg-[rgb(var(--warn)/0.05)]">
                   <Badge tone="warn" dot>
                     no template match
                   </Badge>

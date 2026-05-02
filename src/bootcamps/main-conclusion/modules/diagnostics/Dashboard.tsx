@@ -36,11 +36,11 @@ export function Dashboard() {
       <PageHeader eyebrow="Diagnostics" title="Dashboard" compact />
 
       {!seed.attempted ? (
-        <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
-          <Badge tone="warn">awaiting seed</Badge>
+        <Card variant="elev" className="border border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.04)]">
+          <Badge tone="warn">awaiting first attempt</Badge>
           <h2 className="font-mc-serif text-h2 font-semibold mt-2">No data yet</h2>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
-            The dashboard activates after your first M1.13 calibration attempt.{' '}
+            The dashboard activates after your first Lesson 13 calibration attempt.{' '}
             <Link to="/bootcamp/intro-to-lr/lessons/1.13" className="text-mc-accent hover:underline">
               Take the calibration →
             </Link>

@@ -13,7 +13,7 @@ export function Philosophy() {
         eyebrow="Diagnostics"
         title="Philosophy"
         description={
-          <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
+          <span className="italic border-l border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
             A diagnostic is a mirror, not a prison. It tells you what you are doing. It does not tell you
             who you are.
           </span>
@@ -28,12 +28,12 @@ export function Philosophy() {
 
       <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
         We refuse this. The dashboard you are about to see does not produce a number until you have done
-        the work to make a number meaningful. The first time it has anything to say is after the M1.13
-        capstone — which sits at the end of teaching, not the front. We calibrate after we have taught
-        you the thing. Not before.
+        the work to make a number meaningful. The first time it has anything to say is after the
+        Lesson 13 capstone, which sits at the end of teaching, not the front. We calibrate after we
+        have taught you the thing. Not before.
       </p>
 
-      <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
+      <Card variant="elev" className="border border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.04)]">
         <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">What the dashboard shows</div>
         <ul className="mt-2 space-y-1 list-disc pl-5 font-mc-serif text-body-prose text-ink marker:text-ink-faint">
           <li>Module progress rings — how much of each module you have completed.</li>
@@ -44,7 +44,7 @@ export function Philosophy() {
         </ul>
       </Card>
 
-      <Card variant="elev" className="border-l-4 border-l-[rgb(var(--warn)/0.50)]">
+      <Card variant="elev" className="border border-[rgb(var(--warn)/0.40)] bg-[rgb(var(--warn)/0.04)]">
         <div className="font-mc-mono text-mono uppercase tracking-wider text-[rgb(var(--warn))]">What it does not show</div>
         <ul className="mt-2 space-y-1 list-disc pl-5 font-mc-serif text-body-prose text-ink marker:text-ink-faint">
           <li>A score-band prediction. We won’t tell you "your projected LSAT is X" — that is fortune-telling.</li>

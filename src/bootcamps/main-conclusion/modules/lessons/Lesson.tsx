@@ -122,7 +122,7 @@ export function Lesson(): JSX.Element {
           <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
             {data.title}
           </h1>
-          <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
+          <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
             {data.hook}
           </p>
         </div>
@@ -136,7 +136,7 @@ export function Lesson(): JSX.Element {
           }
           if (block.kind === 'callout') {
             return (
-              <aside key={i} className="my-6 px-5 py-4 rounded-3 border-l-2 border-mc-accent bg-[rgb(var(--accent)/0.06)]">
+              <aside key={i} className="my-6 px-5 py-4 rounded-3 border border-mc-accent bg-[rgb(var(--accent)/0.06)]">
                 <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent mb-2">{block.label}</div>
                 <div className="font-mc-serif text-body-prose text-ink" dangerouslySetInnerHTML={{ __html: block.body }} />
               </aside>

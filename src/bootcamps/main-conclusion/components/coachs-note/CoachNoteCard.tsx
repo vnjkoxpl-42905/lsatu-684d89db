@@ -26,7 +26,7 @@ export function CoachNoteCard({ questionId, structure_map, core_move, per_answer
     <Card
       variant="elev"
       data-coach-note={questionId}
-      className="relative space-y-4 border-l-4 border-l-[color:var(--border-accent-strong)]"
+      className="relative space-y-4 border border-[color:var(--border-accent-strong)] bg-[rgb(var(--accent)/0.04)]"
     >
       <div
         aria-hidden="true"

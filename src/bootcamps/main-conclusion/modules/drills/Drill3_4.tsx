@@ -56,7 +56,7 @@ export function Drill3_4() {
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
-      <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
+      <Card variant="elev" className="border border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.04)]">
         <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">Unlock gate</div>
         <p className="font-mc-serif text-body-prose text-ink mt-1">
           Completing this drill (passing all four stages) unlocks the Question Simulator.
@@ -76,7 +76,7 @@ export function Drill3_4() {
       />
 
       {completed ? (
-        <Card variant="elev" className="border-l-4 border-l-[rgb(var(--success)/0.50)]">
+        <Card variant="elev" className="border border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.04)]">
           <Badge tone="success">unlocked</Badge>
           <h2 className="font-mc-serif text-h2 font-semibold mt-2">Simulator unlocked</h2>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
