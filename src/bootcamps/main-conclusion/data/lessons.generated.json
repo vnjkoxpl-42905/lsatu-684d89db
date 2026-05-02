@@ -5,91 +5,222 @@
     "title": "What's an argument?",
     "hook": "Hark, a simple argument. Before we hunt the conclusion, we have to know what kind of beast we're hunting.",
     "prose_blocks": [
-      { "kind": "p", "text": "An argument is the author's viewpoint, opinion, or decision, supported by premises and evidence. It is not just a statement of fact, and it is not just an unsupported opinion. An argument is a claim plus the support that's been built up underneath it." },
-      { "kind": "p", "text": "Imagine you're building a table made of blocks to keep a delicious piece of cake off the floor (you live a very interesting life in this example). Your blocks are solid. They're not going anywhere. These are your <em>premises</em>. Your cake is squishy and fragile. It needs to be held up off the floor because it can't fend for itself. This is your <em>conclusion</em>." },
-      { "kind": "visual-spec", "component": "CakeOnBlocks", "caption": "Tap a premise block. Watch the conclusion fall." },
-      { "kind": "p", "text": "The cake is only safe from the floor because you arranged your blocks exactly right. Conclusions are a little ridiculous like that too. They can't hold themselves up. If you left a conclusion to its own devices, it would turn into a hot mess on the floor. <strong>Conclusions need premises to be worth anything.</strong>" },
-      { "kind": "p", "text": "Every LR argument has, at minimum, a premise and a main conclusion. Some arguments add an intermediate conclusion in between — a middle layer that has its own support and itself supports the main claim. We'll come back to that in Lesson 1.7. For now: claim plus support. That's the beast." },
-      { "kind": "callout", "label": "The three pieces of an argument", "body": "<strong>Main Conclusion</strong> — the primary point the author is trying to convey.<br/><strong>Premise</strong> — the evidence that directly supports the conclusion.<br/><strong>Intermediate Conclusion</strong> — a statement supported by premises that itself supports the main conclusion. Optional. A link in the chain." },
-      { "kind": "example", "tag": "Worked example — Monica claimed the dinosaurs (logicalreasoningfoundation prototype)", "body": "&ldquo;Monica claimed to have caused the extinction of the dinosaurs, and everything Monica claims is true. Therefore, Monica caused the extinction of the dinosaurs.&rdquo;<br/><br/><strong>Premises:</strong> Monica claimed it. Everything Monica claims is true.<br/><strong>Conclusion:</strong> Monica caused the extinction.<br/><br/>The conclusion is silly because the second premise is silly — but accept the premises and the structure works. On the LSAT, you accept the premises. Push back on the <em>conclusion</em>, not the support." },
-      { "kind": "p", "text": "One more thing before we move on. Watch where the conclusion is hiding. School taught you it goes at the end. The LSAT writers know that. In more than 90% of Main Conclusion questions, the conclusion is somewhere else. We give that pattern a name in Lesson 1.4 — the [[NT-Upside-Down-Argument]]Upside Down Argument[[/]] — and once you can spot it, the question type collapses into a recognition exercise." }
+      {
+        "kind": "p",
+        "text": "An argument is the author's viewpoint, opinion, or decision, supported by premises and evidence. It is not just a statement of fact, and it is not just an unsupported opinion. An argument is a claim plus the support that's been built up underneath it."
+      },
+      {
+        "kind": "p",
+        "text": "Imagine you're building a table made of blocks to keep a delicious piece of cake off the floor (you live a very interesting life in this example). Your blocks are solid. They're not going anywhere. These are your <em>premises</em>. Your cake is squishy and fragile. It needs to be held up off the floor because it can't fend for itself. This is your <em>conclusion</em>."
+      },
+      {
+        "kind": "visual-spec",
+        "component": "CakeOnBlocks",
+        "caption": "Tap a premise block. Watch the conclusion fall."
+      },
+      {
+        "kind": "p",
+        "text": "The cake is only safe from the floor because you arranged your blocks exactly right. Conclusions are a little ridiculous like that too. They can't hold themselves up. If you left a conclusion to its own devices, it would turn into a hot mess on the floor. <strong>Conclusions need premises to be worth anything.</strong>"
+      },
+      {
+        "kind": "p",
+        "text": "Every LR argument has, at minimum, a premise and a main conclusion. Some arguments add an intermediate conclusion in between \u2014 a middle layer that has its own support and itself supports the main claim. We'll come back to that in Lesson 1.7. For now: claim plus support. That's the beast."
+      },
+      {
+        "kind": "callout",
+        "label": "The three pieces of an argument",
+        "body": "<strong>Main Conclusion</strong> \u2014 the primary point the author is trying to convey.<br/><strong>Premise</strong> \u2014 the evidence that directly supports the conclusion.<br/><strong>Intermediate Conclusion</strong> \u2014 a statement supported by premises that itself supports the main conclusion. Optional. A link in the chain."
+      },
+      {
+        "kind": "example",
+        "tag": "Worked example \u2014 Monica claimed the dinosaurs (logicalreasoningfoundation prototype)",
+        "body": "&ldquo;Monica claimed to have caused the extinction of the dinosaurs, and everything Monica claims is true. Therefore, Monica caused the extinction of the dinosaurs.&rdquo;<br/><br/><strong>Premises:</strong> Monica claimed it. Everything Monica claims is true.<br/><strong>Conclusion:</strong> Monica caused the extinction.<br/><br/>The conclusion is silly because the second premise is silly \u2014 but accept the premises and the structure works. On the LSAT, you accept the premises. Push back on the <em>conclusion</em>, not the support."
+      },
+      {
+        "kind": "p",
+        "text": "One more thing before we move on. Watch where the conclusion is hiding. School taught you it goes at the end. The LSAT writers know that. In more than 90% of Main Conclusion questions, the conclusion is somewhere else. We give that pattern a name in Lesson 1.4 \u2014 the [[NT-Upside-Down-Argument]]Upside Down Argument[[/]] \u2014 and once you can spot it, the question type collapses into a recognition exercise."
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-Upside-Down-Argument", "appears_in_paragraph": 6 }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-Upside-Down-Argument",
+        "appears_in_paragraph": 6
+      }
+    ],
     "reference_callouts": [
-      { "reference_id": "MC-REF-2.B", "label": "2-Part Conclusion Check →" },
-      { "reference_id": "MC-REF-2.A", "label": "Indicator Vault →" }
+      {
+        "reference_id": "MC-REF-2.B",
+        "label": "2-Part Conclusion Check \u2192"
+      },
+      {
+        "reference_id": "MC-REF-2.A",
+        "label": "Indicator Vault \u2192"
+      }
     ],
     "checkpoint": {
       "prompt": "Which is the conclusion?",
       "options": [
-        { "id": "A", "text": "Monica claimed to have caused the extinction of the dinosaurs.", "correct": false, "reveal": "This is a premise. The argument treats it as given (no support is offered for it)." },
-        { "id": "B", "text": "Everything Monica claims is true.", "correct": false, "reveal": "Also a premise. Notice nothing in the argument tries to defend this claim — the author just states it." },
-        { "id": "C", "text": "Monica caused the extinction of the dinosaurs.", "correct": true, "reveal": "This is the conclusion — the supported claim. Both prior sentences point at it. The 'Therefore' is the giveaway, but the support test is what confirms it." }
+        {
+          "id": "A",
+          "text": "Monica claimed to have caused the extinction of the dinosaurs.",
+          "correct": false,
+          "reveal": "This is a premise. The argument treats it as given (no support is offered for it)."
+        },
+        {
+          "id": "B",
+          "text": "Everything Monica claims is true.",
+          "correct": false,
+          "reveal": "Also a premise. Notice nothing in the argument tries to defend this claim \u2014 the author just states it."
+        },
+        {
+          "id": "C",
+          "text": "Monica caused the extinction of the dinosaurs.",
+          "correct": true,
+          "reveal": "This is the conclusion \u2014 the supported claim. Both prior sentences point at it. The 'Therefore' is the giveaway, but the support test is what confirms it."
+        }
       ]
     },
     "sources": [
       "Notes/Logical_Reasoning_Notes_Final.pdf (S, voice anchor: HARK A SIMPLE ARGUMENT, cake-on-blocks, claimy judgments)",
       "Notes/Argument Core & Periph_dup1.pdf (A, definitions)",
       "Notes/Lecture 1 Notes LR Arguments Foundation (1)_dup1.pdf (S, three-piece structure)",
-      "Curriculum/Netlify/index (3).html — logicalreasoningfoundation prototype (Monica example, Gap Simulator)"
+      "Curriculum/Netlify/index (3).html \u2014 logicalreasoningfoundation prototype (Monica example, Gap Simulator)"
     ]
   },
-
   {
     "id": "MC-LSN-1.2",
     "number": "1.2",
     "title": "Premises and conclusions: what each one is",
     "hook": "Premises do the heavy lifting. Conclusions are the claimy judgments that need defending.",
     "prose_blocks": [
-      { "kind": "p", "text": "Premises are statements of fact, the evidence the argument runs on. They describe how the world is. On the LSAT, you accept the premises as true. Don't push back on them. Don't question them. Build on them." },
-      { "kind": "p", "text": "Premises are the building blocks. They are the infrastructure. They do not need anything to support them, and you should not waste time arguing about whether they are true. The correct answer almost never questions the truth of a premise. Instead, your job is to figure out how the premises fit together and where they are aimed." },
-      { "kind": "p", "text": "Conclusions are different. Conclusions are the claimy judgments the author makes. They are the part of the argument that goes out on a limb. The author takes what's been given in the premises and infers something new in the conclusion. The conclusion is where the action is. It is the part you should be most suspicious of. Ask whether it is too strong. Ask whether it goes beyond what the premises actually let you say." },
-      { "kind": "p", "text": "Conclusions are not necessarily ironclad. The premises are usually not arranged well enough to fully prove them. That gap between premise and conclusion is exactly what most LR question types live inside." },
-      { "kind": "callout", "label": "The premise/conclusion distinction in one line", "body": "<strong>Premise</strong> = &ldquo;Here's what's true.&rdquo; (You accept it.)<br/><strong>Conclusion</strong> = &ldquo;Here's what the author thinks follows.&rdquo; (You question it.)" },
-      { "kind": "example", "tag": "Worked example — Monica claimed dinosaurs", "body": "&ldquo;Monica claimed to have caused the extinction of the dinosaurs, and everything Monica claims is true. Therefore, Monica caused the extinction of the dinosaurs.&rdquo;<br/><br/><strong>Premises:</strong> Monica claimed it. Everything Monica claims is true.<br/><strong>Conclusion:</strong> Monica caused the extinction.<br/><br/>Notice that the silliness lives in the premises. You accept them anyway. The job is to find the supported claim, not to litigate whether dinosaurs and Monica are on speaking terms." }
+      {
+        "kind": "p",
+        "text": "Premises are statements of fact, the evidence the argument runs on. They describe how the world is. On the LSAT, you accept the premises as true. Don't push back on them. Don't question them. Build on them."
+      },
+      {
+        "kind": "p",
+        "text": "Premises are the building blocks. They are the infrastructure. They do not need anything to support them, and you should not waste time arguing about whether they are true. The correct answer almost never questions the truth of a premise. Instead, your job is to figure out how the premises fit together and where they are aimed."
+      },
+      {
+        "kind": "p",
+        "text": "Conclusions are different. Conclusions are the claimy judgments the author makes. They are the part of the argument that goes out on a limb. The author takes what's been given in the premises and infers something new in the conclusion. The conclusion is where the action is. It is the part you should be most suspicious of. Ask whether it is too strong. Ask whether it goes beyond what the premises actually let you say."
+      },
+      {
+        "kind": "p",
+        "text": "Conclusions are not necessarily ironclad. The premises are usually not arranged well enough to fully prove them. That gap between premise and conclusion is exactly what most LR question types live inside."
+      },
+      {
+        "kind": "callout",
+        "label": "The premise/conclusion distinction in one line",
+        "body": "<strong>Premise</strong> = &ldquo;Here's what's true.&rdquo; (You accept it.)<br/><strong>Conclusion</strong> = &ldquo;Here's what the author thinks follows.&rdquo; (You question it.)"
+      },
+      {
+        "kind": "example",
+        "tag": "Worked example \u2014 Monica claimed dinosaurs",
+        "body": "&ldquo;Monica claimed to have caused the extinction of the dinosaurs, and everything Monica claims is true. Therefore, Monica caused the extinction of the dinosaurs.&rdquo;<br/><br/><strong>Premises:</strong> Monica claimed it. Everything Monica claims is true.<br/><strong>Conclusion:</strong> Monica caused the extinction.<br/><br/>Notice that the silliness lives in the premises. You accept them anyway. The job is to find the supported claim, not to litigate whether dinosaurs and Monica are on speaking terms."
+      }
     ],
     "named_tool_callouts": [],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.A", "label": "Indicator Vault →" }],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.A",
+        "label": "Indicator Vault \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "On the LSAT, what should you do with a premise that sounds wrong?",
       "options": [
-        { "id": "A", "text": "Push back. If the premise is false, the argument can't work.", "correct": false, "reveal": "Not on the LSAT. Premise truth is given. The whole argumentative game is about how the premises fit together — not whether they are world-true." },
-        { "id": "B", "text": "Accept it as given and move on.", "correct": true, "reveal": "Yes. You accept the premises and look for the move the author makes from them to the conclusion. That's the part that's contestable." },
-        { "id": "C", "text": "Skip the question — broken premise means broken argument.", "correct": false, "reveal": "No. A weird-sounding premise (Monica, fish made of light, microphones drinking coffee) is intentional. It keeps you from importing outside knowledge." }
+        {
+          "id": "A",
+          "text": "Push back. If the premise is false, the argument can't work.",
+          "correct": false,
+          "reveal": "Not on the LSAT. Premise truth is given. The whole argumentative game is about how the premises fit together \u2014 not whether they are world-true."
+        },
+        {
+          "id": "B",
+          "text": "Accept it as given and move on.",
+          "correct": true,
+          "reveal": "Yes. You accept the premises and look for the move the author makes from them to the conclusion. That's the part that's contestable."
+        },
+        {
+          "id": "C",
+          "text": "Skip the question \u2014 broken premise means broken argument.",
+          "correct": false,
+          "reveal": "No. A weird-sounding premise (Monica, fish made of light, microphones drinking coffee) is intentional. It keeps you from importing outside knowledge."
+        }
       ]
     },
     "sources": [
       "Notes/Logical_Reasoning_Notes_Final.pdf (S, premises-as-blocks framing, claimy judgments)",
       "Notes/Lecture 1 Notes LR Arguments Foundation (1)_dup1.pdf (S, definitions)",
-      "Curriculum/Netlify/index (3).html — logicalreasoningfoundation prototype (Monica example)"
+      "Curriculum/Netlify/index (3).html \u2014 logicalreasoningfoundation prototype (Monica example)"
     ]
   },
-
   {
     "id": "MC-LSN-1.3",
     "number": "1.3",
     "title": "Indicator words: the visible signposts",
     "hook": "The test makers leave breadcrumbs. Some are loud. Some are quiet. Some are traps.",
     "prose_blocks": [
-      { "kind": "p", "text": "LSAC writers use a small set of words to mark the role of each claim in an argument. Memorize these and your eyes will start picking them up automatically. Six categories matter on Main Conclusion questions. We'll do the deep dive in the Reference module — here are the headlines." },
-      { "kind": "callout", "label": "The six categories at a glance", "body": "<strong>Conclusion indicators</strong> — so, thus, hence, therefore, it follows, as a result, consequently, this shows that.<br/><strong>Premise indicators ([[NT-FABS]]FABS[[/]])</strong> — for, after all, because, since.<br/><strong>Pivot indicators</strong> — but, yet, however.<br/><strong>Opinion indicators</strong> — clearly, obviously, evidently, ought, must, should, probably.<br/><strong>Opposing-viewpoint indicators</strong> — some people say, it's commonly believed, some economists believe, some biologists.<br/><strong>Concession indicators</strong> — although, while, despite, granted, naturally." },
-      { "kind": "p", "text": "One warning before we move on: indicator words are helpful but not sufficient. The test makers know you've memorized this list. Sometimes they leave the indicator out entirely. Sometimes they bury a true conclusion under a fake &ldquo;Therefore&rdquo; that's actually marking an intermediate conclusion. Treat indicators as a clue, not a verdict." },
-      { "kind": "p", "text": "Lesson 1.11 introduces the verification step every claim has to pass before you call it the main conclusion: the [[NT-2-Part-Conclusion-Check]]2-Part Conclusion Check[[/]]. Get familiar with that one. It's the one tool that doesn't lie." }
+      {
+        "kind": "p",
+        "text": "LSAC writers use a small set of words to mark the role of each claim in an argument. Memorize these and your eyes will start picking them up automatically. Six categories matter on Main Conclusion questions. We'll do the deep dive in the Reference module \u2014 here are the headlines."
+      },
+      {
+        "kind": "callout",
+        "label": "The six categories at a glance",
+        "body": "<strong>Conclusion indicators</strong> \u2014 so, thus, hence, therefore, it follows, as a result, consequently, this shows that.<br/><strong>Premise indicators ([[NT-FABS]]FABS[[/]])</strong> \u2014 for, after all, because, since.<br/><strong>Pivot indicators</strong> \u2014 but, yet, however.<br/><strong>Opinion indicators</strong> \u2014 clearly, obviously, evidently, ought, must, should, probably.<br/><strong>Opposing-viewpoint indicators</strong> \u2014 some people say, it's commonly believed, some economists believe, some biologists.<br/><strong>Concession indicators</strong> \u2014 although, while, despite, granted, naturally."
+      },
+      {
+        "kind": "p",
+        "text": "One warning before we move on: indicator words are helpful but not sufficient. The test makers know you've memorized this list. Sometimes they leave the indicator out entirely. Sometimes they bury a true conclusion under a fake &ldquo;Therefore&rdquo; that's actually marking an intermediate conclusion. Treat indicators as a clue, not a verdict."
+      },
+      {
+        "kind": "p",
+        "text": "Lesson 1.11 introduces the verification step every claim has to pass before you call it the main conclusion: the [[NT-2-Part-Conclusion-Check]]2-Part Conclusion Check[[/]]. Get familiar with that one. It's the one tool that doesn't lie."
+      }
     ],
     "named_tool_callouts": [
-      { "tool_id": "NT-FABS", "appears_in_paragraph": 2 },
-      { "tool_id": "NT-2-Part-Conclusion-Check", "appears_in_paragraph": 4 }
+      {
+        "tool_id": "NT-FABS",
+        "appears_in_paragraph": 2
+      },
+      {
+        "tool_id": "NT-2-Part-Conclusion-Check",
+        "appears_in_paragraph": 4
+      }
     ],
     "reference_callouts": [
-      { "reference_id": "MC-REF-2.A", "label": "Indicator Vault (full list) →" },
-      { "reference_id": "MC-REF-2.C", "label": "FABS deep dive →" }
+      {
+        "reference_id": "MC-REF-2.A",
+        "label": "Indicator Vault (full list) \u2192"
+      },
+      {
+        "reference_id": "MC-REF-2.C",
+        "label": "FABS deep dive \u2192"
+      }
     ],
     "checkpoint": {
       "prompt": "Which word marks support, not the conclusion?",
       "options": [
-        { "id": "A", "text": "Therefore", "correct": false, "reveal": "Therefore is a conclusion indicator. What follows is a candidate conclusion (with the 2-Part Check caveat from Lesson 1.11)." },
-        { "id": "B", "text": "After all", "correct": true, "reveal": "Yes. After all is in FABS — premise/support territory. The clause it introduces is evidence; the conclusion sits next door." },
-        { "id": "C", "text": "However", "correct": false, "reveal": "However is a pivot. It marks a turn — the author is about to push back. The author's claim lives on the far side of the pivot." }
+        {
+          "id": "A",
+          "text": "Therefore",
+          "correct": false,
+          "reveal": "Therefore is a conclusion indicator. What follows is a candidate conclusion (with the 2-Part Check caveat from Lesson 1.11)."
+        },
+        {
+          "id": "B",
+          "text": "After all",
+          "correct": true,
+          "reveal": "Yes. After all is in FABS \u2014 premise/support territory. The clause it introduces is evidence; the conclusion sits next door."
+        },
+        {
+          "id": "C",
+          "text": "However",
+          "correct": false,
+          "reveal": "However is a pivot. It marks a turn \u2014 the author is about to push back. The author's claim lives on the far side of the pivot."
+        }
       ]
     },
     "sources": [
@@ -98,27 +229,67 @@
       "Notes/Keyword.pdf (B, FABS callout)"
     ]
   },
-
   {
     "id": "MC-LSN-1.4",
     "number": "1.4",
     "title": "Main Conclusion: the most salvageable question type ever",
     "hook": "Find the conclusion. Pick the answer that matches it. That's the whole job. Now, here's why it's hard anyway.",
     "prose_blocks": [
-      { "kind": "p", "text": "Main Conclusion questions ask one straightforward thing: what is the author's main point? Find that, then pick the answer choice that restates it. There is no logical trick to learn. There is no flaw to spot. There is just a stimulus, and somewhere inside it, the conclusion. Once you find it, you've won. <strong>This is the most salvageable question type ever.</strong>" },
-      { "kind": "p", "text": "The catch is that LSAC has to make this difficult somehow, so they hide the conclusion. They almost never put it as the final claim of the stimulus. That feels wrong, because in school you were taught that conclusions go at the end. On the LSAT, in more than 90% of Main Conclusion questions, the conclusion shows up earlier and the evidence comes after. We call this the [[NT-Upside-Down-Argument]]Upside Down Argument[[/]]." },
-      { "kind": "p", "text": "If you can recognize the Upside Down Argument and get familiar with the two places they typically stash the conclusion, the question type collapses into a recognition exercise. <strong>It's also the most lovable question type ever.</strong>" },
-      { "kind": "callout", "label": "The two stashes (where the conclusion almost always lives)", "body": "<strong>1. First sentence.</strong> If the opening sentence sounds like an author opinion, it is almost certainly the conclusion. Verify that the rest of the paragraph supports it.<br/><br/><strong>2. After a Pivot (But / Yet / However).</strong> If the opening sentence sounds like an attribution to someone else (&ldquo;Some people argue...&rdquo;), expect a pivot, and the author's claim that comes after the pivot is the conclusion." },
-      { "kind": "p", "text": "Don't over-complicate this. Once you've identified a candidate, run it through the verification check (Lesson 1.11) and move on." }
+      {
+        "kind": "p",
+        "text": "Main Conclusion questions ask one straightforward thing: what is the author's main point? Find that, then pick the answer choice that restates it. There is no logical trick to learn. There is no flaw to spot. There is just a stimulus, and somewhere inside it, the conclusion. Once you find it, you've won. <strong>This is the most salvageable question type ever.</strong>"
+      },
+      {
+        "kind": "p",
+        "text": "The catch is that LSAC has to make this difficult somehow, so they hide the conclusion. They almost never put it as the final claim of the stimulus. That feels wrong, because in school you were taught that conclusions go at the end. On the LSAT, in more than 90% of Main Conclusion questions, the conclusion shows up earlier and the evidence comes after. We call this the [[NT-Upside-Down-Argument]]Upside Down Argument[[/]]."
+      },
+      {
+        "kind": "p",
+        "text": "If you can recognize the Upside Down Argument and get familiar with the two places they typically stash the conclusion, the question type collapses into a recognition exercise. <strong>It's also the most lovable question type ever.</strong>"
+      },
+      {
+        "kind": "callout",
+        "label": "The two stashes (where the conclusion almost always lives)",
+        "body": "<strong>1. First sentence.</strong> If the opening sentence sounds like an author opinion, it is almost certainly the conclusion. Verify that the rest of the paragraph supports it.<br/><br/><strong>2. After a Pivot (But / Yet / However).</strong> If the opening sentence sounds like an attribution to someone else (&ldquo;Some people argue...&rdquo;), expect a pivot, and the author's claim that comes after the pivot is the conclusion."
+      },
+      {
+        "kind": "p",
+        "text": "Don't over-complicate this. Once you've identified a candidate, run it through the verification check (Lesson 1.11) and move on."
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-Upside-Down-Argument", "appears_in_paragraph": 2 }],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.D", "label": "Stimulus Tendencies (heat map) →" }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-Upside-Down-Argument",
+        "appears_in_paragraph": 2
+      }
+    ],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.D",
+        "label": "Stimulus Tendencies (heat map) \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "If the final sentence of a Main Conclusion stimulus sounds confident and verdict-y, what should you do?",
       "options": [
-        { "id": "A", "text": "Pick it. Conclusions go at the end.", "correct": false, "reveal": "Last Claim Trap. School taught you that, and the test makers count on it. The final sentence is the conclusion less than 10% of the time on this question type." },
-        { "id": "B", "text": "Treat it as a candidate, then run the 2-Part Conclusion Check.", "correct": true, "reveal": "Right. It's a candidate, not a verdict. Both parts of the check have to land before you commit." },
-        { "id": "C", "text": "Skip it. Conclusions never come last on the LSAT.", "correct": false, "reveal": "&ldquo;Never&rdquo; is too strong. ~10% of Main Conclusion stimuli put the conclusion last. Don't auto-rule it out — just don't auto-accept it either." }
+        {
+          "id": "A",
+          "text": "Pick it. Conclusions go at the end.",
+          "correct": false,
+          "reveal": "Last Claim Trap. School taught you that, and the test makers count on it. The final sentence is the conclusion less than 10% of the time on this question type."
+        },
+        {
+          "id": "B",
+          "text": "Treat it as a candidate, then run the 2-Part Conclusion Check.",
+          "correct": true,
+          "reveal": "Right. It's a candidate, not a verdict. Both parts of the check have to land before you commit."
+        },
+        {
+          "id": "C",
+          "text": "Skip it. Conclusions never come last on the LSAT.",
+          "correct": false,
+          "reveal": "&ldquo;Never&rdquo; is too strong. ~10% of Main Conclusion stimuli put the conclusion last. Don't auto-rule it out \u2014 just don't auto-accept it either."
+        }
       ]
     },
     "sources": [
@@ -127,28 +298,67 @@
       "Notes/Main conclusion (recap)_dup1.pdf (S, FABS recap)"
     ]
   },
-
   {
     "id": "MC-LSN-1.5",
     "number": "1.5",
     "title": "Hiding spot 1: the first sentence",
-    "hook": "Sometimes they hide the conclusion right where you're not looking — at the beginning.",
+    "hook": "Sometimes they hide the conclusion right where you're not looking \u2014 at the beginning.",
     "prose_blocks": [
-      { "kind": "p", "text": "The first stash is the easiest to learn but the hardest to trust. The first sentence of the stimulus is, more often than you'd expect, the main conclusion. The structure looks like this:" },
-      { "kind": "callout", "label": "Structure pattern", "body": "Sentence 1: <strong>Conclusion</strong> (sounds like author opinion).<br/>Sentence 2 onward: Support, support, maybe a concession, more support." },
-      { "kind": "p", "text": "Your job in this configuration is to read the first sentence, ask yourself &ldquo;does this sound like the author's opinion?&rdquo;, and if the answer is yes, treat it as the candidate conclusion. Then verify by checking the rest of the paragraph: do the later sentences read like reasons that defend that opening claim?" },
-      { "kind": "p", "text": "Look for opinion language in the first sentence. Words like <em>should</em>, <em>ought</em>, <em>must</em>, <em>essential</em>, <em>likely</em>, <em>misguided</em>, or any verdict that goes beyond bare fact. If the first sentence is an opinion, you've probably already found the conclusion." },
-      { "kind": "example", "tag": "Worked example — vision test (PT-style, real first-sentence conclusion)", "body": "&ldquo;The vision test for obtaining a driver's license should not be limited to measuring the adequacy of vision in daylight conditions, as is the current practice. Many people whose daylight vision is adequate have night vision that is inadequate for safe night driving. Most car accidents occur at night, and inadequate vision plays a role in 80 percent of these accidents.&rdquo;<br/><br/><strong>Conclusion:</strong> Sentence 1. (Author's recommendation, marked by &ldquo;should not.&rdquo;)<br/><strong>Support:</strong> Sentences 2 and 3 (facts about night vision).<br/><strong>Structure map:</strong> Conclusion → Support → Support." },
-      { "kind": "p", "text": "Drill 3.3 (First-Sentence Reading Drill) is exactly nine arguments where the first sentence is the conclusion. No scoring. The skill is pre-conscious recognition: feel the pattern until it sticks." }
+      {
+        "kind": "p",
+        "text": "The first stash is the easiest to learn but the hardest to trust. The first sentence of the stimulus is, more often than you'd expect, the main conclusion. The structure looks like this:"
+      },
+      {
+        "kind": "callout",
+        "label": "Structure pattern",
+        "body": "Sentence 1: <strong>Conclusion</strong> (sounds like author opinion).<br/>Sentence 2 onward: Support, support, maybe a concession, more support."
+      },
+      {
+        "kind": "p",
+        "text": "Your job in this configuration is to read the first sentence, ask yourself &ldquo;does this sound like the author's opinion?&rdquo;, and if the answer is yes, treat it as the candidate conclusion. Then verify by checking the rest of the paragraph: do the later sentences read like reasons that defend that opening claim?"
+      },
+      {
+        "kind": "p",
+        "text": "Look for opinion language in the first sentence. Words like <em>should</em>, <em>ought</em>, <em>must</em>, <em>essential</em>, <em>likely</em>, <em>misguided</em>, or any verdict that goes beyond bare fact. If the first sentence is an opinion, you've probably already found the conclusion."
+      },
+      {
+        "kind": "example",
+        "tag": "Worked example \u2014 vision test (PT-style, real first-sentence conclusion)",
+        "body": "&ldquo;The vision test for obtaining a driver's license should not be limited to measuring the adequacy of vision in daylight conditions, as is the current practice. Many people whose daylight vision is adequate have night vision that is inadequate for safe night driving. Most car accidents occur at night, and inadequate vision plays a role in 80 percent of these accidents.&rdquo;<br/><br/><strong>Conclusion:</strong> Sentence 1. (Author's recommendation, marked by &ldquo;should not.&rdquo;)<br/><strong>Support:</strong> Sentences 2 and 3 (facts about night vision).<br/><strong>Structure map:</strong> Conclusion \u2192 Support \u2192 Support."
+      },
+      {
+        "kind": "p",
+        "text": "Drill 3.3 (First-Sentence Reading Drill) is exactly nine arguments where the first sentence is the conclusion. No scoring. The skill is pre-conscious recognition: feel the pattern until it sticks."
+      }
     ],
     "named_tool_callouts": [],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.E", "label": "Five Types of Conclusions →" }],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.E",
+        "label": "Five Types of Conclusions \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "What's the strongest signal that the first sentence is the conclusion?",
       "options": [
-        { "id": "A", "text": "It includes opinion language (should / ought / must / essential / likely / misguided).", "correct": true, "reveal": "Yes. Opinion language is the loudest tell. Verify by checking the rest of the paragraph reads as support, but the opening verdict word is your first clue." },
-        { "id": "B", "text": "It's the longest sentence in the stimulus.", "correct": false, "reveal": "Sentence length isn't a signal. Some conclusions are short and punchy; some opening setups are long. Look at role, not length." },
-        { "id": "C", "text": "It contains a Therefore or Thus.", "correct": false, "reveal": "Conclusion indicators almost never appear in the first sentence — those words point backward. The first-sentence conclusion is recognized by opinion language and by what supports it, not by an explicit indicator." }
+        {
+          "id": "A",
+          "text": "It includes opinion language (should / ought / must / essential / likely / misguided).",
+          "correct": true,
+          "reveal": "Yes. Opinion language is the loudest tell. Verify by checking the rest of the paragraph reads as support, but the opening verdict word is your first clue."
+        },
+        {
+          "id": "B",
+          "text": "It's the longest sentence in the stimulus.",
+          "correct": false,
+          "reveal": "Sentence length isn't a signal. Some conclusions are short and punchy; some opening setups are long. Look at role, not length."
+        },
+        {
+          "id": "C",
+          "text": "It contains a Therefore or Thus.",
+          "correct": false,
+          "reveal": "Conclusion indicators almost never appear in the first sentence \u2014 those words point backward. The first-sentence conclusion is recognized by opinion language and by what supports it, not by an explicit indicator."
+        }
       ]
     },
     "sources": [
@@ -157,30 +367,67 @@
       "Notes/Main Conclusion Synopsis.pdf (S, the two stashes)"
     ]
   },
-
   {
     "id": "MC-LSN-1.6",
     "number": "1.6",
     "title": "Hiding spot 2: after the pivot (Rebuttal-styled conclusion)",
     "hook": "When somebody else speaks first, the author is about to disagree. That disagreement is the conclusion.",
     "prose_blocks": [
-      { "kind": "p", "text": "The second stash is the rebuttal pattern. Here, the stimulus opens with someone else's view — a &ldquo;Some people say...&rdquo; or a direct attribution — and the author then pivots and says, in effect, they're wrong. The author's pivot-and-counter is the main conclusion." },
-      { "kind": "callout", "label": "Structure pattern", "body": "Sentence 1: Opposing viewpoint / attribution. (&ldquo;Some people argue...&rdquo;)<br/>Pivot word: <strong>But / Yet / However.</strong><br/>Sentence 2: <strong>Conclusion</strong> (the author's counter-claim).<br/>Sentence 3 onward: Support for the author's claim." },
-      { "kind": "p", "text": "The rebuttal pattern dominates two question types: Main Conclusion and Role. Get the feel for it: the early attribution, the pivot, the author stepping in to say &ldquo;no, here's what's actually true.&rdquo; That sentiment that sounds like &ldquo;they're wrong&rdquo; is your conclusion." },
-      { "kind": "example", "tag": "Worked example — the tomato", "body": "&ldquo;Tomatoes grow on a vine to about the size of a baseball. Most people believe that tomatoes are vegetables, since tomatoes are often found in salads and savory dishes. But they are wrong. After all, although tomatoes are never found in fruit salads, tomatoes have seeds and so they are fruit.&rdquo;<br/><br/><strong>Background:</strong> Tomatoes grow on a vine, baseball-sized.<br/><strong>Opposing conclusion:</strong> Most people believe tomatoes are vegetables.<br/><strong>Pivot:</strong> &ldquo;But.&rdquo;<br/><strong>Main Conclusion:</strong> Tomatoes are not vegetables. (Author's counter.)<br/><strong>Intermediate Conclusion:</strong> Tomatoes are fruit.<br/><strong>Premise:</strong> Tomatoes have seeds." },
-      { "kind": "p", "text": "One warning. The rebuttal often uses pronouns to point back at what was just said: <em>this position</em>, <em>they</em>, <em>such laws</em>. When you state the conclusion to yourself, replace the pronoun with what it actually refers to. We'll drill this in Lesson 1.10." }
+      {
+        "kind": "p",
+        "text": "The second stash is the rebuttal pattern. Here, the stimulus opens with someone else's view \u2014 a &ldquo;Some people say...&rdquo; or a direct attribution \u2014 and the author then pivots and says, in effect, they're wrong. The author's pivot-and-counter is the main conclusion."
+      },
+      {
+        "kind": "callout",
+        "label": "Structure pattern",
+        "body": "Sentence 1: Opposing viewpoint / attribution. (&ldquo;Some people argue...&rdquo;)<br/>Pivot word: <strong>But / Yet / However.</strong><br/>Sentence 2: <strong>Conclusion</strong> (the author's counter-claim).<br/>Sentence 3 onward: Support for the author's claim."
+      },
+      {
+        "kind": "p",
+        "text": "The rebuttal pattern dominates two question types: Main Conclusion and Role. Get the feel for it: the early attribution, the pivot, the author stepping in to say &ldquo;no, here's what's actually true.&rdquo; That sentiment that sounds like &ldquo;they're wrong&rdquo; is your conclusion."
+      },
+      {
+        "kind": "example",
+        "tag": "Worked example \u2014 the tomato",
+        "body": "&ldquo;Tomatoes grow on a vine to about the size of a baseball. Most people believe that tomatoes are vegetables, since tomatoes are often found in salads and savory dishes. But they are wrong. After all, although tomatoes are never found in fruit salads, tomatoes have seeds and so they are fruit.&rdquo;<br/><br/><strong>Background:</strong> Tomatoes grow on a vine, baseball-sized.<br/><strong>Opposing conclusion:</strong> Most people believe tomatoes are vegetables.<br/><strong>Pivot:</strong> &ldquo;But.&rdquo;<br/><strong>Main Conclusion:</strong> Tomatoes are not vegetables. (Author's counter.)<br/><strong>Intermediate Conclusion:</strong> Tomatoes are fruit.<br/><strong>Premise:</strong> Tomatoes have seeds."
+      },
+      {
+        "kind": "p",
+        "text": "One warning. The rebuttal often uses pronouns to point back at what was just said: <em>this position</em>, <em>they</em>, <em>such laws</em>. When you state the conclusion to yourself, replace the pronoun with what it actually refers to. We'll drill this in Lesson 1.10."
+      }
     ],
     "named_tool_callouts": [],
     "reference_callouts": [
-      { "reference_id": "MC-REF-2.F", "label": "Rebuttal Structure (full breakdown) →" },
-      { "reference_id": "MC-REF-2.H", "label": "Pronoun & Reference Library →" }
+      {
+        "reference_id": "MC-REF-2.F",
+        "label": "Rebuttal Structure (full breakdown) \u2192"
+      },
+      {
+        "reference_id": "MC-REF-2.H",
+        "label": "Pronoun & Reference Library \u2192"
+      }
     ],
     "checkpoint": {
       "prompt": "In the tomato stimulus, what is the main conclusion?",
       "options": [
-        { "id": "A", "text": "Most people believe that tomatoes are vegetables.", "correct": false, "reveal": "That's the opposing conclusion — what the author is rejecting. The pivot &ldquo;But&rdquo; is your tell that this isn't the author's claim." },
-        { "id": "B", "text": "Tomatoes are not vegetables.", "correct": true, "reveal": "Yes. Implicit in &ldquo;But they are wrong.&rdquo; The pronoun-replacement step from Lesson 1.10 makes this explicit: replace &ldquo;they are wrong&rdquo; with &ldquo;most people are wrong about tomatoes being vegetables&rdquo; → tomatoes are not vegetables." },
-        { "id": "C", "text": "Tomatoes have seeds.", "correct": false, "reveal": "That's a premise. It supports the intermediate conclusion (tomatoes are fruit), which in turn supports the main conclusion." }
+        {
+          "id": "A",
+          "text": "Most people believe that tomatoes are vegetables.",
+          "correct": false,
+          "reveal": "That's the opposing conclusion \u2014 what the author is rejecting. The pivot &ldquo;But&rdquo; is your tell that this isn't the author's claim."
+        },
+        {
+          "id": "B",
+          "text": "Tomatoes are not vegetables.",
+          "correct": true,
+          "reveal": "Yes. Implicit in &ldquo;But they are wrong.&rdquo; The pronoun-replacement step from Lesson 1.10 makes this explicit: replace &ldquo;they are wrong&rdquo; with &ldquo;most people are wrong about tomatoes being vegetables&rdquo; \u2192 tomatoes are not vegetables."
+        },
+        {
+          "id": "C",
+          "text": "Tomatoes have seeds.",
+          "correct": false,
+          "reveal": "That's a premise. It supports the intermediate conclusion (tomatoes are fruit), which in turn supports the main conclusion."
+        }
       ]
     },
     "sources": [
@@ -189,29 +436,72 @@
       "Notes/Skeletal Breakdown LR (1)_dup1.pdf (A, tomato worked example)"
     ]
   },
-
   {
     "id": "MC-LSN-1.7",
     "number": "1.7",
     "title": "Intermediate conclusions vs multi-premise arguments",
     "hook": "Two premises and one conclusion is simple. Add an intermediate conclusion and the chain gets longer. Confusing them is one of the test's favorite tricks.",
     "prose_blocks": [
-      { "kind": "p", "text": "Up to now, every argument we've discussed has been: premises → conclusion. But arguments can stack. The author can support a claim with a sub-claim that has its own evidence underneath it. That middle layer is called the <em>intermediate conclusion</em>: it is a statement that the premises support, which itself supports the main conclusion." },
-      { "kind": "p", "text": "Students confuse this with a multi-premise argument. The difference is whether the supporting claims connect to each other or operate independently. In a multi-premise argument, two or more premises each independently push toward the conclusion. In an intermediate-conclusion argument, the premise supports a sub-claim, and the sub-claim supports the main conclusion." },
-      { "kind": "example", "tag": "EV cars: a chain in three stages", "body": "<strong>Stage 1 (simple).</strong> &ldquo;EVs are more enjoyable to drive than traditional cars. So more people will buy EVs.&rdquo;<br/>Premise → Main Conclusion. One step.<br/><br/><strong>Stage 2 (multi-premise).</strong> &ldquo;EVs are more enjoyable to drive. The price of gas is going through the roof. So more people will buy EVs.&rdquo;<br/>Two independent premises both pointing at the same conclusion.<br/><br/><strong>Stage 3 (intermediate conclusion).</strong> &ldquo;The price of gas is going through the roof. So more people will buy EVs. So the internal combustion engine car is doomed.&rdquo;<br/>Premise → Intermediate Conclusion → Main Conclusion. The middle claim has both support (gas prices) and is itself support (for the doomed-ICE conclusion)." },
-      { "kind": "p", "text": "The diagnostic is simple: if a claim has support and provides support, it's an intermediate conclusion. If it has support but provides none, it's the main conclusion. If it provides support and has none of its own, it's a premise." },
-      { "kind": "callout", "label": "3-rule diagnostic", "body": "1. If a claim <strong>has support</strong>, we can call it a <strong>Conclusion</strong>.<br/>2. If it <strong>provides support</strong>, we can call it a <strong>Premise</strong>.<br/>3. If it <strong>has support and also provides support</strong>, it's an <strong>Intermediate Conclusion</strong>." },
-      { "kind": "p", "text": "One sharper technique: when you can't tell what role a sentence is playing, interrogate it. Ask &ldquo;How do I know that?&rdquo; If the answer is &ldquo;because of this other sentence,&rdquo; you've identified support. If the answer is &ldquo;I don't, the author just says it,&rdquo; you've identified a premise (which the author treats as given). If you can give a reason AND the claim itself is being used as a reason for something else, you've found an intermediate conclusion. We call this the [[NT-Stegosaurus-Interrogation]]Stegosaurus Interrogation[[/]]." },
-      { "kind": "example", "tag": "The stegosaurus interrogation", "body": "&ldquo;The stegosaurus likes eucalyptus leaves. Eucalyptus leaves have a pleasant aroma. The stegosaurus likes something with a pleasant aroma.&rdquo;<br/><br/><em>How do I know the stegosaurus likes eucalyptus leaves?</em> Because... reasons. (Premise.)<br/><em>How do I know eucalyptus leaves have a pleasant aroma?</em> Because... reasons. (Premise.)<br/><em>How do I know the stegosaurus likes something with a pleasant aroma?</em> Because he likes eucalyptus leaves, and they have a pleasant aroma. (Conclusion — supported by the other two.)" }
+      {
+        "kind": "p",
+        "text": "Up to now, every argument we've discussed has been: premises \u2192 conclusion. But arguments can stack. The author can support a claim with a sub-claim that has its own evidence underneath it. That middle layer is called the <em>intermediate conclusion</em>: it is a statement that the premises support, which itself supports the main conclusion."
+      },
+      {
+        "kind": "p",
+        "text": "Students confuse this with a multi-premise argument. The difference is whether the supporting claims connect to each other or operate independently. In a multi-premise argument, two or more premises each independently push toward the conclusion. In an intermediate-conclusion argument, the premise supports a sub-claim, and the sub-claim supports the main conclusion."
+      },
+      {
+        "kind": "example",
+        "tag": "EV cars: a chain in three stages",
+        "body": "<strong>Stage 1 (simple).</strong> &ldquo;EVs are more enjoyable to drive than traditional cars. So more people will buy EVs.&rdquo;<br/>Premise \u2192 Main Conclusion. One step.<br/><br/><strong>Stage 2 (multi-premise).</strong> &ldquo;EVs are more enjoyable to drive. The price of gas is going through the roof. So more people will buy EVs.&rdquo;<br/>Two independent premises both pointing at the same conclusion.<br/><br/><strong>Stage 3 (intermediate conclusion).</strong> &ldquo;The price of gas is going through the roof. So more people will buy EVs. So the internal combustion engine car is doomed.&rdquo;<br/>Premise \u2192 Intermediate Conclusion \u2192 Main Conclusion. The middle claim has both support (gas prices) and is itself support (for the doomed-ICE conclusion)."
+      },
+      {
+        "kind": "p",
+        "text": "The diagnostic is simple: if a claim has support and provides support, it's an intermediate conclusion. If it has support but provides none, it's the main conclusion. If it provides support and has none of its own, it's a premise."
+      },
+      {
+        "kind": "callout",
+        "label": "3-rule diagnostic",
+        "body": "1. If a claim <strong>has support</strong>, we can call it a <strong>Conclusion</strong>.<br/>2. If it <strong>provides support</strong>, we can call it a <strong>Premise</strong>.<br/>3. If it <strong>has support and also provides support</strong>, it's an <strong>Intermediate Conclusion</strong>."
+      },
+      {
+        "kind": "p",
+        "text": "One sharper technique: when you can't tell what role a sentence is playing, interrogate it. Ask &ldquo;How do I know that?&rdquo; If the answer is &ldquo;because of this other sentence,&rdquo; you've identified support. If the answer is &ldquo;I don't, the author just says it,&rdquo; you've identified a premise (which the author treats as given). If you can give a reason AND the claim itself is being used as a reason for something else, you've found an intermediate conclusion. We call this the [[NT-Stegosaurus-Interrogation]]Stegosaurus Interrogation[[/]]."
+      },
+      {
+        "kind": "example",
+        "tag": "The stegosaurus interrogation",
+        "body": "&ldquo;The stegosaurus likes eucalyptus leaves. Eucalyptus leaves have a pleasant aroma. The stegosaurus likes something with a pleasant aroma.&rdquo;<br/><br/><em>How do I know the stegosaurus likes eucalyptus leaves?</em> Because... reasons. (Premise.)<br/><em>How do I know eucalyptus leaves have a pleasant aroma?</em> Because... reasons. (Premise.)<br/><em>How do I know the stegosaurus likes something with a pleasant aroma?</em> Because he likes eucalyptus leaves, and they have a pleasant aroma. (Conclusion \u2014 supported by the other two.)"
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-Stegosaurus-Interrogation", "appears_in_paragraph": 6 }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-Stegosaurus-Interrogation",
+        "appears_in_paragraph": 6
+      }
+    ],
     "reference_callouts": [],
     "checkpoint": {
-      "prompt": "In the EV chain stage 3 (gas prices → more EV buyers → ICE car doomed), what role does &ldquo;more people will buy EVs&rdquo; play?",
+      "prompt": "In the EV chain stage 3 (gas prices \u2192 more EV buyers \u2192 ICE car doomed), what role does &ldquo;more people will buy EVs&rdquo; play?",
       "options": [
-        { "id": "A", "text": "Main conclusion.", "correct": false, "reveal": "Tempting because it's a confident-sounding claim with support behind it (gas prices). But it provides support for a bigger claim (ICE doomed), so it's not the main conclusion." },
-        { "id": "B", "text": "Intermediate conclusion.", "correct": true, "reveal": "Yes. It has support (gas prices) AND provides support (for the ICE-doomed claim). Both — by the 3-rule diagnostic, that's intermediate." },
-        { "id": "C", "text": "Premise.", "correct": false, "reveal": "Premises provide support without needing any. This claim has support behind it, so it's a conclusion of some kind — and since it itself supports the bigger claim, it's intermediate." }
+        {
+          "id": "A",
+          "text": "Main conclusion.",
+          "correct": false,
+          "reveal": "Tempting because it's a confident-sounding claim with support behind it (gas prices). But it provides support for a bigger claim (ICE doomed), so it's not the main conclusion."
+        },
+        {
+          "id": "B",
+          "text": "Intermediate conclusion.",
+          "correct": true,
+          "reveal": "Yes. It has support (gas prices) AND provides support (for the ICE-doomed claim). Both \u2014 by the 3-rule diagnostic, that's intermediate."
+        },
+        {
+          "id": "C",
+          "text": "Premise.",
+          "correct": false,
+          "reveal": "Premises provide support without needing any. This claim has support behind it, so it's a conclusion of some kind \u2014 and since it itself supports the bigger claim, it's intermediate."
+        }
       ]
     },
     "sources": [
@@ -220,85 +510,201 @@
       "Notes/Intermediate_Conclusions_Practice_Full.docx (S, 3-rule diagnostic)"
     ]
   },
-
   {
     "id": "MC-LSN-1.8",
     "number": "1.8",
     "title": "The Trojan Horse: opposing viewpoints and concessions",
     "hook": "When the author seems to agree with the other side, it's a setup. The real point is coming.",
     "prose_blocks": [
-      { "kind": "p", "text": "The argument core (premise + conclusion + maybe intermediate) is the part that does logical work. But the stimulus often includes peripheral information that isn't part of the core, and you need to recognize it so you don't mistake it for the conclusion. Three kinds of peripheral material show up: opposing viewpoints, concessions, and background information." },
-      { "kind": "p", "text": "<strong>Opposing viewpoints</strong> are claims the author may respond to. They are not part of the core argument. The author brings them up to push back against them, ignore them, or use them as a foil. The clue: phrases like &ldquo;Some people say...&rdquo;, &ldquo;It's commonly believed...&rdquo;, &ldquo;Critics argue that...&rdquo; All flag a view the author is about to engage with." },
-      { "kind": "p", "text": "<strong>Concessions</strong> are stickier. A concession happens when the author acknowledges a valid point from the opposing side. It looks like agreement. It is not. A concession is the [[NT-Trojan-Horse-Concession]]Trojan Horse Concession[[/]]: the author appears to give ground in order to set up the rebuttal that follows. Words like <em>granted</em>, <em>although</em>, <em>while</em>, <em>despite</em>, <em>naturally</em> all signal that the author is about to step back briefly and then push forward harder." },
-      { "kind": "p", "text": "<strong>Background information</strong> is just context: facts that explain the setting or define a term. It is not a premise in the argument's logical chain; it is scenery. Statements of fact that don't directly support the conclusion are usually background." },
-      { "kind": "callout", "label": "When you see a concession, brace", "body": "A concession is always followed by the author's actual viewpoint. The structure is: concede a point → pivot → state the real claim → support it. If you see &ldquo;While X is true...&rdquo;, expect the conclusion in the next sentence or two. The [[NT-Concession-Decoder]]Concession Decoder[[/]] in Reference §2.I has the full pattern." },
-      { "kind": "example", "tag": "Opposing viewpoint, worked — William and Harry", "body": "<strong>William:</strong> The law school admissions process should take a more holistic approach and place less weight on standardized tests.<br/><br/><strong>Harry:</strong> I disagree. Standardized testing is the only way to ensure that candidates meet a high standard for facing the rigorous challenges of law school.<br/><br/>Harry's <strong>conclusion:</strong> Law schools should NOT place less weight on standardized tests.<br/>Harry's <strong>premise:</strong> Standardized tests are the only way to ensure students are ready for law school.<br/>William's view is the <strong>opposing viewpoint</strong>. It's not part of Harry's argument's logical core. (Note: William didn't even provide support, so William's statement is not even an argument by itself.)" },
-      { "kind": "example", "tag": "Concession, worked — the all-nighter paper", "body": "&ldquo;While it may be true that pulling an all-nighter writing a paper will get you a pass with the least amount of time spent, the best way to write a paper for a class would be to start early, conduct meticulous research, and revise iterative drafts until the final version is completed.&rdquo;<br/><br/><strong>Concession:</strong> &ldquo;While it may be true that pulling an all-nighter...&rdquo; (Acknowledging the opposing view.)<br/><strong>Pivot:</strong> Implicit at &ldquo;the best way...&rdquo; (the author shifting to their actual claim).<br/><strong>Main Conclusion:</strong> The best way to write a paper is to start early, research, and revise." }
+      {
+        "kind": "p",
+        "text": "The argument core (premise + conclusion + maybe intermediate) is the part that does logical work. But the stimulus often includes peripheral information that isn't part of the core, and you need to recognize it so you don't mistake it for the conclusion. Three kinds of peripheral material show up: opposing viewpoints, concessions, and background information."
+      },
+      {
+        "kind": "p",
+        "text": "<strong>Opposing viewpoints</strong> are claims the author may respond to. They are not part of the core argument. The author brings them up to push back against them, ignore them, or use them as a foil. The clue: phrases like &ldquo;Some people say...&rdquo;, &ldquo;It's commonly believed...&rdquo;, &ldquo;Critics argue that...&rdquo; All flag a view the author is about to engage with."
+      },
+      {
+        "kind": "p",
+        "text": "<strong>Concessions</strong> are stickier. A concession happens when the author acknowledges a valid point from the opposing side. It looks like agreement. It is not. A concession is the [[NT-Trojan-Horse-Concession]]Trojan Horse Concession[[/]]: the author appears to give ground in order to set up the rebuttal that follows. Words like <em>granted</em>, <em>although</em>, <em>while</em>, <em>despite</em>, <em>naturally</em> all signal that the author is about to step back briefly and then push forward harder."
+      },
+      {
+        "kind": "p",
+        "text": "<strong>Background information</strong> is just context: facts that explain the setting or define a term. It is not a premise in the argument's logical chain; it is scenery. Statements of fact that don't directly support the conclusion are usually background."
+      },
+      {
+        "kind": "callout",
+        "label": "When you see a concession, brace",
+        "body": "A concession is always followed by the author's actual viewpoint. The structure is: concede a point \u2192 pivot \u2192 state the real claim \u2192 support it. If you see &ldquo;While X is true...&rdquo;, expect the conclusion in the next sentence or two. The [[NT-Concession-Decoder]]Concession Decoder[[/]] in Reference \u00a72.I has the full pattern."
+      },
+      {
+        "kind": "example",
+        "tag": "Opposing viewpoint, worked \u2014 William and Harry",
+        "body": "<strong>William:</strong> The law school admissions process should take a more holistic approach and place less weight on standardized tests.<br/><br/><strong>Harry:</strong> I disagree. Standardized testing is the only way to ensure that candidates meet a high standard for facing the rigorous challenges of law school.<br/><br/>Harry's <strong>conclusion:</strong> Law schools should NOT place less weight on standardized tests.<br/>Harry's <strong>premise:</strong> Standardized tests are the only way to ensure students are ready for law school.<br/>William's view is the <strong>opposing viewpoint</strong>. It's not part of Harry's argument's logical core. (Note: William didn't even provide support, so William's statement is not even an argument by itself.)"
+      },
+      {
+        "kind": "example",
+        "tag": "Concession, worked \u2014 the all-nighter paper",
+        "body": "&ldquo;While it may be true that pulling an all-nighter writing a paper will get you a pass with the least amount of time spent, the best way to write a paper for a class would be to start early, conduct meticulous research, and revise iterative drafts until the final version is completed.&rdquo;<br/><br/><strong>Concession:</strong> &ldquo;While it may be true that pulling an all-nighter...&rdquo; (Acknowledging the opposing view.)<br/><strong>Pivot:</strong> Implicit at &ldquo;the best way...&rdquo; (the author shifting to their actual claim).<br/><strong>Main Conclusion:</strong> The best way to write a paper is to start early, research, and revise."
+      }
     ],
     "named_tool_callouts": [
-      { "tool_id": "NT-Trojan-Horse-Concession", "appears_in_paragraph": 3 },
-      { "tool_id": "NT-Concession-Decoder", "appears_in_paragraph": 5 }
+      {
+        "tool_id": "NT-Trojan-Horse-Concession",
+        "appears_in_paragraph": 3
+      },
+      {
+        "tool_id": "NT-Concession-Decoder",
+        "appears_in_paragraph": 5
+      }
     ],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.I", "label": "Concession Decoder →" }],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.I",
+        "label": "Concession Decoder \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "&ldquo;While the new transit policy did reduce traffic downtown, the cost overruns make it impossible to scale.&rdquo; What role does the &ldquo;While&rdquo; clause play?",
       "options": [
-        { "id": "A", "text": "Main conclusion. The author is praising the policy.", "correct": false, "reveal": "It looks like agreement, but it's a Trojan Horse. The author is conceding ground only to set up the actual claim that follows." },
-        { "id": "B", "text": "Concession. The author grants the point briefly, then pivots to the real claim.", "correct": true, "reveal": "Yes. &ldquo;While&rdquo; is a concession indicator. The pivot is implicit at the comma; the author's actual conclusion (cost overruns make it impossible to scale) follows." },
-        { "id": "C", "text": "Background. It's just context.", "correct": false, "reveal": "Background information doesn't engage with the opposing side. A concession explicitly acknowledges a contrary point — that's structurally different from background." }
+        {
+          "id": "A",
+          "text": "Main conclusion. The author is praising the policy.",
+          "correct": false,
+          "reveal": "It looks like agreement, but it's a Trojan Horse. The author is conceding ground only to set up the actual claim that follows."
+        },
+        {
+          "id": "B",
+          "text": "Concession. The author grants the point briefly, then pivots to the real claim.",
+          "correct": true,
+          "reveal": "Yes. &ldquo;While&rdquo; is a concession indicator. The pivot is implicit at the comma; the author's actual conclusion (cost overruns make it impossible to scale) follows."
+        },
+        {
+          "id": "C",
+          "text": "Background. It's just context.",
+          "correct": false,
+          "reveal": "Background information doesn't engage with the opposing side. A concession explicitly acknowledges a contrary point \u2014 that's structurally different from background."
+        }
       ]
     },
     "sources": [
       "Notes/Argument Core & Periph_dup1.pdf (A, William/Harry, concession example)",
       "Notes/Skeletal Breakdown LR (1)_dup1.pdf (A, concession structure)",
-      "Curriculum/Netlify/index (1).html — argumentslr prototype (Trojan Horse framing)"
+      "Curriculum/Netlify/index (1).html \u2014 argumentslr prototype (Trojan Horse framing)"
     ]
   },
-
   {
     "id": "MC-LSN-1.9",
     "number": "1.9",
     "title": "The five types of conclusions",
     "hook": "Not every conclusion looks the same. Knowing the type helps you spot it faster.",
     "prose_blocks": [
-      { "kind": "p", "text": "Conclusions on the LSAT come in five basic flavors. Each type has its own characteristic feel. Once you've seen each, you'll recognize them in the wild." },
-      { "kind": "callout", "label": "The five types", "body": "<strong>1. Recommendations.</strong> The author tells you what should be done. Watch for <em>should</em>, <em>ought</em>, <em>must</em>.<br/>Example: &ldquo;Eating meat contributes to climate change. Hence, we should try to eat more vegetarian.&rdquo;<br/><br/><strong>2. Causal Hypotheses.</strong> The author identifies a cause. Watch for explanatory framing.<br/>Example: &ldquo;The bank on Main Street burned down. Thus, the arsonist must be Eddie, since he was seen nearby holding an empty gas can.&rdquo;<br/><br/><strong>3. Rebuttals.</strong> The author rejects someone else's view.<br/>Example: &ldquo;Some people say tomatoes are vegetables. But tomatoes have seeds and so are fruit.&rdquo;<br/><br/><strong>4. Predictions.</strong> The author claims something will happen.<br/>Example: &ldquo;Millennials are waiting longer to have kids than their Gen-X counterparts waited. This shows that Gen-Z will wait even longer.&rdquo;<br/><br/><strong>5. Judgments / Labels.</strong> The author renders a verdict on something.<br/>Example: &ldquo;Miguel's blueberry pie had a soggy crust. Therefore, it was not a good pie.&rdquo;" },
-      { "kind": "p", "text": "Recognizing the type isn't required to answer the question, but it speeds up your read. If the first sentence sounds like a Recommendation, the rest of the paragraph is probably defending it. If the first sentence is an attribution and a pivot follows, expect a Rebuttal. Pattern recognition is leverage." }
+      {
+        "kind": "p",
+        "text": "Conclusions on the LSAT come in five basic flavors. Each type has its own characteristic feel. Once you've seen each, you'll recognize them in the wild."
+      },
+      {
+        "kind": "callout",
+        "label": "The five types",
+        "body": "<strong>1. Recommendations.</strong> The author tells you what should be done. Watch for <em>should</em>, <em>ought</em>, <em>must</em>.<br/>Example: &ldquo;Eating meat contributes to climate change. Hence, we should try to eat more vegetarian.&rdquo;<br/><br/><strong>2. Causal Hypotheses.</strong> The author identifies a cause. Watch for explanatory framing.<br/>Example: &ldquo;The bank on Main Street burned down. Thus, the arsonist must be Eddie, since he was seen nearby holding an empty gas can.&rdquo;<br/><br/><strong>3. Rebuttals.</strong> The author rejects someone else's view.<br/>Example: &ldquo;Some people say tomatoes are vegetables. But tomatoes have seeds and so are fruit.&rdquo;<br/><br/><strong>4. Predictions.</strong> The author claims something will happen.<br/>Example: &ldquo;Millennials are waiting longer to have kids than their Gen-X counterparts waited. This shows that Gen-Z will wait even longer.&rdquo;<br/><br/><strong>5. Judgments / Labels.</strong> The author renders a verdict on something.<br/>Example: &ldquo;Miguel's blueberry pie had a soggy crust. Therefore, it was not a good pie.&rdquo;"
+      },
+      {
+        "kind": "p",
+        "text": "Recognizing the type isn't required to answer the question, but it speeds up your read. If the first sentence sounds like a Recommendation, the rest of the paragraph is probably defending it. If the first sentence is an attribution and a pivot follows, expect a Rebuttal. Pattern recognition is leverage."
+      }
     ],
     "named_tool_callouts": [],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.E", "label": "Five Types of Conclusions (full reference) →" }],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.E",
+        "label": "Five Types of Conclusions (full reference) \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "&ldquo;Miguel's blueberry pie had a soggy crust. Therefore, it was not a good pie.&rdquo; What type of conclusion is this?",
       "options": [
-        { "id": "A", "text": "Causal Hypothesis.", "correct": false, "reveal": "There is a causal flavor (the soggy crust is the reason), but the conclusion itself is a verdict on the pie's quality, not a claim about cause." },
-        { "id": "B", "text": "Judgment.", "correct": true, "reveal": "Yes. &ldquo;Not a good pie&rdquo; is an evaluative verdict — type 5. The author is rendering a quality judgment based on a specific feature." },
-        { "id": "C", "text": "Recommendation.", "correct": false, "reveal": "Recommendations tell you what should be done. The Miguel conclusion is an evaluation, not a directive." }
+        {
+          "id": "A",
+          "text": "Causal Hypothesis.",
+          "correct": false,
+          "reveal": "There is a causal flavor (the soggy crust is the reason), but the conclusion itself is a verdict on the pie's quality, not a claim about cause."
+        },
+        {
+          "id": "B",
+          "text": "Judgment.",
+          "correct": true,
+          "reveal": "Yes. &ldquo;Not a good pie&rdquo; is an evaluative verdict \u2014 type 5. The author is rendering a quality judgment based on a specific feature."
+        },
+        {
+          "id": "C",
+          "text": "Recommendation.",
+          "correct": false,
+          "reveal": "Recommendations tell you what should be done. The Miguel conclusion is an evaluation, not a directive."
+        }
       ]
     },
     "sources": [
       "Notes/Skeletal Breakdown LR (1)_dup1.pdf (A, types-of-conclusions taxonomy)"
     ]
   },
-
   {
     "id": "MC-LSN-1.10",
     "number": "1.10",
     "title": "Pre-phrase: replace the pronouns before you say the conclusion back",
     "hook": "&ldquo;Such laws won't work&rdquo; tells you nothing on its own. Which laws? Replace the pronoun. Always.",
     "prose_blocks": [
-      { "kind": "p", "text": "Many conclusions in Main Conclusion stimuli use referential language: pronouns and pointer-words like <em>this</em>, <em>that</em>, <em>they</em>, <em>such</em>, <em>this position</em>, <em>such laws</em>. These point back at something said earlier in the stimulus, but on their own they're empty." },
-      { "kind": "p", "text": "Before you go to the answer choices, do this: take the conclusion you've identified, find every pronoun or pointer-word, and replace it with the actual reference language from earlier in the stimulus. State the conclusion to yourself in those replaced terms. The correct answer choice will then jump out, because it will read like a paraphrase of your replaced version. We call this the [[NT-Pre-Phrase-Goal]]Pre-Phrase Goal[[/]]." },
-      { "kind": "example", "tag": "The gun-laws example", "body": "&ldquo;Some people propose laws that would require mandatory background checks on people owning a gun. However, such laws won't affect the homicide rate. Almost all homicides are committed by people who would pass the background check proposed in that law.&rdquo;<br/><br/><strong>Naive read of the conclusion:</strong> &ldquo;Such laws won't affect the homicide rate.&rdquo;<br/><strong>Replaced read:</strong> &ldquo;<strong>Laws requiring mandatory background checks on people owning a gun</strong> won't affect the homicide rate.&rdquo;<br/><br/>Now match against the answer choices. The correct one will say something close to that replaced version. The pronoun version is too vague to compare." },
-      { "kind": "callout", "label": "Pronoun-replacement protocol", "body": "1. Identify the conclusion.<br/>2. Scan it for: <em>this</em>, <em>that</em>, <em>they</em>, <em>such X</em>, <em>this position</em>, <em>these views</em>.<br/>3. For each, look back into the stimulus and find what it points to.<br/>4. Restate the conclusion to yourself with the actual reference substituted in.<br/>5. Then compare to the answer choices." }
+      {
+        "kind": "p",
+        "text": "Many conclusions in Main Conclusion stimuli use referential language: pronouns and pointer-words like <em>this</em>, <em>that</em>, <em>they</em>, <em>such</em>, <em>this position</em>, <em>such laws</em>. These point back at something said earlier in the stimulus, but on their own they're empty."
+      },
+      {
+        "kind": "p",
+        "text": "Before you go to the answer choices, do this: take the conclusion you've identified, find every pronoun or pointer-word, and replace it with the actual reference language from earlier in the stimulus. State the conclusion to yourself in those replaced terms. The correct answer choice will then jump out, because it will read like a paraphrase of your replaced version. We call this the [[NT-Pre-Phrase-Goal]]Pre-Phrase Goal[[/]]."
+      },
+      {
+        "kind": "example",
+        "tag": "The gun-laws example",
+        "body": "&ldquo;Some people propose laws that would require mandatory background checks on people owning a gun. However, such laws won't affect the homicide rate. Almost all homicides are committed by people who would pass the background check proposed in that law.&rdquo;<br/><br/><strong>Naive read of the conclusion:</strong> &ldquo;Such laws won't affect the homicide rate.&rdquo;<br/><strong>Replaced read:</strong> &ldquo;<strong>Laws requiring mandatory background checks on people owning a gun</strong> won't affect the homicide rate.&rdquo;<br/><br/>Now match against the answer choices. The correct one will say something close to that replaced version. The pronoun version is too vague to compare."
+      },
+      {
+        "kind": "callout",
+        "label": "Pronoun-replacement protocol",
+        "body": "1. Identify the conclusion.<br/>2. Scan it for: <em>this</em>, <em>that</em>, <em>they</em>, <em>such X</em>, <em>this position</em>, <em>these views</em>.<br/>3. For each, look back into the stimulus and find what it points to.<br/>4. Restate the conclusion to yourself with the actual reference substituted in.<br/>5. Then compare to the answer choices."
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-Pre-Phrase-Goal", "appears_in_paragraph": 2 }],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.H", "label": "Pronoun & Reference Library →" }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-Pre-Phrase-Goal",
+        "appears_in_paragraph": 2
+      }
+    ],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.H",
+        "label": "Pronoun & Reference Library \u2192"
+      }
+    ],
     "checkpoint": {
       "prompt": "Conclusion in the stimulus: &ldquo;This position is misguided.&rdquo; What's the next move?",
       "options": [
-        { "id": "A", "text": "Match the conclusion verbatim against each answer choice.", "correct": false, "reveal": "The pronoun version is too vague — multiple distractors will paraphrase &ldquo;misguided.&rdquo; Replace the pointer first, then match by meaning." },
-        { "id": "B", "text": "Find what &ldquo;this position&rdquo; refers to in the stimulus, substitute it in, then compare answers.", "correct": true, "reveal": "Yes. The replaced version is what you actually match. The right answer will read as a paraphrase of the replaced conclusion, not the pronoun-version." },
-        { "id": "C", "text": "Pick the answer that contains the word &ldquo;misguided.&rdquo;", "correct": false, "reveal": "Word-matching is a Trait 3 trap. The right answer often paraphrases. Match by meaning of the replaced version." }
+        {
+          "id": "A",
+          "text": "Match the conclusion verbatim against each answer choice.",
+          "correct": false,
+          "reveal": "The pronoun version is too vague \u2014 multiple distractors will paraphrase &ldquo;misguided.&rdquo; Replace the pointer first, then match by meaning."
+        },
+        {
+          "id": "B",
+          "text": "Find what &ldquo;this position&rdquo; refers to in the stimulus, substitute it in, then compare answers.",
+          "correct": true,
+          "reveal": "Yes. The replaced version is what you actually match. The right answer will read as a paraphrase of the replaced conclusion, not the pronoun-version."
+        },
+        {
+          "id": "C",
+          "text": "Pick the answer that contains the word &ldquo;misguided.&rdquo;",
+          "correct": false,
+          "reveal": "Word-matching is a Trait 3 trap. The right answer often paraphrases. Match by meaning of the replaced version."
+        }
       ]
     },
     "sources": [
@@ -306,31 +712,77 @@
       "Notes/main_conclusion_role_merged_note.pdf (S, replacement rule)"
     ]
   },
-
   {
     "id": "MC-LSN-1.11",
     "number": "1.11",
     "title": "The 2-Part Conclusion Check",
     "hook": "Two questions. Every candidate has to pass both. If it doesn't, it's not your conclusion.",
     "prose_blocks": [
-      { "kind": "p", "text": "You've found a candidate sentence in the stimulus and you think it's the main conclusion. Before you commit, run it through the verification check. This is the one tool that doesn't lie." },
-      { "kind": "callout", "label": "The [[NT-2-Part-Conclusion-Check]]2-Part Conclusion Check[[/]]", "body": "1. <strong>Does it sound like the author's opinion?</strong> (Facts ≠ conclusions. If it could be looked up in a reference book, it's a premise, not a conclusion.)<br/>2. <strong>Is it supported by at least one explicit claim in the stimulus?</strong> (If nothing in the paragraph backs it up, it's not the conclusion. The conclusion always has support.)" },
-      { "kind": "p", "text": "Both have to be true. A claim that sounds like an opinion but has no support is just a stray statement. A claim that has support but reads as bare fact is probably background information, not the conclusion. Only when both boxes get checked do you have your candidate." },
-      { "kind": "p", "text": "Equivalent meaning matters too. The correct answer choice will not always read word-for-word like the conclusion. They will use synonyms, inverted syntax, paraphrases. As long as the meaning matches, it's the right answer. Watch for syntax flips:" },
-      { "kind": "example", "tag": "Syntax-equivalence example", "body": "Conclusion in stimulus: &ldquo;Not all tornadoes should be avoided.&rdquo;<br/>Equivalent in answer: &ldquo;Some tornadoes should not be avoided.&rdquo;<br/><br/>Same meaning, different shape." },
-      { "kind": "callout", "label": "Three classic incorrect-answer traps", "body": "<strong>Premise Trap.</strong> The answer is tempting because the words appeared in the paragraph. But the words were a premise, not a conclusion. The conclusion is the supported claim, not the supporting one.<br/><br/><strong>Last Claim Trap.</strong> The answer is the final sentence of the stimulus. The test makers know you wish the last claim was the conclusion. They count on it.<br/><br/><strong>Intermediate Conclusion Trap.</strong> The answer is a claim that has support, so it passes part 2 of the check. But that claim is itself supporting a bigger claim. Look for what's supporting what — the claim that's being supported by everything (and not supporting anything bigger) is the main conclusion." }
+      {
+        "kind": "p",
+        "text": "You've found a candidate sentence in the stimulus and you think it's the main conclusion. Before you commit, run it through the verification check. This is the one tool that doesn't lie."
+      },
+      {
+        "kind": "callout",
+        "label": "The [[NT-2-Part-Conclusion-Check]]2-Part Conclusion Check[[/]]",
+        "body": "1. <strong>Does it sound like the author's opinion?</strong> (Facts \u2260 conclusions. If it could be looked up in a reference book, it's a premise, not a conclusion.)<br/>2. <strong>Is it supported by at least one explicit claim in the stimulus?</strong> (If nothing in the paragraph backs it up, it's not the conclusion. The conclusion always has support.)"
+      },
+      {
+        "kind": "p",
+        "text": "Both have to be true. A claim that sounds like an opinion but has no support is just a stray statement. A claim that has support but reads as bare fact is probably background information, not the conclusion. Only when both boxes get checked do you have your candidate."
+      },
+      {
+        "kind": "p",
+        "text": "Equivalent meaning matters too. The correct answer choice will not always read word-for-word like the conclusion. They will use synonyms, inverted syntax, paraphrases. As long as the meaning matches, it's the right answer. Watch for syntax flips:"
+      },
+      {
+        "kind": "example",
+        "tag": "Syntax-equivalence example",
+        "body": "Conclusion in stimulus: &ldquo;Not all tornadoes should be avoided.&rdquo;<br/>Equivalent in answer: &ldquo;Some tornadoes should not be avoided.&rdquo;<br/><br/>Same meaning, different shape."
+      },
+      {
+        "kind": "callout",
+        "label": "Three classic incorrect-answer traps",
+        "body": "<strong>Premise Trap.</strong> The answer is tempting because the words appeared in the paragraph. But the words were a premise, not a conclusion. The conclusion is the supported claim, not the supporting one.<br/><br/><strong>Last Claim Trap.</strong> The answer is the final sentence of the stimulus. The test makers know you wish the last claim was the conclusion. They count on it.<br/><br/><strong>Intermediate Conclusion Trap.</strong> The answer is a claim that has support, so it passes part 2 of the check. But that claim is itself supporting a bigger claim. Look for what's supporting what \u2014 the claim that's being supported by everything (and not supporting anything bigger) is the main conclusion."
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-2-Part-Conclusion-Check", "appears_in_paragraph": 2 }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-2-Part-Conclusion-Check",
+        "appears_in_paragraph": 2
+      }
+    ],
     "reference_callouts": [
-      { "reference_id": "MC-REF-2.B", "label": "2-Part Conclusion Check (reference) →" },
-      { "reference_id": "MC-REF-2.G", "label": "Three Incorrect-Answer Trap Types →" }
+      {
+        "reference_id": "MC-REF-2.B",
+        "label": "2-Part Conclusion Check (reference) \u2192"
+      },
+      {
+        "reference_id": "MC-REF-2.G",
+        "label": "Three Incorrect-Answer Trap Types \u2192"
+      }
     ],
     "checkpoint": {
       "prompt": "A candidate sentence reads as a confident verdict but you can't find any sentence in the stimulus that supports it. Apply the 2-Part Check.",
       "options": [
-        { "id": "A", "text": "It's the conclusion. Strong-sounding sentences are usually the conclusion.", "correct": false, "reveal": "Trait 1 trap. Confidence ≠ conclusion. Without support, this is a stray statement (often background or an opposing-view fragment), not the main conclusion." },
-        { "id": "B", "text": "It fails part 2 — no support — so it's not the conclusion. Keep looking.", "correct": true, "reveal": "Yes. The 2-Part Check is non-negotiable: both parts have to land. Unsupported strong-sounding sentences are exactly what Trait 1 weaponizes." },
-        { "id": "C", "text": "Pick it anyway and verify with the answer choices.", "correct": false, "reveal": "Don't outsource verification to the answer choices. Find the right sentence first; the answer match comes after." }
+        {
+          "id": "A",
+          "text": "It's the conclusion. Strong-sounding sentences are usually the conclusion.",
+          "correct": false,
+          "reveal": "Trait 1 trap. Confidence \u2260 conclusion. Without support, this is a stray statement (often background or an opposing-view fragment), not the main conclusion."
+        },
+        {
+          "id": "B",
+          "text": "It fails part 2 \u2014 no support \u2014 so it's not the conclusion. Keep looking.",
+          "correct": true,
+          "reveal": "Yes. The 2-Part Check is non-negotiable: both parts have to land. Unsupported strong-sounding sentences are exactly what Trait 1 weaponizes."
+        },
+        {
+          "id": "C",
+          "text": "Pick it anyway and verify with the answer choices.",
+          "correct": false,
+          "reveal": "Don't outsource verification to the answer choices. Find the right sentence first; the answer match comes after."
+        }
       ]
     },
     "sources": [
@@ -338,32 +790,98 @@
       "Notes/Main Conclusion Synopsis.pdf (S, traps)"
     ]
   },
-
   {
     "id": "MC-LSN-1.12",
     "number": "1.12",
     "title": "The trap landscape (preview)",
     "hook": "The makers of the test have a finite playbook. Seven traits cover almost every wrong answer you'll meet. Here's the map; the deep dive lives in the Question Simulator.",
     "prose_blocks": [
-      { "kind": "p", "text": "Once you know what to look for, the question type becomes pattern recognition. The seven traits below are the test makers' standard moves. Each one has a name and a fingerprint. Module 4 ([[NT-Trap-Master]]Trap Master[[/]] + Question Simulator) drills each trait against real PT questions. This lesson is just the map." },
-      { "kind": "callout", "label": "The 7 traits", "body": "<strong>Trait 1.</strong> Trap statement that sounds like the conclusion but has no support.<br/><strong>Trait 2.</strong> Main conclusion not explicitly stated in the stimulus.<br/><strong>Trait 3.</strong> Correct answer doesn't match up word-for-word with the conclusion (paraphrase or synonym disguise).<br/><strong>Trait 4.</strong> Subtle shift in scope in trap answers.<br/><strong>Trait 5.</strong> Wrong answers express ideas the author might agree with but that are not the actual conclusion (&ldquo;Must Be True / Most Strongly Supported&rdquo; disguise).<br/><strong>Trait 6.</strong> Correct answer vaguely worded, placed right next to an attractive wrong answer.<br/><strong>Trait 7.</strong> Intermediate Conclusion traps and Cause/Effect traps." },
-      { "kind": "p", "text": "The trick to the test is not knowing more rules. It is recognizing which trick is being played in front of you. Once you can name a Trait 5 from across the room, the question stops feeling slippery." },
-      { "kind": "p", "text": "Module 1's calibration drill (Lesson 1.13) is your first real test on the framework. Misses there feed your weakness profile, and the Trap Master diagnostic in Module 4 takes that signal and turns it into a path. Recognize, then drill. Pattern recognition is leverage." }
+      {
+        "kind": "p",
+        "text": "Once you know what to look for, the question type becomes pattern recognition. The seven traits below are the test makers' standard moves. Each one has a name and a fingerprint. Module 4 ([[NT-Trap-Master]]Trap Master[[/]] + Question Simulator) drills each trait against real PT questions. This lesson is just the map."
+      },
+      {
+        "kind": "callout",
+        "label": "The 7 traits",
+        "body": "<strong>Trait 1.</strong> Trap statement that sounds like the conclusion but has no support.<br/><strong>Trait 2.</strong> Main conclusion not explicitly stated in the stimulus.<br/><strong>Trait 3.</strong> Correct answer doesn't match up word-for-word with the conclusion (paraphrase or synonym disguise).<br/><strong>Trait 4.</strong> Subtle shift in scope in trap answers.<br/><strong>Trait 5.</strong> Wrong answers express ideas the author might agree with but that are not the actual conclusion (&ldquo;Must Be True / Most Strongly Supported&rdquo; disguise).<br/><strong>Trait 6.</strong> Correct answer vaguely worded, placed right next to an attractive wrong answer.<br/><strong>Trait 7.</strong> Intermediate Conclusion traps and Cause/Effect traps."
+      },
+      {
+        "kind": "p",
+        "text": "The trick to the test is not knowing more rules. It is recognizing which trick is being played in front of you. Once you can name a Trait 5 from across the room, the question stops feeling slippery."
+      },
+      {
+        "kind": "p",
+        "text": "Module 1's calibration drill (Lesson 1.13) is your first real test on the framework. Misses there feed your weakness profile, and the Trap Master diagnostic in Module 4 takes that signal and turns it into a path. Recognize, then drill. Pattern recognition is leverage."
+      }
     ],
-    "named_tool_callouts": [{ "tool_id": "NT-Trap-Master", "appears_in_paragraph": 1 }],
-    "reference_callouts": [{ "reference_id": "MC-REF-2.G", "label": "Three Trap Types (legacy gateway) →" }],
+    "named_tool_callouts": [
+      {
+        "tool_id": "NT-Trap-Master",
+        "appears_in_paragraph": 1
+      }
+    ],
+    "reference_callouts": [
+      {
+        "reference_id": "MC-REF-2.G",
+        "label": "Three Trap Types (legacy gateway) \u2192"
+      }
+    ],
     "checkpoint": {
-      "prompt": "A wrong answer reads &ldquo;We should not spend money on equipment to search for extraterrestrial life&rdquo; — but the stimulus argued that the search will not succeed (not that we shouldn't fund it). Which trait is this?",
+      "prompt": "A wrong answer reads &ldquo;We should not spend money on equipment to search for extraterrestrial life&rdquo; \u2014 but the stimulus argued that the search will not succeed (not that we shouldn't fund it). Which trait is this?",
       "options": [
-        { "id": "A", "text": "Trait 1 — sounds like a conclusion but has no support.", "correct": false, "reveal": "Trait 1 is about strength-without-support. This trap is different: the answer would be defensible from the stimulus, but it's not what the author argued for." },
-        { "id": "B", "text": "Trait 5 — author would agree, but it's not the conclusion.", "correct": true, "reveal": "Yes. The author probably would agree with the policy claim, but the stimulus made a prediction (the search won't succeed), not a recommendation. Stay narrow — match the actual conclusion." },
-        { "id": "C", "text": "Trait 7 — Intermediate Conclusion trap.", "correct": false, "reveal": "Trait 7 is about a claim that's supported by some evidence and itself supports a larger claim. This trap doesn't have that intermediate-link structure." }
+        {
+          "id": "A",
+          "text": "Trait 1 \u2014 sounds like a conclusion but has no support.",
+          "correct": false,
+          "reveal": "Trait 1 is about strength-without-support. This trap is different: the answer would be defensible from the stimulus, but it's not what the author argued for."
+        },
+        {
+          "id": "B",
+          "text": "Trait 5 \u2014 author would agree, but it's not the conclusion.",
+          "correct": true,
+          "reveal": "Yes. The author probably would agree with the policy claim, but the stimulus made a prediction (the search won't succeed), not a recommendation. Stay narrow \u2014 match the actual conclusion."
+        },
+        {
+          "id": "C",
+          "text": "Trait 7 \u2014 Intermediate Conclusion trap.",
+          "correct": false,
+          "reveal": "Trait 7 is about a claim that's supported by some evidence and itself supports a larger claim. This trap doesn't have that intermediate-link structure."
+        }
       ]
     },
     "sources": [
       "Notes/Advanced- MP Question Traps_dup1.docx (A, 7-trait taxonomy index)",
       "Notes/_scan_Main conclusion part 1.pdf (S, Traits 1-4 deep dive)",
       "Notes/_scan_Main conclusion part 2 .pdf (S, Traits 5-7 deep dive)"
+    ]
+  },
+  {
+    "id": "MC-LSN-1.13",
+    "number": "1.13",
+    "title": "Absolute statements: read unqualified language at full force",
+    "hook": "When the author writes \"will not,\" the author means will not.",
+    "prose_blocks": [],
+    "named_tool_callouts": [],
+    "reference_callouts": [],
+    "checkpoint": {
+      "prompt": "Placeholder. Phased lesson renders via PhaseRunner.",
+      "options": [
+        {
+          "id": "A",
+          "text": "placeholder",
+          "correct": true,
+          "reveal": "phased lesson; not used"
+        },
+        {
+          "id": "B",
+          "text": "placeholder",
+          "correct": false,
+          "reveal": "phased lesson; not used"
+        }
+      ]
+    },
+    "sources": [
+      "Bootcamp curriculum / Absolute Statements lesson \u2014 authored 2026-05-02"
     ]
   }
 ]

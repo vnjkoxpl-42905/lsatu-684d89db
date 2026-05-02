@@ -19,6 +19,7 @@ import { RoleLabeler } from '@/bootcamps/main-conclusion/components/role-labeler
 import { IndicatorTagger } from '@/bootcamps/main-conclusion/components/indicator-tagger/IndicatorTagger';
 import { ConclusionPicker } from '@/bootcamps/main-conclusion/components/conclusion-picker/ConclusionPicker';
 import { PronounUnpacker } from '@/bootcamps/main-conclusion/components/pronoun-unpacker/PronounUnpacker';
+import { AbsoluteStatementsWalk } from '@/bootcamps/main-conclusion/components/absolute-statements/AbsoluteStatementsWalk';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { Phase, Role } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 
@@ -377,6 +378,14 @@ function PhaseBody({
                 prompt={phase.interactive.prompt}
                 segments={phase.interactive.segments}
                 spans={phase.interactive.spans}
+                caption={phase.interactive.caption}
+              />
+            </div>
+          ) : null}
+          {phase.interactive && phase.interactive.kind === 'absolute-statements' ? (
+            <div className="mt-5">
+              <AbsoluteStatementsWalk
+                scenarios={phase.interactive.scenarios}
                 caption={phase.interactive.caption}
               />
             </div>
