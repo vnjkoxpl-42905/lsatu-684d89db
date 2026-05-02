@@ -79,19 +79,33 @@ export interface PhaseDemo {
   body: string;
   /** Optional pre-labeled stimulus to *show* what role-labeling looks like. */
   exampleSegments?: Array<{ text: string; role: Role; whisper?: string }>;
-  /** Optional interactive widget rendered after `body`. Currently supports the
-   *  pronoun-unpack click-reveal used by Lesson 1.10. Demos with an interactive
-   *  widget should usually omit `exampleSegments` to keep the surface focused. */
-  interactive?: {
-    kind: 'pronoun-unpack';
-    prompt?: string;
-    segments: Array<
-      | { kind: 'text'; text: string }
-      | { kind: 'pronoun'; spanId: string }
-    >;
-    spans: Array<{ id: string; pronoun: string; antecedent: string }>;
-    caption?: string;
-  };
+  /** Optional interactive widget rendered after `body`. Demos with an
+   *  interactive widget should usually omit `exampleSegments` to keep the
+   *  surface focused. */
+  interactive?:
+    | {
+        kind: 'pronoun-unpack';
+        prompt?: string;
+        segments: Array<
+          | { kind: 'text'; text: string }
+          | { kind: 'pronoun'; spanId: string }
+        >;
+        spans: Array<{ id: string; pronoun: string; antecedent: string }>;
+        caption?: string;
+      }
+    | {
+        kind: 'absolute-statements';
+        caption?: string;
+        scenarios: Array<{
+          id: string;
+          statement: string;
+          explanation: string;
+          invalidation: string;
+          softened: string;
+          softWord: string;
+          softReason: string;
+        }>;
+      };
 }
 
 export interface PhaseAttempt {
@@ -1239,14 +1253,14 @@ PHASED_LESSONS['1.10'] = {
   studentEyebrow: 'Lesson 10',
   title: 'Pre-phrase: replace the pronouns before you say the conclusion back',
   hook:
-    '"Such laws will not work" tells you nothing on its own. Which laws? Replace the pronoun. Always.',
+    '"Such laws will not work" tells you nothing on its own. Which laws? Replace the pronoun. Mandatory.',
   phases: [
     {
       kind: 'briefing',
       goal:
-        'Build the pronoun-replacement habit so you can compare the conclusion to answer choices without losing the antecedent.',
+        'Replace every pronoun in the conclusion with what it points at. Before you compare to a single answer choice.',
       body:
-        'When you say the conclusion back to yourself with "this," "that," "such," or "they" still in it, you have not actually said it. Replace the pronoun with what it refers to. Then compare to the choices.',
+        'If "this," "that," "such," or "they" is still in your conclusion, you have not said the conclusion. You have said a pointer. Replace the pointer with the thing it points at. Mandatory, every time.',
       primer: 'Pronouns out before pre-phrase.',
     },
     {
@@ -1327,7 +1341,7 @@ PHASED_LESSONS['1.10'] = {
       kind: 'reveal',
       title: 'Replace the pronoun before you compare',
       body:
-        'You picked the candidate that swapped "these changes" for the actual list. That is the move. Saying the conclusion back to yourself with the pronoun still in it leaves you vulnerable to wrong answers that swap one item from the list for the whole.',
+        'You picked the candidate that swapped "these changes" for the actual list. That is the move. A conclusion read with the pronoun still in it leaves you wide open to a wrong answer that swaps one item from the list for the whole. The list was three; partial-list answers will offer one.',
     },
     {
       kind: 'coach',
@@ -1335,9 +1349,9 @@ PHASED_LESSONS['1.10'] = {
       structure_map:
         'Premise list (three proposals) → premise (opposition + cited stats) → conclusion ("these changes will damage the local economy"). The pronoun "these changes" reaches back to the full proposal list.',
       core_move:
-        'After you find the conclusion, ask "which words point at something earlier?" Replace them. Then read the conclusion back.',
+        'When you find the conclusion, do not read it. Replace the pointers first. Every "this," "that," "such," "they," "it." Then read.',
       why_it_matters:
-        'A common LSAC trap is an answer choice that captures one element from the antecedent but not all. Pronoun replacement blocks that.',
+        'Partial-list traps are LSAC\'s favorite move on these items. Replace the pronoun and the trap loses its surface match.',
     },
     {
       kind: 'checkpoint',
@@ -1610,6 +1624,169 @@ PHASED_LESSONS['1.12'] = {
           correct: false,
           reveal:
             'Direction (fee → applicants) is preserved. The trap is strength, not direction.',
+        },
+      ],
+    },
+  ],
+};
+
+PHASED_LESSONS['1.13'] = {
+  number: '1.13',
+  studentEyebrow: 'Lesson 13',
+  title: 'Absolute statements: read unqualified language at full force',
+  hook:
+    'When the author writes "will not," the author means will not. Treat the claim like it has zero exceptions until proven otherwise.',
+  phases: [
+    {
+      kind: 'briefing',
+      goal:
+        'Read unqualified language at full force, then use the Invalidation Test to expose how brittle a 100%-claim really is.',
+      body:
+        'Conclusions on the LSAT often arrive without hedges. "The decision will not reduce funding." No "may," no "usually," no "in most cases." Take the author at their word. Then ask: would one real exception break this claim?',
+      primer: 'Full force on the way in. One exception on the way out.',
+    },
+    {
+      kind: 'demo',
+      title: 'Walk four full-force claims',
+      body:
+        'Each scenario starts with an unqualified claim. Tap to apply the Invalidation Test. Tap again to see the same claim softened with one hedge word. The hedge changes the entire analysis.',
+      interactive: {
+        kind: 'absolute-statements',
+        caption: 'Walk all four. Each tap reveals one beat of the analysis.',
+        scenarios: [
+          {
+            id: 'as-1',
+            statement: 'The decision will not reduce funding.',
+            explanation:
+              'Full-force claim. The author rules out reduction completely. No "may," no "in some cases." Read it as zero exceptions.',
+            invalidation:
+              'One real exception is enough to break the claim. If you can show even one case where the decision reduces funding, the statement is too strong to defend.',
+            softened: 'The decision may not reduce funding.',
+            softWord: 'may',
+            softReason:
+              '"May" softens the claim because the result is no longer guaranteed. The author is no longer ruling reduction out entirely.',
+          },
+          {
+            id: 'as-2',
+            statement: 'The policy will increase ridership.',
+            explanation:
+              'Full-force claim. The author guarantees the result. Not "might," not "in pilot corridors." Treat the outcome as certain on the author\'s terms.',
+            invalidation:
+              'One real exception is enough to break the claim. If even one corridor has stable or falling ridership, the statement is too strong.',
+            softened: 'The policy could increase ridership.',
+            softWord: 'could',
+            softReason:
+              '"Could" softens the claim by opening the door to possibility. The result is now contingent, not guaranteed.',
+          },
+          {
+            id: 'as-3',
+            statement: 'The revised plan improves response time.',
+            explanation:
+              'Full-force claim. The author guarantees improvement. Not "tends to," not "on average." Read the outcome as absolute certainty.',
+            invalidation:
+              'One real exception is enough to break the claim. If you can find one instance where the plan fails to improve response time, the statement is too strong.',
+            softened: 'The revised plan often improves response time.',
+            softWord: 'often',
+            softReason:
+              '"Often" softens the claim by allowing exceptions. Improvement is now the typical case, not every case.',
+          },
+          {
+            id: 'as-4',
+            statement: 'The committee rejects late applications.',
+            explanation:
+              'Full-force claim. The author states this happens 100% of the time. There is zero room for hedging or real-world exceptions.',
+            invalidation:
+              'One real exception is enough to break the claim. If there is even one late application the committee accepts, the statement is too strong.',
+            softened: 'The committee usually rejects late applications.',
+            softWord: 'usually',
+            softReason:
+              '"Usually" softens the claim by allowing exceptions. Rejection is now the typical outcome, not the universal one.',
+          },
+        ],
+      },
+    },
+    {
+      kind: 'attempt',
+      title: 'Your turn — pick the answer that respects the force of the claim',
+      prompt:
+        'The conclusion in the stimulus is "Routine maintenance will prevent every breakdown of the new fleet." Pick the answer choice that paraphrases the conclusion without softening or strengthening it.',
+      task: {
+        kind: 'conclusion-pick',
+        stimulus:
+          'The transit authority has rolled out a maintenance schedule that calls for inspections every 200 miles, with parts replaced on a fixed cycle regardless of wear. The schedule was designed by engineers who reviewed every breakdown of the prior fleet. Routine maintenance will prevent every breakdown of the new fleet.',
+        candidates: [
+          {
+            id: 'c1',
+            text: 'Routine maintenance will prevent every breakdown of the new fleet.',
+            is_main: true,
+            rationale:
+              'Verbatim. The full-force language ("will prevent every") is preserved. This is what the right answer looks like.',
+          },
+          {
+            id: 'c2',
+            text: 'Routine maintenance may prevent breakdowns of the new fleet.',
+            is_main: false,
+            rationale:
+              'Softened. "Will prevent every" became "may prevent." The author was claiming 100%; this answer hedges. Different statement.',
+          },
+          {
+            id: 'c3',
+            text: 'Routine maintenance will prevent most breakdowns of the new fleet.',
+            is_main: false,
+            rationale:
+              'Quantifier weakened. "Every" became "most." The author left no exceptions; this answer admits some. Different claim.',
+          },
+          {
+            id: 'c4',
+            text: 'Routine maintenance is the best way to prevent breakdowns of the new fleet.',
+            is_main: false,
+            rationale:
+              'Topic shift. The conclusion was about whether breakdowns will be prevented; this answer ranks methods. Different question.',
+          },
+        ],
+      },
+    },
+    {
+      kind: 'reveal',
+      title: 'Full-force in, full-force out',
+      body:
+        'You picked the answer that kept the author\'s force intact. The trap on absolute-statement items is the softener: a wrong answer that turns "every" into "most" or "will" into "may." It sounds reasonable. The author was not being reasonable. The author was committing.',
+    },
+    {
+      kind: 'coach',
+      title: "Coach's note",
+      structure_map:
+        'Premise (200-mile inspection schedule, fixed-cycle parts replacement) → premise (engineers reviewed every prior breakdown) → conclusion ("will prevent every breakdown"). The conclusion is unqualified. The right answer must be unqualified too.',
+      core_move:
+        'When the conclusion has no hedge, the right answer has no hedge. Watch for "may," "could," "often," "usually," "in most cases." Each one is a softener. None of them belong in the right answer.',
+      why_it_matters:
+        'Softener-traps land most often on Main Conclusion items where the conclusion sounds extreme. Students soften the answer because softer feels safer. The author did not soften. Neither should the answer.',
+    },
+    {
+      kind: 'checkpoint',
+      prompt:
+        'The conclusion is "The bridge will collapse within five years." Which answer choice respects the force of the claim?',
+      options: [
+        {
+          id: 'A',
+          text: 'The bridge could collapse within five years.',
+          correct: false,
+          reveal:
+            'Softened. "Will" became "could." The author committed to the outcome; this answer hedges. Wrong.',
+        },
+        {
+          id: 'B',
+          text: 'The bridge will collapse within five years.',
+          correct: true,
+          reveal:
+            'Yes. Force preserved. No hedge added. The author committed; the answer commits. Same claim.',
+        },
+        {
+          id: 'C',
+          text: 'Engineers predict the bridge will likely collapse soon.',
+          correct: false,
+          reveal:
+            '"Likely" is a hedge. The author did not say "likely." Different claim.',
         },
       ],
     },
