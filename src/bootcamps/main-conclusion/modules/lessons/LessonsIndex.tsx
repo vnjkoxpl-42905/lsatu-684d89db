@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Check, ArrowRight, Lock, Award } from 'lucide-react';
+import { Check, ArrowRight, Lock } from 'lucide-react';
 import lessons from '@/bootcamps/main-conclusion/data/lessons.generated.json';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -122,8 +122,8 @@ function Header({
           aria-valuemax={100}
         >
           <div
-            className="absolute inset-y-0 left-0 bg-[image:var(--grad-accent-strong)] shadow-[var(--glow-accent-soft)] transition-[width] duration-300 ease-eased"
-            style={{ width: `${pct}%` }}
+            className="absolute inset-0 bg-[image:var(--grad-accent-strong)] shadow-[var(--glow-accent-soft)] origin-left transition-transform duration-300 ease-eased motion-reduce:transition-none"
+            style={{ transform: `scaleX(${pct / 100})` }}
           />
         </div>
         <div className="font-mc-mono text-mono text-mc-accent">{pct}%</div>
@@ -173,11 +173,11 @@ function StatusIcon({
       aria-hidden="true"
       className={cn(
         'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-        'bg-[rgb(var(--surface-elev))] text-ink-soft',
+        'bg-[rgb(var(--surface-elev))]',
         'border border-[rgb(var(--border)/0.10)]',
       )}
     >
-      <Award className="h-3.5 w-3.5" strokeWidth={1.8} />
+      <span className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink-faint))]" />
     </span>
   );
 }

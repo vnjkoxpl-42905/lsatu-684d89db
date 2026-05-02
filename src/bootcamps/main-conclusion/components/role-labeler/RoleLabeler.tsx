@@ -8,7 +8,7 @@
  * Reuses the role-color tokens (--role-conclusion, --role-premise, etc.).
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
@@ -60,6 +60,15 @@ const ROLE_REVEAL_CLASS: Record<Role, string> = {
     'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)] text-ink-soft',
 };
 
+// Role-color prefix on the reveal row. Same role-color vocabulary as the chip,
+// the segment background tint, and the lesson-prose highlight. Aspiring Gold
+// is reserved for the runner shell and primary CTA, not argument structure.
+const ROLE_PREFIX_CLASS: Record<Role, string> = {
+  conclusion: 'text-[rgb(var(--role-conclusion))]',
+  premise: 'text-[rgb(var(--role-premise))]',
+  background: 'text-[rgb(var(--role-background))]',
+};
+
 /**
  * Per-segment stagger between paint-reveals. Total reveal duration is
  * (segments.length - 1) * REVEAL_STEP_MS + the card's own ~220ms transition,
@@ -75,6 +84,12 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
   const [submitted, setSubmitted] = useState(false);
   const reducedMotion = useReducedMotion();
   const stepMs = reducedMotion ? 0 : REVEAL_STEP_MS;
+  // After-submit focus moves to the score line so screen readers announce the
+  // verdict and keyboard users land in readable content. PRODUCT.md a11y rule.
+  const scoreRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (submitted && scoreRef.current) scoreRef.current.focus();
+  }, [submitted]);
 
   function reset() {
     setPicks(Object.fromEntries(segments.map((s) => [s.id, null])));
@@ -176,7 +191,7 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
 
                 {submitted ? (
                   <p className="mt-3 font-mc-serif text-body text-ink-soft leading-relaxed">
-                    <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent mr-2">
+                    <span className={cn('font-mc-mono text-mono uppercase tracking-wider mr-2', ROLE_PREFIX_CLASS[seg.correct])}>
                       {ROLE_LABEL[seg.correct]}
                       {isWrong && picked ? (
                         <span className="text-ink-faint normal-case tracking-normal">
@@ -205,15 +220,20 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
         </div>
       ) : (
         <div
+          ref={scoreRef}
+          tabIndex={-1}
+          role="status"
+          aria-live="polite"
           className={cn(
             'rounded-3 px-4 py-3',
             'bg-[image:var(--grad-surface-soft)]',
             'border border-[color:var(--border-accent-soft)]',
             'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
           )}
         >
           <p className="font-mc-serif text-body-prose text-ink">
-            <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent mr-2">
+            <span className="font-mc-mono text-mono uppercase tracking-wider text-ink mr-2">
               You got {correctCount} of {segments.length}
             </span>
             {cleanRead

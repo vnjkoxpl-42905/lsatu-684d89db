@@ -6,7 +6,7 @@
  * Submit to reveal: each pill paints with its category color, rationale appears.
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ChipPicker, type ChipOption } from '@/bootcamps/main-conclusion/components/chip-picker/ChipPicker';
@@ -108,6 +108,12 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
     () => Object.fromEntries(targets.map((t) => [t.id, null])),
   );
   const [submitted, setSubmitted] = useState(false);
+  // After-submit focus moves to the score line so screen readers announce the
+  // verdict and keyboard users land in readable content. PRODUCT.md a11y rule.
+  const scoreRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (submitted && scoreRef.current) scoreRef.current.focus();
+  }, [submitted]);
 
   const allLabeled = targets.every((t) => picks[t.id] !== null);
   const correctCount = targets.filter((t) => picks[t.id] === t.correct).length;
@@ -276,16 +282,20 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
         </div>
       ) : (
         <div
+          ref={scoreRef}
+          tabIndex={-1}
           role="status"
+          aria-live="polite"
           className={cn(
             'rounded-3 px-4 py-3',
             'bg-[image:var(--grad-surface-soft)]',
             'border border-[color:var(--border-accent-soft)]',
             'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
           )}
         >
           <p className="font-mc-serif text-body-prose text-ink">
-            <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent mr-2">
+            <span className="font-mc-mono text-mono uppercase tracking-wider text-ink mr-2">
               You got {correctCount} of {targets.length}
             </span>
             {correctCount === targets.length

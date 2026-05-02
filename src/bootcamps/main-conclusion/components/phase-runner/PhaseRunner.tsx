@@ -9,7 +9,7 @@
  * lets the student step backward through phases (read again, retry an attempt).
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
@@ -110,6 +110,20 @@ export function PhaseRunner({
     return true;
   }, [phase, phaseIndex, attemptDone, checkpointPick]);
 
+  // After-submit focus management. When the student finishes an attempt or
+  // picks a checkpoint option, canAdvance flips false→true and the Continue
+  // button becomes actionable. Move focus to it so keyboard users know.
+  // Skipped on phases where canAdvance is true at mount (briefing/demo/reveal/coach).
+  const continueRef = useRef<HTMLButtonElement>(null);
+  const prevCanAdvanceRef = useRef(canAdvance);
+  useEffect(() => {
+    const wasGated = phase.kind === 'attempt' || phase.kind === 'checkpoint';
+    if (wasGated && !prevCanAdvanceRef.current && canAdvance && continueRef.current) {
+      continueRef.current.focus();
+    }
+    prevCanAdvanceRef.current = canAdvance;
+  }, [canAdvance, phase.kind]);
+
   async function next() {
     if (!canAdvance) return;
     if (isLast) {
@@ -140,7 +154,7 @@ export function PhaseRunner({
   return (
     <article
       className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto"
-      data-lesson-number={phases.length > 0 ? title : undefined}
+      data-lesson-title={title}
     >
       <Hero studentEyebrow={studentEyebrow} title={title} hook={hook} completed={completed} />
 
@@ -173,6 +187,7 @@ export function PhaseRunner({
         onNext={next}
         backHref={backHref}
         completed={completed}
+        continueRef={continueRef}
       />
     </article>
   );
@@ -194,7 +209,7 @@ function Hero({
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+        style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.20), transparent 70%)' }}
       />
       <div className="relative">
         <div className="flex flex-wrap items-center gap-2">
@@ -508,13 +523,14 @@ function CheckpointPhase({
 
 function Footer({
   phaseIndex,
-  total,
+  total: _total,
   isLast,
   canAdvance,
   onBack,
   onNext,
   backHref,
   completed,
+  continueRef,
 }: {
   phaseIndex: number;
   total: number;
@@ -524,8 +540,9 @@ function Footer({
   onNext: () => void;
   backHref?: string;
   completed: boolean;
+  continueRef: React.RefObject<HTMLButtonElement>;
 }): JSX.Element {
-  const nextLabel = isLast ? (completed ? 'Mark complete again' : 'Mark lesson complete') : 'Continue';
+  const nextLabel = isLast ? (completed ? 'Done' : 'Mark lesson complete') : 'Continue';
   return (
     <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-3">
@@ -549,6 +566,7 @@ function Footer({
           </Link>
         ) : null}
         <Button
+          ref={continueRef}
           onClick={onNext}
           disabled={!canAdvance}
           rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}
@@ -589,7 +607,7 @@ function ClearedScreen({
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-50 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.22), transparent 70%)' }}
+          style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.22), transparent 70%)' }}
         />
         <div
           aria-hidden="true"

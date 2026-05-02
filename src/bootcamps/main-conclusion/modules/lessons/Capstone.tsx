@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react';
+import { ArrowRight, Check, X as XIcon } from 'lucide-react';
 import calibration from '@/bootcamps/main-conclusion/data/calibration.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -61,9 +62,9 @@ function M1CapstoneCorrectOnly() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader
-        eyebrow="Lesson 13 · Capstone"
-        title="Lesson 13 · Calibration"
-        description="Ten calibration items. Different stimuli from anything in your lessons or drills — this measures what you learned, not what you memorized."
+        eyebrow="Capstone"
+        title="Lesson 13 calibration"
+        description="Ten calibration items, different from anything in your lessons or drills. This measures what you learned, not what you memorized."
         actions={
           <>
             <Badge tone="warn" dot>
@@ -76,10 +77,9 @@ function M1CapstoneCorrectOnly() {
       <ol className="space-y-3">
         {items.map((item, i) => (
           <li key={item.id}>
-            <Card variant="surface" data-calibration-id={item.id}>
+            <Card variant="surface" data-capstone-item-id={item.id}>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  
                   <h3 className="font-mc-serif text-h3 font-semibold mt-1">Item {i + 1}</h3>
                 </div>
                 <div className="flex items-center gap-2">
@@ -90,7 +90,7 @@ function M1CapstoneCorrectOnly() {
                 <p className="font-mc-serif text-body-prose text-ink mt-3 leading-relaxed">{item.stimulus}</p>
               ) : (
                 <p className="font-mc-serif text-body-prose text-ink-faint mt-3 italic">
-                  Stimulus arriving soon. The other items below are ready to attempt now.
+                  The argument is on the way. The other items below are ready now.
                 </p>
               )}
               {item.main_conclusion ? (
@@ -153,14 +153,14 @@ function M5CapstoneView() {
         <Card
           variant="elev"
           accent
-          className="border border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.04)] shadow-[0_24px_48px_-12px_rgb(0_0_0/0.6),0_0_24px_-4px_rgb(16_185_129/0.20)]"
+          className="shadow-[var(--shadow-3),var(--glow-accent-soft)]"
         >
-          <Badge tone="success" dot pulse>
-            capstone complete
+          <Badge tone="accent" dot pulse>
+            capstone cleared
           </Badge>
           <h1 className="font-mc-serif text-display font-semibold mt-3 leading-tight">{correctCount} of {total} clean</h1>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
-            Cluster-decomposition results recorded. Trait performance feeds the Diagnostics dashboard.
+            Cluster-decomposition results are logged. Trait performance feeds your Diagnostics dashboard.
           </p>
           <Button onClick={() => { setIndex(0); setPicks({}); setCompleted(false); }} className="mt-3">
             Retake
@@ -169,14 +169,21 @@ function M5CapstoneView() {
         <Card variant="surface">
           <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Item-by-item</h2>
           <ol className="mt-3 space-y-2">
-            {M5_CAPSTONE.map((q) => {
+            {M5_CAPSTONE.map((q, i) => {
               const picked = q.choices.find((c) => c.letter === picks[q.id]);
               return (
-                <li key={q.id} className="font-mc-serif text-body text-ink">
-                  <span className="font-mc-mono text-mono text-ink-faint">{q.id}</span> · picked {picked?.letter ?? '—'} ·{' '}
-                  <span className={picked?.is_correct ? 'text-[rgb(var(--success))]' : 'text-[rgb(var(--error))]'}>
-                    {picked?.is_correct ? '✓' : '✗'}
-                  </span>
+                <li key={q.id} className="font-mc-serif text-body text-ink flex items-center gap-2" data-capstone-item-id={q.id}>
+                  <span className="font-mc-mono text-mono text-ink-faint">Item {i + 1}</span>
+                  <span className="text-ink-faint">·</span>
+                  <span>picked {picked?.letter ?? 'no answer'}</span>
+                  <span className="text-ink-faint">·</span>
+                  {picked?.is_correct ? (
+                    <Check className="h-4 w-4 text-[rgb(var(--success))]" strokeWidth={2.4} aria-label="Correct" />
+                  ) : picked ? (
+                    <XIcon className="h-4 w-4 text-[rgb(var(--error))]" strokeWidth={2.4} aria-label="Incorrect" />
+                  ) : (
+                    <span className="font-mc-mono text-mono text-ink-faint">skipped</span>
+                  )}
                 </li>
               );
             })}
@@ -189,8 +196,8 @@ function M5CapstoneView() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <PageHeader
-        eyebrow="Hard Sentences · Capstone"
-        title="Hard Sentences · Capstone"
+        eyebrow="Capstone"
+        title="Hard sentences"
         description="Five cluster-decomposition items. Strip the specifiers; pick the core."
         compact
       />
@@ -220,9 +227,8 @@ function CapstoneQuestionView({
 }) {
   const submitted = pickedLetter != null;
   return (
-    <Card variant="surface">
-      <p className="font-mc-mono text-mono text-ink-faint">{item.id}</p>
-      <p className="font-mc-serif text-body-prose text-ink mt-2 leading-relaxed">{item.stimulus}</p>
+    <Card variant="surface" data-capstone-item-id={item.id}>
+      <p className="font-mc-serif text-body-prose text-ink leading-relaxed">{item.stimulus}</p>
       <p className="font-mc-serif text-body text-ink-soft italic mt-3">{item.prompt}</p>
       <ol className="mt-3 space-y-1.5">
         {item.choices.map((c) => {
@@ -237,8 +243,8 @@ function CapstoneQuestionView({
               >
                 <span className="font-mc-mono text-mono text-ink-faint mr-2">{c.letter}</span>
                 <span className="font-mc-serif text-body text-ink flex-1 text-left">{c.text}</span>
-                {submitted && c.is_correct ? <Chip tone="conclusion">correct</Chip> : null}
-                {submitted && isPicked && !c.is_correct ? <Chip tone="opposing">your pick</Chip> : null}
+                {submitted && c.is_correct ? <Badge tone="success" dot>correct</Badge> : null}
+                {submitted && isPicked && !c.is_correct ? <Badge tone="warn" dot>your pick</Badge> : null}
               </Button>
             </li>
           );
@@ -247,15 +253,21 @@ function CapstoneQuestionView({
       {submitted ? (
         <div className="mt-3 space-y-2">
           {item.choices.map((c) => (
-            <p key={c.letter} className="font-mc-serif text-body text-ink-soft">
-              <span className="font-mc-mono text-mono mr-2">{c.letter}</span>
-              {c.is_correct ? <span className="text-[rgb(var(--success))]">✓ </span> : null}
-              {c.rationale}
-              {c.trap_label ? <span className="font-mc-mono text-mono text-ink-faint ml-2">[{c.trap_label}]</span> : null}
+            <p key={c.letter} className="font-mc-serif text-body text-ink-soft flex items-baseline gap-2">
+              <span className="font-mc-mono text-mono shrink-0">{c.letter}</span>
+              {c.is_correct ? (
+                <Check className="h-3.5 w-3.5 text-[rgb(var(--success))] shrink-0 self-center" strokeWidth={2.4} aria-label="Correct choice" />
+              ) : null}
+              <span>
+                {c.rationale}
+                {c.trap_label ? <span className="font-mc-mono text-mono text-ink-faint ml-2">[{c.trap_label}]</span> : null}
+              </span>
             </p>
           ))}
           <div className="flex justify-end">
-            <Button onClick={onNext}>{isLast ? 'Finish' : 'Next →'}</Button>
+            <Button onClick={onNext} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+              {isLast ? 'Finish' : 'Continue'}
+            </Button>
           </div>
         </div>
       ) : null}

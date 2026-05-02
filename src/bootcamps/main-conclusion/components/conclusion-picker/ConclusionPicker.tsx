@@ -6,7 +6,7 @@
  * conclusion color, every candidate gets per-rationale text, score line fires.
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -28,6 +28,12 @@ interface Props {
 export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): JSX.Element {
   const [picked, setPicked] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  // After-submit focus moves to the score line so screen readers announce the
+  // verdict and keyboard users land in readable content. PRODUCT.md a11y rule.
+  const scoreRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (submitted && scoreRef.current) scoreRef.current.focus();
+  }, [submitted]);
 
   const pickedC = candidates.find((c) => c.id === picked) ?? null;
   const correctC = candidates.find((c) => c.is_main) ?? null;
@@ -155,10 +161,14 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
         </div>
       ) : (
         <div
+          ref={scoreRef}
+          tabIndex={-1}
           role="status"
+          aria-live="polite"
           className={cn(
             'rounded-3 px-4 py-3 border',
             'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
             pickedC?.is_main
               ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
               : 'bg-[rgb(var(--warn)/0.06)] border-[rgb(var(--warn)/0.40)]',

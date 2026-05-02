@@ -10,7 +10,7 @@ import { useDrawer } from '@/bootcamps/main-conclusion/components/workspace-shel
 import { CakeOnBlocks } from '@/bootcamps/main-conclusion/components/argument-structure-map/CakeOnBlocks';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, X as XIcon } from 'lucide-react';
 import { PhaseRunner } from '@/bootcamps/main-conclusion/components/phase-runner/PhaseRunner';
 import { getPhasedLesson } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 import type { LessonId, NamedToolId, ReferenceId } from '@/bootcamps/main-conclusion/types/source-slots';
@@ -101,7 +101,7 @@ export function Lesson(): JSX.Element {
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+          style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.20), transparent 70%)' }}
         />
         <div className="relative">
           <div className="flex flex-wrap items-center gap-2">
@@ -112,7 +112,6 @@ export function Lesson(): JSX.Element {
               />
               Lesson {data.number}
             </div>
-            <span className="font-mc-mono text-mono text-ink-faint">{data.id}</span>
             {completed && (
               <Badge tone="success" dot>
                 completed
@@ -201,13 +200,18 @@ export function Lesson(): JSX.Element {
                   ].join(' ')}
                 >
                   <span className="font-mc-mono text-mono text-ink-faint mr-3">{opt.id}</span>
-                  <span className="text-body">{opt.text}</span>
+                  <span className="font-mc-serif text-body-prose text-ink">{opt.text}</span>
                   {showVerdict && (
                     <div className={[
-                      'mt-2 font-mc-mono text-mono',
-                      opt.correct ? 'text-role-conclusion' : 'text-mc-error',
+                      'mt-2 font-mc-mono text-mono inline-flex items-baseline gap-2',
+                      opt.correct ? 'text-[rgb(var(--success))]' : 'text-[rgb(var(--error))]',
                     ].join(' ')}>
-                      {opt.correct ? '✓ ' : '✕ '}{opt.reveal}
+                      {opt.correct ? (
+                        <Check className="h-3.5 w-3.5 self-center shrink-0" strokeWidth={2.4} aria-label="Correct" />
+                      ) : (
+                        <XIcon className="h-3.5 w-3.5 self-center shrink-0" strokeWidth={2.4} aria-label="Incorrect" />
+                      )}
+                      <span>{opt.reveal}</span>
                     </div>
                   )}
                 </button>
@@ -260,12 +264,13 @@ export function Lesson(): JSX.Element {
         </section>
       )}
 
-      {/* Source citation — handoff §6 SBSR */}
-      <footer className="mt-12 pt-6 border-t border-[rgb(var(--border)/0.08)]">
+      {/* Source citation — handoff §6 SBSR. Author-side metadata (e.g. "(S, voice anchor: ...)") is
+          stripped so only the citation surfaces to students. Full strings remain in data-* for QA. */}
+      <footer className="mt-12 pt-6 border-t border-[rgb(var(--border)/0.08)]" data-sources-raw={data.sources.join('\n')}>
         <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint mb-2">Sources</div>
         <ul className="space-y-1">
           {data.sources.map((s) => (
-            <li key={s} className="font-mc-mono text-mono text-ink-soft">{s}</li>
+            <li key={s} className="font-mc-mono text-mono text-ink-soft">{redactAuthorMetadata(s)}</li>
           ))}
         </ul>
       </footer>
@@ -299,6 +304,18 @@ export function Lesson(): JSX.Element {
       </div>
     </article>
   );
+}
+
+/**
+ * Strips trailing author-only metadata from a source citation. Author strings shaped like
+ *   "Notes/Foo.pdf (S, voice anchor: HARK A SIMPLE ARGUMENT)"
+ *   "Curriculum/index.html — logicalreasoningfoundation prototype (Monica example)"
+ * become "Notes/Foo.pdf" and "Curriculum/index.html". Full strings stay on data-sources-raw
+ * for QA. The first parenthesis or em-dash is treated as the metadata boundary.
+ */
+function redactAuthorMetadata(citation: string): string {
+  const cut = citation.search(/\s+[—(]/);
+  return cut === -1 ? citation : citation.slice(0, cut).trim();
 }
 
 /**
