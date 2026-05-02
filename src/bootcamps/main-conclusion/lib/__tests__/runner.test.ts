@@ -2,8 +2,10 @@ import { describe, it, expect } from 'vitest';
 import {
   nextTrainingStep,
   buildLessonPath,
+  nextDrillStep,
   type LessonRow,
   type ProgressLike,
+  type DrillRow,
 } from '@/bootcamps/main-conclusion/lib/runner';
 
 const LESSONS: LessonRow[] = Array.from({ length: 13 }, (_, i) => ({
@@ -83,6 +85,45 @@ describe('nextTrainingStep', () => {
       const visible = [s.title, s.subtitle, s.cta, s.eyebrow, s.secondary?.label ?? ''].join(' ');
       expect(visible).not.toMatch(/MC-LSN|MC-DRL|MC-DIA|MC-HS|MC-REF|NT-/);
     }
+  });
+});
+
+const DRILLS: DrillRow[] = [
+  { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Word ID' },
+  { id: 'MC-DRL-3.2', number: '3.2', title: 'X-Ray Drill' },
+  { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Reading' },
+  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal vs First-Sentence', gates_simulator: true },
+  { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping' },
+];
+
+describe('nextDrillStep', () => {
+  it('points at the gate drill (3.4) when not yet cleared, even if 3.1–3.3 are done', () => {
+    const progress: ProgressLike = {
+      completed_lessons: [],
+      completed_drills: ['MC-DRL-3.1', 'MC-DRL-3.2', 'MC-DRL-3.3'],
+    };
+    const step = nextDrillStep(progress, DRILLS);
+    expect(step.isGate).toBe(true);
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.4');
+  });
+
+  it('points at the next non-gate drill when the gate is done', () => {
+    const progress: ProgressLike = {
+      completed_lessons: [],
+      completed_drills: ['MC-DRL-3.1', 'MC-DRL-3.4'],
+    };
+    const step = nextDrillStep(progress, DRILLS);
+    expect(step.isGate).toBe(false);
+    expect(step.href).toBe('/bootcamp/intro-to-lr/drills/3.2');
+  });
+
+  it('all drills cleared → simulator', () => {
+    const progress: ProgressLike = {
+      completed_lessons: [],
+      completed_drills: DRILLS.map((d) => d.id),
+    };
+    const step = nextDrillStep(progress, DRILLS);
+    expect(step.href).toBe('/bootcamp/intro-to-lr/simulator/bank');
   });
 });
 

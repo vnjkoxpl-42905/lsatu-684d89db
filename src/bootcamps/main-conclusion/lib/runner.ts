@@ -156,6 +156,75 @@ export interface PathDot {
   capstone?: boolean;
 }
 
+export interface DrillRow {
+  id: string;
+  number: string;
+  title: string;
+  gates_simulator?: boolean;
+}
+
+export interface DrillNextStep {
+  /** Eyebrow above the title — student-facing. */
+  eyebrow: string;
+  /** Headline. */
+  title: string;
+  /** Subtitle — one sentence. */
+  subtitle: string;
+  /** CTA verb. */
+  cta: string;
+  /** Destination href. */
+  href: string;
+  /** Whether this step is the unlock-gate drill (3.4). */
+  isGate: boolean;
+}
+
+/** Pure helper for the Drills hub: which drill should the student do next? */
+export function nextDrillStep(
+  progress: ProgressLike | null,
+  drills: readonly DrillRow[],
+): DrillNextStep {
+  const completed = new Set(progress?.completed_drills ?? []);
+  const ordered = [...drills].sort((a, b) => parseFloat(a.number) - parseFloat(b.number));
+  const gate = ordered.find((d) => d.gates_simulator);
+
+  // Highest priority: if the unlock-gate drill is not done, that is always next.
+  if (gate && !completed.has(gate.id)) {
+    return {
+      eyebrow: 'Unlock the Simulator',
+      title: `Drill ${gate.number} — ${gate.title}`,
+      subtitle:
+        'Four stages, five questions each. Clear all four and the Question Simulator opens.',
+      cta: `Run Drill ${gate.number}`,
+      href: `${BC}/drills/${gate.number}`,
+      isGate: true,
+    };
+  }
+
+  // Otherwise: first uncompleted drill in numeric order.
+  const next = ordered.find((d) => !completed.has(d.id));
+  if (next) {
+    return {
+      eyebrow: 'Next drill',
+      title: `Drill ${next.number} — ${next.title}`,
+      subtitle: 'Stage-Gate format. Your run-rate is calibration, not a grade.',
+      cta: `Run Drill ${next.number}`,
+      href: `${BC}/drills/${next.number}`,
+      isGate: false,
+    };
+  }
+
+  // All drills cleared.
+  return {
+    eyebrow: 'All drills cleared',
+    title: 'Run a Simulator question',
+    subtitle:
+      'Drill 3.4 is the unlock-gate; you have it. Now apply the read on real LSAT-format items.',
+    cta: 'Open Simulator',
+    href: `${BC}/simulator/bank`,
+    isGate: false,
+  };
+}
+
 export function buildLessonPath(
   progress: ProgressLike | null,
   lessons: readonly LessonRow[],

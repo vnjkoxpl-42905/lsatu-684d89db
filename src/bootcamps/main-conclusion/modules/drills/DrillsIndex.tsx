@@ -1,12 +1,16 @@
 /**
- * Module 3: Drills index.
- * 9 drills. 3.4 (Stage-Gate Rebuttal vs First-Sentence) gates the Simulator unlock per G2.DRL-3.4.
+ * Module 3: Drills hub.
+ * Runner-style: lead with the next drill (gating Drill 3.4 if not done).
+ * Roster shows status; each drill page is the active surface.
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight, Zap, Check } from 'lucide-react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
+import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
+import { nextDrillStep } from '@/bootcamps/main-conclusion/lib/runner';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 interface DrillRow {
@@ -31,8 +35,19 @@ export const DRILLS: DrillRow[] = [
 ];
 
 export function DrillsIndex() {
+  const { progress } = useModuleProgress();
+  const completed = new Set(progress?.completed_drills ?? []);
+  const next = nextDrillStep(
+    progress
+      ? { completed_lessons: progress.completed_lessons, completed_drills: progress.completed_drills }
+      : null,
+    DRILLS,
+  );
+  const doneCount = DRILLS.filter((d) => completed.has(d.id)).length;
+  const pct = Math.round((doneCount / DRILLS.length) * 100);
+
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
       <header className="relative isolate">
         <div
           aria-hidden="true"
@@ -45,51 +60,121 @@ export function DrillsIndex() {
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
             />
-            Module 3
-          </div>
-          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
             Drills
+          </div>
+          <h1 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
+            {doneCount} of {DRILLS.length} cleared
           </h1>
-          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            Nine drills, stratified by mechanic. Each drill is its own Stage-Gate.{' '}
-            <span className="text-mc-accent">Drill 3.4</span> unlocks the Simulator.
-          </p>
+          <div
+            className="mt-3 relative h-1.5 w-48 rounded-full bg-[rgb(var(--surface-elev))] overflow-hidden"
+            role="progressbar"
+            aria-valuenow={pct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <div
+              className="absolute inset-y-0 left-0 bg-[image:var(--grad-accent-strong)] shadow-[var(--glow-accent-soft)] transition-[width] duration-300 ease-eased"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
         </div>
       </header>
 
-      <ul className="mt-10 grid gap-3">
-        {DRILLS.map((d) => (
+      <section
+        className={cn(
+          'relative isolate overflow-hidden rounded-5 p-6 desktop:p-7',
+          'bg-[image:var(--grad-surface-elev)]',
+          'border border-[color:var(--border-accent-soft)]',
+          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+        )}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+        />
+        <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-5">
+          <div className="min-w-0 flex-1">
+            <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              />
+              {next.eyebrow}
+            </div>
+            <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
+              {next.title}
+            </h2>
+            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
+              {next.subtitle}
+            </p>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Link
+                to={next.href}
+                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+              >
+                <Button
+                  size="lg"
+                  rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+                >
+                  {next.cta}
+                </Button>
+              </Link>
+              {next.isGate ? (
+                <Badge tone="accent" dot pulse>
+                  unlocks Simulator
+                </Badge>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
+          Full roster
+        </h2>
+      <ul className="grid gap-3">
+        {DRILLS.map((d) => {
+          const isDone = completed.has(d.id);
+          const isActive = !isDone && d.number === next.href.split('/').pop();
+          return (
           <li key={d.id}>
             <Link
               to={d.route.startsWith('/bootcamp/intro-to-lr') ? d.route : `/bootcamp/intro-to-lr${d.route}`}
               className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
             >
-              <Card variant="surface" interactive accent={d.gates_simulator}>
+              <Card variant="surface" interactive accent={d.gates_simulator || isActive}>
                 <div className="flex items-start gap-4">
                   <div
                     className={cn(
                       'shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full font-mc-mono text-body font-semibold',
-                      d.gates_simulator
+                      isDone
+                        ? 'bg-[rgb(var(--success)/0.16)] text-[rgb(var(--success))] border border-[rgb(var(--success)/0.40)]'
+                        : d.gates_simulator || isActive
                         ? 'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-mid)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]'
                         : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
                     )}
                   >
-                    {d.number}
+                    {isDone ? <Check className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" /> : d.number}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-baseline gap-2">
-                      <span className="font-mc-mono text-mono text-ink-faint">{d.id}</span>
-                      {d.gates_simulator ? (
-                        <Badge tone="accent" dot pulse>
+                      {isDone ? (
+                        <Badge tone="success" dot>cleared</Badge>
+                      ) : isActive ? (
+                        <Badge tone="accent" dot pulse>next up</Badge>
+                      ) : null}
+                      {d.gates_simulator && !isDone ? (
+                        <Badge tone="accent" dot>
                           <Zap className="h-3 w-3 -ml-0.5" strokeWidth={2.2} aria-hidden="true" />
-                          unlocks simulator
+                          unlocks Simulator
                         </Badge>
                       ) : null}
                     </div>
                     <h3
                       className={cn(
                         'font-mc-serif text-h3 font-semibold mt-1 leading-tight transition-colors duration-150 ease-eased',
-                        'text-ink group-hover:text-mc-accent',
+                        isDone ? 'text-ink-soft' : 'text-ink group-hover:text-mc-accent',
                       )}
                     >
                       {d.title}
@@ -106,8 +191,10 @@ export function DrillsIndex() {
               </Card>
             </Link>
           </li>
-        ))}
+          );
+        })}
       </ul>
+      </section>
     </article>
   );
 }

@@ -23,9 +23,13 @@ const CAPSTONE: { id: string; number: string; title: string; route: string } = {
 
 export function HardSentencesIndex() {
   const all: Array<HardSection | typeof CAPSTONE> = [...HARD_SECTIONS, CAPSTONE];
+  // We don't track per-section completion for hard sentences in v1 (no
+  // markComplete hook for them today). Direct the student to the first section
+  // by default — honest: this reflects "where to start," not "what is incomplete."
+  const next = all[0]!;
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
-      <header className="relative isolate mb-10">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
+      <header className="relative isolate">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
@@ -37,16 +41,60 @@ export function HardSentencesIndex() {
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
             />
-            Module 5
+            Hard Sentences
           </div>
           <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-            Hard Sentences
+            Decompose the cluster
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            The cluster-sentence decomposer. Specifier chains. The Alex/Jordan walkthrough.
+            LSAT writers stack qualifiers around a core thought until you can&apos;t see it. This module
+            is the dive crew — one section at a time, peel the coral off the statue.
           </p>
         </div>
       </header>
+
+      <section
+        className={cn(
+          'relative isolate overflow-hidden rounded-5 p-6',
+          'bg-[image:var(--grad-surface-elev)]',
+          'border border-[color:var(--border-accent-soft)]',
+          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+        )}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+        />
+        <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-5">
+          <div className="min-w-0 flex-1">
+            <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              />
+              Start here
+            </div>
+            <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
+              {next.number} — {next.title}
+            </h2>
+            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
+              Begin with the why and the cluster anatomy before you reach the decomposer in 5.7.
+            </p>
+            <div className="mt-4">
+              <Link
+                to={next.route}
+                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+              >
+                <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
+                  Open section {next.number}
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint">All sections</h2>
       <ul className="grid gap-3">
         {all.map((s) => {
           const isCapstone = s.id === CAPSTONE.id;

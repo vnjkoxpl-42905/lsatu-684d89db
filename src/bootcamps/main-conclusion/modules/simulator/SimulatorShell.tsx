@@ -10,8 +10,10 @@ import traps from '@/bootcamps/main-conclusion/data/traps.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
+import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
+import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { LucideIcon } from 'lucide-react';
 
@@ -30,6 +32,9 @@ interface SimQ {
 }
 
 export function SimulatorOverview() {
+  const { progress } = useModuleProgress();
+  const drill34Done = !!progress?.completed_drills.includes('MC-DRL-3.4');
+
   const overviewLinks: Array<{ to: string; title: string; desc: string; Icon: LucideIcon }> = [
     {
       to: '/bootcamp/intro-to-lr/simulator/bank',
@@ -51,12 +56,67 @@ export function SimulatorOverview() {
     },
   ];
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-6">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
       <PageHeader
-        eyebrow="Module 4"
-        title="Question Simulator"
-        description="The canonical 20. Two structure families: First-sentence (9 Qs) and Rebuttal (11 Qs). Wrong answers tagged with one of the seven trap traits."
+        eyebrow="Simulator"
+        title="Live training"
+        description="Real LSAT-format Main Conclusion items, full five-choice answer set, trap-trait diagnostic on every miss."
       />
+
+      {!drill34Done ? (
+        <section
+          className={cn(
+            'relative isolate overflow-hidden rounded-5 p-6',
+            'bg-[image:var(--grad-surface-elev)]',
+            'border border-[color:var(--border-accent-soft)]',
+            'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+          )}
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+          />
+          <div className="relative">
+            <Badge tone="warn" dot>
+              gate ahead
+            </Badge>
+            <h2 className="font-mc-serif text-h1 font-semibold mt-3 text-ink leading-tight">
+              Clear Drill 3.4 first
+            </h2>
+            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
+              Drill 3.4 (Rebuttal vs First-Sentence) is the unlock-gate. Run its four stages to open
+              the Simulator with calibrated reads.
+            </p>
+            <div className="mt-4">
+              <Link
+                to="/bootcamp/intro-to-lr/drills/3.4"
+                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+              >
+                <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
+                  Open the gate drill
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section
+          className={cn(
+            'rounded-4 p-5',
+            'bg-[image:var(--grad-surface-soft)]',
+            'border border-[rgb(var(--border)/0.08)]',
+          )}
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge tone="success" dot>
+              Simulator unlocked
+            </Badge>
+            <span className="font-mc-mono text-mono text-ink-faint">
+              Drill 3.4 cleared — open any of the surfaces below
+            </span>
+          </div>
+        </section>
+      )}
       <ul className="grid gap-3 sm:grid-cols-3">
         {overviewLinks.map((l) => (
           <li key={l.to}>
