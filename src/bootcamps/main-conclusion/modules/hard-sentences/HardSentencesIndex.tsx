@@ -157,7 +157,7 @@ function RenderBlock({ block }: { block: Block }) {
       return <h2 className="font-mc-serif text-h2 font-semibold mt-6">{block.text}</h2>;
     case 'callout':
       return (
-        <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">
+        <Card variant="elev" className="border border-[color:var(--border-accent-mid)] bg-[rgb(var(--accent)/0.05)]">
           <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">{block.label}</div>
           <p className="font-mc-serif text-body-prose text-ink mt-2">{block.body}</p>
         </Card>
@@ -178,7 +178,7 @@ function RenderBlock({ block }: { block: Block }) {
       );
     case 'example':
       return (
-        <Card variant="surface" className="border-l-4 border-l-[rgb(var(--role-premise)/0.50)]">
+        <Card variant="surface" className="border border-[rgb(var(--role-premise)/0.35)] bg-[rgb(var(--role-premise)/0.04)]">
           <div className="font-mc-mono text-mono uppercase tracking-wider text-[rgb(var(--role-premise))]">
             Example · {block.label}
           </div>

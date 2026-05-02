@@ -7,7 +7,7 @@
  */
 
 import { useMemo, useState } from 'react';
-import { Check, X as XIcon } from 'lucide-react';
+import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { IndicatorCategory } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
@@ -98,7 +98,10 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
 
   function pick(category: IndicatorCategory) {
     if (submitted || !selectedId) return;
-    setPicks((p) => ({ ...p, [selectedId]: category }));
+    // Click-again-to-clear: same category twice clears that target.
+    setPicks((p) => ({ ...p, [selectedId]: p[selectedId] === category ? null : category }));
+    const next = picks[selectedId];
+    if (next === category) return; // user just cleared; stay on this target
     // Auto-advance to next unlabeled target.
     const order = targets.map((t) => t.id);
     const ix = order.indexOf(selectedId);
@@ -112,6 +115,12 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
     if (!allLabeled || submitted) return;
     setSubmitted(true);
     onComplete?.({ correct: correctCount, total: targets.length });
+  }
+
+  function reset() {
+    setPicks(Object.fromEntries(targets.map((t) => [t.id, null])));
+    setSelectedId(targets[0]?.id ?? null);
+    setSubmitted(false);
   }
 
   return (
@@ -218,14 +227,17 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
               <li
                 key={t.id}
                 className={cn(
-                  'rounded-3 p-4 border-l-4',
+                  'rounded-3 p-4 border',
                   isRight
-                    ? 'bg-[rgb(var(--success)/0.06)] border-l-[rgb(var(--success))]'
-                    : 'bg-[rgb(var(--error)/0.06)] border-l-[rgb(var(--error))]',
+                    ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.35)]'
+                    : 'bg-[rgb(var(--error)/0.06)] border-[rgb(var(--error)/0.35)]',
                 )}
               >
                 <div className="flex items-center gap-2 font-mc-mono text-mono uppercase tracking-wider">
-                  <span aria-hidden="true" className={cn('h-1.5 w-1.5 rounded-full', CATEGORY_DOT[t.correct])} />
+                  <span
+                    aria-label={CATEGORY_LABEL[t.correct]}
+                    className={cn('h-1.5 w-1.5 rounded-full', CATEGORY_DOT[t.correct])}
+                  />
                   <span className={cn(isRight ? 'text-[rgb(var(--success))]' : 'text-[rgb(var(--error))]')}>
                     {isRight ? 'Right' : 'Off'} · {CATEGORY_LABEL[t.correct]}
                   </span>
@@ -251,10 +263,12 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
         </div>
       ) : (
         <div
+          role="status"
           className={cn(
             'rounded-3 px-4 py-3',
             'bg-[image:var(--grad-surface-soft)]',
             'border border-[color:var(--border-accent-soft)]',
+            'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
           )}
         >
           <p className="font-mc-serif text-body-prose text-ink">
@@ -262,9 +276,19 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
               You got {correctCount} of {targets.length}
             </span>
             {correctCount === targets.length
-              ? 'Clean read across all four indicators.'
-              : 'Read the per-indicator notes above before you continue.'}
+              ? 'Clean read across every indicator. Move on.'
+              : correctCount === 0
+                ? 'Every indicator slipped. Not a grade. A calibration. Read the notes above slowly.'
+                : 'Read the per-indicator notes above before you continue.'}
           </p>
+          <Button
+            variant="subtle"
+            size="sm"
+            onClick={reset}
+            leftIcon={<RefreshCcw className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
+            Try again
+          </Button>
         </div>
       )}
     </div>

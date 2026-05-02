@@ -7,7 +7,7 @@
  */
 
 import { useState } from 'react';
-import { Check, X as XIcon } from 'lucide-react';
+import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
@@ -38,11 +38,21 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
     onComplete?.({ correct: !!pickedC?.is_main });
   }
 
+  function reset() {
+    setPicked(null);
+    setSubmitted(false);
+  }
+
+  function togglePick(id: string) {
+    if (submitted) return;
+    setPicked((cur) => (cur === id ? null : id));
+  }
+
   return (
     <div className="space-y-5">
       <Card variant="surface">
         <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-          Stimulus
+          Read first
         </div>
         <p className="mt-2 font-mc-serif text-body-prose text-ink leading-relaxed">{stimulus}</p>
       </Card>
@@ -59,7 +69,8 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
                 role="radio"
                 aria-checked={isPicked}
                 disabled={submitted}
-                onClick={() => setPicked(c.id)}
+                onClick={() => togglePick(c.id)}
+                title={isPicked && !submitted ? 'Click again to clear' : undefined}
                 className={cn(
                   'group/cand w-full text-left rounded-3 border px-4 py-3',
                   'transition-[border-color,background,box-shadow,transform] duration-180 ease-eased',
@@ -78,12 +89,12 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
                   submitted &&
                     !c.is_main &&
                     !isPicked &&
-                    'opacity-60',
+                    'border-[rgb(var(--border)/0.06)]',
                 )}
               >
                 <div className="flex items-start gap-3">
                   <span
-                    aria-hidden="true"
+                    aria-label={`Choice ${String.fromCharCode(65 + i)}`}
                     className={cn(
                       'shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-full',
                       'font-mc-mono text-[10.5px] font-semibold uppercase',
@@ -136,7 +147,7 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
       {!submitted ? (
         <div className="flex items-center justify-between gap-3">
           <p className="font-mc-mono text-mono text-ink-faint">
-            {picked ? '1 candidate selected' : 'Pick the sentence the rest is built to support'}
+            {picked ? 'Reveal when ready.' : 'Pick the sentence the rest is built to support.'}
           </p>
           <Button onClick={submit} disabled={!picked}>
             Reveal the conclusion
@@ -144,11 +155,13 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
         </div>
       ) : (
         <div
+          role="status"
           className={cn(
-            'rounded-3 px-4 py-3 border-l-4',
+            'rounded-3 px-4 py-3 border',
+            'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
             pickedC?.is_main
-              ? 'bg-[rgb(var(--success)/0.06)] border-l-[rgb(var(--success))]'
-              : 'bg-[rgb(var(--warn)/0.06)] border-l-[rgb(var(--warn))]',
+              ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
+              : 'bg-[rgb(var(--warn)/0.06)] border-[rgb(var(--warn)/0.40)]',
           )}
         >
           <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
@@ -158,12 +171,20 @@ export function ConclusionPicker({ stimulus, candidates, onComplete }: Props): J
                 pickedC?.is_main ? 'text-[rgb(var(--success))]' : 'text-[rgb(var(--warn))]',
               )}
             >
-              {pickedC?.is_main ? 'You found it' : 'Calibration miss'}
+              {pickedC?.is_main ? 'You found it' : 'Off the conclusion'}
             </span>
             {pickedC?.is_main
-              ? 'You picked the conclusion. Read the rationales above to see why each other candidate plays the role it plays.'
-              : `The main conclusion is "${correctC?.text ?? ''}". Read why your pick is not it before you continue.`}
+              ? 'Read why each other candidate plays the role it plays before you continue.'
+              : 'The conclusion is the candidate paint-revealed above. Read its rationale next.'}
           </p>
+          <Button
+            variant="subtle"
+            size="sm"
+            onClick={reset}
+            leftIcon={<RefreshCcw className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
+            Try again
+          </Button>
         </div>
       )}
     </div>
