@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, Mic, Square } from 'lucide-react';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Textarea } from '@/bootcamps/main-conclusion/components/primitives/Input';
@@ -60,11 +61,11 @@ export function Drill3_8() {
       <div className="flex flex-wrap gap-2">
           <Chip tone="neutral">passage {pIndex + 1} / {DRILL_3_8_PASSAGES.length}</Chip>
           {isMobile ? (
-            <Chip tone="background">mobile · text-only</Chip>
+            <Chip tone="neutral">mobile · text-only</Chip>
           ) : canMic ? (
             <Chip tone="accent">desktop · mic ready</Chip>
           ) : (
-            <Chip tone="background">no Web Speech API · text fallback</Chip>
+            <Chip tone="neutral">no Web Speech API · text fallback</Chip>
           )}
         </div>
 
@@ -92,7 +93,9 @@ function ReadStage({ passage, onContinue }: { passage: typeof DRILL_3_8_PASSAGES
       <h2 className="font-mc-serif text-h3 font-semibold mt-1">{passage.title}</h2>
       <p className="font-mc-serif text-body-prose text-ink mt-3 leading-relaxed">{passage.passage}</p>
       <div className="mt-4 flex justify-end">
-        <Button onClick={onContinue}>Cover and rephrase →</Button>
+        <Button onClick={onContinue} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+          Cover and rephrase
+        </Button>
       </div>
     </Card>
   );
@@ -148,26 +151,26 @@ function RephraseStage({
       {canMic ? (
         <div className="mt-3 flex gap-2 items-center">
           {recording ? (
-            <Button variant="danger" onClick={stop}>
-              ◼ Stop
+            <Button variant="danger" onClick={stop} leftIcon={<Square className="h-3.5 w-3.5" strokeWidth={2.4} fill="currentColor" />}>
+              Stop
             </Button>
           ) : (
-            <Button variant="primary" onClick={start}>
-              ● Record
+            <Button variant="primary" onClick={start} leftIcon={<Mic className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+              Record
             </Button>
           )}
-          <span className="font-mc-mono text-mono text-ink-faint">{recording ? 'Listening…' : 'Tap to record'}</span>
+          <span className="font-mc-mono text-mono text-ink-faint">{recording ? 'Listening...' : 'Tap to record'}</span>
         </div>
       ) : null}
       <Textarea
         value={transcript}
         onChange={(e) => setTranscript(e.target.value)}
-        placeholder={canMic ? 'Live transcript appears here…' : 'Type your restatement…'}
+        placeholder={canMic ? 'Live transcript appears here...' : 'Type your restatement...'}
         className="mt-3"
       />
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      <div className="mt-3 flex flex-wrap gap-1.5" role="status" aria-label="Key phrase coverage">
         {passage.key_phrases.map((k) => (
-          <Chip key={k} tone={lower.includes(k.toLowerCase()) ? 'conclusion' : 'background'}>
+          <Chip key={k} tone={lower.includes(k.toLowerCase()) ? 'accent' : 'neutral'}>
             {k}
           </Chip>
         ))}
@@ -176,8 +179,8 @@ function RephraseStage({
         coverage: {hits.length}/{passage.key_phrases.length} ({Math.round(coverage * 100)}%)
       </p>
       <div className="mt-4 flex justify-end">
-        <Button onClick={onContinue} disabled={!transcript.trim()}>
-          Continue →
+        <Button onClick={onContinue} disabled={!transcript.trim()} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+          Continue
         </Button>
       </div>
     </Card>
@@ -199,8 +202,8 @@ function SkepticStage({ onContinue }: { onContinue: () => void }) {
         className="mt-3"
       />
       <div className="mt-4 flex justify-end">
-        <Button onClick={onContinue} disabled={!note.trim()}>
-          Save and continue →
+        <Button onClick={onContinue} disabled={!note.trim()} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+          Save and continue
         </Button>
       </div>
     </Card>
