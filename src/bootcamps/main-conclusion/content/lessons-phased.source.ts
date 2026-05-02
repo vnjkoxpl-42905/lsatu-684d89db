@@ -8,7 +8,7 @@
  * Source-anchored to lessons.generated.json[1.1] (Monica claimed dinosaurs).
  */
 
-export type Role = 'conclusion' | 'premise' | 'background';
+export type Role = 'conclusion' | 'premise' | 'opposing' | 'background';
 
 /** Six categories of LSAT indicator words (M1.3 + Indicator Vault). */
 export type IndicatorCategory =
@@ -786,7 +786,7 @@ PHASED_LESSONS['1.6'] = {
       exampleSegments: [
         {
           text: 'Many policy analysts argue the housing tax credit has not boosted construction.',
-          role: 'background',
+          role: 'opposing',
           whisper: 'Opposing-view opener. Attributed to "many analysts" — not the author.',
         },
         {

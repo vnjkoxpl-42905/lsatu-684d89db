@@ -49,6 +49,8 @@ const ROLE_DEMO_CLASS: Record<Role, string> = {
   conclusion:
     'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)]',
   premise: 'bg-[rgb(var(--role-premise)/0.14)] border border-[rgb(var(--role-premise)/0.30)]',
+  opposing:
+    'bg-[rgb(var(--role-opposing)/0.14)] border border-[rgb(var(--role-opposing)/0.32)]',
   background:
     'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)]',
 };
@@ -56,6 +58,7 @@ const ROLE_DEMO_CLASS: Record<Role, string> = {
 const ROLE_DEMO_TAG: Record<Role, string> = {
   conclusion: 'text-[rgb(var(--role-conclusion))]',
   premise: 'text-[rgb(var(--role-premise))]',
+  opposing: 'text-[rgb(var(--role-opposing))]',
   background: 'text-[rgb(var(--role-background))]',
 };
 

@@ -15,7 +15,7 @@ import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button
 import { ChipPicker, type ChipOption } from '@/bootcamps/main-conclusion/components/chip-picker/ChipPicker';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
-export type Role = 'conclusion' | 'premise' | 'background';
+export type Role = 'conclusion' | 'premise' | 'opposing' | 'background';
 
 export interface Segment {
   id: string;
@@ -33,6 +33,7 @@ interface Props {
 const ROLE_LABEL: Record<Role, string> = {
   conclusion: 'Conclusion',
   premise: 'Premise',
+  opposing: 'Opposing',
   background: 'Background',
 };
 
@@ -41,6 +42,8 @@ const ROLE_PICK_CLASS: Record<Role, string> = {
     'border-[rgb(var(--role-conclusion)/0.50)] bg-[rgb(var(--role-conclusion)/0.10)] text-[rgb(var(--role-conclusion))]',
   premise:
     'border-[rgb(var(--role-premise)/0.50)] bg-[rgb(var(--role-premise)/0.10)] text-[rgb(var(--role-premise))]',
+  opposing:
+    'border-[rgb(var(--role-opposing)/0.50)] bg-[rgb(var(--role-opposing)/0.10)] text-[rgb(var(--role-opposing))]',
   background:
     'border-[rgb(var(--role-background)/0.40)] bg-[rgb(var(--role-background)/0.10)] text-[rgb(var(--role-background))]',
 };
@@ -48,6 +51,7 @@ const ROLE_PICK_CLASS: Record<Role, string> = {
 const ROLE_DOT_CLASS: Record<Role, string> = {
   conclusion: 'bg-[rgb(var(--role-conclusion))]',
   premise: 'bg-[rgb(var(--role-premise))]',
+  opposing: 'bg-[rgb(var(--role-opposing))]',
   background: 'bg-[rgb(var(--role-background))]',
 };
 
@@ -56,6 +60,8 @@ const ROLE_REVEAL_CLASS: Record<Role, string> = {
     'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)] text-ink',
   premise:
     'bg-[rgb(var(--role-premise)/0.14)] border border-[rgb(var(--role-premise)/0.30)] text-ink',
+  opposing:
+    'bg-[rgb(var(--role-opposing)/0.14)] border border-[rgb(var(--role-opposing)/0.32)] text-ink',
   background:
     'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)] text-ink-soft',
 };
@@ -66,6 +72,7 @@ const ROLE_REVEAL_CLASS: Record<Role, string> = {
 const ROLE_PREFIX_CLASS: Record<Role, string> = {
   conclusion: 'text-[rgb(var(--role-conclusion))]',
   premise: 'text-[rgb(var(--role-premise))]',
+  opposing: 'text-[rgb(var(--role-opposing))]',
   background: 'text-[rgb(var(--role-background))]',
 };
 
