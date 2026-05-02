@@ -9,8 +9,9 @@
  * lets the student step backward through phases (read again, retry an attempt).
  */
 
-import { useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -66,10 +67,38 @@ export function PhaseRunner({
   onComplete,
   backHref,
 }: Props): JSX.Element {
-  const [phaseIndex, setPhaseIndex] = useState(0);
-  // Per-phase gates: a phase can be locked from advancing until it reports done.
+  const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+
+  // Phase index survives refresh via the `?p=` query param. Clamp to valid range.
+  const requested = Number.parseInt(params.get('p') ?? '0', 10);
+  const phaseIndex = Number.isFinite(requested)
+    ? Math.max(0, Math.min(phases.length - 1, requested))
+    : 0;
+
+  // Per-phase gates and the post-completion celebration screen.
   const [attemptDone, setAttemptDone] = useState<Record<number, boolean>>({});
   const [checkpointPick, setCheckpointPick] = useState<Record<number, string | null>>({});
+  const [cleared, setCleared] = useState(false);
+
+  // Self-heal: if the URL had p=99 from a stale link, normalize it.
+  useEffect(() => {
+    if (requested !== phaseIndex) {
+      const next = new URLSearchParams(params);
+      if (phaseIndex === 0) next.delete('p');
+      else next.set('p', String(phaseIndex));
+      setParams(next, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function setPhaseIndex(updater: (prev: number) => number) {
+    const target = updater(phaseIndex);
+    const next = new URLSearchParams(params);
+    if (target === 0) next.delete('p');
+    else next.set('p', String(target));
+    setParams(next, { replace: true });
+  }
 
   const phase = phases[phaseIndex]!;
   const isLast = phaseIndex === phases.length - 1;
@@ -85,6 +114,7 @@ export function PhaseRunner({
     if (!canAdvance) return;
     if (isLast) {
       await onComplete();
+      setCleared(true);
       return;
     }
     setPhaseIndex((i) => i + 1);
@@ -93,6 +123,18 @@ export function PhaseRunner({
   function back() {
     if (phaseIndex === 0) return;
     setPhaseIndex((i) => i - 1);
+  }
+
+  // Post-completion celebration. Renders once, then student clicks through to the runner.
+  if (cleared) {
+    return (
+      <ClearedScreen
+        studentEyebrow={studentEyebrow}
+        title={title}
+        backHref={backHref ?? '/bootcamp/intro-to-lr/lessons'}
+        onContinue={() => navigate('/bootcamp/intro-to-lr')}
+      />
+    );
   }
 
   return (
@@ -496,18 +538,15 @@ function Footer({
         >
           Back
         </Button>
-        <span className="font-mc-mono text-mono text-ink-faint">
-          Phase {phaseIndex + 1} of {total}
-        </span>
       </div>
       <div className="flex items-center gap-3">
         {backHref ? (
-          <a
-            href={backHref}
+          <Link
+            to={backHref}
             className="font-mc-mono text-mono text-ink-soft hover:text-mc-accent transition-colors duration-150 ease-eased focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-2 px-1"
           >
             Back to Lessons
-          </a>
+          </Link>
         ) : null}
         <Button
           onClick={onNext}
@@ -521,22 +560,77 @@ function Footer({
   );
 }
 
-// Export types so other surfaces (e.g. tests) can import them in one place.
-export type { Phase, Role };
-
-// Re-export for convenience to satisfy any prop-types future consumers may import.
-export type PhaseRunnerProps = Props;
-
-// Type guard helper kept here so we don't grow another file just for it.
-export function isPhasedNumber(num: string, registry: Record<string, unknown>): boolean {
-  return Object.prototype.hasOwnProperty.call(registry, num);
+/**
+ * Cleared screen — rendered once when the student completes the final phase.
+ * Closes the loop with a real beat: "Lesson cleared." Then a single CTA back
+ * to the runner where the next step is already computed.
+ */
+function ClearedScreen({
+  studentEyebrow,
+  title,
+  backHref,
+  onContinue,
+}: {
+  studentEyebrow: string;
+  title: string;
+  backHref: string;
+  onContinue: () => void;
+}): JSX.Element {
+  return (
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto">
+      <section
+        className={cn(
+          'relative isolate overflow-hidden rounded-5 p-7 desktop:p-9',
+          'bg-[image:var(--grad-surface-elev)]',
+          'border border-[color:var(--border-accent-soft)]',
+          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+        )}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-50 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.22), transparent 70%)' }}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+        />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)] motion-safe:animate-pulse motion-reduce:animate-none"
+            />
+            {studentEyebrow} cleared
+          </div>
+          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
+            Nice. {title}
+          </h1>
+          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft leading-relaxed max-w-[58ch]">
+            That session is logged. Open the trainer and your next step is teed up.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button
+              size="lg"
+              rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
+              className="!h-12 !px-6"
+              onClick={onContinue}
+              leftIcon={<Sparkles className="h-4 w-4" strokeWidth={2.2} />}
+            >
+              See your next step
+            </Button>
+            <Link
+              to={backHref}
+              className="font-mc-mono text-mono text-ink-soft hover:text-mc-accent transition-colors duration-150 ease-eased focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-2 px-1"
+            >
+              All lessons
+            </Link>
+          </div>
+        </div>
+      </section>
+    </article>
+  );
 }
 
-// (Unused inside this file; exported because Lesson.tsx wants the helper.)
-export const __PHASE_RUNNER_VERSION__ = 1;
-
-// no-op default to keep the file tidy if tree-shaken differently later
+export type { Phase, Role };
 export default PhaseRunner;
-
-// Suppress unused "ReactNode" if linter complains about the import
-type _Unused = ReactNode;
