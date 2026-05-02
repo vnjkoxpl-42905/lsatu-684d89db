@@ -70,7 +70,6 @@ export function HardSentencesIndex() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-baseline gap-2">
-                        <span className="font-mc-mono text-mono text-ink-faint">{s.id}</span>
                         {isCapstone ? (
                           <Badge tone="accent" dot>
                             capstone · 5 calibration items
@@ -210,20 +209,12 @@ export function HardSentenceSection() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto">
       <PageHeader
-        eyebrow={sec.id}
-        title={`${sec.number} · ${sec.title}`}
+        eyebrow="Hard Sentences"
+        title={sec.title}
         description={
           <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
             {sec.hook}
           </span>
-        }
-        actions={
-          <>
-            <Badge tone="success" dot>
-              authored
-            </Badge>
-            <Badge tone="neutral">voice · {String(sec.voice_register)}</Badge>
-          </>
         }
       />
       <div className="space-y-4">
@@ -232,9 +223,6 @@ export function HardSentenceSection() {
         ))}
         {isDecomposer ? <ClusterDecomposer sentences={DECOMPOSER_SAMPLES} /> : null}
       </div>
-      <p className="mt-8 font-mc-mono text-mono text-ink-faint border-t border-[rgb(var(--border)/0.08)] pt-4">
-        source: {sec.source}
-      </p>
-    </article>
+</article>
   );
 }

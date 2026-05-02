@@ -52,7 +52,7 @@ export function Drill3_8() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DRL-3.8"
+        eyebrow="Drill 3.8"
         title="R&amp;R Drill · Read &amp; Restate"
         description="Read the passage. Cover it. Rephrase from memory. Apply the Skeptic’s Ear Check."
         compact

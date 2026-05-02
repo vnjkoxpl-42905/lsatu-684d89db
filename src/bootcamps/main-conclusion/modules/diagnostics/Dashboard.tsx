@@ -33,7 +33,7 @@ export function Dashboard() {
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-6">
-      <PageHeader eyebrow="MC-DIA-6.2" title="Dashboard" compact />
+      <PageHeader eyebrow="Diagnostics" title="Dashboard" compact />
 
       {!seed.attempted ? (
         <Card variant="elev" className="border-l-4 border-l-[rgb(var(--accent)/0.50)]">

@@ -40,7 +40,7 @@ export function Drill3_6() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DRL-3.6"
+        eyebrow="Drill 3.6"
         title="Design the Conclusion"
         description="A premise pair from the dragon-and-broom universe. Write one valid conclusion and one invalid-but-tempting one. Stay inside the universe — the evaluator catches outside-knowledge imports."
       />

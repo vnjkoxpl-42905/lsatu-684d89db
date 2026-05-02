@@ -104,7 +104,7 @@ export function QuestionBank() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader
-        eyebrow="/simulator/bank"
+        eyebrow="Simulator"
         title="Question bank · 20"
         description="Stimuli + main conclusions populated. Distractors author at Phase D."
       />
@@ -114,7 +114,7 @@ export function QuestionBank() {
             <Card variant="surface" data-question-id={q.id}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="font-mc-mono text-mono text-ink-faint">{q.id}</div>
+                  
                   <h3 className="font-mc-serif text-h3 font-semibold mt-1 text-ink leading-tight">
                     Q{q.number} · {q.title}
                   </h3>
@@ -139,9 +139,6 @@ export function QuestionBank() {
                   <span className="text-ink">{q.main_conclusion}</span>
                 </p>
               ) : null}
-              {q.structure_map ? (
-                <p className="font-mc-mono text-mono text-ink-faint mt-2">map: {q.structure_map}</p>
-              ) : null}
             </Card>
           </li>
         ))}
@@ -160,7 +157,7 @@ export function TrapMaster() {
   const items = traps as Trait[];
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
-      <PageHeader eyebrow="/simulator/trap-master" title="Trap Master · 7 traits" />
+      <PageHeader eyebrow="Simulator" title="Trap Master · 7 traits" />
       <ul className="grid gap-3 sm:grid-cols-2">
         {items.map((t) => (
           <li key={t.id}>
@@ -169,7 +166,7 @@ export function TrapMaster() {
               className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
             >
               <Card variant="surface" interactive>
-                <div className="font-mc-mono text-mono text-mc-accent">{t.id}</div>
+                
                 <h3
                   className={cn(
                     'font-mc-serif text-h3 font-semibold mt-1 leading-tight transition-colors duration-150 ease-eased',
@@ -191,7 +188,7 @@ export function TrapMaster() {
 export function HardMode() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
-      <PageHeader eyebrow="/simulator/hard-mode" title="Hard mode" compact />
+      <PageHeader eyebrow="Simulator" title="Hard mode" compact />
       <EmptyState
         title="Hard mode unlocks at Phase D"
         body="Five hardest questions will surface here once you've attempted the question bank and we have distractor data to score with."

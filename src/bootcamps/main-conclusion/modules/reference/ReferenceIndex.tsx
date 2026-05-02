@@ -1,14 +1,16 @@
 /**
- * Module 2: Reference index. Lists all 11 reference sections + named tools list.
- * Sections render placeholder cards that link to /reference/:id.
+ * Module 2: Reference — Tool Lab + lookup surfaces.
+ * Tools are practiced in the Tool Lab (interactive try-its). Lookup surfaces are
+ * the secondary surface for static notes.
  */
 
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Wrench } from 'lucide-react';
 import refs from '@/bootcamps/main-conclusion/data/references.generated.json';
-import namedTools from '@/bootcamps/main-conclusion/data/named-tools.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
+import { ToolCard } from '@/bootcamps/main-conclusion/components/tool-lab/ToolCard';
+import { TOOL_LAB } from '@/bootcamps/main-conclusion/content/tool-lab.source';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 interface RefSection {
@@ -19,17 +21,26 @@ interface RefSection {
   source: string;
   status: 'placeholder' | 'authored';
 }
-interface NamedTool {
-  id: string;
-  name: string;
-  what: string;
-}
+
+// Map raw reference IDs to clean student-facing names.
+const REF_LABEL: Record<string, string> = {
+  'MC-REF-2.A': 'Indicator Vault',
+  'MC-REF-2.B': '2-Part Conclusion Check',
+  'MC-REF-2.C': 'FABS — premise indicators',
+  'MC-REF-2.D': 'Stimulus tendencies',
+  'MC-REF-2.E': 'Conclusion types',
+  'MC-REF-2.F': 'Rebuttal structure',
+  'MC-REF-2.G': 'Three-trap landscape',
+  'MC-REF-2.H': 'Pronoun & reference library',
+  'MC-REF-2.I': 'Concession decoder',
+  'MC-REF-2.J': 'Quick reference card',
+  'MC-REF-2.K': 'Companion mode',
+};
 
 export function ReferenceIndex() {
   const sections = refs as RefSection[];
-  const tools = namedTools as NamedTool[];
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-12">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[920px] mx-auto space-y-14">
       <header className="relative isolate">
         <div
           aria-hidden="true"
@@ -42,21 +53,44 @@ export function ReferenceIndex() {
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
             />
-            Module 2
+            Reference
           </div>
           <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-            Reference
+            Tool Lab + lookup surfaces
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            The decisive lookup surfaces — indicator vault, 2-Part Conclusion Check, FABS, the seven
-            traits, the named tools.
+            Tools you practice, not a glossary you skim. Try each one in a 30-second drill before you
+            close the page.
           </p>
         </div>
       </header>
 
       <section>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent inline-flex items-center gap-2">
+            <Wrench className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />
+            Tool Lab
+          </h2>
+          <span className="font-mc-mono text-mono text-ink-faint">
+            {TOOL_LAB.length} training tools
+          </span>
+        </div>
+        <p className="font-mc-serif text-body-prose text-ink-soft mb-6 max-w-[60ch] leading-relaxed">
+          Each tool teaches itself in under a minute — what it does, when to use it, the mistake it
+          prevents, and a try-it. Run the try-it before you move on.
+        </p>
+        <ul className="space-y-4">
+          {TOOL_LAB.map((tool) => (
+            <li key={tool.slug}>
+              <ToolCard tool={tool} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
         <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
-          Sections · {sections.length}
+          Lookup surfaces · {sections.length}
         </h2>
         <ul className="grid gap-3 sm:grid-cols-2">
           {sections.map((s) => (
@@ -68,25 +102,21 @@ export function ReferenceIndex() {
                 <Card variant="surface" interactive>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <div className="font-mc-mono text-mono text-ink-faint">{s.id}</div>
                       <h3
                         className={cn(
-                          'font-mc-serif text-h3 font-semibold mt-1 leading-tight',
+                          'font-mc-serif text-h3 font-semibold leading-tight',
                           'transition-colors duration-150 ease-eased',
                           'text-ink group-hover:text-mc-accent',
                         )}
                       >
-                        {s.title}
+                        {REF_LABEL[s.id] ?? s.title}
                       </h3>
                     </div>
                     <Badge tone={s.status === 'authored' ? 'success' : 'warn'} dot className="shrink-0">
-                      {s.status}
+                      {s.status === 'authored' ? 'ready' : 'draft'}
                     </Badge>
                   </div>
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="font-mc-mono text-mono text-ink-faint">
-                      voice · {String(s.voice_register)}
-                    </p>
+                  <div className="mt-3 flex items-center justify-end">
                     <ArrowUpRight
                       className="h-3.5 w-3.5 text-ink-faint transition-all duration-220 ease-eased group-hover:text-mc-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       aria-hidden="true"
@@ -99,37 +129,6 @@ export function ReferenceIndex() {
         </ul>
       </section>
 
-      <section>
-        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4 inline-flex items-center gap-2">
-          <Wrench className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />
-          Named tools · {tools.length}
-        </h2>
-        <ul
-          className={cn(
-            'grid sm:grid-cols-2 gap-x-6 gap-y-2 rounded-4 p-5',
-            'bg-[image:var(--grad-surface-soft)]',
-            'border border-[rgb(var(--border)/0.08)]',
-            'shadow-[var(--shadow-1)]',
-          )}
-        >
-          {tools.map((t) => (
-            <li key={t.id} className="flex items-baseline gap-3 min-w-0">
-              <Link
-                to={`/bootcamp/intro-to-lr/reference/named-tools/${t.id}`}
-                className={cn(
-                  'font-mc-serif text-body-prose text-mc-accent truncate',
-                  'hover:underline underline-offset-4 decoration-[rgb(var(--accent)/0.5)]',
-                  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent rounded-2',
-                  'transition-colors duration-150 ease-eased',
-                )}
-              >
-                {t.name}
-              </Link>
-              <span className="font-mc-mono text-mono text-ink-faint shrink-0">{t.id}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
     </article>
   );
 }

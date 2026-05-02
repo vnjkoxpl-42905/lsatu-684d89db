@@ -47,7 +47,7 @@ export function MistakeProfile() {
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
-      <PageHeader eyebrow="MC-DIA-6.6" title="Mistake Profile" compact />
+      <PageHeader eyebrow="Diagnostics" title="Mistake Profile" compact />
 
       <section>
         <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Top traps you fall for</h2>

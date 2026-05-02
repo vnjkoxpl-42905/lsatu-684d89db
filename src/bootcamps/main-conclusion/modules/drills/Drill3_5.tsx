@@ -34,7 +34,7 @@ export function Drill3_5() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DRL-3.5"
+        eyebrow="Drill 3.5"
         title="Chain Mapping"
         description="Decompose the stimulus. Premise(s) support the intermediate conclusion (when present); the intermediate supports the main. Cake on blocks: pull a block and the cake collapses."
       />

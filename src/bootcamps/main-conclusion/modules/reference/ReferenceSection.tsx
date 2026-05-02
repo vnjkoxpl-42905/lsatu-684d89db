@@ -125,7 +125,7 @@ export function ReferenceSection() {
   return (
     <article className={`px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto ${isQrc ? 'print-card' : ''}`}>
       <PageHeader
-        eyebrow={section.id}
+        eyebrow="Reference"
         title={section.title}
         description={
           section.hook ? (
@@ -135,12 +135,11 @@ export function ReferenceSection() {
           ) : undefined
         }
         actions={
-          <>
-            <Badge tone={section.status === 'authored' ? 'success' : 'warn'} dot>
-              {section.status}
+          section.status !== 'authored' ? (
+            <Badge tone="warn" dot>
+              draft
             </Badge>
-            <Badge tone="neutral">voice · {String(section.voice_register)}</Badge>
-          </>
+          ) : undefined
         }
       />
       {isQrc ? (
@@ -162,13 +161,11 @@ export function ReferenceSection() {
         </div>
       ) : (
         <p className="font-mc-serif text-body-prose text-ink-soft">
-          Body authored in Phase B. Source-anchored to {section.source}.
+          This reference is still being written. Use the Tool Lab and your lesson sequence in the
+          meantime — every tool you would reach for here is practiced there.
         </p>
       )}
-      <p className="mt-8 font-mc-mono text-mono text-ink-faint border-t border-[rgb(var(--border)/0.08)] pt-4">
-        source: {section.source}
-      </p>
-    </article>
+</article>
   );
 }
 
@@ -198,22 +195,19 @@ export function NamedToolEntry() {
   }
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto">
-      <PageHeader eyebrow={tool.id} title={tool.name} compact />
+      <PageHeader eyebrow="Training tool" title={tool.name} compact />
       <section className="mt-6">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">What it is</h2>
-        <p className="font-mc-serif text-body-prose text-ink mt-1">{tool.what}</p>
+        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">What it is</h2>
+        <p className="font-mc-serif text-body-prose text-ink mt-1.5 leading-relaxed">{tool.what}</p>
       </section>
-      <section className="mt-5">
-        <h2 className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Where it appears</h2>
-        <ul className="mt-1 space-y-1">
-          {tool.where.map((w) => (
-            <li key={w} className="font-mc-mono text-mono text-ink-soft">
-              {w}
-            </li>
-          ))}
-        </ul>
+      <section className="mt-6">
+        <Link
+          to="/bootcamp/intro-to-lr/reference"
+          className="font-mc-mono text-mono text-mc-accent hover:underline underline-offset-4 decoration-[rgb(var(--accent)/0.5)]"
+        >
+          ← Open in Tool Lab to practice this
+        </Link>
       </section>
-      <p className="mt-6 font-mc-mono text-mono text-ink-faint">source: {tool.source}</p>
-    </article>
+</article>
   );
 }

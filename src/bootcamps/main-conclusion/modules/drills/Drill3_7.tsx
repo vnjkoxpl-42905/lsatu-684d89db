@@ -47,7 +47,7 @@ export function Drill3_7() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DRL-3.7"
+        eyebrow="Drill 3.7"
         title="Pronoun Replacement"
         description="Rewrite the candidate conclusion replacing the highlighted pronoun with its antecedent."
       />

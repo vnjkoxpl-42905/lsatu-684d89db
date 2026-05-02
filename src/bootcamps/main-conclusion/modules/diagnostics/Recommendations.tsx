@@ -31,7 +31,7 @@ export function Recommendations() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DIA-6.3"
+        eyebrow="Diagnostics"
         title="Recommendations"
         description="Targeted next moves, ranked by leverage. Surfaces from your trait performance, your SRS queue, and the calibration seed."
         compact

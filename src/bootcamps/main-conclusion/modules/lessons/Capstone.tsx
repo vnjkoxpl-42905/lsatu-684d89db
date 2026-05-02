@@ -61,8 +61,8 @@ function M1CapstoneCorrectOnly() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader
-        eyebrow="MC-LSN-1.13"
-        title="Lesson 1.13 · Capstone"
+        eyebrow="Lesson 13 · Capstone"
+        title="Lesson 13 · Calibration"
         description="Ten calibration items. Sourced outside the canonical 20 and outside Module 3 drills, so this measures learning rather than recognition. Distractors author at Phase B/D."
         actions={
           <>
@@ -79,7 +79,7 @@ function M1CapstoneCorrectOnly() {
             <Card variant="surface" data-calibration-id={item.id}>
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="font-mc-mono text-mono text-ink-faint">{item.id}</div>
+                  
                   <h3 className="font-mc-serif text-h3 font-semibold mt-1">Item {i + 1}</h3>
                 </div>
                 <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ function M1CapstoneCorrectOnly() {
                   <span className="text-ink">{item.main_conclusion}</span>
                 </p>
               ) : null}
-              <p className="font-mc-mono text-mono text-ink-faint mt-2">why: {item.trait_target_rationale}</p>
+              <p className="font-mc-mono text-mono text-ink-faint mt-2">{item.trait_target_rationale}</p>
             </Card>
           </li>
         ))}
@@ -193,7 +193,7 @@ function M5CapstoneView() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <PageHeader
-        eyebrow="MC-HS-5.8"
+        eyebrow="Hard Sentences · Capstone"
         title="Hard Sentences · Capstone"
         description="Five cluster-decomposition items. Strip the specifiers; pick the core."
         compact

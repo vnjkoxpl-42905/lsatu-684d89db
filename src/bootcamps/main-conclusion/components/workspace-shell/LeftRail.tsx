@@ -139,7 +139,7 @@ export function LeftRail(): JSX.Element {
             )}
           />
           <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint">
-            Preview mode · all surfaces open
+            All surfaces open during private review
           </div>
         </div>
       </div>

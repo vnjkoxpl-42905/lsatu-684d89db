@@ -10,7 +10,7 @@ export function Philosophy() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-prose mx-auto space-y-5">
       <PageHeader
-        eyebrow="MC-DIA-6.1"
+        eyebrow="Diagnostics"
         title="Philosophy"
         description={
           <span className="italic border-l-2 border-l-[color:var(--border-accent-strong)] pl-3 inline-block">
@@ -57,10 +57,6 @@ export function Philosophy() {
         Read the diagnostic. Argue with it. Override it when it’s wrong about you. The mirror is honest;
         the conclusions you draw are yours.
       </p>
-
-      <p className="font-mc-mono text-mono text-ink-faint border-t border-[rgb(var(--border)/0.08)] pt-4 mt-6">
-        source: spec.html §6 + Joshua’s diagnostic worldview
-      </p>
-    </article>
+</article>
   );
 }

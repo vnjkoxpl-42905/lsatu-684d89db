@@ -31,7 +31,7 @@ export function IndicatorVault() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader
-        eyebrow="MC-REF-2.A"
+        eyebrow="Reference"
         title="Indicator Vault"
         description="Six categories. Memorize them. Tattoo them if you have to."
       />
@@ -43,9 +43,7 @@ export function IndicatorVault() {
               <Card variant="surface" className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <h2 className="font-mc-serif text-h3 font-semibold text-ink leading-tight">{c.name}</h2>
-                  <Chip tone={tone} className="shrink-0">
-                    {c.id}
-                  </Chip>
+                  
                 </div>
                 <p className="font-mc-serif text-body-prose text-ink-soft leading-relaxed">
                   {c.description}

@@ -40,7 +40,7 @@ export function TraitProfile() {
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-4">
       <PageHeader
-        eyebrow="MC-DIA-6.5"
+        eyebrow="Diagnostics"
         title="Trait Diagnostic"
         description="Seven traits. Sorted by which trips you up most. Tap a trait to read the deep-dive."
         compact
