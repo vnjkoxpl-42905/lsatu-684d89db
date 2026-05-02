@@ -3,8 +3,9 @@
  * Question bank reads simulator.generated.json.
  */
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Library, Bug, Flame, ArrowRight } from 'lucide-react';
+import { Library, Bug, Flame, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import sim from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 import traps from '@/bootcamps/main-conclusion/data/traps.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -159,6 +160,68 @@ export function SimulatorOverview() {
   );
 }
 
+function QuestionItem({ q }: { q: SimQ }): JSX.Element {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <Card variant="surface" data-question-id={q.id}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-mc-serif text-h3 font-semibold mt-1 text-ink leading-tight">
+            Q{q.number} · {q.title}
+          </h3>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <Chip tone={q.structure_family === 'Rebuttal' ? 'opposing' : 'conclusion'}>
+            {q.structure_family}
+          </Chip>
+          {q.ocr_status === 'pending' ? (
+            <Badge tone="warn" dot>
+              arriving soon
+            </Badge>
+          ) : null}
+        </div>
+      </div>
+      {q.stimulus ? (
+        <p className="font-mc-serif text-body-prose text-ink mt-3 leading-relaxed">{q.stimulus}</p>
+      ) : null}
+      {q.main_conclusion ? (
+        <div className="mt-4">
+          {revealed ? (
+            <div className="space-y-2">
+              <p
+                role="status"
+                className="font-mc-serif text-body-prose leading-relaxed rounded-3 border border-[rgb(var(--role-conclusion)/0.35)] bg-[rgb(var(--role-conclusion)/0.08)] p-3"
+              >
+                <span className="font-mc-mono text-mono uppercase tracking-wider text-[rgb(var(--role-conclusion))] mr-2">
+                  Main conclusion
+                </span>
+                <span className="text-ink">{q.main_conclusion}</span>
+              </p>
+              <Button
+                variant="subtle"
+                size="sm"
+                onClick={() => setRevealed(false)}
+                leftIcon={<EyeOff className="h-3.5 w-3.5" strokeWidth={2.2} />}
+              >
+                Hide and re-read
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="subtle"
+              size="sm"
+              onClick={() => setRevealed(true)}
+              leftIcon={<Eye className="h-3.5 w-3.5" strokeWidth={2.2} />}
+            >
+              Make your call, then reveal
+            </Button>
+          )}
+        </div>
+      ) : null}
+    </Card>
+  );
+}
+
 export function QuestionBank() {
   const items = sim as SimQ[];
   return (
@@ -166,42 +229,12 @@ export function QuestionBank() {
       <PageHeader
         eyebrow="Simulator"
         title="Question bank · 20"
-        description="Twenty real LSAT-format Main Conclusion stimuli. Read first, then check your call against the published conclusion."
+        description="Twenty real LSAT-format Main Conclusion stimuli. Read each one, name the conclusion in your head, then reveal to check yourself."
       />
       <ul className="space-y-3">
         {items.map((q) => (
           <li key={q.id}>
-            <Card variant="surface" data-question-id={q.id}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  
-                  <h3 className="font-mc-serif text-h3 font-semibold mt-1 text-ink leading-tight">
-                    Q{q.number} · {q.title}
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Chip tone={q.structure_family === 'Rebuttal' ? 'opposing' : 'conclusion'}>
-                    {q.structure_family}
-                  </Chip>
-                  {q.ocr_status === 'pending' ? (
-                    <Badge tone="warn" dot>
-                      arriving soon
-                    </Badge>
-                  ) : null}
-                </div>
-              </div>
-              {q.stimulus ? (
-                <p className="font-mc-serif text-body-prose text-ink mt-3 leading-relaxed">{q.stimulus}</p>
-              ) : null}
-              {q.main_conclusion ? (
-                <p className="font-mc-serif text-body-prose mt-3 leading-relaxed">
-                  <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">
-                    Main conclusion ·{' '}
-                  </span>
-                  <span className="text-ink">{q.main_conclusion}</span>
-                </p>
-              ) : null}
-            </Card>
+            <QuestionItem q={q} />
           </li>
         ))}
       </ul>
