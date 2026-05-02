@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-02T00:00:00Z",
+  "title": "Design System: Intro to LR Bootcamp",
+  "scope": {
+    "route": "/bootcamp/intro-to-lr/*",
+    "pageShell": "src/pages/IntroToLrBootcamp.tsx",
+    "sourceTree": "src/bootcamps/main-conclusion/"
+  },
+  "extensions": {
+    "colorMeta": {
+      "aspiring-gold": {
+        "role": "primary",
+        "displayName": "Aspiring Gold",
+        "canonical": "rgb(232 208 139)",
+        "tonalRamp": ["#1A1607", "#332C0F", "#5C4E1B", "#8A7327", "#B8993A", "#E8D08B", "#F2DF9A", "#F8EBC0", "#FCF5DD"]
+      },
+      "aspiring-gold-hover": {
+        "role": "primary",
+        "displayName": "Aspiring Gold Hover",
+        "canonical": "rgb(242 223 154)",
+        "tonalRamp": ["#1B180A", "#352F14", "#5F5320", "#8E7B30", "#BCA644", "#F2DF9A", "#F6E7B0", "#FAEFC8", "#FDF7E0"]
+      },
+      "aspiring-gold-deep": {
+        "role": "primary",
+        "displayName": "Aspiring Gold Deep",
+        "canonical": "rgb(197 160 89)",
+        "tonalRamp": ["#15110707", "#2A220E", "#4D3F1A", "#735E27", "#996F35", "#C5A059", "#D4B377", "#E1C595", "#EED9B6"]
+      },
+      "bg-shadow": {
+        "role": "neutral",
+        "displayName": "BG Shadow",
+        "canonical": "rgb(5 7 10)",
+        "tonalRamp": ["#05070A", "#0A0E14", "#10141C", "#181D27", "#252B38", "#384055", "#5A6478", "#8590A4", "#B6BECE"]
+      },
+      "bg-night": {
+        "role": "neutral",
+        "displayName": "BG Night",
+        "canonical": "rgb(11 17 32)",
+        "tonalRamp": ["#070B14", "#0B1120", "#11192C", "#1A2440", "#283356", "#3D4A75", "#5E6E9F", "#8B98C0", "#BAC3DB"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "rgb(18 21 30)",
+        "tonalRamp": ["#0C0E14", "#12151E", "#181C28", "#222738", "#33394F", "#4D5570", "#737C9A", "#9EA6BD", "#C7CCDA"]
+      },
+      "surface-elev": {
+        "role": "neutral",
+        "displayName": "Surface Elev",
+        "canonical": "rgb(26 30 43)",
+        "tonalRamp": ["#11141C", "#1A1E2B", "#222738", "#2D344A", "#414A66", "#5E6987", "#8590A8", "#ADB5C7", "#D2D7E0"]
+      },
+      "ink-bright": {
+        "role": "neutral",
+        "displayName": "Ink Bright",
+        "canonical": "rgb(241 245 249)",
+        "tonalRamp": ["#1B1E22", "#33383F", "#525965", "#737C8D", "#9099A9", "#ABB3C0", "#C5CBD5", "#DCE0E7", "#F1F5F9"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "rgb(203 213 225)",
+        "tonalRamp": ["#181B1F", "#2D3138", "#494F5A", "#6A727F", "#878FA0", "#A2ABBC", "#BAC3D2", "#CBD5E1", "#E2E8EE"]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Ink Faint",
+        "canonical": "rgb(148 163 184)",
+        "tonalRamp": ["#15171B", "#272A30", "#3F434C", "#5C616E", "#777E8E", "#94A3B8", "#ADB7C7", "#C3CBD7", "#D9DEE6"]
+      },
+      "role-conclusion": {
+        "role": "secondary",
+        "displayName": "Conclusion Green",
+        "canonical": "rgb(16 185 129)",
+        "tonalRamp": ["#031A12", "#063624", "#0B5740", "#117D5C", "#16A07A", "#10B981", "#3CCFA0", "#74E1BC", "#B0EFD7"]
+      },
+      "role-premise": {
+        "role": "secondary",
+        "displayName": "Premise Blue",
+        "canonical": "rgb(96 165 250)",
+        "tonalRamp": ["#091523", "#142943", "#1F3F66", "#2E588F", "#4274BC", "#60A5FA", "#86BBFB", "#A9CFFC", "#CCE2FD"]
+      },
+      "role-pivot": {
+        "role": "secondary",
+        "displayName": "Pivot Orange",
+        "canonical": "rgb(249 115 22)",
+        "tonalRamp": ["#1F0C03", "#3D1707", "#642611", "#8E371D", "#C04A28", "#F97316", "#FB8E45", "#FCAA72", "#FDC79F"]
+      },
+      "role-opposing": {
+        "role": "secondary",
+        "displayName": "Opposing Purple",
+        "canonical": "rgb(168 85 247)",
+        "tonalRamp": ["#150925", "#251142", "#3C1B66", "#591E97", "#7E2EC9", "#A855F7", "#BC76F8", "#CD9AFA", "#DDBCFC"]
+      },
+      "role-concession": {
+        "role": "secondary",
+        "displayName": "Concession Yellow",
+        "canonical": "rgb(250 204 21)",
+        "tonalRamp": ["#211B03", "#3F3408", "#665512", "#92791F", "#C29F2A", "#FACC15", "#FBD744", "#FCE176", "#FDECA8"]
+      },
+      "role-background": {
+        "role": "secondary",
+        "displayName": "Background Slate",
+        "canonical": "rgb(148 163 184)",
+        "tonalRamp": ["#15171B", "#272A30", "#3F434C", "#5C616E", "#777E8E", "#94A3B8", "#ADB7C7", "#C3CBD7", "#D9DEE6"]
+      },
+      "state-success": {
+        "role": "tertiary",
+        "displayName": "State Success",
+        "canonical": "rgb(16 185 129)",
+        "tonalRamp": ["#031A12", "#063624", "#0B5740", "#117D5C", "#16A07A", "#10B981", "#3CCFA0", "#74E1BC", "#B0EFD7"]
+      },
+      "state-warn": {
+        "role": "tertiary",
+        "displayName": "State Warn",
+        "canonical": "rgb(250 204 21)",
+        "tonalRamp": ["#211B03", "#3F3408", "#665512", "#92791F", "#C29F2A", "#FACC15", "#FBD744", "#FCE176", "#FDECA8"]
+      },
+      "state-error": {
+        "role": "tertiary",
+        "displayName": "State Error",
+        "canonical": "rgb(239 68 68)",
+        "tonalRamp": ["#1F0707", "#3B0E0E", "#601717", "#8B2222", "#BA2F2F", "#EF4444", "#F36F6F", "#F69999", "#FAC0C0"]
+      },
+      "state-info": {
+        "role": "tertiary",
+        "displayName": "State Info",
+        "canonical": "rgb(56 189 248)",
+        "tonalRamp": ["#031623", "#072D44", "#104766", "#1B6890", "#2A8FBE", "#38BDF8", "#67CFFA", "#94DFFB", "#C0EDFC"]
+      }
+    },
+    "typographyMeta": {
+      "display":    { "displayName": "Display", "purpose": "Runner hero titles and module display headers. The only H1-tier mark on a page." },
+      "h1":         { "displayName": "Headline", "purpose": "Page-level titles inside the workspace shell." },
+      "h2":         { "displayName": "Title", "purpose": "Section titles within a lesson or hub." },
+      "h3":         { "displayName": "Subtitle", "purpose": "Subsection and card titles." },
+      "body":       { "displayName": "Body", "purpose": "UI prose, runner copy, helper text." },
+      "body-prose": { "displayName": "Body Prose", "purpose": "Lesson prose only. Capped at 64ch." },
+      "small":      { "displayName": "Small", "purpose": "Secondary metadata, footnote text, error helper." },
+      "mono":       { "displayName": "Mono Callout", "purpose": "Named-tool callouts and any inline code-like reference." },
+      "label":      { "displayName": "Eyebrow Label", "purpose": "Eyebrow labels above page titles. Always all-caps when rendered." }
+    },
+    "shadows": [
+      { "name": "shadow-1", "value": "0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4)", "purpose": "Inline elements, chips, low-stakes lift." },
+      { "name": "shadow-2", "value": "0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6)", "purpose": "Cards, panels, hover state on lifted elements." },
+      { "name": "shadow-3", "value": "0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7)", "purpose": "Modals, top-priority surfaces, focused active card in a hub." },
+      { "name": "shadow-lift", "value": "0 0 0 1px rgb(232 208 139 / 0.18), 0 16px 40px -12px rgb(0 0 0 / 0.7), 0 4px 16px -4px rgb(232 208 139 / 0.08)", "purpose": "Premium tier. Active runner step and cleared-screen surface." },
+      { "name": "shadow-press", "value": "0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5)", "purpose": "Pressed state on primary buttons and confirmed selections." },
+      { "name": "glow-accent-soft", "value": "0 0 24px -4px rgb(232 208 139 / 0.18)", "purpose": "Hover state on accent surfaces. Warmth without commitment." },
+      { "name": "glow-accent-strong", "value": "0 0 32px -2px rgb(232 208 139 / 0.36)", "purpose": "Cleared moment, confirmed-correct attempt, active diagnostic answer." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for all state transitions. No bounce, no spring." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Hover and tooltip-in transitions." },
+      { "name": "duration-mid", "value": "180ms", "purpose": "Standard component state changes (chip select, card lift)." },
+      { "name": "duration-slow", "value": "220ms", "purpose": "Phase changes and reveal animations." },
+      { "name": "mc-shimmer", "value": "background-position -200% 0 to 200% 0 over 1.6s ease-in-out infinite", "purpose": "Loading skeleton shimmer." },
+      { "name": "mc-shine-sweep", "value": "translateX(-120%) skewX(-12deg) to translateX(220%) skewX(-12deg) over 0.85s standard ease", "purpose": "Hover shine on premium card surfaces." },
+      { "name": "mc-glow-pulse", "value": "box-shadow 0 0 0 0 to 0 0 24px 0 over 3s ease-in-out infinite", "purpose": "Active runner step accent pulse." },
+      { "name": "mc-zoom-fade-in", "value": "opacity 0 to 1, scale 0.96 to 1 over 180ms standard ease", "purpose": "Reveal cards entering view." },
+      { "name": "mc-tooltip-in", "value": "opacity 0 to 1, translateY(-4px) scale(0.96) to translateY(0) scale(1) over 150ms standard ease", "purpose": "Tooltip and named-tool callout entrance." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "max-width: 600px" },
+      { "name": "tablet", "value": "min-width: 601px and max-width: 900px" },
+      { "name": "desktop", "value": "min-width: 901px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single computed CTA on every hub. Aspiring Gold on near-black text, used sparingly.",
+      "html": "<button class=\"ds-btn-primary\">Continue</button>",
+      "css": ".ds-btn-primary { background: #E8D08B; color: #05070A; padding: 10px 20px; border: none; border-radius: 8px; font-family: Outfit, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1), box-shadow 180ms cubic-bezier(0.4,0,0.2,1), transform 180ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { background: #F2DF9A; box-shadow: 0 0 24px -4px rgb(232 208 139 / 0.18); } .ds-btn-primary:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; } .ds-btn-primary:active { background: #C5A059; box-shadow: 0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5); transform: translateY(1px); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action. Try-again, Skip-for-now affordances.",
+      "html": "<button class=\"ds-btn-ghost\">Try again</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #F1F5F9; padding: 10px 20px; border: 1px solid rgb(255 255 255 / 0.12); border-radius: 8px; font-family: Outfit, Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1), border-color 180ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-ghost:hover { background: rgb(255 255 255 / 0.04); border-color: rgb(255 255 255 / 0.20); } .ds-btn-ghost:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip (Default)",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "ChipPicker primitive default state. Click again to clear; keyboard-activatable.",
+      "html": "<button class=\"ds-chip\" type=\"button\" aria-pressed=\"false\">Premise</button>",
+      "css": ".ds-chip { background: #1A1E2B; color: #CBD5E1; padding: 6px 12px; border: 1px solid rgb(255 255 255 / 0.06); border-radius: 9999px; font-family: Outfit, Inter, system-ui, sans-serif; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1), color 180ms cubic-bezier(0.4,0,0.2,1), border-color 180ms cubic-bezier(0.4,0,0.2,1); } .ds-chip:hover { background: #222738; color: #F1F5F9; border-color: rgb(255 255 255 / 0.12); } .ds-chip:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip (Selected)",
+      "kind": "chip",
+      "refersTo": "chip-selected",
+      "description": "ChipPicker selected state. Click again to clear back to default.",
+      "html": "<button class=\"ds-chip-selected\" type=\"button\" aria-pressed=\"true\">Premise</button>",
+      "css": ".ds-chip-selected { background: #E8D08B; color: #05070A; padding: 6px 12px; border: 1px solid #E8D08B; border-radius: 9999px; font-family: Outfit, Inter, system-ui, sans-serif; font-size: 12.5px; font-weight: 600; cursor: pointer; box-shadow: 0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5); transition: background 180ms cubic-bezier(0.4,0,0.2,1); } .ds-chip-selected:hover { background: #F2DF9A; } .ds-chip-selected:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Default lesson and runner card. Flat at rest; lift on hover.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Identify the conclusion</h3><p class=\"ds-card-body\">Your job: name the conclusion in one sentence, in your own words.</p></article>",
+      "css": ".ds-card { background: #12151E; color: #F1F5F9; padding: 20px; border-radius: 14px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4); transition: box-shadow 180ms cubic-bezier(0.4,0,0.2,1), transform 180ms cubic-bezier(0.4,0,0.2,1); } .ds-card:hover { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6); transform: translateY(-2px); } .ds-card-title { font-family: Outfit, Inter, system-ui, sans-serif; font-size: 17px; font-weight: 600; line-height: 1.3; margin: 0 0 8px 0; color: #F1F5F9; } .ds-card-body { font-family: Outfit, Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.6; margin: 0; color: #CBD5E1; }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text input with focus ring matching the focus-visible spec.",
+      "html": "<label class=\"ds-input-wrap\"><span class=\"ds-input-label\">Your conclusion</span><input class=\"ds-input\" type=\"text\" placeholder=\"In one sentence...\" /></label>",
+      "css": ".ds-input-wrap { display: flex; flex-direction: column; gap: 8px; } .ds-input-label { font-family: Outfit, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94A3B8; } .ds-input { background: #12151E; color: #F1F5F9; padding: 10px 12px; border: 1px solid rgb(255 255 255 / 0.08); border-radius: 8px; font-family: Outfit, Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.6; transition: border-color 180ms cubic-bezier(0.4,0,0.2,1); } .ds-input::placeholder { color: #94A3B8; } .ds-input:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; border-color: rgb(232 208 139 / 0.32); }"
+    },
+    {
+      "name": "Runner Hero",
+      "kind": "custom",
+      "refersTo": "RunnerHero",
+      "description": "The computed-CTA hub hero. Eyebrow plus display title plus subtitle plus one primary CTA. Never a card grid below it.",
+      "html": "<section class=\"ds-hero\"><span class=\"ds-hero-eyebrow\">Pick up where you left off</span><h1 class=\"ds-hero-title\">Identifying the main conclusion</h1><p class=\"ds-hero-sub\">Three sentences in, you'll see what most students miss on their first pass.</p><button class=\"ds-btn-primary\">Continue</button></section>",
+      "css": ".ds-hero { display: flex; flex-direction: column; gap: 16px; padding: 48px 24px; max-width: 64ch; } .ds-hero-eyebrow { font-family: Outfit, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #E8D08B; } .ds-hero-title { font-family: Fraunces, ui-serif, Georgia, serif; font-size: 36px; font-weight: 700; line-height: 1.1; color: #F1F5F9; margin: 0; } .ds-hero-sub { font-family: Outfit, Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 8px 0; max-width: 60ch; }"
+    },
+    {
+      "name": "Named Tool Inline",
+      "kind": "custom",
+      "refersTo": "named-tool-inline",
+      "description": "Inline mono callout for any named-tool reference. The only place text is colored gold without a surface behind it.",
+      "html": "<p class=\"ds-prose\">When you hit a tough sentence, reach for the <button class=\"ds-named-tool\">X-Ray Scan</button> tool.</p>",
+      "css": ".ds-prose { font-family: Fraunces, ui-serif, Georgia, serif; font-size: 15px; line-height: 1.7; color: #F1F5F9; max-width: 64ch; } .ds-named-tool { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; color: #E8D08B; background: rgb(232 208 139 / 0.10); padding: 1px 6px; border-radius: 4px; border: none; cursor: pointer; transition: background 150ms cubic-bezier(0.4,0,0.2,1); } .ds-named-tool:hover { background: rgb(232 208 139 / 0.16); } .ds-named-tool:focus-visible { outline: 2px solid #E8D08B; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Coach's Workbook",
+    "overview": "The bootcamp sits on a tinted-near-black surface (warm-cool layered darks) and reserves Aspiring Gold for moments that earn it. Long-form lesson prose carries in Fraunces, the runner shell speaks in Outfit, and named tools land as JetBrains Mono callouts. It reads like a well-typeset workbook with a coach in the room, not like a test-prep platform with a points meter. The system is restrained on color, generous on whitespace, deliberate on hierarchy. Motion is accent: 150 to 220 millisecond eases, transform and opacity only, no bounce, no spring. Argument-structure roles (conclusion, premise, pivot, opposing, concession, background) carry a locked color vocabulary so meaning travels with form. Everything is dark-by-purpose because the student spends extended time reading dense prose under indoor light.",
+    "keyCharacteristics": [
+      "Dark-by-purpose, not dark-by-default. Surfaces are layered tonal darks, never #000.",
+      "Restrained color strategy: tinted neutrals plus one accent at 10% or less per screen.",
+      "Editorial-typographic pairing: Fraunces (display + lesson prose), Outfit (UI sans), JetBrains Mono (named-tool callouts).",
+      "Argument-structure role colors are a signature primitive, not a chart palette.",
+      "Motion is accent: short eased transitions on transform and opacity, never on layout.",
+      "Card grids are forbidden as primary navigation. Hubs lead with one computed CTA."
+    ],
+    "rules": [
+      { "name": "The One-Voice Rule", "body": "Aspiring Gold is the only warm accent in the system. It is used on 10% or less of any given screen. Its rarity is the point. If three things on a screen are gold, none of them are.", "section": "colors" },
+      { "name": "The Role-Color Rule", "body": "Conclusion green, premise blue, pivot orange, opposing purple, concession yellow, background slate. This vocabulary is locked. Never repurposed for status, never used for brand, never reassigned even when the same role appears in a new surface.", "section": "colors" },
+      { "name": "The Tinted-Neutral Rule", "body": "No #000, no #fff. Every neutral is tinted toward the brand hue.", "section": "colors" },
+      { "name": "The Voice-to-Typography Rule", "body": "Register 2 (Joshua's authored prose) lives in serif. Register 1 (decisive computed copy and runner copy) lives in sans plus mono callouts. Lessons read in Fraunces; the runner shell speaks in Outfit; named tools render as JetBrains Mono.", "section": "typography" },
+      { "name": "The 64ch Rule", "body": "Lesson prose caps at 64 characters per line. Reading column over content density.", "section": "typography" },
+      { "name": "The Eyebrow Rule", "body": "Every page-level surface leads with eyebrow plus display title plus subtitle. Eyebrow is short, all-caps, tracking 0.18em, accent-colored when active. One concept per eyebrow.", "section": "typography" },
+      { "name": "The Glow-Earns-Itself Rule", "body": "Accent glow is reserved for the active runner step, a confirmed-correct attempt, or the cleared-screen surface. Never decorative. If three things on the screen glow, none of them do.", "section": "elevation" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Hover and focus introduce shadow; pressed introduces inner shadow; cleared introduces glow. Depth is a response to state, not a baseline.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Aspiring Gold (#E8D08B) on 10% or less of any given screen. Reserve it for active state, primary CTA, and the cleared moment.",
+      "Do carry argument-structure role colors (conclusion green, premise blue, pivot orange, opposing purple, concession yellow, background slate) consistently across every surface that names those roles.",
+      "Do lead every hub with one computed CTA from RunnerHero. JumpTo pill row is the only acceptable secondary nav.",
+      "Do gate Continue until the student submits. Reveal copy must reference the student's actual attempt, not a generic answer.",
+      "Do make every chip and selectable candidate click-again-to-clear and keyboard-activatable.",
+      "Do ship a Try-again affordance on every submitted attempt. Submission must never be a one-way door.",
+      "Do animate on transform and opacity only, with cubic-bezier(0.4, 0, 0.2, 1) easing and 150-220ms durations.",
+      "Do honor prefers-reduced-motion everywhere. Durations zero out, motion does not become load-bearing.",
+      "Do trace every progress claim, badge, percentage, streak, and next-step CTA to real persistence (useModuleProgress, useDiagnostics) or a static registry.",
+      "Do prefer honest empty states over fabricated content. If the dashboard has no data, lead with the action that generates data."
+    ],
+    "donts": [
+      "Don't use border-left or border-right greater than 1px as a colored stripe. Enforced by __tests__/impeccable-bans.test.ts.",
+      "Don't use gradient text (background-clip: text plus a gradient background). Use a single solid color; emphasize via weight or size.",
+      "Don't use glassmorphism decoratively. Rare and purposeful, or nothing.",
+      "Don't lead a hub with an equal-weight card grid (the 7Sage / Khan Academy / Manhattan Prep failure mode).",
+      "Don't ship the hero-metric template (big number, small label, supporting stats, gradient accent). SaaS cliché.",
+      "Don't reach for a modal first. Exhaust inline and progressive alternatives.",
+      "Don't use em dashes in utility, computed, or runner copy. Joshua's authored prose may keep them; the runner shell may not.",
+      "Don't use #000 or #fff. Every neutral is tinted toward the brand hue.",
+      "Don't invent analytics, mastery scores, streaks, score predictions, or 'X students improved Y points' copy.",
+      "Don't render internal IDs (MC-LSN-*, MC-DRL-*, Phase A through Phase I, Stage-Gate format, voice register N, OCR pending) in student-visible copy.",
+      "Don't ship Duolingo-shaped streak flames, mascot animations, XP bars, or trophy popovers. The bootcamp does not reward attendance.",
+      "Don't write 'Welcome back' or 'Welcome to X' copy that is not conditional on actual returning state.",
+      "Don't use industry vocabulary in student copy. 'Stimulus' is industry; 'the argument' is student.",
+      "Don't lock review surfaces without a BOOTCAMP_PREVIEW_OPEN bypass. If you build a gate, you build the bypass at the same time."
+    ]
+  }
+}
