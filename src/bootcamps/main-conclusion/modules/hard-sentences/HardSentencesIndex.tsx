@@ -23,10 +23,10 @@ const CAPSTONE: { id: string; number: string; title: string; route: string } = {
 
 export function HardSentencesIndex() {
   const all: Array<HardSection | typeof CAPSTONE> = [...HARD_SECTIONS, CAPSTONE];
-  // We don't track per-section completion for hard sentences in v1 (no
-  // markComplete hook for them today). Direct the student to the first section
-  // by default — honest: this reflects "where to start," not "what is incomplete."
-  const next = all[0]!;
+  // Honest framing: per-section completion isn't tracked. We don't pretend to
+  // know where the student left off; we offer the first section as a default
+  // entry and the roster as a free-pick.
+  const entry = all[0]!;
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
       <header className="relative isolate">
@@ -72,21 +72,22 @@ export function HardSentencesIndex() {
                 aria-hidden="true"
                 className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
               />
-              Start here
+              New here? Open with the why
             </div>
             <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
-              {next.number}: {next.title}
+              {entry.number}: {entry.title}
             </h2>
             <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
-              Begin with the why and the cluster anatomy before you reach the decomposer in 5.7.
+              The first section frames the cluster anatomy. The decomposer practice lives in 5.7.
+              Pick anywhere from the roster below if you already know what you came for.
             </p>
             <div className="mt-4">
               <Link
-                to={next.route}
+                to={entry.route}
                 className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
               >
                 <Button size="lg" rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>
-                  Open section {next.number}
+                  Open section {entry.number}
                 </Button>
               </Link>
             </div>
