@@ -9,7 +9,7 @@
  */
 
 import { useState } from 'react';
-import { Check, X as XIcon } from 'lucide-react';
+import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
@@ -58,13 +58,23 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
   );
   const [submitted, setSubmitted] = useState(false);
 
+  /**
+   * Click the same chip twice → clears. Click a different chip → swaps.
+   * No way to be "stuck" on a wrong label without an escape.
+   */
   function setRole(segId: string, role: Role) {
     if (submitted) return;
-    setPicks((p) => ({ ...p, [segId]: role }));
+    setPicks((p) => ({ ...p, [segId]: p[segId] === role ? null : role }));
+  }
+
+  function reset() {
+    setPicks(Object.fromEntries(segments.map((s) => [s.id, null])));
+    setSubmitted(false);
   }
 
   const allLabeled = segments.every((s) => picks[s.id] !== null);
   const correctCount = segments.filter((s) => picks[s.id] === s.correct).length;
+  const cleanRead = correctCount === segments.length;
 
   function submit() {
     if (!allLabeled || submitted) return;
@@ -126,6 +136,7 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
                         aria-checked={isPicked}
                         disabled={submitted}
                         onClick={() => setRole(seg.id, role)}
+                        title={isPicked ? 'Click again to clear' : undefined}
                         className={cn(
                           'inline-flex items-center gap-1.5 rounded-full border px-3 py-1',
                           'font-mc-mono text-mono uppercase tracking-wider',
@@ -156,6 +167,12 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
                   <p className="mt-3 font-mc-serif text-body text-ink-soft leading-relaxed">
                     <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent mr-2">
                       {ROLE_LABEL[seg.correct]}
+                      {isWrong && picked ? (
+                        <span className="text-ink-faint normal-case tracking-normal">
+                          {' '}
+                          (you picked {ROLE_LABEL[picked]})
+                        </span>
+                      ) : null}
                     </span>
                     {rationale[seg.id] ?? ''}
                   </p>
@@ -181,16 +198,25 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
             'rounded-3 px-4 py-3',
             'bg-[image:var(--grad-surface-soft)]',
             'border border-[color:var(--border-accent-soft)]',
+            'flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3',
           )}
         >
           <p className="font-mc-serif text-body-prose text-ink">
             <span className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent mr-2">
               You got {correctCount} of {segments.length}
             </span>
-            {correctCount === segments.length
+            {cleanRead
               ? 'Clean read. The structure is in your hands now.'
-              : 'Not a grade — a calibration. Read the per-sentence notes above before you continue.'}
+              : 'Not a grade. A calibration. Read the per-sentence notes above before you continue.'}
           </p>
+          <Button
+            variant="subtle"
+            size="sm"
+            onClick={reset}
+            leftIcon={<RefreshCcw className="h-3.5 w-3.5" strokeWidth={2.2} />}
+          >
+            Try again
+          </Button>
         </div>
       )}
     </div>

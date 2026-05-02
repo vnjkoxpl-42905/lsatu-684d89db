@@ -48,7 +48,7 @@ export function HardSentencesIndex() {
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
             LSAT writers stack qualifiers around a core thought until you can&apos;t see it. This module
-            is the dive crew — one section at a time, peel the coral off the statue.
+            is the dive crew. One section at a time, peel the coral off the statue.
           </p>
         </div>
       </header>
@@ -75,7 +75,7 @@ export function HardSentencesIndex() {
               Start here
             </div>
             <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
-              {next.number} — {next.title}
+              {next.number}: {next.title}
             </h2>
             <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
               Begin with the why and the cluster anatomy before you reach the decomposer in 5.7.

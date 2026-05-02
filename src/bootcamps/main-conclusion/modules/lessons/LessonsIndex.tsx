@@ -106,7 +106,7 @@ function Header({
         Twelve lessons, then your first calibration
       </h1>
       <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-        Each lesson is a guided session — briefing, demo, your attempt, reveal, coach&apos;s note,
+        Each lesson is a guided session: briefing, demo, your attempt, reveal, coach&apos;s note,
         checkpoint. You answer before the explanation. Lesson 13 is your first calibration.
       </p>
 
@@ -189,7 +189,7 @@ function Footer(): JSX.Element {
         aria-hidden="true"
         className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
       />
-      Lesson 13 is calibration — taken after the teaching, not before. That&apos;s when the dashboard turns on.
+      Lesson 13 is calibration. Taken after the teaching, not before. That&apos;s when the dashboard turns on.
     </p>
   );
 }

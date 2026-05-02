@@ -78,7 +78,7 @@ export function nextTrainingStep(
     return {
       kind: 'start',
       eyebrow: 'Start training',
-      title: first ? `Lesson 1 — ${first.title}` : 'Lesson 1',
+      title: first ? `Lesson 1: ${first.title}` : 'Lesson 1',
       subtitle:
         'Begin with the foundation. Twelve voice-led lessons take you from "what is an argument" to spotting the conclusion at speed.',
       cta: 'Begin Lesson 1',
@@ -100,7 +100,7 @@ export function nextTrainingStep(
     return {
       kind: 'continue-lesson',
       eyebrow: teachingDoneCount === 0 ? 'Start training' : 'Pick up where you left off',
-      title: `Lesson ${lessonInt} — ${firstUndoneTeaching.title}`,
+      title: `Lesson ${lessonInt}: ${firstUndoneTeaching.title}`,
       subtitle:
         teachingDoneCount === 0
           ? 'Twelve guided sessions take you from "what is an argument" to spotting the conclusion at speed. Lesson 13 is the calibration that turns the dashboard on.'
@@ -117,7 +117,7 @@ export function nextTrainingStep(
       eyebrow: 'Calibration time',
       title: 'Take your calibration',
       subtitle:
-        'Twelve lessons clear. The calibration is the first time the dashboard learns anything about you — after the teaching, not before.',
+        'Twelve lessons clear. The calibration is the first time the dashboard learns anything about you. After the teaching, not before.',
       cta: 'Start calibration',
       href: `${BC}/lessons/${CAPSTONE_NUMBER}`,
     };
@@ -128,7 +128,7 @@ export function nextTrainingStep(
     return {
       kind: 'unlock-drill',
       eyebrow: 'Unlock the Simulator',
-      title: `Drill ${UNLOCK_DRILL_NUMBER} — Rebuttal vs First-Sentence`,
+      title: `Drill ${UNLOCK_DRILL_NUMBER}: Rebuttal vs First-Sentence`,
       subtitle:
         'Four stages, five questions each. Clear all four and the Question Simulator opens.',
       cta: 'Open the gate drill',
@@ -196,7 +196,7 @@ export function nextDrillStep(
   if (gate && !completed.has(gate.id)) {
     return {
       eyebrow: 'Unlock the Simulator',
-      title: `Drill ${gate.number} — ${gate.title}`,
+      title: `Drill ${gate.number}: ${gate.title}`,
       subtitle:
         'Four stages, five questions each. Clear all four and the Question Simulator opens.',
       cta: `Run Drill ${gate.number}`,
@@ -210,7 +210,7 @@ export function nextDrillStep(
   if (next) {
     return {
       eyebrow: 'Next drill',
-      title: `Drill ${next.number} — ${next.title}`,
+      title: `Drill ${next.number}: ${next.title}`,
       subtitle: 'Four stages of five questions. Your run-rate is calibration, not a grade.',
       cta: `Run Drill ${next.number}`,
       href: `${BC}/drills/${next.number}`,

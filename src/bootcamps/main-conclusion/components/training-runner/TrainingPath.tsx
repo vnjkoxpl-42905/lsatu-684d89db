@@ -48,8 +48,8 @@ export function TrainingPath({ dots }: Props): JSX.Element {
       <ol className="flex flex-wrap items-center gap-1.5">
         {dots.map((d, i) => {
           const label = d.capstone
-            ? `Capstone — ${d.title}`
-            : `Lesson ${d.number.split('.')[1]} — ${d.title}`;
+            ? `Capstone: ${d.title}`
+            : `Lesson ${d.number.split('.')[1]}: ${d.title}`;
           return (
             <li key={d.number} className="flex items-center">
               <Tooltip content={label} side="top">
