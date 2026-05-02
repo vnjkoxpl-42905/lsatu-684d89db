@@ -198,12 +198,13 @@ const App = () => {
                   <Route path="/bootcamp/causation-station" element={
                     <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
                   } />
-                  {/* Legacy bootcamp slugs → Intro to LR */}
-                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
-                  <Route path="/bootcamp/structure" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
-                  <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
-                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
-                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamp/intro-to-lr" replace />} />
+                  {/* Retired bootcamp slugs — bounce back to the bootcamp index so the
+                      old "Structure" name can never be confused with the active bootcamp. */}
+                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamps" replace />} />
+                  <Route path="/bootcamp/structure" element={<Navigate to="/bootcamps" replace />} />
+                  <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamps" replace />} />
+                  <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />
+                  <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/abstraction" element={
                     <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
                   } />
