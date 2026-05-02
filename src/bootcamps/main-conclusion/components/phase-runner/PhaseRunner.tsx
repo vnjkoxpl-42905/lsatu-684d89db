@@ -18,6 +18,7 @@ import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { RoleLabeler } from '@/bootcamps/main-conclusion/components/role-labeler/RoleLabeler';
 import { IndicatorTagger } from '@/bootcamps/main-conclusion/components/indicator-tagger/IndicatorTagger';
 import { ConclusionPicker } from '@/bootcamps/main-conclusion/components/conclusion-picker/ConclusionPicker';
+import { PronounUnpacker } from '@/bootcamps/main-conclusion/components/pronoun-unpacker/PronounUnpacker';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { Phase, Role } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 
@@ -366,6 +367,16 @@ function PhaseBody({
                 </li>
               ))}
             </ol>
+          ) : null}
+          {phase.interactive && phase.interactive.kind === 'pronoun-unpack' ? (
+            <div className="mt-5">
+              <PronounUnpacker
+                prompt={phase.interactive.prompt}
+                segments={phase.interactive.segments}
+                spans={phase.interactive.spans}
+                caption={phase.interactive.caption}
+              />
+            </div>
           ) : null}
         </Card>
       );

@@ -79,6 +79,19 @@ export interface PhaseDemo {
   body: string;
   /** Optional pre-labeled stimulus to *show* what role-labeling looks like. */
   exampleSegments?: Array<{ text: string; role: Role; whisper?: string }>;
+  /** Optional interactive widget rendered after `body`. Currently supports the
+   *  pronoun-unpack click-reveal used by Lesson 1.10. Demos with an interactive
+   *  widget should usually omit `exampleSegments` to keep the surface focused. */
+  interactive?: {
+    kind: 'pronoun-unpack';
+    prompt?: string;
+    segments: Array<
+      | { kind: 'text'; text: string }
+      | { kind: 'pronoun'; spanId: string }
+    >;
+    spans: Array<{ id: string; pronoun: string; antecedent: string }>;
+    caption?: string;
+  };
 }
 
 export interface PhaseAttempt {
@@ -1238,27 +1251,36 @@ PHASED_LESSONS['1.10'] = {
     },
     {
       kind: 'demo',
-      title: 'Before and after',
+      title: 'Tap a pronoun. Watch it expand.',
       body:
-        'Same conclusion, two ways. The first is what your brain hears. The second is what the test is testing.',
-      exampleSegments: [
-        {
-          text: 'Conclusion as it appears: "Such measures will not reduce crime."',
-          role: 'background',
-          whisper: 'Vague. "Such measures" leaves the antecedent in the prior sentence.',
-        },
-        {
-          text: 'Antecedent (from prior sentence): "increased police presence and harsher sentencing"',
-          role: 'premise',
-          whisper: 'The phrase "such measures" is pointing at this.',
-        },
-        {
-          text: 'Conclusion after pronoun replacement: "Increased police presence and harsher sentencing will not reduce crime."',
-          role: 'conclusion',
-          whisper:
-            'Now you have the actual claim. This is what the right answer choice will paraphrase.',
-        },
-      ],
+        'Same paragraph, two ways. Read it once, then tap each highlighted phrase. Each pronoun swaps to the antecedent it points at. The conclusion stops sounding vague the moment you do this.',
+      interactive: {
+        kind: 'pronoun-unpack',
+        prompt: 'Tap each gold phrase to replace it with what it points at.',
+        segments: [
+          {
+            kind: 'text',
+            text: 'The city has tried two responses to rising crime: increased police presence and harsher sentencing. ',
+          },
+          { kind: 'pronoun', spanId: 'such-measures' },
+          { kind: 'text', text: ' will not reduce crime, because ' },
+          { kind: 'pronoun', spanId: 'they' },
+          { kind: 'text', text: ' fail to address the underlying conditions that drive offending in the first place.' },
+        ],
+        spans: [
+          {
+            id: 'such-measures',
+            pronoun: 'Such measures',
+            antecedent: 'Increased police presence and harsher sentencing',
+          },
+          {
+            id: 'they',
+            pronoun: 'they',
+            antecedent: 'increased police presence and harsher sentencing',
+          },
+        ],
+        caption: 'Tap each gold phrase to expand it. Tap again to collapse.',
+      },
     },
     {
       kind: 'attempt',
