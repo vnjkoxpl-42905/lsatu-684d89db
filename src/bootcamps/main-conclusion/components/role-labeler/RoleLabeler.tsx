@@ -9,6 +9,7 @@
  */
 
 import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Check, X as XIcon, RefreshCcw } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ChipPicker, type ChipOption } from '@/bootcamps/main-conclusion/components/chip-picker/ChipPicker';
@@ -59,11 +60,21 @@ const ROLE_REVEAL_CLASS: Record<Role, string> = {
     'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)] text-ink-soft',
 };
 
+/**
+ * Per-segment stagger between paint-reveals. Total reveal duration is
+ * (segments.length - 1) * REVEAL_STEP_MS + the card's own ~220ms transition,
+ * so a 3-segment stimulus reveals over ~640ms — long enough to feel earned,
+ * short enough to never feel slow. `motion-reduce` users get instant paint.
+ */
+const REVEAL_STEP_MS = 220;
+
 export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: Props): JSX.Element {
   const [picks, setPicks] = useState<Record<string, Role | null>>(() =>
     Object.fromEntries(segments.map((s) => [s.id, null])),
   );
   const [submitted, setSubmitted] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const stepMs = reducedMotion ? 0 : REVEAL_STEP_MS;
 
   function reset() {
     setPicks(Object.fromEntries(segments.map((s) => [s.id, null])));
@@ -90,8 +101,16 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
           return (
             <li key={seg.id}>
               <div
+                style={{
+                  // Stagger the role-color paint when revealing. CSS-only;
+                  // stepMs is zeroed for reduced-motion users so all segments
+                  // paint at once.
+                  transitionDelay: submitted ? `${i * stepMs}ms` : '0ms',
+                }}
                 className={cn(
-                  'rounded-3 border p-4 transition-colors duration-180 ease-eased',
+                  'rounded-3 border p-4',
+                  'transition-colors duration-220 ease-eased',
+                  'motion-reduce:transition-none',
                   submitted
                     ? ROLE_REVEAL_CLASS[seg.correct]
                     : cn(
@@ -110,20 +129,31 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
                   <p className="font-mc-serif text-body-prose text-ink leading-relaxed flex-1">
                     {seg.text}
                   </p>
-                  {submitted ? (
-                    isRight ? (
-                      <Check
-                        className="shrink-0 h-4 w-4 text-[rgb(var(--success))]"
-                        strokeWidth={2.4}
-                        aria-label="Correct label"
-                      />
-                    ) : isWrong ? (
-                      <XIcon
-                        className="shrink-0 h-4 w-4 text-[rgb(var(--error))]"
-                        strokeWidth={2.4}
-                        aria-label="Incorrect label"
-                      />
-                    ) : null
+                  {submitted && (isRight || isWrong) ? (
+                    <motion.span
+                      initial={reducedMotion ? false : { opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        delay: (i * stepMs) / 1000,
+                        duration: reducedMotion ? 0 : 0.22,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                      className="shrink-0 inline-flex"
+                    >
+                      {isRight ? (
+                        <Check
+                          className="h-4 w-4 text-[rgb(var(--success))]"
+                          strokeWidth={2.4}
+                          aria-label="Correct label"
+                        />
+                      ) : (
+                        <XIcon
+                          className="h-4 w-4 text-[rgb(var(--error))]"
+                          strokeWidth={2.4}
+                          aria-label="Incorrect label"
+                        />
+                      )}
+                    </motion.span>
                   ) : null}
                 </div>
 
