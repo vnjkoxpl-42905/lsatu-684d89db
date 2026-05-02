@@ -70,10 +70,6 @@ export function TraitDeepDive() {
         <Section def={SECTIONS.fingerprint!} text={trait.fingerprint} />
         <Section def={SECTIONS.defense!} text={trait.defense} />
       </div>
-      <p className="mt-8 font-mc-mono text-mono text-ink-faint">
-        Worst-case examples wire in at Phase D once distractors are authored. surface-id: trap-master/
-        {trait.id}
-      </p>
     </article>
   );
 }

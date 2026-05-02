@@ -86,61 +86,66 @@ export function nextTrainingStep(
     };
   }
 
-  // First uncompleted lesson under module 1.
-  const firstUndone = sorted.find((l) => !completedLessons.has(l.id));
+  // Teaching lessons are 1.1–1.12. Capstone is 1.13 and is tracked separately.
+  const teaching = sorted.filter((l) => l.id !== CAPSTONE_LESSON_ID);
+  const firstUndoneTeaching = teaching.find((l) => !completedLessons.has(l.id));
+  const teachingDoneCount = teaching.filter((l) => completedLessons.has(l.id)).length;
+  const capstoneAttempted = completedLessons.has(CAPSTONE_LESSON_ID);
+  const drill34Done = completedDrills.has(UNLOCK_DRILL_ID);
 
-  // All 13 lessons done → did they take the capstone yet?
-  if (!firstUndone || completedLessons.size >= TOTAL_LESSONS) {
-    const capstoneAttempted = completedLessons.has(CAPSTONE_LESSON_ID);
-    if (!capstoneAttempted) {
-      return {
-        kind: 'capstone',
-        eyebrow: 'Calibration time',
-        title: 'Take your calibration',
-        subtitle:
-          'You finished the lesson sequence. The capstone is the first time the dashboard learns anything about you — calibration after teaching, not before.',
-        cta: 'Start calibration',
-        href: `${BC}/lessons/${CAPSTONE_NUMBER}`,
-      };
-    }
-
-    // Capstone done. Has Drill 3.4 (the simulator unlock gate) been cleared?
-    const drill34Done = completedDrills.has(UNLOCK_DRILL_ID);
-    if (!drill34Done) {
-      return {
-        kind: 'unlock-drill',
-        eyebrow: 'Unlock the Simulator',
-        title: `Drill ${UNLOCK_DRILL_NUMBER} — Rebuttal vs First-Sentence`,
-        subtitle:
-          'Four stages, five questions each. Clear all four and the Question Simulator opens.',
-        cta: 'Open the gate drill',
-        href: `${BC}/drills/${UNLOCK_DRILL_NUMBER}`,
-      };
-    }
-
-    // Capstone + Drill 3.4 done → push toward live questions.
+  // 1) Mid-teaching: any of 1.1–1.12 not yet done → continue there.
+  if (firstUndoneTeaching) {
+    const lessonNumber = firstUndoneTeaching.number;
+    const lessonInt = lessonNumber.split('.')[1] ?? lessonNumber;
     return {
-      kind: 'simulator-ready',
-      eyebrow: 'Live training',
-      title: 'Run a Simulator question',
+      kind: 'continue-lesson',
+      eyebrow: teachingDoneCount === 0 ? 'Start training' : 'Pick up where you left off',
+      title: `Lesson ${lessonInt} — ${firstUndoneTeaching.title}`,
       subtitle:
-        'Real LSAT-format Main Conclusion items, full five-choice answer set, trap-trait diagnostic on every miss.',
-      cta: 'Open Simulator',
-      href: `${BC}/simulator/bank`,
-      secondary: { label: 'See your dashboard', href: `${BC}/diagnostics/dashboard` },
+        teachingDoneCount === 0
+          ? 'Twelve guided sessions take you from "what is an argument" to spotting the conclusion at speed. Lesson 13 is the calibration that turns the dashboard on.'
+          : `${teachingDoneCount} of ${teaching.length} teaching lessons cleared. One click and you are back in the seat.`,
+      cta: teachingDoneCount === 0 ? `Begin Lesson ${lessonInt}` : `Continue Lesson ${lessonInt}`,
+      href: `${BC}/lessons/${lessonNumber}`,
     };
   }
 
-  // Mid-lessons.
-  const lessonNumber = firstUndone.number;
-  const lessonInt = lessonNumber.split('.')[1] ?? lessonNumber;
+  // 2) Teaching done, capstone not taken → push to calibration.
+  if (!capstoneAttempted) {
+    return {
+      kind: 'capstone',
+      eyebrow: 'Calibration time',
+      title: 'Take your calibration',
+      subtitle:
+        'Twelve lessons clear. The calibration is the first time the dashboard learns anything about you — after the teaching, not before.',
+      cta: 'Start calibration',
+      href: `${BC}/lessons/${CAPSTONE_NUMBER}`,
+    };
+  }
+
+  // 3) Capstone done, Drill 3.4 not cleared → run the unlock-gate drill.
+  if (!drill34Done) {
+    return {
+      kind: 'unlock-drill',
+      eyebrow: 'Unlock the Simulator',
+      title: `Drill ${UNLOCK_DRILL_NUMBER} — Rebuttal vs First-Sentence`,
+      subtitle:
+        'Four stages, five questions each. Clear all four and the Question Simulator opens.',
+      cta: 'Open the gate drill',
+      href: `${BC}/drills/${UNLOCK_DRILL_NUMBER}`,
+    };
+  }
+
+  // 4) Capstone + Drill 3.4 done → live training.
   return {
-    kind: 'continue-lesson',
-    eyebrow: 'Pick up where you left off',
-    title: `Lesson ${lessonInt} — ${firstUndone.title}`,
-    subtitle: `${completedLessons.size} of ${TOTAL_LESSONS} lessons completed. The next step is teed up.`,
-    cta: `Continue Lesson ${lessonInt}`,
-    href: `${BC}/lessons/${lessonNumber}`,
+    kind: 'simulator-ready',
+    eyebrow: 'Live training',
+    title: 'Run a Simulator question',
+    subtitle:
+      'Real LSAT-format items with the full five-choice answer set. Every miss is tagged so you can see the pattern.',
+    cta: 'Open Simulator',
+    href: `${BC}/simulator/bank`,
+    secondary: { label: 'See your dashboard', href: `${BC}/diagnostics/dashboard` },
   };
 }
 
@@ -206,7 +211,7 @@ export function nextDrillStep(
     return {
       eyebrow: 'Next drill',
       title: `Drill ${next.number} — ${next.title}`,
-      subtitle: 'Stage-Gate format. Your run-rate is calibration, not a grade.',
+      subtitle: 'Four stages of five questions. Your run-rate is calibration, not a grade.',
       cta: `Run Drill ${next.number}`,
       href: `${BC}/drills/${next.number}`,
       isGate: false,
@@ -218,7 +223,7 @@ export function nextDrillStep(
     eyebrow: 'All drills cleared',
     title: 'Run a Simulator question',
     subtitle:
-      'Drill 3.4 is the unlock-gate; you have it. Now apply the read on real LSAT-format items.',
+      'Gate drill cleared. Apply the read on real LSAT-format items.',
     cta: 'Open Simulator',
     href: `${BC}/simulator/bank`,
     isGate: false,

@@ -37,9 +37,7 @@ export function EmptyState({ title, body, cta, surfaceId, icon, className }: Pro
         <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Empty</div>
         <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{title}</h2>
         {body ? <p className="mt-3 font-mc-serif text-body-prose text-ink-soft">{body}</p> : null}
-        {surfaceId ? (
-          <p className="mt-4 font-mc-mono text-mono text-ink-faint">surface-id: {surfaceId}</p>
-        ) : null}
+        {surfaceId ? <span data-surface-id={surfaceId} className="hidden" aria-hidden="true" /> : null}
         {cta ? <div className="mt-6 flex justify-center">{cta}</div> : null}
       </div>
     </div>

@@ -184,7 +184,7 @@ export function NamedToolEntry() {
     return (
       <EmptyState
         title="Named tool not found"
-        body="Check the URL — IDs are like NT-FABS or NT-Stage-Gate-Tracker."
+        body="That tool isn't in the lab. Open the Tool Lab to see what's available."
         cta={
           <Link to="/bootcamp/intro-to-lr/reference">
             <Button variant="subtle">← Back to Reference</Button>

@@ -23,8 +23,8 @@ export function Placeholder({
         title={surfaceLabel}
         description={
           <>
-            Specced at Gate 3, scaffolded for Gate 4. Production content lands in this surface once
-            Lesson 1.1 review is locked and Module 1's per-lesson template is approved.
+            This surface is on the way. Use the lessons sequence and the Tool Lab in the meantime —
+            both are available now and feed straight into what arrives here.
           </>
         }
       />

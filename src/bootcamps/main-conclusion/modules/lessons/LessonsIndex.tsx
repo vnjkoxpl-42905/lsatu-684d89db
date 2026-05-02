@@ -100,14 +100,14 @@ function Header({
           aria-hidden="true"
           className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
         />
-        Module 1
+        Lessons
       </div>
       <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-        Lessons
+        Twelve lessons, then your first calibration
       </h1>
       <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-        12 voice-led lessons + capstone calibration. Voice register 2 (whimsical) for prose;
-        register 1 (decisive) for callouts. Every lesson cites its source file.
+        Each lesson is a guided session — briefing, demo, your attempt, reveal, coach&apos;s note,
+        checkpoint. You answer before the explanation. Lesson 13 is your first calibration.
       </p>
 
       <div className="mt-6 flex items-center gap-3">
@@ -189,7 +189,7 @@ function Footer(): JSX.Element {
         aria-hidden="true"
         className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
       />
-      Lesson 1.13 capstone is the calibration drill — post-instruction, never cold-test.
+      Lesson 13 is calibration — taken after the teaching, not before. That&apos;s when the dashboard turns on.
     </p>
   );
 }

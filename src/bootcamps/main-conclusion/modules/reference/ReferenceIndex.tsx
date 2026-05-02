@@ -31,7 +31,7 @@ const REF_LABEL: Record<string, string> = {
   'MC-REF-2.E': 'Conclusion types',
   'MC-REF-2.F': 'Rebuttal structure',
   'MC-REF-2.G': 'Three-trap landscape',
-  'MC-REF-2.H': 'Pronoun & reference library',
+  'MC-REF-2.H': 'Pronoun replacement',
   'MC-REF-2.I': 'Concession decoder',
   'MC-REF-2.J': 'Quick reference card',
   'MC-REF-2.K': 'Companion mode',
@@ -56,11 +56,11 @@ export function ReferenceIndex() {
             Reference
           </div>
           <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-            Tool Lab + lookup surfaces
+            Tools you practice
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            Tools you practice, not a glossary you skim. Try each one in a 30-second drill before you
-            close the page.
+            Each tool below trains itself in under a minute — what it does, when to reach for it, and
+            a try-it that proves you can use it.
           </p>
         </div>
       </header>
@@ -72,12 +72,11 @@ export function ReferenceIndex() {
             Tool Lab
           </h2>
           <span className="font-mc-mono text-mono text-ink-faint">
-            {TOOL_LAB.length} training tools
+            {TOOL_LAB.length} tools
           </span>
         </div>
         <p className="font-mc-serif text-body-prose text-ink-soft mb-6 max-w-[60ch] leading-relaxed">
-          Each tool teaches itself in under a minute — what it does, when to use it, the mistake it
-          prevents, and a try-it. Run the try-it before you move on.
+          Run the try-it. The reveal will not show up until you have made a call.
         </p>
         <ul className="space-y-4">
           {TOOL_LAB.map((tool) => (
@@ -90,7 +89,7 @@ export function ReferenceIndex() {
 
       <section>
         <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
-          Lookup surfaces · {sections.length}
+          Quick references · {sections.length}
         </h2>
         <ul className="grid gap-3 sm:grid-cols-2">
           {sections.map((s) => (

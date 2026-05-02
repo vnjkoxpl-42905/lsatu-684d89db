@@ -26,7 +26,7 @@ export const DRILLS: DrillRow[] = [
   { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Word ID', route: '/drills/3.1', blurb: 'Spot premise, conclusion, pivot, concession, opposing, opinion words at speed.' },
   { id: 'MC-DRL-3.2', number: '3.2', title: 'X-Ray Drill', route: '/drills/3.2', blurb: 'Toggle role colors. Confirm or correct your read of the structure.' },
   { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Reading', route: '/drills/3.3', blurb: 'When the first sentence is the conclusion, support follows. Drill the read.' },
-  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal vs First-Sentence Stage-Gate', route: '/drills/3.4', blurb: 'The unlock-gate for the Simulator. Four stages × five questions.', gates_simulator: true },
+  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal vs First-Sentence', route: '/drills/3.4', blurb: 'Four stages × five questions. Clear all four to open the Simulator.', gates_simulator: true },
   { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping', route: '/drills/3.5', blurb: 'Premise → intermediate conclusion → main conclusion. Map the chain.' },
   { id: 'MC-DRL-3.6', number: '3.6', title: 'Design the Conclusion', route: '/drills/3.6', blurb: 'Whimsical premise pair. Design a valid conclusion and an invalid one.' },
   { id: 'MC-DRL-3.7', number: '3.7', title: 'Pronoun Replacement', route: '/drills/3.7', blurb: 'Replace this/that/such/those before stating the conclusion to yourself.' },

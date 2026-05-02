@@ -166,7 +166,7 @@ export function QuestionBank() {
       <PageHeader
         eyebrow="Simulator"
         title="Question bank · 20"
-        description="Stimuli + main conclusions populated. Distractors author at Phase D."
+        description="Twenty real LSAT-format Main Conclusion stimuli. Read first, then check your call against the published conclusion."
       />
       <ul className="space-y-3">
         {items.map((q) => (
@@ -183,9 +183,11 @@ export function QuestionBank() {
                   <Chip tone={q.structure_family === 'Rebuttal' ? 'opposing' : 'conclusion'}>
                     {q.structure_family}
                   </Chip>
-                  <Badge tone={q.ocr_status === 'captured' ? 'success' : 'warn'} dot>
-                    {q.ocr_status}
-                  </Badge>
+                  {q.ocr_status === 'pending' ? (
+                    <Badge tone="warn" dot>
+                      arriving soon
+                    </Badge>
+                  ) : null}
                 </div>
               </div>
               {q.stimulus ? (
@@ -250,8 +252,8 @@ export function HardMode() {
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader eyebrow="Simulator" title="Hard mode" compact />
       <EmptyState
-        title="Hard mode unlocks at Phase D"
-        body="Five hardest questions will surface here once you've attempted the question bank and we have distractor data to score with."
+        title="Hard mode opens after the bank"
+        body="Once you have attempted the question bank, your five hardest items will surface here for a focused re-run."
         surfaceId="simulator/hard-mode"
         icon={<Flame className="h-5 w-5" strokeWidth={2.2} aria-hidden="true" />}
       />

@@ -73,7 +73,12 @@ export function CommandPalette({ open, onClose }: Props) {
     const q = query.trim().toLowerCase();
     if (!q) return items.slice(0, 30);
     return items
-      .filter((i) => i.id.toLowerCase().includes(q) || i.title.toLowerCase().includes(q))
+      .filter(
+        (i) =>
+          i.title.toLowerCase().includes(q) ||
+          i.group.toLowerCase().includes(q) ||
+          i.id.toLowerCase().includes(q),
+      )
       .slice(0, 30);
   }, [items, query]);
 
@@ -146,7 +151,7 @@ export function CommandPalette({ open, onClose }: Props) {
               <Search className="h-4 w-4 shrink-0 text-mc-accent" strokeWidth={2.2} aria-hidden="true" />
               <input
                 ref={inputRef}
-                placeholder="Type any inventory ID — MC-LSN-1.7, NT-FABS, T3, MC-SIM-Q11, MC-DRL-3.4 …"
+                placeholder="Jump to any lesson, drill, tool, simulator question, or trap…"
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);
@@ -191,7 +196,6 @@ export function CommandPalette({ open, onClose }: Props) {
                       <Chip tone="neutral" className="shrink-0">
                         {item.group}
                       </Chip>
-                      <span className="font-mc-mono text-mono text-ink-faint w-32 shrink-0 truncate">{item.id}</span>
                       <span className="font-mc-serif text-body text-ink flex-1 truncate">{item.title}</span>
                     </button>
                   </li>

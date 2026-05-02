@@ -63,7 +63,7 @@ function M1CapstoneCorrectOnly() {
       <PageHeader
         eyebrow="Lesson 13 · Capstone"
         title="Lesson 13 · Calibration"
-        description="Ten calibration items. Sourced outside the canonical 20 and outside Module 3 drills, so this measures learning rather than recognition. Distractors author at Phase B/D."
+        description="Ten calibration items. Different stimuli from anything in your lessons or drills — this measures what you learned, not what you memorized."
         actions={
           <>
             <Badge tone="warn" dot>
@@ -84,17 +84,13 @@ function M1CapstoneCorrectOnly() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Chip tone="accent">{item.trait_target}</Chip>
-                  <Badge tone={item.stimulus_pending_ocr ? 'warn' : 'success'}>
-                    {item.stimulus_pending_ocr ? 'OCR pending' : 'captured'}
-                  </Badge>
                 </div>
               </div>
               {item.stimulus ? (
                 <p className="font-mc-serif text-body-prose text-ink mt-3 leading-relaxed">{item.stimulus}</p>
               ) : (
                 <p className="font-mc-serif text-body-prose text-ink-faint mt-3 italic">
-                  Stimulus pending OCR — wires in at Phase H.1 (DOCX extractor for{' '}
-                  <code className="font-mc-mono">{item.source_anchor.primary}</code>).
+                  Stimulus arriving soon. The other items below are ready to attempt now.
                 </p>
               )}
               {item.main_conclusion ? (
