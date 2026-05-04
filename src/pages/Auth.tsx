@@ -412,8 +412,8 @@ export default function Auth() {
   const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
-  // ── Modal state — localized so BackgroundPaths never re-renders ──
-  const [modalOpen, setModalOpen] = React.useState(false);
+  // ── Modal state — auto-opens on /auth so login form is visible immediately ──
+  const [modalOpen, setModalOpen] = React.useState(true);
   const [forgotOpen, setForgotOpen] = React.useState(false);
 
   // ── Form state ──

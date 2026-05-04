@@ -13,7 +13,7 @@ import { NaturalDrillCreator } from '@/components/drill/NaturalDrillCreator';
 import { SplineScene } from '@/components/ui/splite';
 import { Card } from '@/components/ui/card';
 import { Spotlight } from '@/components/ui/spotlight';
-import { BackgroundPaths } from '@/components/ui/background-paths';
+
 import {
   BookOpen,
   Sparkles,
@@ -301,7 +301,7 @@ export default function Home() {
 
         {/* ── Row 1 — Hero (unchanged) ──────────────────────────────────────── */}
         <Card className="w-full h-[280px] bg-black/[0.96] relative overflow-hidden rounded-xl">
-          <BackgroundPaths />
+          
           <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
           <div className="flex h-full">
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">

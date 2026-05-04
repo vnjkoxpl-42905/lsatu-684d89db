@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Lock, Eye, EyeOff, ArrowRight, Mail } from 'lucide-react';
-import { BackgroundPaths } from '@/components/ui/background-paths';
+
 import { BorderBeam } from '@/components/ui/border-beam';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { cn } from '@/lib/utils';
@@ -183,9 +183,6 @@ export default function ResetPassword() {
 
   return (
     <div className="relative isolate min-h-screen bg-neutral-950 overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none [&_svg]:!text-white">
-        <BackgroundPaths />
-      </div>
       <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(ellipse_80%_70%_at_50%_50%,transparent_30%,rgba(9,9,11,0.35)_70%,rgba(9,9,11,0.5)_100%)]" />
 
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
