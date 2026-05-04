@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
 import FoyerDock from "@/components/foyer/FoyerDock";
+import FoyerAccountButton from "@/components/foyer/FoyerAccountButton";
 import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -101,8 +102,9 @@ export default function AcademyFoyer() {
 
       <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto flex items-center gap-2">
             <FoyerDock />
+            <FoyerAccountButton displayName={displayName} />
           </div>
         </div>
         <RadialOrbitalTimeline
