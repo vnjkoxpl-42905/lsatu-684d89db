@@ -409,7 +409,7 @@ let AUTH_MOUNT_COUNT = 0;
 export default function Auth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signUp, signIn, resetPassword } = useAuth();
+  const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
   // ── Modal state — localized so BackgroundPaths never re-renders ──
@@ -688,6 +688,19 @@ export default function Auth() {
   // the auth flow exactly. setModalOpen(true) opens the GlassShell sign-in,
   // which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
   const openSignIn = React.useCallback(() => setModalOpen(true), []);
+
+  const oauthReturning =
+    typeof window !== 'undefined' &&
+    sessionStorage.getItem('oauth_pending') === '1';
+
+  if ((authReady && user) || oauthReturning) {
+    return (
+      <div
+        aria-hidden="true"
+        style={{ minHeight: '100vh', background: ARC.bg }}
+      />
+    );
+  }
 
   return (
     <div className="lsatu-arc">
