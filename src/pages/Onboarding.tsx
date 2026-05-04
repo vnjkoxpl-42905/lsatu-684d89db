@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { BackgroundPaths } from '@/components/ui/background-paths';
+
 import { BorderBeam } from '@/components/ui/border-beam';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';

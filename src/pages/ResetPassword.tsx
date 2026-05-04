@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Lock, Eye, EyeOff, ArrowRight, Mail } from 'lucide-react';
-import { BackgroundPaths } from '@/components/ui/background-paths';
+
 import { BorderBeam } from '@/components/ui/border-beam';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { cn } from '@/lib/utils';
