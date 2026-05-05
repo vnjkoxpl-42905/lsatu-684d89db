@@ -18,16 +18,23 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import HubStudentList from "@/components/hub/HubStudentList";
 import HubContextPanel, { type HubTab } from "@/components/hub/HubContextPanel";
-import TAChatView from "@/components/ta/TAChatView";
+import HubWorkspace, { type WorkspaceTab } from "@/components/hub/HubWorkspace";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { track } from "@/lib/analytics";
 
-const VALID_TABS: HubTab[] = ["overview", "notes", "library"];
+const VALID_TABS: HubTab[] = ["snapshot", "ai", "library"];
+const VALID_WORKSPACE_TABS: WorkspaceTab[] = ["messages", "overview", "assignments", "notes"];
 
 function parseTab(raw: string | null): HubTab {
   return (VALID_TABS as string[]).includes(raw ?? "")
     ? (raw as HubTab)
-    : "overview";
+    : "snapshot";
+}
+
+function parseWorkspaceTab(raw: string | null): WorkspaceTab {
+  return (VALID_WORKSPACE_TABS as string[]).includes(raw ?? "")
+    ? (raw as WorkspaceTab)
+    : "messages";
 }
 
 const LS_SELECTED_KEY = "ta-selected-student";
@@ -59,6 +66,9 @@ export default function StudentHub() {
   const isMobile = useIsMobile();
   const [tab, setTabState] = useState<HubTab>(() =>
     parseTab(searchParams.get("tab"))
+  );
+  const [workspaceTab, setWorkspaceTabState] = useState<WorkspaceTab>(() =>
+    parseWorkspaceTab(searchParams.get("ws"))
   );
   const [mobileSelectorOpen, setMobileSelectorOpen] = useState(false);
   const [mobileContextOpen, setMobileContextOpen] = useState(false);
@@ -124,10 +134,10 @@ export default function StudentHub() {
         return;
       }
       if (e.key === "1" || e.key === "2" || e.key === "3") {
-        const tab: HubTab =
-          e.key === "1" ? "overview" : e.key === "2" ? "notes" : "library";
+        const next: HubTab =
+          e.key === "1" ? "snapshot" : e.key === "2" ? "ai" : "library";
         e.preventDefault();
-        setTabRef.current?.(tab);
+        setTabRef.current?.(next);
       }
     };
     window.addEventListener("keydown", handler);
@@ -138,6 +148,8 @@ export default function StudentHub() {
   useEffect(() => {
     const urlTab = parseTab(searchParams.get("tab"));
     if (urlTab !== tab) setTabState(urlTab);
+    const urlWs = parseWorkspaceTab(searchParams.get("ws"));
+    if (urlWs !== workspaceTab) setWorkspaceTabState(urlWs);
     // Only react to URL, not to local state (setTab handles forward sync).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -153,13 +165,30 @@ export default function StudentHub() {
         setSearchParams(
           (prev) => {
             const copy = new URLSearchParams(prev);
-            if (next === "overview") copy.delete("tab");
+            if (next === "snapshot") copy.delete("tab");
             else copy.set("tab", next);
             return copy;
           },
           { replace: true }
         );
       }, URL_SYNC_DEBOUNCE_MS);
+    },
+    [setSearchParams]
+  );
+
+  const setWorkspaceTab = useCallback(
+    (next: WorkspaceTab) => {
+      setWorkspaceTabState(next);
+      track("hub_workspace_tab_switched", { tab: next });
+      setSearchParams(
+        (prev) => {
+          const copy = new URLSearchParams(prev);
+          if (next === "messages") copy.delete("ws");
+          else copy.set("ws", next);
+          return copy;
+        },
+        { replace: true }
+      );
     },
     [setSearchParams]
   );
@@ -350,7 +379,7 @@ export default function StudentHub() {
           </aside>
         )}
 
-        {/* Center panel: chat */}
+        {/* Center panel: workspace (Messages / Overview / Assignments / Notes) */}
         <section
           className={cn(
             "flex-1 min-w-0 min-h-0 flex flex-col",
@@ -358,7 +387,12 @@ export default function StudentHub() {
           )}
         >
           {selected ? (
-            <TAChatView studentId={selected} studentName={selectedName} />
+            <HubWorkspace
+              studentId={selected}
+              studentName={selectedName}
+              tab={workspaceTab}
+              onTabChange={setWorkspaceTab}
+            />
           ) : (
             <EmptyChatState />
           )}
@@ -420,8 +454,8 @@ function EmptyChatState() {
         <Command className="h-8 w-8 text-zinc-600 mx-auto" />
         <div className="text-zinc-300 font-medium">Pick a student</div>
         <div className="text-sm text-zinc-500">
-          Chat history is scoped per student. Select one from the list to
-          start.
+          Select a student to message them, view their work, and ask the
+          AI assistant.
         </div>
       </div>
     </div>
