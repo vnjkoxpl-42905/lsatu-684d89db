@@ -39,21 +39,21 @@ export default function TodayView({
   const data = scheduleData.find(d => d.day === day) || scheduleData[0];
   
   const [completedDays, setCompletedDays] = useState<number[]>(() => {
-    const saved = localStorage.getItem('lsatCompletedDays');
+    const saved = localStorage.getItem('pf:completedDays');
     return saved ? JSON.parse(saved) : [];
   });
 
   const [dailyChecklists, setDailyChecklists] = useState<Record<number, Record<string, boolean>>>(() => {
-    const saved = localStorage.getItem('lsatDailyChecklists');
+    const saved = localStorage.getItem('pf:dailyChecklists');
     return saved ? JSON.parse(saved) : {};
   });
 
   useEffect(() => {
-    localStorage.setItem('lsatCompletedDays', JSON.stringify(completedDays));
+    localStorage.setItem('pf:completedDays', JSON.stringify(completedDays));
   }, [completedDays]);
 
   useEffect(() => {
-    localStorage.setItem('lsatDailyChecklists', JSON.stringify(dailyChecklists));
+    localStorage.setItem('pf:dailyChecklists', JSON.stringify(dailyChecklists));
   }, [dailyChecklists]);
 
   const toggleDayComplete = () => {
@@ -103,7 +103,7 @@ export default function TodayView({
   useEffect(() => {
     if (allDone) {
       recordCompletionToday();
-      window.dispatchEvent(new Event('lsat-streak-updated'));
+      window.dispatchEvent(new Event('pf-streak-updated'));
     }
   }, [allDone]);
 

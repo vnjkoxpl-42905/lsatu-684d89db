@@ -11,7 +11,7 @@ interface SrsEntry {
   lastReviewed: string; // ISO date
 }
 
-const SRS_KEY = 'lsatFlashcardSRS';
+const SRS_KEY = 'pf:flashcardSRS';
 const todayISO = () => new Date().toISOString().slice(0, 10);
 const addDays = (iso: string, days: number) => {
   const d = new Date(iso);
@@ -24,7 +24,7 @@ export default function FlashcardsView() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [filter, setFilter] = useState<string>('All');
   const [mastered, setMastered] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem('lsatFlashcardMastery');
+    const saved = localStorage.getItem('pf:flashcardMastery');
     return saved ? JSON.parse(saved) : {};
   });
   const [srs, setSrs] = useState<Record<string, SrsEntry>>(() => {
@@ -64,7 +64,7 @@ export default function FlashcardsView() {
   }, [filteredCards, srs]);
 
   useEffect(() => {
-    localStorage.setItem('lsatFlashcardMastery', JSON.stringify(mastered));
+    localStorage.setItem('pf:flashcardMastery', JSON.stringify(mastered));
   }, [mastered]);
 
   useEffect(() => {

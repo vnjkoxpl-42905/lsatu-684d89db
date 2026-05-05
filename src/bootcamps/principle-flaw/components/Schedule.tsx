@@ -9,7 +9,7 @@ import { Button } from './ui/button';
 export default function Schedule({ currentDay, setDay }: { currentDay: number, setDay: (d: number) => void }) {
   const [expandedDay, setExpandedDay] = useState<number | null>(currentDay);
   const [completedDays, setCompletedDays] = useState<number[]>(() => {
-    const saved = localStorage.getItem('lsatCompletedDays');
+    const saved = localStorage.getItem('pf:completedDays');
     return saved ? JSON.parse(saved) : [];
   });
 

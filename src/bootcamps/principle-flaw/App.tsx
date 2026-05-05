@@ -38,11 +38,11 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedName = localStorage.getItem('lsatStudentName');
+    const savedName = localStorage.getItem('pf:studentName');
     if (savedName) {
       setUserName(savedName);
     }
-    const savedDay = localStorage.getItem('lsatCurrentDay');
+    const savedDay = localStorage.getItem('pf:currentDay');
     if (savedDay) {
       const parsedDay = parseInt(savedDay, 10);
       if (!isNaN(parsedDay) && parsedDay >= 1 && parsedDay <= 14) {
@@ -53,13 +53,13 @@ export default function App() {
   }, []);
 
   const handleSaveName = (name: string) => {
-    localStorage.setItem('lsatStudentName', name);
+    localStorage.setItem('pf:studentName', name);
     setUserName(name);
   };
 
   const handleSetDay = (day: number) => {
     setCurrentDay(day);
-    localStorage.setItem('lsatCurrentDay', day.toString());
+    localStorage.setItem('pf:currentDay', day.toString());
   };
 
   const setTabAndScroll = (tab: Tab) => {
@@ -76,13 +76,13 @@ export default function App() {
     const refresh = () => setStreak(computeStreak(readStreakDates()));
     refresh();
     const onStorage = (e: StorageEvent) => {
-      if (e.key === 'lsatStreakDates') refresh();
+      if (e.key === 'pf:streakDates') refresh();
     };
     window.addEventListener('storage', onStorage);
-    window.addEventListener('lsat-streak-updated', refresh);
+    window.addEventListener('pf-streak-updated', refresh);
     return () => {
       window.removeEventListener('storage', onStorage);
-      window.removeEventListener('lsat-streak-updated', refresh);
+      window.removeEventListener('pf-streak-updated', refresh);
     };
   }, []);
 
@@ -101,8 +101,8 @@ export default function App() {
   // Practice → ReviewLog handoff: jump to review tab when a Log to Review Log button fires.
   useEffect(() => {
     const onPrefill = () => setTabAndScroll('review');
-    window.addEventListener('lsat-prefill-review', onPrefill);
-    return () => window.removeEventListener('lsat-prefill-review', onPrefill);
+    window.addEventListener('pf-prefill-review', onPrefill);
+    return () => window.removeEventListener('pf-prefill-review', onPrefill);
   }, []);
 
   const [learnSubTab, setLearnSubTab] = useState<'flaw' | 'principle'>('flaw');
@@ -132,16 +132,16 @@ export default function App() {
   };
 
   const handleReset = () => {
-    localStorage.removeItem('lsatStudentName');
-    localStorage.removeItem('lsatCurrentDay');
-    localStorage.removeItem('lsatReviewLogs');
-    localStorage.removeItem('lsatCompletedDays');
-    localStorage.removeItem('lsatDailyChecklists');
-    localStorage.removeItem('lsatStreakDates');
-    localStorage.removeItem('lsatFlashcardSRS');
-    localStorage.removeItem('lsatFlashcardMastery');
-    localStorage.removeItem('lsatQuestionStatus');
-    localStorage.removeItem('lsatRedoQueue');
+    localStorage.removeItem('pf:studentName');
+    localStorage.removeItem('pf:currentDay');
+    localStorage.removeItem('pf:reviewLogs');
+    localStorage.removeItem('pf:completedDays');
+    localStorage.removeItem('pf:dailyChecklists');
+    localStorage.removeItem('pf:streakDates');
+    localStorage.removeItem('pf:flashcardSRS');
+    localStorage.removeItem('pf:flashcardMastery');
+    localStorage.removeItem('pf:questionStatus');
+    localStorage.removeItem('pf:redoQueue');
     setUserName(null);
     setCurrentDay(1);
     setStreak(0);

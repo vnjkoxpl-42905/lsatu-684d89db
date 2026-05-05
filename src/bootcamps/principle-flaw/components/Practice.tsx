@@ -127,7 +127,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: Questi
           <div className="mt-3 flex justify-end">
             <button
               onClick={() => {
-                window.dispatchEvent(new CustomEvent('lsat-prefill-review', {
+                window.dispatchEvent(new CustomEvent('pf-prefill-review', {
                   detail: {
                     reference: `PT ${q.pt}, S ${q.section}, Q ${q.question}`,
                     type: q.topic.includes('Principle') ? 'Principle' : q.topic.includes('Parallel') ? 'Flaw' : 'Flaw',
@@ -149,21 +149,21 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
   const [view, setView] = useState<'sets' | 'redo'>('sets');
   
   const [qStatus, setQStatus] = useState<Record<string, 'correct' | 'missed' | 'none'>>(() => {
-    const saved = localStorage.getItem('lsatQuestionStatus');
+    const saved = localStorage.getItem('pf:questionStatus');
     return saved ? JSON.parse(saved) : {};
   });
 
   const [redoQueue, setRedoQueue] = useState<string[]>(() => {
-    const saved = localStorage.getItem('lsatRedoQueue');
+    const saved = localStorage.getItem('pf:redoQueue');
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('lsatQuestionStatus', JSON.stringify(qStatus));
+    localStorage.setItem('pf:questionStatus', JSON.stringify(qStatus));
   }, [qStatus]);
 
   useEffect(() => {
-    localStorage.setItem('lsatRedoQueue', JSON.stringify(redoQueue));
+    localStorage.setItem('pf:redoQueue', JSON.stringify(redoQueue));
   }, [redoQueue]);
 
   const toggleStatus = (id: string, status: 'correct' | 'missed') => {

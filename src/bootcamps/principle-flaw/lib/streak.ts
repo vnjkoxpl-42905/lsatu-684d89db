@@ -1,4 +1,4 @@
-const STREAK_DATES_KEY = 'lsatStreakDates';
+const STREAK_DATES_KEY = 'pf:streakDates';
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10);

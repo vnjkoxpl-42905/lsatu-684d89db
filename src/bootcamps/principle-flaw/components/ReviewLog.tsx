@@ -47,7 +47,7 @@ function formatLogDate(d: string): string {
 
 export default function ReviewLog() {
   const [logs, setLogs] = useState<LogEntry[]>(() => {
-    const saved = localStorage.getItem('lsatReviewLogs');
+    const saved = localStorage.getItem('pf:reviewLogs');
     const parsed: LogEntry[] = saved ? JSON.parse(saved) : [];
     return parsed.slice().sort((a, b) => parseLogDate(b.date) - parseLogDate(a.date));
   });
@@ -62,7 +62,7 @@ export default function ReviewLog() {
   const [downloadStatus, setDownloadStatus] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('lsatReviewLogs', JSON.stringify(logs));
+    localStorage.setItem('pf:reviewLogs', JSON.stringify(logs));
   }, [logs]);
 
   // Listen for prefill events fired by Practice's "Log to Review Log" button.
@@ -76,8 +76,8 @@ export default function ReviewLog() {
       }));
       setIsAdding(true);
     };
-    window.addEventListener('lsat-prefill-review', onPrefill);
-    return () => window.removeEventListener('lsat-prefill-review', onPrefill);
+    window.addEventListener('pf-prefill-review', onPrefill);
+    return () => window.removeEventListener('pf-prefill-review', onPrefill);
   }, []);
 
   // Mirror redoLater entries into lsatRedoQueue when the reference matches a
@@ -85,7 +85,7 @@ export default function ReviewLog() {
   // entries without a matching id are not added.
   useEffect(() => {
     try {
-      const queueRaw = localStorage.getItem('lsatRedoQueue');
+      const queueRaw = localStorage.getItem('pf:redoQueue');
       const existing: string[] = queueRaw ? JSON.parse(queueRaw) : [];
       const next = new Set(existing);
       const refToId = (ref: string): string | null => {
@@ -100,7 +100,7 @@ export default function ReviewLog() {
         if (!id) continue;
         if (entry.redoLater) next.add(id);
       }
-      localStorage.setItem('lsatRedoQueue', JSON.stringify(Array.from(next)));
+      localStorage.setItem('pf:redoQueue', JSON.stringify(Array.from(next)));
     } catch { /* ignore */ }
   }, [logs]);
 
