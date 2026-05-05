@@ -1,9 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { questionBank, practiceSets, QuestionRef, PracticeSet, flashcards, StudyResource } from '../data';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Target, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, ListChecks, HelpCircle, Zap, BookOpen, Clock, Copy, Check } from 'lucide-react';
+import { Target, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, ListChecks, HelpCircle, Zap, BookOpen, Clock, Copy, Check, PlayCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+
+/**
+ * Build the LSAT U drill URL for a single PF question reference.
+ * The host LR question bank uses qids of the form `PT{pt}-S{section}-Q{qnum}`
+ * (see src/lib/questionLoader.ts → hashQid). We launch the drill in
+ * `type-drill` mode with one selected qid so the user lands on the real
+ * LSAT question pulled from the question database.
+ */
+function pfDrillHref(q: QuestionRef): string {
+  const qid = `PT${q.pt}-S${q.section}-Q${q.question}`;
+  return `/drill?mode=type-drill&qids=${encodeURIComponent(qid)}`;
+}
+
+function OpenInDrillButton({ q }: { q: QuestionRef }) {
+  const navigate = useNavigate();
+  return (
+    <motion.button
+      onClick={(e) => { e.stopPropagation(); navigate(pfDrillHref(q)); }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ duration: 0.12, ease: [0.25, 1, 0.5, 1] }}
+      title="Open this question in the LSAT U drill"
+      aria-label="Open question in drill"
+      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.04] text-[10px] font-bold uppercase tracking-widest text-emerald-300 hover:bg-emerald-500/10 hover:border-emerald-400/50 transition-colors"
+    >
+      <PlayCircle size={12} aria-hidden="true" />
+      Open
+    </motion.button>
+  );
+}
 
 function CopyRefButton({ q }: { q: QuestionRef }) {
   const [copied, setCopied] = useState(false);
