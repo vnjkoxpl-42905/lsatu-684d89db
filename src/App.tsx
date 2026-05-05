@@ -27,6 +27,7 @@ import Abstraction from "./pages/Abstraction";
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
+const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -210,6 +211,13 @@ const App = () => {
                   } />
                   <Route path="/bootcamp/intro-to-lr/*" element={
                     <ProtectedRoute flag="has_bootcamp_access"><IntroToLrBootcamp /></ProtectedRoute>
+                  } />
+                  <Route path="/bootcamp/principle-flaw" element={
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
+                        <PrincipleFlawBootcamp />
+                      </React.Suspense>
+                    </ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

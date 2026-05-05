@@ -46,6 +46,16 @@ const BOOTCAMPS = [
     route: '/bootcamp/intro-to-lr',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },
+  {
+    id: 'principle-flaw',
+    title: 'Principle & Flaw',
+    emoji: '⚖️',
+    description:
+      'A 14-day, voice-led program covering Flaw (Levels 1–4), Principle Strengthen, Strengthen Application, Principle Conform, and Parallel Flaw bridging — with daily question sets pulled live from the LSAT U question bank, a Learn hub, flashcards with SRS, and a structured Review Log.',
+    stats: ['14-Day Plan', '47 PT Questions', 'Flashcards + Review Log'],
+    route: '/bootcamp/principle-flaw',
+    accentClass: 'bg-emerald-500/10 border-emerald-500/20',
+  },
 ] as const;
 
 export default function BootcampsPage() {
