@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { displayNameFor } from '@/lib/displayName';
+import { formatParticipantName } from '@/lib/displayName';
 
 const PrincipleFlawApp = React.lazy(
   () => import('@/bootcamps/principle-flaw/PrincipleFlawApp'),
@@ -29,9 +29,12 @@ export default function PrincipleFlawBootcamp() {
 
   if (loading || !user) return null;
 
+  const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+  const rawName = (meta.display_name as string) || (meta.full_name as string) || (meta.name as string) || null;
   const userName =
-    displayNameFor(user) ||
-    (user.email ? user.email.split('@')[0] : 'Student');
+    formatParticipantName(rawName) !== 'User'
+      ? formatParticipantName(rawName)
+      : (user.email ? user.email.split('@')[0] : 'Student');
 
   return (
     <div className="min-h-screen bg-[#030303]">
