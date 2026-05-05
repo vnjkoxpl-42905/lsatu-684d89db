@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, BookOpen, Zap, Target, FileText } from 'lucide-react';
 import { flawHubData, principleHubData, flashcards, questionBank } from '../data';
-import type { Tab } from '../App';
+import type { Tab } from '../PrincipleFlawApp';
 
 type Result = {
   id: string;
