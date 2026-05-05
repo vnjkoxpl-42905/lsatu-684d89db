@@ -55,10 +55,10 @@ const TeacherAssignments = React.lazy(() => import("./pages/teacher/TeacherAssig
 const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcamps"));
 const TeacherUploads = React.lazy(() => import("./pages/teacher/TeacherUploads"));
 const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
-const TeacherMessages = React.lazy(() => import("./pages/teacher/TeacherMessages"));
 const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
+import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
@@ -214,7 +214,7 @@ const App = () => {
                     </ProtectedRoute>
                   } />
                   <Route path="/teacher" element={
-                    <ProtectedRoute flag="has_ta_access">
+                    <ProtectedRoute requireAdmin>
                       <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
                         <TeacherShell />
                       </React.Suspense>
@@ -270,11 +270,6 @@ const App = () => {
                         <TeacherRecaps />
                       </React.Suspense>
                     } />
-                    <Route path="messages" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherMessages />
-                      </React.Suspense>
-                    } />
                     <Route path="analytics-bridge" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherAnalyticsBridge />
@@ -302,7 +297,11 @@ const App = () => {
                     <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
                   } />
                   <Route path="/bootcamp/causation-station" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/causation-station" title="Causation Station">
+                        <CausationStation />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   {/* Retired bootcamp slugs — bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
@@ -312,16 +311,26 @@ const App = () => {
                   <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/abstraction" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/abstraction" title="Abstract">
+                        <Abstraction />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   <Route path="/bootcamp/intro-to-lr/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><IntroToLrBootcamp /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
+                        <IntroToLrBootcamp />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   <Route path="/bootcamp/principle-flaw" element={
                     <ProtectedRoute flag="has_bootcamp_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
-                        <PrincipleFlawBootcamp />
-                      </React.Suspense>
+                      <BootcampGate routePath="/bootcamp/principle-flaw" title="Principle and Flaw">
+                        <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
+                          <PrincipleFlawBootcamp />
+                        </React.Suspense>
+                      </BootcampGate>
                     </ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />

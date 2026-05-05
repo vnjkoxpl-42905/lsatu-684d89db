@@ -10,7 +10,6 @@ import {
   Flame,
   UploadCloud,
   BookOpen,
-  MessagesSquare,
   LineChart,
   ArrowLeft,
   Command,
@@ -28,7 +27,6 @@ const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/uploads', label: 'Uploads', Icon: UploadCloud },
   { to: '/teacher/recaps', label: 'Recaps', Icon: BookOpen },
-  { to: '/teacher/messages', label: 'Messages', Icon: MessagesSquare },
   { to: '/teacher/analytics-bridge', label: 'Analytics Bridge', Icon: LineChart },
 ];
 

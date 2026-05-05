@@ -3,11 +3,19 @@ import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissi
 import LockedModule from "@/components/LockedModule";
 
 interface ProtectedRouteProps {
-  flag: PermissionFlag;
+  /**
+   * Optional feature flag. Ignored when `requireAdmin` is true.
+   */
+  flag?: PermissionFlag;
+  /**
+   * When true, only admin users may render the children. Non-admin
+   * users, regardless of feature flags, see LockedModule.
+   */
+  requireAdmin?: boolean;
   children: ReactNode;
 }
 
-export default function ProtectedRoute({ flag, children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ flag, requireAdmin, children }: ProtectedRouteProps) {
   const permissions = useUserPermissions();
 
   if (permissions.loading) {
@@ -18,10 +26,16 @@ export default function ProtectedRoute({ flag, children }: ProtectedRouteProps) 
     );
   }
 
-  // Admins bypass all gates
-  if (permissions.is_admin || permissions[flag]) {
-    return <>{children}</>;
+  if (requireAdmin) {
+    return permissions.is_admin ? <>{children}</> : <LockedModule />;
   }
 
-  return <LockedModule />;
+  if (flag) {
+    if (permissions.is_admin || permissions[flag]) {
+      return <>{children}</>;
+    }
+    return <LockedModule />;
+  }
+
+  return <>{children}</>;
 }

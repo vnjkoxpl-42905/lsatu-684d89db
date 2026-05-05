@@ -9,6 +9,7 @@ import { postDraftAsClassroomItem } from '@/lib/aiTAQueue';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import NewAIDraftCard from '@/components/teacher/NewAIDraftCard';
 
 const STATUS_TABS: { id: AITADraftStatus | 'all'; label: string }[] = [
   { id: 'draft', label: 'Pending' },
@@ -87,6 +88,8 @@ export default function TeacherAITA() {
           until you approve it.
         </p>
       </div>
+
+      <NewAIDraftCard />
 
       <div className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-zinc-900/60">
         {STATUS_TABS.map((t) => (
