@@ -43,7 +43,7 @@ export function AssignedWorkSection() {
                 <div className="text-sm font-medium truncate">{a.set_title || 'Homework'}</div>
                 <div className="text-[11px] text-muted-foreground mt-0.5 truncate">
                   {a.question_qids?.length ?? 0} questions
-                  {a.score != null ? ` · ${a.score}%` : ''}
+                  {a.score != null ? ` · ${Math.round(a.score)}%` : ''}
                 </div>
               </div>
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
