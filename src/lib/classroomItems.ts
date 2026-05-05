@@ -1,0 +1,117 @@
+import { supabase } from '@/integrations/supabase/client';
+import type { ClassroomItem } from '@/hooks/useClassroomItems';
+
+interface CreateClassroomItemInput {
+  studentId: string;
+  createdBy: string;
+  type: ClassroomItem['type'];
+  title: string;
+  description?: string;
+  contentMarkdown?: string;
+  contentHtml?: string;
+  sourceTable?: string;
+  sourceId?: string;
+  unlockAt?: string | null;
+  dueAt?: string | null;
+  priority?: number;
+  status?: ClassroomItem['status'];
+  visibleToStudent?: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+export async function createClassroomItem(input: CreateClassroomItemInput) {
+  const { data, error } = await (supabase as any)
+    .from('classroom_items')
+    .insert({
+      student_id: input.studentId,
+      created_by: input.createdBy,
+      type: input.type,
+      title: input.title,
+      description: input.description ?? null,
+      content_markdown: input.contentMarkdown ?? null,
+      content_html: input.contentHtml ?? null,
+      source_table: input.sourceTable ?? null,
+      source_id: input.sourceId ?? null,
+      unlock_at: input.unlockAt ?? null,
+      due_at: input.dueAt ?? null,
+      priority: input.priority ?? 0,
+      status: input.status ?? 'assigned',
+      visible_to_student: input.visibleToStudent ?? true,
+      metadata_json: input.metadata ?? {},
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ClassroomItem;
+}
+
+export async function updateClassroomItem(
+  id: string,
+  patch: Partial<{
+    title: string;
+    description: string | null;
+    status: ClassroomItem['status'];
+    unlock_at: string | null;
+    due_at: string | null;
+    visible_to_student: boolean;
+    completed_at: string | null;
+    priority: number;
+    metadata_json: Record<string, unknown>;
+  }>,
+) {
+  const { data, error } = await (supabase as any)
+    .from('classroom_items')
+    .update(patch)
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ClassroomItem;
+}
+
+export async function archiveClassroomItem(id: string) {
+  return updateClassroomItem(id, { status: 'archived', visible_to_student: false });
+}
+
+export function nextActionFor(items: ClassroomItem[]): ClassroomItem | null {
+  if (!items?.length) return null;
+  const candidates = items.filter(
+    (i) => i.status === 'assigned' || i.status === 'in_progress',
+  );
+  if (candidates.length === 0) return null;
+  // Highest priority, then earliest due date, then earliest unlock.
+  return [...candidates].sort((a, b) => {
+    if (b.priority !== a.priority) return b.priority - a.priority;
+    const adue = a.due_at ? new Date(a.due_at).getTime() : Infinity;
+    const bdue = b.due_at ? new Date(b.due_at).getTime() : Infinity;
+    if (adue !== bdue) return adue - bdue;
+    const aun = a.unlock_at ? new Date(a.unlock_at).getTime() : 0;
+    const bun = b.unlock_at ? new Date(b.unlock_at).getTime() : 0;
+    return aun - bun;
+  })[0];
+}
+
+/**
+ * Resolve a classroom_items row to the right student-facing route.
+ * Returns the path to navigate to, or null if the item is not actionable.
+ */
+export function resolveItemRoute(item: ClassroomItem): string | null {
+  switch (item.type) {
+    case 'drill':
+      if (item.source_id) return `/drill?assignmentId=${encodeURIComponent(item.source_id)}`;
+      return '/drill';
+    case 'homework':
+      if (item.source_id) return `/classroom/${encodeURIComponent(item.source_id)}`;
+      return '/classroom';
+    case 'bootcamp_module':
+      if (item.source_id) return item.source_id; // expected to be a /bootcamp/* path
+      return '/bootcamps';
+    case 'session_recap':
+    case 'smartboard_recap':
+    case 'announcement':
+    case 'note':
+      return `/classroom/item/${encodeURIComponent(item.id)}`;
+    default:
+      return `/classroom/item/${encodeURIComponent(item.id)}`;
+  }
+}

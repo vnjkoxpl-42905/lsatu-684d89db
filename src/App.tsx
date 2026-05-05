@@ -41,6 +41,22 @@ const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
+const ClassroomItem = React.lazy(() => import("./pages/ClassroomItem"));
+const ClassroomUploads = React.lazy(() => import("./pages/ClassroomUploads"));
+const ClassroomRecaps = React.lazy(() => import("./pages/ClassroomRecaps"));
+const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
+const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
+const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents"));
+const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
+const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
+const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
+const TeacherAssignments = React.lazy(() => import("./pages/teacher/TeacherAssignments"));
+const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcamps"));
+const TeacherUploads = React.lazy(() => import("./pages/teacher/TeacherUploads"));
+const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
+const TeacherMessages = React.lazy(() => import("./pages/teacher/TeacherMessages"));
+const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
@@ -176,6 +192,95 @@ const App = () => {
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
                   } />
+                  <Route path="/classroom/uploads" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomUploads />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/classroom/recaps" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomRecaps />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/classroom/item/:itemId" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomItem />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/teacher" element={
+                    <ProtectedRoute flag="has_ta_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <TeacherShell />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherToday />
+                      </React.Suspense>
+                    } />
+                    <Route path="students" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherStudents />
+                      </React.Suspense>
+                    } />
+                    <Route path="students/:studentId" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherStudentDetail />
+                      </React.Suspense>
+                    } />
+                    <Route path="ai-ta" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAITA />
+                      </React.Suspense>
+                    } />
+                    <Route path="weekly-plans" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherWeeklyPlans />
+                      </React.Suspense>
+                    } />
+                    <Route path="smartboard" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherSmartboard />
+                      </React.Suspense>
+                    } />
+                    <Route path="assignments" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAssignments />
+                      </React.Suspense>
+                    } />
+                    <Route path="bootcamps" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherBootcamps />
+                      </React.Suspense>
+                    } />
+                    <Route path="uploads" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherUploads />
+                      </React.Suspense>
+                    } />
+                    <Route path="recaps" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherRecaps />
+                      </React.Suspense>
+                    } />
+                    <Route path="messages" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherMessages />
+                      </React.Suspense>
+                    } />
+                    <Route path="analytics-bridge" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAnalyticsBridge />
+                      </React.Suspense>
+                    } />
+                  </Route>
                   <Route path="/classroom/ta/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>

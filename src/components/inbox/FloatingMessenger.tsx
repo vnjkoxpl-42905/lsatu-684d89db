@@ -26,7 +26,7 @@ import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer', '/admin/ta'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer', '/admin/ta', '/teacher'];
 
 export function FloatingMessenger() {
   const location = useLocation();
