@@ -20,6 +20,7 @@ export interface Conversation {
   participants: Participant[];
   last_message?: { body: string; created_at: string; sender_id: string } | null;
   unread: boolean;
+  hasAttachments: boolean;
 }
 
 export interface MessageAttachment {
@@ -97,13 +98,29 @@ export function useInbox() {
     // Last message per conversation
     const { data: msgs } = await supabase
       .from('messages')
-      .select('conversation_id, body, created_at, sender_id')
+      .select('id, conversation_id, body, created_at, sender_id')
       .in('conversation_id', convIds)
       .order('created_at', { ascending: false });
     const lastMsgMap = new Map<string, { body: string; created_at: string; sender_id: string }>();
+    const msgIdToConv = new Map<string, string>();
     for (const m of msgs ?? []) {
+      msgIdToConv.set(m.id, m.conversation_id);
       if (!lastMsgMap.has(m.conversation_id)) {
         lastMsgMap.set(m.conversation_id, { body: m.body, created_at: m.created_at, sender_id: m.sender_id });
+      }
+    }
+
+    // Per-conversation attachment presence (single query, ids only)
+    const attachmentConvIds = new Set<string>();
+    const allMsgIds = Array.from(msgIdToConv.keys());
+    if (allMsgIds.length) {
+      const { data: atts } = await supabase
+        .from('message_attachments')
+        .select('message_id')
+        .in('message_id', allMsgIds);
+      for (const a of atts ?? []) {
+        const cid = msgIdToConv.get(a.message_id);
+        if (cid) attachmentConvIds.add(cid);
       }
     }
 
@@ -126,6 +143,7 @@ export function useInbox() {
         participants: parts,
         last_message: lastMsg,
         unread,
+        hasAttachments: attachmentConvIds.has(c.id),
       };
     });
 

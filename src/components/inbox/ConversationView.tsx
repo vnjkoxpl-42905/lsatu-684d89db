@@ -6,6 +6,7 @@ import { useConversationMessages, type Conversation } from '@/hooks/useInbox';
 import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
 import { formatParticipantName } from '@/lib/displayName';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 
 interface Props {
   conversation: Conversation;
@@ -18,6 +19,7 @@ interface Props {
 
 export function ConversationView({ conversation, onBack, onMessageSent, hideHeader = false }: Props) {
   const { user } = useAuth();
+  const { is_admin } = useUserPermissions();
   const { messages, refresh } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +33,9 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   const formattedNames = others
     .map((o) => formatParticipantName(o.display_name, o.is_admin))
     .filter((n) => n && n !== 'User');
-  const headerName = formattedNames.join(', ') || conversation.subject || 'Conversation';
+  const headerName = is_admin
+    ? formattedNames.join(', ') || conversation.subject || 'Conversation'
+    : formattedNames.find((n) => n) || 'Joshua';
 
   const nameById = new Map(
     conversation.participants.map((p) => [p.user_id, formatParticipantName(p.display_name, p.is_admin)])
@@ -48,9 +52,9 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
           )}
           <div className="min-w-0">
             <div className="font-semibold text-base truncate">{headerName}</div>
-            {conversation.subject && (
-              <div className="text-xs text-muted-foreground truncate">{conversation.subject}</div>
-            )}
+            <div className="text-xs text-muted-foreground truncate">
+              {is_admin && conversation.subject ? conversation.subject : 'Messages and PDF attachments'}
+            </div>
           </div>
         </div>
       )}

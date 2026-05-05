@@ -27,7 +27,8 @@ type NavItem = {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
-  { to: "/waj", label: "Ask Joshua", Icon: MessagesSquare, flag: "has_waj_access" },
+  { to: "/inbox", label: "Ask Joshua", Icon: MessagesSquare, flag: "has_chat_access" },
+  { to: "/waj", label: "Wrong Answer Journal", Icon: BookOpen, flag: "has_waj_access" },
   { to: "/flagged", label: "Flagged", Icon: Flag, flag: "has_flagged_access" },
   { to: "/practice", label: "Practice", Icon: Dumbbell, flag: "has_practice_access" },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },

@@ -247,6 +247,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <Send className="w-4 h-4" />
         </Button>
       </div>
+      <div className="text-[10px] text-muted-foreground px-1">⌘ Enter to send</div>
     </div>
   );
 }
