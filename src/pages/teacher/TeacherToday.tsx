@@ -76,7 +76,7 @@ export default function TeacherToday() {
           label="Students needing reply"
           value={needsReplyCount}
           Icon={MessagesSquare}
-          onClick={() => navigate('/teacher/messages')}
+          onClick={() => navigate('/inbox')}
         />
         <StatTile
           label="Roster"
