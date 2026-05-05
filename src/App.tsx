@@ -41,8 +41,24 @@ const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
+const ClassroomItem = React.lazy(() => import("./pages/ClassroomItem"));
+const ClassroomUploads = React.lazy(() => import("./pages/ClassroomUploads"));
+const ClassroomRecaps = React.lazy(() => import("./pages/ClassroomRecaps"));
+const TeacherShell = React.lazy(() => import("./pages/teacher/TeacherShell"));
+const TeacherToday = React.lazy(() => import("./pages/teacher/TeacherToday"));
+const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents"));
+const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
+const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
+const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
+const TeacherAssignments = React.lazy(() => import("./pages/teacher/TeacherAssignments"));
+const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcamps"));
+const TeacherUploads = React.lazy(() => import("./pages/teacher/TeacherUploads"));
+const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
+const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
+import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
@@ -176,6 +192,90 @@ const App = () => {
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
                   } />
+                  <Route path="/classroom/uploads" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomUploads />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/classroom/recaps" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomRecaps />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/classroom/item/:itemId" element={
+                    <ProtectedRoute flag="has_classroom_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <ClassroomItem />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/teacher" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <TeacherShell />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherToday />
+                      </React.Suspense>
+                    } />
+                    <Route path="students" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherStudents />
+                      </React.Suspense>
+                    } />
+                    <Route path="students/:studentId" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherStudentDetail />
+                      </React.Suspense>
+                    } />
+                    <Route path="ai-ta" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAITA />
+                      </React.Suspense>
+                    } />
+                    <Route path="weekly-plans" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherWeeklyPlans />
+                      </React.Suspense>
+                    } />
+                    <Route path="smartboard" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherSmartboard />
+                      </React.Suspense>
+                    } />
+                    <Route path="assignments" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAssignments />
+                      </React.Suspense>
+                    } />
+                    <Route path="bootcamps" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherBootcamps />
+                      </React.Suspense>
+                    } />
+                    <Route path="uploads" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherUploads />
+                      </React.Suspense>
+                    } />
+                    <Route path="recaps" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherRecaps />
+                      </React.Suspense>
+                    } />
+                    <Route path="analytics-bridge" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAnalyticsBridge />
+                      </React.Suspense>
+                    } />
+                  </Route>
                   <Route path="/classroom/ta/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
@@ -197,7 +297,11 @@ const App = () => {
                     <ProtectedRoute flag="has_bootcamp_access"><Bootcamps /></ProtectedRoute>
                   } />
                   <Route path="/bootcamp/causation-station" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><CausationStation /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/causation-station" title="Causation Station">
+                        <CausationStation />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   {/* Retired bootcamp slugs — bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
@@ -207,16 +311,26 @@ const App = () => {
                   <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/abstraction" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><Abstraction /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/abstraction" title="Abstract">
+                        <Abstraction />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   <Route path="/bootcamp/intro-to-lr/*" element={
-                    <ProtectedRoute flag="has_bootcamp_access"><IntroToLrBootcamp /></ProtectedRoute>
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
+                        <IntroToLrBootcamp />
+                      </BootcampGate>
+                    </ProtectedRoute>
                   } />
                   <Route path="/bootcamp/principle-flaw" element={
                     <ProtectedRoute flag="has_bootcamp_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
-                        <PrincipleFlawBootcamp />
-                      </React.Suspense>
+                      <BootcampGate routePath="/bootcamp/principle-flaw" title="Principle and Flaw">
+                        <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
+                          <PrincipleFlawBootcamp />
+                        </React.Suspense>
+                      </BootcampGate>
                     </ProtectedRoute>
                   } />
                   <Route path="*" element={<NotFound />} />

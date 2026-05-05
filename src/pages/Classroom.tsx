@@ -1,241 +1,139 @@
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  ArrowLeft,
-  ClipboardList,
-  ChevronRight,
-  GraduationCap,
-  BookOpen,
-} from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { LogoutButton } from "@/components/LogoutButton";
-import {
-  useStudentAssignments,
-  useStudentTAAssignments,
-  type AssignmentStatus,
-  type TAAssignmentStatus,
-  type StudentAssignment,
-  type StudentTAAssignment,
-} from "@/hooks/useStudentAssignments";
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, GraduationCap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LogoutButton } from '@/components/LogoutButton';
+import { useAuth } from '@/contexts/AuthContext';
+import { useClassroomItems } from '@/hooks/useClassroomItems';
+import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStudentAssignments';
+import { nextActionFor } from '@/lib/classroomItems';
+import { DoThisNextCard } from '@/components/classroom/DoThisNextCard';
+import { ThisWeekSection } from '@/components/classroom/ThisWeekSection';
+import { AssignedWorkSection } from '@/components/classroom/AssignedWorkSection';
+import { UploadWorkSection } from '@/components/classroom/UploadWorkSection';
+import { RecapsSection } from '@/components/classroom/RecapsSection';
+import { AnnouncementsSection } from '@/components/classroom/AnnouncementsSection';
 
-type ListItem =
-  | { kind: "homework"; row: StudentAssignment; sortKey: string }
-  | { kind: "ta"; row: StudentTAAssignment; sortKey: string };
-
-function IL({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium select-none">
-      {children}
-    </span>
-  );
-}
-
-function HomeworkStatusBadge({ status }: { status: AssignmentStatus }) {
-  const map: Record<AssignmentStatus, { label: string; cls: string }> = {
-    assigned: {
-      label: "Assigned",
-      cls: "bg-secondary text-foreground/80 ring-border",
-    },
-    in_progress: {
-      label: "In progress",
-      cls: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
-    },
-    completed: {
-      label: "Completed",
-      cls: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
-    },
-  };
-  const cfg = map[status];
-  return (
-    <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ring-1 ${cfg.cls}`}
-    >
-      {cfg.label}
-    </span>
-  );
-}
-
-function TAStatusBadge({ status }: { status: TAAssignmentStatus }) {
-  const map: Record<TAAssignmentStatus, { label: string; cls: string }> = {
-    assigned: {
-      label: "Assigned",
-      cls: "bg-secondary text-foreground/80 ring-border",
-    },
-    viewed: {
-      label: "Viewed",
-      cls: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
-    },
-    completed: {
-      label: "Completed",
-      cls: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
-    },
-  };
-  const cfg = map[status];
-  return (
-    <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ring-1 ${cfg.cls}`}
-    >
-      {cfg.label}
-    </span>
-  );
-}
-
-function homeworkCta(status: AssignmentStatus): string {
-  if (status === "completed") return "Review";
-  if (status === "in_progress") return "Continue";
-  return "Start";
-}
-
-function taCta(status: TAAssignmentStatus): string {
-  if (status === "completed") return "Review";
-  if (status === "viewed") return "Continue";
-  return "Open";
-}
-
-// Active items first, completed last. Within a bucket, newest first.
-function bucket(s: AssignmentStatus | TAAssignmentStatus): number {
-  if (s === "completed") return 1;
-  return 0;
-}
-
+/**
+ * Notion-style private workspace for the signed-in student.
+ *
+ * Composition:
+ *   1. Do This Next     - top-priority unlocked classroom_items row,
+ *                         with fallback to the highest-priority assigned
+ *                         homework when no classroom_items exist yet.
+ *   2. This Week        - current published weekly_plan with day items.
+ *   3. Assigned work    - homework_assignments + ta_assignments.
+ *   4. Upload Work      - student-side intake into external_work_uploads.
+ *   5. Session recaps   - classroom_items of type session_recap.
+ *   6. From Joshua      - announcements + notes.
+ *
+ * Existing /classroom/:assignmentId and /classroom/ta/:assignmentId
+ * keep working; this page links into them via AssignedWorkSection.
+ */
 export default function Classroom() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { assignments: homework, loading: hwLoading } = useStudentAssignments();
-  const { assignments: taRows, loading: taLoading } = useStudentTAAssignments();
+  const { data: items = [] } = useClassroomItems();
+  const { assignments: hw } = useStudentAssignments();
+  const { assignments: ta } = useStudentTAAssignments();
 
-  React.useEffect(() => {
-    if (!user) navigate("/auth");
-  }, [user, navigate]);
+  const fallbackNext = useMemo(() => {
+    const open = [
+      ...hw.filter((a) => a.status !== 'completed').map((a) => ({
+        title: a.set_title || 'Homework',
+        description: `${a.question_qids?.length ?? 0} questions`,
+        route: `/classroom/${encodeURIComponent(a.id)}`,
+        sortKey: new Date(a.created_at).getTime(),
+      })),
+      ...ta.filter((a) => a.status !== 'completed').map((a) => ({
+        title: a.title || 'TA assignment',
+        description: 'From Joshua',
+        route: `/classroom/ta/${encodeURIComponent(a.id)}`,
+        sortKey: new Date(a.assigned_at).getTime(),
+      })),
+    ].sort((a, b) => b.sortKey - a.sortKey);
+    return open[0] ?? null;
+  }, [hw, ta]);
 
-  const loading = hwLoading || taLoading;
-
-  const items: ListItem[] = React.useMemo(() => {
-    const hw: ListItem[] = homework.map((r) => ({
-      kind: "homework",
-      row: r,
-      sortKey: r.created_at,
-    }));
-    const ta: ListItem[] = taRows.map((r) => ({
-      kind: "ta",
-      row: r,
-      sortKey: r.assigned_at,
-    }));
-    return [...hw, ...ta].sort((a, b) => {
-      const aStatus = a.kind === "ta" ? a.row.status : a.row.status;
-      const bStatus = b.kind === "ta" ? b.row.status : b.row.status;
-      const bd = bucket(aStatus) - bucket(bStatus);
-      if (bd !== 0) return bd;
-      return new Date(b.sortKey).getTime() - new Date(a.sortKey).getTime();
-    });
-  }, [homework, taRows]);
+  const nextItem = nextActionFor(items);
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-5xl mx-auto">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/foyer")}
-            className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
+            onClick={() => navigate('/foyer')}
+            className="text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Return to Main Hub
+            <ArrowLeft className="w-4 h-4 mr-1.5" />
+            Foyer
           </Button>
-          <IL>Classroom</IL>
-          <LogoutButton />
-          <ThemeToggle />
+          <div className="flex items-center gap-2 text-foreground">
+            <GraduationCap className="w-4 h-4" />
+            <span className="text-sm font-semibold tracking-tight">Classroom</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LogoutButton />
+          </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 lg:px-8 py-8 space-y-3">
-        {loading && (
-          <>
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-20 w-full" />
-          </>
-        )}
+      <main className="max-w-3xl mx-auto px-4 py-8 space-y-10">
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            {user?.email ? 'Welcome back.' : 'Welcome.'}
+          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Your classroom
+          </h1>
+        </div>
 
-        {!loading && items.length === 0 && (
-          <div className="flex justify-center py-16">
-            <div className="text-center space-y-3 max-w-md">
-              <ClipboardList
-                className="h-10 w-10 text-muted-foreground/40 mx-auto"
-                strokeWidth={1.25}
-              />
-              <h2 className="text-base font-medium text-foreground/90">
-                No assignments yet
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Joshua will send homework when ready.
-              </p>
+        {nextItem ? (
+          <DoThisNextCard item={nextItem} />
+        ) : fallbackNext ? (
+          <div className="rounded-2xl border border-border bg-card/50 px-5 py-5 shadow-sm">
+            <div className="flex items-start gap-4">
+              <div className="min-w-0 flex-1 space-y-1.5">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
+                  Do this next
+                </div>
+                <h3 className="text-lg font-semibold leading-snug">
+                  {fallbackNext.title}
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {fallbackNext.description}
+                </p>
+              </div>
+              <Button
+                onClick={() => navigate(fallbackNext.route)}
+                size="sm"
+                className="shrink-0"
+              >
+                Open
+              </Button>
             </div>
           </div>
+        ) : (
+          <DoThisNextCard item={null} />
         )}
 
-        {!loading &&
-          items.map((item) =>
-            item.kind === "homework" ? (
-              <button
-                key={`hw-${item.row.id}`}
-                onClick={() => navigate(`/classroom/${item.row.id}`)}
-                className="w-full text-left rounded-xl bg-card border border-border px-5 py-4 flex items-center gap-4 hover:bg-accent/40 hover:border-border transition-colors duration-150 group"
-              >
-                <div className="flex-1 min-w-0 space-y-1.5">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                      <BookOpen className="h-3 w-3" />
-                      Homework
-                    </span>
-                    <HomeworkStatusBadge status={item.row.status} />
-                    <span className="text-xs text-muted-foreground">
-                      {item.row.question_qids.length} question
-                      {item.row.question_qids.length === 1 ? "" : "s"}
-                    </span>
-                    {item.row.status === "completed" && item.row.score !== null && (
-                      <span className="text-xs text-emerald-400">
-                        {Math.round(item.row.score)}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-[14px] font-medium text-foreground/90 truncate">
-                    {item.row.set_title}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-foreground/70 shrink-0">
-                  <span>{homeworkCta(item.row.status)}</span>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/70 group-hover:text-muted-foreground transition-colors" />
-                </div>
-              </button>
-            ) : (
-              <button
-                key={`ta-${item.row.id}`}
-                onClick={() => navigate(`/classroom/ta/${item.row.id}`)}
-                className="w-full text-left rounded-xl bg-card border border-border px-5 py-4 flex items-center gap-4 hover:bg-accent/40 hover:border-border transition-colors duration-150 group"
-              >
-                <div className="flex-1 min-w-0 space-y-1.5">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                      <GraduationCap className="h-3 w-3" />
-                      TA assignment
-                    </span>
-                    <TAStatusBadge status={item.row.status} />
-                  </div>
-                  <div className="text-[14px] font-medium text-foreground/90 truncate">
-                    {item.row.title}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-foreground/70 shrink-0">
-                  <span>{taCta(item.row.status)}</span>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/70 group-hover:text-muted-foreground transition-colors" />
-                </div>
-              </button>
-            )
-          )}
+        <ThisWeekSection />
+
+        <AssignedWorkSection />
+
+        <UploadWorkSection />
+
+        <RecapsSection items={items} />
+
+        <AnnouncementsSection items={items} />
+
+        <div className="pt-4 pb-8 text-center text-[11px] text-muted-foreground/70">
+          Inbox stays in the messenger; this is your workspace.
+        </div>
       </main>
     </div>
   );

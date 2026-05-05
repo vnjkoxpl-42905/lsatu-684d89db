@@ -134,13 +134,17 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
 
   return (
-    <div className="border-t border-border bg-background p-3 space-y-2">
+    <div className="border-t border-border bg-background/95 backdrop-blur px-3 py-2.5 space-y-2 shrink-0">
       {file && (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-muted/40 text-sm">
-          <FileText className="w-4 h-4 text-muted-foreground" />
-          <span className="flex-1 truncate">{file.name}</span>
-          <button onClick={() => setFile(null)} className="text-muted-foreground hover:text-foreground">
-            <X className="w-4 h-4" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/40 text-sm">
+          <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
+          <span className="flex-1 truncate text-xs">{file.name}</span>
+          <button
+            onClick={() => setFile(null)}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Remove attachment"
+          >
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
@@ -149,13 +153,13 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           {driveAttachments.map((d) => (
             <div
               key={d.id}
-              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md border border-border bg-muted/40 text-xs max-w-full"
+              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-border bg-muted/40 text-xs max-w-full"
             >
               <Cloud className="w-3 h-3 text-muted-foreground shrink-0" />
               <span className="truncate max-w-[180px]">{d.file_name}</span>
               <button
                 onClick={() => removeDriveFile(d.id)}
-                className="text-muted-foreground hover:text-foreground shrink-0"
+                className="text-muted-foreground hover:text-foreground shrink-0 transition-colors"
                 aria-label={`Remove ${d.file_name}`}
               >
                 <X className="w-3 h-3" />
@@ -165,10 +169,12 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         </div>
       )}
       {polished !== null && (
-        <div className="px-3 py-2 rounded-md border border-border bg-muted/40 text-sm space-y-2">
-          <div className="text-xs uppercase tracking-wide text-muted-foreground">Polished version</div>
-          <div className="whitespace-pre-wrap">{polished}</div>
-          <div className="flex flex-wrap gap-2 pt-1">
+        <div className="px-3 py-2 rounded-lg border border-border bg-muted/30 text-sm space-y-2">
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+            Polished version
+          </div>
+          <div className="whitespace-pre-wrap text-sm leading-relaxed">{polished}</div>
+          <div className="flex flex-wrap gap-1 pt-0.5">
             <Button
               size="sm"
               onClick={() => {
@@ -176,6 +182,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
                 setPolished(null);
               }}
               disabled={sending || polishing}
+              className="h-7 px-2.5 text-xs"
             >
               Use this
             </Button>
@@ -184,6 +191,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               variant="ghost"
               onClick={() => setPolished(null)}
               disabled={sending || polishing}
+              className="h-7 px-2.5 text-xs"
             >
               Keep mine
             </Button>
@@ -192,6 +200,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               variant="ghost"
               onClick={polish}
               disabled={sending || polishing || body.trim().length < 3}
+              className="h-7 px-2.5 text-xs"
             >
               Try again
             </Button>
@@ -243,11 +252,17 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           rows={1}
           className="min-h-[44px] max-h-32 resize-none flex-1"
         />
-        <Button onClick={send} disabled={sending || !canSend} size="icon" aria-label="Send">
+        <Button
+          onClick={send}
+          disabled={sending || !canSend}
+          size="icon"
+          variant={canSend ? 'default' : 'ghost'}
+          aria-label="Send"
+        >
           <Send className="w-4 h-4" />
         </Button>
       </div>
-      <div className="text-[10px] text-muted-foreground px-1">⌘ Enter to send</div>
+      <div className="text-[10px] text-muted-foreground/80 text-right pr-1">⌘ Enter to send</div>
     </div>
   );
 }
