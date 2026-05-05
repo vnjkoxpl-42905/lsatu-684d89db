@@ -115,6 +115,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: Questi
         </div>
 
         <div className="flex items-center gap-2">
+          <OpenInDrillButton q={q} />
           <motion.button
             onClick={() => onToggleStatus('correct')}
             whileTap={{ scale: 0.96 }}
