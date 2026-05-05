@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
-import { formatDistanceToNow } from 'date-fns';
+import { format, isToday, isYesterday } from 'date-fns';
 import { Paperclip } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { formatParticipantName } from '@/lib/displayName';
@@ -28,6 +28,13 @@ function needsReply(c: Conversation, ownId: string) {
   return !!(c.last_message && c.last_message.sender_id !== ownId);
 }
 
+function compactTime(iso: string) {
+  const d = new Date(iso);
+  if (isToday(d)) return format(d, 'h:mm a');
+  if (isYesterday(d)) return 'Yesterday';
+  return format(d, 'MMM d');
+}
+
 export function ThreadList({
   conversations,
   activeId,
@@ -49,7 +56,7 @@ export function ThreadList({
   const isAdmin = variant === 'admin';
 
   return (
-    <div>
+    <div role="list">
       {conversations.map((c) => {
         const fallback = isAdmin ? 'Conversation' : 'Joshua';
         const name = otherParticipantName(c, user.id, fallback);
@@ -59,41 +66,72 @@ export function ThreadList({
         return (
           <button
             key={c.id}
+            role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
-              'w-full px-4 py-3 flex items-start gap-3 text-left transition-colors',
-              'border-l-2 border-b border-border/60',
+              'group w-full px-4 py-3.5 flex items-start gap-3 text-left',
+              'border-l-2 border-b border-border/50',
+              'transition-colors duration-150',
+              'focus-visible:outline-none focus-visible:bg-accent/40',
               isActive
-                ? 'bg-accent/60 border-l-primary'
-                : 'border-l-transparent hover:bg-accent/30'
+                ? 'bg-accent/70 border-l-primary'
+                : 'border-l-transparent hover:bg-accent/30',
             )}
           >
-            <div className="w-9 h-9 rounded-full bg-muted/70 flex items-center justify-center text-xs font-medium shrink-0 text-foreground/80">
+            <div
+              className={cn(
+                'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-shadow',
+                isActive
+                  ? 'bg-foreground/10 text-foreground ring-1 ring-foreground/20'
+                  : 'bg-muted text-foreground/70',
+              )}
+              aria-hidden="true"
+            >
               {initial}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <div className="font-medium text-sm truncate">{name}</div>
-                <div className="text-[10px] text-muted-foreground shrink-0">
-                  {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
                 <div
                   className={cn(
-                    'text-xs truncate flex-1',
-                    c.unread ? 'text-foreground' : 'text-muted-foreground'
+                    'truncate text-sm',
+                    c.unread ? 'font-semibold text-foreground' : 'font-medium text-foreground/90',
+                  )}
+                >
+                  {name}
+                </div>
+                <div
+                  className={cn(
+                    'shrink-0 text-[10px] tabular-nums',
+                    c.unread ? 'text-foreground font-medium' : 'text-muted-foreground',
+                  )}
+                >
+                  {compactTime(c.last_message_at)}
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <div
+                  className={cn(
+                    'text-xs flex-1 line-clamp-1 break-words',
+                    c.unread ? 'text-foreground/90' : 'text-muted-foreground',
                   )}
                 >
                   {c.last_message?.body || c.subject || 'New conversation'}
                 </div>
                 {isAdmin && c.hasAttachments && (
-                  <Paperclip className="w-3 h-3 text-muted-foreground shrink-0" aria-label="Has attachments" />
+                  <Paperclip
+                    className="w-3 h-3 text-muted-foreground shrink-0"
+                    aria-label="Has attachments"
+                  />
                 )}
-                {c.unread && <div className="w-2 h-2 rounded-full bg-primary shrink-0" />}
+                {c.unread && (
+                  <div
+                    className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"
+                    aria-label="Unread"
+                  />
+                )}
               </div>
               {reply && (
-                <div className="mt-1.5 inline-flex items-center text-[10px] uppercase tracking-wider text-amber-600/90 dark:text-amber-400/90">
+                <div className="mt-1.5 inline-flex items-center px-1.5 py-px text-[9px] uppercase tracking-[0.12em] font-semibold rounded text-amber-700 dark:text-amber-300/90 bg-amber-500/10">
                   Needs reply
                 </div>
               )}
