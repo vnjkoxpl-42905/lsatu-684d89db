@@ -1,8 +1,20 @@
-import { useMemo, useState } from 'react';
+// FloatingMessenger — quick-access messaging fly-out.
+//
+// Hidden routes:
+//   /auth, /onboarding, /reset-password — pre-auth surfaces.
+//   /inbox                              — full inbox already visible.
+//   /foyer                              — FoyerDock owns the inbox entry there;
+//                                          showing both would visually collide.
+//   /admin/ta                           — TA workspace owns its own widget at
+//                                          right-24 z-40; Messenger here would
+//                                          stack against it.
+
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MessageSquare, ArrowLeft, ExternalLink, X } from 'lucide-react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,8 +23,10 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { ThreadList } from './ThreadList';
 import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
+import { StudentEmptyState } from './StudentEmptyState';
+import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer', '/admin/ta'];
 
 export function FloatingMessenger() {
   const location = useLocation();
@@ -23,26 +37,44 @@ export function FloatingMessenger() {
 
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [starting, setStarting] = useState(false);
+
+  // Student auto-pin: prefer the thread that contains an admin participant.
+  const studentPrimaryId = useMemo(() => {
+    if (is_admin || !user) return null;
+    const withAdmin = conversations.find((c) =>
+      c.participants.some((p) => p.user_id !== user.id && p.is_admin),
+    );
+    if (withAdmin) return withAdmin.id;
+    if (conversations.length > 0) return conversations[0].id;
+    return null;
+  }, [conversations, is_admin, user]);
+
+  // When a student opens the panel, jump straight into their thread.
+  useEffect(() => {
+    if (!open || is_admin) return;
+    if (activeId) return;
+    if (studentPrimaryId) setActiveId(studentPrimaryId);
+  }, [open, is_admin, activeId, studentPrimaryId]);
 
   const active = useMemo(
     () => conversations.find((c) => c.id === activeId) ?? null,
-    [conversations, activeId]
+    [conversations, activeId],
   );
 
   const activeHeaderName = useMemo(() => {
     if (!active || !user) return null;
     const others = active.participants.filter((p) => p.user_id !== user.id);
-    const realNames = others
-      .map((o) => o.display_name?.trim())
-      .filter((n): n is string => !!n);
+    const realNames = others.map((o) => o.display_name?.trim()).filter((n): n is string => !!n);
+    if (!is_admin) return realNames[0] || 'Joshua';
     return realNames.join(', ') || active.subject || 'Conversation';
-  }, [active, user]);
+  }, [active, user, is_admin]);
 
   if (!authReady || !user || permsLoading) return null;
   if (!has_chat_access && !is_admin) return null;
 
   const pathHidden = HIDDEN_ROUTES.some(
-    (r) => location.pathname === r || location.pathname.startsWith(`${r}/`)
+    (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
   );
   if (pathHidden) return null;
 
@@ -56,9 +88,24 @@ export function FloatingMessenger() {
     if (!next) setActiveId(null);
   };
 
+  const handleStartJoshua = async () => {
+    if (starting) return;
+    setStarting(true);
+    try {
+      const id = await startJoshuaConversation();
+      await refresh();
+      setActiveId(id);
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Could not start conversation');
+    } finally {
+      setStarting(false);
+    }
+  };
+
+  const showStudentEmpty = !is_admin && !active && !loading && conversations.length === 0;
+
   return (
     <>
-      {/* ── Trigger ── */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -69,7 +116,7 @@ export function FloatingMessenger() {
           'flex items-center justify-center',
           'text-foreground/80 hover:text-foreground',
           'hover:bg-background transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         )}
         aria-label={unreadCount > 0 ? `Open messenger, ${unreadCount} unread` : 'Open messenger'}
       >
@@ -84,12 +131,9 @@ export function FloatingMessenger() {
         )}
       </button>
 
-      {/* ── Panel (Radix Dialog portal) ── */}
       <SheetPrimitive.Root open={open} onOpenChange={handleOpenChange}>
         <SheetPrimitive.Portal>
-          <SheetPrimitive.Overlay
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
-          />
+          <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
           <SheetPrimitive.Content
             className={cn(
               'fixed inset-y-0 right-0 z-50 flex flex-col',
@@ -98,15 +142,14 @@ export function FloatingMessenger() {
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
               'data-[state=closed]:duration-250 data-[state=open]:duration-300',
-              'focus:outline-none'
+              'focus:outline-none',
             )}
             aria-describedby={undefined}
           >
             <SheetPrimitive.Title className="sr-only">Messenger</SheetPrimitive.Title>
 
-            {/* ── Header ── */}
             <div className="flex items-center gap-2 px-4 h-14 border-b border-border shrink-0">
-              {active ? (
+              {active && is_admin ? (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -117,23 +160,28 @@ export function FloatingMessenger() {
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               ) : (
-                <div className="w-9 h-9 rounded-md bg-muted flex items-center justify-center shrink-0">
+                <div
+                  className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0"
+                  aria-hidden="true"
+                >
                   <MessageSquare className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
                 </div>
               )}
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold truncate">
-                  {active ? activeHeaderName : 'Messages'}
+                  {active ? activeHeaderName : is_admin ? 'Messages' : 'Joshua'}
                 </div>
                 {active ? (
-                  active.subject && (
-                    <div className="text-[11px] text-muted-foreground truncate">
-                      {active.subject}
-                    </div>
-                  )
+                  <div className="text-[11px] text-muted-foreground truncate">
+                    {is_admin && active.subject ? active.subject : 'Messages and PDF attachments'}
+                  </div>
                 ) : (
                   <div className="text-[11px] text-muted-foreground">
-                    {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+                    {is_admin
+                      ? unreadCount > 0
+                        ? `${unreadCount} unread`
+                        : 'All caught up'
+                      : 'Direct message'}
                   </div>
                 )}
               </div>
@@ -154,7 +202,6 @@ export function FloatingMessenger() {
               </SheetPrimitive.Close>
             </div>
 
-            {/* ── Body ── */}
             <div className="flex-1 min-h-0 overflow-hidden">
               <AnimatePresence mode="wait" initial={false}>
                 {active ? (
@@ -171,6 +218,17 @@ export function FloatingMessenger() {
                       onMessageSent={refresh}
                       hideHeader
                     />
+                  </motion.div>
+                ) : showStudentEmpty ? (
+                  <motion.div
+                    key="student-empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                    className="h-full flex"
+                  >
+                    <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} compact />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -197,19 +255,17 @@ export function FloatingMessenger() {
                     <div className="flex-1 overflow-y-auto">
                       {loading ? (
                         <div className="p-8 text-center text-sm text-muted-foreground">Loading…</div>
-                      ) : conversations.length === 0 ? (
-                        <div className="p-8 text-center space-y-2">
-                          <div className="text-sm text-muted-foreground">
-                            {is_admin
-                              ? 'No conversations yet. Start one with a student.'
-                              : 'Your instructor will reach out to start your conversation.'}
-                          </div>
-                        </div>
                       ) : (
                         <ThreadList
                           conversations={conversations}
                           activeId={activeId}
                           onSelect={setActiveId}
+                          variant={is_admin ? 'admin' : 'student'}
+                          emptyLabel={
+                            is_admin
+                              ? 'No conversations yet. Start one with a student.'
+                              : 'No conversations yet.'
+                          }
                         />
                       )}
                     </div>

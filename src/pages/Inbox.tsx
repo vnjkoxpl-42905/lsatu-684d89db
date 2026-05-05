@@ -12,6 +12,8 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Inbox as InboxIcon, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
+import { startJoshuaConversation } from '@/lib/joshuaThread';
+import { toast } from 'sonner';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -21,6 +23,13 @@ const FILTER_TABS: { id: AdminFilter; label: string }[] = [
   { id: 'needs_reply', label: 'Needs reply' },
   { id: 'attachments', label: 'Attachments' },
 ];
+
+const FILTER_EMPTY_LABEL: Record<AdminFilter, string> = {
+  all: 'No conversations yet.',
+  unread: 'No unread messages.',
+  needs_reply: 'Nothing needs a reply.',
+  attachments: 'No conversations with attachments.',
+};
 
 function searchableName(c: Conversation, ownId: string) {
   return c.participants
@@ -49,13 +58,24 @@ function applyAdminFilters(
     }
     return true;
   });
-  // Sort: unread/needs-reply first, then by last_message_at desc
   return filtered.sort((a, b) => {
     const aPriority = (a.unread ? 1 : 0) + (a.last_message && a.last_message.sender_id !== ownId ? 1 : 0);
     const bPriority = (b.unread ? 1 : 0) + (b.last_message && b.last_message.sender_id !== ownId ? 1 : 0);
     if (aPriority !== bPriority) return bPriority - aPriority;
     return new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime();
   });
+}
+
+function pickStudentPrimary(conversations: Conversation[], ownId: string): Conversation | null {
+  if (conversations.length === 0) return null;
+  // Prefer the thread that includes an admin participant; fall back to most recent.
+  const withAdmin = conversations.find((c) =>
+    c.participants.some((p) => p.user_id !== ownId && p.is_admin),
+  );
+  if (withAdmin) return withAdmin;
+  return [...conversations].sort(
+    (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
+  )[0];
 }
 
 export default function Inbox() {
@@ -67,9 +87,6 @@ export default function Inbox() {
   const { is_admin, loading: permsLoading } = useUserPermissions();
   const activeId = conversationId ?? null;
 
-  // Cross-surface entry points (e.g., Foyer "Ask Joshua") land here with
-  // { composeWith: <userId> } to pre-open the composer. Capture at mount so
-  // reloads / back-nav don't replay it.
   const [composeTarget, setComposeTarget] = useState<string | null>(
     () => (location.state as { composeWith?: string } | null)?.composeWith ?? null,
   );
@@ -85,29 +102,45 @@ export default function Inbox() {
 
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
+  const [starting, setStarting] = useState(false);
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
     if (is_admin) return applyAdminFilters(conversations, user.id, filter, query);
-    // Student: simple recency sort
     return [...conversations].sort(
       (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
     );
   }, [conversations, user, is_admin, filter, query]);
 
-  // Auto-select on desktop (admin) or always for students
+  // Auto-select: students always; admins on desktop only.
   useEffect(() => {
     if (activeId) return;
     if (loading || permsLoading) return;
-    if (visibleConversations.length === 0) return;
+    if (!user) return;
     if (!is_admin) {
-      navigate(`/inbox/${visibleConversations[0].id}`, { replace: true });
+      const primary = pickStudentPrimary(conversations, user.id);
+      if (primary) navigate(`/inbox/${primary.id}`, { replace: true });
       return;
     }
+    if (visibleConversations.length === 0) return;
     if (window.innerWidth >= 768) {
       navigate(`/inbox/${visibleConversations[0].id}`, { replace: true });
     }
-  }, [visibleConversations, activeId, navigate, is_admin, loading, permsLoading]);
+  }, [conversations, visibleConversations, activeId, navigate, is_admin, loading, permsLoading, user]);
+
+  const handleStartJoshua = useCallback(async () => {
+    if (starting) return;
+    setStarting(true);
+    try {
+      const id = await startJoshuaConversation();
+      await refresh();
+      navigate(`/inbox/${id}`, { replace: true });
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Could not start conversation');
+    } finally {
+      setStarting(false);
+    }
+  }, [starting, refresh, navigate]);
 
   const selectThread = (id: string) => navigate(`/inbox/${id}`);
   const clearThread = () => navigate('/inbox');
@@ -117,6 +150,11 @@ export default function Inbox() {
   if (!authReady || permsLoading) return null;
 
   const showEmptyStudent = !is_admin && !loading && conversations.length === 0;
+
+  const adminEmptyLabel =
+    query.trim().length > 0
+      ? 'No threads match your search.'
+      : FILTER_EMPTY_LABEL[filter];
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,11 +167,11 @@ export default function Inbox() {
             <div className="flex items-center gap-2">
               <InboxIcon className="w-4 h-4 text-muted-foreground" />
               <h1 className="text-base font-semibold">
-                {is_admin ? 'Inbox' : 'Ask Joshua'}
+                {is_admin ? 'Inbox' : 'Joshua'}
               </h1>
               {is_admin && unreadCount > 0 && (
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {unreadCount} unread
+                <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
+                  {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
             </div>
@@ -149,11 +187,10 @@ export default function Inbox() {
 
       {showEmptyStudent ? (
         <div className="max-w-7xl mx-auto">
-          <StudentEmptyState />
+          <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>
       ) : (
         <div className="max-w-7xl mx-auto md:grid md:grid-cols-[360px_1fr] md:h-[calc(100vh-57px)]">
-          {/* Thread list */}
           <aside
             className={cn(
               'border-r border-border md:overflow-y-auto md:flex md:flex-col',
@@ -161,26 +198,33 @@ export default function Inbox() {
             )}
           >
             {is_admin && (
-              <div className="px-3 py-2 border-b border-border space-y-2 shrink-0">
+              <div className="px-3 py-3 border-b border-border space-y-2.5 shrink-0">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search students or messages"
-                    className="pl-8 h-8 text-sm"
+                    className="pl-8 h-9 text-sm"
                   />
                 </div>
-                <div className="flex flex-wrap gap-1">
+                <div
+                  role="tablist"
+                  aria-label="Filter conversations"
+                  className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-muted/60 w-full"
+                >
                   {FILTER_TABS.map((t) => (
                     <button
                       key={t.id}
+                      role="tab"
+                      aria-selected={filter === t.id}
                       onClick={() => setFilter(t.id)}
                       className={cn(
-                        'px-2 py-1 text-[11px] font-medium rounded-md transition-colors',
+                        'flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all whitespace-nowrap',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                         filter === t.id
-                          ? 'bg-foreground text-background'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-accent/50',
+                          ? 'bg-background text-foreground shadow-sm'
+                          : 'text-muted-foreground hover:text-foreground',
                       )}
                     >
                       {t.label}
@@ -198,19 +242,12 @@ export default function Inbox() {
                   activeId={activeId}
                   onSelect={selectThread}
                   variant={is_admin ? 'admin' : 'student'}
-                  emptyLabel={
-                    is_admin
-                      ? query || filter !== 'all'
-                        ? 'No threads match this filter.'
-                        : 'No conversations yet. Start one with a student.'
-                      : 'No conversations yet.'
-                  }
+                  emptyLabel={is_admin ? adminEmptyLabel : 'No conversations yet.'}
                 />
               )}
             </div>
           </aside>
 
-          {/* Conversation view */}
           <main className={cn('md:h-full flex-col h-[calc(100vh-57px)]', active ? 'flex' : 'hidden md:flex')}>
             {active ? (
               <ConversationView
