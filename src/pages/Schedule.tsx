@@ -62,6 +62,26 @@ function itemDate(item: ClassroomItem): Date {
   return startOfDay(new Date(raw));
 }
 
+/**
+ * For multi-day items (currently bootcamp_module with both unlock_at
+ * and due_at), return every day in the range. Other items return a
+ * single date.
+ */
+function itemDates(item: ClassroomItem): Date[] {
+  if (item.type === 'bootcamp_module' && item.unlock_at && item.due_at) {
+    const start = startOfDay(new Date(item.unlock_at));
+    const end = startOfDay(new Date(item.due_at));
+    if (end >= start) {
+      return eachDayOfInterval({ start, end });
+    }
+  }
+  return [itemDate(item)];
+}
+
+function itemMatchesDay(item: ClassroomItem, day: Date): boolean {
+  return itemDates(item).some((d) => isSameDay(d, day));
+}
+
 interface ScheduleCtx { items: ClassroomItem[] }
 const ScheduleContext = React.createContext<ScheduleCtx>({ items: [] });
 
