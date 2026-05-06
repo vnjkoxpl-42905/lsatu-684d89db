@@ -354,6 +354,7 @@ const App = () => {
           <FloatingMessenger />
           <FloatingWhiteboard />
           <AdminChatHub />
+          <GuidedTour />
         </BrowserRouter>
       </TooltipProvider>
     </UserSettingsProvider>
