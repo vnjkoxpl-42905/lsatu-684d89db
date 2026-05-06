@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+// Single source of truth for the orbit path. Both the visible ring and the
+// node positions derive from this so they can never drift apart.
+const ORBIT_RADIUS = 200;
+const ORBIT_DIAMETER = ORBIT_RADIUS * 2;
+
 export interface TimelineItem {
   id: number;
   title: string;
