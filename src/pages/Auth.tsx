@@ -208,10 +208,13 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
       }}>
         Clearer thinking, higher scores. A training environment built for aspiring attorneys.
       </p>
-      <button className="arc-cta" onClick={onCTA}>
-        Begin training
-        <span aria-hidden="true">→</span>
-      </button>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <button className="arc-cta" onClick={onCTA}>
+          Begin training
+          <span aria-hidden="true">→</span>
+        </button>
+        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Sign up</button>
+      </div>
     </div>
 
     <MarketingImage
