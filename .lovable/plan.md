@@ -1,54 +1,58 @@
-## What's actually broken
+# Inline question opening in Principle & Flaw bootcamp
 
-I checked Meghan's data. When you assigned **Principle & Flaw**, the system did fire all three notifications:
-- `classroom_items` row created (visible, May 20 → Jun 2)
-- Inbox message sent ("New assignment: Principle & Flaw…")
-- Bell notification inserted ("New assignment: Principle & Flaw")
+## Goal
+When a student clicks any specific question card in the P&F bootcamp, the actual LSAT question opens **right inside the bootcamp shell** — perfectly formatted (same layout as the official drill page), with answer-choice selection, blind-review marking, and explanation reveal. No navigation away from the bootcamp. Missing questions are clearly disabled and reported.
 
-**So the assign-flow works.** The problem is that the student's `/classroom` page never renders bootcamps. It has sections for Homework, TA assignments, Recaps, Announcements — but `bootcamp_module` items fall through the cracks. That's why Meghan sees nothing in her classroom even though the row exists.
+## What changes
 
-The "schedule = LSAT U calendar" you described already exists at `/schedule` (Schedule.tsx) and it does show the bootcamp as a multi-day band — but Classroom doesn't link the two surfaces, and progress on the bootcamp isn't autosaved back to the assignment.
+### 1. Audit the bootcamp question bank
+Generate a one-time report of every `QuestionRef` in `src/bootcamps/principle-flaw/data.ts` whose `PT{pt}-S{section}-Q{question}` qid is **not** present in the LSAT U `questionBank` (`src/lib/questionLoader.ts`). Output to `/mnt/documents/pf-missing-questions.csv` (qid, topic, set, level) so you can see exactly what's missing.
 
-## Plan
+### 2. Disable missing question cards
+In `Practice.tsx` (and any other place rendering `QuestionRef` cards — `Overview`, `TodayView`, `FlawHub`, `PrincipleHub`):
+- Resolve each ref against `questionBank.getQuestion(qid)` at render time.
+- If missing: card shows a muted "Not available yet" badge, the "Open" button is disabled, no click handler.
+- If present: clickable as today.
 
-### 1. Show assigned bootcamps in Classroom (the real fix)
-- New `BootcampsSection` on `/classroom`, placed right under "Do this next".
-- Lists every active `classroom_items` row of type `bootcamp_module` (visibility + unlock filter handled by RLS already).
-- Each card shows: title, date range, day X of Y progress bar, status pill, and a primary **Open bootcamp** button that deep-links to `b.route` (e.g. `/bootcamp/principle-flaw`).
-- Empty state hidden when there are none — no fake placeholder.
-- Only show currently-unlocked items (per your answer).
+### 3. Inline question viewer (the main work)
+Replace the current `navigate('/drill?...')` behavior with an inline modal/drawer inside the bootcamp:
 
-### 2. Make the LSAT U calendar (Schedule) the single source of truth
-- Add a small **"In your calendar"** strip at the top of each bootcamp card linking to `/schedule` so the student sees it lives there too.
-- On the Schedule page, clicking a bootcamp day already opens a sheet — add an **Open bootcamp** CTA inside that sheet (currently it just shows the title).
-- No external Google Calendar OAuth — per your direction, the LSAT U Schedule *is* their calendar.
+- New component `src/bootcamps/principle-flaw/components/InlineQuestionViewer.tsx`.
+- Reuses the official drill question renderer **`OfficialQuestionPane`** (already exists at `src/components/drill/official/OfficialQuestionPane.tsx`) so formatting matches the drill page exactly — same stem/choice spacing fix you just approved.
+- Loads the LRQuestion via `questionBank.getQuestion(qid)`.
+- Provides: answer-choice selection, eliminate (Eye) toggles, "Submit answer", correctness reveal with the question's official explanation, optional blind-review toggle, and a "Next question" button when the day/set has multiple.
+- Logs the attempt to Supabase `attempts` (same payload shape the drill page uses) so it counts toward proficiency, streaks, and the teacher's classroom view — and the bootcamp-progress autosave hook still fires.
+- Mounts as a full-screen overlay (Dialog / Sheet) over the bootcamp UI, dark drill surface inside, bootcamp shell preserved underneath.
 
-### 3. Autosave progress back to the assignment
-Currently the Principle & Flaw bootcamp stores per-day progress in `localStorage` (`pf:` keys). The teacher has no visibility, and the assignment never moves from `assigned` → `in_progress` → `completed`.
+### 4. Wiring
+- `OpenInDrillButton` in `Practice.tsx` becomes `OpenInlineButton` — opens the viewer with the clicked qid (and the surrounding set's qids as the "next" queue, so students can flow through one set without closing).
+- No more `/drill?mode=type-drill&qids=...` navigation from inside the bootcamp.
 
-- Add a tiny `useBootcampProgress(itemId)` hook that:
-  - On first interaction in any bootcamp day, flips the `classroom_items` row to `status: 'in_progress'` (one-shot).
-  - On every day-complete event, writes `metadata_json.progress = { completedDays: [...], lastDayAt, percent }` (debounced, ~1s) and bumps `updated_at`.
-  - When all days are complete, sets `status: 'completed'` and `completed_at = now()`.
-- Wire this into the Principle & Flaw bootcamp's existing day-complete handler. Other bootcamps follow the same pattern when they're added.
-- Teacher's `/teacher/bootcamps` already reads `classroom_items` for that student → progress shows up automatically.
+## Out of scope
+- No changes to the standalone `/drill` page itself.
+- No data.ts content rewrites — only ref→qid validation.
+- Other bootcamps (Causation Station, Intro to LR) are not touched in this pass.
 
-### 4. Toast clarity on assign
-The teacher already gets `"Assigned and notified"` / `"Assigned, but email failed"`. Keep — this is correct and truthful.
+## Technical details
 
-### 5. Confirm Meghan sees the existing P&F assignment
-After step 1 deploys, her `/classroom` will show the Principle & Flaw card immediately (the row is already in the DB). No backfill needed.
+```text
+Practice.tsx card click
+   └─ <InlineQuestionViewer qid setQids onClose />
+        └─ questionBank.getQuestion(qid) → LRQuestion
+        └─ <OfficialQuestionPane question … />   ← same renderer the drill uses
+        └─ on submit: insert into `attempts` (mode='bootcamp-pf')
+        └─ onComplete → useBootcampProgress autosave (already wired)
+```
 
----
+Audit script (one-shot, written to `/tmp` then run):
+```ts
+import { questionBank as pfBank } from 'src/bootcamps/principle-flaw/data';
+import { questionBank } from 'src/lib/questionLoader';
+const missing = pfBank.filter(q => !questionBank.getQuestion(`PT${q.pt}-S${q.section}-Q${q.question}`));
+// → /mnt/documents/pf-missing-questions.csv
+```
 
-## Out of scope (call out, don't build)
-- **Google Calendar / Apple Calendar export** — you said the LSAT U calendar is the single source of truth, so I'm not adding `.ics` or per-user OAuth. Easy to add later if you change your mind.
-- **Other bootcamps' progress autosave** — only Principle & Flaw has a real day-by-day flow today. Hook is generic; we'll wire each bootcamp as it's built out.
-
-## Files I expect to touch
-- `src/components/classroom/BootcampsSection.tsx` *(new)*
-- `src/pages/Classroom.tsx` (mount the new section)
-- `src/pages/Schedule.tsx` (Open-bootcamp CTA in the day sheet)
-- `src/hooks/useBootcampProgress.ts` *(new)*
-- `src/pages/PrincipleFlawBootcamp.tsx` (or wherever the day-complete handler lives — wire the hook)
-- `src/lib/classroomItems.ts` (small helper to update status/metadata)
+## Files
+- **Create**: `src/bootcamps/principle-flaw/components/InlineQuestionViewer.tsx`
+- **Modify**: `src/bootcamps/principle-flaw/components/Practice.tsx`, `TodayView.tsx`, `FlawHub.tsx`, `PrincipleHub.tsx`, `Overview.tsx` (only where question cards render)
+- **Generate**: `/mnt/documents/pf-missing-questions.csv` (audit report)
