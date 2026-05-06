@@ -64,7 +64,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
-import FloatingTAWidget from "./components/ta/FloatingTAWidget";
+import AdminChatHub from "./components/chat-hub/AdminChatHub";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
 // React root is remounting (e.g. from a service-worker replace) vs its child
