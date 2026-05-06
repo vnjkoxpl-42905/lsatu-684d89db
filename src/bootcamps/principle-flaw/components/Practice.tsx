@@ -188,7 +188,14 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
 
 export default function Practice({ currentDay, onOpenResource }: { currentDay: number; onOpenResource: (r: Partial<StudyResource>) => void }) {
   const [view, setView] = useState<'sets' | 'redo'>('sets');
-  
+  const { isLoading: qbLoading } = useQuestionBank();
+  const [viewer, setViewer] = useState<{ qid: string; queue: string[] } | null>(null);
+
+  const isAvailable = React.useCallback((q: QuestionRef) => {
+    if (qbLoading) return true; // optimistic while loading
+    return !!lrBank.getQuestion(pfQid(q));
+  }, [qbLoading]);
+
   const [qStatus, setQStatus] = useState<Record<string, 'correct' | 'missed' | 'none'>>(() => {
     const saved = localStorage.getItem('pf:questionStatus');
     return saved ? JSON.parse(saved) : {};
