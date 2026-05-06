@@ -9,20 +9,7 @@ import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
 import { createClassroomItem, archiveClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
-
-interface BootcampDef {
-  id: string;
-  title: string;
-  description: string;
-  route: string;
-}
-
-const BOOTCAMPS: BootcampDef[] = [
-  { id: 'principle-flaw', title: 'Principle & Flaw', description: 'Two-week LR bootcamp', route: '/bootcamp/principle-flaw' },
-  { id: 'intro-to-lr', title: 'Intro to LR', description: 'Foundational LR skills', route: '/bootcamp/intro-to-lr' },
-  { id: 'causation-station', title: 'Causation Station', description: 'Causal reasoning patterns', route: '/bootcamp/causation-station' },
-  { id: 'abstraction', title: 'Abstraction', description: 'Abstract relationships', route: '/bootcamp/abstraction' },
-];
+import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
 
 export default function TeacherBootcamps() {
   const { user } = useAuth();

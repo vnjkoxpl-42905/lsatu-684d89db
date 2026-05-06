@@ -36,19 +36,7 @@ interface HomeworkSetRow {
   question_qids: string[] | null;
 }
 
-interface BootcampDef {
-  id: string;
-  title: string;
-  description: string;
-  route: string;
-}
-
-const BOOTCAMPS: BootcampDef[] = [
-  { id: 'principle-flaw', title: 'Principle & Flaw', description: 'Two-week LR bootcamp', route: '/bootcamp/principle-flaw' },
-  { id: 'intro-to-lr', title: 'Intro to LR', description: 'Foundational LR skills', route: '/bootcamp/intro-to-lr' },
-  { id: 'causation-station', title: 'Causation Station', description: 'Causal reasoning patterns', route: '/bootcamp/causation-station' },
-  { id: 'abstraction', title: 'Abstraction', description: 'Abstract relationships', route: '/bootcamp/abstraction' },
-];
+import { BOOTCAMPS } from '@/lib/bootcamps';
 
 type IconCmp = React.ComponentType<{ className?: string }>;
 
