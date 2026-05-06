@@ -1,3 +1,7 @@
+/**
+ * /practice — drill-launcher hub. (Historically the file was Home.tsx;
+ * renamed because the route is /practice and there is no /home surface.)
+ */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -90,9 +94,30 @@ function StudyToolRow({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Spline error boundary — falls back to a calm gradient panel when the
+// external Spline scene fails to load (offline / CDN outage / blocked).
+// ─────────────────────────────────────────────────────────────────────────────
+class SplineBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.warn('[Practice] Spline scene failed', error);
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
-export default function Home() {
+export default function Practice() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
@@ -101,8 +126,9 @@ export default function Home() {
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
     avgAccuracy: 0,
-    recentStreak: 0,
   });
+  const [statsLoaded, setStatsLoaded] = React.useState(false);
+  const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
   const [sparklineData, setSparklineData] = React.useState<
     Array<{ date: string; count: number }>
   >([]);
@@ -114,6 +140,24 @@ export default function Home() {
       navigate('/auth');
     }
   }, [user, authReady, navigate]);
+
+  // Source of truth for the greeting is profiles.display_name (Foyer's
+  // canonical name), not user_metadata which can lag.
+  React.useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (!cancelled) setProfileDisplayName(data?.display_name ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   // Load user stats
   React.useEffect(() => {
@@ -129,6 +173,8 @@ export default function Home() {
         .eq('class_id', classId)
         .gte('timestamp_iso', thirtyDaysAgo.toISOString());
 
+      setStatsLoaded(true);
+
       if (attempts && attempts.length > 0) {
         const correct = attempts.filter((a) => a.correct).length;
         const accuracy = Math.round((correct / attempts.length) * 100);
@@ -136,7 +182,6 @@ export default function Home() {
         setStats({
           totalAttempted: attempts.length,
           avgAccuracy: accuracy,
-          recentStreak: 0,
         });
 
         const dailyCounts = new Map<string, number>();
@@ -167,11 +212,12 @@ export default function Home() {
 
   const getFirstName = () => {
     if (!user) return 'there';
-    const displayName =
-      user.user_metadata?.display_name ||
+    const raw =
+      profileDisplayName ||
+      (user.user_metadata?.display_name as string | undefined) ||
       user.email?.split('@')[0] ||
       'there';
-    const firstName = displayName.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');
+    const firstName = raw.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');
     return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() || 'there';
   };
 
@@ -322,10 +368,12 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 relative hidden md:block">
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
+              <SplineBoundary>
+                <SplineScene
+                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                  className="w-full h-full"
+                />
+              </SplineBoundary>
             </div>
           </div>
         </Card>
@@ -431,6 +479,22 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                {/* Empty-state CTA — only shown after stats load with zero
+                    attempts so we don't flash it during initial load. */}
+                {statsLoaded && stats.totalAttempted === 0 && (
+                  <div className="rounded-xl border border-dashed border-border bg-card/40 p-5 flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-foreground">No attempts yet.</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">
+                        Start a Smart Drill — adaptive difficulty, no setup needed.
+                      </div>
+                    </div>
+                    <Button size="sm" onClick={handleStartAdaptive}>
+                      Start your first drill
+                    </Button>
+                  </div>
+                )}
 
                 {/* Recent Performance */}
                 <RecentPerformanceWidget />
