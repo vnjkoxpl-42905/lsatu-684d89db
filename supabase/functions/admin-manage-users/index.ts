@@ -161,6 +161,30 @@ Deno.serve(async (req) => {
         return jsonRes({ success: true });
       }
 
+      // Apply a template (explicit flag map) to a user. One DB update so
+      // the user never sits in a partially-applied state.
+      if (action === "apply_template") {
+        const { class_id, flags } = body;
+        if (!class_id || !flags || typeof flags !== "object") {
+          return jsonRes({ error: "Invalid params" }, 400);
+        }
+        const updates: Record<string, boolean> = {};
+        for (const flag of ALL_FLAGS) {
+          if (typeof flags[flag] === "boolean") {
+            updates[flag] = flags[flag];
+          }
+        }
+        if (Object.keys(updates).length === 0) {
+          return jsonRes({ error: "No valid flags" }, 400);
+        }
+        const { error } = await admin
+          .from("profiles")
+          .update(updates)
+          .eq("class_id", class_id);
+        if (error) throw error;
+        return jsonRes({ success: true });
+      }
+
       // Bulk grant/revoke all flags for a user
       if (action === "bulk_user") {
         const { class_id, value } = body;
