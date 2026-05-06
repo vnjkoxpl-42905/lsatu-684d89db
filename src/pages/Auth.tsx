@@ -671,7 +671,8 @@ export default function Auth() {
   // CTAs from every Arc section funnel into the existing modal — preserves
   // the auth flow exactly. setModalOpen(true) opens the GlassShell sign-in,
   // which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
-  const openSignIn = React.useCallback(() => setModalOpen(true), []);
+  const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
+  const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
 
   const oauthReturning =
     typeof window !== 'undefined' &&
