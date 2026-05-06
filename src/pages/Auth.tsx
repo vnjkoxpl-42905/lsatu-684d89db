@@ -189,7 +189,7 @@ function MarketingImage({ src, alt, aspect = '16 / 9', maxWidth = 1100, marginTo
 }
 
 // ── Hero ── Arc: heading + subhead + 1 CTA + product image. h1 sized for typographic confidence.
-const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
+const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
   <section style={{ padding: '90px 32px 72px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
       <h1 style={{
