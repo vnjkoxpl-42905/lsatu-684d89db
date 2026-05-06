@@ -170,6 +170,7 @@ function DrillContent() {
   const [totalPoolSize, setTotalPoolSize] = React.useState(0);
   const [availablePoolSize, setAvailablePoolSize] = React.useState(0);
   const [poolExhausted, setPoolExhausted] = React.useState(false);
+  const [bootError, setBootError] = React.useState<string | null>(null);
   const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
   const currentViewId = React.useRef<string | null>(null);
@@ -268,9 +269,21 @@ function DrillContent() {
         setPoolStatus(QuestionPoolService.getPoolStatus(rawQuestions.length, available.length, poolSettings));
 
         if (exhausted) {
-          // Don't initialize session if pool is exhausted
+          // Don't initialize session if pool is exhausted — surface the
+          // reason so the render layer can show a real message instead of
+          // the misleading "Session Complete / Loading…" card.
+          setBootError(
+            "You've already practiced every available question for this drill type. Adjust your drill settings or come back after recycle."
+          );
           return;
         }
+      }
+
+      if (rawQuestions.length === 0) {
+        setBootError(
+          "The question bank hasn't loaded any questions for this drill. Try refreshing or contact support if this persists."
+        );
+        return;
       }
 
       // For type-drill, apply balanced selection from available pool (only if not pre-selected)
@@ -1613,6 +1626,34 @@ function DrillContent() {
     return <div className="min-h-screen bg-background" />;
   }
 
+  // Initial loading — class id, question bank, or session not yet ready.
+  // Must come BEFORE the "session ended" branch so we don't render
+  // "Session Complete" while we're actually still booting.
+  if (!session && !bootError && (classIdLoading || qbLoading)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-6 text-center">
+          <h2 className="text-lg font-semibold mb-2">Preparing your drill…</h2>
+          <p className="text-sm text-muted-foreground">Loading question bank.</p>
+        </Card>
+      </div>
+    );
+  }
+
+  // Initialization failed truthfully (pool exhausted, empty bank, etc.) —
+  // show a real message instead of the misleading completion card.
+  if (!session && bootError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-8 max-w-md text-center">
+          <h2 className="text-xl font-semibold mb-3">No questions available</h2>
+          <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
+          <Button onClick={() => navigate('/foyer')}>Return to Main Hub</Button>
+        </Card>
+      </div>
+    );
+  }
+
   // Handle session completion with BR (old flow)
   if (!session || !currentQuestion) {
     // Check if we should show BR selection
@@ -1687,7 +1728,10 @@ function DrillContent() {
                 Correct: {Array.from(session.attempts.values()).filter(a => a.correct).length} / {session.attempts.size}
               </>
             ) : (
-              'Loading...'
+              // Defensive: should be unreachable after the loading and
+              // bootError guards above. If we still hit this, send the
+              // user back to the hub rather than trapping them.
+              'Returning to hub…'
             )}
           </p>
           <div className="flex gap-3">
