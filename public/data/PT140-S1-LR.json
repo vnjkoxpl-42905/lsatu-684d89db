@@ -6,8 +6,8 @@
     "questionType": "Strengthen",
     "reasoningType": null,
     "questionDifficulty": 1,
-    "stimulus": "Several years ago, most of one country’s large banks failed and were taken over by a government agency. The agency is now selling these banks, aiming to strengthen the banking system in the process. But the banking system will not be strengthened if the former owners of these banks buy them back. So the agency is unlikely to achieve its goal, since _______. The conclusion of the argument is properly drawn if",
-    "questionStem": "which one of the following completes the passage?",
+    "stimulus": "Several years ago, most of one country’s large banks failed and were taken over by a government agency. The agency is now selling these banks, aiming to strengthen the banking system in the process. But the banking system will not be strengthened if the former owners of these banks buy them back. So the agency is unlikely to achieve its goal, since _______.",
+    "questionStem": "The conclusion of the argument is properly drawn if which one of the following completes the passage?",
     "answerChoices": {
       "A": "the agency may be unable to sell some of the banks",
       "B": "a single company could buy more than one of the banks",
@@ -150,8 +150,8 @@
     "questionType": "Necessary Assumption",
     "reasoningType": null,
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Records from 1850 to 1900 show that in a certain region, babies’ birth weights each year varied with the success of the previous year’s crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy. The argument proceeds by",
+    "stimulus": "Records from 1850 to 1900 show that in a certain region, babies’ birth weights each year varied with the success of the previous year’s crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
+    "questionStem": "The argument proceeds by",
     "answerChoices": {
       "A": "inferring from a claimed correlation between two phenomena that two other phenomena are causally connected to one another",
       "B": "inferring from the claim that two phenomena have fluctuated together that one of those phenomena must be the sole cause of the other",
@@ -294,8 +294,8 @@
     "questionType": "Must Be True",
     "reasoningType": null,
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "If a motor is sound-insulated, then it is quiet enough to use in home appliances. If a motor is quiet enough to use in home appliances, then it can be used in institutional settings. None of the motors manufactured by EM Industries are quiet enough to use in home appliances. If the statements above are true, which one of the following must be true?",
+    "stimulus": "If a motor is sound-insulated, then it is quiet enough to use in home appliances. If a motor is quiet enough to use in home appliances, then it can be used in institutional settings. None of the motors manufactured by EM Industries are quiet enough to use in home appliances.",
+    "questionStem": "If the statements above are true, which one of the following must be true?",
     "answerChoices": {
       "A": "If a motor can be used in institutional settings, then it is sound-insulated.",
       "B": "None of the motors manufactured by EM Industries are sound-insulated.",
@@ -366,8 +366,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Lawyer: If you take something that you have good reason to think is someone else’s property, that is stealing, and stealing is wrong. However, Meyers had no good reason to think that the compost in the public garden was anyone else’s property, so it was not wrong for Meyers to take it. The reasoning in the lawyer’s argument is flawed in that the argument",
+    "stimulus": "Lawyer: If you take something that you have good reason to think is someone else’s property, that is stealing, and stealing is wrong. However, Meyers had no good reason to think that the compost in the public garden was anyone else’s property, so it was not wrong for Meyers to take it.",
+    "questionStem": "The reasoning in the lawyer’s argument is flawed in that the argument",
     "answerChoices": {
       "A": "confuses a factual claim with a moral judgment",
       "B": "takes for granted that Meyers would not have taken the compost if he had good reason to believe that it was someone else’s property",

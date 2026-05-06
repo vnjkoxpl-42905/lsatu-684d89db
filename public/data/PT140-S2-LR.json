@@ -150,8 +150,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "CEO: We have been falsely criticized for not being an environmentally responsible corporation. Environmentally responsible corporations are corporations that do all they can to pollute less. Our current production methods pollute significantly less than our old methods did, and there currently are no methods that do not produce any pollution. The reasoning in the CEO’s argument is flawed in that it",
+    "stimulus": "CEO: We have been falsely criticized for not being an environmentally responsible corporation. Environmentally responsible corporations are corporations that do all they can to pollute less. Our current production methods pollute significantly less than our old methods did, and there currently are no methods that do not produce any pollution.",
+    "questionStem": "The reasoning in the CEO’s argument is flawed in that it",
     "answerChoices": {
       "A": "takes for granted that production methods that do not produce pollution cannot be developed",
       "B": "fails to take into account the possibility that different causes can have similar effects",
@@ -168,8 +168,8 @@
     "questionType": "Necessary Assumption",
     "reasoningType": null,
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "A recent study showed that people who address problems quickly and directly are significantly less likely to have gum disease than are people who react to problems by refusing to think about them. Since stress can have a negative effect on the immune system, the study’s results clearly indicate that some forms of gum disease are caused or aggravated by suppression of the immune system. The argument requires the assumption that",
+    "stimulus": "A recent study showed that people who address problems quickly and directly are significantly less likely to have gum disease than are people who react to problems by refusing to think about them. Since stress can have a negative effect on the immune system, the study’s results clearly indicate that some forms of gum disease are caused or aggravated by suppression of the immune system.",
+    "questionStem": "The argument requires the assumption that",
     "answerChoices": {
       "A": "painful conditions will interfere with a person’s ability to address problems quickly and directly",
       "B": "refusing to think about something troubling contributes to a person’s level of stress",
@@ -456,8 +456,8 @@
     "questionType": "Method of Reasoning",
     "reasoningType": null,
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "People may praise the talent of a painter capable of realistically portraying a scene and dismiss as artistically worthless the efforts of abstract expressionists, but obviously an exact replica of the scene depicted is not the only thing people appreciate in a painting, for otherwise photography would have entirely displaced painting as an art form. The argument proceeds by",
+    "stimulus": "People may praise the talent of a painter capable of realistically portraying a scene and dismiss as artistically worthless the efforts of abstract expressionists, but obviously an exact replica of the scene depicted is not the only thing people appreciate in a painting, for otherwise photography would have entirely displaced painting as an art form.",
+    "questionStem": "The argument proceeds by",
     "answerChoices": {
       "A": "using a claim about what most people appreciate to support an aesthetic principle",
       "B": "appealing to an aesthetic principle to defend the tastes that people have",
