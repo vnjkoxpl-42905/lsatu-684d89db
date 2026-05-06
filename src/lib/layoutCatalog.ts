@@ -49,7 +49,7 @@ export const ORBITAL_CATALOG: CatalogItem[] = [
   { id: "smart-drill", label: "Smart Drill", icon: Zap, requires: "has_drill_access" },
   { id: "resume", label: "Resume", icon: Play },
   { id: "find", label: "Find", icon: Search },
-  { id: "mock-lsat", label: "Mock LSAT", icon: BookOpen, requires: "has_practice_access" },
+  { id: "mock-lsat", label: "Practice", icon: BookOpen, requires: "has_practice_access" },
   { id: "last-bootcamp", label: "Last Bootcamp", icon: Flame, requires: "has_bootcamp_access" },
 ];
 

@@ -18,6 +18,8 @@ import { openTAWidget } from "@/components/ta/taWidgetBus";
 import { openNotifications } from "@/components/notifications/notificationsBus";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import {
   DOCK_CATALOG,
   ORBITAL_CATALOG,
@@ -45,9 +47,9 @@ const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
     energy: 80,
   },
   resume: {
-    date: "Last session",
-    content: "Pick up where you left off.",
-    category: "Practice",
+    date: "Last assignment",
+    content: "Open the next thing on your plate.",
+    category: "Classroom",
     status: "pending",
     energy: 60,
   },
@@ -61,7 +63,7 @@ const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
   },
   "mock-lsat": {
     date: "Anytime",
-    content: "Take a full timed mock.",
+    content: "Open the practice surface.",
     category: "Practice",
     status: "pending",
     energy: 70,
@@ -80,6 +82,7 @@ export default function AcademyFoyer() {
   const { user, authReady } = useAuth();
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
+  const { data: classroomItems = [] } = useClassroomItems();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -139,10 +142,32 @@ export default function AcademyFoyer() {
   const onOrbitalActivate = (nodeId: number) => {
     const idx = nodeId - 1;
     const itemId = prefs.orbital[idx];
-    if (itemId === "smart-drill") navigate("/drill", { state: { mode: "adaptive" } });
-    else if (itemId === "resume") navigate("/drill");
-    else if (itemId === "mock-lsat") navigate("/practice");
-    else if (itemId === "last-bootcamp") navigate("/bootcamps");
+    if (itemId === "smart-drill") {
+      navigate("/drill", { state: { mode: "adaptive" } });
+    } else if (itemId === "resume") {
+      // Real resume: open the highest-priority active classroom item.
+      // Falls back to /drill if the student has no assigned work yet.
+      const next = nextActionFor(classroomItems);
+      const route = next ? resolveItemRoute(next) : null;
+      navigate(route ?? "/drill");
+    } else if (itemId === "mock-lsat") {
+      navigate("/practice");
+    } else if (itemId === "last-bootcamp") {
+      // Real "last bootcamp": most recently updated active bootcamp item.
+      // Falls back to the bootcamps index if none assigned.
+      const lastBootcamp = [...classroomItems]
+        .filter(
+          (i) =>
+            i.type === "bootcamp_module" &&
+            (i.status === "assigned" || i.status === "in_progress"),
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+        )[0];
+      const route = lastBootcamp ? resolveItemRoute(lastBootcamp) : null;
+      navigate(route ?? "/bootcamps");
+    }
     // 'find' opens its own expanded content via renderExpandedContent
   };
 
