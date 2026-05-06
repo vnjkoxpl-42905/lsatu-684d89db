@@ -50,6 +50,60 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_ta_drafts: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          class_id: string | null
+          created_at: string
+          created_by: string
+          draft_json: Json | null
+          draft_markdown: string | null
+          draft_type: string
+          id: string
+          input_snapshot_json: Json
+          posted_at: string | null
+          prompt: string | null
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          class_id?: string | null
+          created_at?: string
+          created_by: string
+          draft_json?: Json | null
+          draft_markdown?: string | null
+          draft_type: string
+          id?: string
+          input_snapshot_json?: Json
+          posted_at?: string | null
+          prompt?: string | null
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          class_id?: string | null
+          created_at?: string
+          created_by?: string
+          draft_json?: Json | null
+          draft_markdown?: string | null
+          draft_type?: string
+          id?: string
+          input_snapshot_json?: Json
+          posted_at?: string | null
+          prompt?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       attempts: {
         Row: {
           app_version: string | null
@@ -1217,6 +1271,95 @@ export type Database = {
         }
         Relationships: []
       }
+      student_context: {
+        Row: {
+          content_text: string | null
+          context_type: string
+          created_at: string
+          created_by: string
+          file_path: string | null
+          id: string
+          metadata: Json
+          source: string | null
+          student_id: string
+          title: string
+        }
+        Insert: {
+          content_text?: string | null
+          context_type: string
+          created_at?: string
+          created_by: string
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          source?: string | null
+          student_id: string
+          title: string
+        }
+        Update: {
+          content_text?: string | null
+          context_type?: string
+          created_at?: string
+          created_by?: string
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          source?: string | null
+          student_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      student_sessions: {
+        Row: {
+          created_at: string
+          created_by: string
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          scheduled_at: string
+          source: string | null
+          status: string
+          student_id: string
+          transcript_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          scheduled_at: string
+          source?: string | null
+          status?: string
+          student_id: string
+          transcript_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          scheduled_at?: string
+          source?: string | null
+          status?: string
+          student_id?: string
+          transcript_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_sessions_transcript_id_fkey"
+            columns: ["transcript_id"]
+            isOneToOne: false
+            referencedRelation: "student_context"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       students: {
         Row: {
           class_id: string
@@ -1277,6 +1420,98 @@ export type Database = {
         }
         Relationships: []
       }
+      ta_assignments: {
+        Row: {
+          asset_ids: string[]
+          assigned_at: string
+          assigned_by: string
+          completed_at: string | null
+          content_html: string
+          created_at: string
+          id: string
+          interaction_id: string | null
+          pdf_url: string | null
+          status: string
+          student_id: string
+          title: string
+          viewed_at: string | null
+        }
+        Insert: {
+          asset_ids?: string[]
+          assigned_at?: string
+          assigned_by: string
+          completed_at?: string | null
+          content_html: string
+          created_at?: string
+          id?: string
+          interaction_id?: string | null
+          pdf_url?: string | null
+          status?: string
+          student_id: string
+          title: string
+          viewed_at?: string | null
+        }
+        Update: {
+          asset_ids?: string[]
+          assigned_at?: string
+          assigned_by?: string
+          completed_at?: string | null
+          content_html?: string
+          created_at?: string
+          id?: string
+          interaction_id?: string | null
+          pdf_url?: string | null
+          status?: string
+          student_id?: string
+          title?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ta_assignments_interaction_id_fkey"
+            columns: ["interaction_id"]
+            isOneToOne: false
+            referencedRelation: "ta_interactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ta_interactions: {
+        Row: {
+          asset_ids: string[]
+          created_at: string
+          created_by: string | null
+          draft_content: Json | null
+          draft_status: string | null
+          id: string
+          message: string
+          role: string
+          student_id: string
+        }
+        Insert: {
+          asset_ids?: string[]
+          created_at?: string
+          created_by?: string | null
+          draft_content?: Json | null
+          draft_status?: string | null
+          id?: string
+          message: string
+          role: string
+          student_id: string
+        }
+        Update: {
+          asset_ids?: string[]
+          created_at?: string
+          created_by?: string | null
+          draft_content?: Json | null
+          draft_status?: string | null
+          id?: string
+          message?: string
+          role?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
       tactical_patterns: {
         Row: {
           application: string | null
@@ -1313,6 +1548,45 @@ export type Database = {
           pattern_type?: string
           question_types?: string[] | null
           reasoning_type?: string | null
+        }
+        Relationships: []
+      }
+      teaching_assets: {
+        Row: {
+          asset_type: string
+          content_text: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          file_path: string | null
+          id: string
+          metadata: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          asset_type: string
+          content_text?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          asset_type?: string
+          content_text?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1524,6 +1798,17 @@ export type Database = {
           message: Json
           msg_id: number
           read_ct: number
+        }[]
+      }
+      search_teaching_assets: {
+        Args: { max_rows?: number; q: string }
+        Returns: {
+          asset_type: string
+          description: string
+          excerpt: string
+          id: string
+          rank: number
+          title: string
         }[]
       }
     }
