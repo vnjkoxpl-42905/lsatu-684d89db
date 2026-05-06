@@ -51,6 +51,7 @@ const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents
 const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
 const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
 const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherSchedule = React.lazy(() => import("./pages/teacher/TeacherSchedule"));
 const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
 const TeacherAssignments = React.lazy(() => import("./pages/teacher/TeacherAssignments"));
 const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcamps"));
@@ -247,6 +248,11 @@ const App = () => {
                     <Route path="weekly-plans" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherWeeklyPlans />
+                      </React.Suspense>
+                    } />
+                    <Route path="schedule" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherSchedule />
                       </React.Suspense>
                     } />
                     <Route path="smartboard" element={
