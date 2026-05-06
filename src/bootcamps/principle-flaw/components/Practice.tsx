@@ -96,11 +96,13 @@ interface QuestionRowProps {
   isRedo: boolean;
   onToggleStatus: (status: 'correct' | 'missed') => void;
   onToggleRedo: () => void;
+  onOpen: () => void;
+  available: boolean;
 }
 
-function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: QuestionRowProps) {
+function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, available }: QuestionRowProps) {
   return (
-    <div className={`p-4 rounded-2xl border transition-all duration-300 ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
+    <div className={`p-4 rounded-2xl border transition-all duration-300 ${!available ? 'opacity-70' : ''} ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-zinc-950 border border-white/5 shadow-inner">
@@ -122,7 +124,8 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: Questi
         </div>
 
         <div className="flex items-center gap-2">
-          <OpenInDrillButton q={q} />
+          <OpenInlineButton q={q} onOpen={onOpen} available={available} />
+
           <motion.button
             onClick={() => onToggleStatus('correct')}
             whileTap={{ scale: 0.96 }}
