@@ -49,7 +49,7 @@ export default function OfficialAnswerNavigator({
             const isAnswered = attemptedQids.has(qid);
             const isClickable = jumpEnabled && i !== currentIndex;
             return (
-              <li key={qid} className="relative flex flex-col items-center">
+              <li key={qid} className="relative flex flex-col items-center shrink-0">
                 {isCurrent && (
                   <>
                     <span
