@@ -87,11 +87,11 @@ export default function AcademyFoyer() {
   const { prefs } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
-  const [walkthroughOpen, setWalkthroughOpen] = React.useState(false);
+  const [_unused, setWalkthroughOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (displayName && !hasSeenWalkthrough()) {
-      const t = setTimeout(() => setWalkthroughOpen(true), 600);
+    if (displayName && !hasSeenTour()) {
+      const t = setTimeout(() => startTour(), 600);
       return () => clearTimeout(t);
     }
   }, [displayName]);
