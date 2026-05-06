@@ -133,22 +133,8 @@ function FloatingActions({
 
   return (
     <div className="print-hide fixed bottom-6 right-6 flex flex-col gap-2.5 z-30">
-      <Tooltip content="AI Tutor (⌘J)" side="left">
-        <button
-          onClick={onOpenTutor}
-          aria-label="Open AI Tutor"
-          className={cn(
-            FAB_BASE,
-            'mc-shine',
-            'bg-[image:var(--grad-accent-strong)] text-mc-accent',
-            'border border-[color:var(--border-accent-mid)]',
-            'shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.08)]',
-            'hover:border-[color:var(--border-accent-strong)] hover:shadow-[var(--glow-accent-strong),inset_0_1px_0_rgb(255_255_255/0.10)]',
-          )}
-        >
-          <Sparkles className="h-5 w-5" strokeWidth={2.2} aria-hidden="true" />
-        </button>
-      </Tooltip>
+      {/* AI Tutor button removed — admins use the consolidated chat hub.
+          ⌘J keyboard shortcut still toggles the in-lesson tutor. */}
       <Tooltip content="Command palette (⌘K)" side="left">
         <button
           onClick={onOpenPalette}
