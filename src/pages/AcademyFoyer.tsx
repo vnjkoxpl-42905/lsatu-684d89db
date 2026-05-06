@@ -13,6 +13,7 @@ import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
 import HelpDialog from "@/components/foyer/HelpDialog";
+import WelcomeWalkthrough, { hasSeenWalkthrough } from "@/components/foyer/WelcomeWalkthrough";
 import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
 import { openTAWidget } from "@/components/ta/taWidgetBus";
 import { openNotifications } from "@/components/notifications/notificationsBus";
@@ -84,6 +85,14 @@ export default function AcademyFoyer() {
   const { prefs } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
+  const [walkthroughOpen, setWalkthroughOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (displayName && !hasSeenWalkthrough()) {
+      const t = setTimeout(() => setWalkthroughOpen(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, [displayName]);
 
   React.useEffect(() => {
     if (!authReady) return;
@@ -226,13 +235,15 @@ export default function AcademyFoyer() {
           }}
         />
 
-        <FoyerQuickDock />
+        <FoyerQuickDock onReplayTour={() => setWalkthroughOpen(true)} />
       </main>
+
+      <WelcomeWalkthrough open={walkthroughOpen} onClose={() => setWalkthroughOpen(false)} />
     </div>
   );
 }
 
-function FoyerQuickDock() {
+function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
   const navigate = useNavigate();
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
