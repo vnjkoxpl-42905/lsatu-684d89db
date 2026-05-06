@@ -19,6 +19,7 @@ import Analytics from "./pages/Analytics";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
+import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
@@ -191,6 +192,7 @@ const App = () => {
                     <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
                   } />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings/layout" element={<SettingsLayout />} />
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
                   } />
