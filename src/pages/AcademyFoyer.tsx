@@ -148,39 +148,63 @@ export default function AcademyFoyer() {
       .filter((n): n is TimelineItem => n !== null);
   }, [prefs.orbital, userHasAccess]);
 
-  if (!authReady || !user) return null;
+  const onOrbitalActivate = React.useCallback(
+    (nodeId: number) => {
+      const idx = nodeId - 1;
+      const itemId = prefs.orbital[idx];
+      if (itemId === "smart-drill") {
+        navigate("/drill", { state: { mode: "adaptive" } });
+      } else if (itemId === "resume") {
+        const next = nextActionFor(classroomItems);
+        const route = next ? resolveItemRoute(next) : null;
+        navigate(route ?? "/drill");
+      } else if (itemId === "mock-lsat") {
+        navigate("/practice");
+      } else if (itemId === "last-bootcamp") {
+        const lastBootcamp = [...classroomItems]
+          .filter(
+            (i) =>
+              i.type === "bootcamp_module" &&
+              (i.status === "assigned" || i.status === "in_progress"),
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+          )[0];
+        const route = lastBootcamp ? resolveItemRoute(lastBootcamp) : null;
+        navigate(route ?? "/bootcamps");
+      }
+    },
+    [navigate, prefs.orbital, classroomItems],
+  );
 
-  const onOrbitalActivate = (nodeId: number) => {
-    const idx = nodeId - 1;
-    const itemId = prefs.orbital[idx];
-    if (itemId === "smart-drill") {
-      navigate("/drill", { state: { mode: "adaptive" } });
-    } else if (itemId === "resume") {
-      // Real resume: open the highest-priority active classroom item.
-      // Falls back to /drill if the student has no assigned work yet.
-      const next = nextActionFor(classroomItems);
-      const route = next ? resolveItemRoute(next) : null;
-      navigate(route ?? "/drill");
-    } else if (itemId === "mock-lsat") {
-      navigate("/practice");
-    } else if (itemId === "last-bootcamp") {
-      // Real "last bootcamp": most recently updated active bootcamp item.
-      // Falls back to the bootcamps index if none assigned.
-      const lastBootcamp = [...classroomItems]
-        .filter(
-          (i) =>
-            i.type === "bootcamp_module" &&
-            (i.status === "assigned" || i.status === "in_progress"),
-        )
-        .sort(
-          (a, b) =>
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
-        )[0];
-      const route = lastBootcamp ? resolveItemRoute(lastBootcamp) : null;
-      navigate(route ?? "/bootcamps");
-    }
-    // 'find' opens its own expanded content via renderExpandedContent
-  };
+  const renderOrbitalExpanded = React.useCallback(
+    (item: TimelineItem, close: () => void) => {
+      if (item.variant !== FINDER_VARIANT) return null;
+      return (
+        <FoyerFindCard
+          onOpen={(qid) =>
+            navigate("/drill", {
+              state: {
+                mode: "type-drill",
+                config: {
+                  qtypes: [],
+                  difficulties: [],
+                  pts: [],
+                  count: 1,
+                  selectedQids: [qid],
+                },
+              },
+            })
+          }
+          onClose={close}
+        />
+      );
+    },
+    [navigate],
+  );
+
+  if (!authReady || !user) return null;
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background text-foreground">
@@ -213,28 +237,7 @@ export default function AcademyFoyer() {
         <RadialOrbitalTimeline
           timelineData={foyerNodes}
           onActivate={onOrbitalActivate}
-          renderExpandedContent={(item, close) => {
-            if (item.variant !== FINDER_VARIANT) return null;
-            return (
-              <FoyerFindCard
-                onOpen={(qid) =>
-                  navigate("/drill", {
-                    state: {
-                      mode: "type-drill",
-                      config: {
-                        qtypes: [],
-                        difficulties: [],
-                        pts: [],
-                        count: 1,
-                        selectedQids: [qid],
-                      },
-                    },
-                  })
-                }
-                onClose={close}
-              />
-            );
-          }}
+          renderExpandedContent={renderOrbitalExpanded}
         />
 
         <FoyerQuickDock onReplayTour={() => startTour()} />
