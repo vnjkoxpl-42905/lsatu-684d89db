@@ -1,42 +1,54 @@
-## Goal
+## What's actually broken
 
-Replace the current static "fixed-on-Foyer" modal walkthrough with a guided tour that **actually navigates her through the app**, dropping a small, sleek tooltip-style debrief on each real page as she lands on it.
+I checked Meghan's data. When you assigned **Principle & Flaw**, the system did fire all three notifications:
+- `classroom_items` row created (visible, May 20 → Jun 2)
+- Inbox message sent ("New assignment: Principle & Flaw…")
+- Bell notification inserted ("New assignment: Principle & Flaw")
 
-## How it will feel
+**So the assign-flow works.** The problem is that the student's `/classroom` page never renders bootcamps. It has sections for Homework, TA assignments, Recaps, Announcements — but `bootcamp_module` items fall through the cracks. That's why Meghan sees nothing in her classroom even though the row exists.
 
-1. After onboarding, a tiny "Welcome — take the 60-sec tour?" prompt appears (Start / Skip).
-2. On Start, a small floating coach card (bottom-right, ~360px wide, glass + bronze accent) appears on the **Foyer** itself — pointing at the orbital ring with a 1–2 sentence debrief.
-3. She clicks **Next** → tour navigates to `/drill` (Smart Drill page). Coach card reappears on that page with a 1–2 sentence note about adaptive practice.
-4. Continues the same way through: `/bootcamps`, `/inbox`, `/schedule`, `/analytics` (or whichever real surfaces we pick), ending back at `/foyer` with a "You're all set" card and a Start Smart Drill CTA.
-5. The card is **light, non-blocking** (no full-screen backdrop) so she can see the page behind it. Step counter + Skip + Back/Next.
+The "schedule = LSAT U calendar" you described already exists at `/schedule` (Schedule.tsx) and it does show the bootcamp as a multi-day band — but Classroom doesn't link the two surfaces, and progress on the bootcamp isn't autosaved back to the assignment.
 
-## Steps (proposed, all real routes)
+## Plan
 
-1. Foyer — "Your home base. Orbital ring = top 3 actions, sidebar = full workspace."
-2. /drill — "Smart Drill. Adaptive engine picks questions from your weakest types."
-3. /bootcamps — "Multi-day modules that teach the mechanics before you drill them."
-4. /inbox — "1:1 thread with Joshua. Real messages, PDFs, real responses."
-5. /schedule — "Your weekly plan and what's due next."
-6. /foyer (final) — "You're all set. Start Smart Drill →"
+### 1. Show assigned bootcamps in Classroom (the real fix)
+- New `BootcampsSection` on `/classroom`, placed right under "Do this next".
+- Lists every active `classroom_items` row of type `bootcamp_module` (visibility + unlock filter handled by RLS already).
+- Each card shows: title, date range, day X of Y progress bar, status pill, and a primary **Open bootcamp** button that deep-links to `b.route` (e.g. `/bootcamp/principle-flaw`).
+- Empty state hidden when there are none — no fake placeholder.
+- Only show currently-unlocked items (per your answer).
 
-## Technical notes
+### 2. Make the LSAT U calendar (Schedule) the single source of truth
+- Add a small **"In your calendar"** strip at the top of each bootcamp card linking to `/schedule` so the student sees it lives there too.
+- On the Schedule page, clicking a bootcamp day already opens a sheet — add an **Open bootcamp** CTA inside that sheet (currently it just shows the title).
+- No external Google Calendar OAuth — per your direction, the LSAT U Schedule *is* their calendar.
 
-- Replace `WelcomeWalkthrough` modal with a new `GuidedTour` component mounted once at the App layout level (so it survives navigation).
-- State (current step, active flag) lives in a small `TourContext` + `localStorage` key `lsatu_guided_tour_v1`. Keep the old `lsatu_welcome_walkthrough_v1` flag respected so existing users don't see it again.
-- Each step has `{ path, eyebrow, title, body }`. On Next: `navigate(step.path)` then re-render the floating card after route mount (small delay for transition).
-- Card: fixed `bottom-6 right-6` (mobile: bottom sheet style), pointer-events on the card only — page behind stays interactive. Esc/Skip dismisses, Back/Next navigates.
-- Hook the prompt into `AcademyFoyer` where the current walkthrough is triggered (`!hasSeenWalkthrough()` block).
-- Add a "Replay tour" entry in the Help/dock menu that calls `resetTour()` then triggers it.
+### 3. Autosave progress back to the assignment
+Currently the Principle & Flaw bootcamp stores per-day progress in `localStorage` (`pf:` keys). The teacher has no visibility, and the assignment never moves from `assigned` → `in_progress` → `completed`.
 
-## Files to change
+- Add a tiny `useBootcampProgress(itemId)` hook that:
+  - On first interaction in any bootcamp day, flips the `classroom_items` row to `status: 'in_progress'` (one-shot).
+  - On every day-complete event, writes `metadata_json.progress = { completedDays: [...], lastDayAt, percent }` (debounced, ~1s) and bumps `updated_at`.
+  - When all days are complete, sets `status: 'completed'` and `completed_at = now()`.
+- Wire this into the Principle & Flaw bootcamp's existing day-complete handler. Other bootcamps follow the same pattern when they're added.
+- Teacher's `/teacher/bootcamps` already reads `classroom_items` for that student → progress shows up automatically.
 
-- New: `src/components/foyer/GuidedTour.tsx` (floating card + step engine + storage helpers).
-- New: `src/contexts/TourContext.tsx` (start/stop/next/prev/skip + persistence).
-- Edit: `src/App.tsx` — wrap routes with `TourProvider` and render `<GuidedTour />` once.
-- Edit: `src/pages/AcademyFoyer.tsx` — replace `WelcomeWalkthrough` trigger with `useTour().start()` (auto on first visit after onboarding).
-- Edit (optional): help/dock menu to expose "Replay tour".
-- Delete or keep as legacy: `src/components/foyer/WelcomeWalkthrough.tsx` (delete after migration).
+### 4. Toast clarity on assign
+The teacher already gets `"Assigned and notified"` / `"Assigned, but email failed"`. Keep — this is correct and truthful.
 
-## Out of scope
+### 5. Confirm Meghan sees the existing P&F assignment
+After step 1 deploys, her `/classroom` will show the Principle & Flaw card immediately (the row is already in the DB). No backfill needed.
 
-- No spotlight/highlight ring on individual UI elements (could come later — would need anchor refs across many components). The card alone, on the real page, is enough to feel guided and stays sleek.
+---
+
+## Out of scope (call out, don't build)
+- **Google Calendar / Apple Calendar export** — you said the LSAT U calendar is the single source of truth, so I'm not adding `.ics` or per-user OAuth. Easy to add later if you change your mind.
+- **Other bootcamps' progress autosave** — only Principle & Flaw has a real day-by-day flow today. Hook is generic; we'll wire each bootcamp as it's built out.
+
+## Files I expect to touch
+- `src/components/classroom/BootcampsSection.tsx` *(new)*
+- `src/pages/Classroom.tsx` (mount the new section)
+- `src/pages/Schedule.tsx` (Open-bootcamp CTA in the day sheet)
+- `src/hooks/useBootcampProgress.ts` *(new)*
+- `src/pages/PrincipleFlawBootcamp.tsx` (or wherever the day-complete handler lives — wire the hook)
+- `src/lib/classroomItems.ts` (small helper to update status/metadata)
