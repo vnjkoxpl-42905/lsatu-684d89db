@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
+import FlaggedQuestionsList from '@/components/analytics/FlaggedQuestionsList';
+import { Flag } from 'lucide-react';
 
 interface AnalyticsData {
   accuracyByType: Record<string, { correct: number; total: number; accuracy: number }>;
@@ -431,6 +433,15 @@ const Analytics = () => {
                   );
                 })}
               </div>
+            </div>
+
+            {/* Flagged Questions */}
+            <div className="mt-12">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium mb-5 flex items-center gap-2">
+                <Flag className="w-3.5 h-3.5" />
+                Flagged Questions
+              </p>
+              <FlaggedQuestionsList />
             </div>
           </>
         )}
