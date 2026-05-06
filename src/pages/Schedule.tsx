@@ -62,12 +62,32 @@ function itemDate(item: ClassroomItem): Date {
   return startOfDay(new Date(raw));
 }
 
+/**
+ * For multi-day items (currently bootcamp_module with both unlock_at
+ * and due_at), return every day in the range. Other items return a
+ * single date.
+ */
+function itemDates(item: ClassroomItem): Date[] {
+  if (item.type === 'bootcamp_module' && item.unlock_at && item.due_at) {
+    const start = startOfDay(new Date(item.unlock_at));
+    const end = startOfDay(new Date(item.due_at));
+    if (end >= start) {
+      return eachDayOfInterval({ start, end });
+    }
+  }
+  return [itemDate(item)];
+}
+
+function itemMatchesDay(item: ClassroomItem, day: Date): boolean {
+  return itemDates(item).some((d) => isSameDay(d, day));
+}
+
 interface ScheduleCtx { items: ClassroomItem[] }
 const ScheduleContext = React.createContext<ScheduleCtx>({ items: [] });
 
 function CustomDayContent({ date, displayMonth }: DayContentProps) {
   const { items } = React.useContext(ScheduleContext);
-  const dayItems = items.filter((it) => isSameDay(itemDate(it), date));
+  const dayItems = items.filter((it) => itemMatchesDay(it, date));
   const isOutside = !isSameMonth(date, displayMonth);
 
   const inner = (
@@ -133,7 +153,7 @@ function WeekView({ weekAnchor, items, onDayClick }: { weekAnchor: Date; items: 
   return (
     <div className="grid grid-cols-7 gap-2 mt-2">
       {days.map((day) => {
-        const dayItems = items.filter((it) => isSameDay(itemDate(it), day));
+        const dayItems = items.filter((it) => itemMatchesDay(it, day));
         const today = isToday(day);
         return (
           <div
@@ -169,7 +189,7 @@ function WeekView({ weekAnchor, items, onDayClick }: { weekAnchor: Date; items: 
 }
 
 function DayView({ day, items, onItemClick }: { day: Date; items: ClassroomItem[]; onItemClick: (it: ClassroomItem) => void }) {
-  const dayItems = items.filter((it) => isSameDay(itemDate(it), day));
+  const dayItems = items.filter((it) => itemMatchesDay(it, day));
   return (
     <div className="mt-4 space-y-4">
       <div className={cn(
@@ -236,7 +256,7 @@ export default function Schedule() {
     setSheetOpen(true);
   };
 
-  const itemsForSelected = selectedDate ? items.filter((it) => isSameDay(itemDate(it), selectedDate)) : [];
+  const itemsForSelected = selectedDate ? items.filter((it) => itemMatchesDay(it, selectedDate)) : [];
 
   const navLabel = React.useMemo(() => {
     if (view === 'month') return format(monthAnchor, 'MMMM yyyy');

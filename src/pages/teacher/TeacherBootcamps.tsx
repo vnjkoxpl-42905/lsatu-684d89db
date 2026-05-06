@@ -1,15 +1,77 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Flame, Loader2 } from 'lucide-react';
+import { Flame, Loader2, CalendarIcon } from 'lucide-react';
+import { format, addDays } from 'date-fns';
 import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from 'sonner';
 import HubStudentList from '@/components/hub/HubStudentList';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
-import { createClassroomItem, archiveClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
+import {
+  createClassroomItem,
+  updateClassroomItem,
+  archiveClassroomItem,
+  resolveItemRoute,
+} from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
+import { cn } from '@/lib/utils';
+
+const DEFAULT_DURATION_DAYS: Record<string, number> = {
+  'principle-flaw': 14,
+  'intro-to-lr': 14,
+  'causation-station': 7,
+  abstraction: 5,
+};
+
+function defaultEnd(bootcampId: string, start: Date): Date {
+  const days = DEFAULT_DURATION_DAYS[bootcampId] ?? 7;
+  return addDays(start, days - 1);
+}
+
+interface DatePickerInlineProps {
+  label: string;
+  value: Date | undefined;
+  onChange: (d: Date) => void;
+  minDate?: Date;
+  disabled?: boolean;
+}
+
+function DatePickerInline({ label, value, onChange, minDate, disabled }: DatePickerInlineProps) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={disabled}
+          className={cn(
+            'h-8 px-2.5 gap-1.5 text-xs font-normal',
+            !value && 'text-muted-foreground',
+          )}
+        >
+          <CalendarIcon className="h-3.5 w-3.5" />
+          <span className="text-[10px] uppercase tracking-wider opacity-60">{label}</span>
+          <span>{value ? format(value, 'MMM d') : '—'}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={value}
+          onSelect={(d) => d && onChange(d)}
+          disabled={minDate ? (d) => d < minDate : undefined}
+          initialFocus
+          className={cn('p-3 pointer-events-auto')}
+        />
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default function TeacherBootcamps() {
   const { user } = useAuth();
@@ -18,6 +80,7 @@ export default function TeacherBootcamps() {
   const studentId = searchParams.get('student');
   const { data: items = [] } = useStudentClassroomItems(studentId);
   const [busy, setBusy] = useState<string | null>(null);
+  const [draftDates, setDraftDates] = useState<Record<string, { start?: Date; end?: Date }>>({});
 
   const setStudentId = (id: string) =>
     setSearchParams((p) => {
@@ -26,27 +89,50 @@ export default function TeacherBootcamps() {
       return c;
     });
 
-  const isAssigned = (bootcampId: string) =>
-    items.some(
-      (i) =>
-        i.type === 'bootcamp_module' &&
-        i.metadata_json?.bootcamp_id === bootcampId &&
-        i.status !== 'archived',
-    );
-
   const findItem = (bootcampId: string) =>
     items.find(
       (i) =>
         i.type === 'bootcamp_module' &&
-        i.metadata_json?.bootcamp_id === bootcampId &&
+        (i.metadata_json as any)?.bootcamp_id === bootcampId &&
         i.status !== 'archived',
     );
+
+  // Hydrate draft dates from existing assigned items
+  useEffect(() => {
+    setDraftDates((prev) => {
+      const next = { ...prev };
+      for (const b of BOOTCAMPS) {
+        const it = findItem(b.id);
+        if (it && !next[b.id]) {
+          next[b.id] = {
+            start: it.unlock_at ? new Date(it.unlock_at) : undefined,
+            end: it.due_at ? new Date(it.due_at) : undefined,
+          };
+        }
+      }
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length, studentId]);
+
+  const getDates = (bootcampId: string) => {
+    const d = draftDates[bootcampId];
+    return { start: d?.start, end: d?.end };
+  };
+
+  const setDates = (bootcampId: string, patch: { start?: Date; end?: Date }) =>
+    setDraftDates((prev) => ({ ...prev, [bootcampId]: { ...prev[bootcampId], ...patch } }));
 
   const toggle = async (b: BootcampDef, next: boolean) => {
     if (!studentId || !user) return;
     setBusy(b.id);
     try {
       if (next) {
+        const today = new Date();
+        const start = draftDates[b.id]?.start ?? today;
+        const end = draftDates[b.id]?.end ?? defaultEnd(b.id, start);
+        setDates(b.id, { start, end });
+
         const item = await createClassroomItem({
           studentId,
           createdBy: user.id,
@@ -57,13 +143,15 @@ export default function TeacherBootcamps() {
           sourceId: b.route,
           visibleToStudent: true,
           status: 'assigned',
+          unlockAt: start.toISOString(),
+          dueAt: end.toISOString(),
           metadata: { bootcamp_id: b.id },
         });
         const notify = await notifyStudentOfClassroomItem({
           adminUserId: user.id,
           studentId,
           title: b.title,
-          description: b.description,
+          description: `${b.description} · ${format(start, 'MMM d')} – ${format(end, 'MMM d')}`,
           route: resolveItemRoute(item) ?? b.route,
         });
         toast.success(summarizeNotifyResult(notify));
@@ -74,6 +162,26 @@ export default function TeacherBootcamps() {
       }
       qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Update failed';
+      toast.error(msg);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const updateDates = async (b: BootcampDef, start?: Date, end?: Date) => {
+    const it = findItem(b.id);
+    if (!it || !start || !end) return;
+    setBusy(b.id);
+    try {
+      await updateClassroomItem(it.id, {
+        unlock_at: start.toISOString(),
+        due_at: end.toISOString(),
+      });
+      qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
+      qc.invalidateQueries({ queryKey: ['classroom-items'] });
+      toast.success('Dates updated');
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Update failed';
       toast.error(msg);
@@ -98,9 +206,8 @@ export default function TeacherBootcamps() {
         <div className="space-y-1.5">
           <h2 className="text-xl font-semibold tracking-tight">Bootcamps</h2>
           <p className="text-sm text-zinc-400">
-            Toggle which bootcamps appear in this student's Classroom. Toggling
-            on creates a classroom_items row and notifies the student; toggling
-            off archives the item (no notification).
+            Toggle a bootcamp on, pick a start and end date, and the student will see it in
+            their Bootcamps page and Schedule for the entire range.
           </p>
         </div>
 
@@ -111,24 +218,49 @@ export default function TeacherBootcamps() {
         ) : (
           <ul className="space-y-2">
             {BOOTCAMPS.map((b) => {
-              const assigned = isAssigned(b.id);
+              const item = findItem(b.id);
+              const assigned = !!item;
+              const { start, end } = getDates(b.id);
               return (
                 <li
                   key={b.id}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/40"
+                  className="flex flex-col gap-3 px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/40 sm:flex-row sm:items-center"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium text-zinc-100">{b.title}</div>
                     <div className="text-xs text-zinc-400 mt-0.5">{b.description}</div>
                   </div>
-                  {busy === b.id ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
-                  ) : (
-                    <Switch
-                      checked={assigned}
-                      onCheckedChange={(v) => toggle(b, v)}
+
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <DatePickerInline
+                      label="Start"
+                      value={start}
+                      disabled={busy === b.id}
+                      onChange={(d) => {
+                        const newEnd = end && end >= d ? end : defaultEnd(b.id, d);
+                        setDates(b.id, { start: d, end: newEnd });
+                        if (assigned) updateDates(b, d, newEnd);
+                      }}
                     />
-                  )}
+                    <DatePickerInline
+                      label="End"
+                      value={end}
+                      minDate={start}
+                      disabled={busy === b.id}
+                      onChange={(d) => {
+                        setDates(b.id, { end: d });
+                        if (assigned) updateDates(b, start, d);
+                      }}
+                    />
+                    {busy === b.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
+                    ) : (
+                      <Switch
+                        checked={assigned}
+                        onCheckedChange={(v) => toggle(b, v)}
+                      />
+                    )}
+                  </div>
                 </li>
               );
             })}
