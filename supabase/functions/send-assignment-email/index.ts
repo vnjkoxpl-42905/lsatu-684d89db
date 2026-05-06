@@ -43,7 +43,7 @@ async function verifyAdmin(req: Request) {
     .maybeSingle();
   if (!roleData) throw new Error("Forbidden");
 
-  return { admin };
+  return { admin, authHeader };
 }
 
 Deno.serve(async (req) => {
@@ -52,15 +52,15 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { admin } = await verifyAdmin(req);
+    const { admin, authHeader } = await verifyAdmin(req);
 
     const body = (await req.json()) as Payload;
-    const { studentId, title, description, route } = body;
+    const { studentId, title, description, route, assignmentType } = body;
     if (!studentId || !title || !route) {
       return jsonRes({ ok: false, error: "missing required fields" });
     }
 
-    // Service-role lookup of student email. The client never sees PII.
+    // Service-role lookup of student email + name. The client never sees PII.
     const { data: userResp, error: lookupErr } = await admin.auth.admin.getUserById(studentId);
     if (lookupErr) {
       return jsonRes({ ok: false, error: `lookup failed: ${lookupErr.message}` });
@@ -70,51 +70,44 @@ Deno.serve(async (req) => {
       return jsonRes({ ok: false, error: "no email on file" });
     }
 
-    const apiKey = Deno.env.get("RESEND_API_KEY");
-    if (!apiKey) {
-      return jsonRes({ ok: false, error: "email provider not configured" });
-    }
-    const from = Deno.env.get("FROM_EMAIL");
-    if (!from) {
-      return jsonRes({ ok: false, error: "FROM_EMAIL not configured" });
-    }
-    const appBase = Deno.env.get("APP_BASE_URL") ?? "";
-    const link = appBase ? `${appBase}${route}` : route;
+    const { data: profile } = await admin
+      .from("profiles")
+      .select("display_name")
+      .eq("class_id", studentId)
+      .maybeSingle();
+    const studentName = (profile as { display_name?: string } | null)?.display_name ?? undefined;
 
-    const text =
-      `Joshua assigned new work in LSAT U.\n\n` +
-      `${title}\n` +
-      (description ? `${description}\n\n` : `\n`) +
-      `Open your Classroom:\n${link}\n`;
+    const appBase = Deno.env.get("APP_BASE_URL") ?? "https://lsatprep.study";
+    const link = `${appBase}${route}`;
 
-    const r = await fetch("https://api.resend.com/emails", {
+    // Forward to the Lovable Emails transactional sender.
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const r = await fetch(`${supabaseUrl}/functions/v1/send-transactional-email`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: authHeader,
+        apikey: Deno.env.get("SUPABASE_ANON_KEY")!,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from,
-        to: email,
-        subject: `New LSAT U assignment: ${title}`,
-        text,
+        templateName: "assignment-notification",
+        recipientEmail: email,
+        idempotencyKey: `assign-${studentId}-${route}-${title}`.slice(0, 200),
+        templateData: {
+          studentName,
+          itemTitle: title,
+          itemType: assignmentType ?? "assignment",
+          assignedBy: "Joshua",
+          link,
+        },
       }),
     });
 
     if (!r.ok) {
-      // Read response body for diagnostics but don't echo it back to the
-      // client — keep the surface narrow.
       let detail = "";
-      try {
-        detail = await r.text();
-      } catch {
-        // ignore
-      }
-      console.error("[send-assignment-email] resend failed", {
-        status: r.status,
-        detail,
-      });
-      return jsonRes({ ok: false, error: `resend ${r.status}` });
+      try { detail = await r.text(); } catch { /* ignore */ }
+      console.error("[send-assignment-email] enqueue failed", { status: r.status, detail });
+      return jsonRes({ ok: false, error: `email ${r.status}` });
     }
 
     return jsonRes({ ok: true });
