@@ -1,38 +1,24 @@
-## Why the bootcamp didn't show up
+## What's already in the bank vs. what you uploaded
 
-I checked the database for this student and the bootcamp **was** assigned successfully — but with `unlock_at = May 20, 2026` (today is May 6). Two things hide it:
+| File | Sections in markdown | Already in bank | Missing |
+|---|---|---|---|
+| PT102 | S2, S3, S4 | S2, S3 | **S4** |
+| PT103 | S1, S2, S3 | S1, S2 | **S3** |
+| PT105 | S1, S2, S4 | S1, S2 | **S4** |
 
-1. **Database access rule**: students can only read classroom items where `unlock_at <= now()`. So the row exists but is invisible to the student until May 20.
-2. **Classroom UI**: `BootcampsSection` filters out anything with a future unlock date, so even if the row were readable it would be hidden.
+So nothing in PT102-S2/S3, PT103-S1/S2, or PT105-S1/S2 needs to be re-added — they're already there. Three new sections to ingest: **PT102-S4, PT103-S3, PT105-S4** (~75 new questions total).
 
-Result: nothing on the classroom page, no notification on home, no link.
+## Plan
 
-## Fix
+1. **Parse the three markdown files** with a one-off Node script. Extract for each `### Question PT###-S#-Q#`:
+   - pt, section, qnum, qtype (Question Type), reasoningType (left empty if not given), difficulty, correctAnswer, stimulus, questionStem, answerChoices A–E
+2. **Generate JSON files** matching the existing schema (`public/data/PT102-S4-LR.json`, `PT103-S3-LR.json`, `PT105-S4-LR.json`).
+3. **De-dupe guard** — script will skip any qid already present in any existing `public/data/*.json` so no duplicates land.
+4. **Register the three new files** in `src/lib/questionLoader.ts`'s `JSON_FILES` array. Once registered, every mode (Drill, WAJ, bootcamps, type-drills, full-section practice) automatically picks them up — they all read from the same `questionBank`.
+5. **Verify**: run a quick count + sample check, and confirm `questionBank.load()` total grows by the expected number.
+6. **Report any malformed/skipped questions** so you know if anything didn't ingest cleanly.
 
-### 1. Make assigned bootcamps visible immediately (DB)
-Update the student-side read policy on `classroom_items` to drop the `unlock_at` gate for `bootcamp_module` rows. Bootcamps are always visible the moment they're assigned; the start date stays informational/calendar-only.
-
-### 2. Default the assignment start date to today
-In `src/pages/teacher/TeacherBootcamps.tsx`, default the start date to **today** instead of leaving the previously chosen future date. Stops accidental future-dating.
-
-### 3. Show bootcamps on classroom regardless of unlock date
-In `src/components/classroom/BootcampsSection.tsx`, remove the `unlock_at > today` filter. Always render assigned/in-progress bootcamps.
-
-### 4. Make new assignments BOLD on the classroom home
-- Promote the Bootcamps section above "This Week" / "Assigned Work" on `Classroom.tsx` so it's the first thing the student sees.
-- Add a bold **"NEW"** badge on a bootcamp card if it was assigned in the last 7 days and the student hasn't opened it yet (track `last_opened_at` in `metadata_json` via the existing `useBootcampProgress` hook; if absent and `created_at` is recent → show NEW).
-- Use stronger visual weight: amber accent border, bigger title, larger "Open bootcamp" CTA.
-- If "Do This Next" is empty AND a brand-new bootcamp exists, surface that bootcamp as the "Do This Next" item instead of "Nothing assigned yet."
-
-### 5. Notification + inbox (already wired — verify)
-The assignment flow already calls `notifyStudentOfClassroomItem`, which inserts a bell notification, posts an inbox message, and emails the student. I'll verify it's firing for bootcamp assignments and that the link points at `/bootcamp/principle-flaw`.
-
-### 6. Backfill the existing assignment for this student
-Update the active row (`1818dcf4…`) so `unlock_at = now()` so it shows up immediately on the next refresh — no need to re-assign manually.
-
-## Files touched
-- `supabase/migrations/<new>.sql` — relax student SELECT policy for bootcamp rows
-- `src/pages/teacher/TeacherBootcamps.tsx` — default start = today
-- `src/components/classroom/BootcampsSection.tsx` — remove unlock gate, add NEW badge + bold styling
-- `src/pages/Classroom.tsx` — reorder so Bootcamps shows first; surface new bootcamp in "Do This Next"
-- Data backfill via insert/update for the existing row
+## Notes / non-goals
+- Existing per-question explanations and BR breakdowns aren't in your markdown — new questions will load without them, same as most existing ones (the app already handles that gracefully).
+- Section III of PT103 is marked "unscored" in the answer key but is still useful practice; ingesting it.
+- "EXCEPT" / fill-in-the-blank features in your markdown will be appended into the question type label so they remain searchable (e.g., `Strengthen EXCEPT`).
