@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
-import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
 import { AnimatedButton } from '@/components/ui/animated-button';
 
 import { BorderBeam } from '@/components/ui/border-beam';
@@ -154,15 +153,14 @@ export default function Onboarding() {
                 Continue
               </AnimatedButton>
 
-              <div className="flex justify-center pt-1">
-                <LiquidMetalButton
-                  label={signingOut ? 'Signing out…' : 'Sign out'}
-                  ariaLabel="Sign out"
-                  onClick={() => {
-                    if (!signingOut && !saving) handleSignOut();
-                  }}
-                />
-              </div>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={signingOut || saving}
+                className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2 disabled:opacity-50"
+              >
+                {signingOut ? 'Signing out…' : 'Sign out'}
+              </button>
             </form>
           </GlassShell>
         </motion.div>

@@ -151,11 +151,11 @@ export default function RadialOrbitalTimeline({
     <div
       ref={containerRef}
       onClick={handleContainerClick}
-      className="relative w-full h-[520px] overflow-visible select-none flex items-center justify-start pl-[140px] bg-slate-50"
+      className="relative w-full h-[520px] flex items-center justify-center overflow-visible select-none"
     >
       <div
         ref={orbitRef}
-        className="relative w-[480px] h-[480px] flex items-center justify-center rounded-none border-0"
+        className="relative w-[480px] h-[480px] flex items-center justify-center"
         style={{ perspective: "1000px" }}
       >
         {/* Center sphere — cool glass */}
@@ -166,7 +166,7 @@ export default function RadialOrbitalTimeline({
 
         {/* Single orbit ring — the one true path. Nodes are centered on it. */}
         <div
-          className="absolute border border-foreground/40 shadow-[0_0_60px_rgba(255,255,255,0.08)] rounded-3xl"
+          className="absolute rounded-full border border-foreground/40 shadow-[0_0_60px_rgba(255,255,255,0.08)]"
           style={{ width: ORBIT_DIAMETER, height: ORBIT_DIAMETER }}
         />
 

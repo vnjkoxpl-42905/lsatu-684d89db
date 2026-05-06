@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, User, Shield, Sliders, BarChart3 } from "lucide-react";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { ChevronDown, User, Shield, LogOut, Sliders, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
@@ -140,16 +139,16 @@ export default function FoyerAccountButton({ displayName }: FoyerAccountButtonPr
 
         <DropdownMenuSeparator />
 
-        <div className="flex justify-center px-3 py-2">
-          <LiquidMetalButton
-            label="Sign out"
-            ariaLabel="Sign out"
-            onClick={async () => {
-              await signOut();
-              navigate("/auth");
-            }}
-          />
-        </div>
+        <DropdownMenuItem
+          onClick={async () => {
+            await signOut();
+            navigate("/auth");
+          }}
+          className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
+        >
+          <LogOut className="h-4 w-4 text-muted-foreground" aria-hidden />
+          Sign out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

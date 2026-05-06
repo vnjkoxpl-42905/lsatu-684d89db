@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { Button } from '@/components/ui/button';
-import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
 import { Switch } from '@/components/ui/switch';
 import {
   Select,
@@ -509,11 +508,15 @@ export default function Profile() {
             {/* Account ────────────────────────────────────────────────────── */}
             <div className="flex items-center justify-between px-1 pt-1">
               <IL>Account</IL>
-              <LiquidMetalButton
-                label="Sign Out"
-                ariaLabel="Sign out"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={handleSignOut}
-              />
+                className="gap-2 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-8 px-3"
+              >
+                <LogOut className="h-3 w-3" />
+                Sign Out
+              </Button>
             </div>
 
           </div>
