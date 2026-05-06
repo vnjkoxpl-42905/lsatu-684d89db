@@ -1953,22 +1953,26 @@ function DrillContent() {
       (user?.user_metadata?.display_name as string | undefined) ||
       user?.email?.split('@')[0] ||
       undefined;
-    const jumpEnabled = isPracticeSetMode || isFullSection || session.mode === 'type-drill';
+    // Match the default navigator: all modes can jump within the queue.
+    // Disable while paused to mirror the default's behavior.
+    const jumpEnabled = !timer?.isPaused;
     const handleJumpTo = (idx: number) => {
       if (!session) return;
+      if (isPracticeSetMode) questionTimer.current.pause();
       setSession({ ...session, currentIndex: idx });
     };
-    const handleTogglePauseClick = () => {
-      if (!timer) return;
-      if (timer.isPaused) timer.resume();
-      else timer.pause();
-    };
+    const handleTogglePauseClick = timer
+      ? () => {
+          if (timer.isPaused) timer.resume();
+          else timer.pause();
+        }
+      : undefined;
     const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
     const officialNext = isPracticeSetMode ? handlePracticeSetNext : handleNext;
-    const displayNum =
-      typeof currentQuestion.qnum === 'number'
-        ? currentQuestion.qnum
-        : session.currentIndex + 1;
+    const qnumNum = Number(currentQuestion.qnum);
+    const displayNum = Number.isFinite(qnumNum) && qnumNum > 0
+      ? qnumNum
+      : session.currentIndex + 1;
 
     return (
       <>
@@ -1999,7 +2003,7 @@ function DrillContent() {
           <OfficialDrillToolbar
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
-            timerLabel={timer?.label ?? ''}
+            timerLabel={timer?.label ?? ""}
             totalMs={totalMs}
             remainingMs={timer?.ms}
             isFullSection={isFullSection}
