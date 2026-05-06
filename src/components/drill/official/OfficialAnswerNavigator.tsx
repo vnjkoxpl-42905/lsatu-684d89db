@@ -65,7 +65,7 @@ export default function OfficialAnswerNavigator({
                   aria-current={isCurrent ? "true" : undefined}
                   aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}`}
                   className={cn(
-                    "min-w-[28px] h-7 px-2 rounded-full text-[12px] tabular-nums border transition-colors",
+                    "min-w-[24px] h-6 px-1.5 rounded-full text-[11px] tabular-nums border transition-colors",
                     isCurrent
                       ? "border-slate-700 bg-white text-slate-900 font-bold"
                       : isAnswered
