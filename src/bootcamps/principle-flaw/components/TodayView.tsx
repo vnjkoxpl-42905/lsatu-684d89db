@@ -57,6 +57,13 @@ export default function TodayView({
     localStorage.setItem('pf:dailyChecklists', JSON.stringify(dailyChecklists));
   }, [dailyChecklists]);
 
+  // Sync progress to the assigned classroom_items row so Joshua sees it.
+  useBootcampProgress({
+    bootcampId: 'principle-flaw',
+    completedDays,
+    totalDays: 14,
+  });
+
   const toggleDayComplete = () => {
     if (completedDays.includes(day)) {
       setCompletedDays(completedDays.filter(d => d !== day));
