@@ -415,6 +415,14 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
       <AnimatePresence mode="wait">
         {view === 'sets' ? <SetView key="sets" /> : <RedoQueueView key="redo" />}
       </AnimatePresence>
+
+      {viewer && (
+        <InlineQuestionViewer
+          initialQid={viewer.qid}
+          queue={viewer.queue.length > 0 ? viewer.queue : [viewer.qid]}
+          onClose={() => setViewer(null)}
+        />
+      )}
     </div>
   );
 }
