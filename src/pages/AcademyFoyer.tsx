@@ -19,6 +19,8 @@ import { openNotifications } from "@/components/notifications/notificationsBus";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { useInbox } from "@/hooks/useInbox";
+import { useNotifications } from "@/hooks/useNotifications";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import {
   DOCK_CATALOG,
@@ -236,7 +238,15 @@ function FoyerQuickDock() {
   const navigate = useNavigate();
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
+  const { unreadCount: inboxUnread } = useInbox();
+  const { unreadCount: notifUnread } = useNotifications();
   const [helpOpen, setHelpOpen] = React.useState(false);
+
+  const badgeFor = (id: string): number | undefined => {
+    if (id === "inbox") return inboxUnread;
+    if (id === "notifications") return notifUnread;
+    return undefined;
+  };
 
   const userHasAccess = (item: CatalogItem) => {
     if (item.adminOnly) return perms.is_admin;
@@ -275,9 +285,9 @@ function FoyerQuickDock() {
       if (!cat || !userHasAccess(cat)) return null;
       const onClick = resolveAction(id);
       if (!onClick) return null;
-      return { icon: cat.icon, label: cat.label, onClick };
+      return { icon: cat.icon, label: cat.label, onClick, badge: badgeFor(id) };
     })
-    .filter((x): x is { icon: CatalogItem["icon"]; label: string; onClick: () => void } => x !== null);
+    .filter((x): x is NonNullable<typeof x> => x !== null);
 
   return (
     <>
