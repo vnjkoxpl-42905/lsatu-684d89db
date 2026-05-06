@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Zap, Play, Search } from "lucide-react";
+import { Menu, Zap, Play, Search, GraduationCap, PencilRuler, Inbox, CalendarDays, LifeBuoy } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
@@ -11,7 +11,10 @@ import FoyerAccountButton from "@/components/foyer/FoyerAccountButton";
 import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import FloatingTAWidget from "@/components/ta/FloatingTAWidget";
+import GooeyDock from "@/components/ui/gooey-dock";
+import { openTAWidget } from "@/components/ta/taWidgetBus";
+import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
 
 const FIND_NODE_ID = 3;
 
@@ -100,7 +103,7 @@ export default function AcademyFoyer() {
         </SheetContent>
       </Sheet>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10">
+      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
           <div className="pointer-events-auto flex items-center gap-2">
             <FoyerDock />
@@ -136,9 +139,35 @@ export default function AcademyFoyer() {
             );
           }}
         />
-      </main>
 
-      <FloatingTAWidget />
+        <FoyerQuickDock />
+      </main>
+    </div>
+  );
+}
+
+function FoyerQuickDock() {
+  const navigate = useNavigate();
+  const { is_admin } = useUserPermissions();
+
+  // TODO(joshua): finalize items
+  const items = [
+    ...(is_admin
+      ? [
+          { icon: GraduationCap, label: "Ask Joshua", onClick: () => openTAWidget() },
+          { icon: PencilRuler, label: "Whiteboard", onClick: () => openWhiteboard() },
+        ]
+      : []),
+    { icon: Inbox, label: "Inbox", onClick: () => navigate("/inbox") },
+    { icon: CalendarDays, label: "Schedule", onClick: () => navigate("/schedule") },
+    { icon: LifeBuoy, label: "Help", onClick: () => navigate("/help") },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center">
+      <div className="pointer-events-auto">
+        <GooeyDock items={items} />
+      </div>
     </div>
   );
 }

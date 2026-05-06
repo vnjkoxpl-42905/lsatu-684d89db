@@ -50,7 +50,7 @@ No Prettier. Formatting is ESLint-only.
 
 ## Product rules (must not regress)
 
-- Foyer (`FoyerSidebar` + `FoyerHeroRing`) is the primary navigation. No bottom dock or utility tray — any new entry point belongs in the sidebar nav or the hero ring, not in a duplicate surface.
+- Foyer (`FoyerSidebar` + `FoyerHeroRing`) is the primary navigation. The Foyer additionally hosts a `GooeyDock` quick-launch row well below the orbital ring; this dock is allowed only on `/foyer`. Do not add docks elsewhere.
 - Inbox is real messaging with back-and-forth threads and PDF attachments, scoped 1:1 per student with admin.
 - Admin is fully responsive on desktop and mobile.
 - Do not expose actions users cannot actually perform — no fake analytics, no dead buttons, no misleading placeholders. Prefer truthful fallbacks over fake data.
