@@ -82,7 +82,7 @@ export function BootcampsSection({ items }: Props) {
             >
               <div className="flex items-start gap-3">
                 <div className="w-9 h-9 rounded-lg bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0">
-                  <Flame className="w-4.5 h-4.5" />
+                  <Flame className="w-4 h-4" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
