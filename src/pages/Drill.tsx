@@ -9,6 +9,10 @@ import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { TimerControls } from '@/components/drill/TimerControls';
+import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
+import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
+import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
+import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
 import { TutorChatModal } from '@/components/drill/TutorChatModal';
 import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
@@ -1920,6 +1924,119 @@ function DrillContent() {
       </div>
     );
   };
+
+  // ── Official testing-format layout ─────────────────────────────────────
+  // Opt-in via /drill?layout=official. Reuses every existing handler so the
+  // attempt save / WAJ / blind review / section-complete flow is identical
+  // to the default layout. Pure visual swap.
+  const isOfficialLayout = searchParams.get('layout') === 'official';
+  if (isOfficialLayout && session && currentQuestion) {
+    const isFullSection = session.mode === 'full-section';
+    const sectionTimer = session.fullSectionConfig?.timer;
+    let totalMs: number | undefined;
+    if (sectionTimer) {
+      switch (sectionTimer.mode) {
+        case '35': totalMs = 35 * 60 * 1000; break;
+        case '52.5': totalMs = 52.5 * 60 * 1000; break;
+        case '70': totalMs = 70 * 60 * 1000; break;
+        case 'custom':
+          totalMs = sectionTimer.customMinutes ? sectionTimer.customMinutes * 60 * 1000 : undefined;
+          break;
+        case 'unlimited': totalMs = undefined; break;
+      }
+    }
+    const attemptedQids = new Set<string>();
+    for (const [qid, attempt] of session.attempts) {
+      if (attempt.selectedAnswer) attemptedQids.add(qid);
+    }
+    const officialDisplayName =
+      (user?.user_metadata?.display_name as string | undefined) ||
+      user?.email?.split('@')[0] ||
+      undefined;
+    const jumpEnabled = isPracticeSetMode || isFullSection || session.mode === 'type-drill';
+    const handleJumpTo = (idx: number) => {
+      if (!session) return;
+      setSession({ ...session, currentIndex: idx });
+    };
+    const handleTogglePauseClick = () => {
+      if (!timer) return;
+      if (timer.isPaused) timer.resume();
+      else timer.pause();
+    };
+    const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
+    const officialNext = isPracticeSetMode ? handlePracticeSetNext : handleNext;
+    const displayNum =
+      typeof currentQuestion.qnum === 'number'
+        ? currentQuestion.qnum
+        : session.currentIndex + 1;
+
+    return (
+      <>
+        <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Leave drill session?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to leave? Your progress in this session will be saved.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmExit}>Yes, leave</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <OfficialDrillFrame
+          pt={isFullSection ? currentQuestion.pt : undefined}
+          section={isFullSection ? currentQuestion.section : undefined}
+          isFullSection={isFullSection}
+          displayName={officialDisplayName}
+          isPaused={!!timer?.isPaused}
+          onTogglePause={handleTogglePauseClick}
+          onComplete={handleFinishSection}
+        >
+          <OfficialDrillToolbar
+            highlightMode={highlightMode}
+            setHighlightMode={setHighlightMode}
+            timerLabel={timer?.label ?? ''}
+            totalMs={totalMs}
+            remainingMs={timer?.ms}
+            isFullSection={isFullSection}
+          />
+          <OfficialQuestionPane
+            question={{
+              qid: currentQuestion.qid,
+              qnum: currentQuestion.qnum,
+              stimulus: currentQuestion.stimulus,
+              questionStem: currentQuestion.questionStem,
+              answerChoices: currentQuestion.answerChoices,
+            }}
+            displayNumber={displayNum}
+            selectedAnswer={selectedAnswer}
+            eliminatedAnswers={eliminatedAnswers}
+            isFlagged={isFlagged}
+            highlights={highlights.get(currentQuestion.qid) || []}
+            highlightMode={highlightMode}
+            onAnswerSelect={handleAnswerSelect}
+            onEliminate={handleEliminateAnswer}
+            onToggleFlag={handleToggleFlag}
+            onTextSelection={handleTextSelection}
+            onHighlightClick={handleHighlightClick}
+          />
+          <OfficialAnswerNavigator
+            questionQueue={session.questionQueue}
+            currentIndex={session.currentIndex}
+            attemptedQids={attemptedQids}
+            jumpEnabled={jumpEnabled}
+            onJumpTo={handleJumpTo}
+            onPrev={officialPrev}
+            onNext={officialNext}
+          />
+        </OfficialDrillFrame>
+      </>
+    );
+  }
 
   return (
     <>
