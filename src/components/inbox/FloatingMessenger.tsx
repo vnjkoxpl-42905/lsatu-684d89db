@@ -71,7 +71,9 @@ export function FloatingMessenger() {
   }, [active, user, is_admin]);
 
   if (!authReady || !user || permsLoading) return null;
-  if (!has_chat_access && !is_admin) return null;
+  // Admins use the consolidated AdminChatHub instead.
+  if (is_admin) return null;
+  if (!has_chat_access) return null;
 
   const pathHidden = HIDDEN_ROUTES.some(
     (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
