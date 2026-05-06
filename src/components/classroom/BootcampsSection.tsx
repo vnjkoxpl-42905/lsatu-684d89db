@@ -40,7 +40,6 @@ export function BootcampsSection({ items }: Props) {
   const active = items.filter((i) => {
     if (i.type !== 'bootcamp_module') return false;
     if (i.status === 'archived' || i.status === 'completed') return false;
-    if (i.unlock_at && new Date(i.unlock_at) > today) return false;
     return true;
   });
 
@@ -48,7 +47,7 @@ export function BootcampsSection({ items }: Props) {
 
   return (
     <ClassroomSection title="Bootcamps">
-      <div className="space-y-2.5">
+      <div className="space-y-3">
         {active.map((it) => {
           const route = resolveItemRoute(it) ?? '/bootcamps';
           const prog = readProgress(it);
@@ -60,6 +59,8 @@ export function BootcampsSection({ items }: Props) {
               : total > 0
                 ? Math.round((done / total) * 100)
                 : 0;
+          const startsAt = it.unlock_at ? new Date(it.unlock_at) : null;
+          const notStartedYet = startsAt ? startsAt > today : false;
           const range =
             it.unlock_at && it.due_at
               ? `${format(new Date(it.unlock_at), 'MMM d')} – ${format(
@@ -67,27 +68,45 @@ export function BootcampsSection({ items }: Props) {
                   'MMM d',
                 )}`
               : null;
+          const ageHours = differenceInHours(new Date(), new Date(it.created_at));
+          const isNew = ageHours < 24 * 7 && done === 0;
 
           return (
             <div
               key={it.id}
-              className="rounded-xl border border-border/70 bg-card/40 px-4 py-3.5 space-y-3"
+              className={
+                isNew
+                  ? 'rounded-xl border-2 border-amber-500/60 bg-amber-50/40 dark:bg-amber-500/5 px-4 py-4 space-y-3 shadow-[0_0_0_4px_hsl(var(--background))_inset,0_8px_24px_-12px_hsl(var(--primary)/0.25)]'
+                  : 'rounded-xl border border-border/70 bg-card/40 px-4 py-3.5 space-y-3'
+              }
             >
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-                  <Flame className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-lg bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0">
+                  <Flame className="w-4.5 h-4.5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm font-semibold leading-snug truncate">
+                    <h3 className={isNew ? 'text-base font-bold leading-snug' : 'text-sm font-semibold leading-snug truncate'}>
                       {it.title}
                     </h3>
-                    <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-md border border-border/60 text-muted-foreground">
-                      {it.status === 'in_progress' ? 'In progress' : 'Assigned'}
-                    </span>
+                    {isNew && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500 text-white">
+                        <Sparkles className="w-3 h-3" /> New
+                      </span>
+                    )}
+                    {!isNew && (
+                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-md border border-border/60 text-muted-foreground">
+                        {it.status === 'in_progress' ? 'In progress' : 'Assigned'}
+                      </span>
+                    )}
+                    {notStartedYet && startsAt && (
+                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-md border border-amber-500/40 text-amber-700 dark:text-amber-400">
+                        Starts {format(startsAt, 'MMM d')}
+                      </span>
+                    )}
                   </div>
                   {it.description && (
-                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                    <p className={isNew ? 'text-sm text-foreground/80 mt-1' : 'text-xs text-muted-foreground mt-0.5 line-clamp-2'}>
                       {it.description}
                     </p>
                   )}
@@ -105,10 +124,14 @@ export function BootcampsSection({ items }: Props) {
                 <button
                   type="button"
                   onClick={() => navigate(route)}
-                  className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity"
+                  className={
+                    isNew
+                      ? 'shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors shadow-sm'
+                      : 'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity'
+                  }
                 >
-                  Open
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  {isNew ? 'Start bootcamp' : 'Open'}
+                  <ArrowRight className={isNew ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
                 </button>
               </div>
 
