@@ -1,73 +1,34 @@
-## Problem
+## Goal
 
-On the admin side there are currently up to **three separate floating chat surfaces** stacked in the bottom-right:
+Make sure the foyer orbital nodes are mathematically and visually locked to one circular path. Nothing should ever appear to drift, float inside, or break through the ring — at any viewport, any rotation angle.
 
-1. **Sparkles (gold)** — AI Tutor / `FloatingActions` (bootcamp only)
-2. **Graduation cap** — `FloatingTAWidget` (Teaching Assistant — pick a student → AI-assisted TA chat)
-3. **Chat bubble** — `FloatingMessenger` (real 1:1 student↔admin inbox)
+## Root cause
 
-Each opens its own panel, with its own student picker, on its own keyboard shortcut. As an admin you want **one** floating button that opens **one** panel where you can:
+In `src/components/ui/radial-orbital-timeline.tsx`:
 
-- Message any student directly (real Inbox threads)
-- Talk to the Teaching Assistant (assign tasks, ask it things)
+- The component currently draws **four concentric rings** at radii 192, 200, 200 (dashed/spinning), and 210.
+- Node centers ride on radius 200 (correct), but each node bubble is 48px wide (~26px visual radius including border).
+- Result: the inner ring at r=192 and the outer ring at r=210 cut straight through every node as it rotates. The node is locked to the orbit, but the *extra rings* make it look like it's escaping.
 
-…without juggling three different fly-outs.
+## Fix
 
-## Plan
+Collapse to a **single clean ring** with nodes centered exactly on it. One source of truth for the orbit radius — used for both the ring and the node positions — so they can never get out of sync.
 
-Consolidate into a **single admin "Chat" surface** with two tabs inside one panel.
+### Changes in `src/components/ui/radial-orbital-timeline.tsx`
 
-### 1. New unified component: `AdminChatHub`
+1. Define a single constant `ORBIT_RADIUS = 200` at the top of the component (or module).
+2. Replace the four ring `<div>`s with **one** ring sized from that constant: `width/height = ORBIT_RADIUS * 2`. Keep the subtle border + soft shadow for the premium look. Remove the dashed spinning ring and the inner/outer echoes.
+3. Use the same `ORBIT_RADIUS` inside `calculateNodePosition` instead of the hardcoded `200`. This guarantees ring and nodes always share the exact same path.
+4. Keep the center sphere as-is (it's well inside the ring and doesn't intersect anything).
+5. Leave node size, opacity-by-angle depth, and z-index logic untouched — those are correct.
 
-Location: `src/components/chat-hub/AdminChatHub.tsx` (plus a small `ChatHubFab.tsx`).
+### Verification
 
-- Single floating bubble bottom-right (replaces all three admin FABs).
-  - Icon: `MessageSquare` with a small badge for unread inbox count.
-- Opens a right-side fly-out (same Radix Dialog pattern as today's `FloatingTAWidget`) with **two tabs at the top**:
-  - **Students** — reuses existing `ThreadList` + `ConversationView` from `src/components/inbox/`. Admin sees all their threads, can pick any and message. "New conversation" entry uses existing `NewConversationDialog`.
-  - **Teaching Assistant** — reuses existing `StudentSelector` + `TAChatView` from `src/components/ta/`. Admin picks a student context (or "no student") and chats with the TA, including assigning tasks.
-- Footer "Open full page" links: Students tab → `/inbox`, TA tab → `/admin/ta`.
-- Remembers last active tab in `localStorage` (`admin-chat-hub-tab`).
-- Keyboard shortcut `⌘J` opens the panel on the TA tab; existing `subscribeTAWidget` bus is rewired to open the hub on TA tab so existing triggers keep working.
+- Visually confirm at /foyer that every node's center sits exactly on the ring, and the ring passes cleanly through the middle of each bubble at every rotation angle.
+- Resize viewport (mobile + desktop) to confirm alignment holds — since both the ring and node positions derive from the same constant, they cannot diverge.
 
-### 2. Mounting
+## Files touched
 
-In `src/App.tsx`:
+- `src/components/ui/radial-orbital-timeline.tsx` (only)
 
-- Keep `FloatingMessenger` mounted **only for non-admin students** (gate on `!is_admin`). Students keep their single Messenger bubble — no change to student UX (matches existing memory rule).
-- For admins, mount `AdminChatHub` instead of both `FloatingMessenger` and `FloatingTAWidget`.
-- Remove the standalone `<FloatingTAWidget />` mount entirely (its functionality lives in the hub now).
-
-In `src/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell.tsx`:
-
-- The bootcamp `FloatingActions` (gold Sparkles + ⌘ palette) is already admin-gated. Leave the ⌘ palette button, but **remove the Sparkles AI Tutor button** since the TA tab in the hub now covers admin AI chat. ⌘J keyboard shortcut remains and routes into the hub's TA tab.
-
-### 3. Hidden routes
-
-Hub follows the union of current hidden-route lists:
-- Hidden on `/auth`, `/onboarding`, `/reset-password`.
-- Visible on `/foyer` for admin (the FoyerDock inbox pill is student-facing; admin still benefits from the hub there). If this collides visually with FoyerDock, hide on `/foyer` and rely on dock + `/inbox` page.
-- Visible on `/admin/ta` and `/inbox` (the panel is supplemental; both pages keep working).
-
-### 4. Result
-
-**Admin** sees exactly **one** floating chat bubble everywhere it's allowed. Click it → tab between Students (real messaging) and Teaching Assistant (AI + task assignment). No more stacked icons.
-
-**Student** is unchanged: still one Messenger bubble, no TA, no hub.
-
-## Files
-
-Create:
-- `src/components/chat-hub/AdminChatHub.tsx`
-- `src/components/chat-hub/ChatHubFab.tsx`
-
-Edit:
-- `src/App.tsx` — swap admin mounts; keep `FloatingMessenger` student-only.
-- `src/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell.tsx` — drop Sparkles button from `FloatingActions`, keep ⌘J shortcut bound to hub.
-- `src/components/ta/FloatingTAWidget.tsx` — leave file in place but no longer mounted (or delete in a follow-up once we've verified `/admin/ta` page doesn't import it).
-
-## Out of scope
-
-- No backend / RLS changes. Reuses existing `useInbox`, `useTAChat`, `StudentSelector`, `TAChatView` as-is.
-- No change to student-side chat.
-- No change to `/inbox` or `/admin/ta` full pages.
+No other components, routes, or data flows are affected.
