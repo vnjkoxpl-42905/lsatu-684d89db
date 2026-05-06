@@ -10,7 +10,7 @@ import { QuestionBankProvider } from "./contexts/QuestionBankContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import Practice from "./pages/Practice";
 import AcademyFoyer from "./pages/AcademyFoyer";
 import Drill from "./pages/Drill";
 import WrongAnswerJournal from "./pages/WrongAnswerJournal";
@@ -178,7 +178,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/foyer" replace />} />
                   <Route path="/practice" element={
-                    <ProtectedRoute flag="has_practice_access"><Home /></ProtectedRoute>
+                    <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
                   } />
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
