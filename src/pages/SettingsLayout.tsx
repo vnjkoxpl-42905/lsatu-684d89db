@@ -1,8 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronUp, ChevronDown, Plus, RotateCcw, Save, X, Loader2, Check } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useBlocker } from "react-router-dom";
+import {
+  ArrowLeft,
+  ChevronUp,
+  ChevronDown,
+  Plus,
+  RotateCcw,
+  Save,
+  X,
+  Loader2,
+  Check,
+  Undo2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,10 +39,10 @@ import {
   SIDEBAR_CATALOG,
   ORBITAL_MAX,
   ORBITAL_MIN,
+  SIDEBAR_MIN,
   type CatalogItem,
 } from "@/lib/layoutCatalog";
 import {
-  PRESETS,
   defaultLayout,
   detectPreset,
   getPreset,
@@ -48,6 +69,7 @@ export default function SettingsLayout() {
   const { prefs: serverPrefs, loading, save, saving } = useLayoutPrefs();
 
   const [draft, setDraft] = useState<LayoutPrefs>(defaultLayout());
+  const [confirmRestoreOpen, setConfirmRestoreOpen] = useState(false);
 
   useEffect(() => {
     if (!authReady) return;
@@ -63,6 +85,27 @@ export default function SettingsLayout() {
   const dirty = useMemo(
     () => JSON.stringify(draft) !== JSON.stringify(serverPrefs),
     [draft, serverPrefs],
+  );
+
+  // ── Unsaved-changes guard #1: browser-level beforeunload (refresh, tab close) ──
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      // Modern browsers ignore the message; setting returnValue is what triggers
+      // the confirm.
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
+
+  // ── Unsaved-changes guard #2: in-app router blocker ──
+  // useBlocker triggers when an in-app navigation is attempted while dirty;
+  // we surface a confirm dialog rather than navigating directly.
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      dirty && currentLocation.pathname !== nextLocation.pathname,
   );
 
   const detectedPreset = detectPreset(draft);
@@ -86,6 +129,7 @@ export default function SettingsLayout() {
   const remove = (surface: Surface, idx: number) => {
     setDraft((d) => {
       if (surface === "orbital" && d.orbital.length <= ORBITAL_MIN) return d;
+      if (surface === "sidebar" && d.sidebar.length <= SIDEBAR_MIN) return d;
       const list = d[surface].filter((_, i) => i !== idx);
       return { ...d, [surface]: list };
     });
@@ -113,14 +157,21 @@ export default function SettingsLayout() {
     }
   };
 
-  const onReset = () => setDraft(getPreset("default"));
+  const onDiscard = () => {
+    setDraft(serverPrefs);
+  };
+
+  const onRestoreDefault = () => {
+    setDraft(getPreset("default"));
+    setConfirmRestoreOpen(false);
+  };
 
   if (!authReady || !user) return null;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
-        <div className="mx-auto max-w-3xl px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-3xl px-6 py-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => navigate("/foyer")} aria-label="Back">
               <ArrowLeft className="h-4 w-4" />
@@ -131,10 +182,25 @@ export default function SettingsLayout() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={onReset} disabled={saving}>
-              <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Reset
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onDiscard}
+              disabled={!dirty || saving || loading}
+              title="Revert unsaved edits to your last saved layout"
+            >
+              <Undo2 className="h-3.5 w-3.5 mr-1.5" /> Discard changes
             </Button>
-            <Button size="sm" onClick={onSave} disabled={!dirty || saving}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setConfirmRestoreOpen(true)}
+              disabled={saving || loading}
+              title="Replace your current layout with the Default preset"
+            >
+              <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Restore default
+            </Button>
+            <Button size="sm" onClick={onSave} disabled={!dirty || saving || loading}>
               {saving ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Save className="h-3.5 w-3.5 mr-1.5" />}
               Save
             </Button>
@@ -157,6 +223,42 @@ export default function SettingsLayout() {
           />
         ))}
       </main>
+
+      {/* Restore default confirm */}
+      <AlertDialog open={confirmRestoreOpen} onOpenChange={setConfirmRestoreOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Restore default layout?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This replaces your current draft with the Default preset. Your saved
+              layout is unchanged until you click Save.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onRestoreDefault}>Restore default</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Unsaved-changes router blocker confirm */}
+      <AlertDialog open={blocker.state === "blocked"}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved layout edits. Leaving will discard them — your
+              saved layout stays as it was.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => blocker.reset?.()}>Stay on this page</AlertDialogCancel>
+            <AlertDialogAction onClick={() => blocker.proceed?.()}>
+              Discard and leave
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -232,8 +334,20 @@ function SurfaceEditor({
   const addable = catalog.filter((c) => !visibleSet.has(c.id) && userHasAccess(c));
 
   const isOrbital = surface === "orbital";
+  const isSidebar = surface === "sidebar";
   const atMax = isOrbital && ids.length >= ORBITAL_MAX;
-  const atMin = isOrbital && ids.length <= ORBITAL_MIN;
+  const atMinOrbital = isOrbital && ids.length <= ORBITAL_MIN;
+  const atMinSidebar = isSidebar && ids.length <= SIDEBAR_MIN;
+  const atMin = atMinOrbital || atMinSidebar;
+  const minTooltip = atMinOrbital
+    ? "Orbital ring needs at least one item"
+    : atMinSidebar
+    ? "Sidebar needs at least one item"
+    : "Remove";
+
+  // Cache the listRef so focus can return to the Add button after a remove
+  // empties the list. (Phase C will expand on this with per-row refs.)
+  const addBtnRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <section className="rounded-xl border border-border bg-card overflow-hidden">
@@ -243,10 +357,13 @@ function SurfaceEditor({
           {isOrbital && (
             <div className="text-[11px] text-muted-foreground">Up to {ORBITAL_MAX} items.</div>
           )}
+          {isSidebar && (
+            <div className="text-[11px] text-muted-foreground">At least {SIDEBAR_MIN} item.</div>
+          )}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" disabled={atMax || addable.length === 0}>
+            <Button ref={addBtnRef} variant="outline" size="sm" disabled={atMax || addable.length === 0}>
               <Plus className="h-3.5 w-3.5 mr-1.5" /> Add
             </Button>
           </DropdownMenuTrigger>
@@ -331,7 +448,7 @@ function SurfaceEditor({
                 type="button"
                 onClick={() => onRemove(i)}
                 disabled={atMin}
-                title={atMin ? "Needs at least one item" : "Remove"}
+                title={atMin ? minTooltip : "Remove"}
                 className="text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
                 aria-label="Remove"
               >
