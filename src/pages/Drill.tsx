@@ -2037,6 +2037,8 @@ function DrillContent() {
             sectionTitle={
               isFullSection && currentQuestion.pt && currentQuestion.section
                 ? `The Official LSAT PrepTest ${currentQuestion.pt} — Section ${currentQuestion.section}`
+                : currentQuestion.pt && currentQuestion.section
+                ? `PT${currentQuestion.pt} · S${currentQuestion.section}${currentQuestion.qnum ? ` · Q${currentQuestion.qnum}` : ''}`
                 : 'Practice Drill'
             }
             highlightMode={highlightMode}
@@ -2550,11 +2552,11 @@ export default function Drill() {
     if (state?.mode === 'full-section' && state.config) {
       const config = state.config as FullSectionConfig;
       const timerMode = config.timer.mode;
-      
+
       if (timerMode === 'unlimited') {
         return { mode: 'stopwatch' };
       }
-      
+
       let durationMs: number;
       switch (timerMode) {
         case '35': durationMs = 35 * 60 * 1000; break;
@@ -2563,11 +2565,13 @@ export default function Drill() {
         case 'custom': durationMs = (config.timer.customMinutes || 35) * 60 * 1000; break;
         default: durationMs = 35 * 60 * 1000;
       }
-      
+
       return { mode: 'countdown', durationMs };
     }
-    
-    return null;
+
+    // Default: every other drill mode (adaptive, type-drill without selectedQids,
+    // anything new) gets a stopwatch so the toolbar shows real elapsed time.
+    return { mode: 'stopwatch' };
   };
 
   const timerConfig = getTimerConfig();

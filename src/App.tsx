@@ -65,6 +65,7 @@ import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
 import AdminChatHub from "./components/chat-hub/AdminChatHub";
+import FloatingTutorButton from "./components/tutor/FloatingTutorButton";
 import GuidedTour from "./components/foyer/GuidedTour";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
@@ -354,6 +355,7 @@ const App = () => {
           <FloatingMessenger />
           <FloatingWhiteboard />
           <AdminChatHub />
+          <FloatingTutorButton />
           <GuidedTour />
         </BrowserRouter>
       </TooltipProvider>
