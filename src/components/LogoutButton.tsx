@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
 
 export function LogoutButton() {
   const { signOut } = useAuth();
@@ -12,13 +12,10 @@ export function LogoutButton() {
   };
 
   return (
-    <button
+    <LiquidMetalButton
+      label="Logout"
+      ariaLabel="Log out"
       onClick={handleLogout}
-      className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-rose-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-      aria-label="Log out"
-    >
-      <LogOut className="h-3.5 w-3.5" />
-      <span>Logout</span>
-    </button>
+    />
   );
 }
