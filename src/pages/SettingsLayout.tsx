@@ -33,6 +33,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
@@ -76,6 +82,7 @@ export default function SettingsLayout() {
   const [confirmRestoreOpen, setConfirmRestoreOpen] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const justSavedTimerRef = useRef<number | null>(null);
+  const [pendingPreset, setPendingPreset] = useState<Exclude<PresetId, "custom"> | null>(null);
 
   useEffect(() => {
     if (!authReady) return;
@@ -158,7 +165,18 @@ export default function SettingsLayout() {
   };
 
   const applyPreset = (id: Exclude<PresetId, "custom">) => {
+    // Confirm preset switch when there are unsaved edits, so a careless
+    // click doesn't blow away in-progress work.
+    if (dirty) {
+      setPendingPreset(id);
+      return;
+    }
     setDraft(getPreset(id));
+  };
+
+  const confirmPresetSwitch = () => {
+    if (pendingPreset) setDraft(getPreset(pendingPreset));
+    setPendingPreset(null);
   };
 
   const onSave = async () => {
@@ -193,9 +211,10 @@ export default function SettingsLayout() {
   if (!authReady || !user) return null;
 
   return (
+    <TooltipProvider>
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
-        <div className="mx-auto max-w-3xl px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => navigate("/foyer")} aria-label="Back">
               <ArrowLeft className="h-4 w-4" />
@@ -205,7 +224,7 @@ export default function SettingsLayout() {
               <p className="text-xs text-muted-foreground">Reorder and toggle items across the Foyer.</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-3 sm:flex sm:items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
@@ -292,7 +311,27 @@ export default function SettingsLayout() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Preset-switch-while-dirty confirm */}
+      <AlertDialog open={!!pendingPreset} onOpenChange={(open) => { if (!open) setPendingPreset(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Switch preset and lose unsaved edits?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Switching to a preset replaces your current draft. Your saved
+              layout is unchanged until you click Save.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep editing</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmPresetSwitch}>
+              Replace draft
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+    </TooltipProvider>
   );
 }
 
@@ -349,7 +388,7 @@ function PresetRow({
                 "text-left rounded-lg border px-3 py-2.5 transition-colors " +
                 (isActive
                   ? "border-primary bg-primary/10"
-                  : "border-border hover:bg-accent")
+                  : "border-border/80 hover:border-border hover:bg-accent")
               }
             >
               <div className="flex items-center gap-1.5">
@@ -415,7 +454,7 @@ function SurfaceEditor({
     <section className="rounded-xl border border-border bg-card overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <div>
-          <div className="text-sm font-semibold">{SURFACE_TITLE[surface]}</div>
+          <h2 className="text-sm font-semibold">{SURFACE_TITLE[surface]}</h2>
           {isOrbital && (
             <div className="text-[11px] text-muted-foreground">Up to {ORBITAL_MAX} items.</div>
           )}
@@ -577,7 +616,18 @@ function SurfaceRow({
         </button>
       </div>
       <item.icon className="h-4 w-4 text-muted-foreground" />
-      <span className="text-sm flex-1">{item.label}</span>
+      {item.description ? (
+        <Tooltip delayDuration={400}>
+          <TooltipTrigger asChild>
+            <span className="text-sm flex-1 cursor-help">{item.label}</span>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="max-w-[260px]">
+            {item.description}
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <span className="text-sm flex-1">{item.label}</span>
+      )}
       {!accessible && (
         <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
           No access
