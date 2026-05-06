@@ -203,7 +203,7 @@ export default function AcademyFoyer() {
         </SheetContent>
       </Sheet>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
+      <main className="relative flex-1 items-center justify-center px-6 py-10 pb-32 flex flex-col">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
           <div className="pointer-events-auto flex items-center gap-2">
             <FoyerDock />
