@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { format, differenceInCalendarDays, startOfDay } from 'date-fns';
-import { Flame, ArrowRight, CalendarDays } from 'lucide-react';
+import { format, differenceInCalendarDays, startOfDay, differenceInHours } from 'date-fns';
+import { Flame, ArrowRight, CalendarDays, Sparkles } from 'lucide-react';
 import { ClassroomSection } from './ClassroomSection';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
