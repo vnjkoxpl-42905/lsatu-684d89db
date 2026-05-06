@@ -226,7 +226,7 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
 );
 
 // ── Proof quote ── Arc: pull-quote + attribution + dual CTAs + "More details".
-const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSecondary: () => void }) => (
+const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
   <section style={{ padding: '120px 32px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
       <p style={{
@@ -242,7 +242,6 @@ const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeconda
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSecondary}>Sign in</button>
       </div>
     </div>
   </section>
