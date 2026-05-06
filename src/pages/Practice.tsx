@@ -28,6 +28,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { LogoutButton } from '@/components/LogoutButton';
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -123,6 +125,14 @@ export default function Practice() {
   const { manifest, isLoading, error } = useQuestionBank();
   const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
+  const [useOfficial, setUseOfficial] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('drillLayout') === 'official';
+  });
+  React.useEffect(() => {
+    localStorage.setItem('drillLayout', useOfficial ? 'official' : 'default');
+  }, [useOfficial]);
+  const drillPath = useOfficial ? '/drill?layout=official' : '/drill';
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
     avgAccuracy: 0,
@@ -198,15 +208,15 @@ export default function Practice() {
   };
 
   const handleStartAdaptive = () => {
-    navigate('/drill', { state: { mode: 'adaptive' } });
+    navigate(drillPath, { state: { mode: 'adaptive' } });
   };
 
   const handleStartSection = (config: FullSectionConfig) => {
-    navigate('/drill', { state: { mode: 'full-section', config } });
+    navigate(drillPath, { state: { mode: 'full-section', config } });
   };
 
   const handleStartTypeDrill = (config: TypeDrillConfig) => {
-    navigate('/drill', { state: { mode: 'type-drill', config } });
+    navigate(drillPath, { state: { mode: 'type-drill', config } });
   };
 
   const handleModeClick = (modeId: DrillMode) => {
@@ -285,6 +295,23 @@ export default function Practice() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <div
+              className="hidden sm:flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5"
+              title="LawHub-style testing chrome. Toggle on for official LSAT testing layout."
+            >
+              <Label
+                htmlFor="practice-official-toggle"
+                className="text-xs font-medium text-muted-foreground cursor-pointer select-none"
+              >
+                Official Format
+              </Label>
+              <Switch
+                id="practice-official-toggle"
+                checked={useOfficial}
+                onCheckedChange={setUseOfficial}
+                aria-label="Toggle official LSAT testing format"
+              />
+            </div>
             <LogoutButton />
             <ThemeToggle />
             <Button
