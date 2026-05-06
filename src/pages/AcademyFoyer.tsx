@@ -237,10 +237,8 @@ export default function AcademyFoyer() {
           }}
         />
 
-        <FoyerQuickDock onReplayTour={() => setWalkthroughOpen(true)} />
+        <FoyerQuickDock onReplayTour={() => startTour()} />
       </main>
-
-      <WelcomeWalkthrough open={walkthroughOpen} onClose={() => setWalkthroughOpen(false)} />
     </div>
   );
 }
