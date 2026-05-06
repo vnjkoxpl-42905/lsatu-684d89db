@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowRight, Link as LinkIcon, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -122,17 +122,22 @@ export default function RadialOrbitalTimeline({
     };
   }, [autoRotate]);
 
-  const calculateNodePosition = (index: number, total: number) => {
-    const angle = ((index / total) * 360 + rotationAngle) % 360;
-    // Orbit radius is shared with the visible ring (see ORBIT_RADIUS).
+  const nodePositions = useMemo(() => {
+    const total = timelineData.length;
     const radius = ORBIT_RADIUS;
-    const radian = (angle * Math.PI) / 180;
-    const x = radius * Math.cos(radian);
-    const y = radius * Math.sin(radian);
-    const zIndex = Math.round(100 + 50 * Math.cos(radian));
-    const opacity = Math.max(0.4, Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)));
-    return { x, y, angle, zIndex, opacity };
-  };
+    return timelineData.map((_, index) => {
+      const angle = ((index / total) * 360 + rotationAngle) % 360;
+      const radian = (angle * Math.PI) / 180;
+      const x = radius * Math.cos(radian);
+      const y = radius * Math.sin(radian);
+      const zIndex = Math.round(100 + 50 * Math.cos(radian));
+      const opacity = Math.max(
+        0.4,
+        Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)),
+      );
+      return { x, y, angle, zIndex, opacity };
+    });
+  }, [timelineData, rotationAngle]);
 
   const getStatusStyles = (status: TimelineItem["status"]): string => {
     switch (status) {
@@ -171,7 +176,7 @@ export default function RadialOrbitalTimeline({
         />
 
         {timelineData.map((item, index) => {
-          const position = calculateNodePosition(index, timelineData.length);
+          const position = nodePositions[index];
           const isExpanded = !!expandedItems[item.id];
           const isRelated = isRelatedToActive(item.id);
           const isPulsing = !!pulseEffect[item.id];

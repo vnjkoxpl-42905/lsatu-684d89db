@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,6 +30,8 @@ export function useLayoutPrefs() {
   const query = useQuery({
     queryKey: ["layout-prefs", userId],
     enabled: !!userId,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
     queryFn: async (): Promise<LayoutPrefs> => {
       const { data, error } = await supabase
         .from("profiles")
@@ -65,8 +68,13 @@ export function useLayoutPrefs() {
     },
   });
 
+  const prefs = useMemo<LayoutPrefs>(
+    () => query.data ?? defaultLayout(),
+    [query.data],
+  );
+
   return {
-    prefs: query.data ?? defaultLayout(),
+    prefs,
     loading: query.isLoading,
     save: save.mutateAsync,
     saving: save.isPending,

@@ -52,6 +52,8 @@ export function useClassroomItems() {
   return useQuery<ClassroomItem[]>({
     queryKey: ['classroom-items', user?.id],
     enabled: !!user,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const { data, error } = await (supabase as any)
         .from('classroom_items')
