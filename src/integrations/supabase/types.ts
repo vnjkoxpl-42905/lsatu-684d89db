@@ -200,6 +200,75 @@ export type Database = {
         }
         Relationships: []
       }
+      classroom_items: {
+        Row: {
+          class_id: string | null
+          completed_at: string | null
+          content_html: string | null
+          content_markdown: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_at: string | null
+          id: string
+          metadata_json: Json
+          priority: number
+          source_id: string | null
+          source_table: string | null
+          status: string
+          student_id: string
+          title: string
+          type: string
+          unlock_at: string | null
+          updated_at: string
+          visible_to_student: boolean
+        }
+        Insert: {
+          class_id?: string | null
+          completed_at?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          metadata_json?: Json
+          priority?: number
+          source_id?: string | null
+          source_table?: string | null
+          status?: string
+          student_id: string
+          title: string
+          type: string
+          unlock_at?: string | null
+          updated_at?: string
+          visible_to_student?: boolean
+        }
+        Update: {
+          class_id?: string | null
+          completed_at?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          metadata_json?: Json
+          priority?: number
+          source_id?: string | null
+          source_table?: string | null
+          status?: string
+          student_id?: string
+          title?: string
+          type?: string
+          unlock_at?: string | null
+          updated_at?: string
+          visible_to_student?: boolean
+        }
+        Relationships: []
+      }
       concept_library: {
         Row: {
           application: string | null
@@ -631,6 +700,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
