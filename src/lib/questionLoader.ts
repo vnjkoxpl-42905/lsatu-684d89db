@@ -206,6 +206,32 @@ const JSON_FILES = [
   '/data/PT140-S1-LR.json',
   '/data/PT140-S2-LR.json',
   '/data/PT140-S3-LR.json',
+  // Twenty-sixth batch - PT141, PT144, PT145 (markdown ingest)
+  '/data/PT141-S2-LR.json',
+  '/data/PT141-S4-LR.json',
+  '/data/PT144-S2-LR.json',
+  '/data/PT144-S3-LR.json',
+  '/data/PT144-S4-LR.json',
+  '/data/PT145-S2-LR.json',
+  '/data/PT145-S4-LR.json',
+  // Twenty-seventh batch - PT142, PT143, PT150, PT151, PT156, PT157, PT158 (markdown ingest)
+  '/data/PT142-S1-LR.json',
+  '/data/PT142-S2-LR.json',
+  '/data/PT142-S4-LR.json',
+  '/data/PT143-S1-LR.json',
+  '/data/PT143-S3-LR.json',
+  '/data/PT143-S4-LR.json',
+  '/data/PT150-S3-LR.json',
+  '/data/PT151-S2-LR.json',
+  '/data/PT151-S3-LR.json',
+  '/data/PT151-S4-LR.json',
+  '/data/PT156-S2-LR.json',
+  '/data/PT156-S4-LR.json',
+  '/data/PT157-S2-LR.json',
+  '/data/PT157-S3-LR.json',
+  '/data/PT158-S2-LR.json',
+  '/data/PT158-S3-LR.json',
+  '/data/PT158-S4-LR.json',
 ];
 
 // Simple hash for qid generation
