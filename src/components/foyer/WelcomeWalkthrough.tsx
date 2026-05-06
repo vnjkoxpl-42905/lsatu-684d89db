@@ -158,12 +158,12 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
             className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-neutral-900 to-neutral-950 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
           >
             {/* Bronze glow */}
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-accent-bronze/20 blur-3xl" />
+            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
 
             {/* Top progress bar */}
             <div className="relative h-1 w-full bg-white/5">
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent-bronze/80 to-accent-bronze"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-500/80 to-amber-500"
                 initial={false}
                 animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -173,7 +173,7 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
             {/* Header: step indicator + close */}
             <div className="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
               <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-400">
-                <span className="text-accent-bronze">Step {step + 1}</span>
+                <span className="text-amber-400">Step {step + 1}</span>
                 <span className="text-neutral-600">of {STEPS.length}</span>
                 <span className="text-neutral-600">·</span>
                 <span className="truncate normal-case tracking-normal text-neutral-300">{current.eyebrow}</span>
@@ -191,12 +191,12 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
               {/* Icon */}
               <div className="mb-5 flex justify-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-inner">
-                  <Icon className="h-6 w-6 text-accent-bronze" />
+                  <Icon className="h-6 w-6 text-amber-400" />
                 </div>
               </div>
 
               {/* Eyebrow */}
-              <p className="mb-2 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-accent-bronze/80">
+              <p className="mb-2 text-center text-[11px] font-medium uppercase tracking-[0.22em] text-amber-500/80">
                 {current.eyebrow}
               </p>
 
@@ -218,7 +218,7 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
                       key={i}
                       className="flex items-start gap-2 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2 text-sm text-neutral-300"
                     >
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-bronze" />
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
                       {b}
                     </li>
                   ))}
@@ -236,7 +236,7 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
                   className={cn(
                     "h-1.5 rounded-full transition-all",
                     i === step
-                      ? "w-6 bg-accent-bronze"
+                      ? "w-6 bg-amber-500"
                       : i < step
                         ? "w-1.5 bg-white/40"
                         : "w-1.5 bg-white/15",
@@ -273,7 +273,7 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
                   <Button
                     size="sm"
                     onClick={handleFinish}
-                    className="bg-accent-bronze text-black hover:bg-accent-bronze/90"
+                    className="bg-amber-500 text-black hover:bg-amber-500/90"
                   >
                     Start Smart Drill
                     <Rocket className="h-4 w-4" />
@@ -282,7 +282,7 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
                   <Button
                     size="sm"
                     onClick={() => setStep((s) => s + 1)}
-                    className="bg-accent-bronze text-black hover:bg-accent-bronze/90"
+                    className="bg-amber-500 text-black hover:bg-amber-500/90"
                   >
                     Next
                     <ChevronRight className="h-4 w-4" />
