@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
+import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
 import { AnimatedButton } from '@/components/ui/animated-button';
 
 import { BorderBeam } from '@/components/ui/border-beam';

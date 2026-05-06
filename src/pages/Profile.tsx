@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserSettings } from '@/contexts/UserSettingsContext';
 import { Button } from '@/components/ui/button';
+import { LiquidMetalButton } from '@/components/ui/liquid-metal-button';
 import { Switch } from '@/components/ui/switch';
 import {
   Select,
