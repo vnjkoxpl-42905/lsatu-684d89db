@@ -96,6 +96,13 @@ const JSON_FILES = [
   '/data/PT117-S3-LR.json',
   '/data/PT118-S1-LR.json',
   '/data/PT118-S4-LR.json',
+  // Sections added from PT111/114/117/118/120 markdown uploads
+  '/data/PT111-S3-LR.json',
+  '/data/PT111-S4-LR.json',
+  '/data/PT114-S4-LR.json',
+  '/data/PT117-S4-LR.json',
+  '/data/PT118-S3-LR.json',
+  '/data/PT120-S4-LR.json',
   // Fifth batch - PT102
   '/data/PT102-S2-LR.json',
   '/data/PT102-S3-LR.json',
