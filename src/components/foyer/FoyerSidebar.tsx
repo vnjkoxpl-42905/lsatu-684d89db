@@ -9,7 +9,6 @@ import {
   MessagesSquare,
   Flag,
   BookOpen,
-  Command,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -36,7 +35,6 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/analytics", label: "Analytics", Icon: BarChart3, flag: "has_analytics_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
   { to: "/admin/homework", label: "Homework", Icon: BookOpen, adminOnly: true },
-  { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true },
 ] as const;
 
 const today = format(new Date(), "EEEE, MMMM d");

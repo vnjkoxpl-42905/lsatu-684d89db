@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Zap, Play, Search, GraduationCap, PencilRuler, Inbox, CalendarDays, LifeBuoy } from "lucide-react";
+import { Menu, Zap, Play, Search, PencilRuler, LifeBuoy, Command } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
@@ -12,7 +12,7 @@ import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
-import { openTAWidget } from "@/components/ta/taWidgetBus";
+import HelpDialog from "@/components/foyer/HelpDialog";
 import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 
@@ -149,25 +149,26 @@ export default function AcademyFoyer() {
 function FoyerQuickDock() {
   const navigate = useNavigate();
   const { is_admin } = useUserPermissions();
+  const [helpOpen, setHelpOpen] = React.useState(false);
 
-  // TODO(joshua): finalize items
   const items = [
     ...(is_admin
       ? [
-          { icon: GraduationCap, label: "Ask Joshua", onClick: () => openTAWidget() },
+          { icon: Command, label: "Teacher Workspace", onClick: () => navigate("/teacher") },
           { icon: PencilRuler, label: "Whiteboard", onClick: () => openWhiteboard() },
         ]
       : []),
-    { icon: Inbox, label: "Inbox", onClick: () => navigate("/inbox") },
-    { icon: CalendarDays, label: "Schedule", onClick: () => navigate("/schedule") },
-    { icon: LifeBuoy, label: "Help", onClick: () => navigate("/help") },
+    { icon: LifeBuoy, label: "Help", onClick: () => setHelpOpen(true) },
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center">
-      <div className="pointer-events-auto">
-        <GooeyDock items={items} />
+    <>
+      <div className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center">
+        <div className="pointer-events-auto">
+          <GooeyDock items={items} />
+        </div>
       </div>
-    </div>
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+    </>
   );
 }
