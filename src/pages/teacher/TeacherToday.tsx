@@ -43,7 +43,7 @@ function useDashboardStats(): DashboardStats {
 export default function TeacherToday() {
   const navigate = useNavigate();
   const stats = useDashboardStats();
-  const { students = [] } = useHubStudents();
+  const { rows: students = [] } = useHubStudents();
 
   const needsReplyCount = students.filter((s) => s.has_unread_from_student).length;
 
