@@ -836,8 +836,9 @@ export default function Auth() {
                               exit={{ opacity: 0, height: 0 }}
                               className="overflow-hidden"
                             >
-                              <label className={labelCls}>Name</label>
+                              <label htmlFor="auth-name" className={labelCls}>Name</label>
                               <Input
+                                id="auth-name"
                                 type="text"
                                 required
                                 placeholder="Your name"
@@ -852,11 +853,12 @@ export default function Auth() {
 
                         {/* Email */}
                         <div>
-                          <label className={labelCls}>Email</label>
+                          <label htmlFor="auth-email" className={labelCls}>Email</label>
                           {/* group + group-focus-within replaces focused state — zero re-renders */}
                           <div className="relative group">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                             <Input
+                              id="auth-email"
                               type="email"
                               required
                               placeholder="name@example.com"
@@ -870,7 +872,7 @@ export default function Auth() {
                         {/* Password */}
                         <div>
                           <div className="flex justify-between items-end mb-1.5">
-                            <label className={labelCls} style={{ marginBottom: 0 }}>
+                            <label htmlFor="auth-password" className={labelCls} style={{ marginBottom: 0 }}>
                               Password
                             </label>
                             {!isSignUp && (
@@ -886,19 +888,21 @@ export default function Auth() {
                           <div className="relative group mt-1.5">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                             <Input
+                              id="auth-password"
                               type={showPassword ? 'text' : 'password'}
                               required
                               placeholder="••••••••••••"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
-                              minLength={isSignUp ? 6 : undefined}
+                              minLength={isSignUp ? 8 : undefined}
                               className={inputWithToggleCls}
                             />
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
                               className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                              aria-label="Toggle password visibility"
+                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              aria-pressed={showPassword}
                             >
                               {showPassword ? (
                                 <EyeOff className="w-4 h-4" />
@@ -907,6 +911,11 @@ export default function Auth() {
                               )}
                             </button>
                           </div>
+                          {isSignUp && (
+                            <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">
+                              8+ characters
+                            </p>
+                          )}
                         </div>
 
                         {/* Confirm password — sign up only */}
@@ -918,10 +927,11 @@ export default function Auth() {
                               exit={{ opacity: 0, height: 0 }}
                               className="overflow-hidden"
                             >
-                              <label className={labelCls}>Confirm Password</label>
+                              <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
                               <div className="relative group">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                                 <Input
+                                  id="auth-confirm"
                                   type={showPassword ? 'text' : 'password'}
                                   required
                                   placeholder="••••••••••••"
@@ -1031,10 +1041,11 @@ export default function Auth() {
                   </p>
                   <form onSubmit={handleForgotPassword} className="space-y-4">
                     <div>
-                      <label className={labelCls}>Email</label>
+                      <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
                       <div className="relative group">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                         <Input
+                          id="auth-reset-email"
                           type="email"
                           placeholder="name@example.com"
                           value={resetEmail}

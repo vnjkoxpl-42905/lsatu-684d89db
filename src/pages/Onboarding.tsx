@@ -114,12 +114,13 @@ export default function Onboarding() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5">
+                <label htmlFor="onboarding-name" className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5">
                   Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600 pointer-events-none" />
                   <Input
+                    id="onboarding-name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Your name"

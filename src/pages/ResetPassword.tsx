@@ -223,10 +223,11 @@ export default function ResetPassword() {
                     <p className="text-[11px] text-rose-400">This reset link is invalid or has expired.</p>
                   </div>
                   <div>
-                    <label className={labelCls}>Email</label>
+                    <label htmlFor="reset-email" className={labelCls}>Email</label>
                     <div className="relative group">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                       <Input
+                        id="reset-email"
                         type="email"
                         placeholder="name@example.com"
                         value={recoveryEmail || resetEmail}
@@ -248,10 +249,11 @@ export default function ResetPassword() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className={labelCls}>New Password</label>
+                    <label htmlFor="reset-new-password" className={labelCls}>New Password</label>
                     <div className="relative group">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                       <Input
+                        id="reset-new-password"
                         type={showNew ? 'text' : 'password'}
                         placeholder="••••••••••••"
                         value={newPassword}
@@ -260,16 +262,18 @@ export default function ResetPassword() {
                         minLength={8}
                         className={inputWithToggleCls}
                       />
-                      <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors" aria-label="Toggle">
+                      <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors" aria-label={showNew ? 'Hide password' : 'Show password'} aria-pressed={showNew}>
                         {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
+                    <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">8+ characters</p>
                   </div>
                   <div>
-                    <label className={labelCls}>Confirm Password</label>
+                    <label htmlFor="reset-confirm-password" className={labelCls}>Confirm Password</label>
                     <div className="relative group">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                       <Input
+                        id="reset-confirm-password"
                         type={showConfirm ? 'text' : 'password'}
                         placeholder="••••••••••••"
                         value={confirmPassword}
@@ -278,7 +282,7 @@ export default function ResetPassword() {
                         minLength={8}
                         className={inputWithToggleCls}
                       />
-                      <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors" aria-label="Toggle">
+                      <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors" aria-label={showConfirm ? 'Hide password' : 'Show password'} aria-pressed={showConfirm}>
                         {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
