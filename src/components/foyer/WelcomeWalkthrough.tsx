@@ -160,16 +160,34 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
             {/* Bronze glow */}
             <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-accent-bronze/20 blur-3xl" />
 
-            {/* Close */}
-            <button
-              onClick={handleClose}
-              className="absolute right-3 top-3 z-10 rounded-md p-1.5 text-neutral-400 hover:bg-white/5 hover:text-white"
-              aria-label="Close walkthrough"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {/* Top progress bar */}
+            <div className="relative h-1 w-full bg-white/5">
+              <motion.div
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-accent-bronze/80 to-accent-bronze"
+                initial={false}
+                animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
 
-            <div className="relative px-7 pt-10 pb-6">
+            {/* Header: step indicator + close */}
+            <div className="flex items-center justify-between border-b border-white/5 px-5 py-2.5">
+              <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-400">
+                <span className="text-accent-bronze">Step {step + 1}</span>
+                <span className="text-neutral-600">of {STEPS.length}</span>
+                <span className="text-neutral-600">·</span>
+                <span className="truncate normal-case tracking-normal text-neutral-300">{current.eyebrow}</span>
+              </div>
+              <button
+                onClick={handleClose}
+                className="rounded-md p-1 text-neutral-400 hover:bg-white/5 hover:text-white"
+                aria-label="Close walkthrough"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="relative px-7 pt-7 pb-6">
               {/* Icon */}
               <div className="mb-5 flex justify-center">
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-inner">
@@ -273,10 +291,6 @@ export function WelcomeWalkthrough({ open, onClose }: WelcomeWalkthroughProps) {
               </div>
             </div>
 
-            {/* Step counter */}
-            <div className="absolute bottom-[68px] right-5 text-[10px] uppercase tracking-[0.18em] text-neutral-500">
-              {step + 1} / {STEPS.length}
-            </div>
           </motion.div>
         </motion.div>
       )}
