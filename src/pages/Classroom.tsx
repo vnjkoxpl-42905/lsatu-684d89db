@@ -122,6 +122,8 @@ export default function Classroom() {
           <DoThisNextCard item={null} />
         )}
 
+        <BootcampsSection items={items} />
+
         <ThisWeekSection />
 
         <AssignedWorkSection />
