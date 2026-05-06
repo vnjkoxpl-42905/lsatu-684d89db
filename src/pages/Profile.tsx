@@ -508,15 +508,11 @@ export default function Profile() {
             {/* Account ────────────────────────────────────────────────────── */}
             <div className="flex items-center justify-between px-1 pt-1">
               <IL>Account</IL>
-              <Button
-                variant="ghost"
-                size="sm"
+              <LiquidMetalButton
+                label="Sign Out"
+                ariaLabel="Sign out"
                 onClick={handleSignOut}
-                className="gap-2 text-muted-foreground/70 hover:text-foreground hover:bg-accent text-[11px] h-8 px-3"
-              >
-                <LogOut className="h-3 w-3" />
-                Sign Out
-              </Button>
+              />
             </div>
 
           </div>

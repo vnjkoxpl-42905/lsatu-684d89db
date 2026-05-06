@@ -153,14 +153,15 @@ export default function Onboarding() {
                 Continue
               </AnimatedButton>
 
-              <button
-                type="button"
-                onClick={handleSignOut}
-                disabled={signingOut || saving}
-                className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2 disabled:opacity-50"
-              >
-                {signingOut ? 'Signing out…' : 'Sign out'}
-              </button>
+              <div className="flex justify-center pt-1">
+                <LiquidMetalButton
+                  label={signingOut ? 'Signing out…' : 'Sign out'}
+                  ariaLabel="Sign out"
+                  onClick={() => {
+                    if (!signingOut && !saving) handleSignOut();
+                  }}
+                />
+              </div>
             </form>
           </GlassShell>
         </motion.div>
