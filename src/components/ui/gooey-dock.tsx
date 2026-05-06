@@ -17,6 +17,8 @@ interface GooeyDockProps {
     icon: React.ComponentType<{ className?: string }>;
     label: string;
     onClick?: () => void;
+    /** Optional unread / count badge rendered top-right of the icon. */
+    badge?: number;
   }[];
 }
 
@@ -74,6 +76,14 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
                       onClick={item.onClick}
                     >
                       <item.icon className="h-6 w-6" />
+                      {typeof item.badge === "number" && item.badge > 0 && (
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground"
+                        >
+                          {item.badge > 9 ? "9+" : item.badge}
+                        </span>
+                      )}
                     </Button>
                   </motion.div>
                 </TooltipTrigger>
