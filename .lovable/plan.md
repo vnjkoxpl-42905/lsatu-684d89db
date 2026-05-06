@@ -1,34 +1,36 @@
 ## Goal
+When a new user signs up, every admin gets an in-app notification (bell + dropdown). Students do **not** receive this — admin-only.
 
-Make sure the foyer orbital nodes are mathematically and visually locked to one circular path. Nothing should ever appear to drift, float inside, or break through the ring — at any viewport, any rotation angle.
+## How it works today
+- `notifications` table already exists with RLS allowing users to read their own rows. Admins can insert anything.
+- `useNotifications` + `NotificationBell` already render unread counts and realtime updates for the logged-in user.
+- A profile row is created right after signup (via the existing onboarding flow / profile insert policy).
 
-## Root cause
+## Implementation
 
-In `src/components/ui/radial-orbital-timeline.tsx`:
+### 1. Database trigger (migration)
+Add a trigger on `public.profiles` that fires `AFTER INSERT` and, for each admin in `user_roles` where `role = 'admin'`, inserts a `notifications` row:
 
-- The component currently draws **four concentric rings** at radii 192, 200, 200 (dashed/spinning), and 210.
-- Node centers ride on radius 200 (correct), but each node bubble is 48px wide (~26px visual radius including border).
-- Result: the inner ring at r=192 and the outer ring at r=210 cut straight through every node as it rotates. The node is locked to the orbit, but the *extra rings* make it look like it's escaping.
+- `user_id` = admin's auth uid
+- `type` = `'signup'`
+- `title` = `'New signup'`
+- `body` = display_name (or "A new student joined") + the new user's email/name
+- `link` = `/admin` (or `/admin/students`)
 
-## Fix
+Function is `SECURITY DEFINER` with `SET search_path = public` so it can write notifications regardless of caller RLS. It silently no-ops if there are no admins.
 
-Collapse to a **single clean ring** with nodes centered exactly on it. One source of truth for the orbit radius — used for both the ring and the node positions — so they can never get out of sync.
+### 2. Type widening
+Extend `NotificationType` in `src/hooks/useNotifications.ts` to include `'signup'`, and add an icon case (`UserPlus` from lucide) in `NotificationBell.tsx`.
 
-### Changes in `src/components/ui/radial-orbital-timeline.tsx`
-
-1. Define a single constant `ORBIT_RADIUS = 200` at the top of the component (or module).
-2. Replace the four ring `<div>`s with **one** ring sized from that constant: `width/height = ORBIT_RADIUS * 2`. Keep the subtle border + soft shadow for the premium look. Remove the dashed spinning ring and the inner/outer echoes.
-3. Use the same `ORBIT_RADIUS` inside `calculateNodePosition` instead of the hardcoded `200`. This guarantees ring and nodes always share the exact same path.
-4. Keep the center sphere as-is (it's well inside the ring and doesn't intersect anything).
-5. Leave node size, opacity-by-angle depth, and z-index logic untouched — those are correct.
-
-### Verification
-
-- Visually confirm at /foyer that every node's center sits exactly on the ring, and the ring passes cleanly through the middle of each bubble at every rotation angle.
-- Resize viewport (mobile + desktop) to confirm alignment holds — since both the ring and node positions derive from the same constant, they cannot diverge.
+### 3. No frontend logic change required
+The bell already subscribes to realtime inserts filtered by `user_id`, so the admin will see the new notification appear instantly without a refresh.
 
 ## Files touched
+- New migration: `supabase/migrations/<ts>_signup_notifications.sql` (function + trigger)
+- `src/hooks/useNotifications.ts` — add `'signup'` to union
+- `src/components/notifications/NotificationBell.tsx` — add icon case
 
-- `src/components/ui/radial-orbital-timeline.tsx` (only)
-
-No other components, routes, or data flows are affected.
+## Out of scope
+- Email notifications (in-app only, per request)
+- Notifying non-admin users
+- Backfilling notifications for users who already signed up

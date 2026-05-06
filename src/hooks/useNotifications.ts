@@ -6,7 +6,8 @@ export type NotificationType =
   | "assignment"
   | "message"
   | "reminder"
-  | "streak";
+  | "streak"
+  | "signup";
 
 export interface Notification {
   id: string;

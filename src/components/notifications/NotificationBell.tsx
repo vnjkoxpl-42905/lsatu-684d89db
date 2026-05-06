@@ -6,6 +6,7 @@ import {
   Flame,
   GraduationCap,
   MessageSquare,
+  UserPlus,
 } from "lucide-react";
 import { formatRelativeShort } from "@/lib/time";
 import {
@@ -34,6 +35,8 @@ function typeIcon(type: NotificationType): ReactNode {
       return <Clock className="h-4 w-4" aria-hidden />;
     case "streak":
       return <Flame className="h-4 w-4" aria-hidden />;
+    case "signup":
+      return <UserPlus className="h-4 w-4" aria-hidden />;
   }
 }
 
