@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, User, Shield, LogOut } from "lucide-react";
+import { ChevronDown, User, Shield, LogOut, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
@@ -109,6 +109,16 @@ export default function FoyerAccountButton({ displayName }: FoyerAccountButtonPr
           >
             <Shield className="h-4 w-4 text-muted-foreground" aria-hidden />
             Admin Dashboard
+          </DropdownMenuItem>
+        )}
+
+        {(permissions.is_admin || permissions.has_analytics_access) && (
+          <DropdownMenuItem
+            onClick={() => navigate("/analytics")}
+            className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
+          >
+            <BarChart3 className="h-4 w-4 text-muted-foreground" aria-hidden />
+            Analytics
           </DropdownMenuItem>
         )}
 
