@@ -1,40 +1,46 @@
-## Problem
+## What you're seeing
 
-The landing page (`src/pages/Auth.tsx`) currently shows "Sign in" three times:
+Inside `/bootcamp/intro-to-lr` three floating buttons stack in the bottom-right:
 
-1. Top-right of `ArcNav` (sticky header)
-2. Inside `ArcProof` quote section, paired with "Begin training"
-3. Inside `ArcFinalCTA` (bottom), paired with "Begin training"
+1. **Sparkles (gold)** — AI Tutor (⌘J), mounted by `WorkspaceShell` → `FloatingActions`
+2. **Graduation cap** — `FloatingTAWidget` (admin/TA only — appears for you because you're admin)
+3. **Chat bubble with "1"** — `FloatingMessenger` (the Facebook-Messenger-style one you want to keep)
 
-There is no explicit "Sign up" entry point — new visitors only see "Begin training", which is ambiguous (it routes into the auth modal but doesn't read as account creation).
+Also, there is no way back to the Foyer from inside the bootcamp — the `LeftRail` only lists module sections (Lessons, Reference, Drills, etc.). No Home/Exit.
 
-## Recommendation
+## Fix
 
-Standard SaaS landing pattern, and the cleanest fit here:
+### 1. Add a Home / Back-to-Foyer entry inside the bootcamp
 
-- **Sign in** → lives only in the top nav (one place, persistent, expected location).
-- **Hero (beginning of page)** → primary CTA pair: **Begin training** (opens modal in sign-up mode) + **Sign up** as a secondary explicit option, OR collapse into a single "Get started — it's free" style CTA. Since you asked for an explicit Sign up, we'll show both.
-- **Mid-page proof + final CTA sections** → keep ONE primary CTA each ("Begin training"). Remove the duplicated "Sign in" buttons — anyone scrolling that far who wants to sign in will use the sticky nav.
+In `src/bootcamps/main-conclusion/components/workspace-shell/LeftRail.tsx`:
+- Add a small "← Foyer" link at the top of the left rail (above the "Intro to LR" title block, or just under it). It navigates to `/foyer`.
+- For phone breakpoint (left rail is `phone:hidden`), also surface a small fixed top-left "← Foyer" pill so mobile users have a way out.
 
-Result: Sign in appears once (nav). Sign up appears once (hero, next to Begin training). Marketing CTAs below stay focused on conversion without repeating auth options.
+### 2. Student side: keep only the chat bubble
 
-## Changes (all in `src/pages/Auth.tsx`)
+Students should see exactly one floating element: the Messenger chat bubble.
 
-1. **`ArcHero`** — add a second button "Sign up" next to "Begin training". Both open the modal; "Sign up" sets `isSignUp = true`, "Begin training" keeps current behavior. Wire via a new `onSignUp` prop.
+- **`WorkspaceShell.tsx`** — gate `<FloatingActions />` (the gold Sparkles + ⌘ Command palette buttons) behind `is_admin`. Use `useUserPermissions()`. Non-admin students get nothing from this surface. ⌘K and ⌘J keyboard shortcuts can stay (no visible buttons either way).
+- **`FloatingTAWidget`** is already admin-only, so it already disappears for students. No change needed there. (Your screenshot shows it because you're signed in as admin.)
+- **`FloatingMessenger`** — leave as-is. It already shows on bootcamp routes, has unread badge, and opens a Messenger-style fly-out. This is the single chat surface for students.
 
-2. **`ArcProof`** — remove the "Sign in" ghost button. Keep only "Begin training". Drop the `onSecondary` prop.
+### 3. Result
 
-3. **`ArcFinalCTA`** — remove the "Sign in" ghost button. Keep only "Begin training". Drop the `onSecondary` prop.
+Student on `/bootcamp/intro-to-lr`:
+- Top of left rail: "← Foyer" link to return home.
+- Bottom-right: just the chat bubble (with unread count). No Sparkles, no graduation cap, no command palette button.
 
-4. **`Auth` component body** — update the JSX call sites:
-   - Pass `onSignUp={() => { setIsSignUp(true); setModalOpen(true); }}` to `ArcHero`.
-   - Remove `onSecondary` from `ArcProof` and `ArcFinalCTA` calls.
-   - `ArcNav` Sign in button stays as-is.
+Admin on `/bootcamp/intro-to-lr` (you):
+- Same Home link.
+- Bottom-right keeps Sparkles + Command palette + TA cap + Messenger (admin tools stay).
 
-5. Ensure the existing modal already supports opening directly into Sign up mode (it does — `isSignUp` state already exists at line 381).
+## Files to edit
+
+- `src/bootcamps/main-conclusion/components/workspace-shell/LeftRail.tsx` — add Home link.
+- `src/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell.tsx` — conditionally render `<FloatingActions />` only when `is_admin`. Keep keyboard shortcuts.
+- (Optional) small mobile back-pill if the left rail isn't visible on phone.
 
 ## Out of scope
 
-- No visual redesign of the landing page.
-- No changes to the modal, auth flow, or routing.
-- No copy changes beyond the new "Sign up" button label.
+- No changes to chat behavior, TA widget logic, or routing.
+- Keyboard shortcuts (⌘K, ⌘J) stay wired so admins can still trigger them.
