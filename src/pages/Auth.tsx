@@ -734,8 +734,8 @@ export default function Auth() {
 
       <div className="arc-fade">
         <ArcNav onSignIn={openSignIn} />
-        <ArcHero onCTA={openSignIn} />
-        <ArcProof onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+        <ArcProof onPrimary={openSignIn} />
         <ArcFeatureFullWidth />
         <ArcFeatureSplit
           heading="Space for every part of your prep."
