@@ -1994,10 +1994,6 @@ function DrillContent() {
     for (const [qid, attempt] of session.attempts) {
       if (attempt.selectedAnswer) attemptedQids.add(qid);
     }
-    const officialDisplayName =
-      (user?.user_metadata?.display_name as string | undefined) ||
-      user?.email?.split('@')[0] ||
-      undefined;
     // Match the default navigator: all modes can jump within the queue.
     // Disable while paused to mirror the default's behavior.
     const jumpEnabled = !timer?.isPaused;
@@ -2036,22 +2032,22 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
-        <OfficialDrillFrame
-          pt={isFullSection ? currentQuestion.pt : undefined}
-          section={isFullSection ? currentQuestion.section : undefined}
-          isFullSection={isFullSection}
-          displayName={officialDisplayName}
-          isPaused={!!timer?.isPaused}
-          onTogglePause={handleTogglePauseClick}
-          onComplete={handleFinishSection}
-        >
+        <OfficialDrillFrame>
           <OfficialDrillToolbar
+            sectionTitle={
+              isFullSection && currentQuestion.pt && currentQuestion.section
+                ? `The Official LSAT PrepTest ${currentQuestion.pt} — Section ${currentQuestion.section}`
+                : 'Practice Drill'
+            }
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
             timerLabel={timer?.label ?? ""}
             totalMs={totalMs}
             remainingMs={timer?.ms}
             isFullSection={isFullSection}
+            isPaused={!!timer?.isPaused}
+            onTogglePause={handleTogglePauseClick}
+            onComplete={handleFinishSection}
           />
           <OfficialQuestionPane
             question={{
