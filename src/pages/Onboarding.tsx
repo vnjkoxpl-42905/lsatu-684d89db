@@ -69,20 +69,32 @@ export default function Onboarding() {
 
     setSaving(true);
     try {
-      // Update auth metadata
-      await supabase.auth.updateUser({
-        data: { display_name: trimmed }
-      });
-
-      // Update profiles table
       const classId = user!.id;
-      await supabase.from('profiles').upsert({
-        class_id: classId,
-        display_name: trimmed,
-      }, { onConflict: 'class_id' });
+
+      // Save profile FIRST — this is the gate the Foyer checks. If it fails,
+      // we must not navigate (or the user gets bounced back here forever).
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert(
+          { class_id: classId, display_name: trimmed },
+          { onConflict: 'class_id' },
+        );
+
+      if (profileError) {
+        console.error('[Onboarding] profile upsert failed', profileError);
+        toast.error(profileError.message || 'Could not save your name. Please try again.');
+        return;
+      }
+
+      // Best-effort: mirror to auth metadata. Non-blocking — failure here
+      // must NOT prevent navigation since the profile row is the source of truth.
+      supabase.auth.updateUser({ data: { display_name: trimmed } }).catch((e) => {
+        console.warn('[Onboarding] auth metadata update failed (non-fatal)', e);
+      });
 
       navigate('/foyer', { replace: true });
     } catch (err: any) {
+      console.error('[Onboarding] unexpected error', err);
       toast.error(err?.message || 'Failed to save name');
     } finally {
       setSaving(false);
