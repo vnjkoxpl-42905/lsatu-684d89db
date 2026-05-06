@@ -752,7 +752,7 @@ export default function Auth() {
           alt="The Smart Drill with adaptive difficulty"
         />
         <ArcTextOnly />
-        <ArcFinalCTA onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcFinalCTA onPrimary={openSignIn} />
         <ArcFooter />
       </div>
 
