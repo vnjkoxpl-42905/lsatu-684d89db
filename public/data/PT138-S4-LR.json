@@ -6,8 +6,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Jim’s teacher asked him to determine whether a sample of a substance contained iron. Jim knew that magnets attract iron, so he placed a magnet near the substance. Jim concluded that the substance did contain iron, because the substance became attached to the magnet. Jim’s reasoning is questionable in that it fails to consider the possibility that",
+    "stimulus": "Jim’s teacher asked him to determine whether a sample of a substance contained iron. Jim knew that magnets attract iron, so he placed a magnet near the substance. Jim concluded that the substance did contain iron, because the substance became attached to the magnet.",
+    "questionStem": "Jim’s reasoning is questionable in that it fails to consider the possibility that",
     "answerChoices": {
       "A": "iron sometimes fails to be attracted to magnets",
       "B": "iron is attracted to other objects besides magnets",
@@ -348,8 +348,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Each of the candidates in this year’s mayoral election is a small-business owner. Most small-business owners are competent managers. Moreover, no competent manager lacks the skills necessary to be a good mayor. So, most of the candidates in this year’s mayoral election have the skills necessary to be a good mayor. The pattern of flawed reasoning in which one of the following is most similar to that in the argument above?",
+    "stimulus": "Each of the candidates in this year’s mayoral election is a small-business owner. Most small-business owners are competent managers. Moreover, no competent manager lacks the skills necessary to be a good mayor. So, most of the candidates in this year’s mayoral election have the skills necessary to be a good mayor.",
+    "questionStem": "The pattern of flawed reasoning in which one of the following is most similar to that in the argument above?",
     "answerChoices": {
       "A": "Anyone who has worked in sales at this company has done so for at least a year. Most of this company’s management has worked in its sales department. So, since no one who has worked in the sales department for more than a year fails to understand marketing, most of this company’s upper management understands marketing.",
       "B": "Everything on the menu at Maddy’s Shake Shop is fat-free. Most fat-free foods and drinks are sugar- free. And all sugar-free foods and drinks are low in calories. Hence, most items on the menu at Maddy’s are low in calories.",

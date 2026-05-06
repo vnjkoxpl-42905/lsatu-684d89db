@@ -402,8 +402,8 @@
     "questionType": "Necessary Assumption",
     "reasoningType": null,
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Art historian: This painting, purportedly by Mary Cassatt, is a forgery. Although the canvas and other materials are consistent with most of Cassatt’s work, and the subject matter is similar to that of Cassatt’s finest paintings, the brush style of this painting is not found in any work known to be Cassatt’s. Hence this painting is definitely not a genuine Cassatt. The art historian’s argument depends on assuming which one of the following?",
+    "stimulus": "Art historian: This painting, purportedly by Mary Cassatt, is a forgery. Although the canvas and other materials are consistent with most of Cassatt’s work, and the subject matter is similar to that of Cassatt’s finest paintings, the brush style of this painting is not found in any work known to be Cassatt’s. Hence this painting is definitely not a genuine Cassatt.",
+    "questionStem": "The art historian’s argument depends on assuming which one of the following?",
     "answerChoices": {
       "A": "The type of canvas and other materials that Cassatt used in most of her work were readily available to others.",
       "B": "None of Cassatt’s works is painted using a brush style that is not exhibited in any of her known works.",
@@ -420,8 +420,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "In the Riverview Building, every apartment that has a balcony also has a fireplace. None of the apartments with balconies is a one-bedroom apartment. So none of the one-bedroom apartments has a fireplace. The flawed nature of the argument above can most effectively be demonstrated by noting that, by parallel reasoning, we could conclude that",
+    "stimulus": "In the Riverview Building, every apartment that has a balcony also has a fireplace. None of the apartments with balconies is a one-bedroom apartment. So none of the one-bedroom apartments has a fireplace.",
+    "questionStem": "The flawed nature of the argument above can most effectively be demonstrated by noting that, by parallel reasoning, we could conclude that",
     "answerChoices": {
       "A": "every fish has fur since no cat lacks fur and no cat is a fish",
       "B": "some cats lack fur since every dog has fur and no cat is a dog",
@@ -438,8 +438,8 @@
     "questionType": "Agree/Disagree",
     "reasoningType": null,
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Alissa: If, as the mayor says, the city can no longer continue to fund both the children’s museum and local children’s television programming, then it should cease funding the television programming. The interactive character of the exhibits at the museum makes for a richer educational experience than watching television, which is largely passive. Greta: We should stop funding the museum, not the television programming, because, as the mayor has also pointed out, the museum reaches a much smaller audience. On the basis of their statements, it can be inferred that Alissa and Greta disagree on which one of the following?",
+    "stimulus": "Alissa: If, as the mayor says, the city can no longer continue to fund both the children’s museum and local children’s television programming, then it should cease funding the television programming. The interactive character of the exhibits at the museum makes for a richer educational experience than watching television, which is largely passive. Greta: We should stop funding the museum, not the television programming, because, as the mayor has also pointed out, the museum reaches a much smaller audience.",
+    "questionStem": "On the basis of their statements, it can be inferred that Alissa and Greta disagree on which one of the following?",
     "answerChoices": {
       "A": "whether the city will need to cease funding local children’s television programming if it continues funding the children’s museum",
       "B": "whether the mayor has spoken truthfully about what will need to happen if the city does not cease funding local children’s television programming",

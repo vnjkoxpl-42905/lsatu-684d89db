@@ -24,8 +24,8 @@
     "questionType": "Paradox",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits. But when corrected for inflation, the cost of newsprint is no more than it was ten years ago. Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades. The real threats to their profitability are falling circulation and falling advertising. The accountant’s argument proceeds by",
+    "stimulus": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits. But when corrected for inflation, the cost of newsprint is no more than it was ten years ago. Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades. The real threats to their profitability are falling circulation and falling advertising.",
+    "questionStem": "The accountant’s argument proceeds by",
     "answerChoices": {
       "A": "reinterpreting a popular analogy in order to use that analogy to support an alternative conclusion",
       "B": "using economic data to raise doubts about the current effectiveness of a historically accepted approach",
@@ -168,8 +168,8 @@
     "questionType": "Agree/Disagree",
     "reasoningType": null,
     "questionDifficulty": 3,
-    "stimulus": "",
-    "questionStem": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured. Yolanda: Just as optometry relies on patients’ reports of what they see, happiness research relies on subjects’ reports of how they feel. Surely optometry is a scientific discipline. Vincent’s and Yolanda’s statements provide the most support for concluding that they disagree over which one of the following?",
+    "stimulus": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured. Yolanda: Just as optometry relies on patients’ reports of what they see, happiness research relies on subjects’ reports of how they feel. Surely optometry is a scientific discipline.",
+    "questionStem": "Vincent’s and Yolanda’s statements provide the most support for concluding that they disagree over which one of the following?",
     "answerChoices": {
       "A": "Happiness is an entirely subjective experience.",
       "B": "Optometry is a scientific discipline.",
@@ -402,8 +402,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted. But Frank has not been indicted. So clearly Frank is not an embezzler. The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
+    "stimulus": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted. But Frank has not been indicted. So clearly Frank is not an embezzler.",
+    "questionStem": "The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
     "answerChoices": {
       "A": "If Rosita knew that her 9:00 appointment would cancel, she would not come in to work until 10:00. She did not come in until 10:00. So she must have known her 9:00 appointment would cancel.",
       "B": "If Barry had won the lottery, he would stay home to celebrate. But Barry did not win the lottery, so he will be in to work today.",
@@ -420,8 +420,8 @@
     "questionType": "Unknown",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children’s swollen tonsils has been shown to alleviate sleep disturbances. So removing children’s tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep. The pediatrician’s argument is most vulnerable to the criticism that it",
+    "stimulus": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children’s swollen tonsils has been shown to alleviate sleep disturbances. So removing children’s tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep.",
+    "questionStem": "The pediatrician’s argument is most vulnerable to the criticism that it",
     "answerChoices": {
       "A": "relies on an inappropriate appeal to authority",
       "B": "relies on an assumption that is tantamount to assuming that the conclusion is true",

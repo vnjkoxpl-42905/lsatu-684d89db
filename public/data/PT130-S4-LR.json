@@ -78,8 +78,8 @@
     "questionType": "Flaw",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Company president: For the management consultant position, we shall interview only those applicants who have worked for management consulting firms generally recognized as in the top 1 percent of firms worldwide. When we finally select somebody, then, we can be sure to have selected one of the best management consultants available. The company president’s reasoning is most vulnerable to criticism on the grounds that it",
+    "stimulus": "Company president: For the management consultant position, we shall interview only those applicants who have worked for management consulting firms generally recognized as in the top 1 percent of firms worldwide. When we finally select somebody, then, we can be sure to have selected one of the best management consultants available.",
+    "questionStem": "The company president’s reasoning is most vulnerable to criticism on the grounds that it",
     "answerChoices": {
       "A": "takes for granted that only the best management consultants have worked for the top management consulting firms",
       "B": "generalizes from too small a sample of management consulting firms worldwide",
@@ -204,8 +204,8 @@
     "questionType": "Necessary Assumption",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Sahira: To make a living from their art, artists of great potential would have to produce work that would gain widespread popular acclaim, instead of their best work. That is why governments are justified in subsidizing artists. Rahima: Your argument for subsidizing art depends on claiming that to gain widespread popular acclaim, artists must produce something other than their best work; but this need not be true. In her argument, Rahima",
+    "stimulus": "Sahira: To make a living from their art, artists of great potential would have to produce work that would gain widespread popular acclaim, instead of their best work. That is why governments are justified in subsidizing artists. Rahima: Your argument for subsidizing art depends on claiming that to gain widespread popular acclaim, artists must produce something other than their best work; but this need not be true.",
+    "questionStem": "In her argument, Rahima",
     "answerChoices": {
       "A": "disputes an implicit assumption of Sahira’s",
       "B": "presents independent support for Sahira’s argument",
@@ -276,8 +276,8 @@
     "questionType": "Unknown",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Madden: Industrialists address problems by simplifying them, but in farming that strategy usually leads to oversimplification. For example, industrialists see water retention and drainage as different and opposite functions-that good topsoil both drains and retains water is a fact alien to industrial logic. To facilitate water retention, they use a terrace or a dam; to facilitate drainage, they use drain tile, a ditch, or a subsoiler. More farming problems are created than solved when agriculture is the domain of the industrialist, not of the farmer. The situation as Madden describes it best illustrates which one of the following propositions?",
+    "stimulus": "Madden: Industrialists address problems by simplifying them, but in farming that strategy usually leads to oversimplification. For example, industrialists see water retention and drainage as different and opposite functions-that good topsoil both drains and retains water is a fact alien to industrial logic. To facilitate water retention, they use a terrace or a dam; to facilitate drainage, they use drain tile, a ditch, or a subsoiler. More farming problems are created than solved when agriculture is the domain of the industrialist, not of the farmer.",
+    "questionStem": "The situation as Madden describes it best illustrates which one of the following propositions?",
     "answerChoices": {
       "A": "The handling of water drainage and retention is the most important part of good farming.",
       "B": "The problems of farming should be viewed in all their complexity.",
@@ -438,8 +438,8 @@
     "questionType": "Principle-Conform",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Claude: When I’m having lunch with job candidates, I watch to see if they salt their food without first tasting it. If they do, I count that against them, because they’re making decisions based on inadequate information. Larissa: That’s silly. It’s perfectly reasonable for me to wear a sweater whenever I go into a supermarket, because I already know supermarkets are always too cool inside to suit me. And I never open a credit card offer that comes in the mail, because I already know that no matter how low its interest rate may be, it will never be worthwhile for me. The two analogies that Larissa offers can most reasonably be interpreted as invoking which one of the following principles to criticize Claude’s policy?",
+    "stimulus": "Claude: When I’m having lunch with job candidates, I watch to see if they salt their food without first tasting it. If they do, I count that against them, because they’re making decisions based on inadequate information. Larissa: That’s silly. It’s perfectly reasonable for me to wear a sweater whenever I go into a supermarket, because I already know supermarkets are always too cool inside to suit me. And I never open a credit card offer that comes in the mail, because I already know that no matter how low its interest rate may be, it will never be worthwhile for me.",
+    "questionStem": "The two analogies that Larissa offers can most reasonably be interpreted as invoking which one of the following principles to criticize Claude’s policy?",
     "answerChoices": {
       "A": "In matters involving personal preference, performing an action without first ascertaining whether it is appropriate in the specific circumstances should not be taken as good evidence of faulty decision making, because the action may be based on a reasoned policy relating to knowledge of a general fact about the circumstances.",
       "B": "In professional decision-making contexts, those who have the responsibility of judging other people’s suitability for a job should not use observations of job-related behavior as a basis for inferring general conclusions about those people’s character.",

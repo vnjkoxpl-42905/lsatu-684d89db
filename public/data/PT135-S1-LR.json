@@ -42,8 +42,8 @@
     "questionType": "Unknown",
     "reasoningType": null,
     "questionDifficulty": 2,
-    "stimulus": "",
-    "questionStem": "Millions of homes are now using low-energy lighting, but millions more have still to make the switch, a fact that the government and the home lighting industry are eager to change. Although low-wattage bulbs cost more per bulb than normal bulbs, their advantages to the homeowner are enormous, and therefore everyone should use low- wattage bulbs. Information about which one of the following would be least useful in evaluating the argument?",
+    "stimulus": "Millions of homes are now using low-energy lighting, but millions more have still to make the switch, a fact that the government and the home lighting industry are eager to change. Although low-wattage bulbs cost more per bulb than normal bulbs, their advantages to the homeowner are enormous, and therefore everyone should use low- wattage bulbs.",
+    "questionStem": "Information about which one of the following would be least useful in evaluating the argument?",
     "answerChoices": {
       "A": "the actual cost of burning low-wattage bulbs compared to that of burning normal bulbs",
       "B": "the profits the home lighting industry expects to make from sales of low-wattage bulbs",
@@ -312,8 +312,8 @@
     "questionType": "Necessary Assumption",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Zoologist: Every domesticated large mammal species now in existence was domesticated thousands of years ago. Since those days, people undoubtedly tried innumerable times to domesticate each of the wild large mammal species that seemed worth domesticating. Clearly, therefore, most wild large mammal species in existence today either would be difficult to domesticate or would not be worth domesticating. The zoologist’s argument requires the assumption that",
+    "stimulus": "Zoologist: Every domesticated large mammal species now in existence was domesticated thousands of years ago. Since those days, people undoubtedly tried innumerable times to domesticate each of the wild large mammal species that seemed worth domesticating. Clearly, therefore, most wild large mammal species in existence today either would be difficult to domesticate or would not be worth domesticating.",
+    "questionStem": "The zoologist’s argument requires the assumption that",
     "answerChoices": {
       "A": "in spite of the difficulties encountered, at one time or another people have tried to domesticate each wild large mammal species",
       "B": "it is not much easier today to domesticate wild large mammal species than it was in the past",
@@ -402,8 +402,8 @@
     "questionType": "Agree/Disagree",
     "reasoningType": null,
     "questionDifficulty": 4,
-    "stimulus": "",
-    "questionStem": "Physician: There were approximately 83,400 trampoline- related injuries last year. This suggests that trampolines are quite dangerous and should therefore be used only under professional supervision. Trampoline enthusiast: I disagree. In the past ten years sales of home trampolines have increased much more than trampoline-related injuries have: 260 percent in sales compared with 154 percent in injuries. Every exercise activity carries risks, even when carried out under professional supervision. The dialogue provides the most support for the claim that the physician and the trampoline enthusiast disagree over whether",
+    "stimulus": "Physician: There were approximately 83,400 trampoline- related injuries last year. This suggests that trampolines are quite dangerous and should therefore be used only under professional supervision. Trampoline enthusiast: I disagree. In the past ten years sales of home trampolines have increased much more than trampoline-related injuries have: 260 percent in sales compared with 154 percent in injuries. Every exercise activity carries risks, even when carried out under professional supervision.",
+    "questionStem": "The dialogue provides the most support for the claim that the physician and the trampoline enthusiast disagree over whether",
     "answerChoices": {
       "A": "trampolines cause injuries to a significant number of people using them",
       "B": "home trampolines are the main source of trampoline-related injuries",
@@ -438,8 +438,8 @@
     "questionType": "Must Be True",
     "reasoningType": null,
     "questionDifficulty": 5,
-    "stimulus": "",
-    "questionStem": "Interior decorator: All coffeehouses and restaurants are public places. Most well-designed public places feature artwork. But if a public place is uncomfortable it is not well designed, and all comfortable public places have spacious interiors. If all of the interior decorator’s statements are true, then which one of the following must be true?",
+    "stimulus": "Interior decorator: All coffeehouses and restaurants are public places. Most well-designed public places feature artwork. But if a public place is uncomfortable it is not well designed, and all comfortable public places have spacious interiors.",
+    "questionStem": "If all of the interior decorator’s statements are true, then which one of the following must be true?",
     "answerChoices": {
       "A": "Any restaurant that has a spacious interior is comfortable.",
       "B": "Most public places that feature artwork are well designed.",
