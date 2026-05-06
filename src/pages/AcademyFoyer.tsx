@@ -15,6 +15,7 @@ import GooeyDock from "@/components/ui/gooey-dock";
 import HelpDialog from "@/components/foyer/HelpDialog";
 import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
 import { openTAWidget } from "@/components/ta/taWidgetBus";
+import { openNotifications } from "@/components/notifications/notificationsBus";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 import {
@@ -231,7 +232,7 @@ function FoyerQuickDock() {
       case "schedule":
         return () => navigate("/schedule");
       case "notifications":
-        return () => navigate("/inbox"); // notifications inbox surface
+        return () => openNotifications();
       case "profile":
         return () => navigate("/profile");
       case "settings":

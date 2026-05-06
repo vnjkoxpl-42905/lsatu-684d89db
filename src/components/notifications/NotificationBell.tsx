@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Bell,
@@ -22,6 +22,7 @@ import {
   type NotificationType,
 } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
+import { subscribeNotifications } from "./notificationsBus";
 
 function typeIcon(type: NotificationType): ReactNode {
   switch (type) {
@@ -48,6 +49,8 @@ export default function NotificationBell({ mouseX }: Props) {
   const navigate = useNavigate();
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => subscribeNotifications(() => setOpen(true)), []);
 
   const distance = useTransform(mouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
