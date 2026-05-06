@@ -13,6 +13,7 @@ import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
 import HelpDialog from "@/components/foyer/HelpDialog";
+import WelcomeWalkthrough, { hasSeenWalkthrough } from "@/components/foyer/WelcomeWalkthrough";
 import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
 import { openTAWidget } from "@/components/ta/taWidgetBus";
 import { openNotifications } from "@/components/notifications/notificationsBus";
