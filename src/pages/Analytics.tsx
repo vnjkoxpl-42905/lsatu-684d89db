@@ -62,7 +62,6 @@ const Analytics = () => {
   const loadAnalytics = async () => {
     try {
       const now = new Date();
-      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
       const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
 
@@ -70,7 +69,6 @@ const Analytics = () => {
         .from('attempts')
         .select('qtype, level, correct, timestamp_iso')
         .eq('class_id', classId)
-        .gte('timestamp_iso', thirtyDaysAgo.toISOString())
         .order('timestamp_iso', { ascending: false });
 
       if (error) throw error;

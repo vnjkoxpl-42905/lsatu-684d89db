@@ -171,14 +171,10 @@ export default function Practice() {
     if (!user || classIdLoading || !classId) return;
 
     const loadStats = async () => {
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
       const { data: attempts } = await supabase
         .from('attempts')
         .select('correct, timestamp_iso')
-        .eq('class_id', classId)
-        .gte('timestamp_iso', thirtyDaysAgo.toISOString());
+        .eq('class_id', classId);
 
       setStatsLoaded(true);
 
@@ -466,7 +462,7 @@ export default function Practice() {
                   )}
                 >
                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">
-                     Last 30 Days
+                     All Time
                   </p>
                   <div className="flex items-baseline gap-10">
                     {/* Practiced */}
