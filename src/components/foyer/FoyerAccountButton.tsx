@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, User, Shield, LogOut } from "lucide-react";
+import { ChevronDown, User, Shield, LogOut, Sliders } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
@@ -111,6 +111,14 @@ export default function FoyerAccountButton({ displayName }: FoyerAccountButtonPr
             Admin Dashboard
           </DropdownMenuItem>
         )}
+
+        <DropdownMenuItem
+          onClick={() => navigate("/settings/layout")}
+          className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
+        >
+          <Sliders className="h-4 w-4 text-muted-foreground" aria-hidden />
+          Customize layout
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 

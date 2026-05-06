@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
+import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
 export interface FoyerSidebarProps {
   displayName?: string | null;
@@ -41,6 +42,20 @@ const today = format(new Date(), "EEEE, MMMM d");
 
 export default function FoyerSidebar(_props: FoyerSidebarProps) {
   const permissions = useUserPermissions();
+  const { prefs } = useLayoutPrefs();
+
+  const navByTo = new Map(NAV_ITEMS.map((n) => [n.to, n]));
+  const orderedNav: NavItem[] = [];
+  const seen = new Set<string>();
+  for (const id of prefs.sidebar) {
+    const item = navByTo.get(id);
+    if (item) {
+      orderedNav.push(item);
+      seen.add(id);
+    }
+  }
+  // Append any nav items missing from prefs (e.g. catalog gained a new entry)
+  for (const item of NAV_ITEMS) if (!seen.has(item.to)) orderedNav.push(item);
 
   return (
     <aside className="flex h-full w-full flex-col bg-background">
@@ -73,7 +88,7 @@ export default function FoyerSidebar(_props: FoyerSidebarProps) {
       </div>
 
       <nav className="flex flex-col">
-        {NAV_ITEMS.filter((item) => {
+        {orderedNav.filter((item) => {
           if (item.adminOnly) return permissions.is_admin;
           return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
         }).map(({ to, label, Icon }) => (
