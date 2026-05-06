@@ -1,44 +1,40 @@
-## Why bootcamp toggles fail right now
+## Problem
 
-The Teacher → Bootcamps toggle (`src/pages/teacher/TeacherBootcamps.tsx`) writes a `classroom_items` row, and the per-student gate (`src/components/hub/BootcampGate.tsx`, wrapping every `/bootcamp/*` route) reads from the same table. The frontend, hook (`useClassroomItems`), gate, and notification helper are all already correct — but the underlying table doesn't exist in the database.
+The landing page (`src/pages/Auth.tsx`) currently shows "Sign in" three times:
 
-Confirmed via psql: `relation "public.classroom_items" does not exist`. The migration `supabase/migrations/20260506000000_classroom_items.sql` was authored but never applied. The same is true of `notifications` (used by the bell + the assign-toast flow). Only `homework_*` tables from that batch made it through.
+1. Top-right of `ArcNav` (sticky header)
+2. Inside `ArcProof` quote section, paired with "Begin training"
+3. Inside `ArcFinalCTA` (bottom), paired with "Begin training"
 
-So:
-- Toggling a bootcamp on Teacher → Bootcamps fails ("Update failed").
-- Clicking a bootcamp as a student blows up `BootcampGate`'s query and the page never renders.
-- The "notify student" step also fails because `notifications` is missing.
+There is no explicit "Sign up" entry point — new visitors only see "Begin training", which is ambiguous (it routes into the auth modal but doesn't read as account creation).
 
-This is purely a missing-schema problem. No app code needs to change.
+## Recommendation
 
-## Fix: one idempotent migration
+Standard SaaS landing pattern, and the cleanest fit here:
 
-Scope is intentionally narrow — only what the assign-and-gate flow needs. Other unapplied tables (weekly plans, AI TA drafts, smartboard, uploads, schedule templates) are out of scope.
+- **Sign in** → lives only in the top nav (one place, persistent, expected location).
+- **Hero (beginning of page)** → primary CTA pair: **Begin training** (opens modal in sign-up mode) + **Sign up** as a secondary explicit option, OR collapse into a single "Get started — it's free" style CTA. Since you asked for an explicit Sign up, we'll show both.
+- **Mid-page proof + final CTA sections** → keep ONE primary CTA each ("Begin training"). Remove the duplicated "Sign in" buttons — anyone scrolling that far who wants to sign in will use the sticky nav.
 
-### Migration contents
+Result: Sign in appears once (nav). Sign up appears once (hero, next to Begin training). Marketing CTAs below stay focused on conversion without repeating auth options.
 
-1. **`public.classroom_items`** — `id`, `student_id` (FK `auth.users`), `class_id`, `created_by`, `type` (check list: `drill, homework, bootcamp_module, note, session_recap, announcement, upload_summary, weekly_plan_task, smartboard_recap`), `title`, `description`, `content_markdown`, `content_html`, `source_table`, `source_id`, `status` (`draft, assigned, in_progress, completed, archived`), `unlock_at`, `due_at`, `completed_at`, `priority`, `visible_to_student`, `metadata_json` jsonb, `created_at`, `updated_at`. Indexes on (student_id, visible_to_student, unlock_at), (student_id, status), (student_id, type). `touch_classroom_items_updated_at()` BEFORE UPDATE trigger.
+## Changes (all in `src/pages/Auth.tsx`)
 
-2. **RLS on `classroom_items`** — mirrors how `BootcampGate` queries:
-   - Student SELECT: own row, `visible_to_student = true`, `unlock_at` null or past.
-   - Student UPDATE: own row only (so they can mark in_progress/completed).
-   - Admin: full ALL via `public.has_role(auth.uid(), 'admin')`.
+1. **`ArcHero`** — add a second button "Sign up" next to "Begin training". Both open the modal; "Sign up" sets `isSignUp = true`, "Begin training" keeps current behavior. Wire via a new `onSignUp` prop.
 
-3. **`public.notifications`** — `id`, `user_id` (FK `auth.users`), `type` (`assignment, message, reminder, streak`), `title`, `body`, `link`, `read` (default false), `created_at`. RLS:
-   - User: SELECT / UPDATE / DELETE own rows. A guard trigger restricts non-admins so only the `read` flag can change, and only false → true.
-   - Admin: full ALL.
+2. **`ArcProof`** — remove the "Sign in" ghost button. Keep only "Begin training". Drop the `onSecondary` prop.
 
-All `create policy`, `create trigger`, and `create function` statements use `drop … if exists` first so the migration is safe to re-run.
+3. **`ArcFinalCTA`** — remove the "Sign in" ghost button. Keep only "Begin training". Drop the `onSecondary` prop.
 
-## Verify after applying
+4. **`Auth` component body** — update the JSX call sites:
+   - Pass `onSignUp={() => { setIsSignUp(true); setModalOpen(true); }}` to `ArcHero`.
+   - Remove `onSecondary` from `ArcProof` and `ArcFinalCTA` calls.
+   - `ArcNav` Sign in button stays as-is.
 
-- `/teacher/bootcamps?student=…` → flipping a bootcamp on toasts "Assigned and notified" (or "Assigned, but email failed" if Resend isn't configured — the assignment row still persists).
-- A `classroom_items` row of `type = 'bootcamp_module'` with `metadata_json.bootcamp_id` matching the toggle exists for that student.
-- Logged in as that student, `/bootcamp/principle-flaw` (or whichever was toggled) renders the bootcamp — `BootcampGate` passes.
-- Flipping the switch off archives the row; that student then sees the calm "Not assigned yet" surface instead of the bootcamp content.
-- A `notifications` row appears so the bell + inbox light up.
+5. Ensure the existing modal already supports opening directly into Sign up mode (it does — `isSignUp` state already exists at line 381).
 
-## Files
+## Out of scope
 
-- New: `supabase/migrations/<timestamp>_classroom_items_and_notifications.sql`
-- No application code changes.
+- No visual redesign of the landing page.
+- No changes to the modal, auth flow, or routing.
+- No copy changes beyond the new "Sign up" button label.
