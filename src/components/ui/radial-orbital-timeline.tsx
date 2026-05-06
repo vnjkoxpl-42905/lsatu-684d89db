@@ -119,12 +119,11 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    // Node centers orbit at radius 180. Each node bubble is 48px (24px
-    // radius), so its outer edge sits at 204 — 6px inside the outermost
-    // visible ring at 210 (420px diameter). Previously this was 200,
-    // which placed the node's outer edge at 224 — 14px past the ring,
-    // visibly clipping through it on every rotation.
-    const radius = 180;
+    // Node centers ride exactly on the solid 400px ring (radius 200) so
+    // every bubble appears anchored to the circle. Previously radius was
+    // 180, which pulled the bubbles ~20px inside the ring and made them
+    // look detached / "floating free" of the orbit.
+    const radius = 200;
     const radian = (angle * Math.PI) / 180;
     const x = radius * Math.cos(radian);
     const y = radius * Math.sin(radian);
