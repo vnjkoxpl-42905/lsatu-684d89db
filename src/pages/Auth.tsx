@@ -189,7 +189,7 @@ function MarketingImage({ src, alt, aspect = '16 / 9', maxWidth = 1100, marginTo
 }
 
 // ── Hero ── Arc: heading + subhead + 1 CTA + product image. h1 sized for typographic confidence.
-const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
+const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
   <section style={{ padding: '90px 32px 72px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
       <h1 style={{
@@ -208,10 +208,13 @@ const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
       }}>
         Clearer thinking, higher scores. A training environment built for aspiring attorneys.
       </p>
-      <button className="arc-cta" onClick={onCTA}>
-        Begin training
-        <span aria-hidden="true">→</span>
-      </button>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <button className="arc-cta" onClick={onCTA}>
+          Begin training
+          <span aria-hidden="true">→</span>
+        </button>
+        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Sign up</button>
+      </div>
     </div>
 
     <MarketingImage
@@ -223,7 +226,7 @@ const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
 );
 
 // ── Proof quote ── Arc: pull-quote + attribution + dual CTAs + "More details".
-const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSecondary: () => void }) => (
+const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
   <section style={{ padding: '120px 32px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
       <p style={{
@@ -239,7 +242,6 @@ const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeconda
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSecondary}>Sign in</button>
       </div>
     </div>
   </section>
@@ -318,7 +320,7 @@ const ArcTextOnly = () => (
 );
 
 // ── Final CTA ── Arc: heading + dual CTAs centered.
-const ArcFinalCTA = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSecondary: () => void }) => (
+const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
   <section style={{ padding: '140px 32px 120px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
       <h2 style={{
@@ -330,7 +332,6 @@ const ArcFinalCTA = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeco
       </h2>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSecondary}>Sign in</button>
       </div>
     </div>
   </section>
@@ -670,7 +671,8 @@ export default function Auth() {
   // CTAs from every Arc section funnel into the existing modal — preserves
   // the auth flow exactly. setModalOpen(true) opens the GlassShell sign-in,
   // which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
-  const openSignIn = React.useCallback(() => setModalOpen(true), []);
+  const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
+  const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
 
   const oauthReturning =
     typeof window !== 'undefined' &&
@@ -733,8 +735,8 @@ export default function Auth() {
 
       <div className="arc-fade">
         <ArcNav onSignIn={openSignIn} />
-        <ArcHero onCTA={openSignIn} />
-        <ArcProof onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+        <ArcProof onPrimary={openSignIn} />
         <ArcFeatureFullWidth />
         <ArcFeatureSplit
           heading="Space for every part of your prep."
@@ -750,7 +752,7 @@ export default function Auth() {
           alt="The Smart Drill with adaptive difficulty"
         />
         <ArcTextOnly />
-        <ArcFinalCTA onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcFinalCTA onPrimary={openSignIn} />
         <ArcFooter />
       </div>
 
