@@ -1976,6 +1976,7 @@ function DrillContent() {
   const isOfficialLayout = searchParams.get('layout') === 'official';
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
+    const showOfficialAnswerNavigator = isFullSection;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
     if (sectionTimer) {
@@ -2072,15 +2073,17 @@ function DrillContent() {
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
           />
-          <OfficialAnswerNavigator
-            questionQueue={session.questionQueue}
-            currentIndex={session.currentIndex}
-            attemptedQids={attemptedQids}
-            jumpEnabled={jumpEnabled}
-            onJumpTo={handleJumpTo}
-            onPrev={officialPrev}
-            onNext={officialNext}
-          />
+          {showOfficialAnswerNavigator && (
+            <OfficialAnswerNavigator
+              questionQueue={session.questionQueue}
+              currentIndex={session.currentIndex}
+              attemptedQids={attemptedQids}
+              jumpEnabled={jumpEnabled}
+              onJumpTo={handleJumpTo}
+              onPrev={officialPrev}
+              onNext={officialNext}
+            />
+          )}
         </OfficialDrillFrame>
       </>
     );
