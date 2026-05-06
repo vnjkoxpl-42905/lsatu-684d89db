@@ -139,16 +139,16 @@ export default function FoyerAccountButton({ displayName }: FoyerAccountButtonPr
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onClick={async () => {
-            await signOut();
-            navigate("/auth");
-          }}
-          className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
-        >
-          <LogOut className="h-4 w-4 text-muted-foreground" aria-hidden />
-          Sign out
-        </DropdownMenuItem>
+        <div className="flex justify-center px-3 py-2">
+          <LiquidMetalButton
+            label="Sign out"
+            ariaLabel="Sign out"
+            onClick={async () => {
+              await signOut();
+              navigate("/auth");
+            }}
+          />
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
