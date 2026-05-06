@@ -1,32 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { questionBank, practiceSets, QuestionRef, PracticeSet, flashcards, StudyResource } from '../data';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Target, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, ListChecks, HelpCircle, Zap, BookOpen, Clock, Copy, Check, PlayCircle } from 'lucide-react';
+import { Target, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, ListChecks, HelpCircle, Zap, BookOpen, Clock, Copy, Check, PlayCircle, Lock } from 'lucide-react';
 import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import InlineQuestionViewer from './InlineQuestionViewer';
+import { questionBank as lrBank } from '@/lib/questionLoader';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
 
 /**
- * Build the LSAT U drill URL for a single PF question reference.
- * The host LR question bank uses qids of the form `PT{pt}-S{section}-Q{qnum}`
- * (see src/lib/questionLoader.ts → hashQid). We launch the drill in
- * `type-drill` mode with one selected qid so the user lands on the real
- * LSAT question pulled from the question database.
+ * Build the LSAT U canonical qid (PT{pt}-S{section}-Q{qnum}) for a PF ref.
  */
-function pfDrillHref(q: QuestionRef): string {
-  const qid = `PT${q.pt}-S${q.section}-Q${q.question}`;
-  return `/drill?mode=type-drill&qids=${encodeURIComponent(qid)}`;
+function pfQid(q: QuestionRef): string {
+  return `PT${q.pt}-S${q.section}-Q${q.question}`;
 }
 
-function OpenInDrillButton({ q }: { q: QuestionRef }) {
-  const navigate = useNavigate();
+function OpenInlineButton({ q, onOpen, available }: { q: QuestionRef; onOpen: () => void; available: boolean }) {
+  if (!available) {
+    return (
+      <span
+        title="This question isn't in the LSAT U bank yet"
+        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-800 bg-zinc-900/40 text-[10px] font-bold uppercase tracking-widest text-zinc-600 cursor-not-allowed"
+      >
+        <Lock size={12} aria-hidden="true" />
+        Unavailable
+      </span>
+    );
+  }
   return (
     <motion.button
-      onClick={(e) => { e.stopPropagation(); navigate(pfDrillHref(q)); }}
+      onClick={(e) => { e.stopPropagation(); onOpen(); }}
       whileTap={{ scale: 0.96 }}
       transition={{ duration: 0.12, ease: [0.25, 1, 0.5, 1] }}
-      title="Open this question in the LSAT U drill"
-      aria-label="Open question in drill"
+      title="Open this question inline"
+      aria-label="Open question"
       className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/[0.04] text-[10px] font-bold uppercase tracking-widest text-emerald-300 hover:bg-emerald-500/10 hover:border-emerald-400/50 transition-colors"
     >
       <PlayCircle size={12} aria-hidden="true" />
@@ -89,11 +96,13 @@ interface QuestionRowProps {
   isRedo: boolean;
   onToggleStatus: (status: 'correct' | 'missed') => void;
   onToggleRedo: () => void;
+  onOpen: () => void;
+  available: boolean;
 }
 
-function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: QuestionRowProps) {
+function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, available }: QuestionRowProps) {
   return (
-    <div className={`p-4 rounded-2xl border transition-all duration-300 ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
+    <div className={`p-4 rounded-2xl border transition-all duration-300 ${!available ? 'opacity-70' : ''} ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-zinc-950 border border-white/5 shadow-inner">
@@ -115,7 +124,8 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: Questi
         </div>
 
         <div className="flex items-center gap-2">
-          <OpenInDrillButton q={q} />
+          <OpenInlineButton q={q} onOpen={onOpen} available={available} />
+
           <motion.button
             onClick={() => onToggleStatus('correct')}
             whileTap={{ scale: 0.96 }}
@@ -178,7 +188,14 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo }: Questi
 
 export default function Practice({ currentDay, onOpenResource }: { currentDay: number; onOpenResource: (r: Partial<StudyResource>) => void }) {
   const [view, setView] = useState<'sets' | 'redo'>('sets');
-  
+  const { isLoading: qbLoading } = useQuestionBank();
+  const [viewer, setViewer] = useState<{ qid: string; queue: string[] } | null>(null);
+
+  const isAvailable = React.useCallback((q: QuestionRef) => {
+    if (qbLoading) return true; // optimistic while loading
+    return !!lrBank.getQuestion(pfQid(q));
+  }, [qbLoading]);
+
   const [qStatus, setQStatus] = useState<Record<string, 'correct' | 'missed' | 'none'>>(() => {
     const saved = localStorage.getItem('pf:questionStatus');
     return saved ? JSON.parse(saved) : {};
@@ -239,21 +256,22 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                <div className="lg:col-span-2 space-y-3">
-                  {set.questions.length > 0 ? (
-                    set.questions.map(qId => {
-                      const q = questionBank.find(qb => qb.id === qId);
-                      return q ? (
-                        <QuestionRow 
-                          key={qId} 
-                          q={q} 
-                          status={qStatus[q.id] || 'none'}
-                          isRedo={redoQueue.includes(q.id)}
-                          onToggleStatus={(s) => toggleStatus(q.id, s)}
-                          onToggleRedo={() => toggleRedo(q.id)}
-                        />
-                      ) : null;
-                    })
-                  ) : (
+                  {set.questions.length > 0 ? (() => {
+                    const refs = set.questions.map(qId => questionBank.find(qb => qb.id === qId)).filter(Boolean) as QuestionRef[];
+                    const setQids = refs.filter(isAvailable).map(pfQid);
+                    return refs.map(q => (
+                      <QuestionRow
+                        key={q.id}
+                        q={q}
+                        status={qStatus[q.id] || 'none'}
+                        isRedo={redoQueue.includes(q.id)}
+                        onToggleStatus={(s) => toggleStatus(q.id, s)}
+                        onToggleRedo={() => toggleRedo(q.id)}
+                        available={isAvailable(q)}
+                        onOpen={() => setViewer({ qid: pfQid(q), queue: setQids })}
+                      />
+                    ));
+                  })() : (
                     <div className="p-12 rounded-[32px] border border-dashed border-zinc-800 flex flex-col items-center justify-center text-center space-y-4">
                        <Zap size={32} className="text-zinc-800" />
                        <div>
@@ -317,13 +335,15 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
         {redoQuestions.length > 0 ? (
           <div className="grid grid-cols-1 gap-4">
             {redoQuestions.map(q => (
-              <QuestionRow 
-                key={q.id} 
-                q={q} 
+              <QuestionRow
+                key={q.id}
+                q={q}
                 status={qStatus[q.id] || 'none'}
                 isRedo={redoQueue.includes(q.id)}
                 onToggleStatus={(s) => toggleStatus(q.id, s)}
                 onToggleRedo={() => toggleRedo(q.id)}
+                available={isAvailable(q)}
+                onOpen={() => setViewer({ qid: pfQid(q), queue: redoQuestions.filter(isAvailable).map(pfQid) })}
               />
             ))}
           </div>
@@ -395,6 +415,14 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
       <AnimatePresence mode="wait">
         {view === 'sets' ? <SetView key="sets" /> : <RedoQueueView key="redo" />}
       </AnimatePresence>
+
+      {viewer && (
+        <InlineQuestionViewer
+          initialQid={viewer.qid}
+          queue={viewer.queue.length > 0 ? viewer.queue : [viewer.qid]}
+          onClose={() => setViewer(null)}
+        />
+      )}
     </div>
   );
 }
