@@ -129,15 +129,12 @@ export default function Practice() {
   });
   const [statsLoaded, setStatsLoaded] = React.useState(false);
   const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
-  const [sparklineData, setSparklineData] = React.useState<
-    Array<{ date: string; count: number }>
-  >([]);
   const { classId, loading: classIdLoading } = useClassId();
 
   // Auth guard
   React.useEffect(() => {
     if (authReady && !user) {
-      navigate('/auth');
+      navigate('/auth', { replace: true });
     }
   }, [user, authReady, navigate]);
 
@@ -183,27 +180,6 @@ export default function Practice() {
           totalAttempted: attempts.length,
           avgAccuracy: accuracy,
         });
-
-        const dailyCounts = new Map<string, number>();
-        attempts.forEach((attempt) => {
-          const date = new Date(attempt.timestamp_iso).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          });
-          dailyCounts.set(date, (dailyCounts.get(date) || 0) + 1);
-        });
-
-        const sparkline: Array<{ date: string; count: number }> = [];
-        for (let i = 17; i >= 0; i--) {
-          const date = new Date();
-          date.setDate(date.getDate() - i);
-          const dateStr = date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          });
-          sparkline.push({ date: dateStr, count: dailyCounts.get(dateStr) || 0 });
-        }
-        setSparklineData(sparkline);
       }
     };
 
@@ -282,7 +258,11 @@ export default function Practice() {
     return null;
   };
 
-  const userInitials = user?.email?.slice(0, 2).toUpperCase() || 'U';
+  // Initials for the avatar — pull the first two letter characters of
+  // the email so accounts like "12@example.com" don't render a "12"
+  // avatar. Falls back to "U".
+  const userInitials =
+    (user?.email?.replace(/[^a-zA-Z]/g, '').slice(0, 2) || 'U').toUpperCase();
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
@@ -345,8 +325,8 @@ export default function Practice() {
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8 pb-16 animate-fade-in">
 
-        {/* ── Row 1 — Hero (unchanged) ──────────────────────────────────────── */}
-        <Card className="w-full h-[280px] bg-black/[0.96] relative overflow-hidden rounded-xl">
+        {/* ── Row 1 — Hero (intentionally dark on both themes) ──────────────── */}
+        <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl">
           
           <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
           <div className="flex h-full">
