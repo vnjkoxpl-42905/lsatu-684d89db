@@ -70,6 +70,7 @@ export const SIDEBAR_CATALOG: CatalogItem[] = [
 
 export const ORBITAL_MAX = 3;
 export const ORBITAL_MIN = 1;
+export const SIDEBAR_MIN = 1;
 
 export function findCatalogItem(catalog: CatalogItem[], id: string): CatalogItem | undefined {
   return catalog.find((c) => c.id === id);
