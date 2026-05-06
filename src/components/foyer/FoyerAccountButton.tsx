@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
