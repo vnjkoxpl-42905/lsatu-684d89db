@@ -36,7 +36,7 @@ export default function OfficialDrillToolbar({
 }: Props) {
   const showProgressBar = isFullSection && typeof totalMs === "number" && totalMs > 0 && typeof remainingMs === "number";
   const progressPct = showProgressBar
-    ? Math.max(0, Math.min(100, ((totalMs - remainingMs) / totalMs) * 100))
+    ? Math.max(0, Math.min(100, ((totalMs - Math.max(0, remainingMs)) / totalMs) * 100))
     : 0;
 
   const tools: { mode: HighlightMode; label: string; icon: React.ReactNode; activeBg: string }[] = [
@@ -59,6 +59,7 @@ export default function OfficialDrillToolbar({
         {/* Left: Directions + Find Text */}
         <button
           type="button"
+          disabled
           aria-disabled="true"
           title="Directions — coming soon"
           className="rounded border border-slate-300 bg-white px-3 py-1 text-[13px] text-slate-700 cursor-not-allowed opacity-90"
@@ -99,6 +100,7 @@ export default function OfficialDrillToolbar({
         {/* Aa + line-spacing — inert */}
         <button
           type="button"
+          disabled
           aria-disabled="true"
           title="Font size — coming soon"
           className="p-1.5 rounded text-slate-400 cursor-not-allowed"
@@ -108,6 +110,7 @@ export default function OfficialDrillToolbar({
         </button>
         <button
           type="button"
+          disabled
           aria-disabled="true"
           title="Line spacing — coming soon"
           className="p-1.5 rounded text-slate-400 cursor-not-allowed"
