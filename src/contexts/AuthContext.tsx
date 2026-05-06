@@ -7,7 +7,7 @@ import { z } from 'zod';
 const signUpSchema = z.object({
   email: z.string().email('Invalid email address').max(255, 'Email too long'),
   password: z.string()
-    .min(6, 'Password must be at least 6 characters')
+    .min(8, 'Password must be at least 8 characters')
     .max(100, 'Password too long'),
   name: z.string()
     .min(1, 'Name is required')
@@ -29,14 +29,9 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-// Module-scope remount counter (ID-9 diagnosis). Distinguishes provider
-// remounts from effect re-runs in the onAuthStateChange cascade.
-let AUTH_PROVIDER_MOUNT_COUNT = 0;
-
 /** Detect if the current page load is mid-OAuth callback (URL-based only) */
 function isOAuthCallbackUrl(): boolean {
   return (
-    window.location.pathname.includes('~oauth') ||
     window.location.hash.includes('access_token') ||
     window.location.search.includes('code=')
   );
@@ -72,7 +67,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const markReady = (s: Session | null) => {
-      console.log('[AuthContext] markReady', { hasSession: !!s, userId: s?.user?.id });
       setSession(s);
       setUser(s?.user ?? null);
       setLoading(false);
@@ -87,17 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    // Set up auth state listener FIRST
-    AUTH_PROVIDER_MOUNT_COUNT += 1;
-    console.log('[AuthContext] init', {
-      mountCount: AUTH_PROVIDER_MOUNT_COUNT,
-      isOAuth: isOAuthRef.current,
-      oauth_pending: sessionStorage.getItem('oauth_pending'),
-    });
-    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, newSession) => {
-        console.log('[AuthContext] onAuthStateChange', { event, hasSession: !!newSession });
         if (event === 'PASSWORD_RECOVERY') {
           markReady(newSession);
           window.location.replace('/reset-password');
@@ -113,7 +98,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
-      console.log('[AuthContext] getSession result', { hasSession: !!existingSession });
       if (existingSession) {
         markReady(existingSession);
       } else if (!isOAuthRef.current) {
@@ -127,7 +111,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // just unfreeze the UI so route guards can act on `user = null`.
     if (isOAuthRef.current) {
       oauthTimeoutRef.current = setTimeout(() => {
-        console.warn('[AuthContext] OAuth safety-net fired — unfreezing UI silently');
         sessionStorage.removeItem('oauth_pending');
         setLoading(false);
         setAuthReady(true);
@@ -135,7 +118,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return () => {
-      console.log('[AuthContext] cleanup', { mountCount: AUTH_PROVIDER_MOUNT_COUNT });
       subscription.unsubscribe();
       if (oauthTimeoutRef.current) clearTimeout(oauthTimeoutRef.current);
     };
