@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { ExternalLink, LineChart, Save, Upload, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,14 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function TeacherAnalyticsBridge() {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const [studentId, setStudentId] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const studentId = searchParams.get('student');
+  const setStudentId = (id: string) =>
+    setSearchParams((p) => {
+      const c = new URLSearchParams(p);
+      c.set('student', id);
+      return c;
+    });
   const { data: sources = [] } = useAnalyticsSources(studentId);
   const { data: uploads = [] } = useStudentExternalUploadsForStudent(studentId);
   const upsert = useUpsertAnalyticsSource();

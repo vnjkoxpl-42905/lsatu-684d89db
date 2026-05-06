@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { BookOpen, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,14 @@ import { supabase } from '@/integrations/supabase/client';
 
 export default function TeacherRecaps() {
   const { user } = useAuth();
-  const [studentId, setStudentId] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const studentId = searchParams.get('student');
+  const setStudentId = (id: string) =>
+    setSearchParams((p) => {
+      const c = new URLSearchParams(p);
+      c.set('student', id);
+      return c;
+    });
   const [open, setOpen] = useState(false);
   const { data: items = [] } = useStudentClassroomItems(studentId);
   const recaps = items.filter((i) => i.type === 'session_recap' || i.type === 'smartboard_recap');

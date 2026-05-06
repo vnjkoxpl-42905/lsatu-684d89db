@@ -165,8 +165,13 @@ export function useHubStudents() {
 
   return {
     rows,
-    loading: usersQuery.isLoading || countsQuery.isLoading,
-    error: usersQuery.error ?? countsQuery.error ?? null,
+    // Loading is true only while the *core* roster is loading. Counts and
+    // unread-pip queries are decorative — the list still works without them.
+    loading: usersQuery.isLoading,
+    // Error is reported only when the core roster fails. Count/inbox failures
+    // log a warning but the list still renders with zeros / no pips so
+    // assignment workflows aren't blocked by a peripheral hiccup.
+    error: usersQuery.error ?? null,
     refresh: () => {
       usersQuery.refetch();
       countsQuery.refetch();
