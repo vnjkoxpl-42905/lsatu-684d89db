@@ -38,6 +38,18 @@ export function LeftRail(): JSX.Element {
       )}
     >
       <div className="px-5 pt-7 pb-6">
+        <Link
+          to="/foyer"
+          className={cn(
+            'mb-4 inline-flex items-center gap-1.5 rounded-3 px-2 py-1 -ml-2',
+            'font-mc-mono text-label uppercase tracking-wider text-ink-faint',
+            'hover:text-mc-accent transition-colors duration-150',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
+          )}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
+          Foyer
+        </Link>
         <div className="flex items-baseline gap-2">
           <span
             aria-hidden="true"
