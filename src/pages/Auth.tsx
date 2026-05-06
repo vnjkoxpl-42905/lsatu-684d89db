@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useImageExists } from '@/hooks/useImageExists';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
+import { redirectAfterAuth } from '@/lib/authRedirect';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { BorderBeam } from '@/components/ui/border-beam';
@@ -131,7 +133,9 @@ const PAGE_CSS = `
   }
 `;
 
-// ── Nav ── Logo + 5 links + sign-in CTA. Arc-style: minimal, ~36px tall, 32px page padding.
+// ── Nav ── Logo + sign-in CTA. Decorative section labels were removed in
+// the audit-fix pass (Phase 1) — they had no destinations and read as a
+// fake nav. Real nav lives inside the app at /foyer.
 const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
   <nav style={{
     position: 'sticky', top: 0, zIndex: 30,
@@ -142,26 +146,50 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
       maxWidth: 1280, margin: '0 auto', padding: '18px 32px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
-      <a href="/" style={{ fontFamily: ARC.serif, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em' }}>
+      <Link to="/" style={{ fontFamily: ARC.serif, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', color: 'inherit', textDecoration: 'none' }}>
         LSAT U
-      </a>
-      <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-        {['Bootcamp', 'Drills', 'Diagnostics', 'Reference'].map((label) => (
-          <span key={label} style={{ fontSize: 14, color: ARC.inkSecondary, cursor: 'default' }}>{label}</span>
-        ))}
-        <button onClick={onSignIn} style={{
-          background: 'transparent', border: 0, padding: 0,
-          fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
-        }}>
-          Sign in
-        </button>
-      </div>
+      </Link>
+      <button onClick={onSignIn} style={{
+        background: 'transparent', border: 0, padding: 0,
+        fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
+      }}>
+        Sign in
+      </button>
     </div>
   </nav>
 );
 
+// ── Image probe ── HEAD-fetches a marketing asset; if it isn't served we
+// hide the framed image block entirely so visitors don't see an empty
+// colored rectangle. Returns null while checking too — landing renders
+// heading + lede only until we know the asset is real.
+function MarketingImage({ src, alt, aspect = '16 / 9', maxWidth = 1100, marginTop = 0 }: { src: string; alt: string; aspect?: string; maxWidth?: number; marginTop?: number }) {
+  const exists = useImageExists(src);
+  if (exists !== true) return null;
+  return (
+    <div style={{
+      marginTop,
+      borderRadius: ARC.radiusPill,
+      overflow: 'hidden',
+      background: ARC.bgTinted,
+      border: `1px solid ${ARC.hairline}`,
+      boxShadow: ARC.shadowLift,
+      aspectRatio: aspect,
+      maxWidth,
+      marginInline: 'auto',
+    }}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      />
+    </div>
+  );
+}
+
 // ── Hero ── Arc: heading + subhead + 1 CTA + product image. h1 sized for typographic confidence.
-const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
+const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
   <section style={{ padding: '90px 32px 72px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
       <h1 style={{
@@ -180,37 +208,25 @@ const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
       }}>
         Clearer thinking, higher scores. A training environment built for aspiring attorneys.
       </p>
-      <button className="arc-cta" onClick={onCTA}>
-        Begin training
-        <span aria-hidden="true">→</span>
-      </button>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <button className="arc-cta" onClick={onCTA}>
+          Begin training
+          <span aria-hidden="true">→</span>
+        </button>
+        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Sign up</button>
+      </div>
     </div>
 
-    {/* Hero product image — full-width, dimensional shadow only */}
-    <div style={{
-      marginTop: 72,
-      borderRadius: ARC.radiusPill,
-      overflow: 'hidden',
-      background: ARC.bgTinted,
-      border: `1px solid ${ARC.hairline}`,
-      boxShadow: ARC.shadowLift,
-      aspectRatio: '16 / 9',
-      maxWidth: 1100,
-      marginInline: 'auto',
-    }}>
-      <img
-        src="/marketing/hero-foyer.png"
-        alt="The LSAT U Foyer — a calm, focused training entry"
-        loading="eager"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-      />
-    </div>
+    <MarketingImage
+      src="/marketing/hero-foyer.png"
+      alt="The LSAT U Foyer — a calm, focused training entry"
+      marginTop={72}
+    />
   </section>
 );
 
 // ── Proof quote ── Arc: pull-quote + attribution + dual CTAs + "More details".
-const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSecondary: () => void }) => (
+const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
   <section style={{ padding: '120px 32px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
       <p style={{
@@ -226,7 +242,6 @@ const ArcProof = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeconda
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSecondary}>Sign in</button>
       </div>
     </div>
   </section>
@@ -247,19 +262,10 @@ const ArcFeatureFullWidth = () => (
         Joshua’s coaching, woven into every drill. Real-time feedback that anticipates where you’ll trip.
       </p>
     </div>
-    <div style={{
-      borderRadius: ARC.radiusPill, overflow: 'hidden',
-      background: ARC.bgTinted, border: `1px solid ${ARC.hairline}`,
-      boxShadow: ARC.shadowLift, aspectRatio: '16 / 9', maxWidth: 1100, marginInline: 'auto',
-    }}>
-      <img
-        src="/marketing/feature-coach.png"
-        alt="A drill in progress with coaching feedback"
-        loading="lazy"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-      />
-    </div>
+    <MarketingImage
+      src="/marketing/feature-coach.png"
+      alt="A drill in progress with coaching feedback"
+    />
   </section>
 );
 
@@ -285,17 +291,8 @@ const ArcFeatureSplit = ({
           {lede}
         </p>
       </div>
-      <div style={{
-        direction: 'ltr',
-        borderRadius: ARC.radiusPill, overflow: 'hidden',
-        background: ARC.bgTinted, border: `1px solid ${ARC.hairline}`,
-        boxShadow: ARC.shadowLift, aspectRatio: '4 / 3',
-      }}>
-        <img
-          src={image} alt={alt} loading="lazy"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-        />
+      <div style={{ direction: 'ltr' }}>
+        <MarketingImage src={image} alt={alt} aspect="4 / 3" maxWidth={520} />
       </div>
     </div>
   </section>
@@ -323,7 +320,7 @@ const ArcTextOnly = () => (
 );
 
 // ── Final CTA ── Arc: heading + dual CTAs centered.
-const ArcFinalCTA = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSecondary: () => void }) => (
+const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
   <section style={{ padding: '140px 32px 120px', maxWidth: 1280, margin: '0 auto' }}>
     <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
       <h2 style={{
@@ -335,64 +332,27 @@ const ArcFinalCTA = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeco
       </h2>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSecondary}>Sign in</button>
       </div>
     </div>
   </section>
 );
 
-// ── Footer ── Arc: 3 columns (Product, Resources, Brand).
+// ── Footer ── Brand line + copyright. Decorative columns (Product /
+// Resources / Legal) were removed in the audit-fix pass — they had no
+// destinations.
 const ArcFooter = () => (
-  <footer style={{ borderTop: `1px solid ${ARC.hairline}`, padding: '64px 32px 56px', background: ARC.bg }}>
-    <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48 }}>
-      <div>
-        <div style={{ fontFamily: ARC.serif, fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 10 }}>
-          LSAT U
-        </div>
-        <p style={{ fontSize: 13, color: ARC.inkSecondary, lineHeight: 1.55, maxWidth: 320 }}>
-          Clearer thinking, higher scores. Built for aspiring attorneys by Joshua.
-        </p>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Product
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Bootcamp</li>
-          <li>Drills</li>
-          <li>Diagnostics</li>
-          <li>Reference</li>
-        </ul>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Resources
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Build philosophy</li>
-          <li>For students</li>
-          <li>FAQ</li>
-          <li>Contact</li>
-        </ul>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Legal
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Privacy</li>
-          <li>Terms</li>
-        </ul>
-      </div>
-    </div>
+  <footer style={{ borderTop: `1px solid ${ARC.hairline}`, padding: '40px 32px 36px', background: ARC.bg }}>
     <div style={{
-      maxWidth: 1280, margin: '40px auto 0', paddingTop: 24,
-      borderTop: `1px solid ${ARC.hairline}`,
-      fontSize: 12, color: ARC.inkSecondary,
-      display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+      maxWidth: 1280, margin: '0 auto',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      flexWrap: 'wrap', gap: 16,
     }}>
-      <span>© LSAT U · Aspiring Attorneys</span>
-      <span>Made with focus.</span>
+      <div style={{ fontFamily: ARC.serif, fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>
+        LSAT U
+      </div>
+      <span style={{ fontSize: 12, color: ARC.inkSecondary }}>
+        © LSAT U · Built for aspiring attorneys.
+      </span>
     </div>
   </footer>
 );
@@ -401,10 +361,10 @@ const ArcFooter = () => (
 // AUTH PAGE
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Module-scope remount counter (ID-9 diagnosis). Survives component
-// unmount/remount so we can see whether the page is actually remounting vs
-// its effect re-running.
-let AUTH_MOUNT_COUNT = 0;
+// How long an oauth_pending flag is allowed to live before it counts as
+// stuck. If the user navigated away mid-OAuth and never came back, the
+// flag would otherwise blank /auth on every future visit.
+const OAUTH_PENDING_MAX_AGE_MS = 60_000;
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -412,8 +372,10 @@ export default function Auth() {
   const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
-  // ── Modal state — auto-opens on /auth so login form is visible immediately ──
-  const [modalOpen, setModalOpen] = React.useState(true);
+  // ── Modal state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof,
+  // ArcFinalCTA). Default closed so visitors can read the landing page;
+  // a session-expired or OAuth bounce explicitly forces it open below.
+  const [modalOpen, setModalOpen] = React.useState(false);
   const [forgotOpen, setForgotOpen] = React.useState(false);
 
   // ── Form state ──
@@ -460,40 +422,36 @@ export default function Auth() {
     };
   }, [modalOpen, forgotOpen]);
 
-  // Redirect authenticated users — check if they have a username first
+  // Redirect authenticated users — single helper handles the profile lookup
+  // so this effect, handleSubmit, and ResetPassword all agree on the rules.
   React.useEffect(() => {
     if (!user || skipAutoRedirectRef.current) return;
-
-    const checkProfile = async () => {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('display_name')
-        .eq('class_id', user.id)
-        .maybeSingle();
-
-      if (profile?.display_name) {
-        navigate('/foyer');
-      } else {
-        navigate('/onboarding');
-      }
-    };
-    checkProfile();
+    void redirectAfterAuth(user.id, navigate);
   }, [user, navigate]);
 
-  // Debug: log auth page mount state for OAuth diagnosis
+  // Sanity-check oauth_pending on mount. If the flag is set but there is
+  // no actual return-leg signal (no ?code, no #access_token, and no
+  // recent timestamp), clear it so /auth doesn't render a permanent
+  // blank screen. Stamping a timestamp lets us detect "left the tab open
+  // for an hour" cases too.
   React.useEffect(() => {
-    AUTH_MOUNT_COUNT += 1;
-    console.log('[Auth mount]', {
-      count: AUTH_MOUNT_COUNT,
-      url: window.location.href,
-      hash: window.location.hash,
-      search: window.location.search,
-      oauth_pending: sessionStorage.getItem('oauth_pending'),
-      user: !!user,
-    });
-    return () => {
-      console.log('[Auth unmount]', { count: AUTH_MOUNT_COUNT });
-    };
+    if (sessionStorage.getItem('oauth_pending') !== '1') return;
+    const url = new URL(window.location.href);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const hasReturnLegSignal =
+      !!url.searchParams.get('code') ||
+      !!hashParams.get('access_token') ||
+      !!url.searchParams.get('error') ||
+      !!hashParams.get('error');
+
+    if (hasReturnLegSignal) return;
+
+    const tsRaw = sessionStorage.getItem('oauth_pending_ts');
+    const ts = tsRaw ? parseInt(tsRaw, 10) : 0;
+    if (!ts || Date.now() - ts > OAUTH_PENDING_MAX_AGE_MS) {
+      sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
+    }
   }, []);
 
   // One-shot: surface a session-expired banner if we were bounced here by
@@ -525,6 +483,7 @@ export default function Auth() {
       if (settled) return;
       settled = true;
       sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
       setLoading(false);
       setModalOpen(true);
       toast({
@@ -542,6 +501,7 @@ export default function Auth() {
         window.clearTimeout(timeoutId);
         if (result.error) {
           sessionStorage.removeItem('oauth_pending');
+          sessionStorage.removeItem('oauth_pending_ts');
           console.error('[Auth] OAuth return-leg failed', result.error);
           setLoading(false);
           setModalOpen(true);
@@ -561,6 +521,7 @@ export default function Auth() {
         settled = true;
         window.clearTimeout(timeoutId);
         sessionStorage.removeItem('oauth_pending');
+        sessionStorage.removeItem('oauth_pending_ts');
         console.error('[Auth] OAuth return-leg threw', err);
         setLoading(false);
         setModalOpen(true);
@@ -596,16 +557,38 @@ export default function Auth() {
           setShowConfirmation(true);
         }
       } else {
-        const { error } = await signIn(trimmedEmail, password);
-        if (error) {
-          const isInvalidCreds = error.message?.toLowerCase().includes('invalid login credentials');
+        let error: { message?: string; status?: number } | null = null;
+        try {
+          const result = await signIn(trimmedEmail, password);
+          error = result.error;
+        } catch (e) {
+          // Thrown errors typically mean the request never reached
+          // Supabase (network down, DNS failure, blocked by extension).
+          // The non-throw path returns { error } already.
           toast({
-            title: 'Sign-in failed',
-            description: isInvalidCreds
-              ? 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.'
-              : error.message,
+            title: "Couldn't reach the server",
+            description: 'Check your connection and try again.',
             variant: 'destructive',
           });
+          return;
+        }
+        if (error) {
+          const msg = (error.message || '').toLowerCase();
+          const status = error.status;
+          let title = 'Sign-in failed';
+          let description = error.message ?? 'Sign-in failed';
+
+          if (msg.includes('invalid login credentials')) {
+            description = 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.';
+          } else if (msg.includes('email not confirmed') || msg.includes('email_not_confirmed')) {
+            title = 'Confirm your email';
+            description = "We sent a confirmation link when you signed up. Click it before signing in.";
+          } else if (status === 429 || msg.includes('rate limit') || msg.includes('too many requests')) {
+            title = 'Too many attempts';
+            description = 'Wait a couple of minutes before trying again.';
+          }
+
+          toast({ title, description, variant: 'destructive' });
         } else {
           // Save or clear email based on "Remember me"
           if (rememberMe) {
@@ -616,19 +599,7 @@ export default function Auth() {
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
-          
-          // Check if user has completed onboarding
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('display_name')
-            .eq('class_id', freshUser!.id)
-            .maybeSingle();
-
-          if (profile?.display_name) {
-            navigate('/foyer');
-          } else {
-            navigate('/onboarding');
-          }
+          if (freshUser) await redirectAfterAuth(freshUser.id, navigate);
           return;
         }
       }
@@ -656,16 +627,19 @@ export default function Auth() {
     setLoading(true);
     try {
       sessionStorage.setItem('oauth_pending', '1');
+      sessionStorage.setItem('oauth_pending_ts', String(Date.now()));
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/auth",
       });
       if (result.error) {
         sessionStorage.removeItem('oauth_pending');
+        sessionStorage.removeItem('oauth_pending_ts');
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
       if (result.redirected) return;
     } catch (err: any) {
       sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
       toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
     } finally {
       setLoading(false);
@@ -677,8 +651,18 @@ export default function Auth() {
     setLoading(true);
     const { error } = await resetPassword(resetEmail.trim().toLowerCase());
     if (!error) {
+      toast({
+        title: 'Reset link sent',
+        description: 'Check your email for a link to set a new password.',
+      });
       setForgotOpen(false); setModalOpen(true);
       setResetEmail('');
+    } else {
+      toast({
+        title: 'Reset failed',
+        description: error.message,
+        variant: 'destructive',
+      });
     }
     setLoading(false);
   };
@@ -687,18 +671,61 @@ export default function Auth() {
   // CTAs from every Arc section funnel into the existing modal — preserves
   // the auth flow exactly. setModalOpen(true) opens the GlassShell sign-in,
   // which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
-  const openSignIn = React.useCallback(() => setModalOpen(true), []);
+  const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
+  const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
 
   const oauthReturning =
     typeof window !== 'undefined' &&
     sessionStorage.getItem('oauth_pending') === '1';
 
-  if ((authReady && user) || oauthReturning) {
+  if (authReady && user) {
+    // Already signed in — the redirect effect above will fire imminently.
+    // Show a calm "Redirecting…" panel rather than a flat blank rectangle
+    // so the user knows something is happening.
     return (
       <div
-        aria-hidden="true"
-        style={{ minHeight: '100vh', background: ARC.bg }}
-      />
+        role="status"
+        aria-live="polite"
+        style={{
+          minHeight: '100vh',
+          background: ARC.bg,
+          color: ARC.ink,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Redirecting…
+        </div>
+      </div>
+    );
+  }
+
+  if (oauthReturning) {
+    // OAuth return leg in progress. Show real copy + a spinner so the
+    // user knows something is happening instead of staring at a blank
+    // page. The OAuth effect resolves and either signs in (Auth context
+    // navigates away) or shows a toast and unsets the flag.
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          minHeight: '100vh',
+          background: ARC.bg,
+          color: ARC.ink,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Finishing sign in…
+        </div>
+      </div>
     );
   }
 
@@ -708,8 +735,8 @@ export default function Auth() {
 
       <div className="arc-fade">
         <ArcNav onSignIn={openSignIn} />
-        <ArcHero onCTA={openSignIn} />
-        <ArcProof onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+        <ArcProof onPrimary={openSignIn} />
         <ArcFeatureFullWidth />
         <ArcFeatureSplit
           heading="Space for every part of your prep."
@@ -725,7 +752,7 @@ export default function Auth() {
           alt="The Smart Drill with adaptive difficulty"
         />
         <ArcTextOnly />
-        <ArcFinalCTA onPrimary={openSignIn} onSecondary={openSignIn} />
+        <ArcFinalCTA onPrimary={openSignIn} />
         <ArcFooter />
       </div>
 
@@ -749,6 +776,7 @@ export default function Auth() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="LSAT U Access"
+                aria-describedby="auth-modal-desc"
                 className="pointer-events-auto w-full sm:max-w-[390px] max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform rounded-t-2xl sm:rounded-2xl"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -764,6 +792,11 @@ export default function Auth() {
                   >
                     <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                   </button>
+
+                  {/* Visually hidden description for screen readers */}
+                  <p id="auth-modal-desc" className="sr-only">
+                    Sign in or create your LSAT U account.
+                  </p>
 
                   {/* Header */}
                   <div className="text-center mb-7">
@@ -839,8 +872,9 @@ export default function Auth() {
                               exit={{ opacity: 0, height: 0 }}
                               className="overflow-hidden"
                             >
-                              <label className={labelCls}>Name</label>
+                              <label htmlFor="auth-name" className={labelCls}>Name</label>
                               <Input
+                                id="auth-name"
                                 type="text"
                                 required
                                 placeholder="Your name"
@@ -855,11 +889,12 @@ export default function Auth() {
 
                         {/* Email */}
                         <div>
-                          <label className={labelCls}>Email</label>
+                          <label htmlFor="auth-email" className={labelCls}>Email</label>
                           {/* group + group-focus-within replaces focused state — zero re-renders */}
                           <div className="relative group">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                             <Input
+                              id="auth-email"
                               type="email"
                               required
                               placeholder="name@example.com"
@@ -873,7 +908,7 @@ export default function Auth() {
                         {/* Password */}
                         <div>
                           <div className="flex justify-between items-end mb-1.5">
-                            <label className={labelCls} style={{ marginBottom: 0 }}>
+                            <label htmlFor="auth-password" className={labelCls} style={{ marginBottom: 0 }}>
                               Password
                             </label>
                             {!isSignUp && (
@@ -889,19 +924,21 @@ export default function Auth() {
                           <div className="relative group mt-1.5">
                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                             <Input
+                              id="auth-password"
                               type={showPassword ? 'text' : 'password'}
                               required
                               placeholder="••••••••••••"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
-                              minLength={isSignUp ? 6 : undefined}
+                              minLength={isSignUp ? 8 : undefined}
                               className={inputWithToggleCls}
                             />
                             <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
                               className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                              aria-label="Toggle password visibility"
+                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              aria-pressed={showPassword}
                             >
                               {showPassword ? (
                                 <EyeOff className="w-4 h-4" />
@@ -910,6 +947,11 @@ export default function Auth() {
                               )}
                             </button>
                           </div>
+                          {isSignUp && (
+                            <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">
+                              8+ characters
+                            </p>
+                          )}
                         </div>
 
                         {/* Confirm password — sign up only */}
@@ -921,10 +963,11 @@ export default function Auth() {
                               exit={{ opacity: 0, height: 0 }}
                               className="overflow-hidden"
                             >
-                              <label className={labelCls}>Confirm Password</label>
+                              <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
                               <div className="relative group">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                                 <Input
+                                  id="auth-confirm"
                                   type={showPassword ? 'text' : 'password'}
                                   required
                                   placeholder="••••••••••••"
@@ -1026,7 +1069,7 @@ export default function Auth() {
                     className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
                     aria-label="Close"
                   >
-                    <X className="w-[14px] h-[14px]" />
+                    <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                   </button>
                   <h3 className="text-[14px] font-semibold text-white mb-1">Reset Password</h3>
                   <p className="text-[11px] text-neutral-500 mb-5">
@@ -1034,10 +1077,11 @@ export default function Auth() {
                   </p>
                   <form onSubmit={handleForgotPassword} className="space-y-4">
                     <div>
-                      <label className={labelCls}>Email</label>
+                      <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
                       <div className="relative group">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
                         <Input
+                          id="auth-reset-email"
                           type="email"
                           placeholder="name@example.com"
                           value={resetEmail}

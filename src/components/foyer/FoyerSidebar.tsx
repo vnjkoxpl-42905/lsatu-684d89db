@@ -8,10 +8,10 @@ import {
   MessagesSquare,
   Flag,
   BookOpen,
-  Command,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
+import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
 export interface FoyerSidebarProps {
   displayName?: string | null;
@@ -27,20 +27,33 @@ type NavItem = {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
-  { to: "/inbox", label: "Ask Joshua", Icon: MessagesSquare, flag: "has_chat_access" },
+  { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
   { to: "/waj", label: "Wrong Answer Journal", Icon: BookOpen, flag: "has_waj_access" },
   { to: "/flagged", label: "Flagged", Icon: Flag, flag: "has_flagged_access" },
   { to: "/practice", label: "Practice", Icon: Dumbbell, flag: "has_practice_access" },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
   { to: "/admin/homework", label: "Homework", Icon: BookOpen, adminOnly: true },
-  { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true },
 ] as const;
 
 const today = format(new Date(), "EEEE, MMMM d");
 
 export default function FoyerSidebar(_props: FoyerSidebarProps) {
   const permissions = useUserPermissions();
+  const { prefs } = useLayoutPrefs();
+
+  const navByTo = new Map(NAV_ITEMS.map((n) => [n.to, n]));
+  const orderedNav: NavItem[] = [];
+  const seen = new Set<string>();
+  for (const id of prefs.sidebar) {
+    const item = navByTo.get(id);
+    if (item) {
+      orderedNav.push(item);
+      seen.add(id);
+    }
+  }
+  // Append any nav items missing from prefs (e.g. catalog gained a new entry)
+  for (const item of NAV_ITEMS) if (!seen.has(item.to)) orderedNav.push(item);
 
   return (
     <aside className="flex h-full w-full flex-col bg-background">
@@ -73,7 +86,7 @@ export default function FoyerSidebar(_props: FoyerSidebarProps) {
       </div>
 
       <nav className="flex flex-col">
-        {NAV_ITEMS.filter((item) => {
+        {orderedNav.filter((item) => {
           if (item.adminOnly) return permissions.is_admin;
           return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
         }).map(({ to, label, Icon }) => (

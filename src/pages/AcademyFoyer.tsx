@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Zap, Play, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import FoyerSidebar from "@/components/foyer/FoyerSidebar";
@@ -11,51 +11,90 @@ import FoyerAccountButton from "@/components/foyer/FoyerAccountButton";
 import FoyerFindCard from "@/components/foyer/FoyerFindCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import FloatingTAWidget from "@/components/ta/FloatingTAWidget";
+import GooeyDock from "@/components/ui/gooey-dock";
+import HelpDialog from "@/components/foyer/HelpDialog";
+import { hasSeenTour, startTour } from "@/components/foyer/GuidedTour";
+import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
+import { openTAWidget } from "@/components/ta/taWidgetBus";
+import { openNotifications } from "@/components/notifications/notificationsBus";
+import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
+import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { useInbox } from "@/hooks/useInbox";
+import { useNotifications } from "@/hooks/useNotifications";
+import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
+import {
+  DOCK_CATALOG,
+  ORBITAL_CATALOG,
+  findCatalogItem,
+  type CatalogItem,
+} from "@/lib/layoutCatalog";
 
-const FIND_NODE_ID = 3;
+const FINDER_VARIANT = "finder" as const;
 
-const foyerNodes: TimelineItem[] = [
-  {
-    id: 1,
-    title: "Smart Drill",
+interface OrbitalRenderInfo {
+  date: string;
+  content: string;
+  category: string;
+  status: TimelineItem["status"];
+  energy: number;
+  variant?: typeof FINDER_VARIANT;
+}
+
+const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
+  "smart-drill": {
     date: "Now",
     content: "Adaptive drill tuned to your weakest question types.",
     category: "Practice",
-    icon: Zap,
-    relatedIds: [2],
     status: "in-progress",
     energy: 80,
   },
-  {
-    id: 2,
-    title: "Resume",
-    date: "Last session",
-    content: "Pick up where you left off.",
-    category: "Practice",
-    icon: Play,
-    relatedIds: [1],
+  resume: {
+    date: "Last assignment",
+    content: "Open the next thing on your plate.",
+    category: "Classroom",
     status: "pending",
     energy: 60,
   },
-  {
-    id: FIND_NODE_ID,
-    title: "Find",
+  find: {
     date: "Anytime",
     content: "Jump to a specific question.",
     category: "Practice",
-    icon: Search,
-    relatedIds: [],
     status: "in-progress",
     energy: 100,
-    variant: "finder",
+    variant: FINDER_VARIANT,
   },
-];
+  "mock-lsat": {
+    date: "Anytime",
+    content: "Open the practice surface.",
+    category: "Practice",
+    status: "pending",
+    energy: 70,
+  },
+  "last-bootcamp": {
+    date: "Recent",
+    content: "Resume your last bootcamp module.",
+    category: "Bootcamp",
+    status: "in-progress",
+    energy: 65,
+  },
+};
 
 export default function AcademyFoyer() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
+  const perms = useUserPermissions();
+  const { prefs } = useLayoutPrefs();
+  const { data: classroomItems = [] } = useClassroomItems();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
+  
+
+  React.useEffect(() => {
+    if (displayName && !hasSeenTour()) {
+      const t = setTimeout(() => startTour(), 600);
+      return () => clearTimeout(t);
+    }
+  }, [displayName]);
 
   React.useEffect(() => {
     if (!authReady) return;
@@ -77,7 +116,71 @@ export default function AcademyFoyer() {
     })();
   }, [user, authReady, navigate]);
 
+  const userHasAccess = React.useCallback(
+    (item: CatalogItem) => {
+      if (item.adminOnly) return perms.is_admin;
+      if (item.requires) return perms.is_admin || !!perms[item.requires as PermissionFlag];
+      return true;
+    },
+    [perms],
+  );
+
+  const foyerNodes: TimelineItem[] = React.useMemo(() => {
+    return prefs.orbital
+      .map((id, idx) => {
+        const cat = findCatalogItem(ORBITAL_CATALOG, id);
+        const r = ORBITAL_RENDER[id];
+        if (!cat || !r || !userHasAccess(cat)) return null;
+        const node: TimelineItem = {
+          id: idx + 1,
+          title: cat.label,
+          date: r.date,
+          content: r.content,
+          category: r.category,
+          icon: cat.icon,
+          relatedIds: [],
+          status: r.status,
+          energy: r.energy,
+        };
+        if (r.variant) node.variant = r.variant;
+        return node;
+      })
+      .filter((n): n is TimelineItem => n !== null);
+  }, [prefs.orbital, userHasAccess]);
+
   if (!authReady || !user) return null;
+
+  const onOrbitalActivate = (nodeId: number) => {
+    const idx = nodeId - 1;
+    const itemId = prefs.orbital[idx];
+    if (itemId === "smart-drill") {
+      navigate("/drill", { state: { mode: "adaptive" } });
+    } else if (itemId === "resume") {
+      // Real resume: open the highest-priority active classroom item.
+      // Falls back to /drill if the student has no assigned work yet.
+      const next = nextActionFor(classroomItems);
+      const route = next ? resolveItemRoute(next) : null;
+      navigate(route ?? "/drill");
+    } else if (itemId === "mock-lsat") {
+      navigate("/practice");
+    } else if (itemId === "last-bootcamp") {
+      // Real "last bootcamp": most recently updated active bootcamp item.
+      // Falls back to the bootcamps index if none assigned.
+      const lastBootcamp = [...classroomItems]
+        .filter(
+          (i) =>
+            i.type === "bootcamp_module" &&
+            (i.status === "assigned" || i.status === "in_progress"),
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+        )[0];
+      const route = lastBootcamp ? resolveItemRoute(lastBootcamp) : null;
+      navigate(route ?? "/bootcamps");
+    }
+    // 'find' opens its own expanded content via renderExpandedContent
+  };
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background text-foreground">
@@ -100,7 +203,7 @@ export default function AcademyFoyer() {
         </SheetContent>
       </Sheet>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10">
+      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
           <div className="pointer-events-auto flex items-center gap-2">
             <FoyerDock />
@@ -109,12 +212,9 @@ export default function AcademyFoyer() {
         </div>
         <RadialOrbitalTimeline
           timelineData={foyerNodes}
-          onActivate={(id) => {
-            if (id === 1) navigate("/drill", { state: { mode: "adaptive" } });
-            else if (id === 2) navigate("/drill");
-          }}
+          onActivate={onOrbitalActivate}
           renderExpandedContent={(item, close) => {
-            if (item.variant !== "finder") return null;
+            if (item.variant !== FINDER_VARIANT) return null;
             return (
               <FoyerFindCard
                 onOpen={(qid) =>
@@ -136,9 +236,78 @@ export default function AcademyFoyer() {
             );
           }}
         />
-      </main>
 
-      <FloatingTAWidget />
+        <FoyerQuickDock onReplayTour={() => startTour()} />
+      </main>
     </div>
+  );
+}
+
+function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
+  const navigate = useNavigate();
+  const perms = useUserPermissions();
+  const { prefs } = useLayoutPrefs();
+  const { unreadCount: inboxUnread } = useInbox();
+  const { unreadCount: notifUnread } = useNotifications();
+  const [helpOpen, setHelpOpen] = React.useState(false);
+
+  const badgeFor = (id: string): number | undefined => {
+    if (id === "inbox") return inboxUnread;
+    if (id === "notifications") return notifUnread;
+    return undefined;
+  };
+
+  const userHasAccess = (item: CatalogItem) => {
+    if (item.adminOnly) return perms.is_admin;
+    if (item.requires) return perms.is_admin || !!perms[item.requires as PermissionFlag];
+    return true;
+  };
+
+  const resolveAction = (id: string): (() => void) | null => {
+    switch (id) {
+      case "teacher":
+        return () => navigate("/teacher");
+      case "whiteboard":
+        return () => openWhiteboard();
+      case "ask-joshua":
+        return () => openTAWidget();
+      case "inbox":
+        return () => navigate("/inbox");
+      case "schedule":
+        return () => navigate("/schedule");
+      case "notifications":
+        return () => openNotifications();
+      case "profile":
+        return () => navigate("/profile");
+      case "settings":
+        return () => navigate("/settings/layout");
+      case "help":
+        return () => setHelpOpen(true);
+      default:
+        return null;
+    }
+  };
+
+  const items = prefs.dock
+    .map((id) => {
+      const cat = findCatalogItem(DOCK_CATALOG, id);
+      if (!cat || !userHasAccess(cat)) return null;
+      const onClick = resolveAction(id);
+      if (!onClick) return null;
+      return { icon: cat.icon, label: cat.label, onClick, badge: badgeFor(id) };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null);
+
+  return (
+    <>
+      {items.length > 0 && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center">
+          <div className="pointer-events-auto">
+            <GooeyDock items={items} />
+          </div>
+        </div>
+      )}
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+    </>
   );
 }

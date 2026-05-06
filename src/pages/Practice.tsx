@@ -1,3 +1,7 @@
+/**
+ * /practice — drill-launcher hub. (Historically the file was Home.tsx;
+ * renamed because the route is /practice and there is no /home surface.)
+ */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,6 +28,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { LogoutButton } from '@/components/LogoutButton';
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -90,30 +96,75 @@ function StudyToolRow({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Spline error boundary — falls back to a calm gradient panel when the
+// external Spline scene fails to load (offline / CDN outage / blocked).
+// ─────────────────────────────────────────────────────────────────────────────
+class SplineBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.warn('[Practice] Spline scene failed', error);
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────────────────
-export default function Home() {
+export default function Practice() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { manifest, isLoading, error } = useQuestionBank();
   const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
+  const [useOfficial, setUseOfficial] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('drillLayout') === 'official';
+  });
+  React.useEffect(() => {
+    localStorage.setItem('drillLayout', useOfficial ? 'official' : 'default');
+  }, [useOfficial]);
+  const drillPath = useOfficial ? '/drill?layout=official' : '/drill';
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
     avgAccuracy: 0,
-    recentStreak: 0,
   });
-  const [sparklineData, setSparklineData] = React.useState<
-    Array<{ date: string; count: number }>
-  >([]);
+  const [statsLoaded, setStatsLoaded] = React.useState(false);
+  const [profileDisplayName, setProfileDisplayName] = React.useState<string | null>(null);
   const { classId, loading: classIdLoading } = useClassId();
 
   // Auth guard
   React.useEffect(() => {
     if (authReady && !user) {
-      navigate('/auth');
+      navigate('/auth', { replace: true });
     }
   }, [user, authReady, navigate]);
+
+  // Source of truth for the greeting is profiles.display_name (Foyer's
+  // canonical name), not user_metadata which can lag.
+  React.useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('class_id', user.id)
+        .maybeSingle();
+      if (!cancelled) setProfileDisplayName(data?.display_name ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   // Load user stats
   React.useEffect(() => {
@@ -129,6 +180,8 @@ export default function Home() {
         .eq('class_id', classId)
         .gte('timestamp_iso', thirtyDaysAgo.toISOString());
 
+      setStatsLoaded(true);
+
       if (attempts && attempts.length > 0) {
         const correct = attempts.filter((a) => a.correct).length;
         const accuracy = Math.round((correct / attempts.length) * 100);
@@ -136,29 +189,7 @@ export default function Home() {
         setStats({
           totalAttempted: attempts.length,
           avgAccuracy: accuracy,
-          recentStreak: 0,
         });
-
-        const dailyCounts = new Map<string, number>();
-        attempts.forEach((attempt) => {
-          const date = new Date(attempt.timestamp_iso).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          });
-          dailyCounts.set(date, (dailyCounts.get(date) || 0) + 1);
-        });
-
-        const sparkline: Array<{ date: string; count: number }> = [];
-        for (let i = 17; i >= 0; i--) {
-          const date = new Date();
-          date.setDate(date.getDate() - i);
-          const dateStr = date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-          });
-          sparkline.push({ date: dateStr, count: dailyCounts.get(dateStr) || 0 });
-        }
-        setSparklineData(sparkline);
       }
     };
 
@@ -167,24 +198,25 @@ export default function Home() {
 
   const getFirstName = () => {
     if (!user) return 'there';
-    const displayName =
-      user.user_metadata?.display_name ||
+    const raw =
+      profileDisplayName ||
+      (user.user_metadata?.display_name as string | undefined) ||
       user.email?.split('@')[0] ||
       'there';
-    const firstName = displayName.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');
+    const firstName = raw.split(/[\s._-]/)[0].replace(/[^a-zA-Z]/g, '');
     return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() || 'there';
   };
 
   const handleStartAdaptive = () => {
-    navigate('/drill', { state: { mode: 'adaptive' } });
+    navigate(drillPath, { state: { mode: 'adaptive' } });
   };
 
   const handleStartSection = (config: FullSectionConfig) => {
-    navigate('/drill', { state: { mode: 'full-section', config } });
+    navigate(drillPath, { state: { mode: 'full-section', config } });
   };
 
   const handleStartTypeDrill = (config: TypeDrillConfig) => {
-    navigate('/drill', { state: { mode: 'type-drill', config } });
+    navigate(drillPath, { state: { mode: 'type-drill', config } });
   };
 
   const handleModeClick = (modeId: DrillMode) => {
@@ -236,7 +268,11 @@ export default function Home() {
     return null;
   };
 
-  const userInitials = user?.email?.slice(0, 2).toUpperCase() || 'U';
+  // Initials for the avatar — pull the first two letter characters of
+  // the email so accounts like "12@example.com" don't render a "12"
+  // avatar. Falls back to "U".
+  const userInitials =
+    (user?.email?.replace(/[^a-zA-Z]/g, '').slice(0, 2) || 'U').toUpperCase();
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
@@ -259,6 +295,23 @@ export default function Home() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <div
+              className="hidden sm:flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5"
+              title="LawHub-style testing chrome. Toggle on for official LSAT testing layout."
+            >
+              <Label
+                htmlFor="practice-official-toggle"
+                className="text-xs font-medium text-muted-foreground cursor-pointer select-none"
+              >
+                Official Format
+              </Label>
+              <Switch
+                id="practice-official-toggle"
+                checked={useOfficial}
+                onCheckedChange={setUseOfficial}
+                aria-label="Toggle official LSAT testing format"
+              />
+            </div>
             <LogoutButton />
             <ThemeToggle />
             <Button
@@ -299,8 +352,8 @@ export default function Home() {
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8 pb-16 animate-fade-in">
 
-        {/* ── Row 1 — Hero (unchanged) ──────────────────────────────────────── */}
-        <Card className="w-full h-[280px] bg-black/[0.96] relative overflow-hidden rounded-xl">
+        {/* ── Row 1 — Hero (intentionally dark on both themes) ──────────────── */}
+        <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl">
           
           <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
           <div className="flex h-full">
@@ -322,10 +375,12 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 relative hidden md:block">
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
+              <SplineBoundary>
+                <SplineScene
+                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                  className="w-full h-full"
+                />
+              </SplineBoundary>
             </div>
           </div>
         </Card>
@@ -431,6 +486,22 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                {/* Empty-state CTA — only shown after stats load with zero
+                    attempts so we don't flash it during initial load. */}
+                {statsLoaded && stats.totalAttempted === 0 && (
+                  <div className="rounded-xl border border-dashed border-border bg-card/40 p-5 flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-foreground">No attempts yet.</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">
+                        Start a Smart Drill — adaptive difficulty, no setup needed.
+                      </div>
+                    </div>
+                    <Button size="sm" onClick={handleStartAdaptive}>
+                      Start your first drill
+                    </Button>
+                  </div>
+                )}
 
                 {/* Recent Performance */}
                 <RecentPerformanceWidget />

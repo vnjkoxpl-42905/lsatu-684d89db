@@ -50,6 +50,60 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_ta_drafts: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          class_id: string | null
+          created_at: string
+          created_by: string
+          draft_json: Json | null
+          draft_markdown: string | null
+          draft_type: string
+          id: string
+          input_snapshot_json: Json
+          posted_at: string | null
+          prompt: string | null
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          class_id?: string | null
+          created_at?: string
+          created_by: string
+          draft_json?: Json | null
+          draft_markdown?: string | null
+          draft_type: string
+          id?: string
+          input_snapshot_json?: Json
+          posted_at?: string | null
+          prompt?: string | null
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          class_id?: string | null
+          created_at?: string
+          created_by?: string
+          draft_json?: Json | null
+          draft_markdown?: string | null
+          draft_type?: string
+          id?: string
+          input_snapshot_json?: Json
+          posted_at?: string | null
+          prompt?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       attempts: {
         Row: {
           app_version: string | null
@@ -197,6 +251,75 @@ export type Database = {
           section?: number | null
           session_id?: string | null
           started_at?: string | null
+        }
+        Relationships: []
+      }
+      classroom_items: {
+        Row: {
+          class_id: string | null
+          completed_at: string | null
+          content_html: string | null
+          content_markdown: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_at: string | null
+          id: string
+          metadata_json: Json
+          priority: number
+          source_id: string | null
+          source_table: string | null
+          status: string
+          student_id: string
+          title: string
+          type: string
+          unlock_at: string | null
+          updated_at: string
+          visible_to_student: boolean
+        }
+        Insert: {
+          class_id?: string | null
+          completed_at?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          metadata_json?: Json
+          priority?: number
+          source_id?: string | null
+          source_table?: string | null
+          status?: string
+          student_id: string
+          title: string
+          type: string
+          unlock_at?: string | null
+          updated_at?: string
+          visible_to_student?: boolean
+        }
+        Update: {
+          class_id?: string | null
+          completed_at?: string | null
+          content_html?: string | null
+          content_markdown?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          metadata_json?: Json
+          priority?: number
+          source_id?: string | null
+          source_table?: string | null
+          status?: string
+          student_id?: string
+          title?: string
+          type?: string
+          unlock_at?: string | null
+          updated_at?: string
+          visible_to_student?: boolean
         }
         Relationships: []
       }
@@ -385,6 +508,93 @@ export type Database = {
           picked_at?: string
           thumbnail_url?: string | null
           web_view_link?: string
+        }
+        Relationships: []
+      }
+      email_send_log: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          message_id: string | null
+          metadata: Json | null
+          recipient_email: string
+          status: string
+          template_name: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_id?: string | null
+          metadata?: Json | null
+          recipient_email: string
+          status: string
+          template_name: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          message_id?: string | null
+          metadata?: Json | null
+          recipient_email?: string
+          status?: string
+          template_name?: string
+        }
+        Relationships: []
+      }
+      email_send_state: {
+        Row: {
+          auth_email_ttl_minutes: number
+          batch_size: number
+          id: number
+          retry_after_until: string | null
+          send_delay_ms: number
+          transactional_email_ttl_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          auth_email_ttl_minutes?: number
+          batch_size?: number
+          id?: number
+          retry_after_until?: string | null
+          send_delay_ms?: number
+          transactional_email_ttl_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          auth_email_ttl_minutes?: number
+          batch_size?: number
+          id?: number
+          retry_after_until?: string | null
+          send_delay_ms?: number
+          transactional_email_ttl_minutes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_unsubscribe_tokens: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          token: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          token?: string
+          used_at?: string | null
         }
         Relationships: []
       }
@@ -631,6 +841,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -1028,6 +1271,95 @@ export type Database = {
         }
         Relationships: []
       }
+      student_context: {
+        Row: {
+          content_text: string | null
+          context_type: string
+          created_at: string
+          created_by: string
+          file_path: string | null
+          id: string
+          metadata: Json
+          source: string | null
+          student_id: string
+          title: string
+        }
+        Insert: {
+          content_text?: string | null
+          context_type: string
+          created_at?: string
+          created_by: string
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          source?: string | null
+          student_id: string
+          title: string
+        }
+        Update: {
+          content_text?: string | null
+          context_type?: string
+          created_at?: string
+          created_by?: string
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          source?: string | null
+          student_id?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      student_sessions: {
+        Row: {
+          created_at: string
+          created_by: string
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          scheduled_at: string
+          source: string | null
+          status: string
+          student_id: string
+          transcript_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          scheduled_at: string
+          source?: string | null
+          status?: string
+          student_id: string
+          transcript_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          scheduled_at?: string
+          source?: string | null
+          status?: string
+          student_id?: string
+          transcript_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_sessions_transcript_id_fkey"
+            columns: ["transcript_id"]
+            isOneToOne: false
+            referencedRelation: "student_context"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       students: {
         Row: {
           class_id: string
@@ -1061,6 +1393,122 @@ export type Database = {
           student_label?: string | null
           token_hash?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      suppressed_emails: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          metadata: Json | null
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          metadata?: Json | null
+          reason: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          metadata?: Json | null
+          reason?: string
+        }
+        Relationships: []
+      }
+      ta_assignments: {
+        Row: {
+          asset_ids: string[]
+          assigned_at: string
+          assigned_by: string
+          completed_at: string | null
+          content_html: string
+          created_at: string
+          id: string
+          interaction_id: string | null
+          pdf_url: string | null
+          status: string
+          student_id: string
+          title: string
+          viewed_at: string | null
+        }
+        Insert: {
+          asset_ids?: string[]
+          assigned_at?: string
+          assigned_by: string
+          completed_at?: string | null
+          content_html: string
+          created_at?: string
+          id?: string
+          interaction_id?: string | null
+          pdf_url?: string | null
+          status?: string
+          student_id: string
+          title: string
+          viewed_at?: string | null
+        }
+        Update: {
+          asset_ids?: string[]
+          assigned_at?: string
+          assigned_by?: string
+          completed_at?: string | null
+          content_html?: string
+          created_at?: string
+          id?: string
+          interaction_id?: string | null
+          pdf_url?: string | null
+          status?: string
+          student_id?: string
+          title?: string
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ta_assignments_interaction_id_fkey"
+            columns: ["interaction_id"]
+            isOneToOne: false
+            referencedRelation: "ta_interactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ta_interactions: {
+        Row: {
+          asset_ids: string[]
+          created_at: string
+          created_by: string | null
+          draft_content: Json | null
+          draft_status: string | null
+          id: string
+          message: string
+          role: string
+          student_id: string
+        }
+        Insert: {
+          asset_ids?: string[]
+          created_at?: string
+          created_by?: string | null
+          draft_content?: Json | null
+          draft_status?: string | null
+          id?: string
+          message: string
+          role: string
+          student_id: string
+        }
+        Update: {
+          asset_ids?: string[]
+          created_at?: string
+          created_by?: string | null
+          draft_content?: Json | null
+          draft_status?: string | null
+          id?: string
+          message?: string
+          role?: string
+          student_id?: string
         }
         Relationships: []
       }
@@ -1100,6 +1548,45 @@ export type Database = {
           pattern_type?: string
           question_types?: string[] | null
           reasoning_type?: string | null
+        }
+        Relationships: []
+      }
+      teaching_assets: {
+        Row: {
+          asset_type: string
+          content_text: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          file_path: string | null
+          id: string
+          metadata: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          asset_type: string
+          content_text?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          asset_type?: string
+          content_text?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          file_path?: string | null
+          id?: string
+          metadata?: Json
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1269,6 +1756,14 @@ export type Database = {
       }
     }
     Functions: {
+      delete_email: {
+        Args: { message_id: number; queue_name: string }
+        Returns: boolean
+      }
+      enqueue_email: {
+        Args: { payload: Json; queue_name: string }
+        Returns: number
+      }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
         Returns: {
@@ -1287,6 +1782,34 @@ export type Database = {
       is_conversation_participant: {
         Args: { _conv_id: string; _user_id: string }
         Returns: boolean
+      }
+      move_to_dlq: {
+        Args: {
+          dlq_name: string
+          message_id: number
+          payload: Json
+          source_queue: string
+        }
+        Returns: number
+      }
+      read_email_batch: {
+        Args: { batch_size: number; queue_name: string; vt: number }
+        Returns: {
+          message: Json
+          msg_id: number
+          read_ct: number
+        }[]
+      }
+      search_teaching_assets: {
+        Args: { max_rows?: number; q: string }
+        Returns: {
+          asset_type: string
+          description: string
+          excerpt: string
+          id: string
+          rank: number
+          title: string
+        }[]
       }
     }
     Enums: {

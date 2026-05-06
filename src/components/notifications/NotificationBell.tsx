@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Bell,
@@ -6,6 +6,7 @@ import {
   Flame,
   GraduationCap,
   MessageSquare,
+  UserPlus,
 } from "lucide-react";
 import { formatRelativeShort } from "@/lib/time";
 import {
@@ -22,6 +23,7 @@ import {
   type NotificationType,
 } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
+import { subscribeNotifications } from "./notificationsBus";
 
 function typeIcon(type: NotificationType): ReactNode {
   switch (type) {
@@ -33,6 +35,8 @@ function typeIcon(type: NotificationType): ReactNode {
       return <Clock className="h-4 w-4" aria-hidden />;
     case "streak":
       return <Flame className="h-4 w-4" aria-hidden />;
+    case "signup":
+      return <UserPlus className="h-4 w-4" aria-hidden />;
   }
 }
 
@@ -48,6 +52,8 @@ export default function NotificationBell({ mouseX }: Props) {
   const navigate = useNavigate();
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => subscribeNotifications(() => setOpen(true)), []);
 
   const distance = useTransform(mouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };

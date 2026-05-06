@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft, Search, Shield, Users, Activity, BarChart3,
-  ChevronDown, ChevronUp, Crown, UserCheck, UserX
+  ChevronDown, ChevronUp, Crown, UserCheck, UserX, Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatRelativeShort } from "@/lib/time";
@@ -74,6 +74,50 @@ const FLAG_GROUPS = [
 const ALL_FLAG_KEYS = FLAG_GROUPS.flatMap(g => g.flags.map(f => f.key));
 const ALL_FLAG_LABELS: Record<string, string> = {};
 FLAG_GROUPS.forEach(g => g.flags.forEach(f => { ALL_FLAG_LABELS[f.key] = f.label; }));
+
+// Build a template by listing the keys that should be true; everything
+// else gets explicitly set to false so the template fully describes the
+// resulting access state.
+function template(enabled: string[]): Record<string, boolean> {
+  const out: Record<string, boolean> = {};
+  for (const k of ALL_FLAG_KEYS) out[k] = enabled.includes(k);
+  return out;
+}
+
+const ROLE_TEMPLATES: { id: string; label: string; description: string; flags: Record<string, boolean> }[] = [
+  {
+    id: "trial",
+    label: "Trial",
+    description: "Practice and Drill only.",
+    flags: template(["has_practice_access", "has_drill_access"]),
+  },
+  {
+    id: "standard",
+    label: "Standard",
+    description: "All student tools, no TA workspace.",
+    flags: template([
+      "has_practice_access",
+      "has_drill_access",
+      "has_classroom_access",
+      "has_analytics_access",
+      "has_schedule_access",
+      "has_waj_access",
+      "has_flagged_access",
+      "has_chat_access",
+      "has_bootcamp_access",
+    ]),
+  },
+  {
+    id: "full",
+    label: "Full",
+    description: "Everything except TA access.",
+    flags: template(ALL_FLAG_KEYS.filter(k => k !== "has_ta_access")),
+  },
+];
+
+function templateMatches(user: Record<string, unknown>, t: Record<string, boolean>): boolean {
+  return ALL_FLAG_KEYS.every(k => Boolean(user[k]) === t[k]);
+}
 
 // Relative time rendering delegated to src/lib/time.ts so the admin
 // dashboard, hub, and notification bell all read the same way.
@@ -180,6 +224,23 @@ export default function AdminDashboard() {
     } catch {
       setUsers(us => us.map(u => u.class_id === classId ? prev : u));
       toast.error("Bulk action failed");
+    }
+  };
+
+  const applyTemplate = async (classId: string, flags: Record<string, boolean>, label: string) => {
+    const prev = users.find(u => u.class_id === classId);
+    if (!prev) return;
+    setUsers(us => us.map(u => u.class_id === classId ? { ...u, ...flags } as ManagedUser : u));
+    try {
+      const res = await supabase.functions.invoke("admin-manage-users", {
+        method: "POST",
+        body: { action: "apply_template", class_id: classId, flags },
+      });
+      if (res.error) throw res.error;
+      toast.success(`Applied "${label}"`);
+    } catch {
+      setUsers(us => us.map(u => u.class_id === classId ? prev : u));
+      toast.error("Template apply failed");
     }
   };
 
@@ -371,6 +432,38 @@ export default function AdminDashboard() {
                       <tr className="bg-zinc-900/20">
                         <td colSpan={6} className="px-8 py-4">
                           <div className="space-y-4">
+                            {/* Templates — apply a preset of flags in one shot */}
+                            <div>
+                              <div className="flex items-center gap-1.5 mb-2">
+                                <Sparkles className="w-3 h-3 text-zinc-500" />
+                                <div className="text-[10px] uppercase tracking-wider text-zinc-600">
+                                  Templates
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {ROLE_TEMPLATES.map(t => {
+                                  const active = templateMatches(user as unknown as Record<string, unknown>, t.flags);
+                                  return (
+                                    <button
+                                      key={t.id}
+                                      type="button"
+                                      onClick={() => applyTemplate(user.class_id, t.flags, t.label)}
+                                      title={t.description}
+                                      className={
+                                        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs border transition-colors " +
+                                        (active
+                                          ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                                          : "border-zinc-700 text-zinc-300 hover:bg-zinc-800")
+                                      }
+                                    >
+                                      {t.label}
+                                      <span className="text-[10px] text-zinc-500">{t.description}</span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
                             {/* Feature toggles */}
                             {FLAG_GROUPS.map(group => (
                               <div key={group.label}>

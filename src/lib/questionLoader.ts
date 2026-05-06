@@ -61,6 +61,15 @@ const JSON_FILES = [
   '/data/PT105-S2-LR.json',
   '/data/PT106-S1-LR.json',
   '/data/PT103-S2-LR.json',
+  // PT102-S4, PT103-S3, PT105-S4 — added from validated markdown uploads
+  '/data/PT102-S4-LR.json',
+  '/data/PT103-S3-LR.json',
+  '/data/PT105-S4-LR.json',
+  // PT106-S2, PT107-S3, PT109-S3, PT110-S3 — added from validated markdown uploads
+  '/data/PT106-S2-LR.json',
+  '/data/PT107-S3-LR.json',
+  '/data/PT109-S3-LR.json',
+  '/data/PT110-S3-LR.json',
   // Second batch (PT107-PT120)
   '/data/PT107-S1-LR.json',
   '/data/PT107-S4-LR.json',
@@ -87,6 +96,13 @@ const JSON_FILES = [
   '/data/PT117-S3-LR.json',
   '/data/PT118-S1-LR.json',
   '/data/PT118-S4-LR.json',
+  // Sections added from PT111/114/117/118/120 markdown uploads
+  '/data/PT111-S3-LR.json',
+  '/data/PT111-S4-LR.json',
+  '/data/PT114-S4-LR.json',
+  '/data/PT117-S4-LR.json',
+  '/data/PT118-S3-LR.json',
+  '/data/PT120-S4-LR.json',
   // Fifth batch - PT102
   '/data/PT102-S2-LR.json',
   '/data/PT102-S3-LR.json',

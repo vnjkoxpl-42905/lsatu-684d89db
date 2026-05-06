@@ -33,21 +33,23 @@ export default function OfficialAnswerNavigator({
   onNext,
 }: Props) {
   const total = questionQueue.length;
-  if (total === 0) return null;
+  if (total <= 1) return null;
 
   // Ovals are positional (i + 1), not the question's qnum — matches the
   // official testing UI convention. The pane header shows the real qnum.
 
   return (
     <div className="border-t border-slate-200 bg-slate-100">
-      <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
-        <ol className="flex items-end gap-1.5 flex-wrap min-w-0 flex-1">
+      <div className="px-4 sm:px-6 py-2 flex items-center gap-3">
+        <ol
+          className="flex items-end gap-1 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {questionQueue.map((qid, i) => {
             const isCurrent = i === currentIndex;
             const isAnswered = attemptedQids.has(qid);
             const isClickable = jumpEnabled && i !== currentIndex;
             return (
-              <li key={qid} className="relative flex flex-col items-center">
+              <li key={qid} className="relative flex flex-col items-center shrink-0">
                 {isCurrent && (
                   <>
                     <span
@@ -63,7 +65,7 @@ export default function OfficialAnswerNavigator({
                   aria-current={isCurrent ? "true" : undefined}
                   aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}`}
                   className={cn(
-                    "min-w-[28px] h-7 px-2 rounded-full text-[12px] tabular-nums border transition-colors",
+                    "min-w-[24px] h-6 px-1.5 rounded-full text-[11px] tabular-nums border transition-colors",
                     isCurrent
                       ? "border-slate-700 bg-white text-slate-900 font-bold"
                       : isAnswered

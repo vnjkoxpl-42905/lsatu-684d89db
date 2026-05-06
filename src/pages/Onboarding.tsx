@@ -27,9 +27,19 @@ const GlassShell = ({ children }: { children: React.ReactNode }) => (
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { user, authReady } = useAuth();
+  const { user, authReady, signOut } = useAuth();
   const [name, setName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
+  const [signingOut, setSigningOut] = React.useState(false);
+
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      await signOut();
+    } finally {
+      navigate('/auth', { replace: true });
+    }
+  };
 
   // Pre-fill from metadata if available (e.g. Google name)
   React.useEffect(() => {
@@ -59,20 +69,32 @@ export default function Onboarding() {
 
     setSaving(true);
     try {
-      // Update auth metadata
-      await supabase.auth.updateUser({
-        data: { display_name: trimmed }
-      });
-
-      // Update profiles table
       const classId = user!.id;
-      await supabase.from('profiles').upsert({
-        class_id: classId,
-        display_name: trimmed,
-      }, { onConflict: 'class_id' });
+
+      // Save profile FIRST — this is the gate the Foyer checks. If it fails,
+      // we must not navigate (or the user gets bounced back here forever).
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert(
+          { class_id: classId, display_name: trimmed },
+          { onConflict: 'class_id' },
+        );
+
+      if (profileError) {
+        console.error('[Onboarding] profile upsert failed', profileError);
+        toast.error(profileError.message || 'Could not save your name. Please try again.');
+        return;
+      }
+
+      // Best-effort: mirror to auth metadata. Non-blocking — failure here
+      // must NOT prevent navigation since the profile row is the source of truth.
+      supabase.auth.updateUser({ data: { display_name: trimmed } }).catch((e) => {
+        console.warn('[Onboarding] auth metadata update failed (non-fatal)', e);
+      });
 
       navigate('/foyer', { replace: true });
     } catch (err: any) {
+      console.error('[Onboarding] unexpected error', err);
       toast.error(err?.message || 'Failed to save name');
     } finally {
       setSaving(false);
@@ -104,12 +126,13 @@ export default function Onboarding() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5">
+                <label htmlFor="onboarding-name" className="block text-[10px] uppercase tracking-[0.15em] text-neutral-500 font-medium mb-1.5 ml-0.5">
                   Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600 pointer-events-none" />
                   <Input
+                    id="onboarding-name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Your name"
@@ -129,6 +152,15 @@ export default function Onboarding() {
               >
                 Continue
               </AnimatedButton>
+
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={signingOut || saving}
+                className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2 disabled:opacity-50"
+              >
+                {signingOut ? 'Signing out…' : 'Sign out'}
+              </button>
             </form>
           </GlassShell>
         </motion.div>

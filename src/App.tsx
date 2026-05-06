@@ -10,7 +10,7 @@ import { QuestionBankProvider } from "./contexts/QuestionBankContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import Practice from "./pages/Practice";
 import AcademyFoyer from "./pages/AcademyFoyer";
 import Drill from "./pages/Drill";
 import WrongAnswerJournal from "./pages/WrongAnswerJournal";
@@ -19,6 +19,7 @@ import Analytics from "./pages/Analytics";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
+import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
@@ -30,6 +31,7 @@ import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
+const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
 import AdminDashboard from "./pages/AdminDashboard";
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
@@ -50,6 +52,7 @@ const TeacherStudents = React.lazy(() => import("./pages/teacher/TeacherStudents
 const TeacherStudentDetail = React.lazy(() => import("./pages/teacher/TeacherStudentDetail"));
 const TeacherAITA = React.lazy(() => import("./pages/teacher/TeacherAITA"));
 const TeacherWeeklyPlans = React.lazy(() => import("./pages/teacher/TeacherWeeklyPlans"));
+const TeacherSchedule = React.lazy(() => import("./pages/teacher/TeacherSchedule"));
 const TeacherSmartboard = React.lazy(() => import("./pages/teacher/TeacherSmartboard"));
 const TeacherAssignments = React.lazy(() => import("./pages/teacher/TeacherAssignments"));
 const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcamps"));
@@ -60,6 +63,9 @@ import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
+import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
+import AdminChatHub from "./components/chat-hub/AdminChatHub";
+import GuidedTour from "./components/foyer/GuidedTour";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
 // React root is remounting (e.g. from a service-worker replace) vs its child
@@ -87,6 +93,7 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
 
             {/* Onboarding — username setup for new users */}
             <Route path="/onboarding" element={<Onboarding />} />
@@ -174,7 +181,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/foyer" replace />} />
                   <Route path="/practice" element={
-                    <ProtectedRoute flag="has_practice_access"><Home /></ProtectedRoute>
+                    <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
                   } />
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>
@@ -189,6 +196,7 @@ const App = () => {
                     <ProtectedRoute flag="has_analytics_access"><Analytics /></ProtectedRoute>
                   } />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings/layout" element={<SettingsLayout />} />
                   <Route path="/classroom" element={
                     <ProtectedRoute flag="has_classroom_access"><Classroom /></ProtectedRoute>
                   } />
@@ -243,6 +251,11 @@ const App = () => {
                     <Route path="weekly-plans" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherWeeklyPlans />
+                      </React.Suspense>
+                    } />
+                    <Route path="schedule" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherSchedule />
                       </React.Suspense>
                     } />
                     <Route path="smartboard" element={
@@ -339,6 +352,9 @@ const App = () => {
             } />
           </Routes>
           <FloatingMessenger />
+          <FloatingWhiteboard />
+          <AdminChatHub />
+          <GuidedTour />
         </BrowserRouter>
       </TooltipProvider>
     </UserSettingsProvider>

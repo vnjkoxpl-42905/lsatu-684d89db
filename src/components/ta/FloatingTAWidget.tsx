@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { subscribeTAWidget } from "./taWidgetBus";
 import * as Dialog from "@radix-ui/react-dialog";
 import { GraduationCap, ExternalLink, X, ArrowLeft, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -13,12 +14,21 @@ import TAChatView from "./TAChatView";
 
 const LS_KEY = "ta-selected-student";
 
+const HIDDEN_ROUTES = ["/foyer"];
+
 export default function FloatingTAWidget() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, authReady } = useAuth();
   const { is_admin, has_ta_access, loading: permsLoading } = useUserPermissions();
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => subscribeTAWidget(() => setOpen(true)), []);
+
+  const fabHidden = HIDDEN_ROUTES.some(
+    (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
+  );
   const [selected, setSelected] = useState<string | null>(() => {
     try {
       return localStorage.getItem(LS_KEY);
@@ -66,6 +76,7 @@ export default function FloatingTAWidget() {
 
   return (
     <>
+      {!fabHidden && (
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -82,6 +93,7 @@ export default function FloatingTAWidget() {
       >
         <GraduationCap className="w-5 h-5" strokeWidth={1.75} />
       </button>
+      )}
 
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>

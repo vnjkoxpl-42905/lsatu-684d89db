@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+// Single source of truth for the orbit path. Both the visible ring and the
+// node positions derive from this so they can never drift apart.
+const ORBIT_RADIUS = 200;
+const ORBIT_DIAMETER = ORBIT_RADIUS * 2;
+
 export interface TimelineItem {
   id: number;
   title: string;
@@ -119,7 +124,8 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    // Orbit radius is shared with the visible ring (see ORBIT_RADIUS).
+    const radius = ORBIT_RADIUS;
     const radian = (angle * Math.PI) / 180;
     const x = radius * Math.cos(radian);
     const y = radius * Math.sin(radian);
@@ -158,14 +164,11 @@ export default function RadialOrbitalTimeline({
           <div className="w-3 h-3 rounded-full bg-foreground/40" />
         </div>
 
-        {/* Orbit ring — Apple-like layered depth, razor thin */}
-        <div className="absolute w-[420px] h-[420px] rounded-full border border-foreground/15 backdrop-blur-sm shadow-[0_0_60px_rgba(255,255,255,0.08)]" />
-        <div className="absolute w-[400px] h-[400px] rounded-full border border-foreground/40" />
+        {/* Single orbit ring — the one true path. Nodes are centered on it. */}
         <div
-          className="absolute w-[400px] h-[400px] rounded-full border border-dashed border-foreground/20"
-          style={{ animation: "spin 60s linear infinite" }}
+          className="absolute rounded-full border border-foreground/40 shadow-[0_0_60px_rgba(255,255,255,0.08)]"
+          style={{ width: ORBIT_DIAMETER, height: ORBIT_DIAMETER }}
         />
-        <div className="absolute w-[384px] h-[384px] rounded-full border border-foreground/20" />
 
         {timelineData.map((item, index) => {
           const position = calculateNodePosition(index, timelineData.length);

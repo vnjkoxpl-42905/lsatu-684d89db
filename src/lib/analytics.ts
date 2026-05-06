@@ -23,7 +23,8 @@ export type HubEventName =
   | "hub_session_logged"
   | "hub_draft_approved"
   | "hub_search_used"
-  | "hub_panel_collapsed";
+  | "hub_panel_collapsed"
+  | "hub_workspace_tab_switched";
 
 type TrackerProps = Record<string, string | number | boolean | null | undefined>;
 

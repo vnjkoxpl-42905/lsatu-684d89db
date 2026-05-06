@@ -6,6 +6,7 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { recordCompletionToday } from '../lib/streak';
+import { useBootcampProgress } from '@/hooks/useBootcampProgress';
 
 const TOTAL_TASK_KEYS = ['open', 'read', 'do', 'review', 'log'];
 
@@ -55,6 +56,13 @@ export default function TodayView({
   useEffect(() => {
     localStorage.setItem('pf:dailyChecklists', JSON.stringify(dailyChecklists));
   }, [dailyChecklists]);
+
+  // Sync progress to the assigned classroom_items row so Joshua sees it.
+  useBootcampProgress({
+    bootcampId: 'principle-flaw',
+    completedDays,
+    totalDays: 14,
+  });
 
   const toggleDayComplete = () => {
     if (completedDays.includes(day)) {
