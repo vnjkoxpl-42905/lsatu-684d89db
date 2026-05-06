@@ -2,7 +2,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { LeftRail } from './LeftRail';
 import { RightDrawer } from './RightDrawer';
 import { useState, createContext, useContext, useCallback, useEffect, useRef } from 'react';
-import { Sparkles, Command, ArrowLeft } from 'lucide-react';
+import { Command, ArrowLeft } from 'lucide-react';
 import type { ReferenceId, NamedToolId } from '@/bootcamps/main-conclusion/types/source-slots';
 import { CommandPalette } from '@/bootcamps/main-conclusion/components/command-palette/CommandPalette';
 import { AiTutor } from '@/bootcamps/main-conclusion/components/ai-tutor/AiTutor';
