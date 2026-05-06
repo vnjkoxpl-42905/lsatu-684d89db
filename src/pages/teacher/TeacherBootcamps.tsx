@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Flame, Loader2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import HubStudentList from '@/components/hub/HubStudentList';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
-import { createClassroomItem, archiveClassroomItem } from '@/lib/classroomItems';
+import { createClassroomItem, archiveClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
+import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface BootcampDef {
@@ -16,47 +18,41 @@ interface BootcampDef {
 }
 
 const BOOTCAMPS: BootcampDef[] = [
-  {
-    id: 'principle-flaw',
-    title: 'Principle & Flaw',
-    description: 'Two-week LR bootcamp',
-    route: '/bootcamp/principle-flaw',
-  },
-  {
-    id: 'intro-to-lr',
-    title: 'Intro to LR',
-    description: 'Foundational LR skills',
-    route: '/bootcamp/intro-to-lr',
-  },
-  {
-    id: 'causation-station',
-    title: 'Causation Station',
-    description: 'Causal reasoning patterns',
-    route: '/bootcamp/causation-station',
-  },
-  {
-    id: 'abstraction',
-    title: 'Abstraction',
-    description: 'Abstract relationships',
-    route: '/bootcamp/abstraction',
-  },
+  { id: 'principle-flaw', title: 'Principle & Flaw', description: 'Two-week LR bootcamp', route: '/bootcamp/principle-flaw' },
+  { id: 'intro-to-lr', title: 'Intro to LR', description: 'Foundational LR skills', route: '/bootcamp/intro-to-lr' },
+  { id: 'causation-station', title: 'Causation Station', description: 'Causal reasoning patterns', route: '/bootcamp/causation-station' },
+  { id: 'abstraction', title: 'Abstraction', description: 'Abstract relationships', route: '/bootcamp/abstraction' },
 ];
 
 export default function TeacherBootcamps() {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const [studentId, setStudentId] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const studentId = searchParams.get('student');
   const { data: items = [] } = useStudentClassroomItems(studentId);
   const [busy, setBusy] = useState<string | null>(null);
 
+  const setStudentId = (id: string) =>
+    setSearchParams((p) => {
+      const c = new URLSearchParams(p);
+      c.set('student', id);
+      return c;
+    });
+
   const isAssigned = (bootcampId: string) =>
     items.some(
-      (i) => i.type === 'bootcamp_module' && i.metadata_json?.bootcamp_id === bootcampId,
+      (i) =>
+        i.type === 'bootcamp_module' &&
+        i.metadata_json?.bootcamp_id === bootcampId &&
+        i.status !== 'archived',
     );
 
   const findItem = (bootcampId: string) =>
     items.find(
-      (i) => i.type === 'bootcamp_module' && i.metadata_json?.bootcamp_id === bootcampId,
+      (i) =>
+        i.type === 'bootcamp_module' &&
+        i.metadata_json?.bootcamp_id === bootcampId &&
+        i.status !== 'archived',
     );
 
   const toggle = async (b: BootcampDef, next: boolean) => {
@@ -64,7 +60,7 @@ export default function TeacherBootcamps() {
     setBusy(b.id);
     try {
       if (next) {
-        await createClassroomItem({
+        const item = await createClassroomItem({
           studentId,
           createdBy: user.id,
           type: 'bootcamp_module',
@@ -76,15 +72,24 @@ export default function TeacherBootcamps() {
           status: 'assigned',
           metadata: { bootcamp_id: b.id },
         });
+        const notify = await notifyStudentOfClassroomItem({
+          adminUserId: user.id,
+          studentId,
+          title: b.title,
+          description: b.description,
+          route: resolveItemRoute(item) ?? b.route,
+        });
+        toast.success(summarizeNotifyResult(notify));
       } else {
         const it = findItem(b.id);
         if (it) await archiveClassroomItem(it.id);
+        toast.success('Bootcamp archived');
       }
       qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
       qc.invalidateQueries({ queryKey: ['classroom-items'] });
-      toast.success(next ? 'Bootcamp assigned' : 'Bootcamp archived');
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Update failed');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Update failed';
+      toast.error(msg);
     } finally {
       setBusy(null);
     }
@@ -106,9 +111,9 @@ export default function TeacherBootcamps() {
         <div className="space-y-1.5">
           <h2 className="text-xl font-semibold tracking-tight">Bootcamps</h2>
           <p className="text-sm text-zinc-400">
-            Toggle which bootcamps appear in this student's Classroom.
-            Assignments create classroom_items rows so the student sees the
-            bootcamp as part of their assigned path.
+            Toggle which bootcamps appear in this student's Classroom. Toggling
+            on creates a classroom_items row and notifies the student; toggling
+            off archives the item (no notification).
           </p>
         </div>
 
