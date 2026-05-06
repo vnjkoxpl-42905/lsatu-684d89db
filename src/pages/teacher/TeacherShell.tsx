@@ -22,6 +22,7 @@ const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/ai-ta', label: 'AI Teaching Assistant', Icon: Sparkles },
   { to: '/teacher/weekly-plans', label: 'Weekly Plans', Icon: CalendarDays },
+  { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/teacher/smartboard', label: 'Smartboard', Icon: PencilRuler },
   { to: '/teacher/assignments', label: 'Assignments', Icon: ClipboardList },
   { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
