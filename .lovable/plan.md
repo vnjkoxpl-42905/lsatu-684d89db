@@ -1,31 +1,44 @@
-## Goal
+## Why bootcamp toggles fail right now
 
-1. Completely remove `BackgroundPaths` / `BackgroundPathsHero` from the codebase — no file, no imports, no references.
-2. Keep the Arc cream landing as `/auth`'s base, but auto-open the dark login modal whenever a user lands on `/auth` so the form is visible immediately on top of the cream background.
+The Teacher → Bootcamps toggle (`src/pages/teacher/TeacherBootcamps.tsx`) writes a `classroom_items` row, and the per-student gate (`src/components/hub/BootcampGate.tsx`, wrapping every `/bootcamp/*` route) reads from the same table. The frontend, hook (`useClassroomItems`), gate, and notification helper are all already correct — but the underlying table doesn't exist in the database.
 
-## Changes
+Confirmed via psql: `relation "public.classroom_items" does not exist`. The migration `supabase/migrations/20260506000000_classroom_items.sql` was authored but never applied. The same is true of `notifications` (used by the bell + the assign-toast flow). Only `homework_*` tables from that batch made it through.
 
-### 1. Purge BackgroundPaths
+So:
+- Toggling a bootcamp on Teacher → Bootcamps fails ("Update failed").
+- Clicking a bootcamp as a student blows up `BootcampGate`'s query and the page never renders.
+- The "notify student" step also fails because `notifications` is missing.
 
-- **Delete** `src/components/ui/background-paths.tsx`.
-- **`src/pages/Home.tsx`** — remove the `import { BackgroundPaths }` (line 16) and the `<BackgroundPaths />` render (line 304). The Card already has its own dark backdrop + Spotlight + Spline scene, so removal is purely subtractive.
-- **`src/pages/Onboarding.tsx`** — remove the import (line 7) and the `<BackgroundPaths />` render (line 87). Replace with the page's existing solid background (no extra wrapper needed).
-- **`src/pages/ResetPassword.tsx`** — remove the import (line 8) and the `<BackgroundPaths />` render (line 187). Same treatment as Onboarding.
-- **`src/pages/Auth.tsx`** — remove the stale comment on line 415 that mentions BackgroundPaths.
+This is purely a missing-schema problem. No app code needs to change.
 
-After these edits, `rg "BackgroundPaths|background-paths"` must return zero results.
+## Fix: one idempotent migration
 
-### 2. Auto-open login modal on /auth
+Scope is intentionally narrow — only what the assign-and-gate flow needs. Other unapplied tables (weekly plans, AI TA drafts, smartboard, uploads, schedule templates) are out of scope.
 
-In `src/pages/Auth.tsx`:
-- Locate the modal-open state (currently triggered by the "START HERE" / login CTA).
-- Initialize that state to `true` when the route is `/auth` (use `useLocation` or simply default the `useState` to `true` since this page is only reached via `/auth`).
-- Keep the close handler intact so users can dismiss the modal and explore the cream Arc landing underneath if they want.
-- Confirm the modal's `fixed inset-0 z-40 bg-black/55 backdrop-blur-[5px]` overlay still renders correctly above the Arc layout on first paint (no flash of empty cream).
+### Migration contents
 
-### 3. Verification
+1. **`public.classroom_items`** — `id`, `student_id` (FK `auth.users`), `class_id`, `created_by`, `type` (check list: `drill, homework, bootcamp_module, note, session_recap, announcement, upload_summary, weekly_plan_task, smartboard_recap`), `title`, `description`, `content_markdown`, `content_html`, `source_table`, `source_id`, `status` (`draft, assigned, in_progress, completed, archived`), `unlock_at`, `due_at`, `completed_at`, `priority`, `visible_to_student`, `metadata_json` jsonb, `created_at`, `updated_at`. Indexes on (student_id, visible_to_student, unlock_at), (student_id, status), (student_id, type). `touch_classroom_items_updated_at()` BEFORE UPDATE trigger.
 
-- Visit `/auth` → cream Arc landing renders with the dark login modal already open and focused on the email field.
-- Dismiss modal → cream Arc landing visible; clicking the page's login CTA reopens the modal.
-- Visit `/`, `/foyer`, `/onboarding`, `/reset-password`, `/home` → no visual regressions, no console errors about missing `BackgroundPaths`.
-- `rg BackgroundPaths` returns nothing.
+2. **RLS on `classroom_items`** — mirrors how `BootcampGate` queries:
+   - Student SELECT: own row, `visible_to_student = true`, `unlock_at` null or past.
+   - Student UPDATE: own row only (so they can mark in_progress/completed).
+   - Admin: full ALL via `public.has_role(auth.uid(), 'admin')`.
+
+3. **`public.notifications`** — `id`, `user_id` (FK `auth.users`), `type` (`assignment, message, reminder, streak`), `title`, `body`, `link`, `read` (default false), `created_at`. RLS:
+   - User: SELECT / UPDATE / DELETE own rows. A guard trigger restricts non-admins so only the `read` flag can change, and only false → true.
+   - Admin: full ALL.
+
+All `create policy`, `create trigger`, and `create function` statements use `drop … if exists` first so the migration is safe to re-run.
+
+## Verify after applying
+
+- `/teacher/bootcamps?student=…` → flipping a bootcamp on toasts "Assigned and notified" (or "Assigned, but email failed" if Resend isn't configured — the assignment row still persists).
+- A `classroom_items` row of `type = 'bootcamp_module'` with `metadata_json.bootcamp_id` matching the toggle exists for that student.
+- Logged in as that student, `/bootcamp/principle-flaw` (or whichever was toggled) renders the bootcamp — `BootcampGate` passes.
+- Flipping the switch off archives the row; that student then sees the calm "Not assigned yet" surface instead of the bootcamp content.
+- A `notifications` row appears so the bell + inbox light up.
+
+## Files
+
+- New: `supabase/migrations/<timestamp>_classroom_items_and_notifications.sql`
+- No application code changes.
