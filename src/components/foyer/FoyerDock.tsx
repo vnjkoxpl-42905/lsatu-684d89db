@@ -1,7 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { Inbox, LifeBuoy } from "lucide-react";
-import { toast } from "sonner";
+import { Inbox } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -87,14 +86,6 @@ export default function FoyerDock() {
       </DockItem>
 
       <NotificationBell mouseX={mouseX} />
-
-      <DockItem
-        mouseX={mouseX}
-        onClick={() => toast.info("Help center coming soon")}
-        ariaLabel="Help"
-      >
-        <LifeBuoy className="h-5 w-5" aria-hidden />
-      </DockItem>
     </motion.div>
   );
 }
