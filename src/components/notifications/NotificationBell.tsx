@@ -6,6 +6,7 @@ import {
   Flame,
   GraduationCap,
   MessageSquare,
+  UserPlus,
 } from "lucide-react";
 import { formatRelativeShort } from "@/lib/time";
 import {
