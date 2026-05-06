@@ -1,58 +1,38 @@
-# Inline question opening in Principle & Flaw bootcamp
+## Why the bootcamp didn't show up
 
-## Goal
-When a student clicks any specific question card in the P&F bootcamp, the actual LSAT question opens **right inside the bootcamp shell** — perfectly formatted (same layout as the official drill page), with answer-choice selection, blind-review marking, and explanation reveal. No navigation away from the bootcamp. Missing questions are clearly disabled and reported.
+I checked the database for this student and the bootcamp **was** assigned successfully — but with `unlock_at = May 20, 2026` (today is May 6). Two things hide it:
 
-## What changes
+1. **Database access rule**: students can only read classroom items where `unlock_at <= now()`. So the row exists but is invisible to the student until May 20.
+2. **Classroom UI**: `BootcampsSection` filters out anything with a future unlock date, so even if the row were readable it would be hidden.
 
-### 1. Audit the bootcamp question bank
-Generate a one-time report of every `QuestionRef` in `src/bootcamps/principle-flaw/data.ts` whose `PT{pt}-S{section}-Q{question}` qid is **not** present in the LSAT U `questionBank` (`src/lib/questionLoader.ts`). Output to `/mnt/documents/pf-missing-questions.csv` (qid, topic, set, level) so you can see exactly what's missing.
+Result: nothing on the classroom page, no notification on home, no link.
 
-### 2. Disable missing question cards
-In `Practice.tsx` (and any other place rendering `QuestionRef` cards — `Overview`, `TodayView`, `FlawHub`, `PrincipleHub`):
-- Resolve each ref against `questionBank.getQuestion(qid)` at render time.
-- If missing: card shows a muted "Not available yet" badge, the "Open" button is disabled, no click handler.
-- If present: clickable as today.
+## Fix
 
-### 3. Inline question viewer (the main work)
-Replace the current `navigate('/drill?...')` behavior with an inline modal/drawer inside the bootcamp:
+### 1. Make assigned bootcamps visible immediately (DB)
+Update the student-side read policy on `classroom_items` to drop the `unlock_at` gate for `bootcamp_module` rows. Bootcamps are always visible the moment they're assigned; the start date stays informational/calendar-only.
 
-- New component `src/bootcamps/principle-flaw/components/InlineQuestionViewer.tsx`.
-- Reuses the official drill question renderer **`OfficialQuestionPane`** (already exists at `src/components/drill/official/OfficialQuestionPane.tsx`) so formatting matches the drill page exactly — same stem/choice spacing fix you just approved.
-- Loads the LRQuestion via `questionBank.getQuestion(qid)`.
-- Provides: answer-choice selection, eliminate (Eye) toggles, "Submit answer", correctness reveal with the question's official explanation, optional blind-review toggle, and a "Next question" button when the day/set has multiple.
-- Logs the attempt to Supabase `attempts` (same payload shape the drill page uses) so it counts toward proficiency, streaks, and the teacher's classroom view — and the bootcamp-progress autosave hook still fires.
-- Mounts as a full-screen overlay (Dialog / Sheet) over the bootcamp UI, dark drill surface inside, bootcamp shell preserved underneath.
+### 2. Default the assignment start date to today
+In `src/pages/teacher/TeacherBootcamps.tsx`, default the start date to **today** instead of leaving the previously chosen future date. Stops accidental future-dating.
 
-### 4. Wiring
-- `OpenInDrillButton` in `Practice.tsx` becomes `OpenInlineButton` — opens the viewer with the clicked qid (and the surrounding set's qids as the "next" queue, so students can flow through one set without closing).
-- No more `/drill?mode=type-drill&qids=...` navigation from inside the bootcamp.
+### 3. Show bootcamps on classroom regardless of unlock date
+In `src/components/classroom/BootcampsSection.tsx`, remove the `unlock_at > today` filter. Always render assigned/in-progress bootcamps.
 
-## Out of scope
-- No changes to the standalone `/drill` page itself.
-- No data.ts content rewrites — only ref→qid validation.
-- Other bootcamps (Causation Station, Intro to LR) are not touched in this pass.
+### 4. Make new assignments BOLD on the classroom home
+- Promote the Bootcamps section above "This Week" / "Assigned Work" on `Classroom.tsx` so it's the first thing the student sees.
+- Add a bold **"NEW"** badge on a bootcamp card if it was assigned in the last 7 days and the student hasn't opened it yet (track `last_opened_at` in `metadata_json` via the existing `useBootcampProgress` hook; if absent and `created_at` is recent → show NEW).
+- Use stronger visual weight: amber accent border, bigger title, larger "Open bootcamp" CTA.
+- If "Do This Next" is empty AND a brand-new bootcamp exists, surface that bootcamp as the "Do This Next" item instead of "Nothing assigned yet."
 
-## Technical details
+### 5. Notification + inbox (already wired — verify)
+The assignment flow already calls `notifyStudentOfClassroomItem`, which inserts a bell notification, posts an inbox message, and emails the student. I'll verify it's firing for bootcamp assignments and that the link points at `/bootcamp/principle-flaw`.
 
-```text
-Practice.tsx card click
-   └─ <InlineQuestionViewer qid setQids onClose />
-        └─ questionBank.getQuestion(qid) → LRQuestion
-        └─ <OfficialQuestionPane question … />   ← same renderer the drill uses
-        └─ on submit: insert into `attempts` (mode='bootcamp-pf')
-        └─ onComplete → useBootcampProgress autosave (already wired)
-```
+### 6. Backfill the existing assignment for this student
+Update the active row (`1818dcf4…`) so `unlock_at = now()` so it shows up immediately on the next refresh — no need to re-assign manually.
 
-Audit script (one-shot, written to `/tmp` then run):
-```ts
-import { questionBank as pfBank } from 'src/bootcamps/principle-flaw/data';
-import { questionBank } from 'src/lib/questionLoader';
-const missing = pfBank.filter(q => !questionBank.getQuestion(`PT${q.pt}-S${q.section}-Q${q.question}`));
-// → /mnt/documents/pf-missing-questions.csv
-```
-
-## Files
-- **Create**: `src/bootcamps/principle-flaw/components/InlineQuestionViewer.tsx`
-- **Modify**: `src/bootcamps/principle-flaw/components/Practice.tsx`, `TodayView.tsx`, `FlawHub.tsx`, `PrincipleHub.tsx`, `Overview.tsx` (only where question cards render)
-- **Generate**: `/mnt/documents/pf-missing-questions.csv` (audit report)
+## Files touched
+- `supabase/migrations/<new>.sql` — relax student SELECT policy for bootcamp rows
+- `src/pages/teacher/TeacherBootcamps.tsx` — default start = today
+- `src/components/classroom/BootcampsSection.tsx` — remove unlock gate, add NEW badge + bold styling
+- `src/pages/Classroom.tsx` — reorder so Bootcamps shows first; surface new bootcamp in "Do This Next"
+- Data backfill via insert/update for the existing row
