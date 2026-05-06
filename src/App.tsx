@@ -352,7 +352,7 @@ const App = () => {
           </Routes>
           <FloatingMessenger />
           <FloatingWhiteboard />
-          <FloatingTAWidget />
+          <AdminChatHub />
         </BrowserRouter>
       </TooltipProvider>
     </UserSettingsProvider>
