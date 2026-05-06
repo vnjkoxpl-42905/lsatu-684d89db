@@ -12,7 +12,8 @@ interface Props {
   displayName?: string | null;
   /** Hooked to the existing timer's pause/resume. */
   isPaused: boolean;
-  onTogglePause: () => void;
+  /** Undefined when there is no timer to pause (e.g. unlimited stopwatch modes). */
+  onTogglePause?: () => void;
   /** Hooked to the existing handleFinishSection. */
   onComplete: () => void;
   children: React.ReactNode;
@@ -64,8 +65,10 @@ export default function OfficialDrillFrame({
             <button
               type="button"
               aria-label="Help"
-              className="text-red-500 hover:text-red-600 inline-flex"
-              title="Help"
+              aria-disabled="true"
+              tabIndex={-1}
+              className="text-red-500/70 inline-flex cursor-not-allowed"
+              title="Help — coming soon"
             >
               <HelpCircle className="w-5 h-5" />
             </button>
@@ -74,7 +77,9 @@ export default function OfficialDrillFrame({
             <button
               type="button"
               onClick={onTogglePause}
-              className="inline-flex items-center rounded-full bg-slate-100 hover:bg-slate-200 px-4 py-1.5 text-[13px] text-slate-800 transition-colors"
+              disabled={!onTogglePause}
+              title={onTogglePause ? undefined : "No timer to pause in this mode"}
+              className="inline-flex items-center rounded-full bg-slate-100 hover:bg-slate-200 px-4 py-1.5 text-[13px] text-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-slate-100"
             >
               {isPaused ? resumeLabel : pauseLabel}
             </button>

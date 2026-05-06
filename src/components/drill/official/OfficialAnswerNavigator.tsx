@@ -33,6 +33,10 @@ export default function OfficialAnswerNavigator({
   onNext,
 }: Props) {
   const total = questionQueue.length;
+  if (total === 0) return null;
+
+  // Ovals are positional (i + 1), not the question's qnum — matches the
+  // official testing UI convention. The pane header shows the real qnum.
 
   return (
     <div className="border-t border-slate-200 bg-slate-100">
