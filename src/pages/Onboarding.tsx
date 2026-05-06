@@ -27,9 +27,19 @@ const GlassShell = ({ children }: { children: React.ReactNode }) => (
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { user, authReady } = useAuth();
+  const { user, authReady, signOut } = useAuth();
   const [name, setName] = React.useState('');
   const [saving, setSaving] = React.useState(false);
+  const [signingOut, setSigningOut] = React.useState(false);
+
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      await signOut();
+    } finally {
+      navigate('/auth', { replace: true });
+    }
+  };
 
   // Pre-fill from metadata if available (e.g. Google name)
   React.useEffect(() => {
@@ -129,6 +139,15 @@ export default function Onboarding() {
               >
                 Continue
               </AnimatedButton>
+
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={signingOut || saving}
+                className="w-full text-[11px] text-neutral-600 hover:text-white transition-colors py-2 disabled:opacity-50"
+              >
+                {signingOut ? 'Signing out…' : 'Sign out'}
+              </button>
             </form>
           </GlassShell>
         </motion.div>

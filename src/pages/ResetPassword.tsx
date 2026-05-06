@@ -9,6 +9,7 @@ import { Lock, Eye, EyeOff, ArrowRight, Mail } from 'lucide-react';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { cn } from '@/lib/utils';
+import { redirectAfterAuth } from '@/lib/authRedirect';
 
 const inputCls =
   'pl-10 h-12 sm:h-11 bg-black/50 border-white/[0.06] focus-visible:border-white/[0.18] focus-visible:ring-1 focus-visible:ring-white/[0.08] text-white text-base sm:text-sm placeholder:text-neutral-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.55)] rounded-lg';
@@ -37,6 +38,7 @@ export default function ResetPassword() {
   React.useEffect(() => {
     let cancelled = false;
     let settled = false;
+    let fallbackTimeoutId: number | undefined;
 
     const markValid = (email: string) => {
       if (cancelled || settled) return;
@@ -117,9 +119,11 @@ export default function ResetPassword() {
 
         // 4) No tokens in URL, no existing session — wait briefly for the
         // auth listener (detectSessionInUrl can be async), then give up.
-        setTimeout(() => {
+        // 3s gives a slow listener room without stranding the user on a
+        // doomed reset link.
+        fallbackTimeoutId = window.setTimeout(() => {
           if (!settled) markInvalid();
-        }, 1500);
+        }, 3000);
       } catch {
         markInvalid();
       }
@@ -130,6 +134,7 @@ export default function ResetPassword() {
     return () => {
       cancelled = true;
       subscription.unsubscribe();
+      if (fallbackTimeoutId) window.clearTimeout(fallbackTimeoutId);
     };
   }, []);
 
@@ -164,7 +169,14 @@ export default function ResetPassword() {
 
     toast({ title: 'Password updated.' });
     try { window.history.replaceState(null, '', '/'); } catch {}
-    setTimeout(() => navigate('/foyer'), 500);
+    // Route via the shared helper so a brand-new user without a display
+    // name lands on /onboarding instead of bouncing through Foyer first.
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      await redirectAfterAuth(session.user.id, navigate, { replace: true });
+    } else {
+      navigate('/foyer', { replace: true });
+    }
   };
 
   const handleResend = async () => {
