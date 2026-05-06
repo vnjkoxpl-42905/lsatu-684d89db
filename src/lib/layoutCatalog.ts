@@ -51,7 +51,7 @@ export const ORBITAL_CATALOG: CatalogItem[] = [
   { id: "smart-drill", label: "Smart Drill", icon: Zap, requires: "has_drill_access", description: "Adaptive drill tuned to your weakest question types." },
   { id: "resume", label: "Resume", icon: Play, description: "Open your highest-priority active assignment." },
   { id: "find", label: "Find", icon: Search, description: "Jump to any LSAT question by id." },
-  { id: "mock-lsat", label: "Practice", icon: BookOpen, requires: "has_practice_access", description: "Open the practice mode hub." },
+  { id: "mock-lsat", label: "Practice Hub", icon: BookOpen, requires: "has_practice_access", description: "Open the practice mode hub." },
   { id: "last-bootcamp", label: "Last Bootcamp", icon: Flame, requires: "has_bootcamp_access", description: "Resume your most recent assigned bootcamp module." },
 ];
 
@@ -62,7 +62,7 @@ export const SIDEBAR_CATALOG: CatalogItem[] = [
   { id: "/inbox", label: "Messages", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access", description: "1:1 message threads with Joshua." },
   { id: "/waj", label: "Wrong Answer Journal", icon: BookOpen, to: "/waj", requires: "has_waj_access", description: "Every mistake you've made, organized for review." },
   { id: "/flagged", label: "Flagged", icon: Flag, to: "/flagged", requires: "has_flagged_access", description: "Questions you marked for deeper review." },
-  { id: "/practice", label: "Practice", icon: Dumbbell, to: "/practice", requires: "has_practice_access", description: "Drill-launcher hub: full sections, smart builder, custom drills." },
+  { id: "/practice", label: "Practice Hub", icon: Dumbbell, to: "/practice", requires: "has_practice_access", description: "Drill-launcher hub: full sections, smart builder, custom drills." },
   { id: "/bootcamps", label: "Bootcamps", icon: Flame, to: "/bootcamps", requires: "has_bootcamp_access", description: "Multi-week LR training paths." },
   { id: "/analytics", label: "Analytics", icon: BarChart3, to: "/analytics", requires: "has_analytics_access", description: "Performance trends and accuracy by question type." },
   { id: "/schedule", label: "Schedule", icon: CalendarDays, to: "/schedule", requires: "has_schedule_access", description: "Calendar of due dates and weekly plan items." },

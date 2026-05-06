@@ -282,7 +282,10 @@ export default function Practice() {
       <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
         <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
           <div>
-            <h2 className="text-sm font-medium text-foreground">
+            <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
+              Practice Hub
+            </div>
+            <h2 className="text-sm font-medium text-foreground mt-1">
               Welcome back, {getFirstName()}
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">

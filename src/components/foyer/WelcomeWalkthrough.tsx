@@ -50,7 +50,7 @@ const STEPS: Step[] = [
   },
   {
     icon: Target,
-    eyebrow: "Practice",
+    eyebrow: "Practice Hub",
     title: "Smart Drill is your daily reps",
     body: "Adaptive engine picks questions based on your accuracy, timing, and recent struggles. Every wrong answer feeds your Wrong Answer Journal so it comes back later.",
   },
