@@ -55,6 +55,15 @@ export function getPreset(id: Exclude<PresetId, "custom">): LayoutPrefs {
   return JSON.parse(JSON.stringify(PRESETS[id]));
 }
 
+/**
+ * Returns the Default-preset slice for a single surface. Used by
+ * /settings/layout's per-surface "Reset" link so the user can revert
+ * one surface without nuking the others.
+ */
+export function defaultForSurface(surface: "orbital" | "dock" | "sidebar"): string[] {
+  return [...PRESETS.default[surface]];
+}
+
 export function defaultLayout(): LayoutPrefs {
   return getPreset("default");
 }
