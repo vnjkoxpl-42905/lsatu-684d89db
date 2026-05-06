@@ -335,13 +335,15 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
         {redoQuestions.length > 0 ? (
           <div className="grid grid-cols-1 gap-4">
             {redoQuestions.map(q => (
-              <QuestionRow 
-                key={q.id} 
-                q={q} 
+              <QuestionRow
+                key={q.id}
+                q={q}
                 status={qStatus[q.id] || 'none'}
                 isRedo={redoQueue.includes(q.id)}
                 onToggleStatus={(s) => toggleStatus(q.id, s)}
                 onToggleRedo={() => toggleRedo(q.id)}
+                available={isAvailable(q)}
+                onOpen={() => setViewer({ qid: pfQid(q), queue: redoQuestions.filter(isAvailable).map(pfQid) })}
               />
             ))}
           </div>
