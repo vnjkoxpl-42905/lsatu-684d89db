@@ -57,7 +57,7 @@ export const ORBITAL_CATALOG: CatalogItem[] = [
 // refactors; consumers map id -> NAV_ITEM to render.
 export const SIDEBAR_CATALOG: CatalogItem[] = [
   { id: "/classroom", label: "Classroom", icon: GraduationCap, to: "/classroom", requires: "has_classroom_access" },
-  { id: "/inbox", label: "Ask Joshua", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access" },
+  { id: "/inbox", label: "Messages", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access" },
   { id: "/waj", label: "Wrong Answer Journal", icon: BookOpen, to: "/waj", requires: "has_waj_access" },
   { id: "/flagged", label: "Flagged", icon: Flag, to: "/flagged", requires: "has_flagged_access" },
   { id: "/practice", label: "Practice", icon: Dumbbell, to: "/practice", requires: "has_practice_access" },
