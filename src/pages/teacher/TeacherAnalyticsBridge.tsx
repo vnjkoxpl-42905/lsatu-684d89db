@@ -26,12 +26,12 @@ export default function TeacherAnalyticsBridge() {
 
   const [url, setUrl] = useState('');
   const [pasted, setPasted] = useState('');
-  const [embedFailed, setEmbedFailed] = useState(false);
+  const [embedOpen, setEmbedOpen] = useState(false);
   const [posting, setPosting] = useState(false);
 
   useEffect(() => {
     setUrl(sevenSage?.source_url ?? '');
-    setEmbedFailed(false);
+    setEmbedOpen(false);
   }, [sevenSage?.source_url, studentId]);
 
   const saveUrl = async () => {
@@ -137,23 +137,43 @@ export default function TeacherAnalyticsBridge() {
               <section className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label className="text-xs">Embed</Label>
-                  <button
-                    type="button"
-                    className="text-[11px] text-zinc-500 hover:text-zinc-100"
-                    onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
-                  >
-                    Open in new tab
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {embedOpen && (
+                      <button
+                        type="button"
+                        className="text-[11px] text-zinc-500 hover:text-zinc-100"
+                        onClick={() => setEmbedOpen(false)}
+                      >
+                        Hide embed
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      className="text-[11px] text-zinc-500 hover:text-zinc-100"
+                      onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
+                    >
+                      Open in new tab
+                    </button>
+                  </div>
                 </div>
-                {embedFailed ? (
+                {!embedOpen ? (
                   <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-6 flex items-start gap-3 text-sm">
                     <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                    <div>
-                      <div className="text-zinc-100 font-medium">Embed blocked</div>
+                    <div className="flex-1">
+                      <div className="text-zinc-100 font-medium">7Sage usually blocks embedding</div>
                       <div className="text-zinc-400 mt-1">
-                        7Sage doesn't allow embedding here. Use the Open in new
-                        tab button or paste the analytics text below.
+                        Open in a new tab is the reliable path. You can still try
+                        embedding inline; if 7Sage blocks it the panel will be
+                        blank.
                       </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="mt-3"
+                        onClick={() => setEmbedOpen(true)}
+                      >
+                        Try embed
+                      </Button>
                     </div>
                   </div>
                 ) : (
@@ -161,17 +181,6 @@ export default function TeacherAnalyticsBridge() {
                     src={url}
                     title="7Sage analytics"
                     className="w-full h-[420px] rounded-lg border border-zinc-800 bg-white"
-                    onError={() => setEmbedFailed(true)}
-                    onLoad={(e) => {
-                      try {
-                        // most embeds will throw on cross-origin; treat as blocked
-                        // (no-op success path).
-                        const _ = (e.currentTarget as HTMLIFrameElement).contentWindow;
-                        void _;
-                      } catch {
-                        setEmbedFailed(true);
-                      }
-                    }}
                   />
                 )}
               </section>

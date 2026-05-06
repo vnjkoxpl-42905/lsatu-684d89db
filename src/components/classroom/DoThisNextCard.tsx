@@ -22,12 +22,15 @@ export function DoThisNextCard({ item }: Props) {
 
   if (!item) {
     return (
-      <div className="rounded-2xl border border-border/60 bg-card/40 px-5 py-6">
-        <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-wider">
+      <div className="rounded-2xl border border-border bg-gradient-to-br from-card to-card/40 px-5 py-6 shadow-sm">
+        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
-          Nothing assigned yet
+          Do this next
         </div>
-        <p className="mt-2 text-sm text-foreground/80">
+        <h3 className="mt-2 text-lg font-semibold leading-snug text-foreground/90">
+          Nothing assigned yet
+        </h3>
+        <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
           When Joshua assigns work or publishes a weekly plan, your next step shows up here.
         </p>
       </div>

@@ -18,7 +18,7 @@ export function ClassroomSection({ title, hint, action, children, className }: P
     <section className={cn('space-y-3', className)}>
       <div className="flex items-baseline justify-between gap-3">
         <div className="space-y-0.5">
-          <h2 className="text-[11px] uppercase tracking-[0.2em] font-semibold text-muted-foreground">
+          <h2 className="text-xs uppercase tracking-[0.18em] font-semibold text-foreground/70">
             {title}
           </h2>
           {hint && <p className="text-xs text-muted-foreground/80">{hint}</p>}

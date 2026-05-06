@@ -24,11 +24,12 @@ interface HomeworkSetRow {
 
 const TYPES: { value: ClassroomItem['type']; label: string }[] = [
   { value: 'homework', label: 'Homework set' },
-  { value: 'drill', label: 'Drill' },
   { value: 'note', label: 'Note from Joshua' },
   { value: 'announcement', label: 'Announcement' },
   { value: 'session_recap', label: 'Session recap' },
 ];
+
+const SCHEDULABLE_TYPES = new Set<ClassroomItem['type']>(['homework', 'drill']);
 
 export default function AssignmentBuilder({ studentId, adminUserId, onClose }: Props) {
   const qc = useQueryClient();
@@ -121,7 +122,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose }: P
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end md:items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-xl bg-zinc-950 border border-zinc-800 shadow-xl p-5 space-y-4">
+      <div className="w-full max-w-lg rounded-xl bg-zinc-950 border border-zinc-800 shadow-xl p-5 space-y-4">
         <div>
           <h3 className="text-base font-semibold">Assign work</h3>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -180,26 +181,28 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose }: P
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label className="text-xs">Unlocks</Label>
-              <Input
-                type="datetime-local"
-                value={unlockAt}
-                onChange={(e) => setUnlockAt(e.target.value)}
-                className="mt-1"
-              />
+          {SCHEDULABLE_TYPES.has(type) && (
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Unlocks</Label>
+                <Input
+                  type="datetime-local"
+                  value={unlockAt}
+                  onChange={(e) => setUnlockAt(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Due</Label>
+                <Input
+                  type="datetime-local"
+                  value={dueAt}
+                  onChange={(e) => setDueAt(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
             </div>
-            <div>
-              <Label className="text-xs">Due</Label>
-              <Input
-                type="datetime-local"
-                value={dueAt}
-                onChange={(e) => setDueAt(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-          </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-1">

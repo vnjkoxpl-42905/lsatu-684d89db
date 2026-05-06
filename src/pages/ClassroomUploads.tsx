@@ -21,7 +21,10 @@ export default function ClassroomUploads() {
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Classroom
           </Button>
-          <div className="text-sm font-semibold">Your uploads</div>
+          <div className="flex items-center gap-2 ml-auto text-foreground">
+            <FileText className="w-4 h-4" />
+            <span className="text-sm font-semibold tracking-tight">Your uploads</span>
+          </div>
         </div>
       </header>
 
