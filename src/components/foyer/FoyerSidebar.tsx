@@ -4,7 +4,6 @@ import {
   GraduationCap,
   Dumbbell,
   Flame,
-  BarChart3,
   CalendarDays,
   MessagesSquare,
   Flag,
@@ -33,7 +32,6 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: "/flagged", label: "Flagged", Icon: Flag, flag: "has_flagged_access" },
   { to: "/practice", label: "Practice", Icon: Dumbbell, flag: "has_practice_access" },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
-  { to: "/analytics", label: "Analytics", Icon: BarChart3, flag: "has_analytics_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
   { to: "/admin/homework", label: "Homework", Icon: BookOpen, adminOnly: true },
 ] as const;
