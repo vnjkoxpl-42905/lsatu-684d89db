@@ -256,21 +256,22 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                <div className="lg:col-span-2 space-y-3">
-                  {set.questions.length > 0 ? (
-                    set.questions.map(qId => {
-                      const q = questionBank.find(qb => qb.id === qId);
-                      return q ? (
-                        <QuestionRow 
-                          key={qId} 
-                          q={q} 
-                          status={qStatus[q.id] || 'none'}
-                          isRedo={redoQueue.includes(q.id)}
-                          onToggleStatus={(s) => toggleStatus(q.id, s)}
-                          onToggleRedo={() => toggleRedo(q.id)}
-                        />
-                      ) : null;
-                    })
-                  ) : (
+                  {set.questions.length > 0 ? (() => {
+                    const refs = set.questions.map(qId => questionBank.find(qb => qb.id === qId)).filter(Boolean) as QuestionRef[];
+                    const setQids = refs.filter(isAvailable).map(pfQid);
+                    return refs.map(q => (
+                      <QuestionRow
+                        key={q.id}
+                        q={q}
+                        status={qStatus[q.id] || 'none'}
+                        isRedo={redoQueue.includes(q.id)}
+                        onToggleStatus={(s) => toggleStatus(q.id, s)}
+                        onToggleRedo={() => toggleRedo(q.id)}
+                        available={isAvailable(q)}
+                        onOpen={() => setViewer({ qid: pfQid(q), queue: setQids })}
+                      />
+                    ));
+                  })() : (
                     <div className="p-12 rounded-[32px] border border-dashed border-zinc-800 flex flex-col items-center justify-center text-center space-y-4">
                        <Zap size={32} className="text-zinc-800" />
                        <div>
