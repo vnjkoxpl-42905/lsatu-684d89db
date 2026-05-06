@@ -4,9 +4,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useImageExists } from '@/hooks/useImageExists';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
+import { redirectAfterAuth } from '@/lib/authRedirect';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { BorderBeam } from '@/components/ui/border-beam';
@@ -359,10 +360,10 @@ const ArcFooter = () => (
 // AUTH PAGE
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Module-scope remount counter (ID-9 diagnosis). Survives component
-// unmount/remount so we can see whether the page is actually remounting vs
-// its effect re-running.
-let AUTH_MOUNT_COUNT = 0;
+// How long an oauth_pending flag is allowed to live before it counts as
+// stuck. If the user navigated away mid-OAuth and never came back, the
+// flag would otherwise blank /auth on every future visit.
+const OAUTH_PENDING_MAX_AGE_MS = 60_000;
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -420,40 +421,36 @@ export default function Auth() {
     };
   }, [modalOpen, forgotOpen]);
 
-  // Redirect authenticated users — check if they have a username first
+  // Redirect authenticated users — single helper handles the profile lookup
+  // so this effect, handleSubmit, and ResetPassword all agree on the rules.
   React.useEffect(() => {
     if (!user || skipAutoRedirectRef.current) return;
-
-    const checkProfile = async () => {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('display_name')
-        .eq('class_id', user.id)
-        .maybeSingle();
-
-      if (profile?.display_name) {
-        navigate('/foyer');
-      } else {
-        navigate('/onboarding');
-      }
-    };
-    checkProfile();
+    void redirectAfterAuth(user.id, navigate);
   }, [user, navigate]);
 
-  // Debug: log auth page mount state for OAuth diagnosis
+  // Sanity-check oauth_pending on mount. If the flag is set but there is
+  // no actual return-leg signal (no ?code, no #access_token, and no
+  // recent timestamp), clear it so /auth doesn't render a permanent
+  // blank screen. Stamping a timestamp lets us detect "left the tab open
+  // for an hour" cases too.
   React.useEffect(() => {
-    AUTH_MOUNT_COUNT += 1;
-    console.log('[Auth mount]', {
-      count: AUTH_MOUNT_COUNT,
-      url: window.location.href,
-      hash: window.location.hash,
-      search: window.location.search,
-      oauth_pending: sessionStorage.getItem('oauth_pending'),
-      user: !!user,
-    });
-    return () => {
-      console.log('[Auth unmount]', { count: AUTH_MOUNT_COUNT });
-    };
+    if (sessionStorage.getItem('oauth_pending') !== '1') return;
+    const url = new URL(window.location.href);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const hasReturnLegSignal =
+      !!url.searchParams.get('code') ||
+      !!hashParams.get('access_token') ||
+      !!url.searchParams.get('error') ||
+      !!hashParams.get('error');
+
+    if (hasReturnLegSignal) return;
+
+    const tsRaw = sessionStorage.getItem('oauth_pending_ts');
+    const ts = tsRaw ? parseInt(tsRaw, 10) : 0;
+    if (!ts || Date.now() - ts > OAUTH_PENDING_MAX_AGE_MS) {
+      sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
+    }
   }, []);
 
   // One-shot: surface a session-expired banner if we were bounced here by
@@ -485,6 +482,7 @@ export default function Auth() {
       if (settled) return;
       settled = true;
       sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
       setLoading(false);
       setModalOpen(true);
       toast({
@@ -502,6 +500,7 @@ export default function Auth() {
         window.clearTimeout(timeoutId);
         if (result.error) {
           sessionStorage.removeItem('oauth_pending');
+          sessionStorage.removeItem('oauth_pending_ts');
           console.error('[Auth] OAuth return-leg failed', result.error);
           setLoading(false);
           setModalOpen(true);
@@ -521,6 +520,7 @@ export default function Auth() {
         settled = true;
         window.clearTimeout(timeoutId);
         sessionStorage.removeItem('oauth_pending');
+        sessionStorage.removeItem('oauth_pending_ts');
         console.error('[Auth] OAuth return-leg threw', err);
         setLoading(false);
         setModalOpen(true);
@@ -558,14 +558,22 @@ export default function Auth() {
       } else {
         const { error } = await signIn(trimmedEmail, password);
         if (error) {
-          const isInvalidCreds = error.message?.toLowerCase().includes('invalid login credentials');
-          toast({
-            title: 'Sign-in failed',
-            description: isInvalidCreds
-              ? 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.'
-              : error.message,
-            variant: 'destructive',
-          });
+          const msg = (error.message || '').toLowerCase();
+          const status = (error as { status?: number }).status;
+          let title = 'Sign-in failed';
+          let description = error.message;
+
+          if (msg.includes('invalid login credentials')) {
+            description = 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.';
+          } else if (msg.includes('email not confirmed') || msg.includes('email_not_confirmed')) {
+            title = 'Confirm your email';
+            description = "We sent a confirmation link when you signed up. Click it before signing in.";
+          } else if (status === 429 || msg.includes('rate limit') || msg.includes('too many requests')) {
+            title = 'Too many attempts';
+            description = 'Wait a couple of minutes before trying again.';
+          }
+
+          toast({ title, description, variant: 'destructive' });
         } else {
           // Save or clear email based on "Remember me"
           if (rememberMe) {
@@ -576,19 +584,7 @@ export default function Auth() {
           skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
-          
-          // Check if user has completed onboarding
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('display_name')
-            .eq('class_id', freshUser!.id)
-            .maybeSingle();
-
-          if (profile?.display_name) {
-            navigate('/foyer');
-          } else {
-            navigate('/onboarding');
-          }
+          if (freshUser) await redirectAfterAuth(freshUser.id, navigate);
           return;
         }
       }
@@ -616,16 +612,19 @@ export default function Auth() {
     setLoading(true);
     try {
       sessionStorage.setItem('oauth_pending', '1');
+      sessionStorage.setItem('oauth_pending_ts', String(Date.now()));
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/auth",
       });
       if (result.error) {
         sessionStorage.removeItem('oauth_pending');
+        sessionStorage.removeItem('oauth_pending_ts');
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
       if (result.redirected) return;
     } catch (err: any) {
       sessionStorage.removeItem('oauth_pending');
+      sessionStorage.removeItem('oauth_pending_ts');
       toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
     } finally {
       setLoading(false);
@@ -637,8 +636,18 @@ export default function Auth() {
     setLoading(true);
     const { error } = await resetPassword(resetEmail.trim().toLowerCase());
     if (!error) {
+      toast({
+        title: 'Reset link sent',
+        description: 'Check your email for a link to set a new password.',
+      });
       setForgotOpen(false); setModalOpen(true);
       setResetEmail('');
+    } else {
+      toast({
+        title: 'Reset failed',
+        description: error.message,
+        variant: 'destructive',
+      });
     }
     setLoading(false);
   };
@@ -653,12 +662,40 @@ export default function Auth() {
     typeof window !== 'undefined' &&
     sessionStorage.getItem('oauth_pending') === '1';
 
-  if ((authReady && user) || oauthReturning) {
+  if (authReady && user) {
+    // Already signed in — the redirect effect above will fire imminently.
+    // Render a calm placeholder rather than the marketing page or a flash.
     return (
       <div
         aria-hidden="true"
         style={{ minHeight: '100vh', background: ARC.bg }}
       />
+    );
+  }
+
+  if (oauthReturning) {
+    // OAuth return leg in progress. Show real copy + a spinner so the
+    // user knows something is happening instead of staring at a blank
+    // page. The OAuth effect resolves and either signs in (Auth context
+    // navigates away) or shows a toast and unsets the flag.
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          minHeight: '100vh',
+          background: ARC.bg,
+          color: ARC.ink,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Finishing sign in…
+        </div>
+      </div>
     );
   }
 
