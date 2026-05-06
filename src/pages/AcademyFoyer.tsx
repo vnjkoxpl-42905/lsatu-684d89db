@@ -235,13 +235,15 @@ export default function AcademyFoyer() {
           }}
         />
 
-        <FoyerQuickDock />
+        <FoyerQuickDock onReplayTour={() => setWalkthroughOpen(true)} />
       </main>
+
+      <WelcomeWalkthrough open={walkthroughOpen} onClose={() => setWalkthroughOpen(false)} />
     </div>
   );
 }
 
-function FoyerQuickDock() {
+function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
   const navigate = useNavigate();
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
