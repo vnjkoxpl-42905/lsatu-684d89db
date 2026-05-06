@@ -556,12 +556,26 @@ export default function Auth() {
           setShowConfirmation(true);
         }
       } else {
-        const { error } = await signIn(trimmedEmail, password);
+        let error: { message?: string; status?: number } | null = null;
+        try {
+          const result = await signIn(trimmedEmail, password);
+          error = result.error;
+        } catch (e) {
+          // Thrown errors typically mean the request never reached
+          // Supabase (network down, DNS failure, blocked by extension).
+          // The non-throw path returns { error } already.
+          toast({
+            title: "Couldn't reach the server",
+            description: 'Check your connection and try again.',
+            variant: 'destructive',
+          });
+          return;
+        }
         if (error) {
           const msg = (error.message || '').toLowerCase();
-          const status = (error as { status?: number }).status;
+          const status = error.status;
           let title = 'Sign-in failed';
-          let description = error.message;
+          let description = error.message ?? 'Sign-in failed';
 
           if (msg.includes('invalid login credentials')) {
             description = 'Email or password is incorrect. Check for extra spaces or uppercase/lowercase differences.';
@@ -664,12 +678,26 @@ export default function Auth() {
 
   if (authReady && user) {
     // Already signed in — the redirect effect above will fire imminently.
-    // Render a calm placeholder rather than the marketing page or a flash.
+    // Show a calm "Redirecting…" panel rather than a flat blank rectangle
+    // so the user knows something is happening.
     return (
       <div
-        aria-hidden="true"
-        style={{ minHeight: '100vh', background: ARC.bg }}
-      />
+        role="status"
+        aria-live="polite"
+        style={{
+          minHeight: '100vh',
+          background: ARC.bg,
+          color: ARC.ink,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Redirecting…
+        </div>
+      </div>
     );
   }
 
@@ -746,6 +774,7 @@ export default function Auth() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="LSAT U Access"
+                aria-describedby="auth-modal-desc"
                 className="pointer-events-auto w-full sm:max-w-[390px] max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform rounded-t-2xl sm:rounded-2xl"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -761,6 +790,11 @@ export default function Auth() {
                   >
                     <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                   </button>
+
+                  {/* Visually hidden description for screen readers */}
+                  <p id="auth-modal-desc" className="sr-only">
+                    Sign in or create your LSAT U account.
+                  </p>
 
                   {/* Header */}
                   <div className="text-center mb-7">
@@ -1033,7 +1067,7 @@ export default function Auth() {
                     className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
                     aria-label="Close"
                   >
-                    <X className="w-[14px] h-[14px]" />
+                    <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
                   </button>
                   <h3 className="text-[14px] font-semibold text-white mb-1">Reset Password</h3>
                   <p className="text-[11px] text-neutral-500 mb-5">
