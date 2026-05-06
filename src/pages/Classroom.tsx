@@ -11,6 +11,7 @@ import { nextActionFor } from '@/lib/classroomItems';
 import { DoThisNextCard } from '@/components/classroom/DoThisNextCard';
 import { ThisWeekSection } from '@/components/classroom/ThisWeekSection';
 import { AssignedWorkSection } from '@/components/classroom/AssignedWorkSection';
+import { BootcampsSection } from '@/components/classroom/BootcampsSection';
 import { UploadWorkSection } from '@/components/classroom/UploadWorkSection';
 import { RecapsSection } from '@/components/classroom/RecapsSection';
 import { AnnouncementsSection } from '@/components/classroom/AnnouncementsSection';
@@ -120,6 +121,8 @@ export default function Classroom() {
         ) : (
           <DoThisNextCard item={null} />
         )}
+
+        <BootcampsSection items={items} />
 
         <ThisWeekSection />
 
