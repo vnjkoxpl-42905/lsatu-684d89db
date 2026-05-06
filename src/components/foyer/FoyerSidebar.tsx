@@ -5,7 +5,6 @@ import {
   Dumbbell,
   CalendarDays,
   MessagesSquare,
-  BookOpen,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -26,10 +25,9 @@ type NavItem = {
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
-  { to: "/waj", label: "Wrong Answer Journal", Icon: BookOpen, flag: "has_waj_access" },
   { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
-  { to: "/admin/homework", label: "Homework", Icon: BookOpen, adminOnly: true },
+  { to: "/admin/homework", label: "Homework", Icon: GraduationCap, adminOnly: true },
 ] as const;
 
 const today = format(new Date(), "EEEE, MMMM d");
