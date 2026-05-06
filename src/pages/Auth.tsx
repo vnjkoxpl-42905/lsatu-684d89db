@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useImageExists } from '@/hooks/useImageExists';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
@@ -131,7 +132,9 @@ const PAGE_CSS = `
   }
 `;
 
-// ── Nav ── Logo + 5 links + sign-in CTA. Arc-style: minimal, ~36px tall, 32px page padding.
+// ── Nav ── Logo + sign-in CTA. Decorative section labels were removed in
+// the audit-fix pass (Phase 1) — they had no destinations and read as a
+// fake nav. Real nav lives inside the app at /foyer.
 const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
   <nav style={{
     position: 'sticky', top: 0, zIndex: 30,
@@ -142,23 +145,47 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
       maxWidth: 1280, margin: '0 auto', padding: '18px 32px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
-      <a href="/" style={{ fontFamily: ARC.serif, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em' }}>
+      <Link to="/" style={{ fontFamily: ARC.serif, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', color: 'inherit', textDecoration: 'none' }}>
         LSAT U
-      </a>
-      <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-        {['Bootcamp', 'Drills', 'Diagnostics', 'Reference'].map((label) => (
-          <span key={label} style={{ fontSize: 14, color: ARC.inkSecondary, cursor: 'default' }}>{label}</span>
-        ))}
-        <button onClick={onSignIn} style={{
-          background: 'transparent', border: 0, padding: 0,
-          fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
-        }}>
-          Sign in
-        </button>
-      </div>
+      </Link>
+      <button onClick={onSignIn} style={{
+        background: 'transparent', border: 0, padding: 0,
+        fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
+      }}>
+        Sign in
+      </button>
     </div>
   </nav>
 );
+
+// ── Image probe ── HEAD-fetches a marketing asset; if it isn't served we
+// hide the framed image block entirely so visitors don't see an empty
+// colored rectangle. Returns null while checking too — landing renders
+// heading + lede only until we know the asset is real.
+function MarketingImage({ src, alt, aspect = '16 / 9', maxWidth = 1100, marginTop = 0 }: { src: string; alt: string; aspect?: string; maxWidth?: number; marginTop?: number }) {
+  const exists = useImageExists(src);
+  if (exists !== true) return null;
+  return (
+    <div style={{
+      marginTop,
+      borderRadius: ARC.radiusPill,
+      overflow: 'hidden',
+      background: ARC.bgTinted,
+      border: `1px solid ${ARC.hairline}`,
+      boxShadow: ARC.shadowLift,
+      aspectRatio: aspect,
+      maxWidth,
+      marginInline: 'auto',
+    }}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      />
+    </div>
+  );
+}
 
 // ── Hero ── Arc: heading + subhead + 1 CTA + product image. h1 sized for typographic confidence.
 const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
@@ -186,26 +213,11 @@ const ArcHero = ({ onCTA }: { onCTA: () => void }) => (
       </button>
     </div>
 
-    {/* Hero product image — full-width, dimensional shadow only */}
-    <div style={{
-      marginTop: 72,
-      borderRadius: ARC.radiusPill,
-      overflow: 'hidden',
-      background: ARC.bgTinted,
-      border: `1px solid ${ARC.hairline}`,
-      boxShadow: ARC.shadowLift,
-      aspectRatio: '16 / 9',
-      maxWidth: 1100,
-      marginInline: 'auto',
-    }}>
-      <img
-        src="/marketing/hero-foyer.png"
-        alt="The LSAT U Foyer — a calm, focused training entry"
-        loading="eager"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-      />
-    </div>
+    <MarketingImage
+      src="/marketing/hero-foyer.png"
+      alt="The LSAT U Foyer — a calm, focused training entry"
+      marginTop={72}
+    />
   </section>
 );
 
@@ -247,19 +259,10 @@ const ArcFeatureFullWidth = () => (
         Joshua’s coaching, woven into every drill. Real-time feedback that anticipates where you’ll trip.
       </p>
     </div>
-    <div style={{
-      borderRadius: ARC.radiusPill, overflow: 'hidden',
-      background: ARC.bgTinted, border: `1px solid ${ARC.hairline}`,
-      boxShadow: ARC.shadowLift, aspectRatio: '16 / 9', maxWidth: 1100, marginInline: 'auto',
-    }}>
-      <img
-        src="/marketing/feature-coach.png"
-        alt="A drill in progress with coaching feedback"
-        loading="lazy"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-      />
-    </div>
+    <MarketingImage
+      src="/marketing/feature-coach.png"
+      alt="A drill in progress with coaching feedback"
+    />
   </section>
 );
 
@@ -285,17 +288,8 @@ const ArcFeatureSplit = ({
           {lede}
         </p>
       </div>
-      <div style={{
-        direction: 'ltr',
-        borderRadius: ARC.radiusPill, overflow: 'hidden',
-        background: ARC.bgTinted, border: `1px solid ${ARC.hairline}`,
-        boxShadow: ARC.shadowLift, aspectRatio: '4 / 3',
-      }}>
-        <img
-          src={image} alt={alt} loading="lazy"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-        />
+      <div style={{ direction: 'ltr' }}>
+        <MarketingImage src={image} alt={alt} aspect="4 / 3" maxWidth={520} />
       </div>
     </div>
   </section>
@@ -341,58 +335,22 @@ const ArcFinalCTA = ({ onPrimary, onSecondary }: { onPrimary: () => void; onSeco
   </section>
 );
 
-// ── Footer ── Arc: 3 columns (Product, Resources, Brand).
+// ── Footer ── Brand line + copyright. Decorative columns (Product /
+// Resources / Legal) were removed in the audit-fix pass — they had no
+// destinations.
 const ArcFooter = () => (
-  <footer style={{ borderTop: `1px solid ${ARC.hairline}`, padding: '64px 32px 56px', background: ARC.bg }}>
-    <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48 }}>
-      <div>
-        <div style={{ fontFamily: ARC.serif, fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 10 }}>
-          LSAT U
-        </div>
-        <p style={{ fontSize: 13, color: ARC.inkSecondary, lineHeight: 1.55, maxWidth: 320 }}>
-          Clearer thinking, higher scores. Built for aspiring attorneys by Joshua.
-        </p>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Product
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Bootcamp</li>
-          <li>Drills</li>
-          <li>Diagnostics</li>
-          <li>Reference</li>
-        </ul>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Resources
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Build philosophy</li>
-          <li>For students</li>
-          <li>FAQ</li>
-          <li>Contact</li>
-        </ul>
-      </div>
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: ARC.inkSecondary, marginBottom: 16 }}>
-          Legal
-        </div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10, fontSize: 14 }}>
-          <li>Privacy</li>
-          <li>Terms</li>
-        </ul>
-      </div>
-    </div>
+  <footer style={{ borderTop: `1px solid ${ARC.hairline}`, padding: '40px 32px 36px', background: ARC.bg }}>
     <div style={{
-      maxWidth: 1280, margin: '40px auto 0', paddingTop: 24,
-      borderTop: `1px solid ${ARC.hairline}`,
-      fontSize: 12, color: ARC.inkSecondary,
-      display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+      maxWidth: 1280, margin: '0 auto',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      flexWrap: 'wrap', gap: 16,
     }}>
-      <span>© LSAT U · Aspiring Attorneys</span>
-      <span>Made with focus.</span>
+      <div style={{ fontFamily: ARC.serif, fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>
+        LSAT U
+      </div>
+      <span style={{ fontSize: 12, color: ARC.inkSecondary }}>
+        © LSAT U · Built for aspiring attorneys.
+      </span>
     </div>
   </footer>
 );
@@ -412,8 +370,10 @@ export default function Auth() {
   const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
-  // ── Modal state — auto-opens on /auth so login form is visible immediately ──
-  const [modalOpen, setModalOpen] = React.useState(true);
+  // ── Modal state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof,
+  // ArcFinalCTA). Default closed so visitors can read the landing page;
+  // a session-expired or OAuth bounce explicitly forces it open below.
+  const [modalOpen, setModalOpen] = React.useState(false);
   const [forgotOpen, setForgotOpen] = React.useState(false);
 
   // ── Form state ──
