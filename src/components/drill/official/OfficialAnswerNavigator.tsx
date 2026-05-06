@@ -33,15 +33,17 @@ export default function OfficialAnswerNavigator({
   onNext,
 }: Props) {
   const total = questionQueue.length;
-  if (total === 0) return null;
+  if (total <= 1) return null;
 
   // Ovals are positional (i + 1), not the question's qnum — matches the
   // official testing UI convention. The pane header shows the real qnum.
 
   return (
     <div className="border-t border-slate-200 bg-slate-100">
-      <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
-        <ol className="flex items-end gap-1.5 flex-wrap min-w-0 flex-1">
+      <div className="px-4 sm:px-6 py-2 flex items-center gap-3">
+        <ol
+          className="flex items-end gap-1 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {questionQueue.map((qid, i) => {
             const isCurrent = i === currentIndex;
             const isAnswered = attemptedQids.has(qid);
