@@ -31,6 +31,7 @@ import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
+const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
 import AdminDashboard from "./pages/AdminDashboard";
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
@@ -91,6 +92,7 @@ const App = () => {
             {/* Auth route - NO question bank needed */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
 
             {/* Onboarding — username setup for new users */}
             <Route path="/onboarding" element={<Onboarding />} />
