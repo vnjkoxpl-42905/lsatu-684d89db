@@ -98,7 +98,7 @@ export default function OfficialQuestionPane({
             <Flag
               className={cn(
                 "w-5 h-5 transition-colors",
-                isFlagged ? "text-blue-600 fill-blue-600" : "text-blue-600",
+                isFlagged ? "text-orange-500 fill-orange-500" : "text-orange-500",
               )}
             />
           </button>
