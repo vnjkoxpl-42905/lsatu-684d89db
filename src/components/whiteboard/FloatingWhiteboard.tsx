@@ -1,36 +1,41 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { PencilRuler, X, Loader2 } from 'lucide-react';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { useLocation } from 'react-router-dom';
+import { subscribeWhiteboard } from './whiteboardBus';
 import '@excalidraw/excalidraw/index.css';
 
 const Excalidraw = lazy(() =>
   import('@excalidraw/excalidraw').then((m) => ({ default: m.Excalidraw })),
 );
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/foyer'];
 
 export function FloatingWhiteboard() {
   const { is_admin } = useUserPermissions();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
+  useEffect(() => subscribeWhiteboard(() => setOpen(true)), []);
+
   const hidden = HIDDEN_ROUTES.some(
     (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
   );
 
-  if (!is_admin || hidden) return null;
+  if (!is_admin) return null;
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        title="Open whiteboard"
-        className="fixed bottom-6 right-20 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800 border border-zinc-700 shadow-lg hover:bg-zinc-700 transition-colors"
-        aria-label="Open whiteboard"
-      >
-        <PencilRuler className="w-5 h-5 text-zinc-200" />
-      </button>
+      {!hidden && (
+        <button
+          onClick={() => setOpen(true)}
+          title="Open whiteboard"
+          className="fixed bottom-6 right-20 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800 border border-zinc-700 shadow-lg hover:bg-zinc-700 transition-colors"
+          aria-label="Open whiteboard"
+        >
+          <PencilRuler className="w-5 h-5 text-zinc-200" />
+        </button>
+      )}
 
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col bg-zinc-950">
