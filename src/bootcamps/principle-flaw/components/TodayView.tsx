@@ -6,6 +6,7 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { recordCompletionToday } from '../lib/streak';
+import { useBootcampProgress } from '@/hooks/useBootcampProgress';
 
 const TOTAL_TASK_KEYS = ['open', 'read', 'do', 'review', 'log'];
 
