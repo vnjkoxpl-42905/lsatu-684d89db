@@ -1,12 +1,13 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { LeftRail } from './LeftRail';
 import { RightDrawer } from './RightDrawer';
 import { useState, createContext, useContext, useCallback, useEffect, useRef } from 'react';
-import { Sparkles, Command } from 'lucide-react';
+import { Sparkles, Command, ArrowLeft } from 'lucide-react';
 import type { ReferenceId, NamedToolId } from '@/bootcamps/main-conclusion/types/source-slots';
 import { CommandPalette } from '@/bootcamps/main-conclusion/components/command-palette/CommandPalette';
 import { AiTutor } from '@/bootcamps/main-conclusion/components/ai-tutor/AiTutor';
 import { Tooltip } from '@/bootcamps/main-conclusion/components/primitives/Tooltip';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 export type DrawerPayload =
@@ -67,9 +68,27 @@ export function WorkspaceShell(): JSX.Element {
   // Derive surfaceId from URL for the AI Tutor surface-aware suggestions.
   const surfaceId = deriveSurfaceId(typeof window !== 'undefined' ? window.location.pathname : '/');
 
+  const { is_admin } = useUserPermissions();
+
   return (
     <Ctx.Provider value={{ payload, open, close }}>
       <a className="skip-link" href="#main">Skip to main content</a>
+      {/* Mobile back-to-foyer pill (left rail is hidden on phone). */}
+      <Link
+        to="/foyer"
+        aria-label="Back to Foyer"
+        className={cn(
+          'desktop:hidden tablet:hidden',
+          'fixed top-3 left-3 z-30 inline-flex items-center gap-1.5',
+          'rounded-full px-3 py-1.5',
+          'bg-[image:var(--grad-surface-elev)] border border-[rgb(var(--border)/0.12)]',
+          'text-ink-soft text-label font-mc-mono uppercase tracking-wider',
+          'shadow-[var(--shadow-2)] backdrop-blur',
+        )}
+      >
+        <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
+        Foyer
+      </Link>
       <div className="grid h-full desktop:grid-cols-[260px_1fr] phone:grid-cols-1 tablet:grid-cols-[220px_1fr]">
         <LeftRail />
         <main id="main" ref={mainRef} className="relative overflow-y-auto">
@@ -86,10 +105,12 @@ export function WorkspaceShell(): JSX.Element {
         </main>
       </div>
       <RightDrawer payload={payload} onClose={close} />
-      <FloatingActions
-        onOpenPalette={() => setPaletteOpen(true)}
-        onOpenTutor={() => setTutorOpen(true)}
-      />
+      {is_admin ? (
+        <FloatingActions
+          onOpenPalette={() => setPaletteOpen(true)}
+          onOpenTutor={() => setTutorOpen(true)}
+        />
+      ) : null}
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
       {tutorOpen ? <AiTutor surfaceId={surfaceId} onClose={() => setTutorOpen(false)} /> : null}
     </Ctx.Provider>
