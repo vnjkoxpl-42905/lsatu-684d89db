@@ -61,7 +61,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Film director: It’s inaccurate to say that filmgoers stayed away from my film because it received one or two negative reviews. My film had such a small audience during its opening weekend simply because it was competing with several other films that appeal to the same type of filmgoer that mine does, and the number of such viewers is relatively small.",
     "questionStem": "Which one of the following, if true, most helps to support the film director’s explanation?",
@@ -72,7 +72,10 @@
       "D": "Each of the other films that the film director alludes to received one or two positive reviews.",
       "E": "Most filmgoers are drawn to a variety of kinds of film."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -157,7 +160,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Joshi is clearly letting campaign contributions influence his vote in city council. His campaign for re-election has received more financial support from property developers than any other city councilor’s has. And more than any other councilor’s, his voting record favors the interests of property developers. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -170,7 +173,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -349,7 +353,7 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Studies have shown that pedestrians are struck by cars when crossing streets in crosswalks more often than they are struck when crossing outside of crosswalks. This is because crosswalks give many pedestrians an overly strong sense of security that oncoming cars will follow the signals, and these pedestrians are less likely to look both ways before crossing the street.",
     "questionStem": "Which one of the following, if true, most undermines the explanation proposed above?",
@@ -360,7 +364,10 @@
       "D": "Drivers are generally most alert to pedestrians who are in or near crosswalks.",
       "E": "Measures intended to promote safety tend to make people less cautious."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT145",

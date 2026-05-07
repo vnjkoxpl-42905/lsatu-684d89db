@@ -451,7 +451,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Studies have shown that specialty sports foods contain exactly the same nutrients in the same quantities as do common foods from the grocery store. Moreover, sports foods cost from two to three times more than regular foods. So very few athletes would buy sports foods were it not for expensive advertising campaigns.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -462,6 +462,9 @@
       "D": "Regular foods contain vitamins and minerals that are essential to developing strength and endurance.",
       "E": "Sports foods can nutritionally substitute for regular meals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

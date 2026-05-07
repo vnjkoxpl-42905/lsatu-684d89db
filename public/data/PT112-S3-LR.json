@@ -442,7 +442,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A newspaper article on Britain's unions argued that their strength was declining. The article's evidence was the decreasing number and size of strikes, as if the reason for the unions' existence was to organize strikes. Surely, in a modern industrial society, the calling of a strike is evidence that the negotiating position of the union was too weak. Strong unions do not need to call strikes. They can concentrate their efforts on working with others in the labor market to achieve common goals, such as profitable and humane working conditions.",
     "questionStem": "The argument criticizing the newspaper article employs which one of the following strategies?",
@@ -453,14 +453,17 @@
       "D": "arguing that the newspaper article's conclusion is motivated by a desire to change the role of unions",
       "E": "pointing to common interests among unions and management which the newspaper article ignores"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Anthropologist: All music is based on a few main systems of scale building. Clearly, if the popularity of a musical scale were a result of social conditioning, we would expect, given the diversity of social systems, a diverse mixture of diatonic and nondiatonic scales in the world's music. Yet diatonic scales have always dominated the music of most of the world. Therefore, the popularity of diatonic music can be attributed only to innate dispositions of the human mind.",
     "questionStem": "The anthropologist's argument is most vulnerable to criticism on the grounds that it fails to",
@@ -473,7 +476,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -481,7 +485,7 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Before 1986 physicists believed they could describe the universe in terms of four universal forces. Experiments then suggested, however, a fifth universal force of mutual repulsion between particles of matter. This fifth force would explain the occurrence in the experiments of a smaller measurement of the gravitational attraction between bodies than the established theory predicted.",
     "questionStem": "Which one of the following, if true, most strengthens the argument that there is a fifth universal force?",
@@ -492,6 +496,9 @@
       "D": "The experiments were conducted by physicists in remote geological settings in which factors affecting the force of gravity could not be measured with any degree of precision.",
       "E": "The fifth universal force was postulated at a time in which many other exciting and productive ideas in theoretical physics were developed."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

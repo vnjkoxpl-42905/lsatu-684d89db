@@ -190,7 +190,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Analogy",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Last year the Lalolah River was ranked by the Sunvale Water Commission as the most polluted of the fifteen rivers in the Sunvale Water District. Measures taken to clean up the river must be working, though, since this year the Lalolah River is ranked as only the third most polluted river in the district.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -203,7 +203,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -323,7 +324,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Doctor: Angiotensinogen is a protein in human blood. Typically, the higher a person’s angiotensinogen levels are, the higher that person’s blood pressure is. Disease X usually causes an increase in angiotensinogen levels. Therefore, disease X must be a cause of high blood pressure.",
     "questionStem": "The doctor’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -337,7 +338,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -417,7 +419,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "A scientific study provides evidence that crows are capable of recognizing threatening people and can even pass their concerns on to other crows. Researchers wearing rubber caveman masks trapped wild crows and then released them in the same area. Years later, people wearing the same masks near where the crows had been trapped were shrieked at and dive-bombed by crows.",
     "questionStem": "The argument depends on the assumption that",
@@ -430,7 +432,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {

@@ -58,7 +58,7 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Weaken/Counter",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Physician: In an experiment, 50 patients with chronic back pain were divided into two groups. Small magnets were applied to the backs of one group; the other group received no treatment. Most of the patients in the first group, but very few in the second group, reported a significant reduction in pain. This shows that magnetic fields are probably effective at relieving some back pain.",
     "questionStem": "Which one of the following, if true, constitutes the logically strongest counter to the physician's argument?",
@@ -69,14 +69,17 @@
       "D": "Some of the scientists who helped design the experiment believed even before the experiment that magnetic fields relieve back pain, but they were not directly involved in conducting the experiment.",
       "E": "There was wide variation in the specific causes of the chronic back pain suffered by the patients in the experiment."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Kennel club members who frequently discipline their dogs report a higher incidence of misbehavior than do members who rarely or never discipline their dogs. We can conclude from this that discipline does not improve dogs' behavior; on the contrary, it encourages misbehavior.",
     "questionStem": "The argument is flawed in that it fails to consider the possibility that",
@@ -87,7 +90,10 @@
       "D": "kennel club members tend to be more skilled at raising dogs than are other dog owners",
       "E": "kennel club members are more likely to use discipline than are other dog owners"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -173,7 +179,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "History provides many examples of technological innovations being strongly resisted by people whose working conditions without those innovations were miserable. This shows that social inertia is a more powerful determinant of human behavior than is the desire for comfort or safety.",
     "questionStem": "Which one of the following, if true, most seriously undermines the reasoning in the argument?",
@@ -184,7 +190,10 @@
       "D": "People tend to adapt easily to gradually implemented technological innovations.",
       "E": "People correctly believe that technological innovations almost always increase workers' productivity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -230,7 +239,7 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Medical researcher: Scientists compared a large group of joggers who habitually stretch before jogging to an equal number of joggers who do not stretch before jogging. Both groups of joggers incurred roughly the same number of injuries. This indicates that stretching before jogging does not help to prevent injuries.",
     "questionStem": "Which one of the following, if true, would most weaken the medical researcher's argument?",
@@ -241,7 +250,10 @@
       "D": "The more prone a jogger is to jogging injuries, the more likely he or she is to develop the habit of performing stretches before jogging.",
       "E": "Studies have found that, for certain forms of exercise, stretching beforehand can reduce the severity of injuries resulting from that exercise."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -405,7 +417,7 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Microbiologist: Because heavy metals are normally concentrated in sewage sludge during the sewage treatment process, the bacteria that survive in the sludge have evolved the unusual ability to resist heavy-metal poisoning. The same bacteria also show a strong resistance to antibiotics. This suggests that the bacteria's exposure to the heavy metals in the sewage sludge has somehow promoted their resistance to antibiotics.",
     "questionStem": "Which one of the following, if true, most strengthens the microbiologist's argument?",
@@ -416,7 +428,10 @@
       "D": "Sewage sludge that contains high concentrations of heavy metals almost always contains significant concentrations of antibiotics.",
       "E": "Many kinds of bacteria that do not live in sewage sludge are resistant to both heavy-metal poisoning and antibiotics."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",

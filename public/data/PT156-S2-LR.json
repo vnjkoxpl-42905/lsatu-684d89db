@@ -22,7 +22,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Body temperature can be estimated by the relative\n proportion of two oxygen isotopes in bone. Such estimates\n derived from dinosaur fossils suggest that dinosaurs had\n nearly the same body temperature in their limbs as in the\n rest of their bodies. Typically, the core body temperature of\n cold-blooded animals today is much higher than the body\n temperature in their limbs. Thus, dinosaurs were probably\n warm-blooded.",
     "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
@@ -33,7 +33,10 @@
       "D": "Small warm-blooded animals like mice tend to have more uniform body temperatures than do large warm-blooded animals like elephants.",
       "E": "Warm-blooded animals are more active and use more oxygen than cold-blooded animals. ION II 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best ompletely answers the question and mark that response on your"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -119,7 +122,7 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Mr. Xu: The arctic squirrel gets so cold while hibernating\n that its blood temperature falls well below the\n temperature at which water freezes. Although\n the squirrel’s blood is about 70 percent water,\n the blood never freezes while the squirrel is\n hibernating. The squirrel’s blood, therefore,\n must contain a substance that prevents the blood\n from freezing at the temperature at which water\n freezes. Ms. Yerky: The blood contains no such substance. Laboratory experiments involving a number of\n animals, including the arctic squirrel, have shown\n that a vial of blood from any of the animals\n freezes at just the same temperature as does a vial\n of water. Ms.",
     "questionStem": "Yerky’s response proceeds by",
@@ -130,7 +133,10 @@
       "D": "showing that a key term used by Mr. Xu is ambiguous",
       "E": "showing that the evidence provided by Mr. Xu has no bearing on the point at issue"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -158,7 +164,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Editorialist: Evidence shows that restrictions on tobacco\n advertising have had a significant impact on\n smoking among adults. A recent survey has\n shown that a smaller percentage of adults now\n smoke than at any other time in the last two\n decades. The decline in the percentage of adults\n who smoke has been most marked during the last\n ten years, and, not coincidently, some of the most\n important restrictions on tobacco advertising\n came into force ten years ago.",
     "questionStem": "The reasoning in the editorialist’s argument is most\n vulnerable to criticism on the grounds that the argument",
@@ -172,7 +178,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -295,7 +302,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A recent study found that small rats were approximately\n twice as likely, and large rats only half as likely, to suffer\n from heart problems than were rats of average size.",
     "questionStem": "Each of the following, if true, contributes to an\n explanation of the correlation given above between size\n and heart disease in rats except:",
@@ -306,7 +313,10 @@
       "D": "In addition to being the leading cause of weak hearts in adult rats, malnutrition at early stages of development causes rats to be undersized.",
       "E": "Although large rats are no more active than rats of average size, they tend to be much more active than small rats, resulting in greater cardiovascular conditioning."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -363,7 +373,10 @@
       "D": "Since the time of the ancient Egyptians, Earth’s rate of rotation has been known to fluctuate.",
       "E": "Increased volcanic activity over the last ten years suggests that the overall movement of the tectonic plates has increased. -17- 22 2"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT156",

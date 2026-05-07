@@ -54,7 +54,10 @@
       "D": "Ocean currents have sometimes carried buoyant objects from Hawaii to Réunion.",
       "E": "Many seabird species return to land very infrequently, and often do so only to breed."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -97,7 +100,7 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Saturn’s moon Enceladus has a rocky core and an icy surface. Between these two layers, there must be a lake of liquid water. The Cassini space probe was used to measure the density of matter composing Enceladus. These measurements revealed something denser than ice between the core and surface of Enceladus, and that could only be liquid water.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -108,7 +111,10 @@
       "D": "Density measurements reveal something denser than ice between the core and surface of Enceladus.",
       "E": "Anything denser than ice between the core and surface of Enceladus would have to be liquid water."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -246,7 +252,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -283,7 +290,10 @@
       "D": "Some of the less popular carbonated beverages contain even more caffeine than the more popular ones.",
       "E": "The more calcium a person ingests as a regular part of his or her diet, the more calcium that person will tend to excrete."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -476,7 +486,7 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The three-spine stickleback is a small fish that lives both in oceans and in freshwater lakes. While ocean stickleback are covered with armor to protect them from their predators, lake stickleback have virtually no armor. Since armor limits the speed of a stickleback’s growth, this indicates that having a larger size is a better defense against the lake stickleback’s predators than having armor.",
     "questionStem": "Which one of the following, if true, weakens the argument?",
@@ -487,6 +497,9 @@
       "D": "Both ocean stickleback and lake stickleback feed primarily on the same types of foods.",
       "E": "Sticklebacks originated in the ocean but began populating freshwater lakes and streams following the last ice age."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

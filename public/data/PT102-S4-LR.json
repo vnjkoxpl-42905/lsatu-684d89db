@@ -100,7 +100,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Classification Confidence:** High 6. The male sage grouse has air sacs that, when not inflated, lie hidden beneath the grouse’s neck feathers. During its spring courtship ritual, the male sage grouse inflates these air sacs and displays them to the female sage grouse. Some scientists hypothesize that this courtship ritual serves as a means for female sage grouse to select healthy mates.",
     "questionStem": "Which one of the following, if true, most strongly supports the scientists’ hypothesis?",
@@ -111,7 +111,10 @@
       "D": "Male sage grouse are prone to parasitic infections that exhibit symptoms visible on the birds’ air sacs.",
       "E": "The sage grouse is commonly afflicted with a strain of malaria that tends to change as the organism that causes it undergoes mutation."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -219,7 +222,10 @@
       "D": "The manager insisted that the workers who filed complaints did not have enough to do. Soon there were no more complaints filed. The manager was pleased to conclude that the workers were now productively filling their time.",
       "E": "The nutritionist insisted that the weight gain that team members complained of was caused by their thinking of food too often. The nutritionist was happy to conclude that the weight gain had stopped once the team members reported that they had stopped thinking of food so often."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -439,7 +445,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Classification Confidence:** High 24. Sociologist: Research shows, contrary to popular opinion, that, all other things being equal, most people who have pets are less happy than most people who do not. Therefore, any person who wants to be as happy as possible would do well to consider not having a pet.",
     "questionStem": "Which one of the following, if true, most seriously weakens the sociologist’s argument?",
@@ -450,7 +456,10 @@
       "D": "Most people who have pets feel happier because they have pets.",
       "E": "All people who have no pets admit to feeling unhappy sometimes."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",

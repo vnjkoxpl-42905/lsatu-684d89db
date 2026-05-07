@@ -280,7 +280,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Researcher: Results indicate that the higher their educational level, the better are students’ mathematical skills. These results do not prove that education improves mathematical skills, however, since it is possible that students who have better mathematical skills to start with are\nthe students who reach higher educational levels.",
     "questionStem": "The reasoning of the researcher’s argument is most similar to that of which one of the following arguments?",
@@ -291,14 +291,17 @@
       "D": "Surveys indicate that politicians with law degrees are better at what they do than politicians without law degrees. These surveys do not prove that having a law degree makes one a better politician, since it is possible that many politicians without law degrees were left out of the survey.",
       "E": "Studies suggest that some people who are gifted in higher mathematics are inept at performing simple arithmetical calculations. These studies do not show that being good at mathematics precludes being good at arithmetic, since there are also many people who are good at both."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT108",
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Two hundred randomly selected subjects were asked, “Have you ever awakened, seemingly paralyzed, with a sense of a strange presence in the room?” Forty percent answered yes. A randomly selected control group of 200 different subjects in the same study were asked simply if they remembered ever waking up seemingly paralyzed. Only 14 percent of the control group answered yes.",
     "questionStem": "Which one of the following statements is most supported by the information above?",
@@ -309,7 +312,10 @@
       "D": "At least some of the randomly selected subjects of the study gave inconsistent reports.",
       "E": "The tendency of subjects to report a recollection of an event can sometimes be increased by suggesting circumstances that accompanied the event."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT108",

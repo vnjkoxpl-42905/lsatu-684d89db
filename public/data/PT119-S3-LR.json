@@ -40,7 +40,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Announcement for a television program: Are female physicians more sensitive than male physicians to the needs of women patients? To get the answer, we'll ask physicians of both sexes this question. Tune in tomorrow.",
     "questionStem": "Which one of the following, if true, identifies a flaw in the plan for the program?",
@@ -51,7 +51,10 @@
       "D": "Since medical research is often performed on men, not all results are fully applicable to women as patients.",
       "E": "Women as patients are now beginning to take a more active role in managing their care and making sure that they understand the medical alternatives."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -97,7 +100,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Heavy salting of Albritten's roads to melt winter ice and snow began about 20 years ago. The area's groundwater now contains approximately 100 milligrams of dissolved salt per liter. Groundwater in a nearby, less highly urbanized area, where little salt is used and where traffic patterns resemble those of Albritten 20 years ago, contains only about 10 milligrams of dissolved salt per liter. Since water that contains 250 or more milligrams of dissolved salt per liter tastes unacceptably salty, continuing the salting of Albritten's roads at its present rate will render Albritten's groundwater unpalatable within the next few decades.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -108,7 +111,10 @@
       "D": "Albritten's groundwater contained roughly 90 milligrams of dissolved salt per liter 20 years ago.",
       "E": "Salting of Albritten's roads is likely to decrease over the next few decades."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -473,7 +479,7 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Fossilized teeth of an extinct species of herbivorous great ape have on them phytoliths, which are microscopic petrified remains of plants. Since only phytoliths from certain species of plants are found on the teeth, the apes' diet must have consisted only of those plants.",
     "questionStem": "The argument assumes which one of the following?",
@@ -484,6 +490,9 @@
       "D": "Phytoliths have also been found on the fossilized teeth of apes of other extinct species.",
       "E": "Most species of great ape alive today have diets that consist of a fairly narrow range of plants."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

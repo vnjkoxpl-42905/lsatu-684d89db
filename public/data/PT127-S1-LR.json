@@ -103,7 +103,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Violent crime in this town is becoming a serious problem. Compared to last year, local law enforcement agencies have responded to 17 percent more calls involving violent crimes, showing that the average citizen of this town is more likely than ever to become a victim of a violent crime.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -114,7 +114,10 @@
       "D": "In response to worries about violent crime, the town has recently opened a community center providing supervised activities for teenagers.",
       "E": "Community officials have shown that a relatively small number of repeat offenders commit the majority of violent crimes in the town."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",

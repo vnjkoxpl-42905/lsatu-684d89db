@@ -58,7 +58,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "In polluted industrial English cities during the Industrial\nRevolution, two plant diseases—black spot, which infects\nroses, and tar spot, which infects sycamore trees—\ndisappeared. It is likely that air pollution eradicated these\ndiseases.",
     "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
@@ -69,14 +69,17 @@
       "D": "Black spot and tar spot returned when the air in the cities became less polluted.",
       "E": "Black spot and tar spot were the only plant diseases that disappeared in any English cities during the Industrial Revolution."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Many scholars are puzzled about who created the\nseventeenth-century abridgment of Shakespeare’s\nHamlet contained in the First Quarto. Two facts about\nthe work shed light on this question. First, the person\nwho undertook the abridgment clearly did not possess\na copy of Hamlet. Second, the abridgment contains a\nvery accurate rendering of the speeches of one of the\ncharacters, but a slipshod handling of all the other parts.",
     "questionStem": "Which one of the following statements is most supported\nby the information above?",
@@ -87,7 +90,10 @@
       "D": "The abridgement was prepared by a spectator of a performance of Hamlet.",
       "E": "The abridgment was produced by an actor who was trying to improve the play."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -393,7 +399,10 @@
       "D": "In addition to the porous outer shells of their bones, whales have at least some characteristics suited to deep diving for which there is no clear evidence whether these were shared by ichthyosaurs.",
       "E": "There is evidence that the bones of ichthyosaurs would have been light enough to allow surfacing even if the outer shells were not porous."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",

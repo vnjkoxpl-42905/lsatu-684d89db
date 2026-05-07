@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Jim’s teacher asked him to determine whether a sample of a substance contained iron. Jim knew that magnets attract iron, so he placed a magnet near the substance. Jim concluded that the substance did contain iron, because the substance became attached to the magnet.",
     "questionStem": "Jim’s reasoning is questionable in that it fails to consider the possibility that",
@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -25,7 +26,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "All the books in the library have their proper shelf locations recorded in the catalog. The book Horatio wants is missing from its place on the library shelves, and no one in the library is using it. Since it is not checked out to a borrower nor awaiting shelving nor part of a special display, it must have been either misplaced or stolen.",
     "questionStem": "Which one of the following most accurately describes the method of reasoning used in the argument?",
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -409,7 +411,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "One of the most useful social conventions is money, whose universality across societies is matched only by language. Unlike language, which is rooted in an innate ability, money is an artificial, human invention. Hence, it seems probable that the invention of money occurred independently in more than one society.",
     "questionStem": "The argument’s conclusion is properly drawn if which one of the following is assumed?",
@@ -420,7 +422,10 @@
       "D": "If money were not useful, it would not be so widespread.",
       "E": "No human society that adopted the convention of money has since abandoned it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT138",

@@ -43,7 +43,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A recent study proves that at least some people possess an independent \"sixth sense\" that allows them to detect whether someone is watching them. In the study, subjects were seated one at a time in the center of a room facing away from a large window. On average, subjects decided correctly 60 percent of the time whether or not they were being watched through the window.",
     "questionStem": "Which one of the following, if true, most supports the conclusion drawn from the study mentioned above?",
@@ -54,7 +54,10 @@
       "D": "The room in which the subjects were seated was not soundproof.",
       "E": "The subjects were mostly graduate students in psychology from a nearby university."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT121",

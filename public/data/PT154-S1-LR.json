@@ -340,7 +340,7 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Medical researcher: At the Flegco Corporation, all employees whose work involves lifting heavy objects wear back belts to prevent back injuries. However, a study found that Flegco employees who wear back belts are actually more likely to suffer back injuries than are employees who do not wear back belts. This suggests that back belts do not help to prevent back injuries.",
     "questionStem": "The reasoning in the medical researcher’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -351,7 +351,10 @@
       "D": "It confuses the claim that a phenomenon does not causally contribute to a certain effect with the claim that that phenomenon causally contributes to preventing that effect.",
       "E": "It fails to address the possibility that even if a factor is sufficient to produce a certain effect, its presence may not be necessary in order for that effect to be produced."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -405,7 +408,10 @@
       "D": "Personal gardens are usually popular in economic downturns.",
       "E": "A large retail seed company went out of business early last year."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT154",

@@ -61,7 +61,7 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Panelist: Medical research articles cited in popular newspapers or magazines are more likely than other medical research articles to be cited in subsequent medical research. Thus, it appears that medical researchers’ judgments of the importance of prior research are strongly influenced by the publicity received by that research and do not strongly correspond to the research’s true importance.",
     "questionStem": "The panelist’s argument is most vulnerable to criticism on the grounds that it",
@@ -74,7 +74,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -114,7 +115,10 @@
       "D": "People who are well informed about the effects of long-term tobacco use are significantly less likely to smoke than are people who are not informed.",
       "E": "Antismoking education programs that are funded by taxes on cigarettes will tend to lose their funding if they are successful."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -164,7 +168,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Reducing stress lessens a person’s sensitivity to pain. This is the conclusion reached by researchers who played extended audiotapes to patients before they underwent surgery and afterward while they were recovering. One tape consisted of conversation; the other consisted of music. Those who listened only to the latter tape required less anesthesia during surgery and fewer painkillers afterward than those who listened only to the former tape.",
     "questionStem": "Which one of the following is an assumption on which the researchers’ reasoning depends?",
@@ -178,7 +182,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -307,7 +312,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The average length of stay for patients at Edgewater Hospital is four days, compared to six days at University Hospital. Since studies show that recovery rates at the two hospitals are similar for patients with similar illnesses, University Hospital could decrease its average length of stay without affecting quality of care.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -318,7 +323,10 @@
       "D": "presumes, without providing justification, that the length of time patients stay in the hospital is never relevant to the recovery rates of these patients",
       "E": "fails to take into account the possibility that patients at University Hospital generally prefer longer hospital stays"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -375,7 +383,10 @@
       "D": "Some poisonous plants do not produce amino- acid-based alkaloids.",
       "E": "Mammals sometimes die of drug overdoses from eating angiosperms."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -400,7 +411,7 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A good way to get over one’s fear of an activity one finds terrifying is to do it repeatedly. For instance, over half of people who have parachuted only once report being extremely frightened by the experience, while less than 1 percent of those who have parachuted ten times or more report being frightened by it.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -414,7 +425,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {

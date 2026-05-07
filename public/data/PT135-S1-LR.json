@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "In a recent study of more than 400 North American men and women whose previous heart attack put them at risk for a second heart attack, about half were told to switch to a “Mediterranean-type diet”-one rich in fish, vegetables, olive oil, and grains-while the other half were advised to eat a more traditional “Western” diet but to limit their fat intake. Those following the Mediterranean diet were significantly less likely than those in the other group to have a second heart attack. But the Mediterranean diet includes a fair amount of fat from fish and olive oil, so the research suggests that a diet may not have to be extremely low in fat in order to protect the heart.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -15,7 +15,10 @@
       "D": "Many people who have had heart attacks are advised by their cardiologists to begin an exercise regimen in addition to changing their diet.",
       "E": "Some cardiologists believe that the protection afforded by the Mediterranean diet might be enhanced by drugs that lower blood-cholesterol levels."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -76,7 +79,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In its coverage of a controversy regarding a proposal to build a new freeway, a television news program showed interviews with several people who would be affected by the proposed freeway. Of the interviews shown, those conducted with people against the new freeway outnumbered those conducted with people for it two to one. The television program is therefore biased against the proposed freeway.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -87,7 +90,10 @@
       "D": "Before the program aired, over twice as many people were against building the freeway than were in favor of it.",
       "E": "The business interests of the television station that produced the program would be harmed by the construction of a new freeway."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -130,7 +136,7 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The proportion of fat calories in the diets of people who read the nutrition labels on food products is significantly lower than it is in the diets of people who do not read nutrition labels. This shows that reading these labels promotes healthful dietary behavior.",
     "questionStem": "The reasoning in the argument above is flawed in that the argument",
@@ -141,7 +147,10 @@
       "D": "takes for granted that there are only two possible alternative explanations of a phenomenon",
       "E": "draws a conclusion about the intentions of a group of people based solely on data about the consequences of their behavior"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -184,7 +193,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Inspector: The only fingerprints on the premises are those of the owner, Mr. Tannisch. Therefore, whoever now has his guest’s missing diamonds must have worn gloves.",
     "questionStem": "Which one of the following exhibits a flaw in its reasoning most similar to that in the inspector’s reasoning?",
@@ -195,7 +204,10 @@
       "D": "All of Marjorie’s cavities are on the left side of her mouth. Hence, she must chew more on the left side than on the right.",
       "E": "All of these tomato plants are twice as big as they were last year. So if we grow peas, they will probably be twice as big as last year’s peas."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -349,14 +361,17 @@
       "D": "Birds that remain in their summer range all winter often exhaust that range’s food supply before spring.",
       "E": "Birds sometimes visit feeders even when they are able to find sufficient food for survival by foraging naturally."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Journalist: Newspapers generally report on only those scientific studies whose findings sound dramatic. Furthermore, newspaper stories about small observational studies, which are somewhat unreliable, are more frequent than newspaper stories about large randomized trials, which generate stronger scientific evidence. Therefore, a small observational study must be more likely to have dramatic findings than a large randomized trial.",
     "questionStem": "Which one of the following most accurately expresses a flaw in the journalist’s reasoning?",
@@ -370,7 +385,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
     ]
   },
   {

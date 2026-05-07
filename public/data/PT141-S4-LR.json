@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In an experiment, ten people were asked to taste samples of coffee and rank them. Five of the people were given chocolate with the coffee, and this group subsequently reported that all the coffee samples tasted pretty much the same as one another. Five others tasted coffee only, and they were able to detect differences. Clearly, then, chocolate interferes with one’s ability to taste coffee.",
     "questionStem": "Which one of the following, if true, most undermines the conclusion drawn above?",
@@ -15,7 +15,10 @@
       "D": "The five people who were originally given chocolate were asked a week later to taste coffee samples without chocolate, and they still detected no differences between the coffee samples.",
       "E": "Some subjects who tasted just coffee reported only subtle differences between the coffee samples, while others thought the differences were considerable."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -53,7 +56,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -372,7 +376,10 @@
       "D": "Leakage from damaged or oxygen-starved nerve cells is the only possible source of glutamate in the blood.",
       "E": "Nerve cells can suffer enough damage to leak glutamate without being destroyed themselves."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",

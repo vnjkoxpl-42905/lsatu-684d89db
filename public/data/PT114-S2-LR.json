@@ -162,7 +162,10 @@
       "D": "The students in Ontario reported having more dreams overall, per student, than the students in California did.",
       "E": "The students in Ontario who reported having dreams about earthquakes recorded the dreams as having occurred after the California earthquake."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -316,7 +316,7 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Educator: Some experimental educational programs, based on the principle that children's first education should take place at home, instruct parents in how to be their child's \"first teacher.\" The school performance of the children in these programs is better than average. This shows that these programs are successful and should be expanded.",
     "questionStem": "Which one of the following, if true, most weakens the educator's argument?",
@@ -327,7 +327,10 @@
       "D": "The cost of expanding the programs has not been precisely determined.",
       "E": "Some children who did not participate in the programs performed exceptionally well in school."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",

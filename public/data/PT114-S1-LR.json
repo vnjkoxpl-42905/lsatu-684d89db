@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Last month OCF, Inc., announced what it described as a unique new product: an adjustable computer workstation. Three days later ErgoTech unveiled an almost identical product. The two companies claim that the similarities are coincidental and occurred because the designers independently reached the same solution to the same problem. The similarities are too fundamental to be mere coincidence, however. The two products not only look alike, but they also work alike. Both are oddly shaped with identically placed control panels with the same types of controls. Both allow the same types of adjustments and the same types of optional enhancements.",
     "questionStem": "The main point of the argument is that",
@@ -33,7 +33,10 @@
       "D": "product designers sometimes reach the same solution to a given problem without consulting each other",
       "E": "new products that at first appear to be unique are sometimes simply variations of other products"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -250,7 +253,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Thirty years ago, the percentage of the British people who vacationed in foreign countries was very small compared with the large percentage of the British population who travel abroad for vacations now. Foreign travel is, and always has been, expensive from Britain. Therefore, British people must have, on average, more money to spend on vacations now than they did 30 years ago.",
     "questionStem": "The argument requires assuming which one of the following?",
@@ -261,7 +264,10 @@
       "D": "If more of the British people of 30 years ago had had enough money to vacation abroad, more would have done so.",
       "E": "If British people are now wealthier than they were 30 years ago, then they must have more money to spend on vacations now than they did 30 years ago."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT114",

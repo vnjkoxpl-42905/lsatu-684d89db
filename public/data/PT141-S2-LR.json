@@ -174,7 +174,10 @@
       "D": "Most people who begin smoking during adolescence continue to smoke throughout their lives.",
       "E": "People who are largely unaffected by tobacco advertising tend to be unaffected by other kinds of advertising as well."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -276,7 +279,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Marketing consultant: Last year I predicted that LRG’s latest advertising campaign would be unpopular with customers and ineffective in promoting new products. But LRG ignored my predictions and took the advice of a competing consultant. This season’s sales figures show that sales are down and LRG’s new products are selling especially poorly. Thus, the advertising campaign was ill conceived. The marketing consultant’s reasoning is most vulnerable to criticism on the grounds that",
@@ -287,7 +290,10 @@
       "D": "it takes for granted that the higher sales of established products are due to effective advertising",
       "E": "it confuses a condition necessary for increasing product sales with a condition that will ensure increased sales"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -365,7 +371,10 @@
       "D": "The tomb in which the object was found was that of a politically prominent person.",
       "E": "A speaking staff with a stone head is thought to symbolize a warrior’s mace."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -414,7 +423,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Because the native salmon in Lake Clearwater had nearly disappeared, sockeye salmon were introduced in 1940. After being introduced, this genetically uniform group of sockeyes split into two distinct populations that do not interbreed, one inhabiting deep areas of the lake and the other inhabiting shallow areas. Since the two populations now differ genetically, some researchers hypothesize that each has adapted genetically to its distinct habitat. Which",
     "questionStem": "of the following, if true, most strongly supports the researchers’ hypothesis?",
@@ -425,7 +434,10 @@
       "D": "One of the populations of sockeyes is virtually identical genetically to the sockeyes originally introduced in 1940.",
       "E": "The total number of sockeye salmon in the lake is not as large as the number of native salmon had been many years ago."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT141",

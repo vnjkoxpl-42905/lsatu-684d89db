@@ -167,7 +167,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Terrence Gurney suggests that because his books appeal to a wide audience, he is not given due credit for his literary achievements. Surely he is mistaken. Gurney's books tell interesting stories, but the writing is flat, leaving no lasting impression on the reader. This is likely the reason that Gurney has not received praise for literary achievement.",
     "questionStem": "Which one of the following most accurately states the argument's overall conclusion?",
@@ -178,7 +178,10 @@
       "D": "Terrence Gurney has not been given due credit for his literary achievements because his books appeal to such a wide audience.",
       "E": "Terrence Gurney should have received some praise for his literary achievements despite the fact that his writing is flat and leaves no lasting impression on the reader."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -235,7 +238,10 @@
       "D": "The company's change in policy occurred well after its competitors started offering unlimited free shipping.",
       "E": "Most companies offer free shipping only on mail-order purchases over $50."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -491,7 +497,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

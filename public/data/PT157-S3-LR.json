@@ -133,7 +133,7 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Anthropologist: For early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the\n transition must have been traumatic. There would\n have been increased incidence of disease and\n injury and a more homogeneous diet lacking vital\n nutrients more easily obtainable from the richly\n varied diet of hunter-gatherers. Thus, groups that\n made the transition were likely motivated by\n certain benefits that accompany the settled life\n of the agriculturist, such as opportunities for the\n accumulation of wealth by those with specialized\n social roles.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the anthropologist’s overall argument\n by the statement that for early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the transition\n must have been traumatic?",
@@ -144,7 +144,10 @@
       "D": "It is the conclusion of the argument as a whole.",
       "E": "It is a claim that the rest of the argument seeks to rebut."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -268,7 +271,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Ants sometimes live in hollow places in the roots of\n a certain orchid species. Those orchids of that species\n that house ants are far healthier than those that do not.\n Since the ants store organic matter in the orchids’ roots,\n an explanation for the superior health of the orchids that\n house ants is that the organic matter stored by the ants\n provides those orchids with additional nutrients.",
     "questionStem": "Which one of the following, if true, is an alternative\n explanation for the better health of orchids that house\n the ants?",
@@ -279,7 +282,10 @@
       "D": "The ants that live in hollow places in the roots of orchids do not play a role in pollinating the flowers of the plant.",
       "E": "Most plant species whose roots, stems, or leaves harbor insects are more prone to disease and rot than are other plants."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT157",

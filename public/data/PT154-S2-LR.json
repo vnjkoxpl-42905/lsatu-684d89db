@@ -250,7 +250,7 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Superintendent: Within the school district overall, 11 percent of high school students drop out. However, of the high school students who participate in work internships, only 1 percent drop out. Clearly, then, participation in a work internship decreases the chance that a student will drop out.",
     "questionStem": "The reasoning in the superintendent’s argument is flawed because the argument",
@@ -263,7 +263,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -354,7 +355,10 @@
       "D": "Only cortisone injections can cause a reduction of an inflammation of a nerve like that in the patient’s leg.",
       "E": "The best treatment for back and leg pain is usually a drug that relieves inflammation."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -395,7 +399,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -439,7 +444,7 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Until recently, experts have been unable to identify the artist who created a Renaissance painting depicting aristocrats in a historic battle. But the mystery has been solved by the discovery of a self-portrait of a well-known artist from very early in his career, dated to the same year that the painting of the battle scene was created. One of the figures in the battle scene closely resembles the young man in the self-portrait. It is likely, therefore, that the artist who painted the self-portrait also painted the battle scene.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -450,7 +455,10 @@
       "D": "It would have been a violation of etiquette for so young an artist to include himself among aristocrats in a painting of a historic battle.",
       "E": "The historic battle that is the subject of the painting took place a number of years before the birth of the artist who painted the self-portrait."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT154",

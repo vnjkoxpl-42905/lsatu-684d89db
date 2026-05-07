@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Randy: After Mega Cable Television Company refused to carry the competing Azco News Service alongside its own news channels, the mayor used her influence to get Azco time on a community channel, demonstrating her concern for keeping a diversity of news programming in the city.\nMarion: The mayor's action is fully explained by cruder motives: she's rewarding Azco's owner, a political supporter of hers.",
     "questionStem": "Of the following, which one, if true, is the logically strongest counter Randy can make to Marion's objection?",
@@ -33,7 +33,10 @@
       "D": "The many people whose jobs depend on Azco's continued presence on a community channel are a potential source of political support for the mayor.",
       "E": "The number of people who watch Mega Cable Television Company's programming has decreased during the mayor's term."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",

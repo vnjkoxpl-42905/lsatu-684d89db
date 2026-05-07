@@ -133,7 +133,7 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects. 8. Each of the following, if true, weakens the official’s",
     "questionStem": "argument except:",
@@ -144,7 +144,10 @@
       "D": "Some of the species of insects in District 10 that infest pear trees are water breeders, and the reservoirs and marshlands in this district have been shrinking rapidly over the past three years.",
       "E": "The effects of certain pesticides, including the pesticide that had formerly been used in District 10, are cumulative and persist for several years after the pesticide is no longer applied."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT107",

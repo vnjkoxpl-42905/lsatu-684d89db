@@ -40,7 +40,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A study of the dietary habits of a group of people who had recently developed cancer and a group without cancer found that during the previous five years the diets of the two groups' members closely matched each other in the amount of yogurt they contained. Yogurt contains galactose, which is processed in the body by an enzyme. In the people with cancer the levels of this enzyme were too low to process the galactose in the yogurt they were consuming. It can be concluded that galactose in amounts exceeding the body's ability to process it is carcinogenic.",
     "questionStem": "Of the following, which one constitutes the strongest objection to the reasoning in the argument?",
@@ -53,7 +53,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -79,7 +80,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Evaluate the Argument",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Journalist: A recent study showed that people who drink three cups of decaffeinated coffee per day are twice as likely to develop arthritis—inflammation of joints resulting from damage to connective tissue—as those who drink three cups of regular coffee per day. Clearly, decaffeinated coffee must contain something that damages connective tissue and that is not present in regular coffee.",
     "questionStem": "Which one of the following would be most useful to know in order to evaluate the journalist's argument?",
@@ -90,7 +91,10 @@
       "D": "whether most coffee drinkers drink more than three cups of coffee per day",
       "E": "whether people who have arthritis are less likely than the general population to drink coffee of any kind"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -319,7 +323,10 @@
       "D": "Some children who had not been shown the film imitated the behavior of those who had been shown the film and who punched the doll.",
       "E": "Many of the children who participated in the experiment had never seen a Bobo doll before the experiment."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -355,7 +362,10 @@
       "D": "There are no spots in the forests of North America where both goblin ferns and earthworms of the species L. rubellus can be found.",
       "E": "L. rubellus does not favor habitats where the leaf litter layer is considerably thinner than what is required by goblin ferns."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -416,7 +426,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Anthropologist: Every human culture has taboos against eating certain animals. Some researchers have argued that such taboos originated solely for practical reasons, pointing out, for example, that in many cultures it is taboo to eat domestic animals that provide labor and that are therefore worth more alive than dead. But that conclusion is unwarranted; taboos against eating certain animals might instead have arisen for symbolic, ritualistic reasons, and the presence of the taboos might then have led people to find other uses for those animals.",
     "questionStem": "In the argument, the anthropologist",
@@ -429,7 +439,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -437,7 +448,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In an effort to reduce underage drinking, the Department of Health has been encouraging adolescents to take a pledge not to drink alcohol until they reach the legal age. This seems to be successful. A survey of seventeen-year-olds has found that many who do not drink report having taken a pledge to refrain from drinking, whereas almost all who drink report having never taken such a pledge.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism because the argument",
@@ -450,7 +461,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

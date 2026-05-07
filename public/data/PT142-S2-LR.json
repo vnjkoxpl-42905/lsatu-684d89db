@@ -97,7 +97,7 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Over the last five years, every new major alternative-\nenergy initiative that initially was promised government\nfunding has since seen that funding severely curtailed.\nIn no such case has the government come even close to\nproviding the level of funds initially earmarked for these\nprojects. Since large corporations have made it a point\nto discourage alternative-energy projects, it is likely that\nthe corporations’ actions influenced the government’s\nfunding decisions.",
     "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
@@ -108,7 +108,10 @@
       "D": "Some projects encouraged by large corporations have seen their funding severely curtailed over the last five years.",
       "E": "All large corporations have made it a point to discourage some forms of research."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -190,7 +193,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Psychologists observing a shopping mall parking lot\nfound that, on average, drivers spent 39 seconds leaving\na parking space when another car was quietly waiting\nto enter it, 51 seconds if the driver of the waiting car\nhonked impatiently, but only 32 seconds leaving a space\nwhen no one was waiting. This suggests that drivers feel\npossessive of their parking spaces even when leaving\nthem, and that this possessiveness increases in reaction to\nindications that another driver wants the space.",
     "questionStem": "Which one of the following, if true, most weakens the\nreasoning?",
@@ -201,7 +204,10 @@
       "D": "Parking spaces in shopping mall parking lots are unrepresentative of parking spaces in general with respect to the likelihood that other cars will be waiting to enter them.",
       "E": "Almost any driver leaving a parking space will feel angry at another driver who honks impatiently, and this anger will influence the amount of time spent leaving the space."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -247,7 +253,7 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Geologists recently discovered marks that closely\nresemble worm tracks in a piece of sandstone. These\nmarks were made more than half a billion years earlier\nthan the earliest known traces of multicellular animal life.\nTherefore, the marks are probably the traces of geological\nprocesses rather than of worms.",
     "questionStem": "Which one of the following, if true, most weakens the\nargument?",
@@ -258,7 +264,10 @@
       "D": "At the place where the sandstone was found, the only geological processes that are likely to mark sandstone in ways that resemble worm tracks could not have occurred at the time the marks were made.",
       "E": "Most scientists knowledgeable about early animal life believe that worms are likely to have been among the earliest forms of multicellular animal life on Earth, but evidence of their earliest existence is scarce because they are composed solely of soft tissue."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -319,7 +328,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "To find out how barn owls learn how to determine the\ndirection from which sounds originate, scientists put\ndistorting lenses over the eyes of young barn owls\nbefore the owls first opened their eyes. The owls with\nthese lenses behaved as if objects making sounds were\nfarther to the right than they actually were. Once the owls\nmatured, the lenses were removed, yet the owls continued\nto act as if they misjudged the location of the source of\nsounds. The scientists consequently hypothesized that\nonce a barn owl has developed an auditory scheme for\nestimating the point from which sounds originate, it\nceases to use vision to locate sounds.",
     "questionStem": "The scientists’ reasoning is vulnerable to which one of\nthe following criticisms?",
@@ -330,7 +339,10 @@
       "D": "It neglects to consider how similar distorting lenses might affect the behavior of other bird species.",
       "E": "It uses as evidence experimental results that were irrelevant to the conclusion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",

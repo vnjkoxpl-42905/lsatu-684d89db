@@ -155,7 +155,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Measurements of the motion of the planet Uranus seem to show Uranus being tugged by a force pulling it away from the Sun and the inner planets. Neptune and Pluto, the two known planets whose orbits are farther from the Sun than is the orbit of Uranus, do not have enough mass to exert the force that the measurements indicate. Therefore, in addition to the known planets, there must be at least one planet in our solar system that we have yet to discover.",
     "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
@@ -166,7 +166,10 @@
       "D": "The force the Sun exerts on Uranus is weaker than the force it exerts on the inner planets.",
       "E": "Uranus’ orbit is closer to Neptune’s orbit than it is to Pluto’s."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT103",

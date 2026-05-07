@@ -101,7 +101,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Local resident: An overabundance of algae must be harmful to the smaller fish in this pond. During the fifteen or so years that I have lived here, the few times that I have seen large numbers of dead small fish wash ashore in late summer coincide exactly with the times that I have noticed abnormally large amounts of algae in the water.",
     "questionStem": "The local resident’s argument is most vulnerable to criticism on the grounds that it",
@@ -114,7 +114,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -326,7 +327,10 @@
       "D": "The protein BA directly interferes with the cognitive functions of the brain.",
       "E": "Immune reactions by microglia occur in certain diseases of the brain other than Alzheimer’s."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -396,7 +400,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Economics professor: Marty’s Pizza and Checkers Pizza are the two major pizza parlors in our town. Marty’s sold coupon books including coupons good for one large plain pizza at any local pizza parlor, at Marty’s expense. But Checkers refused to accept these coupons, even though they were redeemed by all other local pizza parlors. Accepting them would have cost Checkers nothing and would have satisfied those of its potential customers who had purchased the coupon books. This shows that Checkers’s motive in refusing to accept the coupons was simply to hurt Marty’s Pizza.",
     "questionStem": "Which one of the following, if assumed, enables the economics professor’s conclusion to be properly drawn?",
@@ -409,7 +413,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {

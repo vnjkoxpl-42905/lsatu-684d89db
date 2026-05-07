@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Mysterious ancient tracks cut into limestone have recently been found on the island of Malta. The tracks wander, sometimes disappearing under modern structures. Their origin and purpose are unknown, but evidence indicates that they could have connected settlements or water sources. One archaeologist hypothesizes, based on the tracks' physical appearance and surroundings, that they were made in about 1000 B.C. by animal-drawn carts.",
     "questionStem": "Which one of the following, if true, most helps to support the archaeologist's hypothesis mentioned above?",
@@ -15,7 +15,10 @@
       "D": "Historically, inhabitants of the island of Malta have not been innovative users of transportation technology.",
       "E": "Around 1000 B.C., some settlements were abandoned in parts of Malta."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -184,7 +187,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A recently completed study of several hundred subjects, all of approximately the same age, showed that those who exercised regularly during the study were much less likely to die during the study. This indicates that exercise can actually increase one's life span.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -195,7 +198,10 @@
       "D": "Whether or not a given subject was to exercise during the study was determined by the researchers on a random basis.",
       "E": "A person who exercises regularly is probably doing so out of concern for his or her own health."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -298,7 +304,7 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Archaeologists excavating a Neanderthal campsite found discarded gazelle teeth there whose coloration indicated that gazelles had been hunted throughout the year. The archaeologists concluded that the Neanderthals had inhabited the campsite year-round and thus were not nomadic. In contrast, the archaeologists cite a neighboring campsite of nomadic Cro-Magnons that contained teeth from gazelles all killed during the same season.",
     "questionStem": "Which one of the following, if true, most seriously weakens the archaeologists' reasoning?",
@@ -309,7 +315,10 @@
       "D": "Cro-Magnons usually followed the migrations of the animals they hunted.",
       "E": "Gazelles inhabited the area around the campsites year-round."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT128",

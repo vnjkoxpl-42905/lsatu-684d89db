@@ -442,7 +442,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Further evidence of a connection between brain physiology and psychological states has recently been uncovered in the form of a correlation between electroencephalograph patterns and characteristic moods. A study showed that participants who suffered from clinical depression exhibited less left frontal lobe activity than right, while, conversely, characteristically goodnatured participants exhibited greater left lobe activity. Thus one’s general disposition is a result of the activity of one’s frontal lobe.",
     "questionStem": "Each of the following, if true, weakens the argument except:",
@@ -453,7 +453,10 @@
       "D": "Earlier studies indicated that frontal lobe activity and emotive states are both caused by activity in the brain’s limbic system.",
       "E": "Social interaction of the kind not engaged in by most clinically depressed people is known to stimulate left lobe activity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT106",

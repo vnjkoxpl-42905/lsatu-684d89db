@@ -26,7 +26,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Entertainment reporter: Unlike most major motion pictures, the release of the upcoming film Escapade II has not been preceded by free, advance screenings that show the film to select audiences for promotional purposes. With movie research showing awareness of the film at 96 percent, and with around 60 percent of filmgoers indicating “definite interest” in the film, the film’s distributors must have decided not to do anything that could reduce interest in the film.",
     "questionStem": "The entertainment reporter’s explanation for why there have been no advance screenings of Escapade II relies on assuming that the distributors believe that",
@@ -37,7 +37,10 @@
       "D": "if 96 percent of the public is aware of the upcoming release of Escapade II, it is probable that 96 percent of the public intends to see the film",
       "E": "the film Escapade II would most likely be viewed by approximately 60 percent of the public if no advance screenings are given should not make assumptions that are by commonsense standards implausible, superfluous, or incompatible with the passage. For some questions, more than one of the choices could conceivably answer the question. However, you are to choose the best answer; that is, choose the response that most accurately and completely answers the question and mark that response on your answer sheet."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -198,7 +201,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The crocodiles of Lake Victoria, in East Africa, sometimes attack humans that venture into their habitat. The number of attacks on people by these crocodiles has increased significantly in the last 20 years. This is despite the fact that the number of crocodiles in the lake has not increased in that time and the crocodiles have no less food available.",
     "questionStem": "Which one of the following, if true, most helps to explain the increase in the incidence of crocodile attacks on humans?",
@@ -209,14 +212,17 @@
       "D": "Adult crocodiles in Lake Victoria are generally unafraid of humans or their boats.",
       "E": "People now fish in more parts of Lake Victoria than they did in previous decades."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "When the annual period of daylight saving time begins, and clocks are set forward one hour, many people lose an hour of sleep. On the following day, according to government statistics, the incidence of traffic accidents is 7 percent greater than the average for that time of year. It is therefore likely that sleep deprivation is responsible for this spike in traffic accidents.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -227,7 +233,10 @@
       "D": "The higher incidence of accidents is most pronounced later in the day, when sleep-deprived people tend to be most drowsy.",
       "E": "The effects of sleep deprivation can linger for several days."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",

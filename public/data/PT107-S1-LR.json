@@ -118,7 +118,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "In Debbie’s magic act, a volunteer supposedly selects a card in a random fashion, looks at it without showing it to her, and replaces it in the deck. After several shuffles, Debbie cuts the deck and supposedly reveals the same selected card. A skeptic conducted three trials. In the first, Debbie was videotaped, and no sleight of hand was found. In the second, the skeptic instead supplied a standard deck of cards. For the third trial, the skeptic selected the card. Each time, Debbie apparently revealed the selected card. The skeptic concluded that Debbie uses neither sleight of hand, nor a trick deck, nor a planted “volunteer” to achieve her effect.",
     "questionStem": "Which one of the following most accurately describes a flaw in the skeptic’s reasoning?",
@@ -129,7 +129,10 @@
       "D": "The skeptic failed to consider the possibility that Debbie used something other than sleight of hand, a trick deck, or a planted “volunteer” to achieve her effect.",
       "E": "The skeptic failed to consider the possibility that Debbie’s success in the three trials was something other than a coincidence."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -296,7 +299,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "We can learn about the living conditions of a vanished culture by examining its language. Thus, it is likely that the people who spoke Proto-Indo-European, the language from which all Indo-European languages descended,\nlived in a cold climate, isolated from ocean or sea, because Proto-Indo-European lacks a word for “sea,” yet contains words for “winter,” “snow,” and “wolf.”",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -309,7 +312,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {

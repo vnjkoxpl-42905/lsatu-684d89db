@@ -190,7 +190,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Feathers recently taken from seabirds stuffed and preserved in the 1880s have been found to contain only half as much mercury as feathers recently taken from living birds of the same species. Since mercury that accumulates in a seabird's feathers as the feathers grow is derived from fish eaten by the bird, these results indicate that mercury levels in saltwater fish are higher now than they were 100 years ago.",
     "questionStem": "The argument depends on assuming that",
@@ -201,14 +201,17 @@
       "D": "the stuffed seabirds whose feathers were tested for mercury were not fully grown",
       "E": "the process used to preserve birds in the 1880s did not substantially decrease the amount of mercury in the birds' feathers"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Novel X and Novel Y are both semiautobiographical novels and contain many very similar themes and situations, which might lead one to suspect plagiarism on the part of one of the authors. However, it is more likely that the similarity of themes and situations in the two novels is merely coincidental, since both authors are from very similar backgrounds and have led similar lives.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
@@ -219,7 +222,10 @@
       "D": "It is less likely that one of the authors of Novel X or Novel Y is guilty of plagiarism than that the similarity of themes and situations in the two novels is merely coincidental.",
       "E": "If the authors of Novel X and Novel Y are from very similar backgrounds and have led similar lives, suspicions that either of the authors plagiarized are very likely to be unwarranted."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -268,7 +274,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "A consumer magazine surveyed people who had sought a psychologist's help with a personal problem. Of those responding who had received treatment for 6 months or less, 20 percent claimed that treatment \"made things a lot better.\" Of those responding who had received longer treatment, 36 percent claimed that treatment “made things a lot better.\" Therefore, psychological treatment lasting more than 6 months is more effective than shorter-term treatment.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -279,7 +285,10 @@
       "D": "Patients who were dissatisfied with their treatment were more likely to feel a need to express their feelings about it and thus to return the survey.",
       "E": "Many psychologists encourage their patients to receive treatment for longer than 6 months."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",

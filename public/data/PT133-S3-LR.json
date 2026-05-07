@@ -15,7 +15,10 @@
       "D": "evidence that knee-level switches are not in fact hazardous",
       "E": "an indication that Acme Engines had been aware of the potential dangers of knee-level switches before the wreck occurred"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -290,7 +293,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Travaillier Corporation has recently hired employees with experience in the bus tour industry, and its executives have also been negotiating with charter bus companies that subcontract with bus tour companies. But Travaillier has traditionally focused on serving consumers who travel primarily by air, and marketing surveys show that Travaillier's traditional consumers have not changed their vacation preferences. Therefore, Travaillier must be attempting to enlarge its consumer base by attracting new customers.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -301,7 +304,10 @@
       "D": "Some of Travaillier's competitors have increased profits by concentrating their attention on their customers who spend the most on vacations.",
       "E": "The industry consultants employed by Travaillier typically recommend that companies expand by introducing their current customers to new products and services."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",

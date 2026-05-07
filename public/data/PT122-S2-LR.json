@@ -58,7 +58,7 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Child psychologist: Some studies in which children have been observed before and after playing video games with violent content have shown that young children tend to behave more aggressively immediately after playing the games. This suggests that the violence in such video games leads young children to believe that aggressive behavior is acceptable.",
     "questionStem": "Each of the following, if true, strengthens the child psychologist's argument except:",
@@ -69,7 +69,10 @@
       "D": "Older children are less likely before playing video games with violent content than they are afterwards to believe that aggressive behavior is acceptable.",
       "E": "Young children tend to behave more aggressively immediately after being told that aggressive behavior is acceptable than they did beforehand."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -97,7 +100,7 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The cattle egret is a bird that lives around herds of cattle. The only available explanation of the fact that the cattle egret follows cattle herds is that the egrets consume the insects stirred up from the grasses as the cattle herds graze.",
     "questionStem": "Which one of the following, if true, would most seriously undermine the claim that the explanation given above is the only available one?",
@@ -108,7 +111,10 @@
       "D": "Cattle egrets are not generally known to live outside the range of large, slow-moving animals.",
       "E": "Forests are generally inhospitable to cattle egrets because of a lack of insects of the kind egrets can consume."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -191,7 +197,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Cholesterol, which is a known factor in coronary heart disease and stroke, needs a carrier, known as a lipoprotein, to transport it through the bloodstream. Low-density lipoproteins (LDLs) increase the risk of coronary heart disease and stroke, but we can tentatively conclude that high-density lipoproteins (HDLs) help prevent coronary heart disease and stroke. First, aerobic exercise increases one's level of HDLs. Second, HDL levels are higher in women than in men. And both aerobic exercise and being female are positively correlated with lower risk of coronary heart disease and stroke.",
     "questionStem": "Each of the following, if true, strengthens the argument except:",
@@ -202,7 +208,10 @@
       "D": "A high level of HDLs mitigates the increased health risks associated with LDLs.",
       "E": "Men whose level of HDLs is equal to the average level for women have been found to have a lower risk of coronary heart disease and stroke than that of most men."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -248,7 +257,7 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Scientist: A controversy in paleontology centers on the question of whether prehistoric human ancestors began to develop sophisticated tools before or after they came to stand upright. I argue that they stood upright first, simply because advanced toolmaking requires free use of the hands, and standing upright makes this possible.",
     "questionStem": "Which one of the following statements, if true, most weakens the scientist's argument?",
@@ -259,7 +268,10 @@
       "D": "Those prehistoric human ancestors who first came to stand upright had no more dexterity with their hands than did those who did not stand upright.",
       "E": "Many of the earliest sophisticated tools did not require their users to be able to stand upright."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",

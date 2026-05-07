@@ -25,7 +25,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Museum curator: Our ancient Egyptian collection includes an earthenware hippopotamus that resembles a child's toy. It was discovered in a tomb, upside down, with its legs broken off. We know that the ancient Egyptians believed the dead had to wage eternal war with beasts. Breaking the legs off a representation of an animal was thought to help a deceased person in this war. We conclude that, far from being a toy, this hippopotamus was a religious object.",
     "questionStem": "Which one of the following is an assumption required by the curator's argument?",
@@ -36,7 +36,10 @@
       "D": "The hippopotamus' legs were not broken through some natural occurrence after it was placed in the tomb.",
       "E": "The hippopotamus was originally placed upside down in the tomb."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -193,7 +196,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "In the last year, biologists have learned that there are many more species of amphibians in existence than had previously been known. This definitely undermines environmentalists' claim that pollution is eliminating many of these species every year.",
     "questionStem": "The reasoning in the argument above is most vulnerable to criticism on the grounds that it involves a confusion between",
@@ -204,7 +207,10 @@
       "D": "a correlation between two phenomena and a causal relationship between them",
       "E": "changes in our knowledge of objects and changes in the objects themselves"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT136",

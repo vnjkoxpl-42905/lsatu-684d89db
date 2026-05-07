@@ -56,7 +56,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -64,7 +65,7 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Strengthen (EXCEPT)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Because quitting smoking is very stressful and leads\nto weight gain, it is difficult to do. The key to quitting,\nhowever, may be as simple as replacing an unhealthy\nactivity with a healthy one. In one study, half of those\nattempting to quit were assigned to a smoking-cessation\nprogram alone, and the other half were assigned to the\nsame program plus fifteen weeks of aerobic exercise. At\nthe one-month mark, none in the first group had quit, but\n40 percent of those in the second group had not smoked.",
     "questionStem": "Each of the following, if true, provides some support for\nthe argument except :",
@@ -75,7 +76,10 @@
       "D": "Aerobic exercise can stimulate the brain’s production of endorphins, which reduce tension.",
       "E": "Of those in the second group in the study, 38 percent had not smoked at the one-year mark."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -349,7 +353,7 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Every student who walks to school goes home for lunch. It follows that some students who have part-time jobs do not walk to school.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -360,7 +364,10 @@
       "D": "Some students who do not go home for lunch have part-time jobs.",
       "E": "Every student who goes home for lunch walks to school."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",

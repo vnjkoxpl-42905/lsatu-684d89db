@@ -58,7 +58,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Ecologist: Before finding a mate, male starlings decorate their nests with fragments of aromatic plants rich in compounds known to kill parasitic insects. Since these parasites are potentially harmful to nestlings, some researchers have hypothesized that the function of these decorations is nestling protection. However, males cease to incorporate such greenery once egg laying starts, which suggests instead that the function of the decorations is to attract females.",
     "questionStem": "Which one of the following, if true, most strengthens the support for the ecologist’s conclusion?",
@@ -69,7 +69,10 @@
       "D": "Male starlings tend to decorate their nests with a greater number of aromatic plants when a caged female is positioned adjacent to the nest.",
       "E": "The compounds in the aromatic plants used by the male starlings to decorate their nests are harmless to nestlings."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -126,7 +129,10 @@
       "D": "In approximately 85 percent of the human population, very small amounts of urushiol can cause a rash.",
       "E": "Poison oak and poison ivy grow particularly well in places where humans have altered natural forest ecosystems."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -400,7 +406,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Fish with teeth specialized for scraping algae occur in both Flower Lake and Blue Lake. Some biologists argue that because such specialized characteristics are rare, fish species that have them should be expected to be closely related. If they are closely related, then the algae-scraping specialization evolved only once. But genetic tests show that the two algae-scraping species, although possibly related, are not closely related. Thus, the algae-scraping specialization evolved more than once.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -411,7 +417,10 @@
       "D": "infers merely because something was likely to occur that it did occur",
       "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -465,14 +474,17 @@
       "D": "Of the people who oppose funding a study to determine the feasibility of building a light rail line in the Loffoch Valley, most also believe that the Valley Freeway should be built. Donna opposes increasing funding for a study, so she probably supports building the Valley Freeway.",
       "E": "Of the people who believe that there will be a blizzard tomorrow, most believe it because of the weather report on the Channel 9 news. Eduardo believes that there will be a blizzard tomorrow, so he probably saw the weather report on the Channel 9 news."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Bird watcher: The decrease in the mourning-dove population in this area is probably a result of the loss of nesting habitat. Many mourning doves had formerly nested in the nearby orchards, but after overhead sprinklers were installed in the orchards last year, the doves ceased building nests there.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -483,6 +495,9 @@
       "D": "Many residents of the area fill their bird feeders with canola or wheat, which are appropriate seeds for attracting mourning doves.",
       "E": "Mourning doves often nest in fruit trees."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

@@ -111,7 +111,10 @@
       "D": "Vanilla is known to be a significantly less complex flavor than chocolate.",
       "E": "Most people are aware of the chemical complexities of different flavors."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -154,7 +157,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Records from 1850 to 1900 show that in a certain region, babies’ birth weights each year varied with the success of the previous year’s crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
     "questionStem": "The argument proceeds by",
@@ -167,7 +170,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -235,7 +239,7 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Animal feed should not include genetically modified plants. A study found that laboratory rats fed genetically modified potatoes for 30 days tended to develop intestinal deformities and a weakened immune system, whereas rats fed a normal diet of foods that were not genetically modified did not develop these problems.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -246,7 +250,10 @@
       "D": "Genetically modified potatoes have the same nutritional value to rats as do potatoes that are not genetically modified.",
       "E": "The researchers conducting the study were unable to explain how the genetic modifications of the potatoes would have caused the intestinal deformities or a weakened immune system in the rats."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",

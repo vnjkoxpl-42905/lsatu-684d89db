@@ -25,7 +25,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Spokesperson: Contrary to what some have claimed, our group's \"Clean City\" campaign has been a rousing success. After all, the amount of trash on the city's streets today is significantly lower than when the campaign began.",
     "questionStem": "Which one of the following is an assumption required by the spokesperson's argument?",
@@ -36,7 +36,10 @@
       "D": "The spokesperson's group did not receive any special funding to support the planning or execution of the campaign.",
       "E": "The amount of trash on the city's streets has declined steadily throughout the course of the campaign."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -157,7 +160,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In a medical study of all of the residents of Groverhill, 35 people reported consulting their physician last year seeking relief from severe headaches. Those same physicians' records, however, indicate that 105 consultations occurred last year with Groverhill patients seeking relief from severe headaches. Obviously, then, many residents who consulted physicians for this condition did not remember doing so.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -170,7 +173,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -451,7 +455,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Nightbird is an unsigned painting that some attribute to the celebrated artist Larocque. Experts agree that it was painted in a style indistinguishable from that of Larocque and that if it was not painted by Larocque, it was undoubtedly painted by one of his students. A recent analysis showed that the painting contains orpiment, a pigment never yet found in a work attributed to Larocque. Therefore, the painting must have been done by one of Larocque's students.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -462,7 +466,10 @@
       "D": "None of Larocque's students is considered to be an important artist.",
       "E": "The use of orpiment became more popular in the years after Larocque's death."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",

@@ -458,7 +458,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Physician: Heart disease generally affects men at an earlier age than it does women, who tend to experience heart disease after menopause. Both sexes have the hormones estrogen and testosterone, but when they are relatively young, men have ten times as much testosterone as women, and women abruptly lose estrogen after menopause. We can conclude, then, that testosterone tends to promote, and estrogen tends to inhibit, heart disease. The physician’s argument is questionable because it presumes which one of the following without providing",
     "questionStem": "sufficient justification?",
@@ -469,7 +469,10 @@
       "D": "Because hormone levels are correlated with heart disease they influence heart disease.",
       "E": "Hormone levels do not vary from person to person, especially among those of the same age and gender."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT111",

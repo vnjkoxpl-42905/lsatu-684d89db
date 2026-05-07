@@ -176,7 +176,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Principle Conform",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Classification Confidence:** High 10. In the course of his reading, George Orwell probably encountered certain storytelling conventions over and over again, and these are the devices he would have most likely used in his work. That is why it does not follow that, even though his 1984 resembles other books of its futuristic genre, Orwell read those books; it is possible that he and the other authors were simply drawing on the same body of literary conventions.",
     "questionStem": "Which one of the following most closely illustrates the principle that the passage illustrates?",
@@ -187,7 +187,10 @@
       "D": "A recent film that involves car chases, explosions, and clever villains is not necessarily directly influenced by other films of the action genre.",
       "E": "A historical romance novel does not fit into its literary genre unless it employs certain kinds of conventions."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -230,7 +233,7 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Classification Confidence:** High 13. Television allows us to transmit images of ourselves that propagate into space. The earliest of these transmissions have by now reached all of our neighboring star systems. None of these transmissions, so far as we know, has been recognized; we have yet to receive any messages of extraterrestrial origin. We must conclude that there is no extraterrestrial intelligence in any of our neighboring star systems.",
     "questionStem": "The reasoning in the argument is questionable because the argument",
@@ -243,7 +246,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

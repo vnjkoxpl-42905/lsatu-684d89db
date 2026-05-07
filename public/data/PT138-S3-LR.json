@@ -40,7 +40,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Statistics reveal that more collisions between bicycles and motor vehicles occur on roads having specifically designated bicycle lanes than on roads having no such lanes. Hence, adding such lanes to existing roads is unlikely to enhance the safety of bicyclists.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -51,7 +51,10 @@
       "D": "concludes that adding bicycle lanes to roads will fail to enhance the safety of bicyclists on the grounds that only some roads that currently have such lanes are safe",
       "E": "takes statistical evidence that fails to support a conclusion concerning the safety of bicyclists as evidence that proves the opposite conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -308,7 +311,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "The conventional view is that asteroids strike the earth at random locations, thereby randomly affecting various aspects of the earth’s evolution. One iconoclastic geophysicist claims instead that asteroids have struck the earth through a highly organized natural process. Cited as evidence is the unusual pattern of impact craters that form a halo-like swath across the Northern Hemisphere. There is a consensus that these craters appeared at the end of the Cretaceous period, followed by a mass extinction of much land and ocean life.",
     "questionStem": "Which one of the following, if true, would most help to support the iconoclastic geophysicist’s claim?",
@@ -319,7 +322,10 @@
       "D": "Lumpy masses within the earth cause gravitational interactions with approaching asteroids that force them into specific orbits before impact.",
       "E": "No similar pattern of impact craters was created during any other period of the earth’s history."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT138",

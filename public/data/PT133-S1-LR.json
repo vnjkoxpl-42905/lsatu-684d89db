@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Jocko, a chimpanzee, was once given a large bunch of bananas by a zookeeper after the more dominant members of the chimpanzee's troop had wandered off. In his excitement, Jocko uttered some loud \"food barks.\" The other chimpanzees returned and took the bananas away. The next day, Jocko was again found alone and was given a single banana. This time, however, he kept silent. The zookeeper concluded that Jocko's silence was a stratagem to keep the other chimpanzees from his food.",
     "questionStem": "Which one of the following, if true, most seriously calls into question the zookeeper's conclusion?",
@@ -33,7 +33,10 @@
       "D": "Even when they are alone, chimpanzees often make noises that appear to be signals to other chimpanzees.",
       "E": "Bananas are a food for which all of the chimpanzees at the zoo show a decided preference."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -132,7 +135,10 @@
       "D": "The Ebola virus is much more contagious than the disease that caused the Athenian epidemic was reported to have been.",
       "E": "The epidemics known to have been caused by the Ebola virus are usually shorter-lived than was the Athenian epidemic."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -350,7 +356,7 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Anthropologist: It was formerly believed that prehistoric Homo sapiens ancestors of contemporary humans interbred with Neanderthals, but DNA testing of a Neanderthal's remains indicates that this is not the case. The DNA of contemporary humans is significantly different from that of the Neanderthal.",
     "questionStem": "Which one of the following is an assumption required by the anthropologist's argument?",
@@ -361,7 +367,10 @@
       "D": "Neanderthals and prehistoric Homo sapiens ancestors of contemporary humans were completely isolated from each other geographically.",
       "E": "Any similarity in the DNA of two species must be the result of interbreeding."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -431,7 +440,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Researcher: Each subject in this experiment owns one car, and was asked to estimate what proportion of all automobiles registered in the nation are the same make as the subject's car. The estimate of nearly every subject has been significantly higher than the actual national statistic for the make of that subject's car. I hypothesize that certain makes of car are more common in some regions of the nation than in other regions; obviously, that would lead many people to overestimate how common their make of car is nationally. That is precisely the result found in this experiment, so certain makes of car must indeed be more common in some areas of the nation than in others.",
     "questionStem": "Which one of the following most accurately expresses a reasoning flaw in the researcher's argument?",
@@ -444,7 +453,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -452,7 +462,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "In university towns, police issue far more parking citations during the school year than they do during the times when the students are out of town. Therefore, we know that most parking citations in university towns are issued to students.",
     "questionStem": "Which one of the following is most similar in its flawed reasoning to the flawed reasoning in the argument above?",
@@ -463,7 +473,10 @@
       "D": "We know that consumers buy more fruit during the summer than they buy during the winter, because there are far more varieties of fruit available in the summer than in the winter.",
       "E": "We know that most of the snacks parents buy go to other people's children, because when other people's children come to visit, parents give out more snacks than usual."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",

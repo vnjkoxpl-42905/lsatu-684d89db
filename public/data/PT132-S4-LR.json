@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Marine biologist: Scientists have long wondered why the fish that live around coral reefs exhibit such brilliant colors. One suggestion is that coral reefs are colorful and, therefore, that colorful fish are camouflaged by them. Many animal species, after all, use camouflage to avoid predators. However, as regards the populations around reefs, this suggestion is mistaken. A reef stripped of its fish is quite monochromatic. Most corals, it turns out, are relatively dull browns and greens.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the marine biologist's argument?",
@@ -15,7 +15,10 @@
       "D": "A reef stripped of its fish is relatively monochromatic.",
       "E": "It turns out that the corals in a coral reef are mostly dull hues of brown and green."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -43,7 +46,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A recent study of perfect pitch—the ability to identify the pitch of an isolated musical note—found that a high percentage of people who have perfect pitch are related to someone else who has it. Among those without perfect pitch, the percentage was much lower. This shows that having perfect pitch is a consequence of genetic factors.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -54,7 +57,10 @@
       "D": "People with perfect pitch are more likely than others to make sure that their children receive musical training.",
       "E": "People who have some training in music are more likely to have perfect pitch than those with no such training."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT132",

@@ -152,7 +152,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Red admiral butterflies fly in a highly irregular fashion,\nconstantly varying their speed, wing strokes, and\nflight path. While predators avoid poisonous butterfly\nspecies, nonpoisonous butterflies like the red admiral\nneed to elude predators to survive. Scientists therefore\nhypothesize that the red admiral’s flight style, which\nis clearly not energy efficient, evolved as a means of\navoiding predators.",
     "questionStem": "Which one of the following, if true, most strengthens the\nsupport for the scientists’ hypothesis?",
@@ -163,7 +163,10 @@
       "D": "It is much more energy efficient for butterflies to fly in an irregular fashion than it is for heavier varieties of insects.",
       "E": "All of the predators that prey on the red admiral also prey on other species of nonpoisonous butterflies. 1 1 1"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -188,7 +191,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Police chief: During my tenure as chief, crime in this city\nhas fallen by 20 percent. This is clearly the result\nof my policing strategy, which uses real-time\ncrime data and focuses police resources on the\nareas with the most crime.",
     "questionStem": "Which one of the following, if true, most calls into\nquestion the police chief’s explanation for the drop in\ncrime?",
@@ -199,7 +202,10 @@
       "D": "The crime rate in the country as a whole fell by about 30 percent during the police chief’s tenure.",
       "E": "The variation in crime rates between different areas of the city is smaller in the police chief’s city than in many other cities."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -260,7 +266,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Astronomer: In most cases in which a planet has been\ndetected orbiting a distant star, the planet’s orbit\nis distinctly oval, whereas the orbits of Earth\nand several other planets around our sun are\napproximately circular. However, many comets\norbiting our sun have been thrown into oval\norbits by close encounters with planets orbiting\nour sun. So some of the planets in oval orbits\naround distant stars were probably thrown into\nthose orbits by close encounters with other\nplanets orbiting the same stars.",
     "questionStem": "Which one of the following, if true, would most\nstrengthen the astronomer’s argument?",
@@ -271,7 +277,10 @@
       "D": "Most comets with an oval orbit around our sun were thrown into that orbit by a close encounter with some other object.",
       "E": "For each distant star that has been found to have a planet, no other object large enough to affect the planet’s orbit has been found orbiting the star."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",

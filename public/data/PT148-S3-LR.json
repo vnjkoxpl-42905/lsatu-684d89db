@@ -40,7 +40,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researcher: Dinosaur fossils come in various forms, including mineralized bones and tracks in dried mud flats. However, mineralized dinosaur bones and dinosaur tracks in dried mud flats are rarely found together. This isn’t surprising, because creatures that scavenged dinosaur carcasses most likely frequented mud flats to find food.",
     "questionStem": "Which one of the following, if true, would most strengthen the researcher’s argument?",
@@ -51,7 +51,10 @@
       "D": "Dinosaur fossils other than mineralized bone or tracks in dried mud flats are quite common.",
       "E": "It takes longer for bone to mineralize than it takes for tracks to dry in mud flats."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -253,7 +256,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Researchers recently studied the relationship between diet and mood, using a diverse sample of 1,000 adults. It was found that those who ate the most chocolate were the most likely to feel depressed. Therefore, by reducing excessive chocolate consumption, adults can almost certainly improve their mood.",
     "questionStem": "The argument is most vulnerable to criticism on which one of the following grounds?",
@@ -266,7 +269,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -274,7 +278,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Among the many temptations of the digital age, manipulation of photographs has proved particularly troublesome for science. Recently, a journal of cellular biology began using a software tool to examine the digital images submitted along with articles for publication. It discovered that dozens of authors had submitted digital images that had been manipulated in ways that violated the journal’s guidelines. Clearly, scientific fraud is a widespread problem among the authors submitting to that journal.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -288,7 +292,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -335,7 +340,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Journalist: Scientists took blood samples from two large, diverse groups of volunteers. All the volunteers in one group reported that they enjoyed eating vegetables, whereas all those in the other group disliked vegetables. When the blood samples from the group that disliked vegetables were analyzed, it was discovered that all the volunteers in that group had a gene in common, the XRV2G gene. This strongly suggests that a dislike of vegetables is, at least in some cases, genetically determined.",
     "questionStem": "The journalist’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -346,7 +351,10 @@
       "D": "It overlooks the possibility that even if a dislike of vegetables is genetically determined, it may be strongly influenced by genes other than the XRV2G gene.",
       "E": "It takes for granted that the volunteers in the group that enjoyed eating vegetables did not also all have the XRV2G gene in common."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -443,7 +451,10 @@
       "D": "Bacteria colonies that produce phenazines are better able to fend off other bacteria than are bacteria colonies that do not produce phenazines.",
       "E": "Within bacteria colonies that produce phenazines, interior bacteria are more likely to die than are bacteria along the edges."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",

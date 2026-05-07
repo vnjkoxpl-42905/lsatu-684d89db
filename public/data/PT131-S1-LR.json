@@ -483,7 +483,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "On average, corporations that encourage frequent social events in the workplace show higher profits than those that rarely do. This suggests that the EZ Corporation could boost its profits by having more staff parties during business hours.",
     "questionStem": "Which one of the following, if true, most weakens the argument above?",
@@ -494,7 +494,10 @@
       "D": "Frequent social events in a corporate workplace leave employees with less time to perform their assigned duties than they would otherwise have.",
       "E": "At one time the EZ Corporation encouraged social events in the workplace more frequently than it currently does, but it has not always been one of the most profitable corporations of its size."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT131",

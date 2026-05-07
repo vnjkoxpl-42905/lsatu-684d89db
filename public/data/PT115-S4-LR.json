@@ -327,7 +327,10 @@
       "D": "Archaeological evidence reveals that the human migrants had a number of different kinds of large weapons.",
       "E": "The huge size of the mammals made it difficult for them to migrate the great distances to milder environments."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -363,7 +366,10 @@
       "D": "overlooks the possibility that the same thing may causally contribute both to education and to good health",
       "E": "does not acknowledge that some people who fail to make informed lifestyle choices are in good health"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT115",

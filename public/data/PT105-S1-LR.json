@@ -75,7 +75,10 @@
       "D": "All of the hyperactive adults in the study had been treated for hyperactivity with a medication that is known to depress activity in some regions of the brain, while none of the nonhyperactive adults had been so treated.",
       "E": "The test was performed only on adults because even though the method by which the test measured brain activity is harmless to adults, it does require the use of radiation, which could be harmful to children."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT105",

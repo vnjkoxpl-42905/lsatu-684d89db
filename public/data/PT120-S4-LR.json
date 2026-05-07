@@ -33,7 +33,10 @@
       "D": "In recent years, abnormally low average temperatures have been correlated with a reduced checkerspot butterfly population.",
       "E": "Several studies have shown that several other species of butterfly closely related to the checkerspot butterfly survive only in warm climates."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -76,7 +79,7 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Sickles found at one archaeological site had scratched blades, but those found at a second site did not. Since sickle blades always become scratched whenever they are used to harvest grain, this evidence shows that the sickles found at the first site were used to harvest grain, but the sickles found at the second site were not.",
     "questionStem": "Which one of the following, if shown to be a realistic possibility, would undermine the argument?",
@@ -87,7 +90,10 @@
       "D": "At the second site tools other than sickles were used to harvest grain.",
       "E": "The sickles found at the first site were made by the same people who made the sickles found at the second site."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -370,7 +376,7 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Investment banker: Democracies require free-market capitalist economies, because a more controlled economy is incompatible with complete democracy. But history shows that repressive measures against certain capitalistic developments are required during the transition from a totalitarian regime to a democracy. Thus, people who bemoan the seemingly anticapitalistic measures certain governments are currently taking are being hasty.",
     "questionStem": "Which one of the following is an assumption required by the investment banker’s argument?",
@@ -381,7 +387,10 @@
       "D": "A free-market economy is incompatible with a nondemocratic regime.",
       "E": "The nations whose anticapitalistic measures the people in question bemoan had totalitarian regimes in the recent past."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -420,7 +429,10 @@
       "D": "People who are ordinarily very emotional can refrain from feeling strong emotions when experimenters ask them to do so.",
       "E": "In situations that do not tend to provoke emotions, the average heart rate of repressors is the same as that of nonrepressors."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -456,7 +468,10 @@
       "D": "Egyptian records recovered from the time of the collapse explicitly refer to the deteriorating conditions of the society.",
       "E": "Shortly after the collapse of the old kingdom, Egypt was thrust into a civil war that lasted most of the next two centuries."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -481,7 +496,7 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The number of applications for admission reported by North American Ph.D. programs in art history has declined in each of the last four years. We can conclude from this that interest among recent North American college and university graduates in choosing art history as a career has declined in the last four years.",
     "questionStem": "Each of the following, if true, weakens the argument except:",
@@ -492,6 +507,9 @@
       "D": "The number of North American employers willing to hire individuals without a Ph.D. for jobs in art history has increased in each of the last four years.",
       "E": "The percentage of applications for admission received from outside North America by North American Ph.D. programs in art history has declined substantially in the last four years."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

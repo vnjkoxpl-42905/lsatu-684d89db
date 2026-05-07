@@ -122,7 +122,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Most respondents to a magazine survey who had recently listened to a taped reading of a certain best-selling novel said that they had enjoyed the novel, while most respondents who had recently read the novel themselves said they had not enjoyed it. These survey results support the contention that a person who listens to a taped reading of a novel is more likely to enjoy the novel than a person who reads it is.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -133,7 +133,10 @@
       "D": "Many novels that are available in text versions are not available in audio versions.",
       "E": "The novel in question, unlike most novels, included dialogue in many different dialects that are more understandable when heard than when read."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT139",

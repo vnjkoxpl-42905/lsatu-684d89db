@@ -118,7 +118,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Although many political candidates object to being made the target of advertising designed to cast them in an adverse light, such advertising actually benefits its targets because most elections have been won by candidates who were the targets of that kind of advertising.",
     "questionStem": "The pattern of flawed reasoning in the argument most closely parallels that in which one of the following?",
@@ -131,7 +131,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -448,7 +449,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The Kiffer Forest Preserve, in the northernmost part of the Abbimac Valley, is where most of the bears in the valley reside. During the eight years that the main road through the preserve has been closed the preserve's bear population has nearly doubled. Thus, the valley's bear population will increase if the road is kept closed.",
     "questionStem": "Which one of the following, if true, most undermines the argument?",
@@ -459,7 +460,10 @@
       "D": "The bear population in areas of the Abbimac Valley outside the Kiffer Forest Preserve has decreased over the past eight years.",
       "E": "The bear population in the Abbimac Valley has remained about the same over the past eight years."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",

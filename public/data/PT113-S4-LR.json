@@ -172,7 +172,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Lydia: Red squirrels are known to make holes in the bark of sugar maple trees and to consume the trees' sap. Since sugar maple sap is essentially water with a small concentration of sugar, the squirrels almost certainly are after either water or sugar. Water is easily available from other sources in places where maple trees grow, so the squirrels would not go to the trouble of chewing holes in trees just to get water. Therefore, they are probably after the sugar.\nGalina: It must be something other than sugar, because the concentration of sugar in the maple sap is so low that a squirrel would need to drink an enormous amount of sap to get any significant amount of sugar.",
     "questionStem": "Lydia's argument proceeds by",
@@ -185,7 +185,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -243,7 +244,10 @@
       "D": "Telephones are used by most people in the industrialized world.",
       "E": "The complaints occurred after an increase in the patients' use of the telephone."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT113",

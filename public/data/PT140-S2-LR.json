@@ -75,7 +75,10 @@
       "D": "The health problems that some people have developed shortly after receiving vaccinations have been more serious than the health problems that the vaccines were intended to prevent.",
       "E": "In a few cases in which people developed serious health problems shortly after taking other medications, these problems were initially attributed to coincidence but were later determined to be due to the medications."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -191,7 +194,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {

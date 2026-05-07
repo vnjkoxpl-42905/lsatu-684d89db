@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Evaluate",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "In a study of honesty conducted in various retail stores,\ncustomers who paid in cash and received change were\ngiven an extra dollar with their change. Few people who\nreceived an extra dollar returned it. So, among those who\nreceived an extra dollar, most behaved dishonestly.",
     "questionStem": "The answer to which one of the following questions\nwould most help in evaluating the argument?",
@@ -33,7 +33,10 @@
       "D": "Did the people who returned the extra dollar suspect that it was given to them intentionally?",
       "E": "Does increasing the extra change to five dollars have an effect on people’s behavior?"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -336,7 +339,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "An analysis of the language in social media messages\nposted via the Internet determined that, on average, the\nuse of words associated with positive moods is common\nin the morning, decreases gradually to a low point\nmidafternoon, and then increases sharply throughout the\nevening. This shows that a person’s mood typically starts\nout happy in the morning, declines during the day, and\nimproves in the evening.",
     "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument overlooks the\npossibility that",
@@ -347,7 +350,10 @@
       "D": "the number of social media messages posted in the morning is not significantly different from the number posted in the evening",
       "E": "most of the social media messages posted in the evening are posted by people who rarely post such messages in the morning"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -383,14 +389,17 @@
       "D": "Heart disease interferes with the body’s ability to metabolize triglycerides.",
       "E": "People who maintain strict regimens for their health tend to adopt low-fat diets and to avoid alcohol and processed sugar."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "In an experiment, some volunteers were assigned to\ntake aerobics classes and others to take weight-training\nclasses. After three months, each performed an arduous\nmathematical calculation. Just after that challenge, the\nmeasurable stress symptoms of the volunteers in the\naerobics classes were less than those of the volunteers in\nthe weight-training classes. This provides good evidence\nthat aerobic exercise helps the body handle psychological\nstress.",
     "questionStem": "Which one of the following is an assumption the\nargument requires?",
@@ -401,14 +410,17 @@
       "D": "On average, the volunteers assigned to the aerobics classes found it less difficult to perform the mathematical calculation than did the volunteers assigned to the weight-training classes.",
       "E": "On average, the volunteers assigned to the aerobics classes got a greater amount of aerobic exercise overall during the experiment, including any exercise outside the classes, than did the volunteers assigned to the weight- training classes."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Insurers and doctors are well aware that the incidence\nof lower-back injuries among office workers who spend\nlong hours sitting is higher than that among people who\nregularly do physical work of a type known to place\nheavy stresses on the lower back. This shows that office\nequipment and furniture are not properly designed to\npromote workers’ health.",
     "questionStem": "Which one of the following, if true, most undermines the\nreasoning above?",
@@ -419,7 +431,10 @@
       "D": "Most of the lower-back injuries that office workers suffer occur while they are on the job.",
       "E": "Consistent physical exercise is one of the most effective ways to prevent or recover from lower- back injuries."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -462,7 +477,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Keeler wanted the institute to receive bad publicity.\nHe and Greene were the only ones in a position to tell\nthe press about the institute’s potentially embarrassing\naffiliations, but Greene had no reason to do so. Therefore,\nit must have been Keeler who notified the press.",
     "questionStem": "Which one of the following arguments is most closely\nparallel in its reasoning to the argument above?",
@@ -473,6 +488,9 @@
       "D": "When the bridge was designed, Fleming and Solano were the only ones capable of creating such a design. Fleming, however, had a strong reason to take credit for the design if it were his. Thus, since no one took credit for the design, it must have been the work of Solano.",
       "E": "Cutter and Rengo are the only serious candidates for designing the new monument. Rengo has designed several beautiful monuments and has connections to the selection committee. Therefore, it will probably be Rengo who is awarded the job of designing the monument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

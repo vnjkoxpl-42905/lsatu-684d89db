@@ -137,7 +137,7 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A study of guppy fish shows that a male guppy will alter its courting patterns in response to feedback from a female guppy. Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
@@ -148,7 +148,10 @@
       "D": "Female guppies have little if any orange coloring on their sides.",
       "E": "The male and female guppies were kept in separate tanks so they could see each other but not otherwise directly interact."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -266,7 +269,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The ancient reptile Thrinaxodon, an ancestor of mammals, had skull features suggesting that it had sensory whiskers. If Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature. Therefore, Thrinaxodon was probably warm-blooded, for such insulation would be of little use to a cold-blooded animal.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that if Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature?",
@@ -277,7 +280,10 @@
       "D": "It is a statement of a hypothesis that the argument attempts to show is false.",
       "E": "It is offered as an explanation of the phenomenon described by the argument’s main conclusion, but it is not itself used to provide support for that conclusion."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT149",

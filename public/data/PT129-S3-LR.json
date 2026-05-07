@@ -154,7 +154,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A television commercial argued as follows: both the product advertised and its competitor contain the same active ingredients, but the product advertised contains them in higher concentrations; tests show that the higher concentrations are completely safe; since a product that provides faster relief is always preferable, one should use the product advertised.",
     "questionStem": "The television commercial's argument is most vulnerable to criticism on the grounds that it",
@@ -165,7 +165,10 @@
       "D": "attempts to manipulate the emotions of potential customers of the advertised product rather than presenting logically sound reasons for preferring the product advertised",
       "E": "takes for granted that the product with the higher concentration of active ingredients provides faster relief than its competitor"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -345,7 +348,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

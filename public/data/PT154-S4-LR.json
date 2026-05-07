@@ -441,7 +441,10 @@
       "D": "Many effective treatments for PTSD are designed to reduce how much cortisol those with PTSD produce when exposed to stress.",
       "E": "Experiencing a traumatic event can damage the gland that produces cortisol, resulting in that gland producing more cortisol."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT154",

@@ -40,7 +40,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Science columnist: It is clear why humans have so many diseases in common with cats. Many human diseases are genetically based, and cats are genetically closer to humans than are any other mammals except nonhuman primates. Each of the genes identified so far in cats has an exact counterpart in humans.",
     "questionStem": "Which one of the following, if true, most weakens the science columnist's explanation for the claim that humans have so many diseases in common with cats?",
@@ -51,7 +51,10 @@
       "D": "Many of the diseases humans have in common with cats are mild and are rarely diagnosed.",
       "E": "Humans have more genes in common with nonhuman primates than with cats."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -325,7 +328,10 @@
       "D": "People's moods seem to vary with the color of the clothes they wear. Dark colors are associated with gloomy moods, and bright colors are associated with cheerful moods. This correlation resolves nothing, however. We cannot say whether it is the colors that cause the moods or the converse.",
       "E": "Linguists propose that the similarities between Greek and Latin are due to their common descent from an earlier language. But how are we to know that the similarities are not actually due to the two languages having borrowed structures from one another, as with the languages Marathi and Telegu?"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",

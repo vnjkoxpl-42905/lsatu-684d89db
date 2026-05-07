@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A study found that consumers reaching supermarket checkout lines within 40 minutes after the airing of an advertisement for a given product over the store's audio system were significantly more likely to purchase the product advertised than were consumers who checked out prior to the airing. Apparently, these advertisements are effective.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -33,7 +33,10 @@
       "D": "Many of the consumers who bought an advertised product and who reached the checkout line within 40 minutes of the advertisement's airing reported that they could not remember hearing the advertisement.",
       "E": "Many of the consumers who bought an advertised product reported that they buy that product only occasionally."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -73,7 +76,10 @@
       "D": "Some of the patients who enrolled in the sleep clinic also had difficulty staying asleep once they fell asleep.",
       "E": "Several studies have revealed that in many cases inhaling certain pleasant scents can dramatically affect the degree to which a patient suffers from insomnia."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -205,7 +211,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A mass of \"black water\" containing noxious organic material swept through Laurel Bay last year. Some scientists believe that this event was a naturally occurring but infrequent phenomenon. The black water completely wiped out five species of coral in the bay, including mounds of coral that were more than two centuries old. Therefore, even if this black water phenomenon has struck the bay before, it did not reach last year's intensity at any time in the past two centuries.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -216,7 +222,10 @@
       "D": "The mounds of centuries-old coral that were destroyed were not in especially fragile condition just before the black water swept in last year.",
       "E": "Older specimens of coral in the bay were more vulnerable to damage from the influx of black water than were young specimens."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -241,7 +250,7 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Psychologist: Identical twins are virtually the same genetically. Moreover, according to some studies, identical twins separated at birth and brought up in vastly different environments show a strong tendency to report similar ethical beliefs, dress in the same way, and have similar careers. Thus, many of our inclinations must be genetic in origin, and not subject to environmental influences.",
     "questionStem": "Which one of the following, if true, would most weaken the psychologist's argument?",
@@ -252,7 +261,10 @@
       "D": "Identical twins who grow up together tend to develop different beliefs, tastes, and careers in order to differentiate themselves from each other.",
       "E": "Twins who are not identical tend to develop different beliefs, tastes, and careers."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT137",

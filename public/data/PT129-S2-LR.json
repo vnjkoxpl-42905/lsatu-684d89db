@@ -262,7 +262,7 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Scientists have shown that older bees, which usually forage outside the hive for food, tend to have larger brains than do younger bees, which usually do not forage but instead remain in the hive to tend to newly hatched bees. Since foraging requires greater cognitive ability than does tending to newly hatched bees, it appears that foraging leads to the increased brain size of older bees.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
@@ -273,7 +273,10 @@
       "D": "In some species of bees, the brains of older bees are only marginally larger than those of younger bees.",
       "E": "The brains of older bees that never learn to forage are the same size as those of their foraging counterparts of the same age."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -374,7 +377,7 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "In the past, when there was no highway speed limit, the highway accident rate increased yearly, peaking a decade ago. At that time, the speed limit on highways was set at 90 kilometers per hour (kph) (55 miles per hour). Every year since the introduction of the highway speed limit, the highway accident rate has been at least 15 percent lower than that of its peak rate. Thus, setting the highway speed limit at 90 kph (55 mph) has reduced the highway accident rate by at least 15 percent.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -385,7 +388,10 @@
       "D": "Thanks to changes in automobile design in the past ten years, drivers are better able to maintain control of their cars in dangerous situations.",
       "E": "It was not until shortly after the introduction of the highway speed limit that most cars were equipped with features such as seat belts and airbags designed to prevent harm to passengers."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -413,7 +419,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Archaeologist: After the last ice age, groups of paleohumans left Siberia and crossed the Bering land bridge, which no longer exists, into North America. Archaeologists have discovered in Siberia a cache of Clovis points—the distinctive stone spear points made by paleohumans. This shows that, contrary to previous belief, the Clovis point was not invented in North America.",
     "questionStem": "Which one of the following, if true, would most strengthen the archaeologist's argument?",
@@ -424,7 +430,10 @@
       "D": "Archaeologists have discovered in Siberia artifacts that date from after the time paleohumans left Siberia.",
       "E": "Some paleohuman groups that migrated from Siberia to North America via the Bering land bridge eventually returned to Siberia."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",

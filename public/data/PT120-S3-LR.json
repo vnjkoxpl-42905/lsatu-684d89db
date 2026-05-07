@@ -130,7 +130,7 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Consumer advocate: There is ample evidence that the model of car one drives greatly affects the chances that one’s car will be stolen. The model of car stolen most often in our country last year, for example, was also the model stolen most often in the preceding year.",
     "questionStem": "The consumer advocate’s reasoning is most vulnerable to criticism on the grounds that it",
@@ -143,7 +143,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

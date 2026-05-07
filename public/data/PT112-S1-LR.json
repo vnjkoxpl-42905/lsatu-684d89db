@@ -43,7 +43,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Finnish author Jaakko Mikkeli was accused by Norwegian author Kirsten Halden of plagiarizing a book that she had written and that had been published 20 years before Mikkeli's. The two books, although set in different periods and regions, contain enough plot similarities to make coincidental resemblance unlikely. Mikkeli's defense rests on his argument that plagiarism was impossible in this case because Halden's book has been published only in Norwegian, a language Mikkeli does not understand, and because no reviews of Halden's book have ever been published.",
     "questionStem": "The argument in Mikkeli's defense depends on the assumption that",
@@ -54,7 +54,10 @@
       "D": "there is a common European myth to which both authors referred subconsciously in the books in question",
       "E": "Mikkeli is not familiar with Old Icelandic, an extinct language related to an earlier form of Norwegian"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -108,7 +111,10 @@
       "D": "It is less likely that eating large amounts of chocolate causes acne than that both the chocolate eating and the acne are caused by stress.",
       "E": "The more stress a person experiences, the more likely that person is to crave chocolate."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -128,7 +134,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -172,7 +179,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Cotrell is, at best, able to write magazine articles of average quality. The most compelling pieces of evidence for this are those few of the numerous articles submitted by Cotrell that are superior, since Cotrell, who is incapable of writing an article that is better than average, must obviously have plagiarized superior ones.",
     "questionStem": "The argument is most vulnerable to criticism on which one of the following grounds?",
@@ -186,7 +193,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -347,7 +355,7 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Although it has been suggested that Arton's plays have a strong patriotic flavor, we must recall that, at the time of their composition, her country was in anything but a patriotic mood. Unemployment was high, food was costly, and crime rates were soaring. As a result, the general morale of her nation was at an especially low point. Realizing this, we see clearly that any apparent patriotism in Arton's work must have been intended ironically.",
     "questionStem": "The reasoning above is questionable because it",
@@ -360,7 +368,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -489,7 +498,7 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "In the paintings by seventeenth-century Dutch artist Vermeer, we find several recurrent items: a satin jacket, a certain Turkish carpet, and wooden chairs with lion's-head finials. These reappearing objects might seem to evince a dearth of props. Yet we know that many of the props Vermeer used were expensive. Thus, while we might speculate about exactly why Vermeer worked with a small number of familiar objects, it was clearly not for lack of props that the recurrent items were used.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -502,7 +511,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   }
 ]

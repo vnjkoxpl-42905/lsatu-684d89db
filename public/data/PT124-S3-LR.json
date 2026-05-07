@@ -171,7 +171,10 @@
       "D": "Most people who regularly drink camellia tea do not develop kidney damage.",
       "E": "Many people who regularly consume camellia tea also regularly consume other beverages suspected of causing kidney damage."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -207,7 +210,10 @@
       "D": "Experiencing dramatic changes in climate and disruption of daily routines through international travel can be beneficial to some people who suffer from chronic insomnia.",
       "E": "Some businesspeople who once traveled internationally but no longer do so complain of various sleep-related ailments."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",

@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Editorial: Clearly, during the past two years, the unemployment situation in our city has been improving. Studies show that the number of unemployed people who are actively looking for jobs has steadily decreased during that period.",
     "questionStem": "The editorial's reasoning is most vulnerable to criticism on the grounds that it",
@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -25,7 +26,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Evaluate",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Eating garlic reduces the levels of cholesterol and triglycerides in the blood and so helps reduce the risk of cardiovascular disease. Evidence that eating garlic reduces these levels is that a group of patients taking a garlic tablet each day for four months showed a 12 percent reduction in cholesterol and a 17 percent reduction in triglycerides; over the same period, a group of similar patients taking a medically inert tablet showed only a 2 percent reduction in triglycerides and a 3 percent reduction in cholesterol.",
     "questionStem": "It would be most important to determine which one of the following in evaluating the argument?",
@@ -36,7 +37,10 @@
       "D": "whether large amounts of garlic are well tolerated by all patients",
       "E": "whether the manufacturer of the garlic tablets cites the study in its advertising"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -97,7 +101,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The simultaneous and apparently independent development in several ancient cultures of a myth of creatures who were half human and half horse parallels the increased use of horses in these cultures. But despite the nobility and gentleness traditionally ascribed to the horse, the mythical half-horse, half-humans were frequently portrayed as violent and savage. Many human cultures use myth to express unconscious thoughts, so these mythical creatures obviously reflect people's unconscious fear of the horse.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -110,7 +114,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

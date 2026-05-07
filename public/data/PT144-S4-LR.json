@@ -93,7 +93,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -329,7 +330,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "For several centuries there have been hairless dogs in western Mexico and in coastal Peru. It is very unlikely that a trait as rare as hairlessness emerged on two separate occasions. Since the dogs have never existed in the wild, and the vast mountainous jungle separating these two regions would have made overland travel between them extremely difficult centuries ago, the dogs must have been transported from one of these regions to the other by boat, probably during trading expeditions.",
     "questionStem": "Which one of the following is an assumption that the argument requires?",
@@ -340,7 +341,10 @@
       "D": "If hairless dogs were at one time transported between western Mexico and coastal Peru by boat, they were traded in exchange for other goods.",
       "E": "Centuries ago, it was easier to travel by boat between western Mexico and coastal Peru than to travel by an overland route."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -383,7 +387,7 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork. Thus, it is likely that",
     "questionStem": "the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity. Which one of the following, if true, most tends to undermine the argument?",
@@ -394,7 +398,10 @@
       "D": "Some students who did not participate in the chess program participated instead in after- school study sessions that helped them reach much higher levels of achievement in the year after they attended the sessions.",
       "E": "At least some of the students who did not successfully complete the program were nevertheless more talented chess players than some of the students who did complete the program."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT144",

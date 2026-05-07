@@ -328,7 +328,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A person is more likely to become disabled as that person ages. Among adults in the country of East Wendell, however, the proportion receiving disability benefit payments shrinks from 4 percent among 55 to 64 year olds to 2 percent for those aged 65 to 74 and 1 percent for those aged 75 and older. The explanation of this discrepancy is that the proportion of jobs offering such a disability benefit has greatly increased in recent years.",
     "questionStem": "Which one of the following, if true about East Wendell, shows that the explanation above is at best incomplete?",
@@ -339,7 +339,10 @@
       "D": "For persons receiving disability benefit payments, those payments on average represent a smaller share of their predisability income now than was the case 20 years ago.",
       "E": "Under most employers’ plans, disability benefit payments stop when an employee with a disability reaches the usual retirement age of 65."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -439,7 +442,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Ringtail opossums are an Australian wildlife species that is potentially endangered. A number of ringtail opossums that had been orphaned and subsequently raised in captivity were monitored after being returned to the wild. Seventy-five percent of these opossums were killed by foxes, a species not native to Australia. Conservationists concluded that the native ringtail opossum population was endangered not by a scarcity of food, as had been previously thought, but by non-native predator species against which the opossum had not developed natural defenses.",
     "questionStem": "Which one of the following, if true, most strongly supports the conservationists’ argument?",
@@ -450,7 +453,10 @@
       "D": "Few of the species that compete with the ringtail opossum for food sources are native to Australia.",
       "E": "Ringtail opossums that grow to adulthood in the wild defend themselves against foxes no more successfully than do ringtail opossums raised in captivity."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT110",

@@ -58,7 +58,7 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A survey published in a leading medical journal in the early 1970s found that the more frequently people engaged in aerobic exercise, the lower their risk of lung disease tended to be. Since other surveys have confirmed these results, it must be the case that aerobic exercise has a significant beneficial effect on people’s health.",
     "questionStem": "The reasoning above is questionable because the argument",
@@ -71,7 +71,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -79,7 +80,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researchers examined 100 people suffering from herniated disks in their backs. Five of them were found to have a defect in a particular gene. The researchers also examined 100 people who had no problems with the disks in their backs; none had the genetic defect. They concluded that the genetic defect increases the likelihood of herniated disks.",
     "questionStem": "Which one of the following, if true, most strengthens the researchers’ reasoning?",
@@ -90,7 +91,10 @@
       "D": "Another team of researchers examined a different group of 100 people who suffered from herniated disks, and they found that none of them had the defective gene.",
       "E": "When the researchers examined the family of one of the subjects who did not suffer from herniated disks, they found 30 family members who did not have the defective gene, and 20 of them suffered from herniated disks."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -213,7 +217,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Legislator: The recently passed highway bill is clearly very unpopular with voters. After all, polls predict that the majority party, which supported the bill’s passage, will lose more than a dozen seats in the upcoming election.",
     "questionStem": "The reasoning in the legislator’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -226,7 +230,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -391,7 +396,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Archaeologist: Our team discovered 5,000-year-old copper tools near a Canadian river, in a spot that offered easy access to the raw materials for birchbark canoes—birch, cedar, and spruce trees. The tools are of a sort used by the region’s Aboriginal people in making birchbark canoes in more recent times. It is likely therefore that Aboriginal people in Canada built birchbark canoes 5,000 years ago.",
     "questionStem": "The archaeologist’s argument depends on the assumption that the copper tools that were found",
@@ -402,7 +407,10 @@
       "D": "were the only kind of tool that would have been used for canoe making 5,000 years ago",
       "E": "are not known to have been used by the region’s Aboriginal people for any task other than canoe making"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT149",

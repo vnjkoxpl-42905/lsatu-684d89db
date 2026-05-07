@@ -271,7 +271,10 @@
       "D": "The annual number of accidents on Park Road that did not result in hospitalization remained roughly constant from 1981 to 1990.",
       "E": "Until 1986 accidents were classified as \"serious\" only if they resulted in an extended hospital stay."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT125",

@@ -43,7 +43,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The reason music with a simple recurring rhythm exerts a strong primordial appeal is that it reminds us of the womb environment. After all, the first sound heard within the womb is the comforting sound of the mother’s regular heartbeat. So in taking away from us the warmth and security of the womb, birth also takes away a primal and constant source of comfort. Thus it is extremely natural that in seeking sensations of warmth and security throughout life, people would be strongly drawn toward simple recurring rhythmic sounds.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the reasoning above?",
@@ -56,7 +56,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -205,7 +206,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researcher: This fall I returned to a research site to recover the armadillos I had tagged there the previous spring. Since a large majority of the armadillos I recaptured were found within a few hundred yards of the location of their tagging last spring, I concluded that armadillos do not move rapidly into new territories.",
     "questionStem": "Which one of the following is an assumption required by the researcher’s argument?",
@@ -216,7 +217,10 @@
       "D": "The tags identifying the armadillos cannot be removed by the armadillos, either by accident or deliberately.",
       "E": "A large majority of the recaptured armadillos did not move to a new territory in the intervening summer and then move back to the old territory by the fall."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -455,7 +459,10 @@
       "D": "There is no independent evidence of a volcanic event strong enough to have created the high-pressure shocks that are characteristic of meteorites slamming into Earth.",
       "E": "No known single meteor shower has created exactly eight impact craters that form a straight line."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",

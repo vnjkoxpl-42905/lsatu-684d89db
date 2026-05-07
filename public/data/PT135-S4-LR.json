@@ -115,7 +115,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Evaluate",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The ruins of the prehistoric Bolivian city of Tiwanaku feature green andacite stones weighing up to 40 tons. These stones were quarried at Copacabana, which is across a lake and about 90 kilometers away. Archaeologists hypothesize that the stones were brought to Tiwanaku on reed boats. To show this was possible, experimenters transported a 9-ton stone from Copacabana to Tiwanaku using a reed boat built with locally available materials and techniques traditional to the area.",
     "questionStem": "Which one of the following would be most useful to know in order to evaluate the support for the archaeologists’ hypothesis?",
@@ -126,7 +126,10 @@
       "D": "whether the green andacite stones at Tiwanaku are the largest stones at the site",
       "E": "whether the reed boat built for the experimenters is durable enough to remain usable for several years"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT135",

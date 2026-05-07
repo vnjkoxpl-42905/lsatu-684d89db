@@ -295,7 +295,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Evidently, watching too much television can lead people to overestimate the risks that the world poses to them. A recent study found that people are more likely to think that they will be victims of a natural disaster if they watch an above-average amount of television than if they do not.",
     "questionStem": "Which one of the following, if true, most weakens the reasoning above?",
@@ -308,7 +308,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {

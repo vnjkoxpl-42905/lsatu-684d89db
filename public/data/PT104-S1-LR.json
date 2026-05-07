@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Powell: Private waste-removal companies spend 60 percent of what public waste-removal companies spend per customer, yet give their customers at least as good service. Private waste-removal companies, therefore, work more efficiently.\nFreeman: Your conclusion is unwarranted. Different customers have different waste-removal needs. Since private companies, unlike their public counterparts, can select which customers to serve, they choose to exclude the potential customers whom they judge to be the most costly to serve.",
     "questionStem": "The issue in dispute between Powell and Freeman is the",
@@ -15,7 +15,10 @@
       "D": "likelihood of the local authorities’ turning public waste-removal companies into private ones so that the companies can operate with lower service costs than they now incur",
       "E": "relationship between the needs of a wasteremoval customer and the amount of money it takes to serve that customer"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -43,7 +46,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 3 through 4.\nIn Yasukawa’s month-long study of blackbirds, the percentage of smaller birds that survived the duration of the study exceeded the percentage of larger birds that survived. However, Yasukawa’s conclusion that size is a determinant of a blackbird’s chances of survival over a month-long period is probably mistaken, since smaller blackbirds are generally younger than larger ones.",
     "questionStem": "The statements above, if true, support which one of the\nfollowing inferences?",
@@ -54,14 +57,17 @@
       "D": "Among blackbirds of the same age, a difference in size may not indicate a difference in chances of survival over a month-long period.",
       "E": "With a larger sample of blackbirds, the percentage of smaller birds that survive a one-month period would be the same as the percentage of larger birds that survive."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 3 through 4.\nIn Yasukawa’s month-long study of blackbirds, the percentage of smaller birds that survived the duration of the study exceeded the percentage of larger birds that survived. However, Yasukawa’s conclusion that size is a determinant of a blackbird’s chances of survival over a month-long period is probably mistaken, since smaller blackbirds are generally younger than larger ones.",
     "questionStem": "Which one of the following, if true, indicates that the criticism of Yasukawa’s research is based on a misunderstanding of it?",
@@ -72,14 +78,17 @@
       "D": "Yasukawa noted that the larger blackbirds had more success in fights than did the smaller blackbirds.",
       "E": "Yasukawa noted that the larger blackbirds tended to have more firmly established social hierarchies than did the smaller blackbirds."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "During the 1980s, Japanese collectors were very active in the market for European art, especially as purchasers of nineteenth-century Impressionist paintings. This striking pattern surely reflects a specific preference on the part of many Japanese collectors for certain aesthetic attributes they found in nineteenth-century Impressionist paintings.",
     "questionStem": "Which one of the following, if true, most strongly supports the explanation above?",
@@ -90,7 +99,10 @@
       "D": "During the 1960s and 1970s, the prices of nineteenth-century Impressionist paintings often exceeded the prices of paintings by older European masters.",
       "E": "During the 1980s, collectors from Japan and around the world purchased many paintings and prints by well-known twentieth-century Japanese artists."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -172,7 +184,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 9 through 10.\nSales manager: Last year the total number of meals sold in our company’s restaurants was much higher than it was the year before. Obviously consumers find our meals desirable.\nAccountant: If you look at individual restaurants, however, you find that the number of meals sold actually decreased substantially at every one of our restaurants that was in operation both last year and the year before. The desirability of our meals to consumers has clearly decreased, given that this group of restaurants—the only ones for which we have sales figures that permit a comparison between last year and the year before—demonstrates a trend toward fewer sales.",
     "questionStem": "Which one of the following, if true, most seriously calls into question the accountant’s argument?",
@@ -183,14 +195,17 @@
       "D": "Sales of the company’s most expensive meal contributed little to the overall two-year sales increase.",
       "E": "Most of the company’s restaurants that were in operation throughout both last year and the year before are located in areas where residents experienced a severe overall decline in income last year."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A local chemical plant produces pesticides that can cause sterility in small mammals such as otters. Soon after the plant began operating, the incidence of sterility among the otters that swim in a nearby river increased dramatically. Therefore, pesticides are definitely contaminating the river.",
     "questionStem": "Which one of the following arguments contains a flaw in reasoning that is similar to one in the argument above?",
@@ -204,7 +219,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -344,7 +360,10 @@
       "D": "People who have aisle seats in trains or airplanes are as likely to get motion sickness as are people who have window seats.",
       "E": "Some astronauts do not get motion sickness even after being in orbit for several days."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",

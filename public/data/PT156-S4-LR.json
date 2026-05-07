@@ -166,7 +166,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "While the population of city X is approximately one-half\n that of city Y, the number of city X residents who are\n patients in hospitals is only one-fourth that of the number\n of city Y residents who are patients in hospitals.",
     "questionStem": "Each of the following, if true, contributes to an\n explanation of the difference in the number of residents\n who are patients in hospitals except:",
@@ -177,7 +177,10 @@
       "D": "The hospitals in city Y are of very high quality, and residents of city X are often sent there for treatment.",
       "E": "The lifestyle in city X is significantly less stressful than the lifestyle in city Y."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT156",

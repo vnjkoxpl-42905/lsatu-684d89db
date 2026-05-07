@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "This region’s swimmers generally swim during the day because they are too afraid of sharks to swim after dark but feel safe swimming during daylight hours. Yet all recent shark attacks on swimmers in the area have occurred during the day, indicating that, contrary to popular opinion, it is not more dangerous to swim here at night than during the day.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -43,7 +44,7 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Acme Corporation offers unskilled workers excellent opportunities for advancement. As evidence, consider the fact that the president of the company, Ms. Garon, worked as an assembly line worker, an entry-level position requiring no special skills, when she first started at Acme.",
     "questionStem": "Which one of the following statements, if true, most weakens the reasoning above?",
@@ -56,7 +57,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -139,7 +141,7 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "This boulder is volcanic in origin and yet the rest of the rock in this area is sedimentary. Since this area was covered by southward-moving glaciers during the last ice age, this boulder was probably deposited here, hundreds of miles from its geological birthplace, by a glacier.",
     "questionStem": "Which one of the following, if true, most seriously undermines the conclusion drawn in the argument above?",
@@ -150,7 +152,10 @@
       "D": "There are no geological sources of volcanic rock north of this boulder.",
       "E": "No other boulders of volcanic origin exist within 50 miles of this boulder."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -235,7 +240,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Heart attacks are most likely to occur on Mondays. The accepted explanation is that because Monday is the first day of the workweek, people feel more stress on Mondays than on other days. However, research shows that even unemployed retired people are more likely to have heart attacks on Mondays than on other days.",
     "questionStem": "Which one of the following, if true, most helps to explain the increased likelihood that an unemployed retiree will have a heart attack on a Monday?",
@@ -246,14 +251,17 @@
       "D": "Stress is the major factor influencing the risk of heart attack.",
       "E": "Unemployed retired people are even more likely to have heart attacks than are people who have jobs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Psychologist: We asked 100 entrepreneurs and 100 business managers to answer various questions and rate how confident they were that their responses were correct. While members of each group were overconfident, in general the entrepreneurs were much more so than the business managers. This indicates that people who are especially overconfident are more likely to attempt to start a business in spite of the enormous odds against success than people who are less confident.",
     "questionStem": "Which one of the following, if true, lends the most support to the psychologist’s conclusion?",
@@ -264,7 +272,10 @@
       "D": "The business managers who were most overconfident were found to have attempted to start businesses in the past.",
       "E": "How confident each person surveyed was that his or her answers to the questions asked were correct corresponded closely to that person’s confidence in his or her business acumen."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",

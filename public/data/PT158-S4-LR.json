@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The government’s tax collection agency has not followed\n through on its plan, announced a year ago, to crack down\n on violations of corporate income tax law. Audits are\n the primary tool for detecting such violations, and over\n the past year, not a single audit of corporate income tax\n returns has been completed.",
     "questionStem": "Which one of the following, if true, most weakens the\n argument?",
@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -153,7 +154,10 @@
       "D": "The warming of the waters off the Pacific coast of North America may be the result of a natural cycle of ocean temperature changes.",
       "E": "If the warming of the waters off the Pacific coast of North America is due to a natural cycle of ocean temperature changes, then it is not a symptom of a more general, global warming caused by human-generated air pollution."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -207,7 +211,10 @@
       "D": "When doctors advised that cow’s milk fed to infants should be boiled, they did not know that scurvy was caused by vitamin C deficiency.",
       "E": "When doctors advised that cow’s milk fed to infants should be boiled, most mothers did not breast-feed their infants. 4 4 -31-4"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -250,7 +257,7 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Psychologist: Most people’s blood pressure rises when\n they talk. But extroverted people experience\n milder surges when they speak than do\n introverted people, for whom speaking is more\n stressful. This suggests that the increases result\n from the psychological stress of communicating\n rather than from the physical exertion of speech\n production.",
     "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
@@ -261,7 +268,10 @@
       "D": "Deaf people experience increased blood pressure when they sign, but no change when they move their hands for other reasons.",
       "E": "Extroverted people are more likely to have chronically high blood pressure than are introverted people and are more likely to take medication to lower their blood pressure."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -424,7 +434,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Official: Six months ago, the fines for parking violations\n on the city’s streets were raised to help pay for\n the parking garage that had just opened. Since\n then, parking violations on our streets have\n dropped by 50 percent. Hence, if we want there\n to be even fewer parking violations, the fines\n should be raised again.",
     "questionStem": "The reasoning in the official’s argument is flawed in that\n the argument",
@@ -435,7 +445,10 @@
       "D": "takes for granted that people who park their cars illegally would prefer to park legally",
       "E": "fails to establish that the initial decrease in parking violations was not due to the availability of additional parking spaces"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",

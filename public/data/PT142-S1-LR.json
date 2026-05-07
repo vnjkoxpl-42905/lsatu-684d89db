@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Archaeologist: How did the Parthenon’s stonemasons\nmanage to carve columns that all bulged outward\nin the center in precisely the same way? One\nhypothesis is suggested by the discovery of a\nscale drawing of a column etched into the stone\nof a Greek temple at Didyma. The drawing is\na profile view of a column surrounded by a\ngrid, which makes it possible to determine the\ncorrect width at every height of the column.\nThe stonemasons who carved the Parthenon’s\ncolumns may have relied on a drawing like the\none at Didyma.",
     "questionStem": "Which one of the following, if true, adds the most\nsupport for the archaeologist’s hypothesis?",
@@ -33,7 +33,10 @@
       "D": "The surviving columns at Didyma are almost twice as tall as the columns at the Parthenon.",
       "E": "The Parthenon’s stonemasons had considerable experience carving columns before they started work on the Parthenon. 1 1 1"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -61,7 +64,7 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Scientist: Rattlesnakes prey on young California ground\nsquirrels. Protective adult squirrels harass a\nthreatening rattlesnake by puffing up their tails\nand wagging them. New results show that the\nsquirrel’s tail also heats up when harassing a\nrattlesnake. Since rattlesnakes have an infrared\nsensing organ that detects body heat, the heating\nup of the squirrel’s tail probably plays a role in\nrepelling rattlesnakes.",
     "questionStem": "Which one of the following, if true, most helps to support\nthe scientist’s hypothesis?",
@@ -72,7 +75,10 @@
       "D": "The rattlesnake is not the only predator of the California ground squirrel that causes it to engage in harassing behavior as a defensive mechanism.",
       "E": "Mammals such as the California ground squirrel have no organ for sensing infrared energy."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -321,7 +327,10 @@
       "D": "The ingredients used in producing both Han purple and the white glass were easily obtainable during the Qin and Han dynasties.",
       "E": "The white glass is found in more surviving artifacts from the Qin and Han dynasties than Han purple is. 1 1 1"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT142",
