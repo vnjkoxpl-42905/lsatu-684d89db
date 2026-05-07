@@ -181,16 +181,16 @@ export default function AdminGuidedDrills() {
               <ScrollArea className="h-80 mt-2 border border-border rounded">
                 <div className="p-2 space-y-1">
                   {students.map((s) => (
-                    <label key={s.user_id} className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted cursor-pointer">
+                    <label key={s.class_id} className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted cursor-pointer">
                       <Checkbox
-                        checked={selectedStudents.has(s.user_id)}
+                        checked={selectedStudents.has(s.class_id)}
                         onCheckedChange={(checked) => {
                           const next = new Set(selectedStudents);
-                          if (checked) next.add(s.user_id); else next.delete(s.user_id);
+                          if (checked) next.add(s.class_id); else next.delete(s.class_id);
                           setSelectedStudents(next);
                         }}
                       />
-                      <span className="text-sm">{s.display_name || s.email || s.user_id.slice(0, 8)}</span>
+                      <span className="text-sm">{s.display_name || s.email || s.class_id.slice(0, 8)}</span>
                     </label>
                   ))}
                 </div>
