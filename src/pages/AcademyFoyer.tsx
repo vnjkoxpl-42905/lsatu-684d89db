@@ -213,6 +213,7 @@ export default function AcademyFoyer() {
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background text-foreground">
       <aside
+        data-tour="foyer-sidebar"
         className="hidden shrink-0 border-r border-border md:flex"
         style={{ width: "min(320px, 30vw)", minWidth: 280 }}
       >
@@ -233,16 +234,18 @@ export default function AcademyFoyer() {
 
       <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
-          <div className="pointer-events-auto flex items-center gap-2">
+          <div data-tour="foyer-dock" className="pointer-events-auto flex items-center gap-2">
             <FoyerDock />
             <FoyerAccountButton displayName={displayName} />
           </div>
         </div>
-        <RadialOrbitalTimeline
-          timelineData={foyerNodes}
-          onActivate={onOrbitalActivate}
-          renderExpandedContent={renderOrbitalExpanded}
-        />
+        <div data-tour="foyer-orbital" className="relative w-[480px] h-[520px] max-w-full">
+          <RadialOrbitalTimeline
+            timelineData={foyerNodes}
+            onActivate={onOrbitalActivate}
+            renderExpandedContent={renderOrbitalExpanded}
+          />
+        </div>
 
         <FoyerQuickDock onReplayTour={() => startTour()} />
       </main>
