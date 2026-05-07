@@ -87,6 +87,8 @@ const JSON_FILES = [
   '/data/PT127-S1-LR.json',
   '/data/PT150-S2-LR.json',
   '/data/PT152-S1-LR.json',
+  '/data/PT152-S2-LR.json',
+  '/data/PT152-S4-LR.json',
   // Fourth batch - PT114-PT118
   '/data/PT114-S1-LR.json',
   '/data/PT114-S2-LR.json',
