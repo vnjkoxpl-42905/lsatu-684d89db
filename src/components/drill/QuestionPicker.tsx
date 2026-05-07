@@ -138,13 +138,13 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     if (filters.prepTests.length > 0) questions = questions.filter(q => filters.prepTests.includes(q.pt));
     if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
     if (filters.sections.length > 0) questions = questions.filter(q => filters.sections.includes(q.section));
-    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
+    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => (q.reasoningType || []).some(r => filters.reasoningTypes.includes(r)));
     if (filters.questionFeatures.length > 0) questions = questions.filter(q => (q.questionFeatures || []).some(f => filters.questionFeatures.includes(f)));
     return questions.length;
   };
 
   const getReasoningCount = (rtype: string): number => {
-    let questions = questionBank.getAllQuestions().filter(q => q.reasoningType === rtype);
+    let questions = questionBank.getAllQuestions().filter(q => (q.reasoningType || []).includes(rtype));
     if (filters.prepTests.length > 0) questions = questions.filter(q => filters.prepTests.includes(q.pt));
     if (filters.questionTypes.length > 0) questions = questions.filter(q => filters.questionTypes.includes(q.qtype));
     if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
@@ -159,7 +159,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     if (filters.questionTypes.length > 0) questions = questions.filter(q => filters.questionTypes.includes(q.qtype));
     if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
     if (filters.sections.length > 0) questions = questions.filter(q => filters.sections.includes(q.section));
-    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
+    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => (q.reasoningType || []).some(r => filters.reasoningTypes.includes(r)));
     return questions.length;
   };
 
@@ -177,7 +177,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     }
 
     if (filters.reasoningTypes.length > 0) {
-      questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
+      questions = questions.filter(q => (q.reasoningType || []).some(r => filters.reasoningTypes.includes(r)));
     }
 
     if (filters.questionFeatures.length > 0) {

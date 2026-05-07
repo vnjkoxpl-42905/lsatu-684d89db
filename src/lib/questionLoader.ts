@@ -588,9 +588,9 @@ export class QuestionBank {
       this.manifest.byQType[q.qtype] = (this.manifest.byQType[q.qtype] || 0) + 1;
       this.manifest.byDifficulty[q.difficulty] = (this.manifest.byDifficulty[q.difficulty] || 0) + 1;
       this.manifest.bySection[q.section] = (this.manifest.bySection[q.section] || 0) + 1;
-      if (q.reasoningType) {
-        this.manifest.byReasoningType[q.reasoningType] =
-          (this.manifest.byReasoningType[q.reasoningType] || 0) + 1;
+      for (const r of q.reasoningType || []) {
+        this.manifest.byReasoningType[r] =
+          (this.manifest.byReasoningType[r] || 0) + 1;
       }
       for (const f of q.questionFeatures || []) {
         this.manifest.byFeature[f] = (this.manifest.byFeature[f] || 0) + 1;
