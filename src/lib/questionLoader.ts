@@ -493,6 +493,7 @@ export class QuestionBank {
     totalQuestions: 0,
     byPT: {},
     byQType: {},
+    byFeature: {},
     byDifficulty: {},
     sections: [],
   };
