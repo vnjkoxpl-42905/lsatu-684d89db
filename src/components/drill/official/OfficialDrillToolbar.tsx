@@ -207,46 +207,56 @@ export default function OfficialDrillToolbar({
 // Slanted pen with a clearly colored tip; chunky two-tone eraser.
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
+  // Slanted highlighter: long barrel tilted ~45°, clearly colored
+  // triangular tip at lower-left. White cap at upper-right.
   return (
     <svg
-      width="20"
-      height="20"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#475569"
-      strokeWidth="1.5"
+      stroke="#334155"
+      strokeWidth="1.25"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Pen barrel — slanted ~45°, tip at lower-left */}
-      <path d="M16 3 L21 8 L9 20 L3 21 L4 15 Z" fill="#fff" />
-      <path d="M14 5 L19 10" />
-      {/* Colored tip */}
+      {/* Cap (top-right end) */}
+      <path d="M17 3 L21 7 L19 9 L15 5 Z" fill="#cbd5e1" />
+      {/* Barrel — long slanted rectangle */}
+      <path d="M15 5 L19 9 L9 19 L5 15 Z" fill="#fff" />
+      {/* Ferrule line just before tip */}
+      <line x1="7" y1="13" x2="11" y2="17" />
+      {/* Colored tip — triangle pointing down-left */}
       <path
-        d="M3 21 L4 15 L9 20 Z"
+        d="M5 15 L9 19 L4 22 L3 21 Z"
         fill={tipColor}
         stroke={tipColor}
+        strokeWidth="0.5"
       />
     </svg>
   );
 }
 
 function EraserIcon() {
+  // Wide chunky eraser: pink top half, gray-white bottom half, with a
+  // crisp separator line. ~28x18 visual footprint.
   return (
     <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
+      width="26"
+      height="18"
+      viewBox="0 0 28 18"
       fill="none"
-      stroke="#475569"
-      strokeWidth="1.5"
+      stroke="#334155"
+      strokeWidth="1.25"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Eraser body — pink top, gray bottom, with separator line */}
-      <rect x="3" y="6" width="18" height="6" rx="1.5" fill="#FBCFE8" />
-      <rect x="3" y="12" width="18" height="6" rx="1.5" fill="#E2E8F0" />
-      <line x1="3" y1="12" x2="21" y2="12" />
+      <rect x="1.5" y="1.5" width="25" height="15" rx="2" fill="#fff" />
+      {/* Pink top band */}
+      <path d="M1.5 8.5 L1.5 3.5 Q1.5 1.5 3.5 1.5 L24.5 1.5 Q26.5 1.5 26.5 3.5 L26.5 8.5 Z" fill="#FBCFE8" />
+      {/* Gray-white bottom is the rect default */}
+      {/* Separator */}
+      <line x1="1.5" y1="8.5" x2="26.5" y2="8.5" />
     </svg>
   );
 }

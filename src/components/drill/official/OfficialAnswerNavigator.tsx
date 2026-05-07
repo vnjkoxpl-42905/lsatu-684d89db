@@ -19,11 +19,10 @@ interface Props {
 }
 
 /**
- * Bottom strip inside the official testing frame. One oval per question;
- * current is bold with an I-beam marker; answered is filled.
- *
- * Per audit constraint #1, no per-question flag dots in v1 because the
- * current state model only tracks `isFlagged` for the focused question.
+ * Bottom strip inside the official testing frame. Mirrors the LawHub layout:
+ * a row of small empty ovals, with the question number rendered BELOW each
+ * oval. The current question's number is bold, with a thin I-beam tick
+ * above its oval.
  */
 export default function OfficialAnswerNavigator({
   questionQueue,
@@ -38,64 +37,70 @@ export default function OfficialAnswerNavigator({
   const total = questionQueue.length;
   if (total === 0) return null;
 
-  // Ovals are positional (i + 1), not the question's qnum — matches the
-  // official testing UI convention. The pane header shows the real qnum.
-
   return (
     <div className="border-t border-slate-200 bg-white">
-      <div className="px-4 sm:px-6 py-3 flex items-center gap-3">
-        <ol
-          className="flex items-end gap-[6px] flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
+      <div className="px-4 sm:px-6 py-3 flex items-end gap-3">
+        <ol className="flex items-end gap-2 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {questionQueue.map((qid, i) => {
             const isCurrent = i === currentIndex;
             const isAnswered = attemptedQids.has(qid);
             const isClickable = jumpEnabled && i !== currentIndex;
             return (
-              <li key={qid} className="relative flex flex-col items-center shrink-0 pt-3">
+              <li
+                key={qid}
+                className="relative flex flex-col items-center shrink-0 pt-2"
+              >
+                {/* I-beam tick: thin vertical line above the current oval */}
                 {isCurrent && (
-                  <span aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                    {/* I-beam: top crossbar + vertical stem */}
-                    <span className="w-3 h-[2px] bg-slate-900" />
-                    <span className="w-[2px] h-2 bg-slate-900" />
-                  </span>
+                  <span
+                    aria-hidden
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-[7px] bg-slate-800"
+                  />
                 )}
                 <button
                   type="button"
                   onClick={() => isClickable && onJumpTo(i)}
                   disabled={!isClickable}
                   aria-current={isCurrent ? "true" : undefined}
-                  aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${!isClickable && !isCurrent && jumpDisabledReason ? `, ${jumpDisabledReason}` : ""}`}
+                  aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${
+                    !isClickable && !isCurrent && jumpDisabledReason ? `, ${jumpDisabledReason}` : ""
+                  }`}
                   title={
                     !isClickable && !isCurrent && jumpDisabledReason
                       ? jumpDisabledReason
                       : undefined
                   }
                   className={cn(
-                    "w-[28px] h-[20px] rounded-full text-[11px] tabular-nums border transition-colors flex items-center justify-center leading-none",
-                    isCurrent
-                      ? "border-slate-700 bg-white text-slate-900 font-bold"
-                      : isAnswered
-                      ? "border-slate-400 bg-slate-200 text-slate-800"
-                      : "border-slate-300 bg-white text-slate-600",
-                    isClickable && "hover:bg-slate-100 cursor-pointer",
+                    "w-[18px] h-[10px] rounded-full border transition-colors",
+                    isAnswered
+                      ? "border-slate-500 bg-slate-400"
+                      : "border-slate-400 bg-white",
+                    isClickable && "hover:bg-slate-200 cursor-pointer",
                     !isClickable && !isCurrent && "cursor-default",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "mt-0.5 text-[11px] tabular-nums leading-none",
+                    isCurrent
+                      ? "font-bold text-slate-900"
+                      : "text-slate-700",
                   )}
                 >
                   {i + 1}
-                </button>
+                </span>
               </li>
             );
           })}
         </ol>
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 self-end pb-1">
           <button
             type="button"
             onClick={onPrev}
             disabled={currentIndex <= 0}
             aria-label="Previous question"
-            className="rounded border border-slate-400 bg-white p-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -104,7 +109,7 @@ export default function OfficialAnswerNavigator({
             onClick={onNext}
             disabled={currentIndex >= total - 1}
             aria-label="Next question"
-            className="rounded border border-slate-400 bg-white p-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowRight className="w-4 h-4" />
           </button>

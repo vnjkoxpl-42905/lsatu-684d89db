@@ -26,7 +26,7 @@ export default function OfficialDrillFrame({ header, children }: Props) {
       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
       {header}
-      <div className="mx-auto max-w-[1180px] bg-white text-black border border-slate-300 rounded-md shadow-2xl overflow-hidden">
+      <div className="mx-auto max-w-[1180px] bg-white text-black rounded-md shadow-2xl overflow-hidden">
         {children}
       </div>
     </div>

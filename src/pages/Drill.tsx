@@ -2041,17 +2041,24 @@ function DrillContent() {
         <OfficialDrillFrame
           header={
             <OfficialSessionStrip
-              sectionTitle={
-                isFullSection && currentQuestion.pt && currentQuestion.section
-                  ? `The Official LSAT PrepTest ${currentQuestion.pt} — Section ${currentQuestion.section}`
-                  : currentQuestion.pt && currentQuestion.section
-                  ? `PT${currentQuestion.pt} · S${currentQuestion.section}${currentQuestion.qnum ? ` · Q${currentQuestion.qnum}` : ''}`
-                  : 'Practice Drill'
-              }
-              timerLabel={timer?.label ?? ''}
+              breadcrumbs={[
+                { label: 'Library', onClick: () => navigate('/practice') },
+                ...(currentQuestion.pt
+                  ? [{
+                      label: `The Official LSAT PrepTest ${currentQuestion.pt}`,
+                      onClick: () => navigate('/practice'),
+                    }]
+                  : []),
+                {
+                  label: currentQuestion.section
+                    ? `Section ${currentQuestion.section}`
+                    : isFullSection
+                    ? 'Section'
+                    : 'Practice Drill',
+                },
+              ]}
               isPaused={!!timer?.isPaused}
               onTogglePause={handleTogglePauseClick}
-              onExit={() => navigate('/practice')}
               onComplete={handleFinishSection}
             />
           }
