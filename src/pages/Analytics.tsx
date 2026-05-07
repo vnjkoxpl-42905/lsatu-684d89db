@@ -150,14 +150,17 @@ const Analytics = () => {
 
       setData({ accuracyByType, accuracyByLevel, accuracyByTypeLevel, trend7d, recentMissShare });
 
-      const targetAccuracy = 85;
+      // Opportunity score = (target_accuracy − current_accuracy) × attempt_share.
+      // Target is the LSAT-prep convention for "near-mastery" — a question type
+      // sitting under this accuracy is the highest-leverage place to drill.
+      const TARGET_ACCURACY = 85;
       const totalAttempts = attempts?.length || 1;
       const impactScores: OpportunityArea[] = [];
 
       Object.entries(accuracyByTypeLevel).forEach(([type, levels]) => {
         Object.entries(levels).forEach(([level, stats]) => {
           const currentAccuracy = stats.accuracy;
-          const gap = Math.max(0, targetAccuracy - currentAccuracy);
+          const gap = Math.max(0, TARGET_ACCURACY - currentAccuracy);
           const recentShare = stats.total / totalAttempts;
           const impact = Math.round(100 * gap * recentShare);
           if (stats.total >= 3 && impact > 0) {
