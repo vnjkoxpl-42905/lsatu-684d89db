@@ -79,7 +79,7 @@ export default function TeacherSmartboard() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
-      <aside className="border-r border-zinc-800 overflow-y-auto">
+      <aside className="border-b lg:border-b-0 lg:border-r border-zinc-800 overflow-y-auto max-h-[40vh] lg:max-h-none">
         <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2 text-zinc-400">
           <PencilRuler className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
@@ -128,16 +128,16 @@ export default function TeacherSmartboard() {
       </aside>
 
       <section className="flex flex-col min-h-0">
-        <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-3 shrink-0">
+        <div className="px-3 sm:px-4 py-3 border-b border-zinc-800 flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
           <Label className="text-xs text-zinc-400 shrink-0">Title</Label>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="h-8 text-sm max-w-md"
+            className="h-8 text-sm flex-1 sm:max-w-md min-w-0"
           />
           <Button
             size="sm"
-            className="ml-auto"
+            className="ml-auto shrink-0"
             onClick={handleSave}
             disabled={!studentId || save.isPending}
           >
