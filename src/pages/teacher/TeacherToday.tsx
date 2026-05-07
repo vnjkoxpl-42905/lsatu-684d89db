@@ -13,7 +13,6 @@ import { useHubStudents } from '@/hooks/useHubStudents';
 interface DashboardStats {
   pendingDrafts: number;
   uploadsToReview: number;
-  recentActivityStudents: number;
 }
 
 function useDashboardStats(): DashboardStats {
@@ -33,11 +32,10 @@ function useDashboardStats(): DashboardStats {
       return {
         pendingDrafts: pendingDrafts ?? 0,
         uploadsToReview: uploadsToReview ?? 0,
-        recentActivityStudents: 0,
       };
     },
   });
-  return data ?? { pendingDrafts: 0, uploadsToReview: 0, recentActivityStudents: 0 };
+  return data ?? { pendingDrafts: 0, uploadsToReview: 0 };
 }
 
 export default function TeacherToday() {
