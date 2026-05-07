@@ -285,7 +285,10 @@
       "D": "has a premise that presupposes the truth of the conclusion",
       "E": "constructs a generalization on the basis of a single instance"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT148",

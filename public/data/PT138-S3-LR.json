@@ -87,7 +87,10 @@
       "D": "tries to show that a position is false simply by pointing out an undesirable consequence of holding that position",
       "E": "treats a necessary condition for blameworthiness as though it were a sufficient condition for blameworthiness"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -288,7 +291,10 @@
       "D": "undermines its claim that people no longer believe there are political solutions to important problems by suggesting that people are dissatisfied with politicians",
       "E": "presumes, without providing justification, that voter apathy prevents the attitudinal changes that result in finding solutions to important problems"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -378,7 +384,10 @@
       "D": "concludes that Riley’s claim is false merely on the grounds that Riley has something to gain if the claim is accepted as true",
       "E": "fails to adequately address the possibility that Riley’s animosity toward the university president is well founded"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",

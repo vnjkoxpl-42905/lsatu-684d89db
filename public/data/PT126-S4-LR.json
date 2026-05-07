@@ -51,7 +51,10 @@
       "D": "takes a correlation between personality traits and high blood pressure as proof that the traits cause high blood pressure",
       "E": "focuses on nervousness and anxiety only, ignoring other personality traits that people with high blood pressure might have"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -213,7 +216,10 @@
       "D": "uses evidence drawn from a small sample that may well be unrepresentative",
       "E": "attempts to persuade by making an emotional appeal"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -267,7 +273,10 @@
       "D": "takes for granted that an action is unlikely to produce a certain outcome unless it is motivated by a desire to produce that outcome",
       "E": "draws a conclusion about the practical consequences of people's actions on the basis of theoretical views about what people should or should not do"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -303,7 +312,10 @@
       "D": "portrays opponents' views as more extreme than they really are",
       "E": "fails to make clear what counts as excessive spending"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -429,7 +441,10 @@
       "D": "That jacket must have been made for a very short person, because only very short people were able to fit into it. We know that they were very short because we saw them before they tried on the jacket.",
       "E": "This painting is a poor imitation, because only people with poor eyesight mistook it for the original. That these people have poor eyesight is demonstrated by the fact that they also mistook a vase of flowers in the painting for a peacock."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -465,6 +480,9 @@
       "D": "presumes that the astronomer's thesis should not be subject to rational discussion and criticism",
       "E": "fails to precisely define the key word “meteoroids\""
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

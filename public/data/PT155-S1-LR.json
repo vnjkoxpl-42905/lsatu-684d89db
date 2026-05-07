@@ -144,7 +144,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -235,7 +236,10 @@
       "D": "It fails to address adequately the possibility that a feature of some theoretical constructs need not be shared by every theoretical construct.",
       "E": "It presumes, without providing justification, that the fact that a suggestion has been made by a physicist proves the truth of that suggestion."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -364,7 +368,10 @@
       "D": "relies on a sample of opinions that is unlikely to represent diverse political outlooks",
       "E": "overlooks the possibility that people whose views diverge are unaware of their disagreement"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",

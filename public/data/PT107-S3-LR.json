@@ -216,7 +216,10 @@
       "D": "confuses two different meanings of the term “symphonies”",
       "E": "takes for granted that all organ symphonies are religious music"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -441,7 +444,10 @@
       "D": "fails to consider that Ms. Chan’s colleague may have been deceived by her",
       "E": "fails to infer that Ms. Chan must be a person of superior character, given her long loyal service"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT107",

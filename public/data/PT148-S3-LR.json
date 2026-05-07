@@ -87,7 +87,10 @@
       "D": "overlooks the possibility that people can act in a way that is contrary to their expressed interest",
       "E": "concludes from the mere fact that an action had a certain effect that the effect was intended by the person who performed the action"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -249,7 +252,10 @@
       "D": "It confuses a condition that is necessary for establishing the truth of the conclusion with a condition that is sufficient for establishing the truth of the conclusion.",
       "E": "Its conclusion is worded too vaguely to evaluate the degree to which the premises support the truth of the conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -398,7 +404,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

@@ -198,7 +198,10 @@
       "D": "fails to consider whether people living near Dalton would favor building the airport",
       "E": "overlooks the possibility that a new airport could benefit the local economy 4 4 4 4"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT143",

@@ -454,6 +454,9 @@
       "D": "presupposes the truth of what it sets out to prove",
       "E": "presumes, without providing justification, that increasing fuel efficiency is the only way to reduce air pollution"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

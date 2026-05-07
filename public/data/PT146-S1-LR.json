@@ -396,7 +396,10 @@
       "D": "takes something to be the cause of a reduction when it could have been an effect of that reduction",
       "E": "does not consider the possibility that PCBs have detrimental effects on human health several years after exposure"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT146",

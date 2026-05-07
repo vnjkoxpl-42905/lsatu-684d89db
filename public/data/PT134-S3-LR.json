@@ -111,7 +111,10 @@
       "D": "ignores the possibility that the overabundance of algae and the deaths of smaller fish are independent effects of a common cause",
       "E": "ignores the possibility that below-normal amounts of algae are detrimental to the pond’s smaller fish"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -201,7 +204,10 @@
       "D": "rejects a proposal on the grounds that the person offering it is unfamiliar with the issues it raises",
       "E": "overlooks the fact that Sigerson’s proposal would apply only to the future conduct of city politicians"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -258,7 +264,10 @@
       "D": "it distorts the opponent’s argument and then attacks this distorted argument",
       "E": "it uses the key term “government” in one sense in a premise and in another sense in the conclusion"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",

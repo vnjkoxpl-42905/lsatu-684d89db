@@ -306,7 +306,10 @@
       "D": "presumes, without providing justification, that family members are willing to work for low wages in a family business because they believe that doing so promotes the family’s prosperity",
       "E": "presumes, without providing justification, that only businesses with low general operating expenses can succeed"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT109",

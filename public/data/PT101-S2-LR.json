@@ -141,7 +141,10 @@
       "D": "mistakes a property of each member of a group taken as an individual for a property of the group taken as a whole",
       "E": "uncritically draws an inference from what has been true in the past to what will be true in the future"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -414,7 +417,10 @@
       "D": "The argument treats two fundamentally different conceptions of a moral order as essentially the same.",
       "E": "The argument’s conclusion is presupposed in the definition it gives of a moral order."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT101",

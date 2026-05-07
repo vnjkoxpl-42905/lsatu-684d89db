@@ -141,7 +141,10 @@
       "D": "reaches a conclusion about the performance of one member of a group merely on the basis of the performance of the group as a whole",
       "E": "takes for granted that an employee who has an unproductive year will not be exceptionally productive in subsequent years"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -452,7 +455,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

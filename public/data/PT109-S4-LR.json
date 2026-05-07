@@ -15,7 +15,10 @@
       "D": "The evidence given to support the conclusion actually undermines that conclusion.",
       "E": "It treats popular opinion as if it constituted conclusive evidence for a claim."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -321,7 +324,10 @@
       "D": "shifts the blame for the team’s behavior to professional players",
       "E": "takes everyone on the team to have performed the actions of a few"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -377,7 +383,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

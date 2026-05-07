@@ -177,7 +177,10 @@
       "D": "It relies on the judgment of experts in a matter to which their expertise is irrelevant.",
       "E": "It infers limits on ability from a few isolated lapses in performance."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT112",

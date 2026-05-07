@@ -213,7 +213,10 @@
       "D": "fails to establish that the freedom of others is worth taking risks for",
       "E": "overlooks the possibility that some people do not have the courage to take risks for freedom"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -379,7 +382,10 @@
       "D": "Children who beg and plead with their parents to buy them trendy toys are the same children who begged for trendy toys last year. I conclude that parents ought to ignore such pleadings and simply buy traditional toys.",
       "E": "The population experts who are predicting world food shortages in the next decade are the same ones who have erroneously predicted such shortages in the past. Therefore, if there are food shortages in the next decade, it will not be because population experts predicted them."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT108",

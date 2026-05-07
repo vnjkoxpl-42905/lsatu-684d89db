@@ -123,7 +123,10 @@
       "D": "makes a personal attack on someone who holds a certain view rather than addressing the reasonableness of that view",
       "E": "takes for granted that a characteristic of a group as a whole is shared by an individual member of that group"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -321,7 +324,10 @@
       "D": "takes for granted that if the accusations of graft are unfounded, so is any accusation of corruption",
       "E": "relies on a premise that contradicts the conclusion drawn in the argument"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -393,7 +399,10 @@
       "D": "By that line of reasoning, we could conclude that more people must be shopping at health food stores than ever before, since people tend to choose healthful food over unhealthful food as long as the healthful food tastes at least as good, and healthful food today is better tasting than ever.",
       "E": "By that line of reasoning, we could conclude that the best way to lose weight is to increase one’s consumption of artificially sweetened foods, since artificially sweetened foods have fewer calories than foods sweetened with sugar, and excessive calorie intake contributes to weight gain."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT143",

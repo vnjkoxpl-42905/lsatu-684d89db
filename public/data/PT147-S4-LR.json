@@ -165,7 +165,10 @@
       "D": "draws a conclusion about all adults from a sample that is too small to be representative",
       "E": "infers that some members of a group have a particular characteristic merely from the fact that the group as a whole has it"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -294,7 +297,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

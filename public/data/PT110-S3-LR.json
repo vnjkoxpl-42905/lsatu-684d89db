@@ -69,7 +69,10 @@
       "D": "contradicts itself by admitting that there may be a high dropout rate among students while claiming that most students want to finish high school",
       "E": "treats high school students from a particular medium-sized city as if they are representative of high school students nationwide"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT110",

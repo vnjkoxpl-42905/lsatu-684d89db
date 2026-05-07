@@ -55,7 +55,10 @@
       "D": "It is reasonable to believe that if the most recent flip of a given coin was tails, the next flip will be heads. So if a coin has turned up tails the last 1000 times it was flipped, it is reasonable to believe that it will turn up heads the next time it is flipped.",
       "E": "For any given group of five-year-old children, the average height is one meter, so it is reasonable to believe that if Pat is five years old, she is exactly one meter tall."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -163,7 +166,10 @@
       "D": "the claim that the political commentators are mistaken is both a premise and a conclusion in the argument",
       "E": "it is assumed that what is true of persons individually is true of a country as a whole"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",

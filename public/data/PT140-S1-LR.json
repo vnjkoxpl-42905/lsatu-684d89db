@@ -54,7 +54,10 @@
       "D": "It draws a conclusion about alcohol consumption in general from a premise about moderate alcohol consumption.",
       "E": "It fails to consider that alcohol may have no effect on many bacteria that cause illness in human beings."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -328,7 +331,10 @@
       "D": "The argument generalizes on the basis of a few unrepresentative cases.",
       "E": "The argument mistakes a claim that a result is possible for a claim that the result is inevitable."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -382,7 +388,10 @@
       "D": "fails to consider the possibility that the compost was Meyers’ property",
       "E": "concludes that something is certainly someone else’s property when there is merely good, but not conclusive, reason to think that it is someone else’s property"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT140",

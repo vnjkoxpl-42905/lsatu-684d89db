@@ -15,7 +15,10 @@
       "D": "It uses evidence about an opinion held by the majority of a population in an attempt to justify a conclusion regarding the opinion of a small part of that population.",
       "E": "It takes for granted that the fund-raising letter had some influence on the opinions of most of the people who received it."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -272,7 +275,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {

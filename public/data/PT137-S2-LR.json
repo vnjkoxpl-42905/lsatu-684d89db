@@ -164,7 +164,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {
@@ -393,7 +394,10 @@
       "D": "The argument fails to consider that bees might be present even in the absence of a particular condition that would ensure their presence.",
       "E": "The argument bases a claim that there is a causal connection between beehives and excellent pollination on a mere association between them."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -429,7 +433,10 @@
       "D": "all supermarkets sell asparagus since all supermarkets sell food and asparagus is a food",
       "E": "all animals are dogs since some dogs are pets and some animals are pets"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",

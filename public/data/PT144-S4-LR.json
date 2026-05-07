@@ -87,7 +87,10 @@
       "D": "making texts and rituals more modern is the only way in which a religion could bring about an increase in attendance at places of worship",
       "E": "the growth in attendance at places of worship affiliated with religions that made their texts and rituals more modern is irreversible"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -267,7 +270,10 @@
       "D": "criticizes Dr. Sullivan’s motives for holding a position rather than addressing the position itself",
       "E": "fails to justify its presumption that nutritional supplements cannot be used in conjunction with other treatments"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",

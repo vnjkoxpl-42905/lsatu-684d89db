@@ -159,7 +159,10 @@
       "D": "fails to provide any evidence to support the claim that the residents of Groverhill have an unusually high occurrence of severe headaches",
       "E": "takes for granted that every resident of Groverhill who suffers from severe headaches would consult a physician about this condition"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -249,7 +252,10 @@
       "D": "The argument appeals to views that contradict rather than support one another.",
       "E": "The argument presumes, without providing justification, that the opinions of all experts are equally justified."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -378,7 +384,10 @@
       "D": "It fails to provide an alternative explanation for the presence of pesticides on the neighbor's land.",
       "E": "It ignores the possibility that pesticides might have dangerous effects other than harming people or domestic animals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -450,6 +459,9 @@
       "D": "The nation's voters know that electing Gomez would be the best way to help the nation. The ten voters we polled all agreed that the policies Gomez is committed to would help the nation more than any other policies.",
       "E": "We know that electing Gomez would be the best course for the nation to follow because, of ten voters we surveyed, each agreed that electing Gomez would help the nation."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

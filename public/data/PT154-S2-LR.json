@@ -177,7 +177,10 @@
       "D": "Boot manufacturers claim that a good pair of boots will last at least five years. But this claim is false. The boots I got on sale at The Discount Store lasted only two years.",
       "E": "A study of local rainfall shows that we have received at least 20 centimeters (8 inches) of rain per year for the past 50 years. Thus, we will probably get at least 20 centimeters of rain this year, too."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -249,7 +252,10 @@
       "D": "infers a specific causal relationship from a correlation that might well have arisen from another cause",
       "E": "contains a premise that presupposes the truth of the conclusion"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT154",

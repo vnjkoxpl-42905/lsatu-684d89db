@@ -199,7 +199,10 @@
       "D": "the argument presumes without giving justification that all of Wagston’s staff have engaged in corruption",
       "E": "the argument attempts to deflect attention away from substantive issues by attacking the character of the board"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -343,7 +346,10 @@
       "D": "Some intellectuals are not socially active, and no intellectual is a professional athlete. Therefore any professional athlete is socially active.",
       "E": "First-person narratives reveal the thoughts of the narrator but conceal those of the other characters. Some third-person narratives reveal the motives of every character. Thus books that rely on making all characters’ motives apparent should be written in the third person."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -399,7 +405,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

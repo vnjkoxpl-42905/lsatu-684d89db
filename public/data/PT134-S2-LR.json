@@ -33,7 +33,10 @@
       "D": "fails to consider the possibility that frequent daytime napping is an effect rather than a cause of insomnia",
       "E": "presumes, without providing justification, that there is such a thing as a regular sleep pattern for someone working on a commercial fishing vessel"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",

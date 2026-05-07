@@ -213,7 +213,10 @@
       "D": "generalizes from a sample that is unlikely to be representative of public sentiment",
       "E": "presumes, without providing justification, that the people surveyed based their responses on a random sampling of movies"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -251,7 +254,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

@@ -236,7 +236,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -294,7 +295,10 @@
       "D": "The argument presumes, without providing justification, that the air traffic control tapes studied do not provide accurate information concerning specific flights.",
       "E": "The argument infers from a lack of conclusive evidence supporting the higher number’s accuracy that it must be inaccurate."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT148",

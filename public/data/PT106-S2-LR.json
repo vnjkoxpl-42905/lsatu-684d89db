@@ -33,7 +33,10 @@
       "D": "takes a high rate of success among the members of a group to indicate that the successes are evenly spread among the members",
       "E": "states a generalization based on a selection that is not representative of the group about which the generalization is supposed to hold true"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -324,7 +327,10 @@
       "D": "Something that is merely a matter of opinion is treated as if it were subject to verification as a matter of fact.",
       "E": "Dobson’s drawing the conclusion relies on interpreting a key term in two different ways."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",

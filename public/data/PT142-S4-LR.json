@@ -267,7 +267,10 @@
       "D": "takes what is merely one way of stimulating economic growth to be the only way of stimulating economic growth",
       "E": "concludes that a further reduction of interest rates would lead to unsustainable economic growth merely from the fact that the economy is already growing at a sustainable rate"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -321,7 +324,10 @@
       "D": "confuses an effect of a phenomenon with its cause",
       "E": "relies on a sample that is unrepresentative 4 4 4 4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -395,7 +401,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

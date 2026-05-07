@@ -15,7 +15,10 @@
       "D": "concludes that two phenomena are associated merely from the claim that there are many instances in which both phenomena are present",
       "E": "uses evidence drawn from a source whose reliability cannot readily be verified"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -143,7 +146,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

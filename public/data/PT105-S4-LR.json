@@ -143,7 +143,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -234,7 +235,10 @@
       "D": "neglects to mention that some governments have sent meticulously prepared messages and recordings on spacecraft",
       "E": "overlooks the immense probability that most star systems are uninhabited"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT105",

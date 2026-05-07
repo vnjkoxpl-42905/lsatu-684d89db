@@ -126,7 +126,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -183,7 +184,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -238,7 +240,10 @@
       "D": "There is no point in asking the club to purchase tents and make them available for use by club members. No member of the club can afford one of those tents, so the club is unable to afford any either.",
       "E": "Agreeing with all of the other members of society does not guarantee that one is correct about an issue. With many topics it is possible for society to be mistaken and hence every individual in society to be likewise mistaken."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -460,7 +465,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   }
 ]

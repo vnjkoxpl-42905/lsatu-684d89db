@@ -15,7 +15,10 @@
       "D": "bases a generalization on a sample that may not be representative",
       "E": "presumes, without providing justification, that older methods of managing employees are superior to newer ones"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -90,7 +93,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -409,7 +413,10 @@
       "D": "It mistakes the majority view for the traditional view.",
       "E": "It confuses inadequate evidence for truth with evidence for falsity."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT125",

@@ -15,7 +15,10 @@
       "D": "drawing a conclusion that simply restates one of the premises of the argument",
       "E": "calling something by a less offensive term than the term that is usually used to name that thing"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT102",

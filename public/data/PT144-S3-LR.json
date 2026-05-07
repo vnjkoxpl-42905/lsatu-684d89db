@@ -168,7 +168,10 @@
       "D": "attempts to derive a conclusion from premises that contradict it",
       "E": "grants the truth of claims that are made by the advocates of the hypothesis but that do nothing to strengthen the astronomer’s own argument"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -369,7 +372,10 @@
       "D": "It takes for granted that few if any of the Popelka Auto Insurance policyholders surveyed underestimated how much they saved when they switched their auto insurance coverage to Popelka.",
       "E": "It fails to address adequately the possibility that people capable of saving hundreds of dollars by switching their auto insurance coverage to Popelka are disproportionately represented among the new Popelka auto insurance policyholders."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",

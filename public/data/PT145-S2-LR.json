@@ -324,7 +324,10 @@
       "D": "fails to exclude the possibility that there might be legitimate evidence motivating those who reject Shakespeare’s authorship",
       "E": "makes use of an assumption that one would accept only if one has already accepted the truth of the conclusion"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT145",

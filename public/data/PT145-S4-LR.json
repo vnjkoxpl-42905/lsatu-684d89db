@@ -105,7 +105,10 @@
       "D": "employs as a premise the contention it purports to show",
       "E": "criticizes the source of a claim rather than the claim itself"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -159,7 +162,10 @@
       "D": "presumes that one thing is the cause of another when it could easily be an effect of it",
       "E": "has a conclusion that is simply a restatement of one of the argument’s stated premises"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -213,7 +219,10 @@
       "D": "attacks the persons making an argument rather than attacking the substance of the argument",
       "E": "fails to consider that, even if an argument’s conclusion is false, some of the evidence used to justify that conclusion may nonetheless be true"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT145",

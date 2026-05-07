@@ -69,7 +69,10 @@
       "D": "The therapy should not be used to treat the illness unless it is either effective or inexpensive.",
       "E": "The therapy's possible effectiveness in treating the illness is not sufficient justification for using it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -339,7 +342,10 @@
       "D": "If all whales need to surface for air, then whales must be easy to observe. Blue whales are easily observed, so they must surface for air.",
       "E": "If all of a restaurant's customers like its food, it must be an exceptional restaurant. Everyone whom Sherryl consulted liked the food at Chez Louis, so it must be an exceptional restaurant."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -413,7 +419,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

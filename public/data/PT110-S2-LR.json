@@ -15,7 +15,10 @@
       "D": "presenting as facts several assertions about the book under review that are based only on strong conviction and would be impossible for others to verify",
       "E": "failing to distinguish between the criteria of being true and of being sufficiently interesting to merit attention"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -432,7 +435,10 @@
       "D": "Deon had lunch with Ms. Osgood. Unbeknownst to Deon, Ms. Osgood is generally thought to be an industrial spy. So Deon had lunch with an industrial spy.",
       "E": "Edwina bought a car from Mr. Yancy, then resold it. Unbeknownst to Edwina, Mr. Yancy had stolen the car. So Edwina sold a stolen car."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT110",

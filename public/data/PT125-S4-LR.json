@@ -141,7 +141,10 @@
       "D": "Literature critics have lavished praise on every chapter of this book. In light of their reviews, one must conclude that the book is excellent.",
       "E": "Passing a driving test is a condition of employment at the city's transportation department. It follows that each of the department's employees has passed the test."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -251,7 +254,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -345,7 +349,10 @@
       "D": "the exceptional lung capacity and exceptionally powerful hearts of Tour de France winners are due to training",
       "E": "the notions of exceptional lung capacity and exceptional heart function are relative to the physiology of most cyclists"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT125",

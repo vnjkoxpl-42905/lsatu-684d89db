@@ -51,7 +51,10 @@
       "D": "Since medical research is often performed on men, not all results are fully applicable to women as patients.",
       "E": "Women as patients are now beginning to take a more active role in managing their care and making sure that they understand the medical alternatives."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT113",

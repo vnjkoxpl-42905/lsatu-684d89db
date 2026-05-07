@@ -396,7 +396,10 @@
       "D": "presumes without justification that what was true of the members of a group in the past will continue to be true of them in the future",
       "E": "takes the fact that all members of a group have a certain property to constitute evidence that the members of the group are the only things with that property"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT113",

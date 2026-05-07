@@ -396,7 +396,10 @@
       "D": "its conclusion is a generalization of statistical evidence drawn from only a small minority of the population",
       "E": "its conclusion contradicts an implicit principle on which an earlier part of the argument is based"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT105",

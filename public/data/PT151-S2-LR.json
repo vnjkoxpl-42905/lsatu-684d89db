@@ -15,7 +15,10 @@
       "D": "other forms of art have more potential to be harmful to society than music has",
       "E": "artists who are trying to manipulate people’s emotions to control them are not likely to admit it"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -417,7 +420,10 @@
       "D": "Stephanie likes hot summer weather much more than Katherine does. So the place where Stephanie grew up must have had more days of hot summer weather than the place where Katherine grew up.",
       "E": "Guillermo has a much shorter drive to work than Abdul does. So Guillermo’s estimate of the average commute for workers in the country as a whole is likely to be lower than Abdul’s estimate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT151",

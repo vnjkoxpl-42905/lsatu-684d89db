@@ -51,7 +51,10 @@
       "D": "The argument overlooks the possibility that cancer causes low levels of the enzyme.",
       "E": "The argument does not specify whether any member of either group lacked the enzyme entirely."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -435,7 +438,10 @@
       "D": "treats a condition that is sufficient to produce an outcome as though it were necessary for the outcome to occur",
       "E": "confuses the claim that many adolescents who do not drink report having taken the pledge with the claim that many who report having taken the pledge do not drink"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT139",

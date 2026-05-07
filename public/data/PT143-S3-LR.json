@@ -291,7 +291,10 @@
       "D": "takes for granted that adaptations that serve a biologically useful purpose originally came about for that purpose",
       "E": "presumes, without providing justification, that an internal representation of its environment can be formed by an organism with even a rudimentary nervous system"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT143",

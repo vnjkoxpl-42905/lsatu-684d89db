@@ -195,7 +195,10 @@
       "D": "Some of the fish did not recover rapidly from the physiological changes that were induced by the changes in hormone concentrations.",
       "E": "The connection between hormone concentrations and reproductive abnormalities is not thoroughly understood."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -231,7 +234,10 @@
       "D": "Although hormonal imbalances can cause disease, the imbalances themselves do not constitute a medical condition.",
       "E": "The long-term effects of synthetic HGH have never been tested and are unknown."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -267,7 +273,10 @@
       "D": "Many posthumously published books would have been published by the author had the author lived.",
       "E": "Some heirs of successful writers do not consider themselves qualified to judge the merits of a literary work."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",

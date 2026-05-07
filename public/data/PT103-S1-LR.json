@@ -51,7 +51,10 @@
       "D": "presupposes what it sets out to establish, that fruit does not differ from sugar-based candy in the number of calories each contains",
       "E": "overlooks the possibility that sugar might not be the only calorie-containing ingredient in candy or fruit"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT103",

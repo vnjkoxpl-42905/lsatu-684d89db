@@ -36,7 +36,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -73,7 +74,10 @@
       "D": "draws a conclusion that is inconsistent with a premise it accepts",
       "E": "presumes, without providing justification, that declining a film role constitutes censorship in the relevant sense"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -405,7 +409,10 @@
       "D": "ignores the possibility that the effects of the types of actions considered might be quite different in environments other than the ones studied",
       "E": "ignores possible differences in the frequency of the two actions whose risk is being assessed"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -441,7 +448,10 @@
       "D": "The flooding in the basement caused damage to the furnace and also caused a short in the electrical system. Fire investigators could not show that the damage to the furnace caused the fire that resulted shortly after the flooding, nor could they show that the fire was caused by the short in the electrical system. Therefore, we cannot claim that the flooding in the basement caused the fire.",
       "E": "We have good reason to believe that the cause of the flooding along the coast was the unusually high tides. We also have good reason to believe that the cause of the unusually high tides was either the sun or the moon. So it is reasonable to maintain that the cause of the flooding was either the sun or the moon."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT130",

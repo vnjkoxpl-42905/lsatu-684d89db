@@ -15,7 +15,10 @@
       "D": "The argument fails to make a needed distinction between how people should have voted and how they actually voted.",
       "E": "The argument defends a claim solely on the grounds that most people believe it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -471,7 +474,10 @@
       "D": "the fiber in fruits and vegetables and the fiber in cereals have cancer-fighting properties to different degrees",
       "E": "foods containing fiber also contain other substances that, when consumed, tend to prevent colon cancer"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT136",

@@ -87,7 +87,10 @@
       "D": "It is based on an appeal to the views of someone with questionable authority on the subject matter.",
       "E": "It bases its conclusion on claims that are inconsistent with one another."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -285,7 +288,10 @@
       "D": "applies a key concept to a different aspect of education than the aspect to which the debater applied it",
       "E": "takes for granted that the conceptual structure of mathematics is sufficiently representative of the conceptual structure of at least some other academic disciplines"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",

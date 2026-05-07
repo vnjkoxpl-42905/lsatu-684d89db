@@ -15,7 +15,10 @@
       "D": "takes for granted that just because there is no evidence that interest in something is decreasing, it must be increasing",
       "E": "takes for granted that it is good that university students have an interest in a certain subject just because the person making the argument has that interest"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT150",

@@ -183,7 +183,10 @@
       "D": "overlooks the possibility that there could be unfamiliar forms of life that have evolved without the presence of liquid water",
       "E": "takes for granted that no conditions on Europa other than the supposed presence of liquid water could have accounted for the data transmitted by the spacecraft"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT132",

@@ -69,7 +69,10 @@
       "D": "drawing a conclusion on the basis of premises that contradict one another",
       "E": "inferring, solely from the claim that a change is not sufficient to solve a problem, that it is not necessary either 4 4 -29-4"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -321,7 +324,10 @@
       "D": "confuses the size of a quantity with the amount by which that quantity has increased",
       "E": "overlooks the possibility that a policy can be fair even when it is not generous"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT158",

@@ -123,7 +123,10 @@
       "D": "draws a conclusion about someone’s motives for making a particular claim without providing evidence that any such claim was actually made",
       "E": "rejects a claim merely because the person making the claim stands to benefit by doing so"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -339,7 +342,10 @@
       "D": "It overlooks the possibility that the effectiveness of different methods of relieving lower back pain may vary substantially depending on the underlying cause of the lower back pain.",
       "E": "It overlooks the possibility that there might be ways of stretching that are much more effective at relieving lower back pain than were the ways the athlete tried."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT153",

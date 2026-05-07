@@ -123,7 +123,10 @@
       "D": "Lopez’s testimony is reliable since she is neither loud nor aggressive",
       "E": "having a violent character is not necessarily associated with the commission of violent crimes"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -327,7 +330,10 @@
       "D": "illicitly takes advantage of an ambiguity in the meaning of “self-interested”",
       "E": "improperly draws an inference about a cause from premises about its effects"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -345,7 +351,10 @@
       "D": "Anyone who sometimes writes poetry that is not politically conservative never writes poetry that is politically conservative.",
       "E": "The content of a poet’s work, not the work’s form, is the most decisive factor in determining what political consequences, if any, the work will have."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT111",

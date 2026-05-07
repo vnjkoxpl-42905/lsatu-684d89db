@@ -33,7 +33,10 @@
       "D": "asserts in a premise what it is trying to establish in its conclusion",
       "E": "treats what could be the effect of something as if it were the cause of that thing"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -108,7 +111,10 @@
       "D": "uses a claim that applies only to entire societies to draw a conclusion about individual persons",
       "E": "draws a universal conclusion on the basis of a very small number of individual cases"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -234,7 +240,10 @@
       "D": "takes a necessary condition for a practice’s being unethical as a sufficient condition for its being so",
       "E": "rejects a claim merely on the grounds that its proponent holds another view inconsistent with it"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -270,7 +279,10 @@
       "D": "It treats an effect of something as the cause of that thing.",
       "E": "It attacks the source of an argument rather than attacking the substance of that argument."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT147",

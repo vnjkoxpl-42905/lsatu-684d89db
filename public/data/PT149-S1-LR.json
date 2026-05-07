@@ -69,7 +69,10 @@
       "D": "presumes, without providing justification, that anyone who does not have lung disease is in good health",
       "E": "fails to consider that even infrequent aerobic exercise may have some beneficial effect on people’s health"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -108,7 +111,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -291,7 +295,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -403,7 +408,10 @@
       "D": "draws a conclusion that simply restates a claim presented in support of that conclusion",
       "E": "concludes that hypnosis videos will be effective simply because they have never been proven to be ineffective"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT149",

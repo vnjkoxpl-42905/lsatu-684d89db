@@ -177,7 +177,10 @@
       "D": "inserts personal opinions into what purports to be a factual debate",
       "E": "advances premises that are inconsistent"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -249,7 +252,10 @@
       "D": "infers, merely from the fact that one event could have caused a second event, that the first event in fact caused the second",
       "E": "takes for granted that any condition that is necessary for an increase in agricultural prices is also sufficient for such an increase"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",

@@ -87,7 +87,10 @@
       "D": "The claim is questionable because it is obvious that Zobel has a professional rivalry with Peterson and cannot judge Peterson’s concepts fairly.",
       "E": "The claim is acceptable because Zobel has effectively shown that Peterson’s analytic concepts are biased and based on emotion rather than rational thinking. -13- 22 2"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -159,7 +162,10 @@
       "D": "neglects to take into account whether there have been restrictions on the advertising of other products besides tobacco in the past ten years",
       "E": "fails to consider the possibility that factors other than restrictions on advertising have contributed to the decline in smoking among adults"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -195,7 +201,10 @@
       "D": "attacks Professor Thomas personally rather than addressing Professor Thomas’s argument",
       "E": "rejects the possibility that Professor York is in fact too confrontational -15- 22 2"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT156",

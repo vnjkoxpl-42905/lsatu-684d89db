@@ -123,7 +123,10 @@
       "D": "fails to address the possibility that many people buy herbal teas containing ginseng because they enjoy drinking the tea",
       "E": "fails to address the possibility that some ingredients other than ginseng in the herbal teas containing ginseng counteract the effects of stress"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -213,7 +216,10 @@
       "D": "It fails to address adequately the possibility that someone who has personal reasons to deny a claim may nonetheless provide legitimate grounds for denying that claim.",
       "E": "It overlooks the possibility that even if a critique does not provide legitimate grounds to reject a claim, this failure need not be the result of any personal biases of the author."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",

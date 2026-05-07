@@ -69,7 +69,10 @@
       "D": "rejects an argument on the grounds that those making it have failed to abide by what the argument recommends",
       "E": "takes a necessary condition for a toy’s being unsafe to be a sufficient condition for its being unsafe"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -177,7 +180,10 @@
       "D": "Because Brenda’s kitten eats less than her puppy does, the kitten is unlikely to become overweight.",
       "E": "Because Brenda’s kitten has become more friendly toward her puppy recently, the puppy must have become more friendly toward the kitten."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -450,6 +456,9 @@
       "D": "It overlooks the possibility that there may be substantial evidence that birds did not evolve from maniraptors, but that this evidence may be unrelated to the ages of any known or unknown bird and maniraptor fossils.",
       "E": "It fails to address adequately the possibility that it can be reasonable to refuse to accept a theory solely on the grounds that the evidence yet discovered for the theory appears to be insufficient."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

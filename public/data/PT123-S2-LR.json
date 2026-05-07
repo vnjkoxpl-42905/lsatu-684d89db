@@ -69,7 +69,10 @@
       "D": "fails to provide evidence that Danto Foods' prepackaged meals are not more nutritious than Ocksenfrey's are",
       "E": "presumes, without providing justification, that Danto Foods' public relations department would not approve a draft of a report that was hostile to Danto Foods' products"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -303,7 +306,10 @@
       "D": "The argument draws a general conclusion about a group based on data about an unrepresentative sample of that group.",
       "E": "The argument infers that a property belonging to large institutions belongs to all institutions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -375,7 +381,10 @@
       "D": "mistakes a condition sufficient for bringing about a result for a condition necessary for doing so",
       "E": "relies on a source that is probably not well-informed"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT123",

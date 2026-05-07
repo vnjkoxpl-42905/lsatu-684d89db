@@ -213,7 +213,10 @@
       "D": "The argument presumes, without providing justification, that what is true of art in general must also be true of every particular type of art.",
       "E": "The argument presumes, without providing justification, that theories about one type of art cannot be compared to theories about another."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT154",

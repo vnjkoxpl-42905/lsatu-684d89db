@@ -33,7 +33,10 @@
       "D": "bases its conclusion on a sample that is unlikely to accurately represent people in the country as a whole",
       "E": "fails to make a needed distinction between wanting to be an artist and making a living as an artist"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -249,7 +252,10 @@
       "D": "attempting to persuade its audience by appealing to their fear",
       "E": "attacking an argument that is not held by any actual council member"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",

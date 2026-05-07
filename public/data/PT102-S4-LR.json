@@ -69,7 +69,10 @@
       "D": "presupposes that legislation is bad legislation whenever it has only a small number of supporters outside the country’s national legislative body",
       "E": "rejects legislation on the grounds that its supporters act inconsistently in seeking to place burdens on manufacturers upon whose business success the supporters depend"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -303,7 +306,10 @@
       "D": "The argument incorrectly presumes that the restoration would be expensive.",
       "E": "The argument inappropriately relies on the emotional connotations of words such as “outdated” and “luxury.”"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -414,7 +420,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

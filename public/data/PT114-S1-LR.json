@@ -141,7 +141,10 @@
       "D": "ground transportation is usually no less expensive than airplane transportation",
       "E": "if the town officials did not follow their own advice then that advice is not worth following"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -195,7 +198,10 @@
       "D": "ignores the possibility that students who lack interest in the curricular material would be quite interested in it if allowed to choose their own curricular material",
       "E": "fails to consider that some students may be neither fascinated by nor completely indifferent to the subject being taught"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -411,7 +417,10 @@
       "D": "fails to consider the possibility that what is safe for animals might not always be safe for human beings",
       "E": "fails to establish that the independent scientists know more about food irradiation than do the people who produced the five studies"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -324,7 +324,10 @@
       "D": "attempts to support its conclusion by making sensationalistic appeals",
       "E": "presumes that the public's right to know is obviously more important than the defendant's right to a fair trial"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -360,7 +363,10 @@
       "D": "treats a single instance of a microprocessor design flaw as evidence that there will be many such flaws",
       "E": "takes for granted, despite evidence to the contrary, that some computers are not liable to error"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -396,7 +402,10 @@
       "D": "Buying running shoes should increase the frequency with which a person exercises, since those who buy two or more pairs of running shoes each year tend to exercise more often than those who buy at most one pair.",
       "E": "Reading to children at an early age should inspire them to read on their own later, since studies have shown that children who have not been read to are less likely to develop an interest in reading than children who have been read to."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT116",
