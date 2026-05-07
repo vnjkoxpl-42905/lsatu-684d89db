@@ -1,49 +1,88 @@
-## Goal
+## What the uploaded files actually are
 
-Introduce a new metadata category — **Question Features** — that is separate from `questionType` and `reasoningType`. First feature to populate: **Conditional Diagramming** (222 questions from the uploaded metadata file).
+Three zips → 13 markdown files covering Weeks 1–12 of "Blue LR Guided Drills." Each file holds multiple drill entries (~80+ total drills across all weeks). Every drill has the same shape:
 
-## Data model change
+- **Metadata block** (YAML-ish): `title`, `category` (Patterns / Process / etc.), `estimated_time`, `question_count`, `difficulty_level` (e.g. `1-3`, `3-5`), `question_type` (array — matches our existing qtype taxonomy), `question_feature` (matches the question_features field we just tagged), `start_button_label`.
+- **Pre-Start Instruction Card** — two-column rich text (left = concept/why, right = "Try these N questions" with tactical bullets). This is the "note preview" you described.
 
-Add an optional `questionFeatures: string[]` field to each question JSON object. Array (not single string) so a question can carry multiple features in the future (e.g., `["Conditional Diagramming", "EXCEPT"]`).
+There are **no hard-coded qids** in the files. Every drill is a *filter spec* (qtype set + feature + difficulty range + count). That's how we'll wire the question bank.
 
-- New field on raw JSON: `"questionFeatures": ["Conditional Diagramming"]`
-- New field on `LRQuestion` interface in `src/lib/questionLoader.ts`: `questionFeatures?: string[]`
-- Loader passes it through unchanged into the in-memory bank.
-- `QuestionManifest` gets a `byFeature: Record<string, number>` aggregate.
+Reasoning type (Conditional / Causation / Comparative) we just tagged is *not* explicit in most cards but is implicit in many (e.g. "Conditional Logic Set 6", "Anti-Causal", "Quantifiers"). We'll infer where the title makes it obvious and otherwise leave it open (any reasoning type allowed).
 
-No change to `questionType` or `reasoningType` for any question — features live alongside them.
+## How this fits into LSAT U
 
-## Tagging script (one-off)
+This is a new product surface: **Guided Drills** — a catalog of admin-curated, instructor-voiced drills. It sits between "freeform Drill" and "Bootcamp." Conceptually:
 
-Write `scripts/apply-question-features.mjs`:
+```text
+Bootcamp        →  multi-day curriculum
+Guided Drill    →  single drill with Joshua's pre-start framing  ← NEW
+Smart Drill     →  adaptive engine, no narrative
+Full Section    →  timed PT section
+```
 
-1. Parse the uploaded markdown table → list of `{pt, section, qnum, feature: "Conditional Diagramming"}` (222 rows).
-2. For each row, locate the matching question across `public/data/PT*-S*-LR.json` (by `practiceTest === "PT###"`, `sectionNumber`, `questionNumber`).
-3. Add `"Conditional Diagramming"` into the question's `questionFeatures` array (create the array if missing, dedupe if already present). Do not touch any other field.
-4. Write a report:
-   - matched count (expect 222)
-   - unmatched rows (PT/section/qnum not in bank — likely PTs whose JSON files don't exist yet, e.g. PT129–PT158)
-   - already-tagged count
-5. Save JSON files in place with stable formatting (2-space indent, preserve key order).
+Visibility rule (your requirement): **catalog is admin-only** until assigned. Students only see a guided drill once Joshua assigns or schedules it — and when they do, the pre-start card is **mandatory reading** (a "Read & Continue" gate) before the drill engine launches.
 
-## Coverage check (informational, no code change yet)
+## Plan
 
-The metadata covers PTs 101–158. The bank's `JSON_FILES` only includes a subset (e.g. PT101–PT156-ish, missing many). The script will report unmatched rows so we know exactly how many of the 222 land. Surfacing the feature in UI (filters, badges, drill mode) is **out of scope for this task** — purely a data layer change.
+### 1. Data model (Lovable Cloud)
 
-## Files touched
+Two new tables + reuse of `classroom_items` for assignment:
 
-- `src/lib/questionLoader.ts` — add `questionFeatures?: string[]` to `LRQuestion`, pass through in mapping, add `byFeature` to manifest.
-- `public/data/PT*-S*-LR.json` — only the rows that match the 222 entries get a new `questionFeatures` key added.
-- `scripts/apply-question-features.mjs` — new one-off tagger.
+- **`guided_drills`** (admin-curated catalog, RLS = admin read/write, students no direct access)
+  - `id`, `slug`, `week` (1–12), `order_in_week`, `title`, `category`, `estimated_minutes`, `question_count`, `difficulty_min`, `difficulty_max`, `question_types text[]`, `question_features text[]`, `reasoning_types text[]` (nullable / empty = any), `start_button_label`, `instruction_card_jsonb` (left/right markdown), `bank_filter_jsonb` (the resolved filter the engine uses), `is_published`.
+- **`guided_drill_assignments`** (per-student instance)
+  - `id`, `guided_drill_id`, `student_id`, `class_id`, `assigned_by`, `assigned_at`, `scheduled_for` (date, optional), `unlock_at`, `status` (assigned / read / started / completed), `read_card_at`, `started_at`, `completed_at`, `attempt_session_id`. RLS: admin all; student read/update own.
+- Mirror into **`classroom_items`** with `type='guided_drill'` so it appears on the student's existing Schedule/Classroom surface alongside other items (matches existing pattern).
 
-## Out of scope
+### 2. Importer (one-time, scripted)
 
-- UI surfacing (filters, badges, drill-by-feature mode).
-- Adding additional features beyond Conditional Diagramming.
-- Backfilling JSON files for PTs not yet in the bank.
+`scripts/import-guided-drills.mjs`:
+- Parse all 13 markdown files → extract YAML metadata + the two-column instruction card.
+- Normalize question types to our exact qtype strings; map features to the canonical list we just tagged; infer reasoning_type from title keywords ("Conditional Logic" → Conditional Reasoning, "Causal/Anti-Causal" → Causation, "Quantifier/Comparison/Relative vs Absolute" → Comparative).
+- Resolve a candidate question pool per drill (preview matched count vs. requested `question_count`) and write `bank_filter_jsonb`. Print a coverage report so we can spot any drill where the pool is too thin.
+- Idempotent upsert by `slug`.
 
-## Verification
+### 3. Admin UI — `/admin/guided-drills`
 
-- Run the script; confirm matched count + report unmatched.
-- `npx tsc --noEmit -p tsconfig.app.json` clean.
-- Spot-check 2–3 tagged JSON files to confirm `questionFeatures: ["Conditional Diagramming"]` is present and nothing else changed.
+- **Catalog view**: filterable table by week / category / qtype / feature / reasoning type. Shows pool size vs. needed count.
+- **Drill detail**: preview the exact pre-start card the student will see + sample of resolved questions.
+- **Assign flow**: pick student(s), optional `scheduled_for` date, optional `unlock_at`. Can assign single, multiple, or "assign all of Week N in order."
+- **Schedule builder**: drag drills onto a week-by-week schedule per student (defaults to the natural order from the markdown files; mix-and-match supported).
+
+### 4. Student UX
+
+- Assigned guided drills appear in **Schedule** and **Classroom** (existing surfaces) with a distinct "Guided" badge.
+- Clicking opens the **Pre-Start Instruction Card** (full-screen, two-column, exactly as authored) with a "Start Drill" button that's disabled until the card has been visible (or scrolled) — enforcing your "read first" rule. `Info` button on the drill page reopens this card mid-drill.
+- "Start" hands off to the existing drill engine with a `TypeDrillConfig` built from `bank_filter_jsonb` (qtypes + features + difficulty range + count, `unseen_only` honored).
+
+### 5. Order, scheduling, mix-and-match
+
+- Default ordering = Week 1 → Week 12, position-in-file (already implicit in the markdown). The importer stores `week` + `order_in_week` so we can render exactly that sequence.
+- Admin can: assign one drill, assign a whole week, or build a custom plan by reordering. Scheduling sets `scheduled_for` / `unlock_at`; the student's Schedule respects unlock times (matches existing `classroom_items` policy).
+
+### 6. Three-tier metadata respected
+
+The catalog stores and the engine filters on all three layers we built:
+1. **questionType** (always)
+2. **reasoningType** (when card implies it)
+3. **questionFeatures** (when card specifies one — most do)
+
+So a "Conditional Logic (Medium) Set 6" drill resolves to: qtypes from the metadata × reasoningType=Conditional Reasoning × difficulty 2–4. No duplication, fully consistent with the hierarchy you confirmed last loop.
+
+### 7. Out of scope for this pass
+
+- Authoring UI (admin edits cards in-app). For now, source of truth = the markdown files + importer; admin can re-run import on edits.
+- Auto-grading "blue vs red" tags (we're only ingesting blue cards as instructed).
+- Bootcamp integration (these are standalone drills, not bootcamp days).
+
+## Open clarification (one)
+
+For the "must read the card before Start" gate — should it be:
+- **(A)** soft (button enabled immediately, but we record `read_card_at` when they click Start), or
+- **(B)** hard (Start disabled for ~10s OR until they scroll to the bottom of the card)?
+
+I'll default to **(B) hard gate via scroll-to-bottom** unless you say otherwise — it matches your "have them read it before starting" intent best.
+
+---
+
+Hit **Implement plan** to proceed (I'll start with the migration + importer + admin catalog page, then the student pre-start gate).
