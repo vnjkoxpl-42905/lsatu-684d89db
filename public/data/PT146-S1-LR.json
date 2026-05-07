@@ -382,7 +382,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Most kinds of soil contain clay, and virtually every kind of soil contains either sand or organic material, or both. Therefore, there must be some kinds of soil that contain both clay and sand and some that contain both clay and organic material.",
     "questionStem": "The pattern of flawed reasoning in which one of the following arguments is most parallel to that in the argument above?",

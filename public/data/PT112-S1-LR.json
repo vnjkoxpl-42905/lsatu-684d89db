@@ -256,7 +256,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "If Slater wins the election, McGuinness will be appointed head of the planning commission. But Yerxes is more qualified to head it since she is an architect who has been on the planning commission for fifteen years. Unless the polls are grossly inaccurate, Slater will win.",
     "questionStem": "Which one of the following can be properly inferred from the information above?",

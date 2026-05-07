@@ -429,7 +429,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Philosopher: An action is morally right if it would be reasonably expected to increase the aggregate well-being of the people affected by it. An action is morally wrong if and only if it would be reasonably expected to reduce the aggregate well-being of the people affected by it. Thus, actions that would be reasonably expected to leave unchanged the aggregate well-being of the people affected by them are also right.",
     "questionStem": "The philosopher's conclusion follows logically if which one of the following is assumed?",

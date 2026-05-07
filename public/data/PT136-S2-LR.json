@@ -442,7 +442,7 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Had the party's economic theories been sound and had it succeeded in implementing its program, the inflation rate would have lessened considerably. But because the inflation rate actually increased, the party's economic theories were far off the mark.",
     "questionStem": "The flawed reasoning in which one of the following arguments most closely resembles the flawed reasoning in the argument above?",

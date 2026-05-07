@@ -440,7 +440,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Paleomycologists, scientists who study ancient forms of fungi, are invariably acquainted with the scholarly publications of all other paleomycologists. Professor Mansour is acquainted with the scholarly publications of Professor DeAngelis, who is a paleomycologist. Therefore, Professor Mansour must also be a paleomycologist.",
     "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",

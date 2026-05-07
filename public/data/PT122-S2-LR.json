@@ -121,7 +121,7 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Any fruit that is infected is also rotten. No fruit that was inspected is infected. Therefore, any fruit that was inspected is safe to eat.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",

@@ -420,7 +420,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "An air traveler in Beijing cannot fly to Lhasa without first flying to Chengdu. Unfortunately, an air traveler in Beijing must fly to Xian before flying to Chengdu. Any air traveler who flies from Beijing to Lhasa, therefore, cannot avoid flying to Xian.",
     "questionStem": "The pattern of reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",

@@ -410,7 +410,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If the price it pays for coffee beans continues to increase, the Coffee Shoppe will have to increase its prices. In that case, either the Coffee Shoppe will begin selling noncoffee products or its coffee sales will decrease. But selling noncoffee products will decrease the Coffee Shoppe's overall profitability. Moreover, the Coffee Shoppe can avoid a decrease in overall profitability only if its coffee sales do not decrease.",
     "questionStem": "Which one of the following statements follows logically from the statements above?",

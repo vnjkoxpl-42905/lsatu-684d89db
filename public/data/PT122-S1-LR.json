@@ -268,7 +268,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "If all works of art evoke intense feelings, and this sculpture is a work of art, then it follows that this sculpture evokes intense feelings. But this sculpture does not evoke intense feelings at all. So either this sculpture is not a work of art, or not all works of art evoke intense feelings.",
     "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",

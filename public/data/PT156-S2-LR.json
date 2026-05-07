@@ -437,7 +437,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "When a resource’s price reflects its full cost to society,\n consumers pay directly for externalities—the unintended\n but harmful consequences to society of using a resource. Further, the price of a resource deters misuse of that\n resource only if it reflects the resource’s externalities. So, since sound management of a resource requires that\n the price of the resource deter its misuse, it also requires\n that the price reflect whatever unintended harm to the\n environment the use of that resource causes.",
     "questionStem": "The conclusion follows logically if which one of the\n following is assumed?",

@@ -312,7 +312,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Classification Confidence:** High 17. Everyone who is excessively generous is not levelheaded, and no one who is levelheaded is bold.",
     "questionStem": "Which one of the following is strictly implied by the above?",

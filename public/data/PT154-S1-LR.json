@@ -472,7 +472,7 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Philosopher: A person is morally responsible for an action only if that action is performed freely. And an action is free only if there is an alternative action that is genuinely open to the person. But an alternative action is genuinely open only if performing that alternative action is not morally wrong.",
     "questionStem": "If the philosopher’s statements are true, which one of the following must also be true?",

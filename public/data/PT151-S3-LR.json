@@ -220,7 +220,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "A recently discovered fossil, which is believed by some\nto come from Archaeoraptor liaoningensis, a species of\ndinosaur, can serve as evidence that birds evolved from\ndinosaurs only if the entire fossil is from a single animal.\nHowever, the fossil is a composite of bones collected\nfrom various parts of the discovery site, so it does not\nprovide evidence that birds evolved from dinosaurs.",
     "questionStem": "The conclusion drawn in the argument follows logically\nif which one of the following is assumed?",

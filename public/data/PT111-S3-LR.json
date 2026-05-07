@@ -323,7 +323,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If there are any inspired musical performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots. If all of the statements above are true, which one of the",
     "questionStem": "following must also be true?",

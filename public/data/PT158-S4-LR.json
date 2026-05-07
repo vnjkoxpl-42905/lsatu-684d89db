@@ -494,7 +494,7 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Every Labrador retriever in my neighborhood is a well-\n behaved dog. However, no pet would be well behaved\n if it were not trained. Thus it is training, not the genetic\n makeup of the breed, that accounts for these Labrador\n retrievers’ good behavior.",
     "questionStem": "The flawed reasoning in which one of the following is\n most closely parallel to the flawed reasoning in the\n argument above?",

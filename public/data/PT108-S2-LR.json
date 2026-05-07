@@ -358,7 +358,7 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "One of the most important events for modern astronomy was the series of collisions, during a single week in 1994, of more than a dozen large objects with Jupiter. The collision of these objects, which once formed most of the comet Shoemaker-Levy 9, resulted in formations that showed no signs of water. There was thus no water involved in the collisions, so we know that none of the comet’s fragments penetrated to Jupiter’s lower atmosphere and that the comet was composed of rock rather than ice.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",

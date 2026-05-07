@@ -305,7 +305,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Art critic: Abstract paintings are nonrepresentational, and so the only measure of their worth is their interplay of color, texture, and form. But for a painting to spur the viewer to political action, instances of social injustice must be not only represented, but also clearly comprehensible as such. Therefore, abstract painting can never be a\npolitically significant art form.",
     "questionStem": "Which one of the following is an assumption that is required by the art critic’s argument?",

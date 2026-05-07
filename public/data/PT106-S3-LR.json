@@ -398,7 +398,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If the law punishes littering, then the city has an obligation to provide trash cans. But the law does not punish littering, so the city has no such obligation.",
     "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to that in the argument above?",

@@ -438,7 +438,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Linda says that, as a scientist, she knows that no scientist appreciates poetry. And, since most scientists are logical, at least some of the people who appreciate poetry are illogical.",
     "questionStem": "Which one of the following is most parallel in its reasoning to the flawed reasoning above?",

@@ -304,7 +304,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Politician: All nations that place a high tax on income produce thereby a negative incentive for technological innovation, and all nations in which technological innovation is hampered inevitably fall behind in the international arms race. Those nations that, through historical accident or the foolishness of their political leadership, wind up in a strategically disadvantageous position are destined to lose their voice in world affairs. So if a nation wants to maintain its value system and way of life, it must not allow its highest tax bracket to exceed 30 percent of income.",
     "questionStem": "Each of the following, if true, weakens the politician’s argument except:",

@@ -484,7 +484,7 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Economist: Countries with an uneducated population are\ndestined to be weak economically and politically,\nwhereas those with an educated population have\ngovernments that display a serious financial\ncommitment to public education. So any\nnation with a government that has made such a\ncommitment will avoid economic and political\nweakness.",
     "questionStem": "The pattern of flawed reasoning in which one of the\nfollowing arguments is most similar to that in the\neconomist’s argument?",

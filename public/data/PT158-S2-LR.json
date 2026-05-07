@@ -476,7 +476,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "If you complete 24 graduate credits and a thesis in\n our department, you are eligible to receive a master’s\n degree. Roger has completed 24 graduate credits in our\n department, yet he is not eligible to receive a master’s\n degree. So he must not have finished his thesis yet.",
     "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following?",

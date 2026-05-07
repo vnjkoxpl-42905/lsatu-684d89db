@@ -392,7 +392,7 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Political scientist: Democracy depends on free choices, and choices cannot be free unless they are made on the basis of well-reasoned opinions. In the Information Age, reading skills have become essential to forming well-reasoned opinions. Thus, in the Information Age, a highly literate society will be a democratic one.",
     "questionStem": "The political scientist’s reasoning is flawed in that it",

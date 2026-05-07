@@ -341,7 +341,7 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Professor Gandolf says that all political systems that aim at preventing conflict are legitimate. However, totalitarian political systems are usually good at preventing conflict, since those who are not in power are subject to the will of the powerful. But since all totalitarian political systems are illegitimate, Professor Gandolf's principle must be false.",
     "questionStem": "Which one of the following is an assumption required by the argument?",

@@ -214,7 +214,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Policy: The factory’s safety inspector should not approve\na new manufacturing process unless it has been\nused safely for more than a year at another\nfactory or it will demonstrably increase safety at\nthe factory.\nApplication: The safety inspector should not approve the\nproposed new welding process, for it cannot be\nshown to increase safety at the factory.",
     "questionStem": "Which one of the following, if true, justifies the above\napplication of the policy?",

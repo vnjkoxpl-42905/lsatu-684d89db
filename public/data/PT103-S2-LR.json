@@ -290,7 +290,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Every new play that runs for more than three months is either a commercial or a critical success. Last year, all new plays that were critical successes were also commercial successes. Therefore, every new play that ran for more than three months last year was a commercial success.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
