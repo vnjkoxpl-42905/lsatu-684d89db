@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   GraduationCap,
   CheckCircle2,
@@ -6,10 +7,29 @@ import {
   PlayCircle,
   Sparkles,
   FileText,
+  Trash2,
+  Megaphone,
+  BookOpen,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { formatRelativeShort } from '@/lib/time';
-import { useAdminTAAssignmentsForStudent, type StudentTAAssignment } from '@/hooks/useStudentAssignments';
+import {
+  useAdminTAAssignmentsForStudent,
+  type StudentTAAssignment,
+} from '@/hooks/useStudentAssignments';
+import { useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   studentId: string;
@@ -37,11 +57,21 @@ const TA_STATUS_ICON = {
   completed: CheckCircle2,
 };
 
+type PendingDelete =
+  | { kind: 'homework'; id: string; title: string }
+  | { kind: 'ta'; id: string; title: string }
+  | { kind: 'classroom'; id: string; title: string };
+
 /**
  * Center-panel "Assignments" tab. Real homework_assignments + ta_assignments
- * for the selected student. Admin RLS allows direct reads.
+ * + classroom_items (posts/bootcamps) for the selected student. Admins can
+ * unassign / delete each row, which removes it from the student's view.
  */
 export default function HubAssignments({ studentId }: Props) {
+  const qc = useQueryClient();
+  const [pending, setPending] = useState<PendingDelete | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const { data: homework, isLoading: hwLoading } = useQuery<HomeworkRow[]>({
     queryKey: ['hub-homework', studentId],
     enabled: !!studentId,
@@ -56,19 +86,72 @@ export default function HubAssignments({ studentId }: Props) {
     },
   });
 
-  const { assignments: taAssignments, loading: taLoading } =
+  const { assignments: taAssignments, loading: taLoading, refresh: refreshTA } =
     useAdminTAAssignmentsForStudent(studentId);
 
-  const hasAny = (homework?.length ?? 0) > 0 || taAssignments.length > 0;
+  const { data: classroomItems, isLoading: ciLoading } =
+    useStudentClassroomItems(studentId);
 
-  if (!hwLoading && !taLoading && !hasAny) {
+  const posts = (classroomItems ?? []).filter(
+    (i) => i.type !== 'drill' && i.type !== 'homework',
+  );
+
+  const hasAny =
+    (homework?.length ?? 0) > 0 ||
+    taAssignments.length > 0 ||
+    posts.length > 0;
+
+  async function confirmDelete() {
+    if (!pending) return;
+    setDeleting(true);
+    try {
+      let error: { message: string } | null = null;
+      if (pending.kind === 'homework') {
+        const r = await supabase
+          .from('homework_assignments')
+          .delete()
+          .eq('id', pending.id);
+        error = r.error;
+        if (!error) await qc.invalidateQueries({ queryKey: ['hub-homework', studentId] });
+      } else if (pending.kind === 'ta') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const r = await (supabase as any)
+          .from('ta_assignments')
+          .delete()
+          .eq('id', pending.id);
+        error = r.error;
+        if (!error) await refreshTA();
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const r = await (supabase as any)
+          .from('classroom_items')
+          .delete()
+          .eq('id', pending.id);
+        error = r.error;
+        if (!error)
+          await qc.invalidateQueries({ queryKey: ['classroom-items-admin', studentId] });
+      }
+      if (error) {
+        console.error('[hub:assignments:delete] failed', error);
+        toast.error('Could not unassign', { description: error.message });
+      } else {
+        toast.success('Removed from student');
+        setPending(null);
+      }
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  if (!hwLoading && !taLoading && !ciLoading && !hasAny) {
     return (
       <div className="flex-1 flex items-center justify-center text-center px-6 py-12">
         <div className="max-w-sm space-y-2">
           <GraduationCap className="w-6 h-6 text-muted-foreground/70 mx-auto" />
           <div className="text-sm font-medium">No assignments yet</div>
           <p className="text-xs text-muted-foreground">
-            Homework drills and TA-generated assignments will show up here.
+            Homework, bootcamps, and posts you assign will show up here so you
+            can edit or unassign them.
           </p>
         </div>
       </div>
@@ -101,6 +184,13 @@ export default function HubAssignments({ studentId }: Props) {
                 .filter((x): x is string => !!x)
                 .join(' · ')}
               Icon={Icon}
+              onDelete={() =>
+                setPending({
+                  kind: 'homework',
+                  id: h.id,
+                  title: h.set_title || 'this homework',
+                })
+              }
             />
           );
         })}
@@ -130,12 +220,104 @@ export default function HubAssignments({ studentId }: Props) {
                 .filter((x): x is string => !!x)
                 .join(' · ')}
               Icon={a.pdf_url ? FileText : Icon}
+              onDelete={() =>
+                setPending({
+                  kind: 'ta',
+                  id: a.id,
+                  title: a.title || 'this TA assignment',
+                })
+              }
             />
           );
         })}
       </Section>
+
+      <Section
+        title="Posts & bootcamps"
+        icon={Megaphone}
+        loading={ciLoading}
+        empty={!ciLoading && posts.length === 0}
+      >
+        {posts.map((it: ClassroomItem) => {
+          const Icon = it.type === 'bootcamp_module' ? BookOpen : Megaphone;
+          return (
+            <Row
+              key={it.id}
+              title={it.title || 'Untitled'}
+              status={it.status}
+              meta={[
+                labelForType(it.type),
+                it.visible_to_student ? null : 'hidden',
+                `Created ${formatRelativeShort(it.created_at)}`,
+              ]
+                .filter((x): x is string => !!x)
+                .join(' · ')}
+              Icon={Icon}
+              onDelete={() =>
+                setPending({
+                  kind: 'classroom',
+                  id: it.id,
+                  title: it.title || 'this item',
+                })
+              }
+            />
+          );
+        })}
+      </Section>
+
+      <AlertDialog
+        open={!!pending}
+        onOpenChange={(o) => !o && !deleting && setPending(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unassign from student?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {pending
+                ? `"${pending.title}" will be removed from the student's view immediately. This can't be undone.`
+                : ''}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button
+                variant="destructive"
+                disabled={deleting}
+                onClick={(e) => {
+                  e.preventDefault();
+                  void confirmDelete();
+                }}
+              >
+                {deleting ? 'Removing…' : 'Unassign'}
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
+}
+
+function labelForType(t: ClassroomItem['type']): string {
+  switch (t) {
+    case 'bootcamp_module':
+      return 'Bootcamp';
+    case 'announcement':
+      return 'Announcement';
+    case 'note':
+      return 'Note';
+    case 'session_recap':
+      return 'Session recap';
+    case 'smartboard_recap':
+      return 'Smartboard recap';
+    case 'upload_summary':
+      return 'Upload summary';
+    case 'weekly_plan_task':
+      return 'Weekly plan';
+    default:
+      return t;
+  }
 }
 
 function Section({
@@ -177,14 +359,16 @@ function Row({
   status,
   meta,
   Icon,
+  onDelete,
 }: {
   title: string;
   status: string;
   meta: string;
   Icon: React.ComponentType<{ className?: string }>;
+  onDelete?: () => void;
 }) {
   return (
-    <div className="flex items-start gap-3 px-3 py-2.5 rounded-lg border border-border/40 bg-card/40">
+    <div className="group flex items-start gap-3 px-3 py-2.5 rounded-lg border border-border/40 bg-card/40">
       <Icon
         className={
           status === 'completed'
@@ -203,6 +387,16 @@ function Row({
       <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
         {status.replace('_', ' ')}
       </span>
+      {onDelete && (
+        <button
+          type="button"
+          onClick={onDelete}
+          aria-label={`Unassign ${title}`}
+          className="shrink-0 p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 }
