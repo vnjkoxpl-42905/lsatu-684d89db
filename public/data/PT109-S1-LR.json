@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Marmosets are the only primates other than humans known to display a preference for using one hand rather than the other. Significantly more marmosets are lefthanded than are right-handed. Since infant marmosets engage in much imitative behavior, researchers hypothesize that it is by imitation that infant marmosets learn which hand to use, so that offspring reared by lefthanded parents generally share their parents’ handedness.",
     "questionStem": "Which one of the following, if true, most supports the researchers’ hypothesis?",
@@ -22,7 +22,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Sheila: It has been argued that using computer technology to add color to a movie originally filmed in black and white damages the integrity of the original film. But no one argues that we should not base a movie on a novel or a short story because doing so would erode the value of the book or story. The film adaptation of the written work is a new\nwork that stands on its own. Judgments of it do not reflect on the original. Similarly, the colorized film is a new work distinct from the original and should be judged on its own merit. It does not damage the integrity of the original black-andwhite film.",
     "questionStem": "Sheila’s argument uses which one of the following techniques of argumentation?",
@@ -44,7 +46,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Comparison",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The following passage is used for Section 1, questions 3 through 4.\nJuan: Unlike the ancient Olympic games on which they are based, the modern Olympics include professional as well as amateur athletes. But since amateurs rarely have the financial or material resources available to professionals, it is unlikely that the amateurs will ever offer a serious challenge to professionals in those Olympic events in which amateurs compete against professionals. Hence, the presence of professional athletes violates the spirit of fairness essential to the games.\nMichiko: But the idea of the modern Olympics is to showcase the world’s finest athletes, regardless of their backgrounds or resources. Hence, professionals should be allowed to compete.",
     "questionStem": "Which one of the following most accurately expresses the point at issue between Juan and Michiko?",
@@ -65,7 +67,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 3 through 4.\nJuan: Unlike the ancient Olympic games on which they are based, the modern Olympics include professional as well as amateur athletes. But since amateurs rarely have the financial or material resources available to professionals, it is unlikely that the amateurs will ever offer a serious challenge to professionals in those Olympic events in which amateurs compete against professionals. Hence, the presence of professional athletes violates the spirit of fairness essential to the games.\nMichiko: But the idea of the modern Olympics is to showcase the world’s finest athletes, regardless of their backgrounds or resources. Hence, professionals should be allowed to compete.",
     "questionStem": "Which one of the following, if true, most seriously undermines Juan’s argument?",
@@ -88,7 +92,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 5 through 6.\nA recent national study of the trash discarded in several representative areas confirmed that plastics constitute a smaller proportion of all trash than paper products do, whether the trash is measured by weight or by volume. The damage that a given weight or volume of trash does to the environment is roughly the same whether the trash consists of plastics or paper products. Contrary to popular opinion, therefore, the current use of plastics actually does less harm to the environment nationwide than that of paper products.",
     "questionStem": "The main conclusion of the argument is that",
@@ -109,7 +113,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 5 through 6.\nA recent national study of the trash discarded in several representative areas confirmed that plastics constitute a smaller proportion of all trash than paper products do, whether the trash is measured by weight or by volume. The damage that a given weight or volume of trash does to the environment is roughly the same whether the trash consists of plastics or paper products. Contrary to popular opinion, therefore, the current use of plastics actually does less harm to the environment nationwide than that of paper products.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -127,7 +131,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Consultant: Most workers do not have every item they produce judged for quality, but each piece a freelance writer authors is evaluated. That is why freelance writers produce such high-quality work.",
     "questionStem": "The consultant’s statements, if true, most strongly support which one of the following?",
@@ -148,7 +154,7 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Few animals brave the midday heat of the Sahara desert. An exception is the silver ant, which chooses this time of day to leave its nest and scout for food, typically the corpses of heat-stricken animals. Even the silver ant, however, must be careful: at such times they can become\nvictims of the heat themselves.",
     "questionStem": "Which one of the following, if true, least helps to explain the silver ant’s choice of scavenging times?",
@@ -166,7 +172,10 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The same task triggers different levels of awareness of one’s surroundings, called environmental awareness, in different individuals. Mathematical puzzles, for example, cause most people to increase such an awareness. Some people—those who formulate the answer visually, imagining the numbers in their mind’s eye—will, in an attempt to freeze the picture, experience a decrease in environmental awareness while solving the puzzle. Other people’s environmental awareness may rise during the exercise, because their brains are signaling a rest at the end of every stage of problem solving.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -188,7 +197,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Art historian: Great works of art have often elicited outrage when first presented; in Europe, Stravinsky’s Rite of Spring prompted a riot, and Manet’s Déjeuner sur l’herbe elicited outrage and derision. So, since it is clear that art is often shocking, we should not hesitate to use public funds to support works of art that many people find shocking.",
     "questionStem": "Which one of the following is an assumption that the art historian’s argument requires in order for its conclusion to be properly drawn?",
@@ -211,7 +222,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Researchers have discovered that caffeine can be as physically addictive as other psychoactive substances.\nSome people find that they become unusually depressed, drowsy, or even irritable if they do not have their customary dose of caffeine. This is significant because as many people consume caffeine as consume any one of the other addictive psychoactive substances.",
     "questionStem": "Which one of the following can be logically concluded from the information above?",
@@ -229,7 +240,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A nationwide poll of students, parents, and teachers showed that over 90 percent believe that an appropriate percentage of their school’s budget is being spent on student counseling programs. It seems, then, that any significant increase in a school’s budget should be spent on something other than student counseling programs.",
     "questionStem": "Which one of the following describes a flaw in the reasoning of the argument above?",
@@ -252,7 +265,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Ethicist: Studies have documented the capacity of placebos to reduce pain in patients who believe that they are receiving beneficial drugs. Some doctors say that they administer placebos because medically effective treatment reinforced by the placebo effect sometimes helps patients recover faster than good treatment alone. But administering placebos is nonetheless ethically questionable, for even if a placebo benefits a patient, a doctor might, for example, have prescribed it just to give the patient satisfaction that something was being done.",
     "questionStem": "The ethicist’s argument depends on which one of the following assumptions?",
@@ -275,7 +290,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "After the United Nations Security Council authorized military intervention by a coalition of armed forces intended to halt civil strife in a certain country, the parliament of one UN member nation passed a resolution condemning its own prime minister for promising to commit military personnel to the action. A parliamentary leader insisted that the overwhelming vote for the resolution did not imply the parliament’s opposition to the anticipated intervention; on the contrary, most members of parliament supported the UN plan.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy presented above?",
@@ -293,7 +308,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "People who are good at playing the game Drackedary are invariably skilled with their hands. Mary is a very\ncompetent watchmaker. Therefore, Mary would make a good Drackedary player.",
     "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following?",
@@ -314,7 +331,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Notice to subscribers: In order for us to provide you with efficient and reliable newspaper service, please note the following policies. You will be billed for home delivery every four weeks, in advance. If you do not receive delivery, call us promptly to receive a replacement copy. Credit can be given only if the missed copy is reported to us within twenty-four hours and only if a replacement copy is unavailable. Request for temporary nondelivery must be made at least three days prior to the first day on which delivery is to stop. No subscription will be canceled unless the subscriber explicitly requests the cancellation beforehand and in writing.\nThe Daily Gazette",
     "questionStem": "If The Daily Gazette denies each of the following subscriber’s requests, each of the denials could be justified solely on the basis of the policy stated above except:",
@@ -337,7 +356,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Expert witness: Ten times, and in controlled circumstances, a single drop of the defendant’s blood was allowed to fall onto the fabric. And in all ten cases, the stained area was much less than the expected 9.5 cm2. In fact, the stained area was always between 4.5 and 4.8 cm2. I conclude that a\nsingle drop of the defendant’s blood stains much less than 9.5 cm2 of the fabric.",
     "questionStem": "Which one of the following, if true, most undermines the value of the evidence for the expert witness’s conclusion?",
@@ -359,7 +380,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The use of space-based satellites to study environmental conditions on Earth is an important development in the conservation movement’s history. Environmental problems may now be observed long before they otherwise would be noticed, allowing for intervention before they reach the crisis stage. It is no wonder that environmentalists fail to consider both that spacecraft may damage the ozone layer and that this damage could be serious enough to warrant discontinuing spaceflight.",
     "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
@@ -382,7 +405,10 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Historian: The spread of literacy informs more people of injustices and, in the right circumstances, leads to increased capacity to distinguish true reformers from mere opportunists. However, widespread literacy invariably emerges before any comprehensive system of general education; thus, in the interim, the populace is vulnerable to clever demagogues calling for change. Consequently, some relatively benign regimes may ironically be toppled by their own “enlightened” move to increase literacy.",
     "questionStem": "Which one of the following is an assumption on which the historian’s argument depends?",
@@ -406,7 +432,7 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Recently discovered prehistoric rock paintings on small islands off the northern coast of Norway have archaeologists puzzled. The predominant theory about northern cave paintings was that they were largely a description of the current diets of the painters. This theory cannot be right, because the painters must have needed to eat the sea animals populating the waters north of Norway if they were to make the long journey to and from the islands, and there are no paintings that unambiguously depict such creatures.",
     "questionStem": "Each of the following, if true, weakens the argument against the predominant theory about northern cave paintings except:",
@@ -427,7 +453,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Attacks on an opponent’s character should be avoided in political debates. Such attacks do not confront the opponent’s argument; instead they attempt to cast doubt on the opponent’s moral right to be in the debate at all.",
     "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning above?",
@@ -448,7 +474,7 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Lawyer: Did Congleton assign the best available graphic artist to the project?\nWitness: Yes.\nLawyer: And the best writer?\nWitness: Yes.\nLawyer: In fact everyone she assigned to work on the project was top notch?\nWitness: That’s true.\nLawyer: So, you lied to the court when you said, earlier, that Congleton wanted the project to fail?",
     "questionStem": "Each of the following accurately describes a flaw in the lawyer’s reasoning displayed above except:",
@@ -469,7 +495,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Parallel",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "An air traveler in Beijing cannot fly to Lhasa without first flying to Chengdu. Unfortunately, an air traveler in Beijing must fly to Xian before flying to Chengdu. Any air traveler who flies from Beijing to Lhasa, therefore, cannot avoid flying to Xian.",
     "questionStem": "The pattern of reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
@@ -490,7 +518,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Supervisor: Our next budget proposal will probably be approved, because normally about half of all budget proposals that the vice president considers are approved, and our last five budget proposals have all been turned down.",
     "questionStem": "The supervisor’s reasoning is flawed because it presumes, without giving warrant, that",
@@ -513,7 +541,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The number of airplanes equipped with a new anticollision device has increased steadily during the past two years. During the same period, it has become increasingly common for key information about an airplane’s altitude and speed to disappear suddenly from air traffic controllers’ screens. The new anticollision device, which operates at the same frequency as air traffic radar, is therefore responsible for the sudden disappearance of key information.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",

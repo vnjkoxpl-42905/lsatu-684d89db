@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Press release: A comprehensive review evaluating the\nmedical studies done up to the present time has\nfound no reason to think that drinking coffee\nin normal amounts harms the coffee-drinker’s\nheart. So coffee drinkers can relax and enjoy their\nbeverage—it is safe to drink coffee.",
     "questionStem": "Which one of the following points to a weakness in the reasoning in the press release’s argument?",
@@ -26,7 +26,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "All people prefer colors that they can distinguish easily to\ncolors that they have difficulty distinguishing. Infants can\neasily distinguish bright colors but, unlike adults, have\ndifficulty distinguishing subtle shades. A brightly colored\ntoy for infants sells better than the same toy in subtle\nshades at the same price.",
     "questionStem": "Which one of the following conclusions is most strongly\nsupported by the information in the passage?",
@@ -47,7 +49,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A group of unusual meteorites was found in Shergotty,\nIndia. Their structure indicates that they originated on\none of the geologically active planets, Mercury, Venus,\nor Mars. Because of Mercury’s proximity to the Sun,\nany material dislodged from that planet’s surface would\nhave been captured by the Sun, rather than falling to\nEarth as meteorites. Nor could Venus be the source of\nthe meteorites, because its gravity would have prevented\ndislodged material from escaping into space. The\nmeteorites, therefore, probably fell to Earth after being\ndislodged from Mars, perhaps as the result of a collision\nwith a large object.",
     "questionStem": "The argument derives its conclusion by",
@@ -71,7 +75,10 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Strengthen (EXCEPT)",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Because quitting smoking is very stressful and leads\nto weight gain, it is difficult to do. The key to quitting,\nhowever, may be as simple as replacing an unhealthy\nactivity with a healthy one. In one study, half of those\nattempting to quit were assigned to a smoking-cessation\nprogram alone, and the other half were assigned to the\nsame program plus fifteen weeks of aerobic exercise. At\nthe one-month mark, none in the first group had quit, but\n40 percent of those in the second group had not smoked.",
     "questionStem": "Each of the following, if true, provides some support for\nthe argument except :",
@@ -96,7 +103,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Altogether, the students in Ms. Tarnowski’s Milton\nElementary School class collected more aluminum cans\nthan did the students in any of the school’s other classes.\nTherefore, the Milton student who collected the most\naluminum cans was in Ms. Tarnowski’s class.",
     "questionStem": "Which one of the following arguments contains flawed\nreasoning that is most parallel to that in the argument\nabove?",
@@ -118,7 +127,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Several excellent candidates have been proposed for\nthe presidency of United Wire, and each candidate\nwould bring to the job different talents and experience.\nIf the others are compared with Jones, however, it will\nbe apparent that none of them has her unique set of\nqualifications. Jones, therefore, is best qualified to be the\nnew president of United Wire.",
     "questionStem": "The argument is vulnerable to criticism on the ground\nthat it",
@@ -139,7 +150,7 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Residents of the city of Krisville have been protesting the very poor state of the city’s recreation facilities. In response, city officials plan to build ten new recreation centers, one in each of the city’s ten neighborhoods. These centers will include a range of exercise facilities. City officials argue that when these facilities are available, many residents will begin to get the regular exercise they need, thereby improving their health; this increase in the health of the population will result in a decrease in the city’s per capita medical costs. So although the centers will be expensive to build, they will ultimately cause the city’s per capita medical costs to decrease.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -160,7 +171,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "of violent crimes in our society is false, for this claim is based upon the large number of stories in newspapers about violent crimes. But since violent crimes are very rare occurrences, newspapers are likely to print stories about them.",
     "questionStem": "The sociologist’s argument is flawed because it",
@@ -181,7 +194,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Historian: Anyone who thinks that the terrors of the ancient regime of Q were exclusively the work of fanatics is overlooking a basic truth: the regime was made up primarily of ordinary people enthusiastically seeking paradise. The regime executed many people in pursuit of its goal; but it later became clear that paradise,\nas they defined it, is unrealizable. So at least some of the ordinary people of Q were in fact murderers.",
     "questionStem": "Which one of the following principles, if valid, provides the most support for the historian’s argumentation?",
@@ -203,7 +218,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Economist: The economy seems to be heading out of recession. Recent figures show that consumers\nare buying more durable goods than before, indicating that they expect economic growth in the near future.",
     "questionStem": "That consumers are buying more durable goods than before figures in the economist’s argument in which one of the following ways?",
@@ -224,7 +241,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Not surprisingly, there are no professors under the age of eighteen. And, as is well known, no one under eighteen can vote legally. Finally, some brilliant people are professors, some are legal voters, and some are under eighteen.",
     "questionStem": "If the statements above are true, then on the basis of them which one of the following must also be true?",
@@ -245,7 +262,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "For years scientists have been scanning the skies in search of life elsewhere in the universe. To date there has been no success in this endeavor. The budget for the project of searching for extraterrestrial life is being reduced, and critics argue that the budget should be reduced even further.",
     "questionStem": "Which one of the following findings would be most relevant to deciding whether the budget of the project should be reduced?",
@@ -263,7 +280,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "There are whitecaps on the ocean of Venus. Hence there must be wind on Venus, since there cannot be whitecaps without wind.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -281,7 +298,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In an effort to boost sales during the summer months, which are typically the best for soft-drink sales, Foamy Soda lowered its prices. In spite of this, however, the sales of Foamy Soda dropped during the summer months.",
     "questionStem": "Each of the following, if true, contributes to reconciling the apparent discrepancy indicated above except:",
@@ -302,7 +321,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Dr. Z: Many of the characterizations of my work offered by Dr. Q are imprecise, and such characterizations do not provide an adequate basis for sound criticism of my work.",
     "questionStem": "Which one of the following can be properly inferred from Dr. Z’s statement?",
@@ -324,7 +343,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Evaluate",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "K, a research scientist, was accused of having falsified laboratory data. Although the original data in question have disappeared, data from K’s more recent experiments have been examined and clearly none of them were falsified. Therefore, the accusation should be dismissed.",
     "questionStem": "Which one of the following contains questionable reasoning that is most similar to that in the argument above?",
@@ -347,7 +368,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "An economic downturn has recently affected the region of Krisville and nearby areas, and therefore many citizens have lost their jobs. Storeowners in Krisville expected that people would buy fewer goods and that sales in Krisville stores would decline. However, it is now reported that the use of credit cards in Krisville has dramatically increased. This would not occur if people were purchasing fewer goods, since the only way of paying for goods with a credit card is to purchase those goods. Therefore, it is likely that sales in Krisville stores have not declined.",
     "questionStem": "The argument in the passage proceeds by doing which one of the following?",
@@ -370,7 +393,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "An economic downturn has recently affected the region of Krisville and nearby areas, and therefore many citizens have lost their jobs. Storeowners in Krisville expected that people would buy fewer goods and that sales in Krisville stores would decline. However, it is now reported that the use of credit cards in Krisville\nhas dramatically increased. This would not occur if people were purchasing fewer goods, since the only way of paying for goods with a credit card is to purchase those goods. Therefore, it is likely that sales in Krisville stores have not declined.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -391,7 +416,10 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Every student who walks to school goes home for lunch. It follows that some students who have part-time jobs do not walk to school.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -413,7 +441,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "When the Pinecrest Animal Shelter, a charitable organization, was in danger of closing because it could not pay for important repairs, its directors appealed to the townspeople to donate money that would be earmarked to pay for those repairs. Since more funds were ultimately donated than were used for the repairs, the directors plan to donate the surplus funds to other animal shelters. But before doing so, the directors should obtain permission from those who made the donations.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the position advocated above and yet places the least restriction on the allocation of funds by directors of charitable organizations?",
@@ -436,7 +467,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw: no matter how diligent the effort, the laws are impossible to enforce. Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law. That is why there should be no legal prohibition against gambling.",
     "questionStem": "Which one of the following, if assumed, allows the argument’s conclusion to be properly drawn?",
@@ -459,7 +492,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Copernicus’s astronomical system is superior to Ptolemy’s and was so at the time it was proposed, even though at that time all observational evidence was equally consistent with both theories. Ptolemy believed that the stars revolved around the earth at great speeds.\nThis struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
     "questionStem": "The argument most closely conforms to which one of the following principles?",
@@ -484,7 +519,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Essayist: The existence of a moral order in the universe—i.e., an order in which bad is always eventually punished and good rewarded—depends upon human souls being immortal. In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated, in others it results from the actions of a supreme being who metes out justice to people after their death. But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
     "questionStem": "Which one of the following most accurately describes a flaw in the essayist’s reasoning?",
@@ -507,7 +544,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No mathematical proposition can be proven true by observation. It follows that it is impossible to know any mathematical proposition to be true.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -529,7 +568,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The publisher of a best-selling self-help book had, in some promotional material, claimed that it showed readers how to become exceptionally successful. Of course, everyone knows that no book can deliver to the many what, by definition, must remain limited to the few: exceptional success. Thus, although it is clear that the publisher knowingly made a false claim, doing so should not be considered unethical in this case.",
     "questionStem": "Which one of the following principles, if valid, most strongly supports the reasoning above?",

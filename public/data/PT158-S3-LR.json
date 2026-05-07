@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "In the previous two years, significantly more rain has\n fallen in Browning in September than in July. Therefore,\n this year in Browning more rain will probably fall in\n September than in July.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
@@ -29,7 +31,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Educator: Few problems faced in daily life can be\n solved most effectively, if at all, by applying\n knowledge from any single academic discipline\n in isolation. Thus, schools should not require\n students to take courses in individual academic\n disciplines but should instead require them to\n take interdisciplinary courses.",
     "questionStem": "Which one of the following, if true, most strengthens the\n educator’s argument?",
@@ -52,7 +56,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Newspaper columnist: What caused the current recession\n is a hotly debated question. It is a mistake,\n however, to assume that answering this question\n is essential to improving the economy. Corrective\n lenses, after all, were an effective treatment for\n myopia long before the cause was known to be\n genetic.",
     "questionStem": "Which one of the following most accurately expresses\n the conclusion drawn in the newspaper columnist’s\n argument?",
@@ -76,7 +80,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Generally, it is important that people practice what\n they preach, yet there are exceptions. For instance, it\n is no more necessary for logicians to be logical in their\n discussions of logic than it is for physicians to have\n healthy lifestyles in order to treat people.",
     "questionStem": "A questionable aspect of the reasoning above is that it\n fails to take into account that",
@@ -98,7 +104,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Domesticated animals, such as dogs, have come into\n existence by the breeding of only the individuals of a\n wild species that are sufficiently tame. For example, if\n when breeding wolves one breeds only those that display\n tameness when young, then after a number of generations\n the offspring will be a species of dog. Therefore, all\n animals can, in principle, be bred for domesticity.",
     "questionStem": "Which one of the following, if true, most weakens the\n argument?",
@@ -121,7 +129,10 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Surprisingly, a new study has revealed that shortly after a\n heavy rainfall, pollution levels in Crystal Bay reach their\n highest levels. This occurs despite the fact that rainwater\n is almost totally pure and one would therefore expect that\n it would dilute the polluted seawater.",
     "questionStem": "Which one of the following, if true, most helps to\n explain why pollution levels in Crystal Bay increase\n after a heavy rainfall?",
@@ -139,7 +150,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Ethicist: This hospital’s ethics code states that hospital\n staff must not deceive patients about their\n medical treatment. But we know that Dr. Faris\n administered medication A to a patient and\n informed him that it would help him sleep.\n Medication A has no known sleep-inducing\n properties. So, Dr. Faris is clearly in violation of\n the ethics code, despite the fact that the patient’s\n sleep did improve after taking medication A.",
     "questionStem": "Which one of the following, if true, most seriously\n weakens the ethicist’s argument?",
@@ -161,7 +175,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Student: My paper was not graded in accordance with\n the professor’s stated criteria. The professor said\n that she would give A’s only to papers whose\n conclusions were supported by reliable statistical\n evidence. The professor acknowledges that my\n conclusions were supported by reliable statistical\n evidence, but she gave my paper a B.",
     "questionStem": "The reasoning in the student’s argument is flawed in that\n the argument",
@@ -184,7 +200,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Consumer advocate: Even relatively minor drug-related\n interactions can still be harmful to patients.\n For example, aspirin taken with fruit juice\n is ineffective. People unaware of this suffer\n unnecessary discomfort or take more aspirin than\n necessary. The government should, therefore,\n require drug companies to notify consumers of all\n known drug-related interactions.",
     "questionStem": "Which one of the following, if true, most weakens the\n consumer advocate’s argument?",
@@ -207,7 +225,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Radioactive elements may have been created when\n the universe began. However, even if this occurred,\n these elements are clearly still being created in the\n universe today. Radioactive elements are unstable, so\n most of them decay within at most a few million years\n into other, nonradioactive elements. So, if no new\n radioactive elements had been created after the universe\n began, almost no radioactive elements would be left in\n the universe today, but there is an abundance of such\n elements.",
     "questionStem": "Which one of the following most accurately expresses\n the main conclusion of the argument?",
@@ -233,7 +253,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "There is evidence that a certain ancient society burned\n large areas of land. Some suggest that this indicates the\n beginning of large-scale agriculture in that society—\n that the land was burned to clear ground for planting.\n But there is little evidence of cultivation after the fires.\n Therefore, it is likely that this society was still a hunter-\n gatherer society.",
     "questionStem": "Which one of the following, if true, most strengthens the\n argument?",
@@ -256,7 +278,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Professor Shanaz: People generally notice and are\n concerned about only the most obvious public\n health problems. Although there is indisputable\n evidence that ozone, an air pollutant, can be\n dangerous for severe asthmatics even if found\n in levels much lower than maximum levels\n permitted by law, most people are currently\n well aware that contaminated water presents a\n much more widespread threat to our community.\n Hence, there is unlikely to be a widespread,\n grassroots effort for new, more restrictive air\n pollution controls at this time.",
     "questionStem": "Which one of the following most accurately describes\n the role played in Professor Shanaz’s argument by the\n claim that people generally notice and are concerned\n about only the most obvious public health problems?",
@@ -278,7 +302,10 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Psychotherapist: The troubles from which a patient\n seeks relief through psychotherapy do not have\n purely internal causes; rather, those troubles\n result in part from the patient’s relationships with\n other people. Hence, to help the patient heal,\n the psychotherapist must focus on the need for\n positive change in those relationships.",
     "questionStem": "Which one of the following is an assumption the\n psychotherapist’s argument requires?",
@@ -302,7 +329,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some freelance journalists sell their work to magazines\n that have lax editorial standards. No self-respecting\n writer sells his or her work to magazines that have lax\n editorial standards. Therefore, some self-respecting\n writers are not freelance journalists.",
     "questionStem": "Which one of the following displays a flawed pattern of\n reasoning most similar to the one in the argument\n above?",
@@ -325,7 +354,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Selling syndicated reruns of a popular network television\n program while the program is still running on the\n network can lead to decreased revenues for that network. The show’s producers do earn a great deal of money from\n the sale of the syndication rights because the stations\n rerunning the program are assured of a successful show. However, a recent study shows that over 80 percent\n of the programs that are made available as reruns and\n as first-run episodes during the same season suffer an\n immediate ratings drop for their first-run episodes.",
     "questionStem": "The argument depends on assuming which one of the\n following?",
@@ -347,7 +379,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If a belief is based on information from a reliable source,\n then it is reasonable to maintain that belief. Furthermore,\n some beliefs are based on information from a reliable\n source and yet are neither self-evident nor grounded in\n observable evidence.",
     "questionStem": "If all the statements above are true, which one of the\n following statements must be true?",
@@ -368,7 +402,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Situation: A physical therapist wants her patients to\n derive more enjoyment from the challenge of\n developing physical skills. She also wants them\n to spend more time practicing those skills. Analysis: Success in meeting the first objective will bring\n about success in meeting the second.",
     "questionStem": "The analysis provided for the situation above could be\n appropriate for each of the following situations except:",
@@ -391,7 +427,10 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Classicist: Our mastery of Latin and Ancient Greek is\n at best imperfect. The best students of a modern\n language may so immerse themselves in a\n country where it is spoken as to attain nearly\n perfect knowledge; but you cannot travel back in\n time to spend a year abroad at Plato’s Academy.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the classicist’s argument by the claim\n that you cannot travel back in time to spend a year\n abroad at Plato’s Academy?",
@@ -415,7 +454,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "For there to be a thriving population of turtles in a pond,\n conditions at that pond must be beneficial to turtles. The\n water in Wallakim Pond, unlike that in Sosachi Pond, is\n acidic. Thus, there must not be a thriving population of\n turtles at Wallakim Pond.",
     "questionStem": "Which one of the following, if assumed, enables the\n argument’s conclusion to be properly drawn?",
@@ -438,7 +479,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The study of primates is interesting for many reasons,\n including the fact that only primates have opposable\n thumbs. The lemurs are lower primates and the only\n primates indigenous to Madagascar, a large island off the\n coast of southeastern Africa. Some species of lemurs are\n the only living lower primates that are diurnal—that is,\n active primarily during the day. All higher primates are\n thought to have evolved from a single diurnal species of\n lower primates.",
     "questionStem": "Which one of the following can be properly inferred\n from the information above?",
@@ -456,7 +499,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Professor: Many scientists hypothesize that there is an\n invisible “light-absorbing medium” in outer\n space. In support, they argue that the medium’s\n existence would explain the low visibility of\n other star systems from Earth. But there is\n actually no reason to believe that the hypothesis\n is correct, since the low visibility in question\n is already completely explained by the general\n theory of relativity.",
     "questionStem": "Which one of the following is an assumption required by\n the professor’s argument?",
@@ -480,7 +525,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some researchers claim that people tend to gesture less\n when they articulate what would typically be regarded\n as abstract rather than physical concepts. To point out\n that such a correlation is far from universal is insufficient\n reason to reject the researchers’ claim, because some\n people perceive words like “comprehension” as\n expressing a physical action, like grasping something,\n rather than a state of understanding, which is abstract.",
     "questionStem": "Which one of the following most accurately describes\n the method of reasoning used in the argument?",
@@ -502,7 +549,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "According to rational-choice theory, popular support for\n various political parties can be explained sufficiently\n in terms of deliberate decisions by individual voters to\n support the party whose policies they believe will yield\n them the greatest economic advantage. This theory is\n opposed by many sociologists on the grounds that a\n complex phenomenon such as the rise of a political\n organization cannot be caused by a simple phenomenon.",
     "questionStem": "It can be properly inferred from the statements above\n that many sociologists believe that",
@@ -525,7 +574,10 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Scientist: Some consumer groups claim that the\n economic benefits of genetically engineered\n foodstuffs may be offset by hidden health risks to\n humans. However, the risk is minimal. In most\n cases of deliberate alteration of a plant’s genetic\n structure only a single gene in about 750,000 has\n been changed. Since the change in the organism’s\n genetic structure is so slight, it cannot have\n effects significant enough to be worrisome.",
     "questionStem": "Which one of the following, if true, most weakens the\n scientist’s argument?",
@@ -549,7 +601,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A government is justified in interfering with a person’s\n action if the action would increase the likelihood of\n physical harm to others and the action is not motivated by\n a desire to help others.",
     "questionStem": "Of the following judgments, which one most closely\n conforms to the principle above?",

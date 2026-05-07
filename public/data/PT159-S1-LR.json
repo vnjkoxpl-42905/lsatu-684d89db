@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Sampling",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: The dangers of drinking are greatly exaggerated in the medical press. We are always hearing about the extent to which alcohol can shorten one’s life, but my grandfather drank heavily his entire life and lived to be 95.",
     "questionStem": "The reasoning in the columnist’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -28,7 +30,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Analogy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some have argued that using food crops to produce fuel represents an unprecedented attack on the food supply. It seems immoral to divert crops from the food supply while there is a need for food. But we currently divert crops from the human food supply to feed livestock. So the diversion of food to fuel is not actually a radical break with traditional practices.",
     "questionStem": "The argument proceeds by",
@@ -51,7 +55,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Hernandez: Celebrities’ public pronouncements can warp a debate because people grant more weight to celebrities’ opinions than to ordinary people’s. For that reason, celebrities should avoid talking publicly about controversial issues on which they have no expertise. Liu: But celebrities are full members of their communities. It is not their fault if people give their opinions more credence than they should. So it is absurd that they should not feel free to join controversial debates.",
     "questionStem": "Hernandez and Liu disagree with each other about which one of the following?",
@@ -72,7 +78,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A process of extracting caffeine from coffee without seriously compromising the coffee’s taste was introduced a number of years ago. When this decaffeinated coffee first came on the market, however, many coffee drinkers reported that it tasted rather bad.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the statements above?",
@@ -90,7 +98,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researchers gave each of eighteen subjects a playing card, then offered them money to lie to a computer about the identity of the card while undergoing a scan by functional magnetic resonance imaging (fMRI). When subjects lied, the scans revealed increased activity in several regions of the brain known to be stimulated by stress. This supports the idea that fMRI can eventually form the basis of an effective lie detector.",
     "questionStem": "Which one of the following would, if true, most weaken the argument above?",
@@ -113,7 +123,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Prominent government officials have denied that their policies have produced serious environmental degradation. But the facts show otherwise. Last year, at the urging of certain mining companies, the government repealed a long-standing provision prohibiting the dumping of mining wastes into streams. Since that time, hundreds of miles of vital streams have been buried under bulldozed mining wastes.",
     "questionStem": "The argument relies on which one of the following assumptions?",
@@ -137,7 +149,10 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Critic: It generally holds true of concert pianists that the more famous the musician, the greater the pleasure of his or her audience. In my view, this is only fair and should give no cause for cynicism about the ability of audiences to distinguish good playing from bad.",
     "questionStem": "Which one of the following, if true, most strongly supports the critic’s view?",
@@ -159,7 +174,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Scientists found the remains of several species of mites trapped in rocks in a high-altitude cave. Radioactive dating shows that the mites were trapped about 2,000 years ago. The mite species in the rocks no longer live in the vicinity of the cave, but they are found a few miles away in a cooler area. Therefore, the area around the cave was probably cooler 2,000 years ago, since _______.",
     "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
@@ -183,7 +200,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Market studies confirm that consumers shopping for automobiles primarily seek those that are most reliable. An automobile is reliable if it very rarely breaks down and it does not require significantly more maintenance than average. Strangely enough, however, some of the most reliable models do not sell well with those who say they care most about reliability.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -201,7 +218,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Quantifier",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A recent study found that most individuals believe that they sleep less than most other people. However, it is obviously not possible that most people sleep less than most other people. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -225,7 +244,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Ross: Many governments have attempted to regulate strictly or even outlaw theater because of its subversive power. Such strategies have rarely succeeded, probably because people strongly desire theater for entertainment and dramatists always find subtle ways to criticize authorities who treat them harshly. Thus, since dramatists will not criticize governments of which they are honored employees, an effective strategy for controlling theater and satisfying the public is to make dramatists and performers honored employees of the government.",
     "questionStem": "Which one of the following, if true, would most weaken Ross’s argument?",
@@ -246,7 +267,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Inference",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Many hikers now carry cell phones so they can call for emergency assistance from remote areas. Many also use their cell phones to call wildlife offices when they see poachers breaking game laws, enabling wildlife agents to reach the scene before the lawbreakers leave. Poachers, however, avoid areas they know to be frequented by hikers.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -269,7 +292,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Definition / Concept",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A cognitive psychologist has claimed that intelligence is the ability to figure out how things work in order to overcome obstacles. If, however, we were to become convinced that a particular being had acquired an understanding of how things work, we would certainly not deny that that being possessed intelligence, even if we were sure that its acquisition of this understanding was not prompted by the desire to overcome some specific obstacle. Clearly, then, the cognitive psychologist’s definition is inadequate.",
     "questionStem": "In the passage the author does which one of the following?",
@@ -290,7 +315,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Environmentalist: The adoption of genetically engineered crops in agriculture is moving so rapidly and is monitored so loosely that it poses a significant risk of damaging sensitive ecosystems. One such crop had already been widely planted when a study found that it could threaten monarch butterflies. Therefore, before any new genetically engineered crop is put into agricultural production, rigorous testing of its safety should be required.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the environmentalist’s reasoning?",
@@ -308,7 +335,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Analogy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Faculty member: The university’s financially minded president holds that some academic programs should be eliminated because they do not serve student demands. According to him, the university is a business and the students are consumers, and it is the responsibility of any business to satisfy consumer demand. But the education of students is not analogous to the providing of consumer goods. Therefore, the president is mistaken in claiming that academic programs should be tailored to suit student demand.",
     "questionStem": "The faculty member’s argument is most vulnerable to the criticism that it",
@@ -330,7 +359,10 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A recent study carefully tracked the specific behaviors of five East African chimpanzee groups of one subspecies, and of two West African groups of another subspecies, in activities such as grooming and foraging. The study found that one of the East African groups was behaviorally more similar to the West African groups than to the other East African groups. It is therefore likely that these behaviors are determined by cultural factors rather than by genetics.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
@@ -353,7 +385,10 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Value Judgment",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Essayist: It would be wrong to defend current testing procedures for new medications simply by appealing to the fact that test subjects are volunteers who are both apprised of and compensated for the risks involved. For while it is not wrong to pay people to do something if they are freely choosing to do it, the same cannot be said if the choice is made under duress.",
     "questionStem": "Which one of the following is an assumption required by the essayist’s argument?",
@@ -374,7 +409,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Putting a tap in a healthy maple that has a trunk 12 or more inches in diameter will not harm the tree. Silver maples, red maples, and Manitoba maples can all be tapped for making maple syrup. The sugar maple, however, is best for syrup making, because of all the maples its sap has the highest concentration of sugar.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -396,7 +433,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Company spokesperson: Although our products are the most expensive in our industry, they are also the best available. After all, consider any less expensive product made by one of our competitors. If it were as good as, or better than, our product, it would cost as much, or more.",
     "questionStem": "The reasoning in the company spokesperson’s argument is flawed in that the argument",
@@ -417,7 +456,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "It should be illegal to patent an organism’s genes, for a person should not be regarded as the inventor of something he or she merely discovered. Moreover, exploitation of genetic information for profit is selfish and irresponsible.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argument?",
@@ -438,7 +479,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Professor O’Brien: Any of my students who heard Mercado’s lecture from the beginning would have thought it was fascinating, and I know that some of my students did think it was fascinating, so some of my students must have heard it from the beginning.",
     "questionStem": "Professor O’Brien’s argument does not follow logically from its premises because of the possibility that",
@@ -460,7 +503,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some moral virtues, such as honesty, tend to benefit one who has them; others, such as generosity, do not. A personal characteristic is not a moral virtue if it tends to be detrimental to other people.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -482,7 +527,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "During last year’s flu season no one who was vaccinated contracted the flu. This year every student at South High School has been vaccinated. So this flu season none of the students at South High School will contract the flu.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -504,7 +551,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Advertising agencies are often wrongly criticized for causing people to desire, and thus purchase, products they do not really need. People actually buy what they buy mainly because they believe the product will satisfy their desires—a belief that, admittedly, it is the purpose of advertising agencies to induce. It is clear then that the desires that people believe products will satisfy _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -526,7 +575,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Sampling",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Artist: I have never won a prize at the Art Competition, even though several of my submitted paintings have received widespread recognition and have sold thousands of copies as posters. I know six other popular artists who have submitted works to that competition and fared no better. Thus, winning the Art Competition proves that an artist is no good.",
     "questionStem": "The pattern of flawed reasoning in which one of the following arguments most closely resembles that in the artist’s argument?",

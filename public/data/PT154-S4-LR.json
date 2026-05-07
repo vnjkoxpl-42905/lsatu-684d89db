@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "One reason swimming immediately after eating is thought to be dangerous is that it could cause muscle cramps. But there is no reason to believe this. Muscle cramps are usually caused by muscle fatigue and dehydration, which are unrelated to eating. Reduced blood flow to muscles during digestion might also be a cause, though this is disputed. In any case, not enough blood goes to the stomach to aid in digestion after a meal to reduce blood flow to muscles.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -29,7 +29,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Flores: The behavior of the character Gawain in Malory’s Le Morte D’Arthur fluctuates radically and without apparent reason between heroic and criminal. Malory’s portrayal of Gawain is incoherent in this way because Malory based his book on earlier sources from different eras, and Gawain’s role changed over time.\nPiro: While the variation you mention might stem from the different times that Malory’s sources were written, in Malory’s work Gawain’s heroic behavior occurs during crises, but his criminal behavior occurs during stable periods, when there is more room to break the rules.",
     "questionStem": "The dialogue provides most support for the claim that Flores and Piro disagree over whether",
@@ -50,7 +52,10 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Audiologist: What is often considered age-related hearing loss is really the accumulated damage of long-term exposure to loud noise. This is demonstrated by studies of remote populations, who have little exposure to loud noise. These studies found that age-related hearing loss in these populations was limited or nonexistent.",
     "questionStem": "Which one of the following, if true, most strengthens the audiologist’s argument?",
@@ -68,7 +73,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A rare Roman bronze helmet was recently discovered in England and sold to a private collector. An English law that requires finders of valuable antiquities to offer them to English museums at reasonable prices did not apply to the Roman helmet because it is neither prehistoric nor made of precious metal. The law is therefore inadequate as a means of giving the English people access to their archaeological heritage.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -90,7 +97,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Professor: During election years, voters often feel that they are insufficiently informed about election issues. And studies have revealed the surprising fact that regular subscribers to the few newspapers that do provide extensive coverage of election issues are no better informed about election issues than subscribers to newspapers that have very little coverage of these issues.",
     "questionStem": "Which one of the following, if true, most helps to explain the surprising fact stated by the professor?",
@@ -108,7 +117,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Historian: Much of what made medieval European communities as close-knit as they usually were was the way they went about meeting basic needs. In medieval communities, in order to get crops harvested or a well dug, people had to come together in respectful cooperation, suspending any private grievances. So if people in industrialized societies today undertook corresponding group tasks, their communities would probably become more close-knit.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the historian’s argument?",
@@ -133,7 +142,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Late blight is a disease affecting tomato plants that causes blue-grey patches to appear on the leaves. Applying a copper solution to the blighted plants is an effective treatment for the disease. Therefore, late blight must be caused by a deficiency of copper in the plant’s mineral intake.",
     "questionStem": "The flawed nature of the argument can be most effectively demonstrated by noting that, by parallel reasoning, we could argue that",
@@ -151,7 +162,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Statistics show clearly that in those countries with the most severe penalties for driving while intoxicated, a smaller percentage of drivers have traffic accidents involving alcohol use than in other countries. This refutes those who claim that would-be drunk drivers will not be deterred by the prospect of severe penalties.",
     "questionStem": "Which one of the following would, if true, most undermine the argument?",
@@ -169,7 +182,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Principle Conform",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Many airlines offer, for a fee, to “offset” the carbon emissions produced when you fly, but such schemes are almost entirely ineffective. Although the fees are usually invested in projects that directly reduce carbon emissions, in most cases these projects would have proceeded even without that investment, so no carbon emissions are prevented.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
@@ -190,7 +205,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Columnist: The dangers of mountain climbing have been greatly exaggerated by the popular media. In the 80 years from 1922 to 2002, there were fewer than 200 climbing fatalities on Mount Everest, one of the most dangerous mountains in the world. Contrast that with the more than 7,000 traffic fatalities in France alone in 2002.",
     "questionStem": "The reasoning in the columnist’s argument is flawed because it fails to consider",
@@ -208,7 +225,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Gyms and fitness centers are sometimes good places to buy used exercise machines. When gyms and fitness centers upgrade machines, they often sell the old machines at reasonable prices. Although these exercise machines have generally seen considerable use, they are also built better than machines designed for home use and are likely to have been well maintained.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument above?",
@@ -229,7 +248,10 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A lichen is made up of a photosynthetic organism and a fungus growing in symbiosis on a solid surface. Lichens absorb minerals from air and rainwater but also from the surfaces on which they grow; they cannot excrete the elements they absorb. Some varieties are very vulnerable to toxic compounds, including compounds found in polluted air. Such compounds can damage both of the symbiotic partners.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -250,7 +272,11 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Lindsey: There are, of course, many poets with cheerful dispositions; however, those I have met have much more often been disposed to melancholy. Thus, if the poets I have met are representative of poets generally, one can reasonably conclude that many poets are made melancholy by writing poetry. As everyone knows, an activity as profound and engrossing as writing poetry can be depressing.",
     "questionStem": "Which one of the following most accurately describes the role played in Lindsey’s argument by the claim that an activity as profound and engrossing as writing poetry can be depressing?",
@@ -268,7 +294,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "People’s antagonism to development in their neighborhoods can be harmful to a city. For example, nightclubs tend to be unpopular with neighbors because of the late hours they keep. So if neighborhoods are allowed to block new nightclubs, a city will never get new nightclubs.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -293,7 +321,10 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Many popular novels have stylistic elements commonly associated with journalistic writing. Moreover, many authors of popular novels began their careers as journalists. So using a journalistic writing style increases the chances that a novel will be popular.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -311,7 +342,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Researchers investigating the accuracy of eyewitness accounts staged and made a video of a crime, and showed it to test subjects. A lineup of “suspects,” none of whom was the person playing the criminal in the video, was then shown to the subjects. When the subjects were not told that the suspect might not be in the lineup, 78 percent of them misidentified one or another of the persons in the lineup as the criminal. Only 38 percent of the subjects made misidentifications when they were told that the suspect might not be in the lineup.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -332,7 +365,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Advice columnist: Parents should not encourage their children to place great value on outdoing others. Being motivated in this way not only fosters resentment, it makes one less happy because it gives one a desire for achievement that is difficult to satisfy.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
@@ -353,7 +388,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Economist: Machinery firms in this country argue that in order to grow big enough to compete successfully with foreign rivals, the protection that they have been receiving from foreign competition must be extended for several more years. Yet these firms have been receiving protection from foreign competition for the last ten years. If it were possible for protection from foreign competition to enable this country’s machinery firms to grow big enough to compete successfully with foreign rivals, ten years would be a sufficient time frame for this to happen.",
     "questionStem": "The economist’s statements, if true, most strongly support which one of the following?",
@@ -371,7 +408,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Store owner: My customers are not worried about crime in this neighborhood; every day I talk to people who shop at my store, and they tell me that they are not worried. So crime is not adversely affecting my business by reducing the number of people willing to shop at my store.",
     "questionStem": "The reasoning in the store owner’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -393,7 +432,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Critic: The more a novel appeals to the general public, the more money its author will make from it. However, since any serious novelist cares about literary style, no serious novelist is motivated primarily by the desire to make money.",
     "questionStem": "The conclusion of the critic’s argument follows logically if which one of the following is assumed?",
@@ -411,7 +452,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Engineer: Air bags in automobiles occasionally cause injuries by accidentally inflating when no collision has occurred. Automobile manufacturers are attempting to fix the problem by inventing more elaborate computer control systems for air bags. But the more complex such a system is, the more ways there are in which it can fail. Thus, the new computer control systems will probably only make the problems with accidental air bag inflation even worse.",
     "questionStem": "The engineer’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -429,7 +472,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Educator: Environmental factors clearly have little effect on whether a teenager will participate in sports. Family life is probably the strongest environmental factor, yet it is common for one teenager in a family to participate in sports enthusiastically while other teenagers in the family are indifferent to sports. Moreover, school programs designed to encourage inactive teenagers to participate in sports are generally ineffective.",
     "questionStem": "Which one of the following, if true, most seriously weakens the educator’s argument?",
@@ -451,7 +496,10 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Safety expert: Conversing on a cell phone while driving is more dangerous than conversing with a passenger in the vehicle. The person talking with the driver on a cell phone is unable to see the driving situation and, hence, cannot immediately recognize situations in which driving becomes difficult. In contrast, a passenger in the vehicle will usually be quiet or even provide helpful warnings in such situations.",
     "questionStem": "Which one of the following is an assumption required by the safety expert’s argument?",
@@ -473,7 +521,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "People who have experienced a traumatic event but who did not subsequently develop post-traumatic stress disorder (PTSD) tend to produce higher levels of the hormone cortisol when exposed to stress than do people who have not experienced traumatic events. This suggests that experiencing a traumatic event can affect how much cortisol one produces in response to stress.",
     "questionStem": "Which one of the following, if true, most weakens the argument above?",
@@ -496,7 +546,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The technical sophistication of commercial fishing equipment increased steadily from 1960 through 2010, which enabled the commercial fishing industry to harvest a greater percentage of the total amount of fish, by weight, in the world’s oceans in each succeeding year during that time. The commercial fishing industry’s harvest, by weight, increased steadily from 1960 until 1995 but did not increase after 1995.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -517,7 +569,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Current evidence indicates that there is no methane on Planet 253. If that is the case, it is certain that there is no life on Planet 253. Since microbes always produce methane, if there is no methane then there are no microbes.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",

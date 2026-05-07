@@ -4,7 +4,10 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Jim’s teacher asked him to determine whether a sample of a substance contained iron. Jim knew that magnets attract iron, so he placed a magnet near the substance. Jim concluded that the substance did contain iron, because the substance became attached to the magnet.",
     "questionStem": "Jim’s reasoning is questionable in that it fails to consider the possibility that",
@@ -26,7 +29,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "All the books in the library have their proper shelf locations recorded in the catalog. The book Horatio wants is missing from its place on the library shelves, and no one in the library is using it. Since it is not checked out to a borrower nor awaiting shelving nor part of a special display, it must have been either misplaced or stolen.",
     "questionStem": "Which one of the following most accurately describes the method of reasoning used in the argument?",
@@ -48,7 +53,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The level of sulfur dioxide in the atmosphere is slightly higher than it was ten years ago. This increase is troubling because ten years ago the Interior Ministry imposed new, stricter regulations on emissions from coal-burning power plants. If these regulations had been followed, then the level of sulfur dioxide in the atmosphere would have decreased.",
     "questionStem": "Which one of the following can be properly inferred from the statements above?",
@@ -71,7 +78,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Ecologist: Landfills are generally designed to hold ten years’ worth of waste. Some people maintain that as the number of active landfills consequently dwindles over the coming decade, there will inevitably be a crisis in landfill availability. However, their prediction obviously relies on the unlikely assumption that no new landfills will open as currently active ones close and is therefore unsound.",
     "questionStem": "The claim that there will be a crisis in landfill availability plays which one of the following roles in the ecologist’s argument?",
@@ -92,7 +101,10 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Recent epidemiological studies report that Country X has the lowest incidence of disease P of any country. Nevertheless, residents of Country X who are reported to have contracted disease P are much more likely to die from it than are residents of any other country.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
@@ -113,7 +125,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "After an oil spill, rehabilitation centers were set up to save sea otters by removing oil from them. The effort was not worthwhile, however, since 357 affected live otters and 900 that had died were counted, but only 222 affected otters, or 18 percent of those counted, were successfully rehabilitated and survived. Further, the percentage of all those affected that were successfully rehabilitated was much lower still, because only a fifth of the otters that died immediately were ever found.",
     "questionStem": "Which one of the following, as potential challenges, most seriously calls into question evidence offered in support of the conclusion above?",
@@ -136,7 +150,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Psychologist: Research has shown that a weakened immune system increases vulnerability to cancer. So, cancer-patient support groups, though derided by those who believe that disease is a purely biochemical phenomenon, may indeed have genuine therapeutic value, as it is clear that participation in such groups reduces participants’ stress levels.",
     "questionStem": "Which one of the following is an assumption required by the psychologist’s argument?",
@@ -159,7 +176,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Main Conclusion",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Adobe is an ideal material for building in desert environments. It conducts heat very slowly. As a result, a house built of adobe retains the warmth of the desert sun during the cool evenings and then remains cool during the heat of the day, thereby helping to maintain a pleasant temperature. In contrast, houses built of other commonly used building materials, which conduct heat more rapidly, grow hot during the day and cold at night.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the argument above?",
@@ -180,7 +199,10 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "In one study of a particular plant species, 70 percent of the plants studied were reported as having patterned stems. In a second study, which covered approximately the same geographical area, only 40 percent of the plants of that species were reported as having patterned stems.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
@@ -198,7 +220,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Letter to the editor: Sites are needed for disposal of contaminated dredge spoils from the local harbor. However, the approach you propose would damage commercial fishing operations. One indication of this is that over 20,000 people have signed petitions opposing your approach and favoring instead the use of sand-capped pits in another area.",
     "questionStem": "Which one of the following most accurately describes a reasoning flaw in the letter’s argument?",
@@ -219,7 +243,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Most universities today offer students a more in-depth and cosmopolitan education than ever before. Until recently, for example, most university history courses required only the reading of textbooks that hardly mentioned the history of Africa or Asia after the ancient periods, or the history of the Americas’ indigenous cultures. The history courses at most universities no longer display such limitations.",
     "questionStem": "Which one of the following, if true, most strengthens the argument above?",
@@ -241,7 +267,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The government has recently adopted a policy of publishing airline statistics, including statistics about each airline’s number of near collisions and its fines for safety violations. However, such disclosure actually undermines the government’s goal of making the public more informed about airline safety, because airlines will be much less likely to give complete reports if such information will be made available to the public.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
@@ -264,7 +292,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Many economists claim that financial rewards provide the strongest incentive for people to choose one job over another. But in many surveys, most people do not name high salary as the most desirable feature of a job. This shows that these economists overestimate the degree to which people are motivated by money in their job choices.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -289,7 +319,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Editorial: A proposed new law would limit elementary school class sizes to a maximum of 20 students. Most parents support this measure and argue that making classes smaller allows teachers to devote more time to each student, with the result that students become more engaged in the learning process. However, researchers who conducted a recent study conclude from their results that this reasoning is questionable. The researchers studied schools that had undergone recent reductions in class size, and found that despite an increase in the amount of time teachers spent individually with students, the students’ average grades were unchanged.",
     "questionStem": "Which one of the following is an assumption required by the researchers’ argument?",
@@ -313,7 +345,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Camille: Manufacturers of water-saving faucets exaggerate the amount of money such faucets can save. Because the faucets handle such a low volume of water, people using them often let the water run longer than they would otherwise. Rebecca: It is true that showering now takes longer. Nevertheless, I have had lower water bills since I installed a water-saving faucet. Thus, it is not true that the manufacturers’ claims are exaggerated.",
     "questionStem": "The reasoning in Rebecca’s argument is questionable in that she takes for granted that",
@@ -338,7 +372,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Company spokesperson: In lieu of redesigning our plants, our company recently launched an environmental protection campaign to buy and dispose of old cars, which are generally highly pollutive. Our plants account for just 4 percent of the local air pollution, while automobiles that predate 1980 account for 30 percent. Clearly, we will reduce air pollution more by buying old cars than we would by redesigning our plants.",
     "questionStem": "Which one of the following, if true, most seriously weakens the company spokesperson’s argument?",
@@ -361,7 +397,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Humankind would not have survived, as it clearly has, if our ancestors had not been motivated by the desire to sacrifice themselves when doing so would ensure the survival of their children or other close relatives. But since even this kind of sacrifice is a form of altruism, it follows that our ancestors were at least partially altruistic.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -382,7 +420,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Bus driver: Had the garbage truck not been exceeding the speed limit, it would not have collided with the bus I was driving. I, on the other hand, was abiding by all traffic regulations-as the police report confirms. Therefore, although I might have been able to avoid the collision had I reacted more quickly, the bus company should not reprimand me for the accident.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the bus driver’s argument?",
@@ -405,7 +445,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Historian: Radio drama requires its listeners to think about what they hear, picturing for themselves such dramatic elements as characters’ physical appearances and spatial relationships. Hence, while earlier generations, for whom radio drama was the dominant form of popular entertainment, regularly exercised their imaginations, today’s generation of television viewers do so less frequently.",
     "questionStem": "Which one of the following is an assumption required by the historian’s argument?",
@@ -429,7 +471,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Each of the candidates in this year’s mayoral election is a small-business owner. Most small-business owners are competent managers. Moreover, no competent manager lacks the skills necessary to be a good mayor. So, most of the candidates in this year’s mayoral election have the skills necessary to be a good mayor.",
     "questionStem": "The pattern of flawed reasoning in which one of the following is most similar to that in the argument above?",
@@ -451,7 +495,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "One of the most useful social conventions is money, whose universality across societies is matched only by language. Unlike language, which is rooted in an innate ability, money is an artificial, human invention. Hence, it seems probable that the invention of money occurred independently in more than one society.",
     "questionStem": "The argument’s conclusion is properly drawn if which one of the following is assumed?",
@@ -473,7 +519,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Libel is defined as damaging the reputation of someone by making false statements. Ironically, strong laws against libel can make it impossible for anyone in the public eye to have a good reputation. For the result of strong libel laws is that, for fear of lawsuits, no one will say anything bad about public figures.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
@@ -496,7 +544,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Mammals cannot digest cellulose and therefore cannot directly obtain glucose from wood. Mushrooms can, however; and some mushrooms use cellulose to make highly branched polymers, the branches of which are a form of glucose called beta-glucans. Beta-glucan extracts from various types of mushrooms slow, reverse, or prevent the growth of cancerous tumors in mammals, and the antitumor activity of beta-glucans increases as the degree of branching increases. These extracts prevent tumor growth not by killing cancer cells directly but by increasing immune-cell activity.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -519,7 +569,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A law is successful primarily because the behavior it prescribes has attained the status of custom. Just as manners are observed not because of sanctions attached to them but because, through repetition, contrary behavior becomes unthinkable, so societal laws are obeyed not because the behavior is ethically required or because penalties await those who act otherwise, but because to act otherwise would be uncustomary.",
     "questionStem": "Which one of the following comparisons is utilized by the argument?",

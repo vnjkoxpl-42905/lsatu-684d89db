@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Principle-Conform",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Any museum that owns the rare stamp that features an airplane printed upside down should not display it. Ultraviolet light causes red ink to fade, and a substantial portion of the stamp is red. If the stamp is displayed, it will be damaged. It should be kept safely locked away, even though this will deny the public the chance to see it.",
     "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
@@ -29,7 +31,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Unknown",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Dietitian: Many diet-conscious consumers are excited about new “fake fat” products designed to give food the flavor and consistency of fatty foods, yet without fat’s harmful effects. Consumers who expect the new fat substitute to help them lose weight are likely to be disappointed, however. Research has shown that when people knowingly or unknowingly eat foods containing “fake fat,” they tend to take in at least as many additional calories as are saved by eating “fake fat.”",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the dietitian’s argument?",
@@ -53,7 +55,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Banking analyst: Banks often offer various services to new customers at no charge. But this is not an ideal business practice, since regular, long-term customers, who make up the bulk of the business for most banks, are excluded from these special offers.",
     "questionStem": "Which one of the following, if true, most strengthens the banking analyst’s argument?",
@@ -76,7 +80,10 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Panelist: Medical research articles cited in popular newspapers or magazines are more likely than other medical research articles to be cited in subsequent medical research. Thus, it appears that medical researchers’ judgments of the importance of prior research are strongly influenced by the publicity received by that research and do not strongly correspond to the research’s true importance.",
     "questionStem": "The panelist’s argument is most vulnerable to criticism on the grounds that it",
@@ -100,7 +107,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Lahar: We must now settle on a procedure for deciding on meeting agendas. Our club’s constitution allows three options: unanimous consent, majority vote, or assigning the task to a committee. Unanimous consent is unlikely. Forming a committee has usually led to factionalism and secret deals. Clearly, we should subject meeting agendas to majority vote.",
     "questionStem": "Lahar’s argument does which one of the following?",
@@ -122,7 +131,10 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Mayor: Local antitobacco activists are calling for expanded antismoking education programs paid for by revenue from heavily increased taxes on cigarettes sold in the city. Although the effectiveness of such education programs is debatable, there is strong evidence that the taxes themselves would produce the sought-after reduction in smoking. Surveys show that cigarette sales drop substantially in cities that impose stiff tax increases on cigarettes.",
     "questionStem": "Which one of the following, if true, most undermines the reasoning in the argument above?",
@@ -145,7 +157,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Gotera: Infants lack the motor ability required to voluntarily produce particular sounds, but produce various babbling sounds randomly. Most children are several years old before they can voluntarily produce most of the vowel and consonant sounds of their language. We can conclude that speech acquisition is entirely a motor control process rather than a process that is abstract or mental.",
     "questionStem": "Which one of the following is an assumption required by Gotera’s argument?",
@@ -170,7 +185,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Caldwell: The government recently demolished a former naval base. Among the complex’s facilities were a gymnasium, a swimming pool, office buildings, gardens, and housing for hundreds of people. Of course the government was legally permitted to use these facilities as it wished. But clearly, using them for the good of the community would have benefited everyone, and thus the government’s actions were not only inefficient but immoral.",
     "questionStem": "Caldwell’s argument is most vulnerable to criticism on the grounds that it",
@@ -193,7 +211,10 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Reducing stress lessens a person’s sensitivity to pain. This is the conclusion reached by researchers who played extended audiotapes to patients before they underwent surgery and afterward while they were recovering. One tape consisted of conversation; the other consisted of music. Those who listened only to the latter tape required less anesthesia during surgery and fewer painkillers afterward than those who listened only to the former tape.",
     "questionStem": "Which one of the following is an assumption on which the researchers’ reasoning depends?",
@@ -217,7 +238,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Samuel: Because communication via computer is usually conducted privately and anonymously between people who would otherwise interact in person, it contributes to the dissolution, not the creation, of lasting communal bonds. Tova: You assume that communication via computer replaces more intimate forms of communication and interaction, when more often it replaces asocial or even antisocial behavior.",
     "questionStem": "On the basis of their statements, Samuel and Tova are committed to disagreeing about which one of the following?",
@@ -240,7 +263,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Spreading iron particles over the surface of the earth’s oceans would lead to an increase in phytoplankton, decreasing the amount of carbon dioxide in the atmosphere and thereby counteracting the greenhouse effect. But while counteracting the greenhouse effect is important, the side effects of an iron-seeding strategy have yet to be studied. Since the oceans represent such an important resource, this response to the greenhouse effect should not be implemented immediately.",
     "questionStem": "The reasoning above most closely conforms to which one of the following principles?",
@@ -266,7 +291,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "No matter how conscientious they are, historians always have biases that affect their work. Hence, rather than trying to interpret historical events, historians should instead interpret what the people who participated in historical events thought about those events.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument fails to consider the possibility that",
@@ -288,7 +315,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Humanitarian considerations aside, sheer economics dictates that country X should institute, as country Y has done, a nationwide system of air and ground transportation for conveying seriously injured persons to specialized trauma centers. Timely access to the kind of medical care that only specialized centers can provide could save the lives of many people. The earnings of these people would result in a substantial increase in country X’s gross national product, and the taxes paid on those earnings would substantially augment government revenues.",
     "questionStem": "The argument depends on the assumption that",
@@ -314,7 +343,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Early urban societies could not have been maintained without large-scale farming nearby. This is because other methods of food acquisition, such as foraging, cannot support populations as dense as urban ones. Large-scale farming requires irrigation, which remained unfeasible in areas far from rivers or lakes until more recent times.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -336,7 +367,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Economist: A country’s rapid emergence from an economic recession requires substantial new investment in that country’s economy. Since people’s confidence in the economic policies of their country is a precondition for any new investment, countries that put collective goals before individuals’ goals cannot emerge quickly from an economic recession.",
     "questionStem": "Which one of the following, if assumed, enables the economist’s conclusion to be properly drawn?",
@@ -359,7 +392,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The average length of stay for patients at Edgewater Hospital is four days, compared to six days at University Hospital. Since studies show that recovery rates at the two hospitals are similar for patients with similar illnesses, University Hospital could decrease its average length of stay without affecting quality of care.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -385,7 +420,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Philosopher: Graham argues that since a person is truly happy only when doing something, the best life is a life that is full of activity. But we should not be persuaded by Graham’s argument. People sleep, and at least sometimes when sleeping, they are truly happy, even though they are not doing anything.",
     "questionStem": "Which one of the following most accurately describes the role played in the philosopher’s argument by the claim that at least sometimes when sleeping, people are truly happy, even though they are not doing anything?",
@@ -408,7 +445,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Historian: In rebuttal of my claim that West influenced Stuart, some people point out that West’s work is mentioned only once in Stuart’s diaries. But Stuart’s diaries mention several meetings with West, and Stuart’s close friend, Abella, studied under West. Furthermore, Stuart’s work often uses West’s terminology which, though now commonplace, none of Stuart’s contemporaries used.",
     "questionStem": "Which one of the following propositions is most supported by the historian’s statements, if those statements are true?",
@@ -430,7 +469,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "One theory to explain the sudden extinction of all dinosaurs points to “drug overdoses” as the cause. Angiosperms, a certain class of plants, first appeared at the time that dinosaurs became extinct. These plants produce amino-acid-based alkaloids that are psychoactive agents. Most plant-eating mammals avoid these potentially lethal poisons because they taste bitter. Moreover, mammals have livers that help detoxify such drugs. However, dinosaurs could neither taste the bitterness nor detoxify the substance once it was ingested. This theory receives its strongest support from the fact that it helps explain why so many dinosaur fossils are found in unusual and contorted positions.",
     "questionStem": "Which one of the following, if true, would most undermine the theory presented above?",
@@ -453,7 +494,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "There are two ways to manage an existing transportation infrastructure: continuous maintenance at adequate levels, and periodic radical reconstruction. Continuous maintenance dispenses with the need for radical reconstruction, and radical reconstruction is necessitated by failing to perform continuous maintenance. Over the long run, continuous maintenance is far less expensive; nevertheless, it almost never happens.",
     "questionStem": "Which one of the following, if true, most contributes to an explanation of why the first alternative mentioned is almost never adopted?",
@@ -474,7 +518,10 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A good way to get over one’s fear of an activity one finds terrifying is to do it repeatedly. For instance, over half of people who have parachuted only once report being extremely frightened by the experience, while less than 1 percent of those who have parachuted ten times or more report being frightened by it.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -499,7 +546,10 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Most economists believe that reducing the price of any product generally stimulates demand for it. However, most wine merchants have found that reducing the price of domestic wines to make them more competitive with imported wines with which they were previously comparably priced is frequently followed by an increase in sales of those imported wines.",
     "questionStem": "Which one of the following, if true, most helps to reconcile the belief of most economists with the consequences observed by most wine merchants?",
@@ -520,7 +570,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Certain bacteria that produce hydrogen sulfide as a waste product would die if directly exposed to oxygen. The hydrogen sulfide reacts with oxygen, removing it and so preventing it from harming the bacteria. Furthermore, the hydrogen sulfide tends to kill other organisms in the area, thereby providing the bacteria with a source of food. As a result, a dense colony of these bacteria produces for itself an environment in which it can continue to thrive indefinitely.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -543,7 +595,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Parallel Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Books that present a utopian future in which the inequities and sufferings of the present are replaced by more harmonious and rational social arrangements will always find enthusiastic buyers. Since gloomy books predicting that even more terrifying times await us are clearly not of this genre, they are unlikely to be very popular.",
     "questionStem": "The questionable pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -565,7 +619,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some people mistakenly believe that since we do not have direct access to the distant past we cannot learn much about it. Contemporary historians and archaeologists find current geography, geology, and climate to be rich in clues about a given region’s distant history. However, the more distant the period we are studying is, the less useful the study of the present becomes.",
     "questionStem": "Of the following, which one most closely conforms to the principle that the passage illustrates?",

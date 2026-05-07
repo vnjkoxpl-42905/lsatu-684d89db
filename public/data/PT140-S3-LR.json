@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Advertisement: GreenBank gives all of its customers unlimited free automatic teller machine (ATM) use. TekBank charges 25 cents for each ATM transaction. So, clearly, it costs more to bank at TekBank than at GreenBank.",
     "questionStem": "The reasoning in the advertisement’s argument is misleading in that the argument",
@@ -26,7 +28,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Klein: The fact that the amount of matter that we have found in our galaxy is only one-tenth of what Einstein’s theory predicts gives us good reason for abandoning his view. Brown: Given the great successes of Einstein’s theory, it would be better to conclude that most of the matter in our galaxy has not yet been found.",
     "questionStem": "On the basis of their statements, Klein and Brown are committed to disagreeing over the truth of which one of the following statements?",
@@ -48,7 +52,10 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "When chimpanzees become angry at other chimpanzees, they often engage in what primatologists call “threat gestures”: grunting, spitting, or making abrupt, upsweeping arm movements. Chimpanzees also sometimes attack other chimpanzees out of anger. However, when they do attack, they almost never take time to make threat gestures first. And, conversely, threat gestures are rarely followed by physical attacks.",
     "questionStem": "Which one of the following, if true, most helps to explain the information about how often threat gestures are accompanied by physical attacks?",
@@ -66,7 +73,10 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The Magno-Blanket is probably able to relieve arthritic pain in older dogs. A hospital study of people suffering from severe joint pain found that 76 percent of those who were treated with magnets reported reduced pain after just 3 weeks. Dogs and humans have similar physiologies and the Magno-Blanket brings magnets into the same proximity to the dog’s joints as they were to patients’ joints in the hospital study.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -87,7 +97,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some people believe that advertising is socially pernicious-it changes consumers’ preferences, thereby manipulating people into wanting things they would not otherwise want. However, classes in music and art appreciation change people’s preferences for various forms of art and music, and there is nothing wrong with these classes. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -110,7 +122,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Many high school students interested in journalism think of journalism careers as involving glamorous international news gathering. But most journalists cover primarily local news, and the overwhelming majority of reporters work for local newspapers. Thus, high school career counselors should tell students who are interested in journalism what life is like for a typical reporter, that is, a reporter for a local newspaper.",
     "questionStem": "Which one of the following principles would, if valid, most help to justify the reasoning above?",
@@ -132,7 +146,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "More pedestrian injuries occur at crosswalks marked by both striping on the roadway and flashing lights than occur at crosswalks not so marked. Obviously these so- called safety features are a waste of taxpayer money.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism because the argument",
@@ -154,7 +171,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "John of Worcester, an English monk, recorded the sighting, on December 8, 1128, of two unusually large sunspots. Five days later a brilliant aurora borealis (northern lights) was observed in southern Korea. Sunspot activity is typically followed by the appearance of an aurora borealis, after a span of time that averages five days. Thus, the Korean sighting helps to confirm John of Worcester’s sighting.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -176,7 +196,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Anyone believing that no individual can have an effect on society’s future will as a result feel too helpless to act to change society for the better. Thus, anyone who wants to improve society should reject the belief that its future will be determined entirely by vast historical forces that individuals are powerless to change.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argument?",
@@ -198,7 +220,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Company president: Whenever you subcontract the manufacturing of a product, you lose some control over the quality of that product. We do subcontract some manufacturing, but only with companies that maintain complete control over the quality of the products they supply.",
     "questionStem": "Which one of the following can be properly inferred from the company president’s statements?",
@@ -220,7 +244,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Secondary school students achieve broad mastery of the curriculum if they are taught with methods appropriate to their learning styles and they devote significant effort to their studies. Thus, if such broad mastery is not achieved by the students in a particular secondary school, those students are not being taught with methods appropriate to their learning styles.",
     "questionStem": "The conclusion can be properly drawn if which one of the following is assumed?",
@@ -242,7 +268,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Consumer advocate: Even if one can of fruit or vegetables weighs more than another, the heavier can does not necessarily contain more food. Canned fruits and vegetables are typically packed in water, which can make up more than half the total weight of the can’s contents. And nothing stops unscrupulous canning companies from including more water per can than others include.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the consumer advocate’s argument?",
@@ -263,7 +291,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Several three-year-olds who had learned to count to ten were trying to learn their telephone numbers. Although each child was familiar with the names of all the digits, no child could remember his or her phone number. Their teacher then taught each child a song whose lyrics contained his or her phone number. By the end of the day the children could remember their telephone numbers.",
     "questionStem": "The situation described above best illustrates which one of the following propositions?",
@@ -285,7 +315,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some theorists argue that literary critics should strive to be value-neutral in their literary criticism. These theorists maintain that by exposing the meaning of literary works without evaluating them, critics will enable readers to make their own judgments about the works’ merits. But literary criticism cannot be completely value-neutral. Thus, some theorists are mistaken about what is an appropriate goal for literary criticism.",
     "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
@@ -308,7 +340,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Amoebas, like human beings, generally withdraw from stimuli that cause them physical damage. Humans do this because such stimuli cause them pain. Thus all microscopic organisms must also be capable of feeling pain.",
     "questionStem": "Which one of the following exhibits flawed reasoning most similar to that exhibited by the argument above?",
@@ -331,7 +366,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Zoologist: In the Lake Champlain area, as the North American snowshoe hare population grows, so do the populations of its predators. As predator numbers increase, the hares seek food in more heavily forested areas, which contain less food, and so the hare population declines. Predator populations thus decline, the hare population starts to increase, and the cycle begins again. Yet these facts alone cannot explain why populations of snowshoe hares everywhere behave simultaneously in this cyclical way. Since the hare population cycle is well correlated with the regular cycle of sunspot activity, that activity is probably a causal factor as well.",
     "questionStem": "Each of the following, if true, supports the zoologist’s reasoning except:",
@@ -355,7 +392,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Science teacher: In any nation, a flourishing national scientific community is essential to a successful economy. For such a community to flourish requires that many young people become excited enough about science that they resolve to become professional scientists. Good communication between scientists and the public is necessary to spark that excitement.",
     "questionStem": "The science teacher’s statements provide the most support for which one of the following?",
@@ -376,7 +415,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A recent magazine article argued that most companies that do not already own videoconferencing equipment would be wasting their money if they purchased it. However, this is clearly not true. In a recent survey of businesses that have purchased such equipment, most of the respondents stated that the videoconferencing equipment was well worth its cost.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -399,7 +440,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Auditor: XYZ, a construction company, purchased 20 new trucks 3 years ago, and there is no record of any of those trucks being sold last year. Records indicate, however, that XYZ sold off all of its diesel-powered trucks last year. We can thus conclude that none of the 20 trucks purchased 3 years ago were diesel powered.",
     "questionStem": "Which one of the following is an assumption required by the auditor’s reasoning?",
@@ -422,7 +465,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Taylor: From observing close friends and relatives, it is clear to me that telepathy is indeed possible between people with close psychic ties. The amazing frequency with which a good friend or family member knows what one is thinking or feeling cannot be dismissed as mere coincidence.",
     "questionStem": "Taylor’s reasoning is most vulnerable to criticism on the grounds that it",
@@ -444,7 +489,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Prolonged exposure to sulfur fumes permanently damages one’s sense of smell. In one important study, 100 workers from sulfur-emitting factories and a control group of 100 workers from other occupations were asked to identify a variety of chemically reproduced scents, including those of foods, spices, and flowers. On average, the factory workers successfully identified 10 percent of the scents compared to 50 percent for the control group.",
     "questionStem": "Each of the following, if true, weakens the argument except:",
@@ -468,7 +516,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Principle: Anyone who has more than one overdue book out on loan from the library at the same time must be fined if some of the overdue books are not children’s books and that person has previously been fined for overdue books. Application: Since three of the books that Kessler currently has out on loan from the library are overdue, Kessler must be fined.",
     "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
@@ -489,7 +539,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Medical school professor: Most malpractice suits arise out of patients’ perceptions that their doctors are acting negligently or carelessly. Many doctors now regard medicine as a science rather than an art, and are less compassionate as a result. Harried doctors sometimes treat patients rudely, discourage them from asking questions, or patronize them. Lawsuits could be avoided if doctors learned to listen better to patients. Unfortunately, certain economic incentives encourage doctors to treat patients rudely.",
     "questionStem": "The medical school professor’s statements, if true, most strongly support which one of the following?",
@@ -510,7 +562,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If the concrete is poured while the ground is wet, it will not form a solid foundation. If the concrete does not form a solid foundation, it will either settle unevenly or crack. So if the concrete settles evenly, either it was poured while the ground was dry or it will crack.",
     "questionStem": "Which one of the following arguments is most closely parallel in its reasoning to the reasoning in the argument above?",
@@ -535,7 +589,10 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "New evidence indicates that recent property development bordering a national park has not adversely affected the park’s wildlife. On the contrary, a comparison of the most recent survey of the park’s wildlife with one conducted just prior to the development shows that the amount of wildlife has in fact increased over the intervening decade. Moreover, the park’s resources can support its current wildlife populations without strain.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -556,7 +613,10 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "As advances in medical research and technology have improved the ability of the medical profession to diagnose and treat a wide variety of illnesses and injuries, life spans have increased and overall health has improved. Yet, over the past few decades there has been a steady and significant increase in the rate of serious infections.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",

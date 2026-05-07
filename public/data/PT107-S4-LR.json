@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Combustion of gasoline in automobile engines produces benzene, a known carcinogen. Environmentalists propose replacing gasoline with methanol, which does not produce significant quantities of benzene when burned. However, combustion of methanol produces formaldehyde, also a known carcinogen. Therefore the environmentalists’ proposal has little merit.",
     "questionStem": "Which one of the following, if true, most supports the environmentalists’ proposal?",
@@ -29,7 +31,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Economist: To the extent that homelessness arises from a lack of available housing, it should not be assumed that the profit motive is at fault. Private investors will, in general, provide housing if the market allows them to make a profit; it is unrealistic to expect investors to take risks with their property unless they get some benefit in return.",
     "questionStem": "Which one of the following most accurately describes the role played in the economist’s argument by the phrase “To the extent that homelessness arises from a lack of available housing”?",
@@ -51,7 +53,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Physical education should teach people to pursue healthy, active lifestyles as they grow older. But the focus on competitive sports in most schools causes most of the less competitive students to turn away from sports. Having learned to think of themselves as unathletic, they do not exercise enough to stay healthy.",
     "questionStem": "Which one of the following is most strongly supported by the statements above, if they are true?",
@@ -76,7 +80,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 4, questions 4 through 5.\nPolitical opinion and analysis outside the mainstream rarely are found on television talk shows, and it might be thought that this state of affairs is a product of the political agenda of the television stations themselves. In fact, television stations are driven by the same economic forces as sellers of more tangible goods. Because they must attempt to capture the largest possible share of the television audience for their shows, they air only those shows that will appeal to large numbers of people. As a result, political opinions and analyses aired on television talk shows are typically bland and innocuous.",
     "questionStem": "An assumption made in the explanation offered by the author of the passage is that",
@@ -102,7 +108,10 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 4, questions 4 through 5.\nPolitical opinion and analysis outside the mainstream rarely are found on television talk shows, and it might be thought that this state of affairs is a product of the political agenda of the television stations themselves. In fact, television stations are driven by the same economic forces as sellers of more tangible goods. Because they must attempt to capture the largest possible share of the television audience for their shows, they air only those shows that will appeal to large numbers of people. As a result, political opinions and analyses aired on television talk shows are typically bland and innocuous.",
     "questionStem": "The explanation offered by the author of the passage makes the assumption that",
@@ -127,7 +136,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Some judges complain about statutes that specify\nmandatory minimum sentences for criminal offenses. These legal restrictions, they complain, are too mechanical and prevent judges from deciding when a given individual can or cannot be rehabilitated. But that is precisely why mandatory minimum sentences are necessary. History amply demonstrates that when people are free to use their own judgment they invariably believe themselves to act wisely when in fact they are often arbitrary and irrational. There is no reason to think that judges are an exception to this rule.",
     "questionStem": "Which one of the following sentences most accurately expresses the main point of the passage?",
@@ -149,7 +158,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The following passage is used for Section 4, questions 7 through 8.\nConservationist: The population of a certain wildflower is so small that the species is headed for extinction. However, this wildflower can cross-pollinate with a closely related domesticated daisy, producing viable seeds. Such cross-pollination could result in a significant population of wildflower-daisy hybrids. The daisy should therefore be introduced into the wildflower’s range, since although the hybrid would differ markedly from the wildflower, hybridization is\nthe only means of preventing total loss of the wildflower in its range.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the conservationist’s reasoning?",
@@ -174,7 +183,10 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 4, questions 7 through 8.\nConservationist: The population of a certain wildflower is so small that the species is headed for extinction. However, this wildflower can cross-pollinate with a closely related domesticated daisy, producing viable seeds. Such cross-pollination could result in a significant population of wildflower-daisy hybrids. The daisy should therefore be introduced into the wildflower’s range, since although the hybrid would differ\nmarkedly from the wildflower, hybridization is the only means of preventing total loss of the wildflower in its range.",
     "questionStem": "Which one of the following is an assumption on which the conservationist’s reasoning depends?",
@@ -199,7 +211,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Because of increases in the price of oil and because of government policies promoting energy conservation, the use of oil to heat homes fell by 40 percent from 1970 to the present, and many homeowners switched to natural gas for heating. Because switching to natural gas involved investing in equipment, a significant switch back to oil in the near future is unlikely.",
     "questionStem": "The prediction that ends the passage would be most seriously called into question if it were true that in the last few years",
@@ -223,7 +237,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Parents should not necessarily raise their children in the ways experts recommend, even if some of those experts are themselves parents. After all, parents are the ones who directly experience which methods are successful in raising their own children.",
     "questionStem": "Which one of the following most closely conforms to the principle that the passage above illustrates?",
@@ -244,7 +260,10 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Sometimes when their trainer gives the hand signal for “Do something creative together,” two dolphins circle a pool in tandem and then leap through the air simultaneously. On other occasions the same signal elicits synchronized backward swims or tail-waving. These behaviors are not simply learned responses to a given stimulus. Rather, dolphins are capable of higher cognitive functions that may include the use of language and forethought.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -267,7 +286,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Editorialist: Drivers with a large number of demerit points who additionally have been convicted of a serious driving-related offense should either be sentenced to jail or be forced to receive\ndriver re-education, since to do otherwise would be to allow a crime to go unpunished. Only if such drivers are likely to be made more responsible drivers should driver re-education be recommended for them. Unfortunately, it is always almost impossible to make drivers with a large number of demerit points more responsible drivers.",
     "questionStem": "If the editorialist’s statements are true, they provide the most support for which one of the following?",
@@ -293,7 +314,7 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "The following passage is used for Section 4, questions 13 through 14.\nPlant manager: We could greatly reduce the amount of sulfur dioxide our copper-smelting plant releases into the atmosphere by using a new process. The new process requires replacing our\nopen furnaces with closed ones and moving the copper from one furnace to the next in solid, not molten, form. However, not only is the new equipment expensive to buy and install, but the new process also costs more to run than the current process, because the copper must be reheated after it has cooled. So overall, adopting the new process will cost much but bring the company no profit.\nSupervisor: I agree with your overall conclusion, but disagree about one point you make, since the latest closed furnaces are extremely fuelefficient.",
     "questionStem": "The point about which the supervisor expresses disagreement with the plant manager is",
@@ -315,7 +336,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 4, questions 13 through 14.\nPlant manager: We could greatly reduce the amount of sulfur dioxide our copper-smelting plant releases into the atmosphere by using a new process. The new process requires replacing our\nopen furnaces with closed ones and moving the copper from one furnace to the next in solid, not molten, form. However, not only is the new equipment expensive to buy and install, but the new process also costs more to run than the current process, because the copper must be reheated after it has cooled. So overall, adopting the new process will cost much but bring the company no profit.\nSupervisor: I agree with your overall conclusion, but disagree about one point you make, since the latest closed furnaces are extremely fuelefficient.",
     "questionStem": "The plant manager’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -339,7 +362,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Ambiguity inspires interpretation. The saying “We are the measure of all things,” for instance, has been interpreted by some people to imply that humans are centrally important in the universe, while others have interpreted\nit to mean simply that, since all knowledge is human knowledge, humans must rely on themselves to find the truth.",
     "questionStem": "The claim that ambiguity inspires interpretation figures in the argument in which one of the following ways?",
@@ -361,7 +384,7 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Comparison",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Franklin: It is inconsistent to pay sports celebrities ten times what Nobel laureates are paid. Both have rare talents and work hard.\nTomeka: What you’ve neglected to consider is that unlike Nobel laureates, sports celebrities earn millions of dollars for their employers in the form of gate receipts and TV rights.",
     "questionStem": "Franklin’s and Tomeka’s statements provide the most support for holding that they disagree about the truth of which one of the following?",
@@ -382,7 +405,10 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Studies of the reliability of eyewitness identifications show little correlation between the accuracy of a witness’s account and the confidence the witness has in the account. Certain factors can increase or undermine a witness’s confidence without altering the accuracy of the identification. Therefore, police officers are advised to disallow suspect lineups in which witnesses can hear one another identifying suspects.",
     "questionStem": "Which one of the following is a principle underlying the advice given to police officers?",
@@ -408,7 +434,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "All actions are motivated by self-interest, since any action that is apparently altruistic can be described in terms of self-interest. For example, helping someone can be described in terms of self-interest: the motivation is hope for a reward or other personal benefit to be bestowed as a result of the helping action.",
     "questionStem": "Which one of the following most accurately describes an error in the argument’s reasoning?",
@@ -431,7 +459,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In the decade from the mid-1980s to the mid-1990s, large corporations were rocked by mergers, reengineering, and downsizing. These events significantly undermined employees’ job security. Surprisingly, however, employees’ perception of their own job security hardly changed over that period. Fifty-eight percent of employees surveyed in 1984 and 55 percent surveyed in 1994 stated that their own jobs were very secure.",
     "questionStem": "Each of the following contributes to an explanation of\nthe surprising survey results described above except:",
@@ -454,7 +484,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Amphibian populations are declining in numbers worldwide. Not coincidentally, the earth’s ozone layer has been continuously depleted throughout the last 50 years. Atmospheric ozone blocks UV-B, a type of ultraviolet radiation that is continuously produced by the sun, and which can damage genes. Because amphibians lack hair, hide, or feathers to shield them, they are particularly vulnerable to UV-B radiation. In addition, their gelatinous eggs lack the protection of leathery or hard shells. Thus, the primary cause of the declining amphibian population is the depletion of the ozone layer.",
     "questionStem": "Each of the following, if true, would strengthen the argument except:",
@@ -481,7 +513,7 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "All too many weaklings are also cowards, and few cowards fail to be fools. Thus there must be at least one person who is both a weakling and a fool.",
     "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following?",
@@ -502,7 +534,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Must be False",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Critic: Most chorale preludes were written for the organ, and most great chorale preludes written for the organ were written by J. S. Bach. One of Bach’s chorale preludes dramatizes one hymn’s perspective on the year’s end. This prelude is agonizing and fixed on the passing of the old year, with its dashed hopes and lost opportunities. It does not necessarily reveal Bach’s own attitude toward the change of the year, but does reflect the tone of the hymn’s text. People often think that artists create in order to express their own feelings. Some artists do. Master artists never do, and Bach was a master artist.",
     "questionStem": "If the critic’s statements are true, then on the basis of them which one of the following cannot be true?",
@@ -524,7 +558,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Must be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Quasars—celestial objects so far away that their light\ntakes at least 500 million years to reach Earth—have been seen since 1963. For anything that far away to appear from Earth the way quasars do, it would have to burn steadily at a rate that produces more light than 90 billion suns would produce. But nothing that burns at a rate that produces that much light could exist for more than about 100 million years.",
     "questionStem": "If the statements above are true, which one of the following must also be true on the basis of them?",
@@ -548,7 +584,10 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Medical researcher: As expected, records covering the last four years of ten major hospitals indicate that babies born prematurely were more likely to have low birth weights and to suffer from health problems than were babies not born prematurely. These records also indicate that mothers who had received adequate prenatal care were less likely to have low birth weight babies than were mothers who had received inadequate prenatal care. Adequate prenatal care, therefore, significantly decreases the risk of low birth weight babies.",
     "questionStem": "Which one of the following, if true, most weakens the medical researcher’s argument?",
@@ -571,7 +610,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Formal performance evaluations in the professional world are conducted using realistic situations. Physicians are allowed to consult medical texts freely, attorneys may refer to law books and case records, and physicists and engineers have their manuals at hand for ready reference. Students, then, should likewise have access to their textbooks whenever they take examinations.",
     "questionStem": "The reasoning in the argument is questionable because the argument",

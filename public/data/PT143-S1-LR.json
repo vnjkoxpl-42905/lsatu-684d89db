@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Pundit: Our city made a mistake when it sold a private\ncompany the rights to assess and collect parking\nfees. The private company raised parking fees\nand so has been able to reap profits far greater\nthan what it paid for the rights to assess and\ncollect the fees. If the city had not sold the rights,\nthen that money would have gone to the city.",
     "questionStem": "The pundit’s argument requires the assumption that",
@@ -26,7 +28,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Popular science publications that explain new\ndevelopments in science face a dilemma. In order to\nreach a wide audience, these publications must rely\nheavily on metaphorical writing, which usually fails\nto convey the science accurately. If the writing is more\nrigorous, they get the science right but fail to reach a\nwide audience. These publications should therefore give\nup trying to explain new developments in science to a\nwide audience.",
     "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning in the argument?",
@@ -48,7 +52,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Critic: Rock music is musically bankrupt and socially\ndestructive, but at least the album covers of rock\nLPs from the 1960s and 1970s often featured\ninnovative visual art. But now, since the success\nof digital music has almost ended the production\nof LPs, rock music has nothing going for it.",
     "questionStem": "Which one of the following is an assumption on which\nthe critic’s argument relies?",
@@ -71,7 +77,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Scientist: In testing whether a baby’s babbling is a\nlinguistic task or just random sounds, researchers\nvideotaped the mouths of babies as they babbled.\nThey discovered that babbling babies open\nthe right sides of their mouths wider than the\nleft. Past studies have established that during\nnonlinguistic vocalizations people generally open\nthe left side of the mouth wider. So babbling\nturns out to be a linguistic task.",
     "questionStem": "Which one of the following most accurately describes\nhow the scientist’s argument proceeds?",
@@ -92,7 +100,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Environment minister: Because of our concern about\nglobal warming, this country has committed\nitself to reducing its emissions of carbon dioxide\nsubstantially over the next ten years. Since trees\nabsorb carbon dioxide, planting large numbers of\ntrees will help us fulfill our commitment.",
     "questionStem": "Which one of the following, if true, would most weaken\nthe environment minister’s argument?",
@@ -114,7 +124,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Sport utility vehicles (SUVs) are, because of their weight,\nextremely expensive to operate but, for the same reason,\nin an accident they are safer for their occupants than\nsmaller vehicles are. Nonetheless, an analysis of recent\ntraffic fatality statistics has led auto safety experts to\nconclude that the increasing popularity of SUVs is an\nalarming trend.",
     "questionStem": "Which one of the following, if true, most helps to\naccount for the response of auto safety experts to the\npopularity of SUVs?",
@@ -132,7 +144,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Political advertisement: Sherwood campaigns as an\nopponent of higher taxes. But is anybody fooled? For the last 10 years, while Sherwood served\non the city council, the council consistently\nincreased taxes year after year. Break the cycle\nof higher and higher taxes: reject Sherwood’s bid\nfor reelection to city council.",
     "questionStem": "The argument in the political advertisement is most\nvulnerable to criticism on the grounds that it",
@@ -154,7 +168,7 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Client: The owners of the catering company we use\ndecided to raise their rates. They argued that the\nincrease was necessary to allow them to hire and\ntrain new staff to accommodate their expanding\nclient base. They should reconsider that decision\nand not raise their rates. After all, the mission\nof the company is to provide low-cost gourmet\ncatering, and this mission will be jeopardized if\nthey raise rates.",
     "questionStem": "Which one of the following most accurately expresses\nthe main conclusion of the client’s argument?",
@@ -176,7 +190,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Red admiral butterflies fly in a highly irregular fashion,\nconstantly varying their speed, wing strokes, and\nflight path. While predators avoid poisonous butterfly\nspecies, nonpoisonous butterflies like the red admiral\nneed to elude predators to survive. Scientists therefore\nhypothesize that the red admiral’s flight style, which\nis clearly not energy efficient, evolved as a means of\navoiding predators.",
     "questionStem": "Which one of the following, if true, most strengthens the\nsupport for the scientists’ hypothesis?",
@@ -198,7 +214,10 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Principle-Conform",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Copyright statutes benefit society by providing incentive\nto produce original works, so some kind of copyright\nstatute is ultimately justified. But these statutes also\nrepresent a significant cost to society because they create\nprotected monopolies. In many countries, copyright\nstatutes grant copyright protection for the life of the\nauthor plus several decades. This is too long, since the\nsocietal benefit from the additional years of copyright is\nmore than offset by the societal cost.",
     "questionStem": "Which one of the following principles, if valid, most\nstrongly supports the reasoning in the argument?",
@@ -219,7 +238,10 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Police chief: During my tenure as chief, crime in this city\nhas fallen by 20 percent. This is clearly the result\nof my policing strategy, which uses real-time\ncrime data and focuses police resources on the\nareas with the most crime.",
     "questionStem": "Which one of the following, if true, most calls into\nquestion the police chief’s explanation for the drop in\ncrime?",
@@ -240,7 +262,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Commentator: The Duke of Acredia argued long ago\nthat only virtuous Acredian rulers concerned\nwith the well-being of the people will be able\nto rule successfully. Since then, when Acredian\ngovernments have fallen, their falls have always\nbeen during the rule of one who viciously\ndisregards the people’s needs. The Duke, then,\nwas right about at least one thing: Concern for\nthe welfare of the people is necessary for the\nsuccessful governance of Acredia.",
     "questionStem": "The reasoning in the commentator’s argument is most\nvulnerable to criticism on the grounds that the argument",
@@ -258,7 +282,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Dr. Khan: Professor Burns recognizes that recent\nobservations fail to confirm earlier ones that\napparently showed a comet reservoir far out in\nour solar system. She claims this nonconfirmation\nis enough to show that the earlier observations\nare incorrect. But the recent observations\noccurred under poor conditions.",
     "questionStem": "Which one of the following is most supported by Dr.\nKhan’s statements?",
@@ -279,7 +305,10 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If people refrained from being impolite to one another\nthe condition of society would be greatly improved.\nBut society would not be better off if the government\nenacted laws requiring people to be polite to each other.\nEnforcing such laws would create even more problems\nthan does impoliteness.",
     "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that society\nwould not be better off if the government enacted laws\nrequiring people to be polite to each other?",
@@ -297,7 +326,10 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Astronomer: In most cases in which a planet has been\ndetected orbiting a distant star, the planet’s orbit\nis distinctly oval, whereas the orbits of Earth\nand several other planets around our sun are\napproximately circular. However, many comets\norbiting our sun have been thrown into oval\norbits by close encounters with planets orbiting\nour sun. So some of the planets in oval orbits\naround distant stars were probably thrown into\nthose orbits by close encounters with other\nplanets orbiting the same stars.",
     "questionStem": "Which one of the following, if true, would most\nstrengthen the astronomer’s argument?",
@@ -318,7 +350,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "It is possible to grow agricultural crops that can\nthrive when irrigated with seawater. Such farming, if\nundertaken near oceans, would actually be cheaper\nthan most other irrigated agriculture, since the water\nwould not have to be pumped far. The greatest expense\nin irrigated agriculture is in pumping the water, and the\npumping costs increase with the distance the water is\npumped.",
     "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that the\ngreatest expense in irrigated agriculture is in pumping\nthe water?",
@@ -339,7 +373,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Critics worry that pessimistic news reports about the\neconomy harm it by causing people to lose confidence\nin the economy, of which everyone has direct experience\nevery day. Journalists respond that to do their jobs well\nthey cannot worry about the effects of their work. Also,\nstudies show that people do not defer to journalists except\non matters of which they have no direct experience.",
     "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
@@ -357,7 +393,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Police captain: The chief of police has indicated that gifts\nof cash or objects valued at more than $100 count\nas graft. However, I know with certainty that no\nofficer in my precinct has ever taken such gifts,\nso the recent accusations of graft in my precinct\nare unfounded.",
     "questionStem": "The reasoning in the police captain’s argument is most\nvulnerable to criticism on the grounds that the argument",
@@ -378,7 +416,10 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Economist: Although average hourly wages vary\nconsiderably between different regions of this\ncountry, in each region, the average hourly\nwage for full-time jobs increased last year.\nParadoxically, however, in the country as a\nwhole, the average hourly wage for full-time jobs\ndecreased last year.",
     "questionStem": "Which one of the following, if true of the economist’s\ncountry, most helps to resolve the apparent paradox in\nthe economist’s statements?",
@@ -399,7 +440,10 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Researchers compared the brains of recently deceased\npeople who had schizophrenia with those of recently\ndeceased people who did not have schizophrenia. They\nfound that 35 percent of the former and none of the latter\nshowed evidence of damage to a structure of nerve cells\ncalled the subplate. They knew that this damage must\nhave occurred prior to the second fetal trimester, when\nthe subplate controls the development of the connections\nbetween the different parts of the brain.",
     "questionStem": "Which one of the following conclusions is most strongly\nsupported by the information above?",
@@ -417,7 +461,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A new device uses the global positioning system to\ndetermine a cow’s location and, when a cow strays\noutside of its pasture, makes noises in the cow’s ears to\nsteer it back to its home range. Outfitting all of the cattle\nin a herd with this device is far more expensive than\nother means of keeping cattle in their pastures, such as\nfences. The device’s maker nevertheless predicts that\nranchers will purchase the device at its current price.",
     "questionStem": "Which one of the following, if true, does the most to\nsupport the prediction made by the device’s maker?",
@@ -438,7 +484,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Food co-ops are a type of consumer cooperative.\nConsumer cooperatives offer the same products as\nother stores but usually more cheaply. It is therefore\nmore economical to shop at a food co-op than at a\nsupermarket.",
     "questionStem": "Which one of the following is most appropriate as an\nanalogy demonstrating that the reasoning in the\nargument above is flawed?",
@@ -460,7 +508,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorial: The gates at most railroad crossings, while\nthey give clear warning of oncoming trains, are\nnot large enough to prevent automobile drivers\nfrom going around them onto the tracks. Some\npeople claim that the ensuing accidents are partly\nthe fault of the railroad company, but this is a\nmistake. Granted, if one has a small child in the\nhouse, then one ought to block access to stairs\ncompletely; but a licensed driver is a capable\nadult who should know better.",
     "questionStem": "The editorial’s conclusion follows logically if which one\nof the following is assumed?",
@@ -482,7 +532,10 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Researcher: People who participate in opinion surveys\noften give answers they believe the opinion\nsurveyor expects to hear, and it is for this reason\nthat some opinion surveys do not reflect the\nactual views of those being surveyed. However,\nin well-constructed surveys, the questions are\nworded so as to provide respondents with no\nindication of which answers the surveyor might\nexpect. So if a survey is well constructed,\nsurvey respondents’ desire to meet surveyors’\nexpectations has no effect on the survey’s results.",
     "questionStem": "The reasoning in the researcher’s argument is\nquestionable in that the argument overlooks the\npossibility that",
@@ -503,7 +556,10 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The availability of television reduces the amount\nof reading children do. When television is made\nunavailable, a nearly universal increase in reading, both\nby parents and by children, is reported. When television\nis available again, the level of reading by\nboth parents and children relapses to its previous level.",
     "questionStem": "The reasoning in which one of the following is most\nsimilar to the reasoning above?",

@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researchers put two electrodes in a pool that a dolphin\nswam in. When the dolphin swam near the electrodes, the\nresearchers would sometimes create a weak electric field\nby activating the electrodes. The dolphin would swim\naway if the electrodes were activated; otherwise it acted\nnormally. The researchers then placed a plastic shield\nover small organs called vibrissal crypts located on the\ndolphin’s snout. With the crypts covered, the dolphin no\nlonger swam away when the electrodes were activated.",
     "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
@@ -25,7 +27,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Evaluate",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "In a study of honesty conducted in various retail stores,\ncustomers who paid in cash and received change were\ngiven an extra dollar with their change. Few people who\nreceived an extra dollar returned it. So, among those who\nreceived an extra dollar, most behaved dishonestly.",
     "questionStem": "The answer to which one of the following questions\nwould most help in evaluating the argument?",
@@ -46,7 +50,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Dario: The government should continue to grant patents\nfor all new drug compounds. Patents promote\ninnovation by rewarding pharmaceutical\ncompanies for undertaking the costly research\nneeded to develop new drugs. Cynthia: Promoting innovation is certainly important. For this reason, patents should be granted only\nfor truly innovative drugs, not for minor variants\nof previously existing drugs. Since it is much\nless expensive to tweak an existing drug than\nto develop a wholly new one, pharmaceutical\ncompanies tend to focus primarily on the cheaper\nalternative.",
     "questionStem": "Dario and Cynthia disagree over whether",
@@ -67,7 +73,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "There are only two possible reasons that it would be\nwrong to engage in an activity that causes pollution:\nbecause pollution harms ecosystems, which are valuable\nin themselves; or, ecosystems aside, because pollution\nharms human populations. Either way, it would not be\nwrong to perform mining operations on Mars. Although\ndoing so would pollute Mars, the small human presence\nneeded to run the mining operation would be completely\nprotected from the Martian environment and would suffer\nno harm.",
     "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
@@ -90,7 +98,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A person with low self-esteem will be treated\ndisrespectfully more often than will a person with high\nself-esteem. Moreover, a recent experiment found that,\nwhen people with low self-esteem and those with high\nself-esteem are both confronted with the same treatment\nby others, people with low self-esteem are much more\nlikely to feel that they have been treated disrespectfully.\nThus, _______.",
     "questionStem": "Which one of the following most logically completes the\nargument?",
@@ -111,7 +122,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Watanabe: To protect the native kokanee salmon in the\nlake, we must allow fishing of native trout. Each\nmature trout eats about 250 mature kokanee\nannually.\nLopez: The real problem is mysis shrimp, which were\noriginally introduced into the lake as food for\nmature kokanee; but mysis eat plankton—young\nkokanees’ food. The young kokanee are starving\nto death. So eradicating the shrimp is preferable\nto allowing trout fishing.",
     "questionStem": "Which one of the following principles, if valid, most\nstrongly supports Lopez’s conclusion?",
@@ -133,7 +146,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If rational-choice theory is correct, then people act only\nin ways that they expect will benefit themselves. But\nthis means that rational-choice theory cannot be correct,\nbecause plenty of examples exist of people acting in\nways that result in no personal benefit whatsoever.",
     "questionStem": "The argument above is most vulnerable to criticism on\nthe grounds that it",
@@ -160,7 +175,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Winds, the movement of gases in the atmosphere of a\nplanet, are ultimately due to differences in atmospheric\ntemperature. Winds on Earth are the result of heat from\nthe Sun, but the Sun is much too far away from Jupiter\nto have any significant impact on the temperature of\nJupiter’s atmosphere. Nevertheless, on Jupiter winds\nreach speeds many times those of winds found on Earth.",
     "questionStem": "Which one of the following, if true, most helps to\nexplain the facts cited above about Jupiter and its winds?",
@@ -181,7 +198,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Until recently it was widely believed that only a\nlimited number of species could reproduce through\nparthenogenesis, reproduction by a female alone.\nBut lately, as interest in the topic has increased,\nparthenogenesis has been found in a variety of\nunexpected cases, including sharks and Komodo dragons.\nSo the number of species that can reproduce through\nparthenogenesis must be increasing.",
     "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument",
@@ -203,7 +222,10 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Physician: Clinical psychologists who are not also\ndoctors with medical degrees should not be\nallowed to prescribe psychiatric medications.\nTraining in clinical psychology includes at most a\nfew hundred hours of education in neuroscience,\nphysiology, and pharmacology. In contrast,\ndoctors with medical degrees must receive years\nof training in these fields before they are allowed\nto prescribe psychiatric medications.",
     "questionStem": "Which one of the following principles, if valid, would\nmost help to justify the reasoning in the physician’s\nargument?",
@@ -225,7 +247,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Lobbyist: Those who claim that automobile exhaust\nemissions are a risk to public health are mistaken. During the last century, as automobile exhaust\nemissions increased, every relevant indicator of\npublic health improved dramatically rather than\ndeteriorated.",
     "questionStem": "The flaw in the lobbyist’s reasoning can most effectively\nbe demonstrated by noting that, by parallel reasoning,\nwe could conclude that",
@@ -246,7 +271,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A recently discovered fossil, which is believed by some\nto come from Archaeoraptor liaoningensis, a species of\ndinosaur, can serve as evidence that birds evolved from\ndinosaurs only if the entire fossil is from a single animal.\nHowever, the fossil is a composite of bones collected\nfrom various parts of the discovery site, so it does not\nprovide evidence that birds evolved from dinosaurs.",
     "questionStem": "The conclusion drawn in the argument follows logically\nif which one of the following is assumed?",
@@ -270,7 +297,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A new screening test has been developed for syndrome\nQ. Research has shown that the test yields a positive\nfor syndrome Q whenever the person tested has that\nsyndrome. So, since Justine shows positive on the test,\nshe must have syndrome Q.",
     "questionStem": "Which one of the following most accurately describes a\nflaw in the reasoning in the argument?",
@@ -293,7 +322,10 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Music historian: In the past, radio stations would not play\nrock songs that were more than three minutes\nin length. Rock musicians claimed that such\ncommercial barriers limited their creativity, and\nsome critics argue that only since those barriers\nhave been lifted has rock music become artistic.\nIn fact, however, when these barriers were lifted,\nthe standards for song structures broke down and\nthe music became aimless, because the styles\nfrom which rock derived were not well suited to\nsongs of extended length.",
     "questionStem": "Which one of the following is most strongly supported\nby the music historian’s claims?",
@@ -315,7 +347,9 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Some food historians conclude that recipes compiled by\nan ancient Roman named Apicius are a reliable indicator\nof how wealthy Romans prepared and spiced their\nfood. Since few other recipes from ancient Rome have\nsurvived, this conclusion is far too hasty. After all, the\nrecipes of Apicius may have been highly atypical, just\nlike the recipes of many notable modern chefs.",
     "questionStem": "The argument does which one of the following?",
@@ -333,7 +367,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Wood that is waterlogged or desiccated can be preserved\nfor a significant period, but, under normal conditions,\nwood usually disintegrates within a century or two. For\nthis reason, archaeologists have been unable to find many\nremains of early wheeled vehicles to examine. However,\narchaeologists have found small ceramic models of\nwheeled vehicles made at approximately the same time\nas those early vehicles. Since these models have been\nmuch less susceptible to disintegration than the vehicles\nthemselves, the main evidence regarding early wheeled\nvehicles has come from these models.",
     "questionStem": "Which one of the following is most strongly supported\nby the information above?",
@@ -354,7 +390,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Traditional hatcheries raise fish in featureless\nenvironments and subject them to dull routines, whereas\nnew, experimental hatcheries raise fish in visually\nstimulating environments with varied routines. When\nreleased into the wild, fish from the experimental\nhatcheries are bolder than those from traditional\nhatcheries in exploring new environments and trying new\ntypes of food. Fish raised in the experimental hatcheries,\ntherefore, are more likely to survive after their release.",
     "questionStem": "Which one of the following is an assumption required by\nthe argument?",
@@ -377,7 +415,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "An analysis of the language in social media messages\nposted via the Internet determined that, on average, the\nuse of words associated with positive moods is common\nin the morning, decreases gradually to a low point\nmidafternoon, and then increases sharply throughout the\nevening. This shows that a person’s mood typically starts\nout happy in the morning, declines during the day, and\nimproves in the evening.",
     "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that the argument overlooks the\npossibility that",
@@ -398,7 +438,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Economist: The wages of many of the lowest-paid\ncorporate employees in this country would be\nprotected from cuts by enacting a maximum\nwage law that prohibits executives at any\ncorporation from earning more than, say, 50 times\nwhat the corporation’s lowest-paid employees\nin this country earn. Currently, some executives\ntry to increase corporate profits—and their own\nsalaries—by cutting the pay and benefits of their\ncorporations’ employees. A maximum wage law\nwould remove this incentive for these executives\nto cut the wages of their lowest-paid employees.",
     "questionStem": "Which one of the following is an assumption the\neconomist’s argument requires?",
@@ -422,7 +464,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The level of triglycerides in the blood rises when\ntriglycerides are inadequately metabolized. Research\nshows that patients with blood triglyceride levels above\n1 milligram per milliliter are twice as prone to heart\nattacks as others. Thus, it is likely that consuming large\namounts of fat, processed sugar, or alcohol, each known\nto increase triglyceride levels in the blood, is a factor\ncausing heart disease.",
     "questionStem": "Which one of the following, if true, most weakens the\nargument?",
@@ -444,7 +488,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "In an experiment, some volunteers were assigned to\ntake aerobics classes and others to take weight-training\nclasses. After three months, each performed an arduous\nmathematical calculation. Just after that challenge, the\nmeasurable stress symptoms of the volunteers in the\naerobics classes were less than those of the volunteers in\nthe weight-training classes. This provides good evidence\nthat aerobic exercise helps the body handle psychological\nstress.",
     "questionStem": "Which one of the following is an assumption the\nargument requires?",
@@ -468,7 +514,10 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Insurers and doctors are well aware that the incidence\nof lower-back injuries among office workers who spend\nlong hours sitting is higher than that among people who\nregularly do physical work of a type known to place\nheavy stresses on the lower back. This shows that office\nequipment and furniture are not properly designed to\npromote workers’ health.",
     "questionStem": "Which one of the following, if true, most undermines the\nreasoning above?",
@@ -490,7 +539,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researchers have found that some unprotected areas\noutside of a national park that was designed to protect\nbirds have substantially higher numbers of certain bird\nspecies than comparable areas inside the park.",
     "questionStem": "Which one of the following, if true, most helps to\nexplain the researchers’ finding?",
@@ -508,7 +559,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A recent poll of a large number of households found that\n47 percent of those with a cat had at least one person\nwith a university degree, while 38 percent of households\nwith a dog had at least one person with a university\ndegree. Clearly, people who hold university degrees are\nmore likely to live in a household with a cat than one\nwith a dog.",
     "questionStem": "The reasoning in the argument is flawed in that the\nargument",
@@ -529,7 +582,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Keeler wanted the institute to receive bad publicity.\nHe and Greene were the only ones in a position to tell\nthe press about the institute’s potentially embarrassing\naffiliations, but Greene had no reason to do so. Therefore,\nit must have been Keeler who notified the press.",
     "questionStem": "Which one of the following arguments is most closely\nparallel in its reasoning to the argument above?",

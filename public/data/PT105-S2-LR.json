@@ -4,7 +4,10 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "French divers recently found a large cave along the coast\nof the Mediterranean Sea. The cave is accessible only\nthrough an underwater tunnel. The interior of the cave is\ncompletely filled with seawater and contains numerous\nlarge stalagmites, which are stony pillars that form when\ndrops of water fall repeatedly on a single spot on a cave\nfloor, leaving behind mineral deposits that accumulate\nover time.",
     "questionStem": "The information above most strongly supports which\none of the following?",
@@ -22,7 +25,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A director of the Rexx Pharmaceutical Company argued\nthat the development costs for new vaccines that the\nhealth department has requested should be subsidized\nby the government, since the marketing of vaccines\npromised to be less profitable than the marketing of any\nother pharmaceutical product. In support of this claim\nthe director argued that sales of vaccines are likely to\nbe lower since each vaccine is administered to a patient\nonly once, whereas medicines that combat diseases and\nchronic illnesses are administered many times to each\npatient.",
     "questionStem": "Which one of the following, if true, most weakens the\nsupport offered by the company director for the claim\nconcerning the marketing of vaccines?",
@@ -40,7 +45,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Manager: Our new computer network, the purpose\nof which is to increase productivity, can be\ninstalled during the day, which would disrupt our\nemployees’ work, or else at night, which would\nentail much higher installation charges. Since\nsaving money is important, we should have the\nnetwork installed during the day.",
     "questionStem": "The manager’s argument assumes which one of the\nfollowing?",
@@ -64,7 +71,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "An ingredient in marijuana known as THC has been\nfound to inactivate herpesviruses in experiments. In\nprevious experiments researchers found that inactivated\nherpesviruses can convert healthy cells into cancer cells.\nIt can be concluded that the use of marijuana can cause\ncancer.",
     "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
@@ -86,7 +95,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Archaeologist: A large corporation has recently offered to\nprovide funding to restore an archaeological site\nand to construct facilities to make the site readily\naccessible to the general public. The restoration\nwill conform to the best current theories about\nhow the site appeared at the height of the ancient\ncivilization that occupied it. This offer should be\nrejected, however, because many parts of the site\ncontain unexamined evidence.",
     "questionStem": "Which one of the following principles, if valid, justifies\nthe archaeologist’s argument?",
@@ -104,7 +115,11 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Besides laying eggs in her own nest, any female wood\nduck will lay an egg in the nest of another female wood\nduck if she sees the other duck leaving her nest. Under\nnatural nesting conditions, this parasitic behavior is\nrelatively rare because the ducks’ nests are well hidden.\nHowever, when people put up nesting boxes to help\nthe ducks breed, they actually undercut the ducks’\nreproductive efforts. These nesting boxes become so\ncrowded with extra eggs that few, if any, of the eggs in\nthose boxes hatch.",
     "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
@@ -125,7 +140,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The crux of creativity resides in the ability to\nmanufacture variations on a theme. If we look at the\nhistory of science, for instance, we see that every idea\nis built upon a thousand related ideas. Careful analysis\nleads us to understand that what we choose to call a new\ntheme or a new discovery is itself always and without\nexception some sort of variation, on a deep level, of\nprevious themes.",
     "questionStem": "If all of the statements in the passage are true, each of\nthe following must also be true except:",
@@ -146,7 +164,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Millions of female bats rear their pups in Bracken Cave.\nAlthough the mothers all leave the cave nightly, on their\nreturn each mother is almost always swiftly reunited\nwith her own pup. Since the bats’ calls are their only\nmeans of finding one another, and a bat pup cannot\ndistinguish the call of its mother from that of any other\nadult bat, it is clear that each mother bat can recognize\nthe call of her pup.",
     "questionStem": "The argument seeks to do which one of the following?",
@@ -169,7 +189,10 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Someone who gets sick from eating a meal will often\ndevelop a strong distaste for the one food in the meal\nthat had the most distinctive flavor, whether or not that\nfood caused the sickness. This phenomenon explains why\nchildren are especially likely to develop strong aversions\nto some foods.",
     "questionStem": "Which one of the following, if true, provides the\nstrongest support for the explanation?",
@@ -187,7 +210,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Premiums for automobile accident insurance are often\nhigher for red cars than for cars of other colors. To justify\nthese higher charges, insurance companies claim that,\noverall, a greater percentage of red cars are involved in\naccidents than are cars of any other color. If this claim is\ntrue, then lives could undoubtedly be saved by banning\nred cars from the roads altogether.",
     "questionStem": "The reasoning in the argument is flawed because the\nargument",
@@ -205,7 +230,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A certain credit-card company awards its customers\nbonus points for using its credit card. Customers\ncan use accumulated points in the purchase of brand\nname merchandise by mail at prices lower than the\nmanufacturers’ suggested retail prices. At any given time,\ntherefore, customers who purchase merchandise using\nthe bonus points spend less than they would spend if they\npurchased the same merchandise in retail stores.",
     "questionStem": "Which one of the following is an assumption on which\nthe argument depends?",
@@ -229,7 +256,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "It is probably not true that colic in infants is caused by\nthe inability of those infants to tolerate certain antibodies\nfound in cow’s milk, since it is often the case that\nsymptoms of colic are shown by infants that are fed\nbreast milk exclusively.",
     "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
@@ -250,7 +280,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 2, questions\n13 through 14.\nYolanda: Gaining access to computers without\nauthorization and manipulating the data\nand programs they contain is comparable to\njoyriding in stolen cars; both involve breaking\ninto private property and treating it recklessly.\nJoyriding, however, is the more dangerous crime\nbecause it physically endangers people, whereas\nonly intellectual property is harmed in the case\nof computer crimes.\nArjun: I disagree! For example, unauthorized use of\nmedical records systems in hospitals could\ndamage data systems on which human lives\ndepend, and therefore computer crimes also\ncause physical harm to people.",
     "questionStem": "An issue in dispute between Yolanda and Arjun is",
@@ -271,7 +301,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The following passage is used for Section 2, questions\n13 through 14.\nYolanda: Gaining access to computers without\nauthorization and manipulating the data\nand programs they contain is comparable to\njoyriding in stolen cars; both involve breaking\ninto private property and treating it recklessly.\nJoyriding, however, is the more dangerous crime\nbecause it physically endangers people, whereas\nonly intellectual property is harmed in the case\nof computer crimes.\nArjun: I disagree! For example, unauthorized use of\nmedical records systems in hospitals could\ndamage data systems on which human lives\ndepend, and therefore computer crimes also\ncause physical harm to people.",
     "questionStem": "The reasoning in Arjun’s response is flawed because he",
@@ -289,7 +322,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A report of a government survey concluded that Center\nCity was among the ten cities in the nation with the\nhighest dropout rate from its schools. The survey data\nwere obtained by asking all city residents over the age\nof 19 whether they were high school graduates and\ncomputing the proportion who were not. A city school\nofficial objected that the result did not seem accurate\naccording to the schools’ figures.",
     "questionStem": "The school official can most properly criticize the\nreasoning by which the survey report reached its result\nfor failure to do which one of the following?",
@@ -310,7 +345,10 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Brown dwarfs—dim red stars that are too cool to burn\nhydrogen—are very similar in appearance to red dwarf\nstars, which are just hot enough to burn hydrogen. Stars,\nwhen first formed, contain substantial amounts of the\nelement lithium. All stars but the coolest of the brown\ndwarfs are hot enough to destroy lithium completely by\nconverting it to helium. Accordingly, any star found that\ncontains no lithium is not one of these coolest brown\ndwarfs.",
     "questionStem": "The argument depends on assuming which one of the\nfollowing?",
@@ -334,7 +372,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Whenever a company loses a major product-liability\nlawsuit, the value of the company’s stocks falls\nsignificantly within hours after the announcement. Cotoy\nhas long been involved in a major product-liability\nlawsuit, and its stocks fell significantly in value today.\nTherefore, we can be sure that an unfavorable judgment\nagainst Cotoy in that lawsuit was announced earlier\ntoday.",
     "questionStem": "Which one of the following contains flawed reasoning\nthat most closely parallels that in the argument above?",
@@ -352,7 +392,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "In recent years the climate has been generally cool in\nnorthern Asia. But during periods when the average daily\ntemperature and humidity in northern Asia were slightly\nhigher than their normal levels the yields of most crops\ngrown there increased significantly. In the next century,\nthe increased average daily temperature and humidity\nattained during those periods are expected to become\nthe norm. Yet scientists predict that the yearly yields of\nmost of the region’s crops will decrease during the next\ncentury.",
     "questionStem": "Which one of the following, if true, most helps to resolve\nthe apparent paradox in the information above?",
@@ -370,7 +410,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No one in the French department to which Professor\nAlban belongs is allowed to teach more than one\nintroductory level class in any one term. Moreover,\nthe only language classes being taught next term are\nadvanced ones. So it is untrue that both of the French\nclasses Professor Alban will be teaching next term will be\nintroductory level classes.",
     "questionStem": "The pattern of reasoning displayed in the argument\nabove is most closely paralleled by that in which one of\nthe following arguments?",
@@ -388,7 +430,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 2, questions\n20 through 21.\nSome people have been promoting a new herbal\nmixture as a remedy for the common cold. The mixture\ncontains, among other things, extracts of the plants\npurple coneflower and goldenseal. A cold sufferer,\nskeptical of the claim that the mixture is an effective\ncold remedy, argued, “Suppose that the mixture were\nan effective cold remedy. Since most people with\ncolds wish to recover quickly, it follows that almost\neverybody with a cold would be using it. Therefore,\nsince there are many people who have colds but do not\nuse the mixture, it is obviously not effective.”",
     "questionStem": "Each of the following is an assumption required by the\nskeptical cold sufferer’s argument except:",
@@ -416,7 +461,7 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Method",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 2, questions\n20 through 21.\nSome people have been promoting a new herbal\nmixture as a remedy for the common cold. The mixture\ncontains, among other things, extracts of the plants\npurple coneflower and goldenseal. A cold sufferer,\nskeptical of the claim that the mixture is an effective\ncold remedy, argued, “Suppose that the mixture were\nan effective cold remedy. Since most people with\ncolds wish to recover quickly, it follows that almost\neverybody with a cold would be using it. Therefore,\nsince there are many people who have colds but do not\nuse the mixture, it is obviously not effective.”",
     "questionStem": "Which one of the following most accurately describes the\nmethod of reasoning the cold sufferer uses to reach the\nconclusion of the argument?",
@@ -437,7 +482,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "To hold criminals responsible for their crimes involves a\nfailure to recognize that criminal actions, like all actions,\nare ultimately products of the environment that forged\nthe agent’s character. It is not criminals but people in the\nlaw-abiding majority who by their actions do most to create\nand maintain this environment. Therefore, it is law-abiding\npeople whose actions, and nothing else, make them alone\ntruly responsible for crime.",
     "questionStem": "The reasoning in the argument is most vulnerable to\ncriticism on the grounds that",
@@ -458,7 +503,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Chronic back pain is usually caused by a herniated or\ndegenerated spinal disk. In most cases the disk will have\nbeen damaged years before chronic pain develops, and\nin fact an estimated one in five people over the age of\n30 has a herniated or degenerated disk that shows no\nchronic symptoms. If chronic pain later develops in such\na case, it is generally brought about by a deterioration of\nthe abdominal and spinal muscles caused by insufficient\nexercise.",
     "questionStem": "The statements above, if true, most strongly support which\none of the following?",
@@ -476,7 +523,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Each December 31 in Country Q, a tally is made of\nthe country’s total available coal supplies—that is, the\ntotal amount of coal that has been mined throughout\nthe country but not consumed. In 1991 that amount\nwas considerably lower than it had been in 1990.\nFurthermore, Country Q has not imported or exported\ncoal since 1970.",
     "questionStem": "If the statements above are true, which one of the\nfollowing must also be true on the basis of them?",
@@ -494,7 +543,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Tom: Employers complain that people graduating from\nhigh school too often lack the vocational skills\nrequired for full-time employment. Therefore,\nsince these skills are best acquired on the job,\nwe should require high school students to work\nat part-time jobs so that they acquire the skills\nneeded for today’s job market.\nMary: There are already too few part-time jobs for\nstudents who want to work, and simply requiring\nstudents to work will not create jobs for them.",
     "questionStem": "Which one of the following most accurately describes\nhow Mary’s response is related to Tom’s argument?",

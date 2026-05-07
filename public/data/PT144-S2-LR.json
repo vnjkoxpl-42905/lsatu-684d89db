@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "In the bodies of reptiles, some industrial by-products cause elevated hormonal activity. Hormones govern the development of certain body parts, and in reptiles abnormal development of these parts occurs only with elevated hormonal activity. Recently, several alligators with the telltale developmental abnormalities were discovered in a swamp. So, apparently, industrial by- products have entered the swamp’s ecosystem. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -28,7 +30,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Fill in the blank",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Government official: Residents who are foreign citizens can serve as public servants at most levels, but not as cabinet secretaries. This is wise, since cabinet secretaries perform some duties that should be performed only by citizens, and no one should be appointed to a position if it involves duties that person should not perform. Moreover, a cabinet undersecretary is expected to serve as cabinet secretary when the actual secretary is unavailable. So, _______.",
     "questionStem": "Which one of the following most logically completes the government official’s statement?",
@@ -51,7 +55,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Point at issue",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Doris: I’ve noticed that everyone involved in student government is outspoken. So if we want students to be more outspoken, we should encourage them to become involved in student government. Zack: Those who are in student government became involved precisely because they are outspoken in the first place. Encouraging others to become involved will do nothing to make them more outspoken. Doris and Zack disagree over whether",
@@ -72,7 +78,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Biologist: A careful study of the behavior of six individual chameleons concluded that lizards such as chameleons bask in the sun not only for warmth but also to regulate their production of vitamin D. Critics of the study—although correct in observing that its sample size was very small—are wrong to doubt its results. After all, the study’s author is well regarded professionally and has been doing excellent work for years. The reasoning in the biologist’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -90,7 +98,10 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Political scientist: Some analysts point to the government’s acceptance of the recent protest rally as proof that the government supports freedom of popular expression. But the government supports no such thing. Supporting freedom of popular expression means accepting the expression of ideas that the government opposes as well as the expression of ideas that the government supports. The message of the protest rally was one that the government entirely supports.",
     "questionStem": "Which one of the following is an assumption that is required by the political scientist’s argument?",
@@ -112,7 +123,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Lawyer: In addition to any other penalties, convicted criminals must now pay a “victim surcharge” of $30. The surcharge is used to fund services for victims of violent crimes, but this penalty is unfair to nonviolent criminals since the surcharge applies to all crimes, even nonviolent ones like petty theft.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the reasoning in the lawyer’s argument?",
@@ -133,7 +146,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Economist: Owing to global economic forces since 1945, our country’s economy is increasingly a service economy, in which manufacturing employs an ever smaller fraction of the workforce. Hence, we have engaged in less and less international trade.",
     "questionStem": "Which one of the following, if true, would most help to explain the decreasing engagement in international trade by the economist’s country?",
@@ -151,7 +167,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Merton: A study showed that people who live on very busy streets have higher rates of heart disease than average. I conclude that this elevated rate of heart disease is caused by air pollution from automobile exhaust. Ortiz: Are you sure?",
     "questionStem": "Do we know whether people living on busy streets have other lifestyle factors that are especially conducive to heart disease?",
@@ -173,7 +192,10 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Two lakes in the Pawpaw mountains, Quapaw and Highwater, were suffering from serious declines in their fish populations ten years ago. Since that time, there has been a moratorium on fishing at Quapaw Lake, and the fish population there has recovered. At Highwater Lake, no such moratorium has been imposed, and the fish population has continued to decline. Thus, the ban on fishing is probably responsible for the rebound in the fish population at Quapaw Lake.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
@@ -194,7 +216,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The Asian elephant walks with at least two, and sometimes three, feet on the ground at all times. Even though it can accelerate, it does so merely by taking quicker and longer steps. So the Asian elephant does not actually run.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
@@ -216,7 +240,10 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Resolve reconcile or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A hardware store generally sells roughly equal numbers of Maxlast brand hammers and Styron brand hammers. Last week, all of the Maxlast hammers were put on sale and placed in a display case just inside the store entrance while the Styron hammers retained their usual price and location. Surprisingly, the Styron hammers slightly outsold the Maxlast hammers.",
     "questionStem": "Which one of the following, if true, does most to explain the surprising result?",
@@ -234,7 +261,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Except",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In an experiment, two groups of mice—one whose diet included ginkgo extract and one that had a normal diet— were taught to navigate a maze. The mice whose diet included ginkgo were more likely to remember how to navigate the maze the next day than were the other mice. However, the ginkgo may not have directly enhanced memory. Other studies have found that ginkgo reduces stress in mice, and lowering very high stress levels is known to improve recall.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -255,7 +285,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico are now refusing to support publicly the idea that free trade should be extended to other Latin American countries. If the statement above is true,",
     "questionStem": "which one of the following must also be true?",
@@ -276,7 +308,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Principle: Any person or business knowingly aiding someone’s infringement on a copyright is also guilty of copyright infringement. Application: Grandview Department Store, which features a self-service photo-printing kiosk, is guilty of copyright infringement since a customer using the kiosk infringed on a wedding photographer’s copyright by printing photographs whose copyright is held by the photographer.",
     "questionStem": "Which one of the following, if assumed, most helps to justify the application of the principle?",
@@ -298,7 +332,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Fill in the blank",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Journalism’s purpose is to inform people about matters relevant to the choices they must make. Yet, clearly, people often buy newspapers or watch television news programs precisely because they contain sensationalistic gossip about people whom they will never meet and whose business is of little relevance to their lives. Obviously, then, the sensationalistic gossip contained in newspapers and television news programs _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -320,7 +356,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "When surveyed about which party they would like to see in the legislature, 40 percent of respondents said Conservative, 20 percent said Moderate, and 40 percent said Liberal. If the survey results are reliable, we can conclude that most citizens would like to see a legislature that is roughly 40 percent Conservative, 20 percent Moderate, and 40 percent Liberal.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
@@ -341,7 +379,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "City leader: If our city adopts the new tourism plan, the amount of money that tourists spend here annually will increase by at least $2 billion, creating as many jobs as a new automobile manufacturing plant would. It would be reasonable for the city to spend the amount of money necessary to convince an automobile manufacturer to build a plant here, but adopting the tourism plan would cost less. The city leader’s statements, if true, provide the most support for",
     "questionStem": "which one of the following?",
@@ -363,7 +403,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "An article claims that many medical patients have an instinctual ability to predict sudden changes in their medical status. But the evidence given is anecdotal and should not be trusted. The case is analogous to empirically disproven reports that babies are born in disproportionately high numbers during full moons. Once that rumor became popular, maternity room staff were more likely to remember busy nights with full moons than busy nights without them. The argument requires the assumption that",
@@ -386,7 +428,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Politician: Union leaders argue that increases in multinational control of manufacturing have shifted labor to nations without strong worker protections, resulting in a corresponding global decrease in workers’ average wages. Given that these leaders have a vested interest in seeing wages remain high, they would naturally want to convince legislators to oppose multinational control. Thus, legislators should reject this argument. The reasoning in the politician’s argument is flawed in that the argument",
@@ -407,7 +451,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Resolve reconcile or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Professor: The number of new university students who enter as chemistry majors has not changed in the last ten years, and job prospects for graduates with chemistry degrees are better than ever. Despite this, there has been a significant decline over the past decade in the number of people earning chemistry degrees.",
     "questionStem": "Which one of the following, if true, most helps to explain the decline?",
@@ -428,7 +475,10 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Although the first humans came to Australia 56,000 years ago and undoubtedly brought new diseases with them, human-borne diseases probably did not cause the mass extinction of large land animals and birds that took place over the following 10,000 years. After all, more than 55 different species disappeared at about the same time, and no one disease, however virulent, could be fatal to animals across that many different species.",
     "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most parallel to that in the argument above?",
@@ -450,7 +500,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A tax preparation company automatically adds the following disclaimer to every e-mail message sent to its clients: “Any tax advice in this e-mail should not be construed as advocating any violation of the provisions of the tax code.” The only purpose this disclaimer could serve is to provide legal protection for the company. But if the e-mail elsewhere suggests that the client do something illegal, then the disclaimer offers no legal protection. So the disclaimer serves no purpose.",
     "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
@@ -472,7 +524,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Well-intentioned people sometimes attempt to resolve the marital problems of their friends. But these attempts are usually ineffectual and thereby foster resentment among all parties. Thus, even well-intentioned attempts to resolve the marital problems of friends are usually unjustified.",
     "questionStem": "Which one of the following principles, if valid, most strongly supports the reasoning above?",
@@ -494,7 +548,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "It has been said that authors who write in order to give pleasure cannot impart to their readers the truth of their subject matter. That claim cannot be true. If it were, one could determine the truthfulness of a book simply by looking at its sales figures. If the book were very popular, one could reasonably conclude that it gave people pleasure and therefore that at least some of what is written in the book is not true.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -519,7 +575,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "It is likely that most of the new television programs Wilke & Wilke produce for this season will be canceled. Most of the new shows they produced last season were canceled due to insufficient viewership. Furthermore, their new shows are all police dramas, and few police dramas have been popular in recent years.",
     "questionStem": "Which one of the following, if true, most helps to strengthen the argument?",
@@ -542,7 +600,9 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If a corporation obtains funds fraudulently, then the penalty should take into account the corporation’s use of those funds during the time it held them. In such cases, the penalty should completely offset any profit the corporation made in using the funds.",
     "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",

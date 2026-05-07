@@ -4,7 +4,10 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "When a forest is subject to acid rain, the calcium level in the soil declines. Spruce, fir, and sugar maple trees all need calcium to survive. However, sugar maples in forests that receive significant acid rain are much more likely to show signs of decline consistent with calcium deficiency than are spruces or firs in such forests.",
     "questionStem": "Which one of the following, if true, most helps to explain the greater decline among sugar maples?",
@@ -22,7 +25,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Syndicated political columnists often use their newspaper columns to try to persuade readers to vote a certain way. However, their efforts to persuade voters rarely succeed, for by the time such a column appears, nearly all who will vote in the election will have already made a decision about which candidate to vote for.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -46,7 +51,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Travel industry consultant: Several airlines are increasing elbow room and leg room in business class, because surveys show that business travelers value additional space more than, say, better meals. But airlines are overconcerned about the comfort of passengers flying on business; they should instead focus on the comfort of leisure travelers, because those travelers purchase 80 percent of all airline tickets.",
     "questionStem": "Which one of the following, if true, most weakens the reasoning in the travel industry consultant’s argument?",
@@ -69,7 +76,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Gaby: In school, children should be allowed fully to follow their own interests, supported by experienced teachers who offer minimal guidance. This enables them to be most successful in their adult lives. Logan: I disagree. Schoolchildren should acquire the fundamental knowledge necessary for future success, and they learn such fundamentals only through disciplined, systematic instruction from accredited teachers.",
     "questionStem": "Gaby’s and Logan’s comments provide most support for the claim that they disagree about",
@@ -90,7 +99,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Judge: The case before me involves a plaintiff and three codefendants. The plaintiff has applied to the court for an order permitting her to question each defendant without their codefendants or their codefendants’ legal counsel being present. Two of the codefendants, however, share the same legal counsel. The court will not order any codefendant to find new legal counsel. Therefore, the order requested by the plaintiff cannot be granted.",
     "questionStem": "The conclusion of the judge’s argument is most strongly supported if which one of the following principles is assumed to hold?",
@@ -113,7 +124,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Must Be True",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The calm, shallow waters of coastal estuaries are easily polluted by nutrient-rich sewage. When estuary waters become overnutrified as a result, algae proliferate. The abundant algae, in turn, sometimes provide a rich food source for microorganisms that are toxic to fish, thereby killing most of the fish in the estuary.",
     "questionStem": "Which one of the following can be properly inferred from the information above?",
@@ -134,7 +147,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Evaluate",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The ruins of the prehistoric Bolivian city of Tiwanaku feature green andacite stones weighing up to 40 tons. These stones were quarried at Copacabana, which is across a lake and about 90 kilometers away. Archaeologists hypothesize that the stones were brought to Tiwanaku on reed boats. To show this was possible, experimenters transported a 9-ton stone from Copacabana to Tiwanaku using a reed boat built with locally available materials and techniques traditional to the area.",
     "questionStem": "Which one of the following would be most useful to know in order to evaluate the support for the archaeologists’ hypothesis?",
@@ -155,7 +170,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Union member: Some members of our labor union are calling for an immediate strike. But a strike would cut into our strike fund and would in addition lead to a steep fine, causing us to suffer a major financial loss. Therefore, we must not strike now.",
     "questionStem": "The union member’s argument is most vulnerable to criticism on the grounds that it",
@@ -178,7 +195,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Birds and mammals can be infected with West Nile virus only through mosquito bites. Mosquitoes, in turn, become infected with the virus when they bite certain infected birds or mammals. The virus was originally detected in northern Africa and spread to North America in the 1990s. Humans sometimes catch West Nile virus, but the virus never becomes abundant enough in human blood to infect a mosquito.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -196,7 +215,10 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In trying to reduce the amount of fat in their diet, on average people have decreased their consumption of red meat by one-half in the last two decades. However, on average those who have reduced their consumption of red meat actually consume substantially more fat than those who have not.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
@@ -217,7 +239,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Rolanda: The house on Oak Avenue has a larger yard than any other house we’ve looked at in Prairieview, so that’s the best one to rent. Tom: No, it isn’t. Its yard isn’t really as big as it looks. Property lines in Prairieview actually start 20 feet from the street. So what looks like part of the yard is really city property. Rolanda: But that’s true of all the other properties we’ve looked at too!",
     "questionStem": "Rolanda’s response to Tom suggests that Tom commits which one of the following reasoning errors?",
@@ -239,7 +263,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The best jazz singers use their voices much as horn players use their instruments. The great Billie Holiday thought of her singing voice as a horn, reshaping melody and words to increase their impact. Conversely, jazz horn players achieve their distinctive sounds by emulating the spontaneous twists and turns of an impassioned voice. So jazz consists largely of voicelike horns and hornlike voices.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the best jazz singers use their voices much as horn players use their instruments?",
@@ -260,7 +286,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Educator: Reducing class sizes in our school district would require hiring more teachers. However, there is already a shortage of qualified teachers in the region. Although students receive more individualized instruction when classes are smaller, education suffers when teachers are underqualified. Therefore, reducing class sizes in our district would probably not improve overall student achievement.",
     "questionStem": "Which one of the following is an assumption required by the educator’s argument?",
@@ -284,7 +312,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Geographer: Because tropical storms require heat and moisture, they form especially over ocean surfaces of at least 26 degrees Celsius (79 degrees Fahrenheit), ocean temperatures that global warming would encourage. For this reason, many early discussions of global warming predicted that it would cause more frequent and intense tropical storms. But recent research shows that this prediction is unlikely to be borne out. Other factors, such as instabilities in wind flow, are likely to counteract global warming’s effects on tropical storm development.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the geographer’s argument?",
@@ -309,7 +339,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Copyright was originally the grant of a temporary government-supported monopoly on copying a work. Its sole purpose was to encourage the circulation of ideas by giving authors the opportunity to derive a reasonable financial reward from their works. However, copyright sometimes goes beyond its original purpose since sometimes _______.",
     "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
@@ -332,7 +364,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Critic to economist: In yet another of your bumbling forecasts, last year you predicted that this country’s economy would soon go into recession if current economic policies were not changed. Instead, economic growth is even stronger this year. Economist: There was nothing at all bumbling about my warning. Indeed, it convinced the country’s leaders to change economic policies, which is what prevented a recession.",
     "questionStem": "The economist responds to the critic by",
@@ -353,7 +387,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Parallel Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Watching music videos from the 1970s would give the viewer the impression that the music of the time was dominated by synthesizer pop and punk rock. But this would be a misleading impression. Because music videos were a new art form at the time, they attracted primarily cutting-edge musicians.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to that of the argument above?",
@@ -375,7 +411,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Hospitals, universities, labor unions, and other institutions may well have public purposes and be quite successful at achieving them even though each of their individual staff members does what he or she does only for selfish reasons.",
     "questionStem": "Which one of the following generalizations is most clearly illustrated by the passage?",
@@ -397,7 +435,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Consumer advocate: In some countries, certain produce is routinely irradiated with gamma rays in order to extend shelf life. There are, however, good reasons to avoid irradiated foods. First, they are exposed to the radioactive substances that produce the gamma rays. Second, irradiation can reduce the vitamin content of fresh foods, leaving behind harmful chemical residues. Third, irradiation spawns unique radiolytic products that cause serious health problems, including cancer.",
     "questionStem": "Each of the following, if true, weakens the consumer advocate’s argument except:",
@@ -420,7 +460,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "When teaching art students about the use of color, teachers should use colored paper rather than paint in their demonstrations. Colored paper is preferable because it readily permits a repeated use of exactly the same color in different compositions, which allows for a precise comparison of that color’s impact in varying contexts. With paint, however, it is difficult to mix exactly the same color twice, and the varying textures of the applied paint can interfere with the pure effect of the color itself.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -445,7 +487,7 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Philosopher: To explain the causes of cultural phenomena, a social scientist needs data about several societies: one cannot be sure, for example, that a given political structure is brought about only by certain ecological or climatic factors unless one knows that there are no similarly structured societies not subject to those factors, and no societies that, though subject to those factors, are not so structured.",
     "questionStem": "The claim that to explain the causes of cultural phenomena, a social scientist needs data about several societies plays which one of the following roles in the philosopher’s reasoning?",
@@ -467,7 +509,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Scientist: Physicists claim that their system of careful peer review prevents scientific fraud in physics effectively. But biologists claimed the same thing for their field 20 years ago, and they turned out to be wrong. Since then, biologists have greatly enhanced their discipline’s safeguards against scientific fraud, thus preventing further major incidents. It would be conducive to progress in physics if physicists were to do the same thing.",
     "questionStem": "The conclusion of the scientist’s argument is most strongly supported if which one of the following is assumed?",
@@ -493,7 +537,10 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Biologist: Researchers believe that dogs are the descendants of domesticated wolves that were bred to be better companions for humans. It has recently been found that some breeds of dog are much more closely related genetically to wolves than to most other breeds of dog. This shows that some dogs are descended from wolves that were domesticated much more recently than others.",
     "questionStem": "Which one of the following principles underlies the biologist’s argument?",
@@ -518,7 +565,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Paleomycologists, scientists who study ancient forms of fungi, are invariably acquainted with the scholarly publications of all other paleomycologists. Professor Mansour is acquainted with the scholarly publications of Professor DeAngelis, who is a paleomycologist. Therefore, Professor Mansour must also be a paleomycologist.",
     "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
@@ -541,7 +590,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Lutsina: Because futuristic science fiction does not need to represent current social realities, its writers can envisage radically new social arrangements. Thus it has the potential to be a richer source of social criticism than is conventional fiction. Priscilla: That futuristic science fiction writers more skillfully envisage radically new technologies than new social arrangements shows how writers’ imaginations are constrained by current realities. Because of this limitation, the most effective social criticism results from faithfully presenting the current social realities for critical examination, as happens in conventional fiction.",
     "questionStem": "Lutsina and Priscilla disagree with each other about whether",
@@ -562,7 +613,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Because our club recruited the best volleyball players in the city, we will have the best team in the city. Moreover, since the best team in the city will be the team most likely to win the city championship, our club will almost certainly be city champions this year.",
     "questionStem": "The reasoning in the argument is flawed because the argument",

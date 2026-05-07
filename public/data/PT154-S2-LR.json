@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Activist: The average CEO is paid many times more than the average worker is paid at the same company. But it is certain that no CEO works many times harder than the average worker. Therefore the high pay of CEOs is wholly unjustified.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the activist’s argument?",
@@ -27,7 +29,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The poet E. E. Cummings stood for the individual human being against regimentation and standardization of any sort. Yet in doing so Cummings stood against something essential to the work he did, since metaphor presupposes literal language, and literal language essentially involves regimentation.",
     "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
@@ -49,7 +53,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Horses, although descended from a forest-dwelling ancestor, thrive in grasslands. In the last 2 million years, horses have gone through three cycles of population increase followed by a rapid decline in population. The most recent cycle peaked 25,000 years ago during a cold period that preceded a period of warming.",
     "questionStem": "Which one of the following, if true, most helps to explain why the horse population peaked 25,000 years ago and then rapidly declined?",
@@ -71,7 +78,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: Some primary schools’ early education reading programs encourage children to read by paying them for each book they read outside of class. Such programs should be viewed with suspicion. While paying kids to read might get them to read more, it also might teach them to regard reading as a chore rather than as a source of intrinsic satisfaction.",
     "questionStem": "Which one of the following principles, if valid, most strongly supports the editorial’s reasoning?",
@@ -95,7 +104,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Salmon farmer: Farm-raised salmon is preferable to wild salmon due to its year-round availability, consistent quality, and cheaper price. But the best reason to prefer farmed salmon is ecological: as consumers’ desire for farmed salmon increases, the market for threatened wild salmon drops, which in turn leads to more wild fish being allowed to live and multiply freely, thus increasing their numbers.",
     "questionStem": "Which one of the following, if true, most weakens the salmon farmer’s argument?",
@@ -118,7 +129,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Video games are commonly criticized as morally corrupting in that they allow people to imagine themselves transgressing conventional morality. But it is telling that precisely this criticism was leveled against many forms of popular culture in their early stages of development, including novels, movies, and rock music. And just as it now seems silly to suggest that reading novels is morally corrupting, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -142,7 +155,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Library policy: For a book to be removed from circulation, the book must be badly damaged and must not have been checked out for over two years. Books that are either written by local authors or are considered to be of significance to local history can only be removed from circulation if they have not been checked out for over three years. \nApplication: Paper Flowers should not be removed from circulation.",
     "questionStem": "Which one of the following, if true, fully justifies the above application of the library policy?",
@@ -164,7 +179,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: If current trends continue, obesity will soon be the leading cause of preventable illness in our country. Yet a recent survey found that 45 percent of doctors said they did not feel qualified to advise their patients about weight-related issues. Clearly, therefore, doctors need more training in the treatment of obesity.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the editor’s argument?",
@@ -187,7 +204,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Editor: It is a myth that a significant amount of music on the Internet is the result of people downloading others’ music and reworking it into new music of their own. We know this because it has been shown that 99 percent of Internet users who download music do not publish new music of their own on the Internet.",
     "questionStem": "The editor’s reasoning is questionable in that it",
@@ -211,7 +230,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Wei: A respected automobile expert claims that most cars will develop transmission problems unless their transmissions are serviced at least once every three years. But this claim is false. I have owned both of my cars for over twelve years, I have never had the transmission serviced on either one, and neither one has ever developed a transmission problem.",
     "questionStem": "The pattern of flawed reasoning in Wei’s argument is most similar to the pattern of flawed reasoning exhibited by which one of the following?",
@@ -235,7 +254,10 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A part of the brain called the amygdala is involved in sensing fear. People who have Urbach-Wiethe disease, which destroys the amygdala, generally do not experience fear. They do, however, experience extreme fear when given a breath that is very high in carbon dioxide, just as some people with normal amygdalae do.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -257,7 +279,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Bauer: It is a mistake to criticize the city for being overzealous in its issuance of parking tickets. Can you imagine how much worse parking would be if parking regulations were not enforced?",
     "questionStem": "The reasoning in Bauer’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -275,7 +300,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Advertisers typically prohibit graphic designers from signing their works because the purpose of a graphic design is to draw attention to an advertised product or service, not to the designer. Nonetheless, it is better that graphic designers not remain anonymous. Anonymity undermines effective graphic design by making it difficult to hold designers accountable for their work.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -297,7 +322,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Superintendent: Within the school district overall, 11 percent of high school students drop out. However, of the high school students who participate in work internships, only 1 percent drop out. Clearly, then, participation in a work internship decreases the chance that a student will drop out.",
     "questionStem": "The reasoning in the superintendent’s argument is flawed because the argument",
@@ -320,7 +348,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Journalist: Despite the recent spate of depressing political news, many investors are putting money into stocks. Clearly, these investors are confident of increased growth in the country’s economy. Thus, since voter confidence in the economy tends to favor incumbent political leaders, it is likely that the party now in power will retain power after the upcoming elections.",
     "questionStem": "Which one of the following is an assumption required by the journalist’s reasoning?",
@@ -345,7 +375,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Archaeologist: The people who lived in this area deposited their rubbish in pits near their dwellings. Some claim that the rubbish found in those pits provides great insight into the possessions these people had, but this rubbish by itself actually tells us relatively little about those possessions; among other reasons, the pits have been subject to erosion over long periods of time, with destructive effects on the rubbish within.",
     "questionStem": "Which one of the following, if true, most strengthens the grounds presented by the archaeologist for drawing the conclusion in the argument above?",
@@ -368,7 +400,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Consultant: The mayor shouldn’t adopt her rival’s controversial proposal for solving the city’s budget problem. If she adopts the proposal and it succeeds, she risks increasing her rival’s credibility. If it fails, she will get blamed for wasting time on such an unconventional idea.",
     "questionStem": "Which one of the following arguments is most closely parallel in its reasoning to the argument above?",
@@ -390,7 +424,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Anthropologists have long debated whether the customs of a culture invariably function to preserve it. According to one proposed definition, a culture is the totality of the customs practiced by those whose culture it is. If this definition is correct, then the customs of a culture necessarily function to preserve it, even if only in the most trivial sense, because, under this conception of a culture, the abandonment of any custom by a culture’s members would by definition constitute that culture’s destruction.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that under a certain conception of culture, the abandonment of any custom by a culture’s members would constitute that culture’s destruction?",
@@ -408,7 +444,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Doctor: The patient had been experiencing back and leg pain. A computerized scan suggested that there was pressure on a nerve exiting to the leg from a lower vertebra. Such pressure can cause nerve inflammation, which can in turn cause pain. I decided that if the nerve was inflamed, the best way to reduce the inflammation would be a cortisone injection to the nerve, and this, in fact, did result in significant pain relief. I conclude, therefore, that pressure on the nerve in question was causing this patient’s back and leg pain.",
     "questionStem": "Which one of the following is an assumption required by the doctor’s argument?",
@@ -431,7 +469,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The public’s welfare can be undermined by its own tastes. Journalists tend to focus on stories that will stimulate their readers’ interest. Because sensation and drama serve this purpose more successfully than do matter-of-fact descriptions of political or social developments of far-reaching importance, newspaper articles containing the latter are all too often displaced by those that highlight rumors and implausible conspiracies.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument above?",
@@ -452,7 +492,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A study of 30 years of weather pattern records of several industrialized urban areas found that weekend days tend to be cloudier than weekdays. Thus it can no longer be denied that human activity has appreciable, large-scale effects on weather, because the few seven-day cycles that occur naturally are of too little significance to cause measurable weather patterns.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -477,7 +519,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Art critic: All of Dolores Albarran’s oil paintings are highly original, though few of them are critically acclaimed or popular with collectors. Remarkably, Albarran produced no highly original works until late in her career, and few of her abstract works demonstrate much originality.",
     "questionStem": "If all of the art critic’s statements are true, which one of the following must also be true?",
@@ -495,7 +539,10 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The effects of global warming on the polar ice caps have been studied with computer models. According to some models, if the global temperature increases by as little as two degrees Celsius, the seawater will rise to a temperature that could melt the ice caps considerably. However, those models also show that under such a scenario, the volume of the ice caps would increase, not shrink.",
     "questionStem": "Which one of the following, if true, would most help to resolve the apparent paradox described above?",
@@ -513,7 +560,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Until recently, experts have been unable to identify the artist who created a Renaissance painting depicting aristocrats in a historic battle. But the mystery has been solved by the discovery of a self-portrait of a well-known artist from very early in his career, dated to the same year that the painting of the battle scene was created. One of the figures in the battle scene closely resembles the young man in the self-portrait. It is likely, therefore, that the artist who painted the self-portrait also painted the battle scene.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -535,7 +584,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Babson: The idea of charging people a dollar to read individual articles and essays online, while novel, will succeed if the quality of the articles and essays is high enough. A dollar isn’t much money: in many countries people routinely reward quality service with tips of much more than a dollar.\nCortez: But most people tip only for those services for which it is customary to tip. The fact that people don’t currently pay for articles and essays individually is a bad sign for anyone who hopes to earn money this way.",
     "questionStem": "The dialogue provides the most support for the claim that Babson and Cortez disagree over whether",

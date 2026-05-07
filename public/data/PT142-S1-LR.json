@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Children should be discouraged from reading Jones’s\nbooks. Reading them is like eating candy, which provides\nintense, short-term sensory stimulation but leaves one\npoorly nourished and dulls one’s taste for better fare.\nIn other words, the problem with letting children read\nJones’s books is that _______.",
     "questionStem": "Which one of the following most logically completes the\nargument above?",
@@ -26,7 +28,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Archaeologist: How did the Parthenon’s stonemasons\nmanage to carve columns that all bulged outward\nin the center in precisely the same way? One\nhypothesis is suggested by the discovery of a\nscale drawing of a column etched into the stone\nof a Greek temple at Didyma. The drawing is\na profile view of a column surrounded by a\ngrid, which makes it possible to determine the\ncorrect width at every height of the column.\nThe stonemasons who carved the Parthenon’s\ncolumns may have relied on a drawing like the\none at Didyma.",
     "questionStem": "Which one of the following, if true, adds the most\nsupport for the archaeologist’s hypothesis?",
@@ -48,7 +52,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: The government should not fund any part of\nits health services with lottery revenue. These\nhealth services are essential to our community,\nbut lottery revenue could decline at some time in\nthe future, leaving the government scrambling to\nmake up a budget shortfall.",
     "questionStem": "The argument in the editorial most closely conforms to\nwhich one of the following principles?",
@@ -70,7 +76,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Scientist: Rattlesnakes prey on young California ground\nsquirrels. Protective adult squirrels harass a\nthreatening rattlesnake by puffing up their tails\nand wagging them. New results show that the\nsquirrel’s tail also heats up when harassing a\nrattlesnake. Since rattlesnakes have an infrared\nsensing organ that detects body heat, the heating\nup of the squirrel’s tail probably plays a role in\nrepelling rattlesnakes.",
     "questionStem": "Which one of the following, if true, most helps to support\nthe scientist’s hypothesis?",
@@ -92,7 +100,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Critic: Fillmore, an influential television executive,\nargues that watching television regularly is not\ndetrimental to very young children. Fillmore\nbases this on the claim, which I grant, that\nchildren can learn much that is beneficial from\ntelevision. But we should reject Fillmore’s\nargument, because clearly it is to Fillmore’s\nbenefit to convince parents that television is not\nharmful to their children.",
     "questionStem": "Which one of the following most accurately describes a\nflaw in the critic’s reasoning?",
@@ -114,7 +124,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "While grapefruit juice is a healthy drink, it has been\ndiscovered that a chemical in the juice affects how certain\nmedicines are absorbed, with the result that normal\nmedicinal doses act like higher doses. Getting the wrong\ndose is dangerous. Since it is always desirable to take the\nlowest effective dose, the best medical approach would\nbe to take lower doses of these medicines along with\nprescribed amounts of grapefruit juice.",
     "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
@@ -135,7 +147,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A landlord needed to replace the air-conditioning unit\nin a small rental home. The salesperson at the appliance\nstore showed the landlord two air-conditioning units with\nidentical prices. She told the landlord that the Sno-Queen\nwas the most powerful unit for the price, but advised him\nto purchase the less powerful FreezAll unit, saying that\nthe FreezAll was powerful enough for his needs.",
     "questionStem": "The salesperson’s advice to the landlord most closely\nconforms to which one of the following principles?",
@@ -158,7 +172,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: Our political discussions tend to focus largely\non the flaws of our nation’s leaders, but we need\nto remind ourselves that these leaders were\nchosen democratically. The real question that\nneeds answering is how our nation’s institutions\nand procedures enable such people to attain\npositions of power. Thus, to focus our attention\non the flaws of our leaders is to indulge in a\npointless distraction.",
     "questionStem": "Which one of the following is an assumption that the\nargument requires?",
@@ -181,7 +197,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Many calcium supplements contain lead, a potentially\ndangerous substance even in small amounts. The body\ncan safely store in bones trace amounts of lead from food,\nbut high levels of lead in the blood are a major public\nhealth concern, associated with anemia and nerve damage.\nDespite this, many doctors contend that for some people\ncalcium supplements containing lead are preferable to no\ncalcium supplements at all.",
     "questionStem": "Which one of the following, if true, would most help to\nresolve the apparent discrepancy in the information\nabove?",
@@ -202,7 +220,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Principle: People should buy an expensive antique only if\nthey can be confident of its authenticity and they\nfind the piece desirable for its intrinsic qualities\nand not just for its value as an investment.\nApplication: Matilde should not buy the expensive antique\nvase offered for sale on the Internet.",
     "questionStem": "Which one of the following, if true, most helps to justify\nthe above application of the principle?",
@@ -223,7 +243,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Critic: In her presentation of important works of art\nin her art history textbook, Waverly claims to\nhave presented only objective accounts: “I have\nsought neither to advocate nor to denigrate what\nI included.” In writing about art, a pretense of\nobjectivity never succeeds: clearly, Waverly\nwrites much better about art she likes than about\nart to which she is indifferent.",
     "questionStem": "The critic’s statements, if true, most strongly support\nwhich one of the following?",
@@ -241,7 +263,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Archaeologists are discovering a great deal about the Sals\nculture. For example, recent excavations have unearthed\nsmelting furnaces and tools of smelted copper and\nbronze. There were distinct Sals words for copper and\nfor bronze, but none for iron. Thus, the Sals did not smelt\niron.",
     "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
@@ -259,7 +283,7 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Community organizations wanting to enhance support\nfor higher education programs need to convince the\npublic that such programs benefit society as a whole.\nTaking this approach makes the public more receptive. It\nis much easier, for example, to get the public to support\nroad building, which is seen as benefiting everyone, than\nit is to get them to support programs that are seen as\nbenefiting only a relatively small segment of society.",
     "questionStem": "Which one of the following most accurately expresses\nthe overall conclusion drawn in the argument?",
@@ -283,7 +307,10 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Currently, no satellite orbiting Earth is at significant risk\nof colliding with other satellites or satellite fragments,\nbut the risk of such a collision is likely to increase\ndramatically in the future. After all, once such a collision\noccurs, it will probably produce thousands of satellite\nfragments, each large enough to shatter other satellites.\nThe resulting collisions will produce many more\nfragments, and so on, causing the space around Earth to\nbecome quite heavily cluttered with dangerous debris.",
     "questionStem": "Which one of the following most accurately describes\nthe role played in the argument by the claim that the risk\nof a satellite orbiting Earth colliding with other satellites\nor satellite fragments is likely to increase dramatically in\nthe future?",
@@ -305,7 +332,10 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researcher: Salmonella bacteria are a major cause of\nillness in humans who consume poultry. Young\nchicks that underwent a new treatment exhibited\na lower incidence of Salmonella infection than\ndid untreated chicks, although one week after the\ntreatment was administered the treated chicks had\nhigher concentrations of a variety of bacteria than\ndid untreated chicks.",
     "questionStem": "Which one of the following, if true, most helps to\nexplain the concentrations of bacteria one week after the\ntreatment?",
@@ -323,7 +353,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Debater: As a pedagogical practice, lecturing embodies\nhierarchy, since the lecturer is superior to the\nstudent in mastery of the subject. But people\nlearn best from peer interaction. Thus, the\nhierarchy in lecturing is a great weakness. Respondent: By definition, all teaching and learning are\nhierarchical, for all teaching and learning must\nproceed from simple to complex. In teaching\nmathematics, for example, arithmetic must\nprecede calculus. Thus, the hierarchy in lecturing\nis a strength.",
     "questionStem": "The respondent’s reply to the debater’s argument is most\nvulnerable to criticism on the grounds that the\nrespondent",
@@ -345,7 +377,10 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "How the pigment known as Han purple was synthesized\nby the ancient Chinese of the Qin and Han dynasties has\npuzzled scientists. The Chinese chemists employed the\nsame chemical ingredients used for Han purple in the\nproduction of a common type of white glass during that\nperiod. Both were produced in processes that involved\nsubjecting the mixtures to high heat and mixing in lead to\ndecrease the melting temperature. Thus, Han purple was\nprobably discovered by fortuitous accident during glass\nproduction.",
     "questionStem": "Which one of the following, if true, would most\nstrengthen the argument?",
@@ -367,7 +402,10 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Medical researcher: A survey of more than 1 million\nadults found that there was a greater frequency\nof illness among people who regularly slept at\nleast 8 hours a night than among people who\nslept significantly less. This shows that mild sleep\ndeprivation is not unhealthy and, in fact, probably\nbolsters the body’s defenses against illness.",
     "questionStem": "The reasoning in the medical researcher’s argument is\nmost vulnerable to criticism on the grounds that the\nargument",
@@ -388,7 +426,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If temperatures had dropped below freezing when I was\ngone last week, the impatiens in my garden would have\ndied. If the impatiens had died, they obviously could not\ncontinue to bloom. However, since the impatiens in my\ngarden are still in bloom today, temperatures did not drop\nbelow freezing last week.",
     "questionStem": "The pattern of reasoning in which one of the following\narguments most closely parallels that in the argument\nabove?",
@@ -412,7 +452,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If the city builds the proposed convention center, several\nnational professional organizations will hold conventions\nthere. And if several large conventions are held in the\ncity, the total number of visitors will of course increase.\nTax revenues will certainly increase if the number of\nvisitors increases. Thus, building the convention center\nwill increase the city’s tax revenues.",
     "questionStem": "The conclusion of the argument follows logically if\nwhich one of the following is assumed?",
@@ -430,7 +472,10 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Evaluate",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In a study, pairs of trained dogs were placed side by side\nand given a command such as “sit.” After both obeyed\nthe command, one dog was given a treat while its partner\nwas given no reward at all. Over time, the dogs who went\nunrewarded began to disobey the command. This shows\nthat dogs have an aversion to being treated unfairly.",
     "questionStem": "Which one of the following would be most useful to\nknow in order to evaluate the argument?",
@@ -448,7 +493,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A study of 20,000 20- to 64-year-olds found that people’s\nsatisfaction with their incomes is not strongly correlated\nwith the amount they make. People tend to live in\nneighborhoods of people from their same economic class,\nand the study shows that people’s satisfaction with their\nincomes depends largely on how favorably their incomes\ncompare with those of their neighbors.",
     "questionStem": "The statements above, if true, most strongly support\nwhich one of the following hypotheses?",
@@ -466,7 +513,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Geologist: The dominant view that petroleum formed\nfrom the fossilized remains of plants and animals\ndeep in the earth’s crust has been challenged\nby scientists who hold that it formed, not from\nliving material, but from deep carbon deposits\ndating from the formation of the earth. But their\ntheory is refuted by the presence in petroleum\nof biomarkers, molecules indicating the past or\npresent existence of a living organism.",
     "questionStem": "Which one of the following, if true, most weakens the\ngeologist’s argument?",
@@ -489,7 +538,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Any driver involved in an accident leading to personal\ninjury or property damage exceeding $500 is legally\nrequired to report the accident to the department of motor\nvehicles, unless the driver is incapable of doing so. Ted\nis not required to report the accident in which he was\ninvolved as a driver.",
     "questionStem": "Which one of the following can be properly inferred\nfrom the statements above?",
@@ -513,7 +564,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Student: If a person has an immunity to infection by a\nmicroorganism, then that microorganism does\nnot cause them to develop harmful symptoms. Since many people are exposed to staphylococcus\nwithout developing any harmful symptoms, it\nfollows that they have an immunity to infection\nby this microorganism.",
     "questionStem": "The student’s argument is most similar in its flawed\npattern of reasoning to which one of the following?",

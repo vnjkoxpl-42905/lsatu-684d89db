@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "CEO: While we only have the sales reports for the first 9 months of this year, I feel confident in concluding that this will be a good year for us in terms of sales. In each of the last 5 years, our monthly sales average was less than $30 million. However, our monthly sales average so far for this year is over $35 million.",
     "questionStem": "Which one of the following, if true, most strengthens the CEO’s argument?",
@@ -29,7 +31,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Javier: Government workers are paid higher hourly wages than comparable private sector employees. So the government could save money by hiring private contractors to perform services now performed by government employees.\nMykayla: An analysis of government contracts showed that, on average, the government paid substantially more to hire contractors than it would have cost for government employees to perform comparable services.",
     "questionStem": "Javier and Mykayla disagree with each other over whether",
@@ -52,7 +56,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Biologist: DNA analysis shows that Acacia heterophylla, a tree native to the Indian Ocean’s Réunion Island, is descended from the Hawaiian tree Acacia koa. Some think this occurred because A. koa seeds floated from Hawaii to Réunion, but that explanation is implausible, since the seeds will not germinate after being soaked in seawater. Moreover, both trees grow in the mountains, not near the shore. Seabirds sometimes carry seeds great distances, so they probably caused the dispersal.",
     "questionStem": "Which one of the following, if true, most strengthens the support for the biologist’s hypothesis?",
@@ -76,7 +83,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Although smaller class sizes are popular with parents and teachers, the evidence shows that large scale reductions in class size lead to only slight improvements in student performance. Because school finances are limited, the cost-benefit test that any educational policy must pass is not “Does this policy have any positive effect?” but rather “Is there a more productive use of education dollars?” So public funds would in fact be better spent on efforts to recruit and retain better teachers.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -101,7 +110,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Seasonal allergy symptoms are the immune system’s response to pollen in the air. When large amounts of pollen are inhaled, it can trigger an inflammatory response that causes allergy symptoms. While there are medicines that minimize those symptoms, a more effective—though often impractical—strategy is simply to stay indoors on dry, windy days during allergy season.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -123,7 +134,7 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Saturn’s moon Enceladus has a rocky core and an icy surface. Between these two layers, there must be a lake of liquid water. The Cassini space probe was used to measure the density of matter composing Enceladus. These measurements revealed something denser than ice between the core and surface of Enceladus, and that could only be liquid water.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -146,7 +157,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Thousands of fossils from the long-extinct dire wolf have been found in a cluster of natural tar pits in which animals became trapped and were preserved for millennia. None of these fossils came from dire wolf pups under six months old. Pups under six months old, therefore, probably did not accompany adults that were scavenging or hunting.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -169,7 +182,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If a garden does not receive plenty of water and sunlight and is not planted in rich soil, then it will not be productive. Patricia has located her garden in an area that is ideal for receiving water and sunlight, and has made sure the soil is rich by adding fertilizer and compost. Hence, Patricia’s garden will be productive.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -191,7 +206,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Rodents are small, gnawing mammals characterized by their chisel-like incisor teeth. Although most North American mammal species are not rodent species, most of the individual mammals in North America are rodents.",
     "questionStem": "Which one of the following one of the following is most strongly supported by the information above?",
@@ -213,7 +230,10 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Toning shoes—walking shoes with a specially rounded sole—are popular with fitness enthusiasts. Research shows that the major leg muscles of people walking in toning shoes receive no more exercise than those of people walking in ordinary walking shoes. Nevertheless, many people experience a strengthening of their major leg muscles after switching to toning shoes.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -234,7 +254,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Psychologist: Specialists naturally tend to view their own specialties as fundamentally important. We are therefore amply justified in being skeptical when geneticists claim that personality traits not traditionally thought to be genetically determined are, in fact, genetically determined. The geneticists are probably just amplifying their sense of their own importance.",
     "questionStem": "The reasoning in the psychologist’s argument is flawed in that this argument",
@@ -257,7 +279,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "After the disastrous 1986 accident at the Chernobyl nuclear plant, the surrounding area was contaminated with radiation. Wild animals that are now there have very high levels of radiation in their muscles and bones. And yet since the disaster, wildlife populations in the region have expanded rapidly.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -278,7 +303,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Commentator: The worldwide oil crisis of 1973 was not due to any real shortage of oil, but was the result of collusion between international oil companies and oil-producing countries to artificially restrict the supply of oil in order to profit from higher prices. This is shown by the fact that after 1973 the profits of oil companies showed large increases, as did the incomes of oil-producing countries.",
     "questionStem": "The reasoning in the commentator’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -301,7 +328,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In a study, six medical students were each separately presented with the same patient, whose symptoms could be the result of any one of several medical conditions. The attending physician asked each student a leading question of the form, “What tests should we order to try to rule out a diagnosis of X?” where X was filled in with a different medical condition for each student. A week later each student was presented with a patient having similar symptoms in the presence of a different attending physician who asked for a diagnosis without asking any leading questions. Each student began by testing the diagnosis that had been suggested by the original attending physician.",
     "questionStem": "Which one of the following statements is most strongly supported by the information above?",
@@ -324,7 +353,10 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Few, if any, carbonated beverages contain calcium. Some very popular ones, however, contain significant amounts of caffeine, and consuming caffeine causes people to excrete significantly more calcium than they would otherwise. Interestingly, teenagers who drink large amounts of carbonated beverages containing caffeine tend to suffer more broken bones than those who do not. Calcium deficiency can make bones more brittle, of course, so the higher incidence of broken bones in teenagers who consume carbonated beverages with caffeine is probably due primarily to caffeine consumption.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -347,7 +379,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Philosopher: Groups are not the type of entity that can be worthy of praise or blame. Blameworthiness implies conscience and agency. Nations do not have consciences. Families are not agents. Hence, any ascription of praise or blame to a group must be translated into some statement about individuals if we are to evaluate it properly.",
     "questionStem": "Which one of the following most accurately describes the role played in the philosopher’s argument by the claim that nations do not have consciences?",
@@ -369,7 +403,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Psychiatrist: Psychological stress is known both to cause negative emotions and to impair physical health. This suggests that overcoming such negative emotions when they arise could cause one’s health to improve.",
     "questionStem": "The psychiatrist’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -390,7 +426,10 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some potential anticancer drugs work by depriving growing tumors of needed blood vessels. The creation of blood vessels is called angiogenesis, and the experimental drugs work by inhibiting this process. The same drugs have been found to prevent obesity in rodents.",
     "questionStem": "The statements above, if true, lend the strongest support to which one of the following?",
@@ -413,7 +452,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Although the slightest difference in shades of paint is noticeable, it is pointless to spend much time trying to match an old paint precisely when repainting only part of the interior of a house. This is because paint fades somewhat in the months after it has been applied. Thus, even if a new paint matches the old during application, the two paints will no longer match after a year or so.",
     "questionStem": "The reasoning in which one of the following is most similar to that in the argument above?",
@@ -436,7 +477,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Social observer: Advertising agencies are willfully neglecting the most profitable segment of the market: older adults. Older adults control more of this nation’s personal disposable income than does the rest of the population combined. Therefore, advertising agencies can maximize their clients’ profits if they gear their advertisements mainly to older adults.",
     "questionStem": "Which one of the following, if assumed, would enable the conclusion of the social observer’s argument to be properly inferred?",
@@ -460,7 +504,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Professor: It has been argued that all judges should be elected rather than appointed to their positions. But this is a bad idea. If judges ran for election, they would have to raise campaign funds. Thus, they would be likely to accept campaign contributions from special interests. It is well known that such contributions lead to conflicts of interest for politicians, so it is to be expected that they would produce similar conflicts of interest for judges.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the professor’s reasoning?",
@@ -484,7 +530,10 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Merle: Usually when I insert a dollar bill into the change machine at the office it makes a squeaking sound before it produces change. But the machine can make the sound only when the electric outlet it is plugged into is turned on. Therefore, it must be that the electric outlet usually is turned on.",
     "questionStem": "Which one of the following arguments exhibits flawed reasoning most similar to the flawed reasoning exhibited by Merle’s argument?",
@@ -506,7 +555,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Method",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Kira: It would be unwise for you to buy that insurance policy. It’s designed to make money for the company that sells it to you. They set the prices to ensure profits.\nBinh: Undeniably, the insurer is in business to make money. But the mere fact that an insurer draws a profit in no way implies that buying one of its policies is unwise.",
     "questionStem": "Binh responds to Kira’s argument by doing which one of the following?",
@@ -529,7 +580,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Economist: The increase in the minimum wage in Country X will quickly lead to a decrease in Country X’s rate of unemployment. Raising the minimum wage will lead to more disposable income for a large segment of the working population. Much of this increased income will be spent on consumer goods. Surely this increase in demand for consumer goods will lead to an increase in the number of factory jobs necessary to meet production.",
     "questionStem": "Each of the following, if true, would weaken the economist’s argument except:",
@@ -554,7 +607,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Art critic: An arrangement of objects tends to be aesthetically pleasing to the extent that it gives the impression that the person who arranged the objects succeeded at what he or she was attempting to do.",
     "questionStem": "The generalization expressed by the art critic, if correct, most helps to justify the reasoning in which one of the following arguments?",
@@ -576,7 +631,10 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The three-spine stickleback is a small fish that lives both in oceans and in freshwater lakes. While ocean stickleback are covered with armor to protect them from their predators, lake stickleback have virtually no armor. Since armor limits the speed of a stickleback’s growth, this indicates that having a larger size is a better defense against the lake stickleback’s predators than having armor.",
     "questionStem": "Which one of the following, if true, weakens the argument?",

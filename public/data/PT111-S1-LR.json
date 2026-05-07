@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Some critics argue that an opera’s stage directions are never reflected in its music. Many comic scenes in Mozart’s operas, however, open with violin phrases that sound like the squeaking of changing scenery. Clearly Mozart intended the music to echo the sounds occurring while stage directions are carried out. Hence, a change of scenery—the most basic and frequent stage direction— can be reflected in the music, which means that other operatic stage directions can be as well.",
     "questionStem": "In the argument, the statement that many comic scenes in Mozart’s operas open with violin phrases that sound like the squeaking of changing scenery is offered in support of the claim that",
@@ -26,7 +26,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Lecturer: Given our current state of knowledge and technology, we can say that the generalization that the entropy of a closed system cannot decrease for any spontaneous process has not been falsified by any of our tests of that generalization. So we conclude it to be true\nuniversally. Yet, it must be admitted that this generalization has not been conclusively verified, in the sense that it has not been tested in every corner of the universe, under every feasible condition. Nevertheless, this generalization is correctly regarded as a scientific law; indeed, it is referred to as the Second Law of Thermodynamics.",
     "questionStem": "Which one of the following principles, if valid, most justifies the lecturer’s classification of the generalization described above?",
@@ -50,7 +52,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "More women than men suffer from Alzheimer’s disease—a disease that is most commonly contracted by elderly persons. This discrepancy has often been attributed to women’s longer life span, but this theory may be wrong. A recent study has shown that prescribing estrogen to women after menopause, when estrogen production in the body decreases, may prevent them from developing the disease. Men’s supply of testosterone may help safeguard them against Alzheimer’s disease because much of it is converted by the body to estrogen, and testosterone levels stay relatively stable into old age.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
@@ -74,7 +78,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Parent P: Children will need computer skills to deal with tomorrow’s world. Computers should be introduced in kindergarten, and computer languages should be required in high school.\nParent Q: That would be pointless. Technology advances so rapidly that the computers used by today’s kindergartners and the computer languages taught in today’s high schools would become obsolete by the time these children are adults.",
     "questionStem": "Which one of the following, if true, is the strongest logical counter parent P can make to parent Q’s objection?",
@@ -99,7 +105,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 5 through 6.\nProponent: Irradiation of food by gamma rays would keep it from spoiling before it reaches the consumer in food stores. The process leaves no radiation behind, and vitamin losses are comparable to those that occur in cooking, so there is no reason to reject irradiation on the grounds of nutrition or safety. Indeed, it kills harmful Salmonella bacteria, which in contaminated poultry have caused serious illness to consumers.\nOpponent: The irradiation process has no effect on the bacteria that cause botulism, a very serious form of food poisoning, while those that cause bad odors that would warn consumers of botulism are killed. Moreover, Salmonella and the bacteria that cause botulism can easily be killed in poultry by using a safe chemical dip.",
     "questionStem": "The opponent’s argument proceeds by",
@@ -124,7 +132,10 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 5 through 6.\nProponent: Irradiation of food by gamma rays would keep it from spoiling before it reaches the consumer in food stores. The process leaves no radiation behind, and vitamin losses are comparable to those that occur in cooking, so there is no reason to reject irradiation on the grounds of nutrition or safety. Indeed, it kills harmful Salmonella bacteria, which in contaminated poultry have caused serious illness to consumers.\nOpponent: The irradiation process has no effect on the bacteria that cause botulism, a very serious form of food poisoning, while those that cause bad odors that would warn consumers of botulism are killed. Moreover, Salmonella and the bacteria that cause botulism can easily be killed in poultry by using a safe chemical dip.",
     "questionStem": "Which one of the following could the opponent properly cite as indicating a flaw in the proponent’s reasoning concerning vitamin losses?",
@@ -149,7 +160,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Principle-Conform",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Due to wider commercial availability of audio recordings of authors reading their own books, sales of printed books have dropped significantly.",
     "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
@@ -172,7 +185,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Lobsters and other crustaceans eaten by humans are more\nlikely to contract gill diseases when sewage contaminates their water. Under a recent proposal, millions of gallons of local sewage each day would be rerouted many kilometers offshore. Although this would substantially reduce the amount of sewage in the harbor where lobsters are caught, the proposal is pointless, because hardly any lobsters live long enough to be harmed by those diseases.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -197,7 +212,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Role",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Researcher: The rate of psychological problems is higher among children of divorced parents than among other children. But it would be a mistake to conclude that these problems are caused by the difficulty the children have adjusting to divorce. It is just as reasonable to infer that certain behaviors that increase the likelihood of divorce—hostility, distrust, lack of empathy— are learned by children from their parents, and that it is these learned behaviors, rather than the difficulty of adjusting to divorce, that cause the children’s psychological problems.",
     "questionStem": "The assertion that children of divorced parents have a higher rate of psychological problems than other children figures in the argument in which one of the following ways?",
@@ -220,7 +237,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Although marathons are 26.2 miles (42.2 kilometers) long and take even world-class marathoners over 2 hours to run, athletes who train by running 90 minutes a day fare better in marathons than do those who train by running 120 minutes or more a day.",
     "questionStem": "Each of the following, if true, contributes to an explanation of the difference in marathon performances described above except:",
@@ -242,7 +261,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Linguist: Some people have understood certain studies as showing that bilingual children have a reduced “conceptual map” because bilingualism overstresses the child’s linguistic capacities. Vocabulary tests taken by bilingual children appear to show that these children tend to have a smaller vocabulary than do most children of the same age group. But these studies are deeply flawed, since the tests were given in only one language. Dual-language tests revealed that the children often expressed a given concept with a word from only one of their two languages.",
     "questionStem": "The linguist’s argument proceeds by",
@@ -266,7 +287,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Gene splicing can give rise to new varieties of farm animals that have only a partially understood genetic makeup. In addition to introducing the genes for whichever trait is desired, the technique can introduce genes governing the production of toxins or carcinogens, and these latter undesirable traits might not be easily discoverable.",
     "questionStem": "The statements above, if true, most strongly support\nwhich one of the following?",
@@ -289,7 +312,10 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Journal: In several psychological studies, subjects were given statements to read that caused them to form new beliefs. Later, the subjects were told that the original statements were false. The studies report, however, that most subjects persevered in their newly acquired beliefs, even after being told that the original statements were false. This strongly suggests that humans continue to hold onto acquired beliefs even in the absence of any credible evidence to support them.",
     "questionStem": "Which one of the following, if true, most undermines the journal’s argument?",
@@ -312,7 +338,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Novelists cannot become great as long as they remain in academia. Powers of observation and analysis, which schools successfully hone, are useful to the novelist, but an intuitive grasp of the emotions of everyday life can be obtained only by the kind of immersion in everyday life that is precluded by being an academic.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -335,7 +363,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Statistician: A financial magazine claimed that its survey of its subscribers showed that North Americans are more concerned about their personal finances than about politics. One question was: “Which do you think about more: politics or the joy of earning money?” This question is clearly biased. Also, the readers of the magazine are a self-selecting sample. Thus, there is reason to be skeptical about the conclusion drawn in the\nmagazine’s survey.",
     "questionStem": "Each of the following, if true, would strengthen the statistician’s argument except:",
@@ -358,7 +388,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 16 through 17.\nOn the basis of the available evidence, Antarctica has generally been thought to have been covered by ice for at least the past 14 million years. Recently, however, three-million-year-old fossils of a kind previously found only in ocean-floor sediments were discovered under the ice sheet covering central Antarctica. About three million years ago, therefore, the Antarctic ice sheet must temporarily have melted. After all, either severe climatic warming or volcanic activity in Antarctica’s mountains could have melted the ice sheet, thus raising sea levels and submerging the continent.",
     "questionStem": "Which one of the following is the main conclusion of the argument?",
@@ -383,7 +415,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The following passage is used for Section 1, questions 16 through 17.\nOn the basis of the available evidence, Antarctica has generally been thought to have been covered by ice for at least the past 14 million years. Recently, however, three-million-year-old fossils of a kind previously found only in ocean-floor sediments were discovered under the ice sheet covering central Antarctica. About three million years ago, therefore, the Antarctic ice sheet must temporarily have melted. After all, either severe climatic warming or volcanic activity in Antarctica’s mountains could have melted the ice sheet, thus raising sea levels and submerging the continent.",
     "questionStem": "The reasoning in the argument is most vulnerable to which one of the following criticisms?",
@@ -408,7 +442,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The current pattern of human consumption of resources, in which we rely on nonrenewable resources, for example metal ore, must eventually change. Since there is only so much metal ore available, ultimately we must either do without or turn to renewable resources to take its place.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -432,7 +468,10 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Lathyrism, a debilitating neurological disorder caused by the consumption of the legume Lathyrus sativus,\nis widespread among the domestic animals of some countries. Attempts to use rats to study lathyrism have generally failed. Rats that ingested Lathyrus sativus did not produce the symptoms associated with the disorder.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -453,7 +492,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Columnist: Almost anyone can be an expert, for there are no official guidelines determining what an expert must know. Anybody who manages to convince some people of his or her qualifications in an area—whatever those may be—is an expert.",
     "questionStem": "The columnist’s conclusion follows logically if which one of the following is assumed?",
@@ -476,7 +517,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A patient complained of feeling constantly fatigued. It was determined that the patient averaged only four to six hours of sleep per night, and this was determined to contribute to the patient’s condition. However, the patient was not advised to sleep more.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -498,7 +541,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "No chordates are tracheophytes, and all members of Pteropsida are tracheophytes. So no members of Pteropsida belong to the family Hominidae.",
     "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
@@ -521,7 +566,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some statisticians claim that the surest way to increase the overall correctness of the total set of one’s beliefs is: never change that set, except by rejecting a belief when given adequate evidence against it. However, if this were the only rule one followed, then whenever one were presented with any kind of evidence, one would have to either reject some of one’s beliefs or else leave one’s beliefs unchanged. But then, over time, one could only have fewer and fewer beliefs. Since we need many beliefs in order to survive, the statisticians’ claim must be mistaken.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -545,7 +592,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "In every case of political unrest in a certain country, the police have discovered that some unknown person or persons organized and fomented that unrest. Clearly, therefore, behind all the cases of political unrest in that country there has been a single mastermind who organized and fomented them all.",
     "questionStem": "The flawed reasoning in the argument above most closely parallels that in which one of the following?",
@@ -567,7 +614,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "A company that produces men’s cologne had been advertising the product in general-circulation magazines for several years. Then one year the company decided to advertise its cologne exclusively in those sports magazines with a predominantly male readership. That year the company sold fewer bottles of cologne than it had in any of the three immediately preceding years.",
     "questionStem": "Which one of the following, if true, best helps to explain why the sale of the company’s cologne dropped that year?",
@@ -585,7 +632,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Kim: The rapidly growing world population is increasing demands on food producers in ways that threaten our natural resources. With more land needed for both food production and urban areas, less land will be available for forests and wildlife habitats.\nHampton: You are overlooking the promise of technology. I am confident that improvements in agriculture will allow us to feed the world population of ten billion predicted for 2050 without significantly increasing the percentage of the world’s land now devoted to agriculture.",
     "questionStem": "Kim’s and Hampton’s statements most strongly support the claim that both of them would agree with which one of the following?",

@@ -4,7 +4,7 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "If a doctor gives a patient only a few options for lifestyle modification, the patient is more likely to adhere to the doctor’s advice than if the doctor gives the patient many options.",
     "questionStem": "Which one of the following most accurately expresses the principle illustrated above?",
@@ -25,7 +25,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Paradox EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "To acquire a better understanding of the structure and development of the human personality, some psychologists study the personalities of animals. Each of the following, if true, contributes to an",
     "questionStem": "explanation of the practice mentioned above except:",
@@ -46,7 +46,10 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Sigatoka disease drastically reduces the yield of banana trees and is epidemic throughout the areas of the world where bananas are grown. The fungus that causes the disease can be controlled with fungicides, but the fungicides can pose a health hazard to people living nearby. The fungicides are thus unsuitable for small banana groves in populated areas. Fortunately, most large banana plantations are in locations so isolated that fungicides can be used safely there. Therefore, most of the world’s banana crop is not seriously threatened by Sigatoka disease.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -71,7 +74,10 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "A group of 1,000 students was randomly selected from three high schools in a medium-sized city and asked the question, “Do you plan to finish your high school education?",
@@ -95,7 +101,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Columnist: A democratic society cannot exist unless its citizens have established strong bonds of mutual trust. Such bonds are formed and strengthened only by participation in civic organizations, political parties, and other groups outside the family. It is obvious then that widespread reliance on movies and electronic media for entertainment has an inherently corrosive effect on democracy.",
     "questionStem": "Which one of the following is an assumption on which the columnist’s argument depends?",
@@ -118,7 +127,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Standard archaeological techniques make it possible to determine the age of anything containing vegetable matter, but only if the object is free of minerals containing carbon. Prehistoric artists painted on limestone with pigments composed of vegetable matter, but it is impossible to collect samples of this prehistoric paint without removing limestone, a mineral containing carbon, with the paint. Therefore, it is not possible to determine the age of prehistoric paintings on limestone using standard archaeological techniques.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -140,7 +151,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Point at Issue",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The following passage is used for Section 3, questions 7 through 8. Dr. Jones: The new technology dubbed “telemedicine” will provide sustained improvement in at least rural patient care since it allows rural physicians to televise medical examinations to specialists who live at great distances—specialists who will thus be able to provide advice the rural patient would otherwise not receive. Dr. Carabella: Not so. Telemedicine might help rural patient care initially. However, small hospitals will soon realize that they can minimize expenses by replacing physicians with technicians who can use telemedicine to transmit examinations to large medical centers, resulting in fewer patients being able to receive traditional, direct medical examinations. Eventually, it will be the rare individual who ever gets truly personal attention. Hence, rural as well as urban patient care will suffer. 7. Which one of the following is a point at issue between Dr. Jones and Dr.",
     "questionStem": "Carabella?",
@@ -161,7 +172,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Dr. Carabella uses which one of the following strategies in responding to Dr.",
     "questionStem": "Jones?",
@@ -183,7 +196,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Lines can be parallel in a Euclidean system of geometry. But the non-Euclidean system of geometry that has the most empirical verification is regarded by several prominent physicists as correctly describing the universe we inhabit. If these physicists are right, in our universe there are no parallel lines.",
     "questionStem": "Which one of the following is an assumption that is required by the argument?",
@@ -207,7 +222,10 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Philosopher: People are not intellectually well suited to live in large, bureaucratic societies. Therefore, people can find happiness, if at all, only in smaller political units such as villages. The reasoning in the philosopher’s argument is flawed",
     "questionStem": "because the argument takes for granted that",
@@ -228,7 +246,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The present goal of the field of medicine seems to be to extend life indefinitely. Increasingly, the ability to transplant such organs as hearts, lungs, livers, and kidneys will allow us to live longer. But we can never achieve brain transplants. There are, for a start, ten million nerves running from the brain down the neck, not to mention the millions joining the brain to the sensing organs. Clearly, then, as the transplantation of organs allows more and more people to live longer, those with degenerative brain disorders will form an ever-increasing proportion of the population.",
     "questionStem": "The argument above is based on which one of the following assumptions?",
@@ -254,7 +275,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw Fill-in",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Politician: My opponents argue that the future of our city depends on compromise—that unless the city’s leaders put aside their differences and work together toward common goals, the city will suffer. However, the founders of this city based the city’s charter on definite principles, and anyone who compromises those principles betrays the city founders’ goals. What my opponents are advocating, therefore, is nothing less than betraying the goals of the city’s founders. Critic: I’m afraid your argument is flawed. Unless you’re assuming that the differences among the city’s leaders are differences of principle, your argument depends on a misleading use of the term _______.",
     "questionStem": "Which one of the following provides the most logical completion of the critic’s statement?",
@@ -272,7 +293,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Must Be True",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Though many insects die soon after reproducing for the first time, some may live for years after the survival of the next generation has been secured. Among the latter are some insects that work for the benefit of the ecosystem—for example, bees.",
     "questionStem": "Which one of the following can be properly inferred from the information above?",
@@ -293,7 +316,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Argument part",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "People’s political behavior frequently does not match their rhetoric. Although many complain about government intervention in their lives, they tend not to reelect inactive politicians. But a politician’s activity consists largely in the passage of laws whose enforcement affects voters’ lives. Thus, voters often reelect politicians whose behavior they resent.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that people tend not to reelect inactive politicians?",
@@ -315,7 +338,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Point at Issue",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Lea: Contemporary art has become big business. Nowadays art has less to do with self- expression than with making money. The work of contemporary artists is utterly bereft of spontaneity and creativity, as a visit to any art gallery demonstrates. Susan: I disagree. One can still find spontaneous, innovative new artwork in most of the smaller, independent galleries. Lea’s and Susan’s remarks provide the most support for",
     "questionStem": "holding that they disagree about whether",
@@ -336,7 +359,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Principle",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Ethicist: In a recent judicial decision, a contractor was ordered to make restitution to a company because of a bungled construction job, even though the company had signed a written agreement prior to entering into the contract that the contractor would not be financially liable should the task not be adequately performed. Thus, it was morally wrong for the company to change its mind and seek restitution.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the ethicist’s reasoning?",
@@ -359,7 +384,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Zoologist: Animals can certainly signal each other with sounds and gestures. However, this does not confirm the thesis that animals possess language, for it does not prove that animals possess the ability to use sounds or gestures to refer to concrete objects or abstract ideas.",
     "questionStem": "Which one of the following is an assumption on which the zoologist’s argument depends?",
@@ -381,7 +408,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A person is more likely to become disabled as that person ages. Among adults in the country of East Wendell, however, the proportion receiving disability benefit payments shrinks from 4 percent among 55 to 64 year olds to 2 percent for those aged 65 to 74 and 1 percent for those aged 75 and older. The explanation of this discrepancy is that the proportion of jobs offering such a disability benefit has greatly increased in recent years.",
     "questionStem": "Which one of the following, if true about East Wendell, shows that the explanation above is at best incomplete?",
@@ -403,7 +432,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Light is registered in the retina when photons hit molecules of the pigment rhodopsin and change the molecules’ shape. Even when they have not been struck by photons of light, rhodopsin molecules sometimes change shape because of normal molecular motion, thereby introducing error into the visual system. The amount of this molecular motion is directly proportional to the temperature of the retina.",
     "questionStem": "Which one of the following conclusions is most strongly supported by the information above?",
@@ -425,7 +456,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Critic: Political utility determines the popularity of a metaphor. In authoritarian societies, the metaphor of society as a human body governed by a head is pervasive. Therefore, the society-as-body metaphor, with its connection between society’s proper functioning and governance by a head, promotes greater acceptance of authoritarian repression than do other metaphors, such as likening society to a family.",
     "questionStem": "Which one of the following statements, if true, most weakens the critic’s argument?",
@@ -446,7 +479,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Thirty years ago, the percentage of their income that single persons spent on food was twice what it is today. Given that incomes have risen over the past thirty years, we can conclude that incomes have risen at a greater rate than the price of food in that period.",
     "questionStem": "Which one of the following, if assumed, helps most to justify the conclusion drawn above?",
@@ -467,7 +502,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Must be false EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Viruses can have beneficial effects. For example, some kill more-complex microorganisms, some of which are deadly to humans. But viruses have such simple structures that replacing just a few of a beneficial virus’s several million atoms can make it deadly to humans. Clearly, since alterations of greater complexity than this are commonly produced by random mutations, any virus could easily become dangerous to humans. If the statements above are true, then each of the",
     "questionStem": "following statements could also be true except:",
@@ -488,7 +523,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Societies in which value is measured primarily in financial terms invariably fragment into isolated social units. But since money is not the main measure of value in nonindustrial societies, they must tend in contrast to be socially unified.",
     "questionStem": "The flawed reasoning in which one of the following is most similar to that in the argument above?",
@@ -509,7 +546,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Ringtail opossums are an Australian wildlife species that is potentially endangered. A number of ringtail opossums that had been orphaned and subsequently raised in captivity were monitored after being returned to the wild. Seventy-five percent of these opossums were killed by foxes, a species not native to Australia. Conservationists concluded that the native ringtail opossum population was endangered not by a scarcity of food, as had been previously thought, but by non-native predator species against which the opossum had not developed natural defenses.",
     "questionStem": "Which one of the following, if true, most strongly supports the conservationists’ argument?",
@@ -532,7 +571,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Parallel method of reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Jordan: If a business invests the money necessary to implement ecologically sound practices, its market share will decrease. But if it doesn’t implement these practices, it pollutes the environment and wastes resources. Terry: But if consumers demand environmental responsibility of all businesses, no particular business will be especially hurt.",
     "questionStem": "In which one of the following exchanges is the logical relationship between Jordan’s and Terry’s statements most similar to the logical relationship between their statements above?",
@@ -550,7 +589,7 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The media now devote more coverage to crime than they did ten years ago. Yet this is not because the crime rate has increased, but rather because the public is now more interested in reading and hearing about crime. After all, a crucial factor in the media’s decisions about what issues to cover and to what extent to cover them is the interests of their audiences.",
     "questionStem": "The proposition that the public is now more interested in reading and hearing about crime plays which one of the following roles in the argument?",

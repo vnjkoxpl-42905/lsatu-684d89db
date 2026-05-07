@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Braille is a method of producing text by means of raised dots that can be read by touch. A recent development in technology will allow flat computer screens to be made of a material that can be heated in patterns that replicate the patterns used in braille. Since the thermal device will utilize the same symbol system as braille, it follows that anyone who is accustomed to reading braille can easily adapt to the use of this electronic system.",
     "questionStem": "Which one of the following is an assumption on which the conclusion depends?",
@@ -29,7 +31,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Mayor of Outerville, a suburb of Center City: Outerville must grow if it is to survive, so, as we have agreed, efforts should be made to attract more residents. The best strategy for attracting residents is to renovate the train station. The numbers of jobs in Center City and of people who prefer to live in suburban towns are increasing. With the rise in tolls, driving into the city is becoming more expensive than train travel. Therefore, people want to live in towns where train travel is convenient and pleasant.",
     "questionStem": "The argument leads to the conclusion that",
@@ -47,7 +49,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Land developer: By attempting to preserve endangered species that otherwise would become extinct during our lifetime, we are wasting money on species that will disappear over time regardless of our efforts. Paleontologists have established that extinction is the normal fate of species on the geological time scale of millions of years. Environmentalist: To claim that we should let species disappear because all species eventually die out makes about as much sense as arguing that we should not spend money to find a cure for cancer because all humans are inevitably mortal. The method the environmentalist uses to object to the",
     "questionStem": "land developer’s argument is to",
@@ -69,7 +73,10 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Most small children are flat-footed. This failure of the foot to assume its natural arch, if it persists past early childhood, can sometimes result in discomfort and even pain later in life. Traditionally, flat-footedness in children has been treated by having the children wear special shoes that give extra support to the foot, in order to foster the development of the arch.",
     "questionStem": "Which one of the following, if true, most calls into question the efficacy of the traditional treatment described above?",
@@ -90,7 +97,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The chances that tropical storms will develop in a given area increase whenever the temperature of a large body of water in that area exceeds 26 degrees Celsius to a depth of about 60 meters. If the amount of carbon dioxide in the Earth’s atmosphere continues to increase, the temperatures of all of the Earth’s waters will rise, with the result that the number of large bodies of water whose temperatures exceed 26 degrees Celsius to a depth of about 60 meters will eventually be greater than it is today.",
     "questionStem": "The statements above, if true, most strongly support which one of the following conclusions?",
@@ -113,7 +123,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Astorga’s campaign promises are apparently just an attempt to please voters. What she says she will do if elected mayor is simply what she has learned from opinion polls that voters want the new mayor to do. Therefore, voters are not being told what Astorga actually intends to do if she becomes mayor.",
     "questionStem": "Which one of the following is a questionable assumption on which the argument relies?",
@@ -135,7 +147,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Newsletter for community-center volunteers: Retired persons who regularly volunteer their time to help others generally display fewer and milder effects of aging than their nonvolunteering contemporaries: in social resources, mental outlook, physical health, economic resources, and overall functioning, they are found to be substantially stronger than nonvolunteers. V olunteering is often described as doing good works to improve the lives of others. How good to know that there is evidence that it can equally benefit your own well-being!",
     "questionStem": "The inference drawn above is unwarranted because",
@@ -153,7 +168,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 3, questions 8 through 9. The local agricultural official gave the fruit growers of the District 10 Farmers’ Cooperative a new pesticide that they applied for a period of three years to their pear orchards in place of the pesticide they had formerly applied. During those three years, the proportion of pears lost to insects was significantly less than it had been during the previous three-year period. On the basis of these results, the official concluded that the new pesticide was more effective than the old pesticide, at least in the short term, in limiting the loss of certain fruit to insects. 8. Each of the following, if true, weakens the official’s",
     "questionStem": "argument except:",
@@ -176,7 +194,10 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "The official’s conclusion is most strongly supported if which one of the following groups of trees did not show a reduction in losses of fruit to insects?",
@@ -194,7 +215,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The only motives that influence all human actions arise from self-interest. It is clear, therefore, that self-interest is the chief influence on human action. The reasoning in the argument is fallacious because the",
     "questionStem": "argument",
@@ -215,7 +238,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Astronomer: Astronomical observatories in many areas have become useless because light from nearby cities obscures the stars. Many people argue that since streetlights are needed for safety, such interference from lights is inevitable. Here in Sandsville, however, the local observatory’s view remains relatively clear, since the city has restricted unnecessary lighting and installed special street lamps that direct all their light downward. It is therefore possible to have both well-lighted streets and relatively dark skies.",
     "questionStem": "The astronomer’s argument proceeds by",
@@ -237,7 +262,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Music critic: Some people argue that, unlike certain works of Handel, which set to music familiar religious texts, the organ symphonies of Louis Vierne are not religious music. Quite the contrary. Sitting in Notre Dame cathedral in Paris and hearing his organ symphonies demonstrates that Vierne’s works are divinely inspired. The music critic’s reasoning is vulnerable to criticism on",
     "questionStem": "the ground that it",
@@ -258,7 +285,10 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 3, questions 13 through 14. Charles: During recessions unemployment typically rises. Thus, during a recession air pollution due to automobile exhaust decreases, since fewer people commute in cars to jobs and so cars emitting pollutants into the air are used less. Darla: Why think that air pollution would decrease? During a recession fewer people can afford to buy new cars, and cars tend to emit more pollutants as they get older. 13.",
     "questionStem": "Which one of the following most accurately describes how Darla’s response is related to Charles’s argument?",
@@ -276,7 +306,10 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Which one of the following is an assumption on which Charles’s argument depends?",
@@ -300,7 +333,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "For the condor to survive in the wild, its breeding population must be greatly increased. But because only a few eggs can be produced by a breeding pair over their lifetime, any significant increase in the number of birds depends upon most of these eggs hatching, which is extremely unlikely in the wild due to environmental dangers. One possible way to eliminate the effects of these factors is to breed the birds in captivity and subsequently return them to the wild.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -318,7 +354,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Parallel method of reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Allowing more steel imports would depress domestic steel prices and harm domestic steel manufacturers. Since the present government will not do anything that would harm the domestic steel industry, it will not lift restrictions on steel imports.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following?",
@@ -341,7 +379,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Wild cheetahs live in the African grasslands. Previous estimates of the size that the wild cheetah population must be in order for these animals to survive a natural disaster in the African grasslands region were too small, and the current population barely meets the previous estimates. At present, however, there is not enough African grassland to support a wild cheetah population larger than the current population.",
     "questionStem": "The statements above, if true, most strongly support which one of the following conclusions?",
@@ -364,7 +404,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Principle",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "To classify a work of art as truly great, it is necessary that the work have both originality and far-reaching influence upon the artistic community.",
     "questionStem": "The principle above, if valid, most strongly supports which one of the following arguments?",
@@ -386,7 +428,10 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Necessary Assumption EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Professor Robinson: A large meteorite impact crater in a certain region was thought to be the clue to explaining the mass extinction of plant and animal species that occurred at the end of the Mesozoic era. However, the crystalline structure of rocks recovered at the site indicates that the impact that formed this crater was not the culprit. When molten rocks crystallize, they display the polarity of Earth’s magnetic field at that time. But the recrystallized rocks recovered at the site display normal magnetic polarity, even though Earth’s magnetic field was reversed at the time of the mass extinction. Each of the following is an assumption on which Professor",
     "questionStem": "Robinson’s argument depends except:",
@@ -412,7 +457,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Pieces of music consist of sounds and silences presented to the listener in a temporal order. A painting, in contrast, is not presented one part at a time to the viewer; there is thus no particular path that the viewer’s eye must follow in order to “read” the painting. Therefore, an essential distinction between the experiences of hearing music and of viewing paintings is that hearing music has a temporal dimension but viewing a painting has none.",
     "questionStem": "The reasoning in the argument is flawed because",
@@ -435,7 +482,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A study of the difference in earnings between men and women in the country of Naota found that the average annual earnings of women who are employed full time is 80 percent of the average annual earnings of men who are employed full time. However, other research consistently shows that, in Naota, the average annual earnings of all employed women is 65 percent of the average annual earnings of all employed men.",
     "questionStem": "Which one of the following, if also established by research, most helps explain the apparent discrepancy between the research results described above?",
@@ -456,7 +505,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Biologist: Some speculate that the unusually high frequency of small goats found in island populations is a response to evolutionary pressure to increase the number of goats so as to ensure a diverse gene pool. However, only the reproductive success of a trait influences its frequency in a population. So, the only kind of evolutionary pressure that can reduce the average size of the members of a goat population is that resulting from small goats achieving greater reproductive success than their larger cousins.",
     "questionStem": "The biologist’s view, if true, provides the most support for which one of the following?",
@@ -479,7 +530,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Several carefully conducted studies showed that 75 percent of strict vegetarians reached age 50 without developing serious heart disease. We can conclude from this that avoiding meat increases one’s chances of avoiding serious heart disease. Therefore, people who want to reduce the risk of serious heart disease should not eat meat.",
     "questionStem": "The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
@@ -497,7 +550,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Mr. Nance: Ms. Chan said that she retired from Quad Cities Corporation, and had received a watch and a wonderful party as thanks for her 40 years of loyal service. But I overheard a colleague of hers say that Ms. Chan will be gone for much of the next year on business trips and is now working harder than she ever did before; that does not sound like retirement to me. At least one of them is not telling the truth.",
     "questionStem": "Mr. Nance’s reasoning is flawed because it",
@@ -519,7 +574,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A recent survey showed that 50 percent of people polled believe that elected officials should resign if indicted for a crime, whereas 35 percent believe that elected officials should resign only if they are convicted of a crime. Therefore, more people believe that elected officials should resign if indicted than believe that they should resign if convicted.",
     "questionStem": "The reasoning above is flawed because it",

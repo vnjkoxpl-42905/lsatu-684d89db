@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Over the long run, apple orchards that use organic\n farming methods cost no more to run than, and are just as\n productive as, apple orchards using conventional methods.\n However, organically grown apples tend to be better\n tasting, and thus, organic orchards are likely to be more\n profitable than conventional orchards in the long run.",
     "questionStem": "Which one of the following, if true, most strengthens the\n argument?",
@@ -25,7 +27,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Banking industry visionaries foresee a bright day in\n the near future when customers will be able to transact\n all their financial business by means of computers or\n telephones from the comfort of their own homes. But\n that may be more of a paradise for banks than for their\n customers. As banks eliminate their branch offices and\n customer-service employees, customers will have to\n serve as their own tellers—and pay more transaction fees\n for their efforts.",
     "questionStem": "Which one of the following most accurately expresses\n the conclusion of the argument?",
@@ -47,7 +49,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Bernard: We should not invite Carl to speak at the\n forum. Carl’s views are clearly false, and worse,\n dangerous. To encourage their consideration\n will not only legitimize them but also help to\n promulgate them, both of which we should avoid,\n since we wish not to support their adoption.\n Ayla: The best way to combat false views is to challenge\n them in public. Once Carl’s views are subjected\n to the kind of public scrutiny the forum provides,\n people will see them for what they are because\n the forum will provide convincing arguments\n against them.",
     "questionStem": "The dialogue provides the most support for the claim\n that Bernard and Ayla disagree about whether",
@@ -68,7 +70,7 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Principle: It is unethical for someone who has bought an\n item to return it to the store after getting all the\n use from it that he or she ever intended to get.\n Application: James purchased a video camera and\n returned it to the store two weeks later. This\n return was unethical.",
     "questionStem": "Which one of the following, if true, most justifies the\n above application of the principle?",
@@ -90,7 +92,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Taylorism, the early-twentieth-century industrial\n efficiency movement pioneered by Frederick Taylor,\n has had a profound effect on industrialized societies. Increased productivity resulting from greater efficiency\n has led to increases in most workers’ standards of living. At the same time, Taylor’s methods have tended to\n make these workers’ jobs routine and repetitive, thereby\n robbing their work of some of the intrinsic worth it\n possessed when it emphasized creativity and talent.",
     "questionStem": "The situation described above most closely conforms to\n which one of the following generalizations?",
@@ -112,7 +116,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Winchester Township cannot afford to keep its several\n small branch libraries supplied with a wide selection\n of current books. However, if the branch libraries were\n closed, then Winchester could afford to open one large\n library, which could carry broader and more current\n selections. Thus, Winchester would better meet its\n residents’ needs by closing its small branch libraries and\n opening one larger, well-supplied library.",
     "questionStem": "Which one of the following, if true, most weakens the\n argument above?",
@@ -135,7 +139,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "News report: Some recently invented television screens\n are built out of small tiles seamlessly joined\n together, each tile a separate miniature screen.\n Television sets with these compound screens\n are just a few inches thick. For a noncompound\n screen in a set of this thickness, the larger the\n screen is, the dimmer it is. However, each tile in\n a compound screen is small enough to be quite\n bright. Moreover, an unlimited number of the\n tiles can be joined together, without making the\n resulting screen any less bright or the set any\n thicker.",
     "questionStem": "Which one of the following can be properly inferred\n from the information in the news report?",
@@ -156,7 +162,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Anthropologist: For early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the\n transition must have been traumatic. There would\n have been increased incidence of disease and\n injury and a more homogeneous diet lacking vital\n nutrients more easily obtainable from the richly\n varied diet of hunter-gatherers. Thus, groups that\n made the transition were likely motivated by\n certain benefits that accompany the settled life\n of the agriculturist, such as opportunities for the\n accumulation of wealth by those with specialized\n social roles.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the anthropologist’s overall argument\n by the statement that for early humans who moved from\n a hunter-gatherer lifestyle to agriculture, the transition\n must have been traumatic?",
@@ -178,7 +186,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Most lawyers hold that violations of the rights of those\n who possess sites on the web are best prevented using\n copyright law. Yet many of the words used to describe\n such sites evoke ideas that are usually associated with\n real estate: for example, the word “site” itself and the\n term “visiting” as applied to sites. The common law of\n trespass usually applies to cases of encroachment on real\n estate. Thus, it is reasonable to extend that law to protect\n against encroachments on property in cyberspace.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
@@ -200,7 +210,10 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Journalist: Contrary to popular opinion, it is more\n dangerous for an individual to drive during the\n day than during the night. A recent study found\n that in each of the last ten years, the number of\n traffic accidents that resulted in death was greater\n during the day than during the night.",
     "questionStem": "Each of the following, if true, helps to strengthen the\n argument except:",
@@ -222,7 +235,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Biologist: The evolutionary advantage of sexual\n reproduction is that it increases the range of\n genetic variation in a species, which is an\n advantage for the species as a whole. However,\n an increased range of genetic variation in a\n species is not advantageous for any individual\n member of the species. It follows that the sole\n reason that sexual reproduction has become the\n rule among both animals and plants is that natural\n selection has favored some entire species over\n others.",
     "questionStem": "The claim that an increased range of genetic variation in\n a species is not advantageous for any individual member\n of the species plays which one of the following roles in\n the biologist’s argument?",
@@ -243,7 +256,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Columnist: Vagrancy laws are supposed to reduce\n criminal activity, but they don’t. Making\n vagrancy illegal means transforming many\n innocuous everyday occurrences into crimes. Thus, vagrancy laws increase crime while\n purporting to reduce it.",
     "questionStem": "The reasoning in the columnist’s argument is most\n vulnerable to criticism on the grounds that the argument",
@@ -265,7 +278,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Political theorist: The purpose of government is to\n prevent individuals from injuring others in the\n pursuit of their own welfare. Hence, if most\n individuals take a reasoned approach to getting\n what they want, the power of government should\n be less.",
     "questionStem": "Which one of the following is an assumption required by\n the political theorist’s argument?",
@@ -287,7 +302,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Food critic: One of the chief competitors of Chris’s\n restaurant claims that Chris’s okra supplier\n cannot reliably supply fresh okra. If this claim\n were true, Chris’s customers could not count on\n getting good seafood gumbo, Chris’s specialty,\n because the best seafood gumbo requires fresh\n okra.",
     "questionStem": "The food critic’s argument is most subject to criticism\n because it",
@@ -309,7 +326,9 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Ants sometimes live in hollow places in the roots of\n a certain orchid species. Those orchids of that species\n that house ants are far healthier than those that do not.\n Since the ants store organic matter in the orchids’ roots,\n an explanation for the superior health of the orchids that\n house ants is that the organic matter stored by the ants\n provides those orchids with additional nutrients.",
     "questionStem": "Which one of the following, if true, is an alternative\n explanation for the better health of orchids that house\n the ants?",
@@ -331,7 +350,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Future overall demand for professors can be predicted\n with reasonable accuracy from current birth rates. But\n the accuracy of predictions of future demand for music\n professors is lower, and that for jazz studies professors\n lower still.",
     "questionStem": "The situation described above best illustrates which one\n of the following principles?",
@@ -352,7 +373,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Anarchist: People can either fight for anarchy or they\n can tolerate totalitarian government control.\n But history shows that government control\n of all facets of human life destroys the spirit,\n making life miserable. So, people should fight\n for anarchy, which allows each individual the\n freedom to pursue a personal course of happiness.",
     "questionStem": "Which one of the following most accurately describes a\n flaw in the argument’s reasoning?",
@@ -374,7 +397,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Consumer demand for personal computers continues to\n increase each year, which might lead one to think that\n the profits earned selling personal computers at the retail\n level are very high relative to total retail sales of personal\n computers. Yet the retail profit margin on personal\n computer sales is extremely low compared to that of\n other popular high-technology items.",
     "questionStem": "Each of the following, if true, helps to resolve the\n apparent discrepancy described above except:",
@@ -392,7 +417,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If a film is accepted by the festival committee, then one\n of the distributors attending the festival buys it. If a\n distributor buys a film, the film’s financial backers are\n assured of recouping their investment. This film was\n not accepted by the festival committee, so this film’s\n financial backers will not recoup their investment.",
     "questionStem": "Which one of the following arguments employs a flawed\n pattern of reasoning most similar to the flawed pattern of\n reasoning in the argument above?",
@@ -416,7 +443,10 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Psychologist: In an experiment, business managers who\n normally drank coffee on a daily basis were given\n more than their normal amount. The managers\n got faster at processing new information,\n but were less able to integrate it with past\n information when making decisions. Because\n successful management depends more on\n integrating information than on speed, this study\n demonstrates that drinking more coffee than usual\n impairs overall management ability.",
     "questionStem": "Which one of the following is an assumption on which\n the psychologist’s argument depends?",
@@ -439,7 +469,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Orator: Moral excellence can be achieved only by\n repeatedly overcoming inclinations to do the\n wrong thing. Overcoming these inclinations is\n often difficult to do, even for a morally virtuous\n person, but the only way to become a morally\n virtuous person is through the achievement of\n moral excellence.",
     "questionStem": "Which one of the following is a conclusion that follows\n logically from the orator’s statements?",
@@ -462,7 +494,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Philosopher: Philosophers usually treat emotions as\n nonrational. But emotion is not nonrational: it\n only seems that way because language lacks\n the ability to convey adequate conceptions\n of emotion. The words we use to refer to\n emotions name only very general kinds of inner\n experience—excitement, calm, joy, and so on.\n Thus, for example, there is no language for\n describing just how one joy differs from another.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the philosopher’s argument by the\n proposition that there is no language for describing just\n how one joy differs from another?",
@@ -484,7 +516,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Superstring theory is a controversial new theory in\n physics that purports, unlike more established physical\n theories, to explain the nature and existence of gravity.\n A major problem with superstring theory is that to test it\n we would have to build a particle accelerator 100 trillion\n kilometers long. Another problem is that superstring\n theory has had no success in adequately explaining why\n the force of gravity is not stronger or weaker than it is.",
     "questionStem": "Which one of the following is most strongly supported\n by the information above?",
@@ -502,7 +536,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A smaller number of short documentary films than\n of full-length science-fiction films are commercially\n successful, even though there are more short\n documentary films than there are science-fiction films.\n Therefore, a higher proportion of full-length science-\n fiction films than of short documentary films are\n commercially successful.",
     "questionStem": "Which one of the following arguments is most similar in\n its pattern of reasoning to the argument above?",
@@ -525,7 +561,10 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "To test the claim that vitamin C is effective in treating\n acne, scientists administered it to one group of subjects\n and a placebo to a control group. The group receiving\n vitamin C had less severe acne during the study than\n did the control group. It was subsequently discovered,\n however, that half of the subjects in each group knew\n which kind of pill they were given. Among those who\n could not tell, no difference in the severity of acne\n was found between the two groups. Therefore, we can\n tentatively conclude that vitamin C has no real benefit in\n reducing the severity of acne.",
     "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",

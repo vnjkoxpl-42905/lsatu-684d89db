@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "In his new book on his complex scientific research, R frequently imputes bad faith to researchers disagreeing with him. A troubling aspect of R’s book is his stated conviction that other investigators’ funding sources often determine what “findings” those investigators report. Add to this that R has often shown himself to be arrogant, overly ambitious, and sometimes plain nasty, and it becomes clear that R’s book does not merit attention from serious professionals.",
     "questionStem": "The author of the book review commits which one of the following reasoning errors?",
@@ -26,7 +26,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Having an efficient, attractive subway system makes good economic sense. So, the city needs to purchase new subway cars, since the city should always do what makes good economic sense.",
     "questionStem": "The conclusion drawn above follows logically if which\none of the following is assumed?",
@@ -49,7 +51,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Restaurant manager: In response to requests from our patrons for vegetarian main dishes, we recently introduced three: an eggplant and zucchini casserole with tomatoes, brown rice with mushrooms, and potatoes baked with cheese. The first two are frequently ordered, but no one orders the potato dish, although it costs less than the other two. Clearly, then, our patrons prefer not to eat potatoes.",
     "questionStem": "Which one of the following is an error of reasoning in the restaurant manager’s argument?",
@@ -74,7 +79,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "For newborns of age four to six weeks whose mothers have been the primary caregivers, the following is true: When the newborns are crying due to hunger or other similar discomfort, merely hearing the mother’s voice will lead to a temporary halt in crying, while the voices of others do not have this effect.",
     "questionStem": "Which one of the following is most reasonably supported by the information above?",
@@ -92,7 +99,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Many elementary schools have recently offered computer-assisted educational programs. Students’ reactions after several years have been decidedly mixed. Whereas students have found computers very useful in studying arithmetic, they have found them of little help in studying science, and of no help at all with their reading and writing skills.",
     "questionStem": "Which one of the following, if true, most helps to explain the students’ mixed reactions?",
@@ -110,7 +119,7 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The notion that one might be justified in behaving irrationally in the service of a sufficiently worthy end is incoherent. For if such an action is justified, then one would be behaving rationally, not irrationally.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -128,7 +137,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A certain moral system holds that performing good actions is praiseworthy only when one overcomes a powerful temptation in order to perform them. Yet this same moral system also holds that performing good actions out of habit is sometimes praiseworthy.",
     "questionStem": "Which one of the following, if true, does the most to reconcile the apparent conflict in the moral system described above?",
@@ -146,7 +157,7 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Conservationist: The risk to airplane passengers from collisions between airplanes using the airport and birds from the wildlife refuge is negligible. In the 10 years since the refuge was established,\nonly 20 planes have been damaged in collisions with birds, and no passenger has been injured as a result of such a collision. The wildlife refuge therefore poses no safety risk.\nPilot: You neglect to mention that 17 of those 20 collisions occurred within the past 2 years, and that the number of birds in the refuge is rapidly increasing. As the number of collisions between birds and airplanes increases, so does the likelihood that at least one such collision will result in passenger injuries.",
     "questionStem": "The pilot counters the conservationist by",
@@ -164,7 +175,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "A university study reported that between 1975 and 1983 the length of the average workweek in a certain country increased significantly. A governmental study, on the other hand, shows a significant decline in the length of the average workweek for the same period. Examination of the studies shows, however, that they used different methods of investigation; thus there is no need to look further for an explanation of the difference in the studies’ results.",
     "questionStem": "The argument’s reasoning is flawed because the argument fails to",
@@ -185,7 +196,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Although the charter of Westside School states that the student body must include some students with special educational needs, no students with learning disabilities have yet enrolled in the school. Therefore, the school is currently in violation of its charter.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -203,7 +214,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Some psychologists claim that, in theory, the best way\nto understand another person would be through deep empathy, whereby one would gain a direct and complete grasp of that person’s motivations. But suppose they are right; then there would be no way at all to achieve understanding, since it is psychologically impossible to gain a direct and complete grasp of another person’s motivations. But obviously one can understand other people; thus these psychologists are wrong.",
     "questionStem": "The argument is most vulnerable to the criticism that it",
@@ -227,7 +238,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The five senses have traditionally been viewed as distinct yet complementary. Each sense is thought to have its own range of stimuli that are incapable of stimulating the other senses. However, recent research has discovered that some people taste a banana and claim that they are tasting blue, or see a color and say that it has a specific smell. This shows that such people, called synesthesiacs, have senses that do not respect the usual boundaries between the five recognized senses.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
@@ -245,7 +256,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Essayist: One of the claims of laissez-faire economics is that increasing the minimum wage reduces the total number of minimum-wage jobs available. In a recent study, however, it was found that after an increase in the minimum wage, fast-food restaurants kept on roughly the same number of minimum-wage employees as before the increase. Therefore, laissez-faire economics is not entirely accurate.",
     "questionStem": "The essayist’s argument depends on assuming which one of the following?",
@@ -269,7 +282,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some people claim that every human discovery or invention is an instance of self-expression. But what they seem to ignore is that, trivially, anything we do is selfexpressive. So, until they can give us a more interesting interpretation of their claim, we are not obliged to take their claim seriously.",
     "questionStem": "Which one of the following, if true, provides the most support for the reasoning above?",
@@ -290,7 +305,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 2, questions 15 through 16.\nCamera manufacturers typically advertise their products by citing the resolution of their cameras’ lenses, the resolution of a lens being the degree of detail the lens is capable of reproducing in the image it projects onto the film. Differences between cameras in this respect are irrelevant for practical photography, however, since all modern lenses are so excellent that they project far more detail onto the film than any photographic film is capable of reproducing in a developed image.",
     "questionStem": "Which one of the following most accurately states the main point of the argument?",
@@ -311,7 +326,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 2, questions 15 through 16.\nCamera manufacturers typically advertise their products by citing the resolution of their cameras’ lenses, the resolution of a lens being the degree of detail the lens is capable of reproducing in the image it projects onto the film. Differences between cameras in this respect are irrelevant for practical photography, however, since all modern lenses are so excellent that they project far more detail onto the film than any photographic film is capable of reproducing in a developed image.",
     "questionStem": "The argument depends on assuming which one of the following?",
@@ -336,7 +353,10 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Dietary researcher: A recent study reports that laboratory animals that were fed reduced-calorie diets lived longer than laboratory animals whose caloric intake was not reduced. In response, some doctors are advocating reduced-calorie diets, in the belief that North Americans’ life spans can thereby be extended. However, this conclusion is not supported. Laboratory animals tend to eat much more than animals in their natural habitats, which leads to their having a shorter life expectancy. Restricting their diets merely brings their caloric intake back to natural, optimal levels and reinstates their normal life spans.",
     "questionStem": "Which one of the following, if true, would most weaken the dietary researcher’s argument?",
@@ -359,7 +379,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Editorialist: The positions advanced by radical environmentalists often contain hypotheses that are false and proposals that are economically infeasible. But there is a positive role to be played even by these extremists, for the social and political inertia that attends environmental issues is so stubborn that even small areas of progress can be made only if the populace fears environmental disaster, however untenable the reasons for those fears may be.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the editorialist’s argument?",
@@ -380,7 +400,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "People should avoid taking the antacid calcium carbonate in doses larger than half a gram, for despite its capacity to neutralize stomach acids, calcium carbonate can increase the calcium level in the blood and thus impair kidney function. Moreover, just half a gram of it can stimulate the production of gastrin, a stomach hormone that triggers acid secretion.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -403,7 +425,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Principle-Strengthen",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 2, questions 20 through 21.\nProfessor Chan: The literature department’s\nundergraduate courses should cover only true literary works, and not such frivolous material as advertisements.\nProfessor Wigmore: Advertisements might or might not be true literary works but they do have a powerfully detrimental effect on society— largely because people cannot discern their real messages. The literature department’s courses give students the critical skills to analyze and understand texts. Therefore, it is the literature department’s responsibility to include the study of advertisements in its undergraduate courses.",
     "questionStem": "Which one of the following principles most strongly supports Professor Wigmore’s argument?",
@@ -426,7 +450,10 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 2, questions 20 through 21.\nProfessor Chan: The literature department’s undergraduate courses should cover only true literary works, and not such frivolous material as advertisements.\nProfessor Wigmore: Advertisements might or might not be true literary works but they do have a powerfully detrimental effect on society— largely because people cannot discern their real messages. The literature department’s courses give students the critical skills to analyze and understand texts. Therefore, it is the literature department’s responsibility to include the study of advertisements in its undergraduate courses.",
     "questionStem": "Which one of the following is an assumption on which Professor Wigmore’s argument depends?",
@@ -449,7 +476,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Sociologist: Some people argue that capital punishment for theft was an essential part of the labor discipline of British capitalism. Critics of such a view argue that more people were executed for theft in preindustrial England than were executed in England after industrialization. But such a criticism overlooks the fact that industrialization and capitalism are two very different social phenomena, and that the latter predated the\nformer by several centuries.",
     "questionStem": "Which one of the following most accurately describes the role played in the passage by the point that capitalism and industrialization are distinct?",
@@ -467,7 +494,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "To be horrific, a monster must be threatening. Whether or not it presents psychological, moral, or social dangers, or triggers enduring infantile fears, if a monster is physically dangerous then it is threatening. In fact, even a physically benign monster is horrific if it inspires revulsion.",
     "questionStem": "Which one of the following logically follows from the statements above?",
@@ -485,7 +512,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Lawyer: The defendant wanted to clear the snow off his car and in doing so knocked snow on the sidewalk. This same snow melted and refroze, forming ice on which the plaintiff fell, breaking her hip. We argue that the defendant maliciously harmed the plaintiff, because malice is intention to cause harm and the defendant intentionally removed the snow from his car and put it on the sidewalk, which, unbeknownst to the defendant at the time, would subsequently cause the injury suffered by the plaintiff.",
     "questionStem": "The flawed reasoning in which one of the following is most similar to that in the lawyer’s argument?",
@@ -506,7 +535,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Although wood-burning stoves are more efficient than open fireplaces, they are also more dangerous. The smoke that wood-burning stoves release up the chimney is cooler than the smoke from an open flame. Thus it travels more slowly and deposits more creosote, a flammable substance that can clog a chimney—or worse, ignite inside it.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",

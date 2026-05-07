@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Jones fell unconscious on the job and it was suspected that he had swallowed a certain chemical, so he was rushed to the local hospital’s emergency room. In making her diagnosis, the emergency-room physician knew that if Jones had swallowed the chemical, a deficiency in the content of a mineral in his blood would result. She also knew that deficiency in the mineral causes inflammation of the skin. Since Jones’s skin was not inflamed when he was admitted to the emergency room, the physician concluded that Jones had not swallowed the chemical.",
     "questionStem": "Which one of the following, if true, would undermine the physician’s conclusion?",
@@ -30,7 +32,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Principle",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Pacifist: It is immoral to do anything that causes harm to another person. But, since using force causes harm to another person, it is also immoral to threaten to use force, even when such a threat is made in self-defense.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the pacifist’s reasoning?",
@@ -51,7 +53,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Beginning in the 1950s, popular music was revolutionized by the electrification of musical instruments, which has enabled musicians to play with increased volume. Because individual musicians can play with increased volume, the average number of musicians per band has decreased. Nevertheless, electrification has increased rather than decreased the overall number of musicians who play popular music professionally.",
     "questionStem": "Which one of the following is most strongly supported by the statements above, if those statements are true?",
@@ -74,7 +78,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Principle",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Statistics indicating a sudden increase in the incidence of a problem often merely reflect a heightened awareness of the problem or a greater ability to record its occurrence. Hence we should be wary of proposals for radical solutions to problems when those proposals are a reaction to new statistical data.",
     "questionStem": "The argumentation conforms most closely to which one of the following principles?",
@@ -97,7 +103,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Barr: The National Tea Association cites tea’s recent visibility in advertising and magazine articles as evidence of tea’s increasing popularity. However, a neutral polling company, the Survey Group, has tracked tea sales at numerous stores for the last 20 years and has found no change in the amount of tea sold. We can thus conclude that tea is no more popular now than it ever was.",
     "questionStem": "Which one of the following, if true, most seriously weakens Barr’s argument?",
@@ -120,7 +128,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Argument Part",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Doctors urge people to reduce their cholesterol levels through dietary changes. But moderate dietary changes often do not work to lower cholesterol levels. One may need, therefore, to make more dramatic changes, such as switching to a vegetarian diet.",
     "questionStem": "The statement that moderate dietary changes often do not work to lower cholesterol levels plays which one of the following roles in the argument?",
@@ -138,7 +146,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Since empathy is essential for people to be willing to follow moral codes that sometimes require them to ignore their own welfare to help others, civilized society could not exist without empathy.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -160,7 +170,7 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Fill in the Blank",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Insurgent political parties that are profoundly dissatisfied with the dominant party’s reign and justificatory ideology always produce factions whose views and aims differ as greatly from each other’s as they do from the dominant party’s. Although these factions ignore their own disagreements for the sake of defeating the dominant party, their disagreements inevitably come forward upon victory. Therefore, _______.",
     "questionStem": "Which one of the following is the most logical completion of the argument?",
@@ -181,7 +191,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Manager: When Sullivan was passed over for promotion, people said that the deciding factor was his being much older than the competition. But this is clearly not the case. Several recent promotions have been given to people older than Sullivan. The manager’s argument is most vulnerable to criticism because it fails to consider the possibility that",
@@ -202,7 +214,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Point at Issue (Disagree)",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "Council member P: Alarmists are those who see an instance of pollution and exaggerate its significance into a major character fault of society. Such alarmists fail to distinguish the incident and the behavior that caused it from the disposition of people not to pollute. Council member Q: To think that there is a lot of pollution based on the discovery of a serious single instance of pollution is simply an application of the widely accepted principle that actions tend to follow the path of least resistance, and it is surely easier to pollute than not to pollute. Council members P and Q disagree over whether",
@@ -223,7 +235,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "It is easy to see that the board of directors of the construction company is full of corruption and should be replaced. There are many instances of bribery by various persons on the staff of board member Wagston that are a matter of public record. These bribes perniciously influenced the awarding of government contracts.",
     "questionStem": "The argument’s reasoning is most vulnerable to criticism on the grounds that",
@@ -244,7 +256,10 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Coffee and tea contain methylxanthines, which cause temporary increases in the natural production of vasopressin, a hormone produced by the pituitary gland. Vasopressin causes clumping of blood cells, and the clumping is more pronounced in women than in men. This is probably the explanation of the fact that women face as much as a tenfold higher risk than men do of complications following angioplasty, a technique used to clear clogged arteries.",
     "questionStem": "Which one of the following statements is most strongly supported by the information above?",
@@ -265,7 +280,10 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Whether a machine performs its intended function is plain for all to see, but recognition of excellence in art requires a rare subtlety of perception. So whereas engineers usually maintain their composure when their work is being evaluated, artists tend to become anxious under such circumstances.",
     "questionStem": "The reasoning above conforms most closely to which one of the following propositions?",
@@ -287,7 +305,7 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Scientists hypothesize that a particular type of fat known as “P-fat” is required for the development of eyesight. Researchers were led to this hypothesis by observing that babies who are fed formulas low in P-fat tend to have worse eyesight than babies fed mother’s milk, which is high in P-fat. It has also been shown that babies that are five to six weeks premature tend to have worse eyesight than babies carried to term.",
     "questionStem": "Which one of the following, if true, most supports the scientists’ hypothesis?",
@@ -308,7 +326,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Artists have different ways of producing contours and hatching, and analysis of these stylistic features can help to distinguish works by a famous artist both from forgeries and from works genuinely by other artists. Indeed, this analysis has shown that many of the drawings formerly attributed to Michelangelo are actually by the artist Giulio Clovio, Michelangelo’s contemporary.",
     "questionStem": "If the statements above are true, then which one of the following must also be true?",
@@ -326,7 +344,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Moralist: Immoral actions are those that harm other people. But since such actions eventually harm those who perform them, those who act immorally do so only through ignorance of some of their actions’ consequences rather than through a character defect.",
     "questionStem": "Which one of the following is an assumption required by the moralist’s argument?",
@@ -349,7 +369,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Strengthen EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Climatologists believe they know why Earth has undergone a regular sequence of ice ages beginning around 800,000 years ago. Calculations show that Earth’s orbit around the Sun has fluctuations that coincide with the ice-age cycles. The climatologists hypothesize that when the fluctuations occur, Earth passes through clouds of cosmic dust that enters the atmosphere; the cosmic dust thereby dims the Sun, resulting in an ice age. They concede, however, that though cosmic dust clouds are common, the clouds would have to be particularly dense in order to have this effect.",
     "questionStem": "Each of the following, if true, would lend support to the climatologists’ hypothesis except:",
@@ -371,7 +393,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Must Be False EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Philosopher: The rational pursuit of happiness is quite different from always doing what one most strongly desires to do. This is because the rational pursuit of happiness must include consideration of long-term consequences, whereas our desires are usually focused on the short term. Moreover, desires are sometimes compulsions, and while ordinary desires result in at least momentary happiness when their goals are attained, compulsions strongly drive a person to pursue goals that offer no happiness even when reached. If all of the philosopher’s statements are true, each of the following could be true except:",
@@ -392,7 +414,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Political scientist: All governments worthy of respect allow their citizens to dissent from governmental policies. No government worthy of respect leaves minorities unprotected. Thus any government that protects minorities permits criticism of its policies. The flawed pattern of reasoning in which one of the following most closely parallels that in the political",
     "questionStem": "scientist’s argument?",
@@ -414,7 +438,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Advertisement: Each of the Economic Merit Prize winners from the past 25 years is covered by the Acme retirement plan. Since the winners of the nation’s most prestigious award for economists have thus clearly recognized that the Acme plan offers them a financially secure future, it is probably a good plan for anyone with retirement needs similar to theirs. The advertisement’s argumentation is most vulnerable to",
     "questionStem": "criticism on which one of the following grounds?",
@@ -432,7 +458,7 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Parallel Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "A small car offers less protection in an accident than a large car does, but since a smaller car is more maneuverable, it is better to drive a small car because then accidents will be less likely.",
     "questionStem": "Which one of the following arguments employs reasoning most similar to that employed by the argument above?",
@@ -450,7 +476,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Trainer: Research shows that when dogs are neutered in early puppyhood, their leg bones usually do not develop properly. Improper bone development leads in turn to problems with arthritis as dogs grow older. Thus, if you want to protect your dog from arthritis you should not neuter your dog until it is full-grown.",
     "questionStem": "Of the following, which one is a criticism to which the reasoning in the trainer’s argument is most vulnerable?",
@@ -475,7 +503,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Fill in the Blank",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Political scientist: One of the most interesting dilemmas in contemporary democratic politics concerns the regulation of political campaign spending. People certainly should be free, within broad limits, to spend their money as they choose. On the other hand, candidates who can vastly outspend all rivals have an unfair advantage in publicizing their platforms. Democratic governments have a strong obligation to ensure that all voices have an equal chance to be heard, but governments should not subsidize expensive campaigns for each candidate. The resolution of the dilemma, therefore, is clear: _______.",
     "questionStem": "Which one of the following most logically completes the political scientist’s argument?",
@@ -496,7 +524,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Argument Part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Some people have maintained that private ownership of the means of production ultimately destroys any society that sanctions it. This may be true of a less technologically advanced society that must share its economic resources to survive. But since only private ownership of the means of production permits individuals to test new technologies without the majority’s consent, a technologically advanced society will actually endanger its survival if the means of production become public property. The proposition that private ownership of the means of production ultimately destroys any society that sanctions it plays which one of the following roles in the argument",
     "questionStem": "above?",
@@ -517,7 +545,10 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A certain medication that is frequently prescribed to lower a patient’s cholesterol level is generally effective. A recent study of 1,000 subjects ranging widely in age indicates, however, that the cholesterol level of someone taking the medication is typically 12 to 15 percent higher than the average for that person’s age group.",
     "questionStem": "Which one of the following, if true, most helps to explain how both of the claims made above could be true?",
@@ -539,7 +570,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Political theorist: For all of its members to be strong in foreign policy, an alliance of countries must respond aggressively to problems. An alliance will do so only if every member of the alliance perceives the problems as grave. But the European Union countries will not all perceive a problem as grave unless they all agree that it threatens their alliance’s economy. Thus, not all of the member countries of the European Union will be strong in foreign policy.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",

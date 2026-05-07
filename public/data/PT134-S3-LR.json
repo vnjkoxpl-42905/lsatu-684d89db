@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "“Hot spot” is a term that ecologists use to describe those habitats with the greatest concentrations of species found only in one place-so-called “endemic” species. Many of these hot spots are vulnerable to habitat loss due to commercial development. Furthermore, loss of endemic species accounts for most modern-day extinctions. Thus, given that only a limited number of environmental battles can be waged, it would be reasonable for organizations dedicated to preserving species to _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -27,7 +29,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Principle: If you sell an item that you know to be defective, telling the buyer that the item is sound, you thereby commit fraud. Application: Wilton sold a used bicycle to Harris, knowing very little about its condition. Wilton told Harris that the bicycle was in good working condition, but Harris soon learned that the brakes were defective. Wilton was therefore guilty of fraud.",
     "questionStem": "The application of the principle is most vulnerable to criticism on the grounds that",
@@ -50,7 +54,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Engine noise from boats travelling through killer whales’ habitats ranges in frequency from 100 hertz to 3,000 hertz, an acoustical range that overlaps that in which the whales communicate through screams and squeals. Though killer whales do not seem to behave differently around running boat engines, engine noise from boats can be loud enough to damage their hearing over time. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -72,7 +78,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Journalist: A manufacturers’ trade group that has long kept its membership list secret inadvertently sent me a document listing hundreds of manufacturing companies. A representative of the trade group later confirmed that every company listed in the document does indeed belong to the trade group. Because Bruch Industries is not listed on the document, it is evidently not a member of the trade group.",
     "questionStem": "The journalist’s reasoning in the argument is flawed in that the journalist",
@@ -93,7 +101,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Peter: Unlike in the past, most children’s stories nowadays don’t have clearly immoral characters in them. They should, though. Children need to learn the consequences of being bad. Yoko: Children’s stories still tend to have clearly immoral characters in them, but now these characters tend not to be the sort that frighten children. Surely that’s an improvement.",
     "questionStem": "Peter and Yoko disagree over whether today’s children’s stories",
@@ -114,7 +124,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Local resident: An overabundance of algae must be harmful to the smaller fish in this pond. During the fifteen or so years that I have lived here, the few times that I have seen large numbers of dead small fish wash ashore in late summer coincide exactly with the times that I have noticed abnormally large amounts of algae in the water.",
     "questionStem": "The local resident’s argument is most vulnerable to criticism on the grounds that it",
@@ -136,7 +148,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Tanner: The public should demand political debates before any election. V oters are better able to choose the candidate best suited for office if they watch the candidates seriously debate one another. Saldana: Political debates almost always benefit the candidate who has the better debating skills. Thus, they don’t really help voters determine which candidate is most qualified for office.",
     "questionStem": "The dialogue provides the most support for the claim that Tanner and Saldana disagree over which one of the following?",
@@ -157,7 +171,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A recent study shows that those highways that carry the most traffic, and thus tend to be the most congested, have the lowest rate of fatal traffic accidents.",
     "questionStem": "Which one of the following, if true, most helps to explain the phenomenon described above?",
@@ -175,7 +192,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In some jurisdictions, lawmakers have instituted sentencing guidelines that mandate a penalty for theft that is identical to the one they have mandated for bribery. Hence, lawmakers in those jurisdictions evidently consider the harm resulting from theft to be equal to the harm resulting from bribery.",
     "questionStem": "Which one of the following, if true, would most strengthen the argument?",
@@ -196,7 +215,7 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "People often admonish us to learn the lessons of history, but, even if it were easy to discover what the past was really like, it is nearly impossible to discover its lessons. We are supposed, for example, to learn the lessons of World War I. But what are they? And were we ever to discover what they are, it is not clear that we could ever apply them, for we shall never again have a situation just like World War I.",
     "questionStem": "That we should learn the lessons of history figures in the argument in which one of the following ways?",
@@ -214,7 +233,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Sigerson argues that the city should adopt ethical guidelines that preclude its politicians from accepting campaign contributions from companies that do business with the city. Sigerson’s proposal is dishonest, however, because he has taken contributions from such companies throughout his career in city politics.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -235,7 +256,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some gardening books published by Garden Path Press recommend tilling the soil and adding compost before starting a new garden on a site, but they do not explain the difference between hot and cold composting. Since any gardening book that recommends adding compost is flawed if it does not explain at least the basics of composting, some books published by Garden Path are flawed.",
     "questionStem": "The argument requires the assumption that",
@@ -259,7 +282,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Astronomers have found new evidence that the number of galaxies in the universe is not 10 billion, as previously believed, but 50 billion. This discovery will have an important effect on theories about how galaxies are formed. But even though astronomers now believe 40 billion more galaxies exist, many astronomers’ estimates of the universe’s total mass remain virtually unchanged.",
     "questionStem": "Which one of the following, if true, does most to explain why the estimates remain virtually unchanged?",
@@ -277,7 +302,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Newspaper subscriber: Arnot’s editorial argues that by making certain fundamental changes in government we would virtually eliminate our most vexing social ills. But clearly this conclusion is false. After all, the argument Arnot makes for this claim depends on the dubious assumption that government can be trusted to act in the interest of the public.",
     "questionStem": "Which one of the following most accurately expresses a flaw in the argument’s reasoning?",
@@ -298,7 +325,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Columnist: Shortsighted motorists learn the hard way about the wisdom of preventive auto maintenance; such maintenance almost always pays off in the long run. Our usually shortsighted city council should be praised for using similar wisdom when they hired a long-term economic development adviser. In hiring this adviser, the council made an investment that is likely to have a big payoff in several years. Other cities in this region that have devoted resources to economic development planning have earned large returns on such an investment.",
     "questionStem": "Which one of the following, if true, most weakens the columnist’s argument?",
@@ -321,7 +351,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorial: Cell-phone usage on buses and trains is annoying to other passengers. This suggests that recent proposals to allow use of cell phones on airplanes are ill-advised. Cell-phone use would be far more upsetting on airplanes than it is on buses and trains. Airline passengers are usually packed in tightly. And if airline passengers are offended by the cell-phone excesses of their seatmates, they often cannot move to another seat.",
     "questionStem": "Which one of the following most accurately describes the role played in the editorial’s argument by the statement that cell-phone use would be far more upsetting on airplanes than it is on buses and trains?",
@@ -339,7 +371,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Science writer: The deterioration of cognitive faculties associated with Alzheimer’s disease is evidently caused by the activities of microglia-the brain’s own immune cells. For one thing, this deterioration can be slowed by some anti- inflammatory drugs, such as acetylsalicylic acid. Furthermore, patients with Alzheimer’s are unable to eliminate the protein BA from the brain, where it accumulates and forms deposits. The microglia attack these protein deposits by releasing poisons that destroy surrounding healthy brain cells, thereby impairing the brain’s cognitive functions.",
     "questionStem": "Which one of the following, if true, most helps to support the science writer’s argument?",
@@ -364,7 +398,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Lawyer: One is justified in accessing information in computer files without securing authorization from the computer’s owner only if the computer is typically used in the operation of a business. If, in addition, there exist reasonable grounds for believing that such a computer contains data usable as evidence in a legal proceeding against the computer’s owner, then accessing the data in those computer files without the owner’s authorization is justified.",
     "questionStem": "The principles stated by the lawyer most strongly support which one of the following judgments?",
@@ -386,7 +422,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The conventional process for tanning leather uses large amounts of calcium oxide and sodium sulfide. Tanning leather using biological catalysts costs about the same as using these conventional chemicals if the cost of waste disposal is left out of the comparison. However, nearly 20 percent less waste is produced with biological catalysts, and waste disposal is a substantial part of the overall cost of tanning. It is therefore less costly to tan leather if biological catalysts are used instead.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -410,7 +448,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "One should not play a practical joke on someone if it shows contempt for that person or if one believes it might bring significant harm to that person.",
     "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
@@ -432,7 +472,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Economics professor: Marty’s Pizza and Checkers Pizza are the two major pizza parlors in our town. Marty’s sold coupon books including coupons good for one large plain pizza at any local pizza parlor, at Marty’s expense. But Checkers refused to accept these coupons, even though they were redeemed by all other local pizza parlors. Accepting them would have cost Checkers nothing and would have satisfied those of its potential customers who had purchased the coupon books. This shows that Checkers’s motive in refusing to accept the coupons was simply to hurt Marty’s Pizza.",
     "questionStem": "Which one of the following, if assumed, enables the economics professor’s conclusion to be properly drawn?",
@@ -454,7 +496,10 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Science writer: Scientists’ astounding success rate with research problems they have been called upon to solve causes the public to believe falsely that science can solve any problem. In fact, the problems scientists are called upon to solve are typically selected by scientists themselves. When the problems are instead selected by politicians or business leaders, their formulation is nevertheless guided by scientists in such a way as to make scientific solutions feasible. Scientists are almost never asked to solve problems that are not subject to such formulation.",
     "questionStem": "The science writer’s statements, if true, most strongly support which one of the following?",
@@ -475,7 +520,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Most auto mechanics have extensive experience. Furthermore, most mechanics with extensive experience understand electronic circuits. Thus, most auto mechanics understand electronic circuits.",
     "questionStem": "The pattern of flawed reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -496,7 +543,10 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If one wants to succeed, then one should act as though one were genuinely confident about one’s abilities, even if one actually distrusts one’s skills. Success is much more easily obtained by those who genuinely believe themselves capable of succeeding than by those filled with self-doubts.",
     "questionStem": "Which one of the following statements, if true, most strengthens the argument?",
@@ -517,7 +567,10 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Journalist: The trade union members at AutoFaber Inc. are planning to go on strike. Independent arbitration would avert a strike, but only if both sides agree to accept the arbitrator’s recommendations as binding. However, based on past experience, the union is quite unlikely to agree to this, so a strike is likely.",
     "questionStem": "Which one of the following arguments exhibits a pattern of reasoning most similar to that exhibited by the journalist’s argument?",
@@ -539,7 +592,9 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Acquiring complete detailed information about all the pros and cons of a product one might purchase would clearly be difficult and expensive. It is rational not to acquire such information unless one expects that the benefits of doing so will outweigh the cost and difficulty of doing so. Therefore, consumers who do not bother to acquire such information are thereby behaving rationally.",
     "questionStem": "The conclusion of the argument is properly drawn if which one of the following is assumed?",

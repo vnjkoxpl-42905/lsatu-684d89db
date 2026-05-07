@@ -4,7 +4,10 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Researcher: It is widely believed that, given its northerly latitude, England’s mild winters must be due to the Gulf Stream, which brings warm water flowing northeastward across the Atlantic Ocean. But this belief is mistaken. While it is true that the Gulf Stream brings tropical water to England, in the Pacific Ocean the analogous Kuroshio Current brings tropical water only as far north as Oregon. Yet North America’s west coast has mild winters well north of that point.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the researcher’s argument?",
@@ -29,7 +32,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Edgar: Nurses who have been specially trained in administering anesthetics should be allowed to anesthetize patients without having to do so under a doctor’s supervision. After all, anesthesia has gotten remarkably safe in recent decades. Janet: Although it’s true that nurse anesthetists receive excellent training, only doctors have the broader medical training to handle the rare emergencies that can arise.",
     "questionStem": "The dialogue provides the most support for the claim that Edgar and Janet disagree over whether",
@@ -50,7 +55,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Consumer: A new law requires all cigarette packaging to display health warnings, disturbing pictures of smoking-related diseases, and no logos. This law will not affect the smoking habits of most people who smoke cigarettes regularly, since most of these people rarely look at the packaging when they take out a cigarette.",
     "questionStem": "The conclusion of the consumer’s argument follows logically if which one of the following is assumed?",
@@ -72,7 +79,10 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Warner: Until recently, most competitive swimmers were high school or university students. Now, more and more competitive swimmers are continuing well beyond their university years. Clearly, better training regimens have allowed today’s competitive swimmers to stay fitter longer than swimmers of the past. Young: Not necessarily. No one has the time to both be a competitive swimmer and hold an outside job. But unlike in the past, today’s competitive swimmers can make a living at their sport.",
     "questionStem": "Young responds to Warner’s argument by",
@@ -95,7 +105,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Eliminating Options",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Businessperson: Brenner and Chen are the only applicants who have the qualifications we require. But Brenner has a history of not getting along with coworkers, so we should hire Chen.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the businessperson’s argument?",
@@ -118,7 +130,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Role",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Psychologist: Thinking can occur without language. Researchers have demonstrated that three-month- old infants, who obviously have no knowledge of language, can detect anomalies in pictures—in a picture displaying a human face with three eyes, for example. The infants probably compare this picture with an internal representation of a typical human face. Thus, a thought of a typical human face must exist in the infants’ minds.",
     "questionStem": "The statement that a thought of a typical human face must exist in the infants’ minds plays which one of the following roles in the psychologist’s argument?",
@@ -139,7 +153,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Except",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Nutritionist: Contrary to popular belief, a high-calcium diet does not prevent osteoporosis (decrease in bone density). Rather, a low-protein diet with an abundance of fruits and vegetables and a minimum quantity of meat and dairy products is essential for the prevention of the condition. Weight-bearing exercise, such as walking or climbing stairs, is also essential, since bones thicken when they withstand regular resistance.",
     "questionStem": "Each of the following, if true, would support the nutritionist’s view except:",
@@ -162,7 +176,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Quartzbrook Farms wanted to test all of its cattle for a rare disease so it could export beef to a country that requires such testing. However, the government of Quartzbrook’s country prohibited it from testing its cattle, on the grounds that there is no scientific evidence that the risk posed by the disease justifies such testing and that the public could be misled into thinking that the testing was scientifically warranted if Quartzbrook performed the tests.",
     "questionStem": "The government’s prohibition of testing is most at odds with which one of the following principles?",
@@ -183,7 +199,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Net Effect",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Office manager: Every vacation an office worker takes significantly reduces the psychological exhaustion experienced on the job. Therefore, to reduce the amount of psychological exhaustion as much as possible over the course of a year, office workers should divide their vacation time into several short vacations spaced throughout the year, rather than into one or two long vacations.",
     "questionStem": "The office manager’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -204,7 +222,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A traditional view of Neanderthals is that they lacked the ability to think symbolically. However, recent evidence suggests this view is mistaken. Using an innovative new technique, researchers established that a cave painting in northern Spain was created at least 40,800 years ago. It is therefore likely the painting was made by a Neanderthal.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -228,7 +248,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "To be considered for this year’s Gillespie Grant, applications must be received in Gillespie City by October 1. It can take up to ten days for regular mail from Greendale to reach Gillespie City. So if Mary is sending an application by regular mail from Greendale, she will be considered for the grant only if her application is mailed ten days before the due date.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -250,7 +272,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The Amazon River flows eastward into the Atlantic Ocean from its source in the western part of South America. The land through which the Amazon flows is now cut off from the Pacific Ocean to the west by the Andes Mountains. Yet certain freshwater fish that inhabit the Amazon are descended from now-extinct saltwater fish known to have inhabited the Pacific Ocean but not the Atlantic. For this reason, some scientists hypothesize that the Amazon River once flowed into the Pacific Ocean.",
     "questionStem": "Which one of the following, if true, provides additional evidence in support of the hypothesis that the Amazon River once flowed into the Pacific Ocean?",
@@ -274,7 +298,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Net Effect",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Columnist: Banning performance enhancing drugs (PEDs) from sports will not stop their use. They provide too big a competitive advantage. And top athletes will do whatever it takes to gain a big competitive advantage. So PEDs should be allowed, but only if administered under a doctor’s care to make sure they are taken only in safe doses. When handled in this fashion the health risks from PEDs disappear.",
     "questionStem": "Which one of the following is an assumption required by the columnist’s argument?",
@@ -300,7 +326,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Role",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Max: As evidence mounts showing the terrible changes wrought on the environment by technology, the conclusion that humans must return to a natural way of living becomes irrefutable. Cora: It is natural for humans to use technology to effect changes on the environment—humans have used technology in that way for many thousands of years. Therefore, your criticism is misguided.",
     "questionStem": "Cora’s claim that it is natural for humans to use technology to effect changes on the environment plays which one of the following roles in her response to Max?",
@@ -318,7 +346,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Part vs. Whole",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Commentator: The reported epidemic of childhood obesity in our country is a myth. Over the last 8 years, there was only a 1 pound (0.45 kilogram) increase in children’s average weight. This is not a substantial increase, so the proportion of children who are obese cannot have increased substantially.",
     "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning contained in the argument above?",
@@ -339,7 +369,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Lack of Support vs. False Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorial: The main contention of Kramer’s book is that coal companies are to blame for our region’s economic difficulties. Kramer bases this contention primarily on allegations made by disgruntled coal company employees that the companies made no significant investments in other industries in our region. Yet the companies invested heavily—albeit sometimes indirectly— in road building and manufacturing in the region. Thus, the book’s main contention is simply false.",
     "questionStem": "The reasoning in the editorial’s argument is flawed in that this argument",
@@ -361,7 +393,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Health-care facilities have a duty to protect their patients from unnecessary harm. So, since influenza viruses pose substantial risks to patients, and since vaccines can significantly reduce the spread of these viruses, health- care facilities must institute policies that make influenza vaccinations mandatory for all employees.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -385,7 +419,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Inference",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Etiquette helps people to get along with each other. For example, it prevents people from inadvertently offending one another. While many people criticize etiquette because they believe it has no beneficial effects for society, these same people think that kindness and social harmony are good.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -406,7 +442,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Evaluate",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "European wood ants incorporate large quantities of solidified conifer resin into their nests. Conifer resin is a natural disinfectant that has been shown to kill strains of bacteria that can cause disease in wood ants. Thus, the wood ants’ use of conifer resin probably came about as a disease-protection measure.",
     "questionStem": "Which one of the following would be most useful to know in order to evaluate the strength of the argument?",
@@ -428,7 +466,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Must Be True",
-    "reasoningType": "Analogy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Coming up with secure passwords for confidential computer files is difficult. Users prefer passwords that are easy to remember, such as birth dates or relatives’ names. Unfortunately, these are the easiest to guess for an outsider who wants to gain access to valuable information. Random configurations of letters and numbers are the hardest to guess, but these are also the easiest for legitimate users to forget. Users who forget their passwords use up the system administrator’s time; furthermore, passwords that are very difficult to remember are generally written down by users, and hence pose the greatest security threat of all.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -449,7 +489,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Main Conclusion",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If you use a wood stove to heat your home, you should use a wood-pellet stove rather than a regular wood stove. Because wood pellets are made from by-products of manufacturing processes that would otherwise go to landfills, heating a home with a wood-pellet stove will not cause more trees to be felled. The same cannot be said for regular wood stoves. So wood-pellet stoves are better for the environment than are regular wood stoves.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -472,7 +514,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Value Judgment",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Economist: Gifts of cash or gift cards, which allow the recipient to choose the actual gift, are more highly valued by recipients than are gifts chosen for them by others. In a study, when people were asked how much they would have been willing to pay for gifts chosen for them by others, they responded by citing amounts that were on average only about two-thirds of the actual price of the gifts.",
     "questionStem": "Which one of the following, if true, most seriously weakens the economist’s argument?",
@@ -494,7 +538,10 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "An antitheft device involving an electronic homing beacon has been developed for use in tracking stolen automobiles. Although its presence is undetectable to a car thief and so does not directly deter theft, its use greatly increases the odds of apprehending even the most experienced car thieves. The device is not yet used by a large percentage of car owners, but in cities where only a small percentage of car owners have the device installed, auto thefts have dropped dramatically.",
     "questionStem": "Which one of the following, if true, would most help to explain the dramatic impact of the antitheft device?",
@@ -512,7 +559,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Analogy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Taken as a whole, the computers that constitute the Internet form a complex, densely interconnected collection that transmits information like the neurons that form the human brain. And like a developing human brain, the Internet is growing at millions of points. So we can expect that the Internet itself will someday gain a humanlike intelligence.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
@@ -534,7 +583,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorial: Any democratic society is endangered by segmentation into classes of widely differing incomes between which there is little mobility. Such class divisions strengthen divisive political factions that stand in the way of good governance. Since economic expansion gives people more opportunities to improve their economic standing, democratic societies should adopt policies that ensure constant economic expansion.",
     "questionStem": "Which one of the following, if true, would most strengthen the reasoning in the editorial?",

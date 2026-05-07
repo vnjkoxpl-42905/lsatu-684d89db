@@ -4,7 +4,10 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In a recent study of dust-mite allergy sufferers, one group slept on mite-proof bedding, while a control group slept on bedding that was not mite-proof. The group using mite-proof bedding had a 69 percent reduction in the dust-mite allergen in their mattresses, whereas there was no significant reduction in the control group. However, even though bedding is the main source of exposure to dust mites, no symptom reduction was reported in either group.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict in the statements above?",
@@ -28,7 +31,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Five years ago, the hair dryer produced by the Wilson Appliance Company accounted for 50 percent of all sales of hair dryers nationwide. Currently, however, Wilson Appliance’s product makes up only 25 percent of such sales. Because of this decline, and because the average net income that Wilson receives per hair dryer sold has not changed over the last 5 years, the company’s net income from sales of the product must be only half of what it was 5 years ago.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -51,7 +56,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Whether or not one can rightfully call a person’s faithfulness a virtue depends in part on the object of that person’s faithfulness. Virtues are by definition praiseworthy, which is why no one considers resentment virtuous, even though it is in fact a kind of faithfulness—faithfulness to hatreds or animosities.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -73,7 +78,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Columnist: A government-owned water utility has received approval to collect an additional charge on water bills and to use that additional revenue to build a dam. A member of the legislature has proposed not building the dam but instead spending the extra money from water bills to build new roads. That proposal is unacceptable.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the columnist’s judgment that the legislator’s proposal is unacceptable?",
@@ -97,7 +104,10 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "During its caterpillar stage, the leopard magpie moth feeds on a plant called the Natal grass cycad and by so doing laces its body with macrozamin, a toxin that makes the moth highly unpalatable to would-be predators. Since the Natal grass cycad is now endangered and facing extinction, the leopard magpie moth is also in danger of extinction.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -121,7 +131,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Citizen: Our government has a large budget surplus, which our leaders wish to use to pay down the national debt. This makes no sense. Because of underfunding, our military is inadequate, the infrastructures of our cities are decaying, and our highways are in disrepair. If homeowners used all their money to pay off their mortgages early, while refusing to pay for upkeep of their homes, this would not make them better off financially. The same goes for the country as a whole.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the citizen’s argument?",
@@ -144,7 +154,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Peraski: Although driving gas-guzzling automobiles produces a greater level of pollution than driving smaller cars, those of us who drive smaller cars when we could use a bicycle cannot speak out against the use of gas guzzlers. We would be revealing our hypocrisy.\nJackson: I acknowledge I could do better in this area. But, it would be worse not to speak out against greater sources of pollution just because I am being hypocritical.",
     "questionStem": "The dialogue provides the most support for the claim that Peraski and Jackson disagree over whether",
@@ -165,7 +177,10 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "For a species of large abalone shellfish to develop from a species of smaller ones, they must spend less energy on finding food and avoiding predators, and more on competition in mating. So it is surprising that the fossil record shows that a species of large abalones developed from a smaller one only after otters, which prey on abalones, began to dominate the waters in which the abalones lived.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -186,7 +201,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Some managers think that the best way to maximize employee performance is to institute stiff competition among employees. However, in situations where one competitor is perceived to be clearly superior, other competitors become anxious and doubt their own ability to perform. Thus, stiff competition can undermine the result it was intended to achieve.",
     "questionStem": "The conclusion of the argument can be properly drawn if which one of the following is assumed?",
@@ -210,7 +227,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Must Be False",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Creating a database of all the plant species in the scientific record has proved to be no easy task. For centuries, botanists have been collecting and naming plants without realizing that many were in fact already named. And by using DNA analysis, botanists have shown that varieties of plants long thought to belong to the same species actually belong to different species.",
     "questionStem": "Of the following claims, which one can most justifiably be rejected on the basis of the statements above?",
@@ -231,7 +250,10 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A year ago several regional hospitals attempted to reduce the number of patient injuries resulting from staff errors by implementing a plan to systematically record all such errors. The incidence of these injuries has substantially decreased at these hospitals since then. Clearly, the knowledge that their errors were being carefully monitored made the hospitals’ staffs much more meticulous in carrying out their patient-care duties.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -255,7 +277,10 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In a national park located on an island, a herd of moose was increasing in number and threatening to destroy species of native plants. Wolves were introduced to the island to reduce the herd and thereby prevent destruction of the vegetation. Although the wolves prospered, the moose herd continued to grow.",
     "questionStem": "Which one of the following, if true, most helps to explain the failure of the strategy involving wolves?",
@@ -276,7 +301,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If the purpose of laws is to contribute to people’s happiness, we have a basis for criticizing existing laws as well as proposing new laws. Hence, if that is not the purpose, then we have no basis for the evaluation of existing laws, from which we must conclude that existing laws acquire legitimacy simply because they are the laws.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -299,7 +326,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In order for life to exist on the recently discovered planet P23, there must be water on the planet’s surface. But there is no water on P23’s surface, so there is no life on planet P23.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
@@ -322,7 +351,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Sanchez: The sixteen new computers that the school purchased were not as expensive as many people assume. So it isn’t true that too much was spent on computers.\nMerriweather: It isn’t that the school paid more for each computer than it was worth, but that the computers that were purchased were much more elaborate than they needed to be.",
     "questionStem": "The dialogue provides the most support for the claim that Sanchez and Merriweather disagree over whether the school",
@@ -343,7 +374,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Airport administrator: According to the latest figures, less than 1 commercial flight in 2 million strays off course while landing, a number low enough to allow runways to be built closer together without a significant increase in risk. Opponents of closer runways claim that the number is closer to 1 in 20,000, but this figure is based on a partial review of air traffic control tapes and so is relatively unreliable compared to the other figure, which is based on a thorough study of the flight reports required of pilots for all commercial flights.",
     "questionStem": "Which one of the following most accurately describes a flaw in the airport administrator’s argument?",
@@ -366,7 +399,10 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In deep temperate lakes, water temperatures vary according to depth. In winter, the coldest water is at the top; in summer, at the bottom. The changes in temperature distribution, or “turnover,” occur in fall and late winter. Lake trout will be found, as a rule, in the coldest water. So, if anglers seek lake trout in deep temperate lakes while these lakes are partially iced over in late winter, they will do best to eschew the lake trout’s summer haunts and fish instead in a shallow bay or close to the surface off a rocky point.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -391,7 +427,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Agreement",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Liang: Watching movies in which violence is portrayed as an appropriate way to resolve problems increases levels of aggression in viewers. Therefore, children’s access to these movies should be restricted.\nSarah: Watching a drama whose characters are violent allows the audience to vicariously experience the emotions associated with aggression and thus be purged of them. Hence, the access by mature audiences to such forms of entertainment should not be restricted.",
     "questionStem": "The dialogue provides the most support for inferring that Liang and Sarah agree with each other that",
@@ -413,7 +451,10 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Politician: Of the candidates running, Thompson is the best person to lead this nation. For one thing, Thompson opposes higher taxes whereas the other candidates support them. Many would agree that anyone who opposes higher taxes will make a better leader than someone who supports them.",
     "questionStem": "Which one of the following, if true, casts the most doubt on the politician’s argument?",
@@ -434,7 +475,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Patterson: Bone flutes dating to the Upper Paleolithic are the earliest evidence for music. Thus it is likely that music first arose during this period.\nGarza: But the Upper Paleolithic is exceptional for the intensive use of bone, which typically survives well in archaeological contexts, unlike other materials commonly used for musical instruments, such as wood.",
     "questionStem": "Garza responds to Patterson by doing which one of the following?",
@@ -457,7 +500,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No occupation should be subject to a licensing requirement unless incompetence in the performance of tasks normally carried out within that occupation poses a plausible threat to human health or safety.",
     "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
@@ -478,7 +523,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Most of the new cars that Regis Motors sold last year were purchased by residents of Blomenville. Regis Motors sold more new cars last year than it did in any previous year. Still, most new cars purchased by Blomenville residents last year were not purchased from Regis Motors.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -500,7 +547,10 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Editorial: Teenagers tend to wake up around 8:00 A.M., the time when they stop releasing melatonin, and are sleepy if made to wake up earlier. Since sleepiness can impair driving ability, car accidents involving teenagers driving to school could be reduced if the school day began later than 8:00 A.M. Indeed, when the schedule for Granville’s high school was changed so that school began at 8:30 A.M. rather than earlier, the overall number of car accidents involving teenage drivers in Granville declined.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument in the editorial?",
@@ -523,7 +573,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Lucinda will soon be attending National University as an engineering major. At National University, most residents of Western Hall are engineering majors. Therefore, Lucinda will probably live in Western Hall.",
     "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning most similar to that exhibited by the argument above?",
@@ -545,7 +597,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Oceanographer: To substantially reduce the amount of carbon dioxide in Earth’s atmosphere, carbon dioxide should be captured and pumped deep into the oceans, where it would dissolve. The cool, dense water in ocean depths takes centuries to mix with the warmer water near the surface, so any carbon dioxide pumped deep into oceans would be trapped there for centuries.",
     "questionStem": "Which one of the following is an assumption that the oceanographer’s argument requires?",

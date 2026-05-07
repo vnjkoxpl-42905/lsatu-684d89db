@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 1 through 2.\nTennyson’s line of poetry “nature, red in tooth and claw” is misconstrued by many evolutionists as a reference to Darwin’s theory of evolution. The poem in which the line appears was published in 1850, but Darwin kept his theory closely held until publishing it in 1859. In addition, in view of the context provided by the rest of the poem, the line was clearly meant to refer to the dominant biological theory of the early nineteenth century, which was a creationist theory.",
     "questionStem": "Which one of the following most accurately expresses the main point of the argument?",
@@ -26,7 +26,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 1 through 2.\nTennyson’s line of poetry “nature, red in tooth and claw” is misconstrued by many evolutionists as a reference to Darwin’s theory of evolution. The poem in which the line appears was published in 1850, but Darwin kept his theory closely held until publishing it in 1859. In addition, in view of the context provided by the rest of the poem, the line was clearly meant to refer to the dominant biological theory of the early nineteenth century, which was a creationist theory.",
     "questionStem": "The claim about the publication dates of Tennyson’s poem and Darwin’s theory plays which one of the following roles in the argument?",
@@ -48,7 +48,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Space programs have recently suffered several setbacks with respect to their large projects, and much money has been lost. Consequently, these grand projects should be abandoned in favor of several small ones.",
     "questionStem": "Which one of the following, if true, provides the most support for the reasoning above?",
@@ -70,7 +72,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "In an experiment testing whether hyperactivity is due to a brain abnormality, the brain activity of 25 hyperactive adults was compared to the brain activity of 25 adults who were not hyperactive. The tests revealed that the hyperactive adults had much less brain activity in the premotor cortex, a region of the brain believed to control action, than did the nonhyperactive adults. The experimenters concluded that diminished activity in the premotor cortex is one cause of hyperactivity.",
     "questionStem": "Which one of the following, if true, most undermines the conclusion drawn by the experimenters?",
@@ -93,7 +97,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Large discount chains can make a profit even while offering low prices, because they buy goods in large quantities at favorable cost. This creates a problem for small retailers. If they try to retain their customers by lowering prices to match those of large discount chains, the result is a lower profit margin. But small retailers can retain their customer base without lowering prices if they offer exceptional service. Hence, small retailers that are forced to compete with large discount chains must offer exceptional service in order to retain their level of profitability.",
     "questionStem": "The reasoning is flawed because it fails to take into account the possibility that",
@@ -111,7 +115,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "We should do what will make others more virtuous and not do what will make others less virtuous. It is an irony of human existence that praise makes those who are less virtuous more virtuous, while it makes those who are more virtuous less virtuous. And, of course, none except the more virtuous deserve praise.",
     "questionStem": "From the statements above, if true, which one of the following can be properly inferred?",
@@ -129,7 +133,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Generic drugs contain exactly the same active ingredients as their brand-name counterparts, but usually cost much less to develop, produce, and market. So, generic drugs are just as effective as their brand-name counterparts, but cost considerably less.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -147,7 +151,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Economist: In the interaction between producers and consumers, the only obligation that all parties have is to act in the best interests of their own side. And distribution of information about product defects is in the best interests of the consumer. So consumers are always obligated to report product defects they discover, while producers are never obligated to reveal them.",
     "questionStem": "Which one of the following is an assumption required by the economist’s argument?",
@@ -169,7 +175,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "All potatoes naturally contain solanine, which is poisonous in large quantities. Domesticated potatoes contain only very small amounts of solanine, but many wild potatoes contain poisonous levels of solanine. Since most of the solanine in potatoes is concentrated in the skin, however, peeling wild potatoes makes them at least as safe to eat as unpeeled domesticated potatoes of the same size.",
     "questionStem": "Which one of the following, if assumed, allows the conclusion above to be properly drawn?",
@@ -187,7 +195,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The consequences of surgical errors can be devastating, and no one would want to risk surgery unless it was performed by someone highly competent to perform surgery. General surgeons have special training and expertise that make them extremely competent to perform surgery. Therefore, surgery at the hands of anyone other than a general surgeon involves highly undesirable risks.",
     "questionStem": "The reasoning in the argument is flawed because the\nargument fails to consider the possibility that",
@@ -205,7 +213,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Role",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Although the concept of free will is essential to that of moral responsibility, its role in determining responsibility is not the same in all situations. We hold criminals morally responsible for the damage they cause, assuming that they freely chose their activities. But we do not hold someone who has a heart attack while driving morally responsible for the damage caused, if any, even when we have good reason to believe that the heart attack could have been prevented by eating different foods and that one’s choice of diet is made freely.",
     "questionStem": "The claim that a choice of diet can affect whether or not one has a heart attack plays which one of the following roles in the argument?",
@@ -226,7 +236,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Method",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Alice will volunteer to work on the hospital fund-raising drive only if her brother Bruce also volunteers and a majority of the others working on the drive promise to select Bruce to manage the drive. However, although Bruce is willing to volunteer, none of the others working on the drive will promise to select Bruce to manage the drive. Thus it is certain that Alice will not volunteer.",
     "questionStem": "In which one of the following arguments is the pattern of reasoning most similar to the pattern of reasoning in the argument above?",
@@ -249,7 +261,7 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 13 through 14.\nIf an artist receives a public subsidy to support work on a specific project—e.g., making a film—and if this project then proves successful enough to allow the artist to repay the subsidy, is the artist then morally obliged to do so? The answer is clearly yes, since the money returned to the agency distributing the subsidies will be welcome as a source of support for other artists deserving of public subsidies.",
     "questionStem": "The passage tries to establish an artist’s obligation by arguing that",
@@ -270,7 +282,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 1, questions 13 through 14.\nIf an artist receives a public subsidy to support work on a specific project—e.g., making a film—and if this project then proves successful enough to allow the artist to repay the subsidy, is the artist then morally obliged to do so? The answer is clearly yes, since the money returned to the agency distributing the subsidies will be welcome as a source of support for other artists deserving of public subsidies.",
     "questionStem": "Which one of the following principles, if established, most helps to justify the conclusion in the passage?",
@@ -291,7 +303,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Jessica: The budget surplus should be used only to increase government payments to those who are\nunemployed.\nMarcie: A better use of the money would be for a public works project that would create jobs.",
     "questionStem": "On the basis of their statements, Jessica and Marcie are committed to disagreeing about the truth of which one of the following?",
@@ -312,7 +324,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "In a town containing a tourist attraction, hotel and restaurant revenues each increased more rapidly over the past year than did revenue from the sale of passes to the attraction, which are valid for a full year. This led those in charge of the attraction to hypothesize that visitors were illicitly selling or sharing the passes.",
     "questionStem": "Each of the following, if true, helps to undermine the hypothesis of those in charge of the tourist attraction except:",
@@ -333,7 +345,10 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The difference between manners and morals is that the former are necessarily social in nature whereas the latter are not necessarily social in nature. So the rules of etiquette do not apply when one is alone.",
     "questionStem": "The statements above, if true, most strongly support which one of the following inferences?",
@@ -354,7 +369,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Sociologist: The intended function of news is to give us information on which to act. But in a consumer society, news becomes a product to be manufactured and dispensed to the consumer. An enormous industry for the production and consumption of news has evolved, and we ingest news with an insatiable appetite. Under such circumstances, news is primarily entertaining and cannot, therefore, serve its intended function.",
     "questionStem": "Which one of the following is an assumption on which the sociologist’s argument depends?",
@@ -376,7 +393,7 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Paleontologist: It is widely, but falsely, held that life began in the ocean and did not exist on land until half a billion years ago. Traces of carbon 14 have been found throughout certain 1.2-billionyear-old rocks in North America. Carbon 14 is extracted by plants and microbes from the atmosphere to fuel their chemical reactions, and is then released when the plants and microbes die.",
     "questionStem": "Each of the following, if true, provides additional support for the paleontologist’s conclusion except:",
@@ -397,7 +414,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The nature of English literature reflects the rich and diverse vocabulary of the English language, which resulted from the dual influence of the Anglo-Saxon and, later, French languages. The French language, though, is a direct descendant of Latin, with few traces of the Celtic language spoken by the pre-Roman inhabitants of the area; the hallmark of French literature is its simplicity and clarity.",
     "questionStem": "Which one of the following can be most reasonably inferred from the information above?",
@@ -418,7 +437,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Two doctrines have been greatly influential in this century. The first holds that the explanation of any historical event must appeal to economic factors. The second attempts to account psychologically for all historical events, especially in terms of early childhood experience. Both doctrines, however, are mistaken. Certainly there have been events that were due both to economic forces and to the nature of the early childhood experiences of the major participants in the event.",
     "questionStem": "The argument depends on assuming which one of the following?",
@@ -441,7 +462,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Editorial: Supporters of the proposed law that would require bicyclists to wear helmets are seriously\nmisguided. The number of pedestrians who die yearly as a result of accidents involving automobiles is five times the number of deaths resulting from bicycle accidents, and drunken driving exacts a much higher toll than both combined. Yet there are no calls for a ban on alcohol or walking down the street.",
     "questionStem": "Which one of the following exhibits a pattern of flawed reasoning most similar to that in the argument above?",
@@ -463,7 +486,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Deep tillage is even more deleterious to the world’s topsoil supply than previously believed. For example, farmers who till deeply are ten times more likely to lose topsoil to erosion than are farmers who use no-till methods. Results like these make it clear that farmers who now till deeply should strive, by using other topsoil aeration techniques, to incorporate no-till methods instead.",
     "questionStem": "The argument depends on assuming which one of the following?",
@@ -486,7 +511,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Editorial: Our society has a vested interest in maintaining a political system in which candidates are free to adhere to their principles. Yet campaigning for elected office is extremely costly, and because only the wealthiest individuals are able to finance their own political campaigns, most candidates must seek funding from private sources. In so\ndoing, the candidates are almost invariably obliged to compromise their principles. Thus, government itself should assume the cost of candidates’ campaigns.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the conclusion as it is drawn in the argument?",
@@ -508,7 +535,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "A clothing manufacturer reports that unsalable garments, those found to be defective by inspectors plus those returned by retailers, total 7 percent of the garments produced. Further, it reports that all of its unsalable garments are recycled as scrap, but the percentage of garments reported as recycled scrap is 9 percent.",
     "questionStem": "Which one of the following, if true, could contribute most to explaining the discrepancy between the reported percentages?",
@@ -529,7 +556,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Marion knows that the bridge on her usual route is closed and that, unless she takes the train instead of driving, she can get to work on time only by leaving at least 45 minutes early. She must go to her neighborhood bank before leaving for work, however, and the bank will not be open in time for her to do so if she leaves 45 minutes early. Therefore, since she hates taking the train, Marion cannot avoid being late for work.",
     "questionStem": "The reasoning in the argument is flawed because the argument",

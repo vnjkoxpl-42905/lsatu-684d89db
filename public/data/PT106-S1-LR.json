@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A student has taken twelve courses and received a B in a majority of them. The student is now taking another course and will probably, given her record, receive a B in it.",
     "questionStem": "Each of the following, if true, strengthens the argument except:",
@@ -28,7 +30,10 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If the government increases its funding for civilian scientific research, private patrons and industries will believe that such research has become primarily the government’s responsibility. When they believe that research is no longer primarily their responsibility, private patrons and industries will decrease their contributions toward research. Therefore, in order to keep from depressing the overall level of funding for civilian scientific research, the government should not increase its own funding.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -55,7 +60,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "For any given ticket in a 1000-ticket lottery, it is reasonable to believe that that ticket will lose. Hence, it is reasonable to believe that no ticket will win.",
     "questionStem": "Which one of the following exhibits flawed reasoning most similar to the flawed reasoning in the argument above?",
@@ -77,7 +82,10 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Dental researcher: Filling a cavity in a tooth is not a harmless procedure: it inevitably damages some of the healthy parts of the tooth. Cavities are harmful only if the decay reaches the nerves inside the tooth, and many cavities, if left untreated, never progress to that point. Therefore, dentists should not fill a cavity unless the nerves inside the tooth are in imminent danger from that cavity.",
     "questionStem": "Which one of the following principles, if valid, most strongly supports the researcher’s reasoning?",
@@ -102,7 +110,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The number of codfish in the North Atlantic has declined substantially as the population of harp seals has increased from two million to more than three million. Some blame the seal for the shrinking cod population, but cod plays a negligible role in the seal’s diet. It is therefore unlikely that the increase in the seal population has contributed significantly to the decline in the cod population.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -125,7 +135,7 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The following passage is used for Section 1, questions 6 through 7.\nHospital auditor: The Rodríguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
     "questionStem": "Which one of the following is the main point at issue between the hospital auditor and the clinic administrator?",
@@ -150,7 +160,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 1, questions 6 through 7.\nHospital auditor: The Rodríguez family stipulated that the funds they donated to the neurological clinic all be used to minimize patients’ suffering. The clinic administration is clearly violating those terms, since it has allocated nearly one fifth of those funds for research into new diagnostic technologies, instead of letting that money flow directly to its patients.\nClinic administrator: But the successful development of new technologies will allow early diagnosis of many neurological disorders. In most cases, patients who are treated in the early stages of neurological disorders suffer far less than do patients who are not treated until their neurological disorders reach advanced stages.",
     "questionStem": "The clinic administrator responds to the hospital auditor by doing which one of the following?",
@@ -174,7 +184,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Generally speaking, if the same crop is sown in a field for several successive years, growth in the later years is poorer than growth in the earlier years, since nitrogen in the soil becomes depleted. Even though alfalfa is a nitrogen-fixing plant and thus increases the amount of nitrogen in the soil, surprisingly, it too, if planted in the same field year after year, grows less well in the later years than it does in the earlier years.",
     "questionStem": "Which one of the following, if true, most helps to explain the similarity described above between alfalfa and non-nitrogen-fixing plants?",
@@ -197,7 +209,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Political commentators see recent policies of the government toward Country X as appeasement, pure and simple. This view is fundamentally mistaken, for polls show that most people disagree with the political commentators’ assessment of government policies toward Country X.",
     "questionStem": "The reasoning in the argument is questionable because",
@@ -220,7 +232,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "It is a principle of economics that a nation can experience economic growth only when consumer confidence is balanced with a small amount of consumer skepticism.",
     "questionStem": "Which one of the following is an application of the economic principle above?",
@@ -244,7 +258,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Must be False",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Sharks have a higher ratio of cartilage mass to body mass than any other organism. They also have a greater resistance to cancer than any other organism. Shark cartilage contains a substance that inhibits tumor growth by stopping the development of a new blood network. In the past 20 years, none of the responses among terminal cancer patients to various therapeutic measures has been more positive than the response among those who consumed shark cartilage.",
     "questionStem": "If the claims made above are true, then each of the following could be true except:",
@@ -267,7 +283,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 1, questions 12 through 13.\nPeople who say that Dooney County is flat are clearly wrong. On flat land, soil erosion by water is not a problem. Consequently, farmers whose land is flat do not build terraces to prevent erosion. Yet I hear that the farms in Dooney County are dotted with terraces.",
     "questionStem": "The author’s conclusion in the passage depends on the assumption that",
@@ -293,7 +311,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 1, questions 12 through 13.\nPeople who say that Dooney County is flat are clearly wrong. On flat land, soil erosion by water is not a problem. Consequently, farmers whose land is flat do not build terraces to prevent erosion. Yet I hear that the farms in Dooney County are dotted with terraces.",
     "questionStem": "The reasoning in the passage is most similar to that in which one of the following?",
@@ -317,7 +337,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Must be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The axis of Earth’s daily rotation is tilted with respect to the plane of its orbit at an angle of roughly 23 degrees. That angle can be kept fairly stable only by the gravitational influence of Earth’s large, nearby Moon. Without such a stable and moderate axis tilt, a planet’s climate is too extreme and unstable to support life. Mars, for example, has only very small moons, tilts at wildly fluctuating angles, and cannot support life.",
     "questionStem": "If the statements above are true, which one of the following must also be true on the basis of them?",
@@ -341,7 +363,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The town of Springhill frequently must declare a water emergency, making it temporarily unlawful to use water for such nonessential purposes as car washing. These emergencies could be avoided if Springhill would introduce permanent economic incentives for water conservation. Actually, Springhill discourages conservation because each household pays a modest monthly flat fee for any amount of water below a certain usage threshold, and a substantial per-liter rate only after the threshold is reached.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -367,7 +389,10 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Poppy petals function to attract pollinating insects. The pollination of a poppy flower triggers the release into that flower of a substance that causes its petals to wilt within one or two days. If the flower is not pollinated, the substance will not be released and the petals will remain fresh for a week or longer, as long as the plant can nourish them. Cutting an unpollinated poppy flower from the plant triggers the release into the flower of the same substance whose release is triggered by pollination.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -390,7 +415,7 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "When a community opens a large shopping mall, it often expects a boost to the local economy, and in fact a large amount of economic activity goes on in these malls. Yet the increase in the local economy is typically much smaller than the total amount of economic activity that\ngoes on in the mall.",
     "questionStem": "Which one of the following, if true, most helps to explain the discrepancy described above?",
@@ -411,7 +436,7 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Essayist: The way science is conducted and regulated can be changed. But we need to determine whether the changes are warranted, taking into account their price. The use of animals in research could end immediately, but only at the cost of abandoning many kinds of research and making others very expensive. The use of recombinant DNA could be drastically curtailed. Many other restrictions could be imposed, complete with a system of fraud police. But such massive interventions would be costly and would change the character of science.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the essayist’s argument?",
@@ -435,7 +460,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The postmodern view involves the rejection of modern assumptions about order and the universality of truth. The grand theories of the modern era are now seen as limited by the social and historical contexts in which they were elaborated. Also, the belief in order has given way to a belief in the importance of irregularity and chaos. It follows that we inhabit a world full of irregular events, and in which there are no universal truths.",
     "questionStem": "The argument’s reasoning is questionable because the argument",
@@ -458,7 +485,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Must be False",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If the economy is weak, then prices remain constant although unemployment rises. But unemployment rises only if investment decreases. Fortunately, investment is not decreasing.",
     "questionStem": "If the statements above are true, then which one of the following must be false?",
@@ -481,7 +510,10 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Psychologist: Some astrologers claim that our horoscopes completely determine our personalities, but this claim is false. I concede that identical twins— who are, of course, born at practically the same time—often do have similar personalities. However, birth records were examined to find two individuals who were born 40 years ago on the same day and at exactly the same time—one in a hospital in Toronto and one in a hospital in New York. Personality tests revealed that the personalities of these two individuals are in fact different.",
     "questionStem": "Which one of the following is an assumption on which the psychologist’s argument depends?",
@@ -505,7 +537,10 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Under the influence of today’s computer-oriented culture, publishing for children has taken on a flashy new look that emphasizes illustrations and graphic design; the resulting lack of substance leads to books that are shortlived items covering mainly trendy subjects. The changes also include more humorous content, simplification of difficult material, and a narrower focus on specific topics.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -527,7 +562,10 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Further evidence of a connection between brain physiology and psychological states has recently been uncovered in the form of a correlation between electroencephalograph patterns and characteristic moods. A study showed that participants who suffered from clinical depression exhibited less left frontal lobe activity than right, while, conversely, characteristically goodnatured participants exhibited greater left lobe activity. Thus one’s general disposition is a result of the activity of one’s frontal lobe.",
     "questionStem": "Each of the following, if true, weakens the argument except:",
@@ -552,7 +590,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "We ought to pay attention only to the intrinsic properties of a work of art. Its other, extrinsic properties are irrelevant to our aesthetic interactions with it. For example, when we look at a painting we should consider only what is directly presented in our experience of it. What is really aesthetically relevant, therefore, is not what a painting symbolizes, but what it directly presents to experience.",
     "questionStem": "The conclusion follows logically if which one of the following is added to the premises?",
@@ -579,7 +619,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "McKinley: A double-blind study, in which neither the patient nor the primary researcher knows whether the patient is being given the drug being tested or a placebo, is the most effective procedure for testing the efficacy of a drug. But we will not be able to perform such a study on this new drug, since the drug will have various effects on the patients’ bodies, which will make us aware of whether the patients are getting the drug or a placebo. Engle: You cannot draw that conclusion at this point, for\nyou are assuming you know what the outcome of the study will be.",
     "questionStem": "Engle’s statement indicates that he is most likely interpreting McKinley’s remarks to be",
@@ -601,7 +641,10 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Modern navigation systems, which are found in most of today’s commercial aircraft, are made with low-power circuitry, which is more susceptible to interference than the vacuum-tube circuitry found in older planes. During landing, navigation systems receive radio signals from the airport to guide the plane to the runway. Recently, one plane with low-power circuitry veered off course during landing, its dials dimming, when a passenger turned on a laptop computer. Clearly, modern aircraft navigation systems are being put at risk by the electronic devices that passengers carry on board, such as cassette players and laptop computers.",
     "questionStem": "Which one of the following, if true, least strengthens the argument above?",
