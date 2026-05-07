@@ -54,7 +54,10 @@
       "D": "Workers at nuclear power plants have filed only a few lawsuits against the management concerning unsafe working conditions.",
       "E": "Medical problems arising from work at a nuclear power plant are unusual in that they are not likely to appear until after an employee has left employment at the plant."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -168,7 +171,10 @@
       "D": "Only an avid collector of paintings by Cézanne would be willing to pay a high price for early works by this artist.",
       "E": "A great work of art can be truly appreciated only if it is displayed in a carefully designed and well- maintained gallery."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -361,7 +367,10 @@
       "D": "questioning the assumption that authorities are available who have special knowledge of the problem under discussion",
       "E": "offering a counterexample in order to show that a particular general claim is too broadly stated"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -379,7 +388,10 @@
       "D": "Claiming that some people raised tobacco but did not smoke it is rather like claiming that a society that knew how to brew alcohol never drank it.",
       "E": "Arguing that not all people with cars will drive them is rather like claiming that humans invented gasoline long before they used it as fuel for transportation. The following passage is used for Section 4, questions 21 through 22. Sarah: Some schools seek to foster a habit of volunteering in their students by requiring them to perform community service. But since a person who has been forced to do something has not really volunteered and since the habit of volunteering cannot be said to have been fostered in a person who has not yet volunteered for anything, there is no way this policy can succeed by itself. Paul: I disagree. Some students forced to perform community service have enjoyed it so much that they subsequently actually volunteer to do something similar. In such cases, the policy can clearly be said to have fostered a habit of volunteering."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -415,7 +427,10 @@
       "D": "it is possible for schools to develop policies that foster the habit of volunteering in their students",
       "E": "students who develop a habit of volunteering while in school are inclined to perform community service later in their lives"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",

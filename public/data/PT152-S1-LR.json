@@ -38,7 +38,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -60,7 +61,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -159,7 +161,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Breadcrumbs"
     ]
   },
   {
@@ -237,7 +241,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Assumes Similarity"
     ]
   },
   {
@@ -274,7 +280,10 @@
       "D": "The bat species with the highest incidence of rabies do not live in buildings.",
       "E": "People are more likely to be aware of having been bitten by a bat if they were bitten by the bat inside a building."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -334,7 +343,10 @@
       "D": "a fast-food place on 10th Street is likely to fail if it has any outdoor seating",
       "E": "the new fast-food place on 10th Street was a risky venture"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -372,7 +384,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -414,7 +427,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -492,7 +506,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Battle of Opinions"
     ]
   }
 ]

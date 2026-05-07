@@ -94,7 +94,10 @@
       "D": "The nineteenth century stands out among other times as a period of great mathematical achievement.",
       "E": "Mathematics tends to advance more quickly than any of the physical sciences."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -152,7 +155,10 @@
       "D": "One report focuses on regional topsoil erosion, while the other report focuses on riverbank erosion resulting from seasonal floods.",
       "E": "One report cost nearly twice as much to prepare as did the other report."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -287,7 +293,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -386,7 +393,10 @@
       "D": "The fingerprints found at the scene of the crime were not Jansen's.",
       "E": "The fingerprints found at the scene of the crime were not Samantha's."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -404,7 +414,10 @@
       "D": "Only mature opera singers can sing demanding roles without undue strain on their vocal cords.",
       "E": "Most young opera singers who sing demanding roles strain their vocal cords."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -468,7 +481,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Binaries"
     ]
   },
   {

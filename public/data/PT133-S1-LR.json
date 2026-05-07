@@ -162,7 +162,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {
@@ -277,7 +279,10 @@
       "D": "the failure of the general public to believe in extrasensory perception is good evidence against its existence",
       "E": "the general public believes that extrasensory perception is a real phenomenon"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -335,7 +340,10 @@
       "D": "argues that two situations are similar by establishing that the same action would be reasonable in each situation",
       "E": "attempts to establish a generalization and then uses that generalization to argue against a particular action"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -376,7 +384,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {

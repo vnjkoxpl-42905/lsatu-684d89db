@@ -15,7 +15,10 @@
       "D": "The student received a B in all but one of the twelve courses.",
       "E": "The current course is a continuation of one of the twelve courses in which the student received a B."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -98,7 +101,11 @@
       "D": "Cod feed almost exclusively on capelin, a fish that is a staple of the harp seal’s diet.",
       "E": "The cod population in the North Atlantic began to decline before the harp-seal population began to increase."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -116,7 +123,10 @@
       "D": "whether the neurological clinic is adhering strictly to the conditions the Rodríguez family placed on the allocation of the funds they donated to the clinic",
       "E": "whether the Rodríguez family anticipated that some of the funds they donated to the neurological clinic would be used to pay for research into new diagnostic technologies"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -136,7 +146,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -155,7 +166,10 @@
       "D": "Alfalfa increases nitrogen in the soil in which it grows only if a certain type of soil bacteria is present in the soil.",
       "E": "Alfalfa is very sensitive to juglone, a compound that is exuded from the leaves of black walnut trees."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -237,7 +251,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -301,7 +316,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -320,7 +336,10 @@
       "D": "The pollen on pollinated poppy flowers prevents their petals from absorbing the nutrients carried to them by their stems.",
       "E": "Poppy plants are unable to draw nutrients from soil or water after the substance that causes wilting has been released."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -379,7 +398,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Battle of Opinions"
     ]
   },
   {
@@ -420,7 +440,10 @@
       "D": "Complete birth records for the past 40 years were kept at both hospitals.",
       "E": "Identical twins have identical genetic structures and usually have similar home environments."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -458,7 +481,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

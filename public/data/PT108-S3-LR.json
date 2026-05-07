@@ -182,7 +182,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -201,7 +202,10 @@
       "D": "Some scholars’ standards for determining genuineness are inappropriate.",
       "E": "The recently discovered manuscript is similar to other texts from the same era."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -255,7 +259,11 @@
       "D": "Synthetic supplements are regulated more strictly than natural supplements.",
       "E": "Consumers generally prefer natural supplements to synthetic ones."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -350,7 +358,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -369,7 +379,10 @@
       "D": "The presence of liquid water is essential for life.",
       "E": "Some planets orbit stars that are much cooler than our sun."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -389,7 +402,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -408,7 +422,10 @@
       "D": "Policies should be adopted only when they benefit all countries equally.",
       "E": "A policy should be adopted only if it increases global trade."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -462,7 +479,11 @@
       "D": "whether vervet monkeys’ behavior can be predicted on the basis of their responses",
       "E": "whether vervet monkeys’ calls can be distinguished by other species"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -482,7 +503,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "2-Speaker"
     ]
   }
 ]

@@ -33,7 +33,11 @@
       "D": "presumes, without providing justification, that only objects that are beautiful are instructive",
       "E": "fails to consider the possibility that there are many things that are both beautiful and instructive but are not part of the natural world"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -293,7 +297,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Alternatives"
     ]
   },
   {
@@ -463,6 +468,9 @@
       "D": "The interpretation of data is the only part of a serious scientific paper that is sometimes slanted by the beliefs and values of scientists.",
       "E": "Slanted interpretations of data in a scientific paper can be removed only through careful review by scientists who do not share the biases of the author or authors of the paper."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

@@ -18,7 +18,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {
@@ -37,7 +39,11 @@
       "D": "Many countries do not recognize the increased economic benefit of tourism associated with preserved natural habitats.",
       "E": "Programs have been proposed that will transfer endangered species out of habitats that are in danger of being destroyed."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -73,7 +79,10 @@
       "D": "famous lawyers have a greater responsibility to be well prepared than do lawyers who are not famous",
       "E": "it is to be expected that ill-prepared lawyers would offend the court in which they appear"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -189,7 +198,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -270,7 +280,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -307,7 +318,10 @@
       "D": "The hiding of hypocrisy is a better way of motivating people to try to be good than is the exposing of it.",
       "E": "There is no stronger motivator for people to try to be good than the exposing of hypocrisy."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -479,7 +493,10 @@
       "D": "The number of middle-aged people in the workforce will increase in the coming years.",
       "E": "Economic productivity will be affected by the number of middle-aged people in the workforce."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",

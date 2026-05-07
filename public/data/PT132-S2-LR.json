@@ -93,7 +93,10 @@
       "D": "takes for granted that lead paint in homes can be eliminated economically",
       "E": "takes for granted that children reside in all of the homes in the area that contain lead paint"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -234,7 +237,11 @@
       "D": "Most marine animals that chase prey over long distances are specialized for long-distance swimming.",
       "E": "The shape of a marine animal's fin affects the way the animal swims in the same way as the shape of a bird's wing affects the way the bird flies."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -354,7 +361,10 @@
       "D": "Yolanda is the most productive programmer on the team. She has been assigned to work with Mike, who is also very productive. They are to work together at the same workstation.",
       "E": "Kevin and Amy both have a reputation for writing idiosyncratic code; neither is unusually productive. They have been assigned to work together at the same workstation."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT132",

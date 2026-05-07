@@ -227,7 +227,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {
@@ -305,7 +307,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -324,7 +327,10 @@
       "D": "presumes, without providing justification, that the survival of each endangered species is equally important to the health of the environment",
       "E": "takes for granted that preserving a currently endangered species in a habitat does not have higher priority than preserving species in that habitat that are not endangered"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -423,7 +429,10 @@
       "D": "In general, the larger a vehicle is, the greater its ability to protect its occupants.",
       "E": "Minivans generally have worse braking and emergency handling capabilities than other vehicles of similar size."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -499,6 +508,9 @@
       "D": "intelligence can be demonstrated by the performance of an activity in accord with fixed principles",
       "E": "tools can be designed to aid in any human activity that is governed by fixed principles"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

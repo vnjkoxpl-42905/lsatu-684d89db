@@ -35,7 +35,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -72,7 +73,10 @@
       "D": "It is misleading for a company to advertise that its product has a feature that a competing product lacks if, on balance, the competing product has more of the features that most consumers want.",
       "E": "It is misleading for a company to advertise that its product has a feature that a competing product lacks if all instances of the competing product that are currently offered for sale have the feature in question."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -92,7 +96,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -196,7 +201,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -217,7 +224,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -279,7 +287,11 @@
       "D": "argue that Jones’s reasoning about finances is questionable because of Jones’s poor management of personal finances",
       "E": "suggest that Jones’s conclusion is more general than is warranted by the evidence Jones presents"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -505,7 +517,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   }
 ]

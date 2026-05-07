@@ -15,7 +15,10 @@
       "D": "Lewis once worked as an aide to a prodevelopment mayor of Bensburg.",
       "E": "Chu was not thought of as a prodevelopment politician before this election."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -33,7 +36,10 @@
       "D": "worst review",
       "E": "in years"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -51,7 +57,10 @@
       "D": "the federal government is willing to provide additional funding to the transit authority now",
       "E": "the transit authority can afford to operate for the next twelve months without cutting service even if it does not receive additional funding"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -135,7 +144,10 @@
       "D": "the raw numbers collected are serious underestimates",
       "E": "the number of people surveyed was adequate for the survey’s purpose"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -153,7 +165,10 @@
       "D": "responding to a possible objection to the reasoning in Lopez’s argument",
       "E": "presenting a consideration in order to undermine the reasoning in Lopez’s argument"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -210,7 +225,10 @@
       "D": "Speakers often convey more information in conversation than they intend to convey.",
       "E": "Listeners cannot reasonably be expected to have the knowledge typically required for successful communication."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -270,7 +288,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -310,7 +329,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker"
     ]
   },
   {
@@ -329,7 +349,10 @@
       "D": "A volcanic ash cloud whose highest point exceeds an altitude of 5 kilometers is likely to be at least partly beyond the reach of weather radar.",
       "E": "Lightning discharges are no more frequent for large volcanic ash clouds than for small volcanic ash clouds."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -409,7 +432,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -470,7 +494,11 @@
       "D": "the average depth of water in the dolphins’ habitat area is 25 meters",
       "E": "a short distance from the dolphins’ habitat area, the ocean floor drops to a depth of 100 meters"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT149",

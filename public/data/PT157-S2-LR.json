@@ -33,7 +33,10 @@
       "D": "Barajas always worked from sketches when she sculpted a statue.",
       "E": "Barajas never took as long to complete a statue as the assistants did to sculpt Sonora. ION II 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best ompletely answers the question and mark that response on your"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -89,7 +92,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -169,7 +173,10 @@
       "D": "fails to show that the data on which the psychologists’ conclusions were based was adequately representative of children in the population as a whole",
       "E": "claims to accept a view, but then rejects it in the course of argument"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -189,7 +196,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies"
     ]
   },
   {
@@ -250,7 +258,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -391,7 +400,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -491,6 +501,9 @@
       "D": "takes for granted that most test subjects do not change their attitudes toward the chance of taking ineffective substances once the substances they take turn out to be ineffective",
       "E": "draws a conclusion that is essentially about a moral issue by appealing to evidence that is purely factual O P HER SECTION IN THE TEST."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   }
 ]

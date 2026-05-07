@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "2-Speaker"
     ]
   },
   {
@@ -36,7 +37,11 @@
       "D": "The city excavated by Dörpfeld’s team had many features that scholars of the time believed Troy had.",
       "E": "The Iliad accurately represents the duration of the Trojan War."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -54,7 +59,10 @@
       "D": "contending that Flynn’s argument could be used to support a policy that is inconsistent with the policy that Flynn advocates",
       "E": "providing an alternative explanation for a situation described in Flynn’s argument"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -72,7 +80,10 @@
       "D": "The stated goal of the project was to reduce as much as possible the number of homes in the community that lack electricity.",
       "E": "Leaving approximately 2,000 homes in the community without electricity at the conclusion of the project counts as a failure for the project."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -93,7 +104,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Sampling"
+      "Sampling",
+      "Alternatives"
     ]
   },
   {
@@ -112,7 +124,11 @@
       "D": "any other stores have gone out of business in Glendale",
       "E": "rug stores can close because of insufficient demand for rugs"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -148,7 +164,10 @@
       "D": "it is possible to understand the basis of the moral codes of different cultures",
       "E": "moral attitudes can be adapted to suit the moral codes of many different cultures"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -187,7 +206,10 @@
       "D": "The instructor who taught the group of students who learned by silent example alone was much less proficient at making the stone tools than was the instructor who taught the other group of students.",
       "E": "The tools created by Neanderthals were much less sophisticated than the tools created by anatomically modern humans who almost certainly possessed language and lived at the same time as the Neanderthals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -223,7 +245,12 @@
       "D": "Reading a movie review by Sartore will usually help one to enjoy the movie more than one otherwise would have.",
       "E": "Most of the movies that Sartore reviews are also reviewed by Kelly."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -357,7 +384,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -376,7 +404,10 @@
       "D": "whether increasing the accessibility of premodern plays through modernizing their language is valuable for teaching history",
       "E": "whether using plays with modernized language to teach history requires that there be some loss in the aesthetic quality of the plays"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -457,7 +488,10 @@
       "D": "It is not fair for lawmakers to favor the interests of people who have the vote over the interests of people who do not have the vote.",
       "E": "A group of people can be fairly represented in a democracy even if some members of that group can vote on behalf of others in that group."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -477,7 +511,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   }
 ]

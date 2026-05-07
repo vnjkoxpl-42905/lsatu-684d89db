@@ -15,7 +15,10 @@
       "D": "Its mother’s pouch keeps a newborn dunnart warm and reduces water loss through its skin.",
       "E": "Some dunnarts live where daytime temperatures are high and the climate is dry."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -33,7 +36,10 @@
       "D": "there is no reason to suppose that a lecture lasting several hours cannot hold an audience’s attention",
       "E": "university professors should treat even the most serious topics in a humorous way"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -72,7 +78,11 @@
       "D": "The improvements to the mayor’s house were done with expensive materials and involved thousands of hours of labor.",
       "E": "The amount of money that the city paid the consultant over the last year greatly exceeded the cost of the improvements to the mayor’s house."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -216,7 +226,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -313,7 +324,10 @@
       "D": "Do some coffee drinkers who switch from lighter to darker roasts of coffee increase their daily coffee consumption?",
       "E": "Do lighter roasts of coffee have any important health benefits that darker roasts of coffee lack?"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -333,7 +347,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Analogies",
+      "Anti-Causal"
     ]
   },
   {
@@ -354,7 +370,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -396,7 +413,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -435,7 +453,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -454,7 +473,10 @@
       "D": "It is easier to convince the government to change its policies on carbon use than to convince people to reduce their personal use of fossil fuels.",
       "E": "People who are concerned about environmental issues are more likely to support political candidates who support environmental issues."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -472,7 +494,11 @@
       "D": "Some analysts are forecasting that if the economy expands, the inflation rate will rise or the unemployment rate will fall. But the unemployment rate promises to remain stable. Therefore, the inflation rate will not change either.",
       "E": "If the party does not change its policies, it will lose heavily in the next election. But if it changes its policies, some people who support those policies will be upset and will sit out the next election. Therefore, it is impossible for the party to win in the next election."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Battle of Opinions",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -514,7 +540,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "2-Speaker"
     ]
   }
 ]

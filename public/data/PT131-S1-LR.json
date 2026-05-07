@@ -129,7 +129,10 @@
       "D": "It is never possible to achieve a balance between the environmental supply and human demand.",
       "E": "Human consumption does not decrease the environmental supply."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -149,7 +152,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Difference"
     ]
   },
   {
@@ -189,7 +193,10 @@
       "D": "fails to consider the possibility that those who engage in vigorous physical exercise are more likely than others to perceive themselves as healthy",
       "E": "fails to show that a certain conclusion of the recent report is better justified than an opposing conclusion reached in older studies"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -209,7 +216,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Battle of Opinions"
     ]
   },
   {
@@ -230,7 +238,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Anti-Causal"
     ]
   },
   {
@@ -291,7 +300,10 @@
       "D": "the argument takes a single fact that is incompatible with a theory as enough to show that theory to be false",
       "E": "the argument does not explain why sibling species cannot interbreed"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -461,7 +473,10 @@
       "D": "whether the number of part-time and temporary workers has increased since the traditional definition of full employment was developed",
       "E": "whether unemployment levels above 5 percent can cause inflation levels to rise"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -499,7 +514,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

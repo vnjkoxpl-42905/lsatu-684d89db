@@ -35,7 +35,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -75,7 +76,10 @@
       "D": "the phrase \"high on the list\" is not specific enough to give useful information about what parents desire from a school",
       "E": "it fails to discuss educators' attitudes toward discipline in schools"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -111,7 +115,10 @@
       "D": "it is safer to invest in savings bonds than to invest in the stock market",
       "E": "it is preferable to pick an investment offering a reliable income over a riskier opportunity to make a large profit quickly"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -132,7 +139,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -268,7 +276,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -365,7 +374,10 @@
       "D": "Humans today have more variety in their diets than in the past, but still rely heavily on cereal crops like rice and wheat.",
       "E": "Today's crops are much less vulnerable to damage from insects or encroachment by weeds than were crops of a few generations ago."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -385,7 +397,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker"
     ]
   },
   {

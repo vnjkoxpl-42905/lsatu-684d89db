@@ -54,7 +54,11 @@
       "D": "The task cannot be assigned to anyone who has any kind of scheduling conflict.",
       "E": "No one who is not a supervisor in the shipping department has the assertiveness this task requires."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -111,7 +115,10 @@
       "D": "introducing a case analogous to the one under consideration to show that a general implementation of the proposal being argued against would be impossible",
       "E": "questioning the motivation of those who made the proposal being argued against"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -187,7 +194,10 @@
       "D": "Since sugar is a major ingredient in ice cream, the price of ice cream increases whenever the price of sugar increases. The price of sugar is expected to increase next month. Therefore, the price of ice cream can be expected to increase next month.",
       "E": "Real estate prices go down when the population of those from 20 to 30 years old declines, and the number in that age group will decrease over the next decade. Therefore, real estate prices will go down over that period."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -227,7 +237,10 @@
       "D": "presumes, without providing justification, that there are no further avenues for the play other than adaptation as a movie or revival at the Decade Festival",
       "E": "fails to recognize that the play's not satisfying one sufficient condition does not preclude its satisfying a different sufficient condition for adaptation as a movie or revival at the Decade Festival"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT118",

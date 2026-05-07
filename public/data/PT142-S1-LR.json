@@ -15,7 +15,10 @@
       "D": "their message may undermine the positive teaching done by parents",
       "E": "children may become so enthralled with books that they will want to spend all their time reading"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -156,7 +159,11 @@
       "D": "As yet, no one in the nation has made the effort to critically examine the details of the nation’s institutions and procedures.",
       "E": "Concentrating on the flaws of the nation’s leaders creates greater dissatisfaction with those leaders."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -174,7 +181,10 @@
       "D": "A high-calcium diet decreases the amount of lead that the body is able to tolerate safely.",
       "E": "When calcium intake is insufficient, the body draws calcium from bones, releasing stored lead into the bloodstream."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -248,7 +258,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Analogies"
     ]
   },
   {
@@ -308,7 +319,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker"
     ]
   },
   {
@@ -445,7 +457,10 @@
       "D": "Certain strains of bacteria thrive deep inside the earth’s crust.",
       "E": "Some carbon deposits were formed from the fossilized remains of plants. 1 1 1"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT142",

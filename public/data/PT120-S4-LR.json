@@ -218,7 +218,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Analogies"
     ]
   },
   {
@@ -239,7 +240,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Binaries"
     ]
   },
   {
@@ -260,7 +262,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Anti-Causal"
     ]
   },
   {
@@ -279,7 +282,10 @@
       "D": "It provides no explanation for why only one piece of evidence was obtained.",
       "E": "It takes for granted that if the handwriting on the note had been Miller’s, then the identity of the joker would have been ascertained to be Miller."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -315,7 +321,10 @@
       "D": "newspapers ought to focus more on the types of stories they have glossed over in the past",
       "E": "newspaper reports from former eras are useful sources of material for understanding the past"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -395,7 +404,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -437,7 +447,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {

@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "every service that is currently performed by government employees could be performed by private contractors",
       "E": "the total amount of money that the government pays its employees annually is greater than the total amount that it spends on contractors annually"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -76,7 +80,10 @@
       "D": "Reducing class size is the most cost effective way to recruit and retain good teachers.",
       "E": "In practice, it is difficult to identify what would be the most productive use of education dollars."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -257,7 +264,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -296,7 +304,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -351,7 +360,10 @@
       "D": "Rodents with cancer are more likely to be obese than healthy rodents.",
       "E": "Drugs that inhibit angiogenesis also prevent absorption of vital nutrients."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -450,7 +462,10 @@
       "D": "conceding Kira’s premises without denying her conclusion, while asserting that the latter does not follow from the former",
       "E": "observing that while Kira’s premises each independently support her conclusion, the premises themselves are inconsistent with one another"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -468,7 +483,10 @@
       "D": "The cost to employers of an increase in the minimum wage in Country X will be made up by reductions in the workforce.",
       "E": "Most factories that produce consumer goods in Country X have large surpluses of goods as a result of years of overproduction."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -506,7 +524,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   }
 ]

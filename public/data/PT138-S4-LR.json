@@ -241,7 +241,10 @@
       "D": "presumes, without providing justification, that airlines, rather than the government, should be held responsible for accurate reporting of safety information",
       "E": "fails to consider whether the publication of airline safety statistics will have an effect on the revenues of airlines"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -262,7 +265,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -304,7 +308,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "2-Speaker",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -384,7 +390,10 @@
       "D": "For today’s generation of television viewers, nothing fills the gap left by radio as a medium for exercising the imagination.",
       "E": "Television drama does not require its viewers to think about what they see."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -425,7 +434,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -483,6 +493,9 @@
       "D": "As with manners, most laws do not prescribe behavior that is ethically required.",
       "E": "As with manners, most laws do not have strict penalties awaiting those who transgress them."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   }
 ]

@@ -35,7 +35,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -247,7 +248,10 @@
       "D": "Most teaching assistants earn stipends that exceed their cost of tuition.",
       "E": "Teaching assistants work as much and as hard as do other university employees."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -327,7 +331,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -369,7 +374,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -388,7 +394,10 @@
       "D": "It constitutes a potential objection to the argument’s main conclusion, but is subsequently countered by an analogy drawn between ships and airplanes.",
       "E": "It draws a distinction between characteristics of semiplaning monohulls and characteristics of conventional ships that the argument’s main conclusion compares to a distinction between types of airplanes. 3 3 3 3"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -445,7 +454,10 @@
       "D": "Amateur gardeners cannot improve their results unless they understand why their methods work as they do.",
       "E": "Professional gardeners only rarely plant at the first warm spell of spring. 3 3 3 3"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -481,6 +493,9 @@
       "D": "If industrial pollution were reduced, the decline in certain amphibian populations would be reversed, and if industrial pollution increases, the decline in certain amphibian populations will be exacerbated.",
       "E": "If industrial pollution is severe, it can create more variations in the weather than would occur naturally."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   }
 ]

@@ -176,7 +176,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -217,7 +218,10 @@
       "D": "takes for granted that a type of phenomenon contributes to the occurrence of another type of phenomenon only if phenomena of these two types are invariably associated",
       "E": "derives a causal connection from mere association when there is no independent evidence of causal connection"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -297,7 +301,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -339,7 +344,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Anti-Causal"
     ]
   },
   {
@@ -432,7 +438,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Binaries"
     ]
   },
   {

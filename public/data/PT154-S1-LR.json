@@ -15,7 +15,11 @@
       "D": "Rhett is entitled to the warm air that heats Barbara’s unused spare room",
       "E": "Rhett could divert to his house the warm air that heats Barbara’s unused spare room without increasing her expenses"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -51,7 +55,10 @@
       "D": "It provides a contrast to the situation that is the main focus of the argument.",
       "E": "It is a general principle for which the argument attempts to provide support."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -69,7 +76,10 @@
       "D": "teacher performance should be assessed without conducting any student evaluations",
       "E": "student evaluations are usually conducted at the end of a class"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -87,7 +97,10 @@
       "D": "fails to consider that most early humans ate a much more limited range of foodstuffs than do contemporary people",
       "E": "takes what might be only a partial explanation of a phenomenon to be the complete explanation"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -123,7 +136,10 @@
       "D": "Newspaper writing is hampered by conventions that do not add to the reader’s understanding of the news.",
       "E": "No print newspaper can possibly publish news as fast as it can be published on the Internet."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -141,7 +157,10 @@
       "D": "users of statistics do not need to understand the underlying theory in order to solve real problems",
       "E": "statisticians do not need to understand the needs of their students in order to become teachers"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -258,7 +277,10 @@
       "D": "Many types of music other than jazz feature a great deal of improvisation.",
       "E": "The later music featuring improvisation has much more in common with early jazz than with any other type of music."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -332,7 +354,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Assumes Similarity"
     ]
   },
   {
@@ -353,7 +377,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -372,7 +397,10 @@
       "D": "Shakespeare’s father’s community standing makes it probable that Shakespeare attended grammar school, where Latin would have been a mandatory subject.",
       "E": "There is strong evidence to suggest that Shakespeare relied on Latin translations of Greek plays as sources for some of his other works."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT154",

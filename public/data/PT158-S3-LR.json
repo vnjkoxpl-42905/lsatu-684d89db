@@ -18,7 +18,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "Most students who are required to take courses that cover only single disciplines can effectively solve many problems faced in daily life.",
       "E": "Most interdisciplinary courses are not designed specifically to teach students how to solve problems faced in daily life. ION III 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best completely answers the question and mark that response on your"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -57,7 +61,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -78,7 +83,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Analogies"
     ]
   },
   {
@@ -177,7 +183,10 @@
       "D": "Current research is such that many drug-related interactions have not yet been identified.",
       "E": "Pharmacists usually draw patients’ attention to printed warnings that are provided with drugs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -416,7 +425,10 @@
       "D": "Most scientists who posit the invisible light- absorbing medium accept the general theory of relativity.",
       "E": "The general theory of relativity does not depend upon the hypothesis that there exists an invisible light-absorbing medium in outer space."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -454,7 +466,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Anti-Causal"
     ]
   },
   {
@@ -475,7 +488,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {

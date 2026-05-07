@@ -57,7 +57,10 @@
       "D": "During cold periods there are extensive grasslands, but these tend to revert to forest when the climate warms.",
       "E": "Several cycles of a cold period followed by a period of warming have occurred in the last 2 million years."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -111,7 +114,11 @@
       "D": "we should condemn forms of popular culture that allow people to imagine themselves transgressing conventional morality",
       "E": "it is silly to suggest that video games do not allow people to imagine themselves transgressing conventional morality"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -167,7 +174,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -271,7 +280,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -290,7 +300,10 @@
       "D": "Voters generally attribute some responsibility for the state of the economy to the policies of previous governments.",
       "E": "Voters are usually more loyal to parties than to individual politicians."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -308,7 +321,10 @@
       "D": "The pits in which the rubbish was deposited had earlier been used by this group of people as burial sites.",
       "E": "Certain types of items were never discarded by members of this group of people."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -326,7 +342,10 @@
       "D": "Alvin should not submit his paper for presentation at the conference. He might not have time to meet his publisher’s deadline if the paper is accepted, and if the paper is rejected, he will lose confidence in it altogether.",
       "E": "Elisa should call the tourist agency now to reserve a spot on the tour. If she waits much longer, she risks not being able to go on the tour. And if she calls right away, she will likely still be able to negotiate the price."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -364,7 +383,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -407,7 +427,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -483,6 +504,9 @@
       "D": "people’s attitudes toward tipping suggest that the idea of charging a dollar to read individual articles and essays online will be successful as long as their quality is high enough",
       "E": "most people are likely to find the idea of paying a dollar to read individual articles and essays online to be a novel one"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

@@ -15,7 +15,10 @@
       "D": "whether it is unreasonable to require people who do not benefit from certain governmental programs to share the costs of those programs",
       "E": "whether the proposed increase on cigarette taxes is an efficient means of financing the healthawareness campaign"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -35,7 +38,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -72,7 +76,10 @@
       "D": "Cats derive ample exercise from frequent stretching.",
       "E": "Cats require strength and agility in order to be effective predators."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -92,7 +99,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
     ]
   },
   {
@@ -131,7 +140,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -171,7 +181,10 @@
       "D": "The company would no longer dominate the high-cost market if it began selling a low-cost model.",
       "E": "Decreased sales of the high-cost model would result in poor sales for the proposed low-cost model."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -189,7 +202,10 @@
       "D": "The vaccinated people who exhibited symptoms of hepatitis A were infected with the hepatitis A virus before being vaccinated.",
       "E": "Of the people who developed symptoms of hepatitis A, those who received the vaccine recovered more quickly, on average, than those who did not."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -273,7 +289,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -294,7 +311,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
     ]
   },
   {
@@ -316,7 +335,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -335,7 +355,10 @@
       "D": "The argument ignores other possible causes of the increase in cancer rates near the nuclear reactor complexes.",
       "E": "The argument concludes that a claim about a causal connection is false on the basis of a lack of evidence for the claim."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -395,7 +418,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Assumes Similarity"
     ]
   },
   {
@@ -416,7 +440,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Breadcrumbs"
     ]
   },
   {
@@ -477,7 +502,11 @@
       "D": "Most car owners ask their mechanics to make sure that their cars are in compliance with emission standards.",
       "E": "When emission standards are set, no allowances are made for older cars."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT107",

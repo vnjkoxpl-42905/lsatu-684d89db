@@ -33,7 +33,10 @@
       "D": "citing a general rule that undermines the claim being opposed",
       "E": "redefining a term in a way that is favorable to the argument’s conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -51,7 +54,10 @@
       "D": "The most common use for natural ivory is in ornamental carvings, which are prized not only for the quality of their workmanship but also for the authenticity of their materials.",
       "E": "It costs significantly less to produce the new synthetic ivory than it does to produce any of the ivory substitutes that scientists had developed previously."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -87,7 +93,10 @@
       "D": "the consumer will experience software problems if the upgrade is not installed",
       "E": "some of the reported problems were a result of users failing to follow instructions"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -105,7 +114,10 @@
       "D": "The training of male and female scientists does not differ according to their sex.",
       "E": "Restriction to males of the patient base on which data are collected results in inadequate science."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -207,7 +219,12 @@
       "D": "A disjointed and subjective style of writing is usually more suitable for novels and song lyrics than it is for any other written works.",
       "E": "The quality of Linsey’s songs is better judged by the quality of their lyrics than by the quality of their musical form."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -436,7 +453,10 @@
       "D": "the only unacceptable course of action is for Kay to vote for Medina",
       "E": "it is acceptable for Kay to vote for any of the candidates"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT103",

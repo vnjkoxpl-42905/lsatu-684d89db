@@ -33,7 +33,10 @@
       "D": "The average monthly cost of subscribing to several channels on a personalized electronic news service will approximately equal the cost of a month's subscription to a newspaper.",
       "E": "Most people who subscribe to personalized electronic news services will not have to pay extra costs for installation since the services will use connections installed by cable and telephone companies."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -69,7 +72,11 @@
       "D": "dependency on computers will increase with the increase of knowledge",
       "E": "synthesizing knowledge and explaining it to ordinary people can be accomplished only by computer experts"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -87,7 +94,11 @@
       "D": "The Stoke Farm was the main cause of the estate's debts.",
       "E": "Loux's grandson had repeatedly expressed his desire to own a farm."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -188,7 +199,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -246,7 +258,10 @@
       "D": "the nature of any medical condition can be inferred from the nature of the treatment that cures that condition",
       "E": "organic factors having little to do with brain chemistry may be at least partially responsible for neuroses"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -264,7 +279,10 @@
       "D": "Students cannot attain technological expertise and also receive an education that does not neglect verbal and quantitative skills.",
       "E": "When learning to use a machine, technological expertise is never more important than verbal and quantitative skills."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -399,7 +417,10 @@
       "D": "Alex holds that the chances of Sandy's winning in a given week are unaffected by whether anyone has won the week before.",
       "E": "Sandy holds that the chances of there being a winner go up if no one has won the lottery for quite a while."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -419,7 +440,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Anti-Causal"
     ]
   },
   {
@@ -458,7 +480,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -480,7 +503,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {

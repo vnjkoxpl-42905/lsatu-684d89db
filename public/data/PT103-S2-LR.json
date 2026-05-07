@@ -54,7 +54,10 @@
       "D": "not going to survive",
       "E": "no longer traditional"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -93,7 +96,11 @@
       "D": "The program offered by the Hyperion School of Journalism is similar in quality and content to those offered by its peer institutions.",
       "E": "The proportion of applicants to the Hyperion School of Journalism that are admitted is lower than it was ten years ago."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -129,7 +136,11 @@
       "D": "The new Caronian nation will not include as citizens anyone who does not speak Caronian.",
       "E": "In most nations several different languages are spoken."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -325,7 +336,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Similarity"
     ]
   },
   {
@@ -418,7 +430,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -455,7 +468,10 @@
       "D": "Because of the remoteness of the tribe, its members have never been exposed to Western music.",
       "E": "Perception of harmony is strongly influenced by the music one has previously been exposed to, even when the exposure occurred early in life."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -475,7 +491,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "2-Speaker"
     ]
   },
   {

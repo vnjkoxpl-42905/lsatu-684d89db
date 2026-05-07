@@ -57,7 +57,10 @@
       "D": "basing a conclusion on the claim that direct mail advertising is annoying to those who receive it",
       "E": "asserting that other advertising methods do not have the negative effects of direct mail advertising"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -99,7 +102,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -138,7 +142,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -331,7 +336,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies",
+      "Assumes Similarity"
     ]
   },
   {
@@ -438,7 +445,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -459,7 +467,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Anti-Causal"
     ]
   },
   {
@@ -480,7 +489,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {

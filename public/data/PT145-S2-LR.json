@@ -15,7 +15,10 @@
       "D": "Most of the environmentalists believe that air pollution is the area’s most serious environmental problem.",
       "E": "The vast majority of the air pollution in the area where the utility operates is produced by trucks and automobiles."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -77,7 +80,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -96,7 +100,10 @@
       "D": "Getting regular exercise over a long period contributes to the prevention of heart disease. Therefore, getting regular exercise over a short period contributes slightly to the prevention of heart disease.",
       "E": "The levels of certain hormones control body temperature. Therefore, if one has a high fever, the levels of one’s hormones must be elevated as well."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -114,7 +121,10 @@
       "D": "most people in the country are either supporters or opponents of McFarlane",
       "E": "the charges on which Brooks was arrested were unfounded"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -132,7 +142,10 @@
       "D": "It is very difficult to distinguish between genuine and fake amber without destroying some of it.",
       "E": "Insects struggling to free themselves from tree resin are usually fossilized in awkward or grotesque positions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -269,7 +282,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -290,7 +304,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Binaries"
     ]
   },
   {
@@ -350,7 +365,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -426,7 +442,10 @@
       "D": "The argument takes for granted that everyone has access to all newspapers.",
       "E": "The argument is concerned only with important stories and not with all stories."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT145",

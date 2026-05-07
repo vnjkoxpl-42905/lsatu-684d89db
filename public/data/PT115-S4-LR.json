@@ -33,7 +33,11 @@
       "D": "whether a precedent that is clearly outdated is in need of being overturned",
       "E": "whether judicial decisions that seem progressive at first can quickly become outdated"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -51,7 +55,11 @@
       "D": "She points out that Tom's conclusion rests on an assumption that is contradicted by the evidence Tom presents.",
       "E": "She introduces a distinction between two kinds of situations in which precedents are overturned, in order to argue for a difference that Tom fails to take into account."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -69,7 +77,10 @@
       "D": "North American school-age children will increase their television viewing with the arrival of interactive television",
       "E": "within a decade of its introduction, interactive television will be almost universally available"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -123,7 +134,10 @@
       "D": "whether people who are not now in their teens or early twenties can write well about the rock music of the 1960s",
       "E": "whether Ruth's ideas about the rock music of the 1960s are likely to appeal to people who were in their teens or early twenties during that period"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -141,7 +155,11 @@
       "D": "offering an analogy to counter an unstated assumption of Jorge's argument",
       "E": "casting doubt on her opponent's qualification to make judgments about popular culture"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -329,7 +347,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -387,7 +406,10 @@
       "D": "the number of complaints filed in Moore's town about tradespeople other than plumbers",
       "E": "whether each person who was dissatisfied with Moore's work filed a complaint against Moore"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -480,6 +502,9 @@
       "D": "Since there is a storm moving in, the outside temperature cannot rise this afternoon. Therefore, it must fall.",
       "E": "The starter in Mary's car gave out weeks ago, and so it is impossible for the car to start. Therefore, it will not start."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   }
 ]

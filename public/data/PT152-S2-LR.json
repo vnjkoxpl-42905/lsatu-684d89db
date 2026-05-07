@@ -33,7 +33,10 @@
       "D": "people only rarely violate grammar rules",
       "E": "languages evolve through an accumulation of changes in usage and rules"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -204,7 +207,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -376,7 +380,10 @@
       "D": "attempting to draw a distinction between two views that Pulford treats as a single view",
       "E": "maintaining that Pulford’s argument is based on inconsistent premises"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT152",

@@ -57,7 +57,10 @@
       "D": "people who hold false views tend to pose a danger to society",
       "E": "one should not encourage the adoption of dangerous views"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -168,7 +171,11 @@
       "D": "fails to provide evidence that the similarities that constitute the analogy are anything but merely verbal",
       "E": "defends a view solely on the grounds that the view is held by many experts"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -287,7 +294,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -480,6 +488,9 @@
       "D": "Some of the subjects who were given placebos consumed foods during the study that are naturally rich in vitamin C.",
       "E": "Some of the subjects who knew their pills were placebos did not actually take the pills they were given. O P THER SECTION IN THE TEST."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   }
 ]

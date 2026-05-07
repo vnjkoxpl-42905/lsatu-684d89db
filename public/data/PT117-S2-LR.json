@@ -15,7 +15,10 @@
       "D": "jazz music requires musicians to adhere closely to the original version in order to be widely popular",
       "E": "bebop musicians were influenced by the more conservative styles of their predecessors"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -71,7 +74,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -92,7 +96,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -111,7 +117,10 @@
       "D": "The right of victims of violent crimes to compensation is as important as the right of criminals in therapy to confidentiality.",
       "E": "A therapist who has gained a violent criminal's trust can persuade that criminal not to commit repeat offenses."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -129,7 +138,10 @@
       "D": "Whatever the health risks to humans from eating the vegetables, these risks would not be attributable to the use of pesticides on them.",
       "E": "The health risks to humans from eating the vegetables were no less than the health risks to humans from eating the same kinds of vegetables treated with pesticides."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -147,7 +159,11 @@
       "D": "Most people committing robbery believe that they will not get caught.",
       "E": "Most people committing robbery have no idea what the average sentence for robbery is."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -344,7 +360,10 @@
       "D": "At least one of the European vampire myths that predated Stoker's book did not portray vampires as able to turn into bats.",
       "E": "At the time he wrote Dracula, Stoker was familiar with earlier European vampire myths."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -422,7 +441,10 @@
       "D": "David thinks that there are more beeches than elms in this forest. Jane thinks he is wrong. The section of forest we examined was small, but examination of the whole forest would either confirm David's view or disprove it.",
       "E": "David thinks this tree is a beech. Jane thinks it is an elm. Maria, unlike David or Jane, is expert at tree identification, so when Maria gives her opinion it will verify either David's or Jane's opinion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",

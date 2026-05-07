@@ -141,7 +141,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Sampling"
+      "Sampling",
+      "Alternatives"
     ]
   },
   {
@@ -182,7 +183,10 @@
       "D": "If the people who occupied the site discovered agriculture thousands of years before people anywhere else are known to have done so, then there are remains of cultivated plants at the site.",
       "E": "It is more likely that the people who occupied the site discovered agriculture thousands of years before people anywhere else did than it is that they ate a wider variety of wild plants than any other people at the time."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -497,6 +501,9 @@
       "D": "some environmentalists who advocate saving the salmon believe that that goal overrides concerns about electrical costs",
       "E": "finding additional energy sources will not decrease the electrical costs in the region"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

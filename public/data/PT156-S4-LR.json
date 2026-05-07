@@ -15,7 +15,10 @@
       "D": "Ionic liquids can be reused many times, whereas organic solvents can be used only once.",
       "E": "For the sake of public relations, companies will sometimes use a more environmentally friendly process even if it is slightly more expensive."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -33,7 +36,10 @@
       "D": "money should be regarded as a tool rather than a commodity",
       "E": "the value of money derives from the tasks it allows one to accomplish ION IV 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best ompletely answers the question and mark that response on your"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -51,7 +57,10 @@
       "D": "the economic gap between rich and poor will widen as a result of the increasing importance of computer literacy",
       "E": "companies will have to train their employees in computer skills"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -69,7 +78,10 @@
       "D": "With respect to its effect on behavior, rush-hour traffic is an example of a situation in which human beings are overcrowded.",
       "E": "Most mammals inhabiting a given region exhibit increasingly aggressive, competitive behavior as their population density in that region increases."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -268,7 +280,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -344,7 +357,10 @@
       "D": "It fails to take into account the possibility that policies that are not in the interest of land developers may well be in the interest of landowners.",
       "E": "It fails to account for potential reactions from private landowners who do not have any endangered species on their land."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT156",

@@ -36,7 +36,10 @@
       "D": "The failure to find all of the matter predicted by Einstein’s theory should lead us to abandon it.",
       "E": "Scientists are able to accurately judge the amount of matter that has been found in our galaxy."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -95,7 +98,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -137,7 +141,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -158,7 +163,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -220,7 +226,10 @@
       "D": "Teaching secondary school students with methods appropriate to their learning styles does not always result in broad mastery of the curriculum by those students.",
       "E": "Secondary school students who devote significant effort to their studies do not always achieve broad mastery of the curriculum."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -301,7 +310,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Part vs. Whole",
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -322,7 +332,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -383,7 +394,10 @@
       "D": "None of the 20 trucks was sold before last year.",
       "E": "XYZ no longer owns any trucks that it purchased more than 3 years ago."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -403,7 +417,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -425,7 +440,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

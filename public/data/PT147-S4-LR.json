@@ -15,7 +15,10 @@
       "D": "In the veiled chameleon, tongue retraction is powered by muscles, whereas tongue extension is driven by energy stored in a rubber band-like sheath.",
       "E": "Compared with the muscles in the tongues of most cold-blooded animals, the retraction muscles in the veiled chameleon’s tongue are considerably stronger."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -36,7 +39,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -75,7 +79,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -237,7 +243,10 @@
       "D": "arguing for a less extreme version of West’s conclusion",
       "E": "denying one of the argument’s presuppositions"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -359,7 +368,12 @@
       "D": "takes for granted that the only reason that high school graduates go on to attend university is to improve their job prospects",
       "E": "takes for granted that initiative, flexibility, and the ability to solve practical problems are attributes that can be acquired through study"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -379,7 +393,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -398,7 +413,10 @@
       "D": "the order to shut down the pumps was legal",
       "E": "shutting down the pumps will be sufficient to protect the fish species"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -418,7 +436,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies"
     ]
   },
   {
@@ -439,7 +458,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

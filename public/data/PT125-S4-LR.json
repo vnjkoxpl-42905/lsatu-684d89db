@@ -15,7 +15,10 @@
       "D": "People who neither watch television nor read any print media are more likely to vote than people who do one or both of these activities.",
       "E": "Unlike advertisements for consumer products, most of which only reinforce existing beliefs, political advertisements often change voters' beliefs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -33,7 +36,12 @@
       "D": "questioning the strength of the analogy on which Kris's argument is based",
       "E": "rejecting Kris's interpretation of the term \"technological progress\""
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -54,7 +62,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -73,7 +82,10 @@
       "D": "fails to consider the possibility that one type of event can be caused in many different ways",
       "E": "presumes the truth of the claim that it is trying to establish"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -133,7 +145,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -195,7 +208,10 @@
       "D": "Most of the PAHs released into the atmosphere are the result of wear and tear on automobile tires.",
       "E": "PAHs are one of several components of automobile exhaust that scientists suspect of causing cancer."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -476,7 +492,10 @@
       "D": "The large buildings demolished over the past 5 years have been replaced with small buildings built on the same sites.",
       "E": "Significantly fewer than 60 new large buildings have been built in downtown Petropolis during the past 5 years."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT125",

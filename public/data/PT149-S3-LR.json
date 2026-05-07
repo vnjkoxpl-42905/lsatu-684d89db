@@ -77,7 +77,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Anti-Causal"
     ]
   },
   {
@@ -99,7 +100,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -136,7 +138,11 @@
       "D": "requires a considerable length of time",
       "E": "could be done without intending to do so"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -175,7 +181,10 @@
       "D": "for most people, certain memories elicit a strong emotional response",
       "E": "people can hold in short-term memory only a few chunks of unpatterned information at a time"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -216,7 +225,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -292,7 +303,10 @@
       "D": "provides no justification for favoring one of the literary critics’ beliefs over the other",
       "E": "provides no justification for following one particular definition of “paraphrase”"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -385,7 +399,10 @@
       "D": "employs a premise that is incompatible with the conclusion it is supposed to justify",
       "E": "uses a claim that presupposes the truth of its main conclusion as part of the justification for that conclusion"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",

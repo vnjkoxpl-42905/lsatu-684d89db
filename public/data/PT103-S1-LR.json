@@ -33,7 +33,10 @@
       "D": "demonstrating that the proposed tax increase will not result in increased expenses for drivers",
       "E": "declining to argue a point with someone who is poorly informed on the matter under discussion"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -168,7 +171,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -259,7 +263,10 @@
       "D": "No others besides environmental activists are concerned about pollution hazards that can result from processing medical waste.",
       "E": "Treatment by superheated steam represents the surest method of sterilization."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -277,7 +284,10 @@
       "D": "Baldness in men can be caused by a variety of factors, only one of which is heredity.",
       "E": "Grow-Again is a product whose per-unit manufacturing cost does not fall significantly when the product is produced in large quantities."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -295,7 +305,10 @@
       "D": "the honeybee is the only species of bee that is capable of communicating navigational information to other hive members",
       "E": "the honeybee’s sense of smell plays a role in its foraging strategies"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -333,7 +346,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -460,7 +474,10 @@
       "D": "He identifies a self-contradictory statement in Sasha’s argument.",
       "E": "He shows that Sasha’s argument itself manifests the undesirable characteristic that it condemns."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -478,6 +495,9 @@
       "D": "The only handwriting analysts who claim that handwriting provides reliable evidence of a person’s character are irresponsible.",
       "E": "The number of handwriting analysts who could conform to professional standards set by a licensing board is very small."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

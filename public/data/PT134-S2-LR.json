@@ -41,7 +41,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -141,7 +142,10 @@
       "D": "Electrical engineers try to minimize the effects of inductance in electrical circuits.",
       "E": "When a water pump is switched off it continues to pump water for a second or two."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -177,7 +181,11 @@
       "D": "Teachers spend no more than a day of class time reviewing old material when students have been away from school for only a few weeks, but have to spend up to a month of class time reviewing after a three-month summer vacation.",
       "E": "Students prefer taking a long vacation from school during the summer to taking more frequent but shorter vacations spread throughout the year."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -254,7 +262,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -417,7 +426,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {

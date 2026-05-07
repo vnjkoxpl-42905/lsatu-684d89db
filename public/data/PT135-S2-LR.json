@@ -38,7 +38,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -57,7 +58,10 @@
       "D": "Once they have chosen a bank, people tend to remain loyal to that bank.",
       "E": "Some banks that offer services at no charge to new customers are very successful."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -78,7 +82,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -142,7 +147,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -205,7 +211,11 @@
       "D": "It is desirable that new social bonds be created to replace the ones that have dissolved.",
       "E": "If people were not communicating via computer, they would most likely be engaged in activities that create stronger social bonds."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -244,7 +254,10 @@
       "D": "not all historians are aware of the effect that their particular biases have on their work",
       "E": "the proposed shift in focus is unlikely to eliminate the effect that historians’ biases have on their work"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -264,7 +277,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Difference"
     ]
   },
   {
@@ -328,7 +342,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
     ]
   },
   {
@@ -432,7 +449,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

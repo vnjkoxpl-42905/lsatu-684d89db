@@ -57,7 +57,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -76,7 +77,11 @@
       "D": "Automotive technology is continually advancing too, but that does not result in one’s having to relearn to drive cars as the new advances are incorporated into new automobiles.",
       "E": "Once people have graduated from high school, they have less time to learn about computers and technology than they had during their schooling years."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -94,7 +99,11 @@
       "D": "shifting perspective from safety with respect to consumers to safety with respect to producers",
       "E": "pointing out an alternative way of obtaining an advantage claimed by the proponent without risking a particular disadvantage"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -112,7 +121,11 @@
       "D": "Vitamins can be ingested in pill form as well as in foods.",
       "E": "That food does not spoil before it can be offered to the consumer is primarily a benefit to the seller, not to the consumer."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -148,7 +161,11 @@
       "D": "Gill diseases cannot be detected by examining the surface of the lobster.",
       "E": "Humans often become ill as a result of eating lobsters with gill diseases."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -168,7 +185,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -208,7 +226,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -248,7 +267,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -334,7 +354,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -509,6 +530,9 @@
       "D": "In the next half century, human population growth will continue to erode wildlife habitats and diminish forests.",
       "E": "The human diet needs to be modified in the next half century because of the depletion of our natural resources due to overpopulation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

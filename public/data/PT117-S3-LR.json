@@ -77,7 +77,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -197,7 +199,11 @@
       "D": "takes for granted that shopping malls do not need large parking lots even given the use of the personal automobile",
       "E": "takes for granted that people ultimately want to live without personal automobiles"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -404,7 +410,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -443,7 +451,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Binaries"
     ]
   },
   {
@@ -480,6 +489,11 @@
       "D": "Accomplished non-native speakers of a language do not perceive sentences as streams of sound.",
       "E": "Native speakers' perceptions of their own language are not more accurate than are the perceptions of persons who do not know that language."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity",
+      "Battle of Opinions"
+    ]
   }
 ]

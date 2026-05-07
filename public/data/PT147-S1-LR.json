@@ -76,7 +76,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -176,7 +177,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -213,7 +215,10 @@
       "D": "the university should be more grateful to donors with a long history of financial support than to new donors",
       "E": "the Pincus family’s construction company did not make the most competitive bid"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -270,7 +275,10 @@
       "D": "If it can be conclusively proven that an officeholder rigged an election, then that officeholder should be removed from office.",
       "E": "It is more important for a country to have a leader who can govern effectively than it is to be viewed by other countries as having a stable political system."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -462,7 +470,10 @@
       "D": "The amount of information contained in the human genome is too large to be easily encapsulated by a computer program.",
       "E": "It is much more difficult to write a program that encapsulates the interactions of proteins than to write a program that encapsulates the information contained in the human genome."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT147",

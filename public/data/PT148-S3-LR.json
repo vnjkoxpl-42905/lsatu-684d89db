@@ -33,7 +33,10 @@
       "D": "Many modern civilizations do not rely to any significant extent on irrigation for agriculture.",
       "E": "The soil of ancient Sumeria already contained some toxic salts and other impurities before the Sumerians started using irrigation for agriculture."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -135,7 +138,10 @@
       "D": "Periodic regional food shortages have occurred at least briefly throughout history.",
       "E": "Population will continue to grow at least briefly when food production has reached its maximum level."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -192,7 +198,11 @@
       "D": "It is not always reasonable to adopt a different code in order to maintain the public’s confidence.",
       "E": "The alternate code contains few provisions that have thus far been criticized as obscure or unnecessary."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -315,7 +325,10 @@
       "D": "overlooks the possibility that the work of at least one contemporary artist is appreciated by many people whose access to the great majority of other artworks is severely restricted",
       "E": "presumes, without providing justification, that the number and variety of great artworks already in the world affects the amount of aesthetic fulfillment derivable from any contemporary artwork."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -356,7 +369,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -375,7 +389,10 @@
       "D": "the proposed ban would prohibit smoking in public places",
       "E": "there are cases in which government should attempt to regulate private behavior"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -393,7 +410,11 @@
       "D": "employs a premise that is incompatible with the conclusion it is supposed to justify",
       "E": "uses a claim that presupposes the truth of its main conclusion as part of the justification for that conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -496,7 +517,10 @@
       "D": "Usually, a company that sends out direct-mail advertisements has good reason to think that the person to whom the advertisement is sent would be more interested in the product than would the average person.",
       "E": "Products purchased as the result of direct-mail advertising comprise an increasingly large portion of the consumer products purchased each year."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT148",

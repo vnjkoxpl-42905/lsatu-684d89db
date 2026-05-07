@@ -156,7 +156,10 @@
       "D": "There is no evidence that any other asteroid of equal size struck Earth at the same time as the asteroid that produced the Chicxulub crater.",
       "E": "During the period immediately before the asteroid that produced the Chicxulub crater struck, most of the world’s dinosaurs lived in or near the region of the asteroid’s impending impact. 4 4 4 4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -294,7 +297,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -355,7 +359,10 @@
       "D": "The freedom and autonomy that democracy provides are of genuine value.",
       "E": "All democracies succeed in meeting the simple material needs of people."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -391,7 +398,10 @@
       "D": "Any substance of medicinal value contained in plant species indigenous to tropical rain forests will eventually be discovered if those species are studied by scientists.",
       "E": "The tropical rain forests should be preserved to make it possible for important medicines to be developed from plant species that have not yet been studied by scientists."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT143",

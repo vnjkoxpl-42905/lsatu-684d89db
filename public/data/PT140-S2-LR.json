@@ -80,7 +80,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -99,7 +100,10 @@
       "D": "Stray cats spread diseases to other cats.",
       "E": "It is mainly out of kindness that people feed stray cats."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -219,7 +223,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -240,7 +245,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -313,7 +319,10 @@
       "D": "Some heartburn-medication advertisements imply that unrelieved heartburn is likely to cause esophageal cancer.",
       "E": "The dangers touted by heartburn-medication advertisements will affect relatively few of the people who see those advertisements."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -367,7 +376,10 @@
       "D": "Most of the viewers surveyed immediately prior to the debate said that they would probably vote for Tanner.",
       "E": "Lopez won the election over Tanner by a very narrow margin."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -387,7 +399,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -406,7 +419,10 @@
       "D": "The publishing house is less likely to give careful consideration to a manuscript that was submitted directly by a writer than one that was submitted by a writer’s literary agent.",
       "E": "Any unrequested manuscripts not submitted by literary agents that the publishing house has published were written by renowned figures."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT140",

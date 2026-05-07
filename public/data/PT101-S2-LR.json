@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -78,7 +79,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -118,7 +120,10 @@
       "D": "supports a universal claim on the basis of a single example",
       "E": "describes an individual in terms that appropriately refer only to the group as a whole"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -271,7 +276,10 @@
       "D": "A strike at Foamy Soda’s main plant forced production cutbacks that resulted in many stores not receiving their normal shipments during the summer months.",
       "E": "The weather during the summer months was unseasonably cool, decreasing the demand for soft drinks."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -389,7 +397,10 @@
       "D": "Charitable organizations should not solicit funds for specific causes unless they can guarantee that the funds raised will be spent only on those causes.",
       "E": "Charitable organizations should be allowed to allocate funds as they see fit, provided the funds are spent for charitable purposes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -431,7 +442,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Battle of Opinions"
     ]
   },
   {

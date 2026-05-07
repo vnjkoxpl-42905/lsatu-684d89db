@@ -15,7 +15,10 @@
       "D": "consumers should demand products that require less energy to produce",
       "E": "manufacturers should be required to label their products with information about the amount of energy used to produce those products"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -51,7 +54,10 @@
       "D": "What percentage of domestic food other than seafood is subjected to health safety inspections?",
       "E": "What percentage of domestic seafood is subjected to health safety inspections?"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -71,7 +77,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -131,7 +138,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker"
     ]
   },
   {
@@ -171,7 +179,10 @@
       "D": "The idea that the dollar value of the biosphere’s essential services can be accurately calculated is unrealistic.",
       "E": "Calculating the dollar value of the biosphere’s essential services implies that the biosphere’s most important value lies in the services it provides to human beings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -225,7 +236,10 @@
       "D": "new revenue allocated to transportation will result in existing transportation funds being reallocated to other areas",
       "E": "leasing government-owned toll bridges to private investors will be financially beneficial to the government"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -243,7 +257,11 @@
       "D": "The periodic table contains only a relatively small amount of information that could, in theory, be memorized, while the information in an ordinary dictionary is likely to be too large for any one person to know all at once.",
       "E": "The periodic table is used primarily by chemists, while ordinary dictionaries are not used primarily by legal scholars and legal interpreters."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -302,7 +320,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Difference"
     ]
   },
   {
@@ -367,7 +386,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Sampling"
+      "Sampling",
+      "Alternatives"
     ]
   },
   {
@@ -424,7 +444,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -503,6 +525,9 @@
       "D": "The news media is more likely to publicize a business’s unethical conduct than it is to publicize a business’s ethical conduct.",
       "E": "Some businesses that meet high ethical standards would not do so if they could not remain profitable while meeting those standards."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

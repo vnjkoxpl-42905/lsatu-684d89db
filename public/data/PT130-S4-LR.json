@@ -199,7 +199,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Alternatives"
     ]
   },
   {
@@ -220,7 +221,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -239,7 +241,10 @@
       "D": "uses Sahira’s premises to reach a conclusion different from that reached by Sahira",
       "E": "argues that a standard that she claims Sahira uses is self-contradictory"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -462,7 +467,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Assumes Difference"
     ]
   },
   {
@@ -503,6 +510,10 @@
       "D": "Individuals whose behavior in specific circumstances does not conform to generally expected norms should not automatically be considered unconcerned with meeting social expectations, because such individuals may be acting in accordance with reasoned policies that they believe should be generally adopted by people in similar circumstances.",
       "E": "Evidence that a particular individual uses bad decision-making strategies in matters of personal taste should not be considered sufficient to warrant a negative assessment of his or her suitability for a job, because any good decision maker can have occasional lapses of rationality with regard to such matters."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   }
 ]

@@ -170,7 +170,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -232,7 +233,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -275,7 +277,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Battle of Opinions"
     ]
   },
   {
@@ -330,7 +333,11 @@
       "D": "Those children incorrectly identified as autistic will not be adversely affected by treatments aimed at helping autistic children.",
       "E": "There was no reliable evidence that autism could affect children so young until the advent of the new test."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -507,6 +514,9 @@
       "D": "Some drivers who violate current speed limits would also violate higher speed limits.",
       "E": "Most drivers who violate current speed limits determine their speeds by what they believe to be safe in the situation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

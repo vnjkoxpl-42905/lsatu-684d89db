@@ -93,7 +93,10 @@
       "D": "Participating in risky sports is not the only way to confront one's fears.",
       "E": "Most of those who do not participate in risky sports believe that they lack the capacity to excel in such activities."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -167,7 +170,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -349,7 +353,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -431,7 +436,11 @@
       "D": "Most historians cannot become aware of the presuppositions that they bring to their narratives.",
       "E": "Which pattern a historian imposes upon events is affected by that historian's presuppositions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -489,6 +498,9 @@
       "D": "Jason might eventually improve his supervisor's opinion of his work even if he never learns that his supervisor is displeased with his work.",
       "E": "Jason would benefit if he were able to improve his supervisor's opinion of his work."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   }
 ]

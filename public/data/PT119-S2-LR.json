@@ -15,7 +15,10 @@
       "D": "the council gave an adequate reason for its decision to recall Derma-35",
       "E": "inflammation is a serious health threat"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -128,7 +131,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Binaries"
     ]
   },
   {
@@ -165,7 +169,10 @@
       "D": "parents and peers are the most important influence on a child's learning of a language",
       "E": "innate mechanisms play a more important role in language acquisition than a child's immediate environment"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -183,7 +190,12 @@
       "D": "questions whether Mark accurately describes the kind of historical writing he deplores",
       "E": "gives reason to believe that Mark's recommendation is motivated by his professional self-interest"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -203,7 +215,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -408,7 +421,10 @@
       "D": "A psychiatrist's patient tells her about his recurring nightmares of having committed a terrible crime. The psychiatrist should fulfill her duty to report this to the authorities because the patient may have broken the law, even though the psychiatrist also has a duty of confidentiality to her patients.",
       "E": "A journalist thinks there is a slight chance that a story about a developing crisis will endanger innocent lives. Therefore, the journalist should await further developments before fulfilling his duty to file the story."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -467,7 +483,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Assumes Similarity"
     ]
   }
 ]

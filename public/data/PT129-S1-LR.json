@@ -35,7 +35,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -155,7 +157,10 @@
       "D": "A few employees in the fast-food industry were already earning more than the new, higher minimum wage before the new minimum wage was established.",
       "E": "Sales of fast food to workers who are paid the minimum wage did not increase following the recent change in the minimum wage."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -197,7 +202,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Anti-Causal"
     ]
   },
   {
@@ -216,7 +222,10 @@
       "D": "Research for the sole purpose of developing new technologies ought to be financed exclusively by corporations.",
       "E": "Knowledge gained through basic scientific research need not be expected to lead to new and useful technologies in order for the research to merit government funding."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -255,7 +264,10 @@
       "D": "There are ways of reducing carbon dioxide emissions that could halt global warming without hurting profits of fossil-fuel producers significantly more than phasing out CFCs hurt those of the chemical industry.",
       "E": "If international agreements forced fossil-fuel producers to find ways to reduce carbon dioxide emissions enough to halt global warming, the fossil-fuel producers could find substitutes for fossil fuels."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -374,7 +386,10 @@
       "D": "It is attacked as inadequate evidence for the claim that nutrients are most effective when provided by natural foods rather than artificial supplements.",
       "E": "It is cited as a bad reason for adopting a dietary habit that the dietitian recommends."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -471,7 +486,10 @@
       "D": "The effects of acid rain are cumulative and largely independent of current acid rain levels.",
       "E": "The soils of many ecosystems exposed to acid rain have been exhausted of minerals that help protect them from acid rain's harmful effects."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT129",

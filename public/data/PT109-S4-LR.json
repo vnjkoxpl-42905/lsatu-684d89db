@@ -55,7 +55,10 @@
       "D": "whether the number of novels that a novelist has written should be a factor in judging whether that novelist is great",
       "E": "whether there are many novelists who are considered to be great but do not deserve to be so considered"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -109,7 +112,10 @@
       "D": "A candidate decides to campaign in the areas of the city where the most new votes are concentrated. The candidate reasons that campaigning in other areas is unnecessary because in those areas the candidate’s message is actually liable to alienate voters.",
       "E": "None of the children in a certain kindergarten class will take responsibility for the crayon drawing on the classroom wall. The teacher reasons that it is best to keep all the kindergarten children in during recess in order to be certain to punish the one who did the drawing on the wall."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -181,7 +187,10 @@
       "D": "whether tyranny tends to lead to cruelty",
       "E": "whether it was Stalin’s psychological state or rather his political condition that was the primary cause of his cruel misdeeds"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -395,7 +404,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -414,7 +424,11 @@
       "D": "Known fossils indicate the relative dates of origin of birds and dromeosaurs.",
       "E": "Dromeosaurs are dissimilar to birds in many significant ways."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT109",

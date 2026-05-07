@@ -182,7 +182,10 @@
       "D": "Often people go hungry because they live in remote barren areas where there is no efficient distribution for emergency food relief.",
       "E": "Most historical cases of famine have been due to bad social and economic policies or catastrophes such as massive crop failure."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -259,7 +262,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -317,7 +321,10 @@
       "D": "It is a premise offered in support of the argument's conclusion.",
       "E": "It is a premise offered as direct support for an intermediate conclusion of the argument."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -335,7 +342,11 @@
       "D": "The Brick Wall Review depends on donations to cover most operating expenses not covered by income from anthology sales.",
       "E": "The Brick Wall Review's annual poetry anthology always contains a number of poems by famous poets not published in the regular issues of the magazine."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -353,7 +364,11 @@
       "D": "public servants should base decisions on something other than the average person's recommendations",
       "E": "one is a good public servant if one is more knowledgeable about the public good than is the average person"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -395,7 +410,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -498,7 +514,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Binaries"
     ]
   },
   {

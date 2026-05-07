@@ -71,7 +71,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -146,7 +147,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Alternatives"
     ]
   },
   {
@@ -222,7 +224,10 @@
       "D": "When mothers of infants that are fed only breast milk eliminate cow’s milk and all products made from cow’s milk from their own diets, any colic symptoms that their infants have manifested quickly disappear.",
       "E": "Infants that are fed breast milk develop mature digestive systems at an earlier age than do those that are fed infant formulas, and infants with mature digestive systems are better able to tolerate certain proteins and antibodies found in cow’s milk."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -240,7 +245,10 @@
       "D": "whether the unauthorized use of computers is as dangerous to people as is joyriding",
       "E": "whether treating private property recklessly is ever a dangerous crime"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -294,7 +302,10 @@
       "D": "Most stars, when first formed, contain roughly the same percentage of lithium.",
       "E": "No stars are more similar in appearance to red dwarfs than are brown dwarfs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -368,7 +379,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Anti-Causal"
     ]
   },
   {
@@ -465,6 +477,9 @@
       "D": "It presents a consideration that undercuts an assumption on which Tom’s argument depends.",
       "E": "It defends an alternative solution to the problem that Tom describes."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

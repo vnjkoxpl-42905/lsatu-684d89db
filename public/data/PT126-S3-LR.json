@@ -75,7 +75,11 @@
       "D": "Hiring extra support staff for the real estate agency's main office would have many of the same beneficial effects as reducing client loads.",
       "E": "Over the last several years, it has become increasingly challenging for the real estate agency to recruit enough qualified agents just to maintain current client loads."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -129,7 +133,10 @@
       "D": "It is used as evidence to support the hypothesis that chemical R causes cancer in humans via long-term exposure.",
       "E": "It is cited as being insufficient to support the conclusion that chemical R is safe for humans."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -149,7 +156,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -170,7 +178,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -210,7 +219,11 @@
       "D": "It presumes without warrant that human beings were presented with greater difficulties during ice ages than were individuals of most other species.",
       "E": "It takes for granted that, if a condition coincided with the emergence of a certain phenomenon, that condition must have been causally responsible for the phenomenon."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -246,7 +259,10 @@
       "D": "The belief that households with children or pets should not have poinsettias is mistaken.",
       "E": "Poinsettias pose no risk to children or pets."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -266,7 +282,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -351,7 +368,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies",
+      "Anti-Causal"
     ]
   },
   {
@@ -370,7 +389,11 @@
       "D": "An ideal bureaucracy can reach its primary goal if, but only if, its system of regulations is always expanding to cover problems that had not been anticipated.",
       "E": "Any complaint that an ideal bureaucracy receives will reveal an unanticipated problem that the bureaucracy is capable of defining and classifying."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -432,7 +455,10 @@
       "D": "In the experiment, the volunteers on the high-carbohydrate diet engaged in regular exercise of a kind known to produce weight loss, and those on the low-carbohydrate diet did not.",
       "E": "Many of the volunteers who had been on the low-carbohydrate diet eventually regained much of the weight they had lost on the diet after returning to their normal diets."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -450,7 +476,11 @@
       "D": "Some vitamins require the presence in adequate amounts of some mineral in order to be fully beneficial to the body. Thus, since selenium is needed to make vitamin E fully active, anyone with a selenium deficiency will have a greater risk of contracting those diseases from which vitamin E provides some measure of protection.",
       "E": "Friendship often involves obligations whose fulfillment can be painful or burdensome. The same can be said of various forms of cooperation that cannot strictly be called friendship. Thus cooperation, like friendship, can require that priority be given to goals other than mere self-interest."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -492,7 +522,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Analogies"
     ]
   }
 ]

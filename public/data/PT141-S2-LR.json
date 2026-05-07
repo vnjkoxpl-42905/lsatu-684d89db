@@ -177,7 +177,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -255,7 +256,10 @@
       "D": "presumes, without providing warrant, that alternative measures for reducing crime would be more effective than imprisonment",
       "E": "takes for granted that the number of prisoners must be proportional to the number of crimes committed"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -273,7 +277,11 @@
       "D": "providing evidence that the beneficial effects that Inez desires can be achieved only at great expense",
       "E": "claiming that a goal that Inez mentions could be pursued without the programs Inez endorses"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -293,7 +301,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -312,7 +321,10 @@
       "D": "arguing that because two different fields are disanalogous, the characteristics of one field are not relevant to justifying a conclusion about the other",
       "E": "contending that an action is inappropriate by presenting an argument that a corresponding action in an analogous case is inappropriate"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -374,7 +386,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -438,7 +451,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

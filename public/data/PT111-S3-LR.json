@@ -35,7 +35,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -133,7 +134,11 @@
       "D": "citing as parallel to the argument made by the drilling opponent an argument in which the conclusion is strikingly unsupported",
       "E": "proposing a conclusion that is more strongly supported by the drilling opponent’s evidence than is the conclusion offered by the drilling opponent"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -151,7 +156,11 @@
       "D": "Legislation governing new oil drilling has been much more thoroughly articulated than has that governing new farms.",
       "E": "The country under discussion imports a higher proportion of the farm products it needs than it does of the oil it needs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -187,7 +196,10 @@
       "D": "The striking workers at Ergon Foods are underpaid.",
       "E": "It was unreasonable for the workers at Ergon Foods to go on strike."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -205,7 +217,10 @@
       "D": "Some implicit promises are worse to break than some explicit ones.",
       "E": "One should never break a promise."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -241,7 +256,10 @@
       "D": "treats a claim about what is currently the case as if it were a claim about what has been the case for an extended period",
       "E": "attacks what was offered as an estimate on the ground that it is not precise"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -280,7 +298,10 @@
       "D": "no economic downturn is accompanied by a significant decrease in the amount of money loaned out by banks to individual borrowers and to businesses",
       "E": "no relaxation of standards for loanmaking by banks would compensate for the effects of the downturn"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -451,7 +472,10 @@
       "D": "Given a choice, customers are more likely to buy a movie on videocassette than to rent it if the rental fee is more than half of the purchase price.",
       "E": "Many of the movies rented from video rental stores, particularly children’s movies, average several viewings per rental fee."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -490,6 +514,9 @@
       "D": "does not prove that most disciplines that are not scientifically valuable have origins that are in some way suspect",
       "E": "uses the word “discipline” in two different senses"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

@@ -51,7 +51,10 @@
       "D": "Tree species that are not native to this area and that are consistent with the master plan are rare and hard to find.",
       "E": "Three Rivers Nursery does not sell any tree species that grow to be very large. 4 4 4 4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -252,7 +255,10 @@
       "D": "appealing to a counterexample to undermine an ethical principle that supports an argument the journalist is trying to refute",
       "E": "clarifying and defending a moral principle by comparing a case in which it applies to one in which it does not apply 4 4 4 4"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -293,7 +299,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {

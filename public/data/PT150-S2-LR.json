@@ -55,7 +55,10 @@
       "D": "The mayor will not get her road repair proposal passed.",
       "E": "It is more important to the mayor that taxes not increase than it is that her road repair proposal passes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -73,7 +76,10 @@
       "D": "takes for granted that both scholars and politicians have persuasion as their aim",
       "E": "presumes, without giving justification, that politicians formulate the positions of their opponents uncharitably even when they share those positions"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -314,7 +320,10 @@
       "D": "rests on a confusion between what is required for a particular outcome and what is sufficient to cause that outcome",
       "E": "confuses what is likely the cause of something for an effect of that thing"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -386,7 +395,12 @@
       "D": "Expression of affection in chimps is limited to members of the social group to which they belong.",
       "E": "Feelings of affection, in both human and chimp communities, are usually displayed through altruistic behavior."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT150",

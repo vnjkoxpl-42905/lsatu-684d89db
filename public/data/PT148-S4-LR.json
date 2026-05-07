@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "There are important decisions to be made in the future.",
       "E": "Klein’s policies were implemented in the face of an impending catastrophe."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -114,7 +118,10 @@
       "D": "Technical fixes cannot discourage risk-taking behavior.",
       "E": "The longer a problem goes unresolved, the worse it becomes."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -134,7 +141,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -348,7 +356,10 @@
       "D": "The proposed legislation as it is framed was not meant to satisfy either political groups on the right or political groups on the left.",
       "E": "The proposed legislation is not made up of a set of statements some of which are overly specific and some of which are overly vague."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -366,7 +377,10 @@
       "D": "The builder said that the school’s roof would not require repairs for years, unless it is damaged in a storm. The roof is already leaking. Thus, since there have been no major storms, the builder was probably wrong.",
       "E": "Professor Yanakita, who is an expert on the subject, said that the tests would find lead in the soil if they were properly conducted. So, since the tests did find lead in the soil, they probably were properly conducted."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -428,7 +442,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {

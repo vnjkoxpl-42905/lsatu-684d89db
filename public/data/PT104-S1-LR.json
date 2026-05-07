@@ -17,7 +17,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -60,7 +62,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -123,7 +126,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker",
+      "Analogies"
     ]
   },
   {
@@ -142,7 +147,10 @@
       "D": "Because of the recession, people in Country A have cut back on magazine subscriptions and are reading borrowed magazines.",
       "E": "More of the new general interest magazines that were launched this year in Country A have survived than survived in previous years."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -160,7 +168,11 @@
       "D": "The owls that are threatened build their nests in the tops of trees, but the gray squirrels strip away bark from the trunks.",
       "E": "The officials’ plan entails adding the poison to food sources that are usually eaten by rodents but not by other animals."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -178,7 +190,10 @@
       "D": "The prices of the company’s meals have changed over the past two years.",
       "E": "The market share captured by the company’s restaurants fell last year."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -198,7 +213,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -258,7 +276,10 @@
       "D": "Country X will begin the process of industrialization in the next few years.",
       "E": "No other country with a similar amount of industrial development has pollution problems that are as severe as those in Country X."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -300,7 +321,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "2-Speaker"
     ]
   },
   {
@@ -385,7 +407,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -422,7 +445,10 @@
       "D": "Of all exports that could be sent to Country S, telecommunication equipment would be the most effective in helping citizens of S oppose that country’s repressive government.",
       "E": "Without pressure from Country R, the government of S would be able to continue repressing its citizens indefinitely."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -501,7 +527,10 @@
       "D": "Having certain kinds of hobbies may indicate that a candidate has good organizational skills.",
       "E": "Personnel managers may make better choices among candidates if they are not restricted from asking particular types of questions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -519,6 +548,9 @@
       "D": "A number of people who die prematurely take aspirin. But it is unreasonable to conclude that aspirin is dangerous. Most people who take aspirin do not die prematurely.",
       "E": "A significant number of children raised near power lines develop cancer. So it is unreasonable to deny a connection between living near power lines and developing cancer, even though many people living near power lines never develop cancer."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   }
 ]

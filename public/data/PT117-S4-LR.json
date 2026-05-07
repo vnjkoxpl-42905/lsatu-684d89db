@@ -18,7 +18,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Argue the Anti-Conclusion",
+      "Breadcrumbs"
     ]
   },
   {
@@ -175,7 +177,10 @@
       "D": "the people older than Sullivan who were promoted had no younger competitors",
       "E": "Sullivan’s employer tries to keep deliberations involving promotion decisions confidential"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -193,7 +198,10 @@
       "D": "people can change their behavior and not pollute",
       "E": "people are inclined to pollute"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -304,7 +312,11 @@
       "D": "Those who, in acting immorally, eventually harm themselves do not intend that harm.",
       "E": "None of those who knowingly harm themselves lack character defects."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -418,7 +430,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Binaries"
     ]
   },
   {

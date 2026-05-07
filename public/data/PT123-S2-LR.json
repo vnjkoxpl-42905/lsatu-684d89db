@@ -33,7 +33,10 @@
       "D": "All transcriptionists know shorthand. All engineers know calculus. Bob has worked both as a transcriptionist and as an engineer. Therefore, Bob knows both shorthand and calculus.",
       "E": "All of Kenisha's dresses are very well made. All of Connie's dresses are very badly made. Half of the dresses in this closet are very well made, and half of them are very badly made. Therefore, half of the dresses in this closet are Kenisha's and half of them are Connie's."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -51,7 +54,10 @@
       "D": "become very interested in the history of the century just ending",
       "E": "reflect on how certain unfortunate events of the century could have been avoided"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -174,7 +180,10 @@
       "D": "The number of different types of video games available is unlikely to decrease in the near future.",
       "E": "Most of the people who have purchased video games over the past 3 years are over the age of 16."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -269,7 +278,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -288,7 +299,11 @@
       "D": "Each year the strain of influenza virus deemed most likely to be prevalent will be one that had not previously been deemed most likely to be prevalent.",
       "E": "Each year's vaccine will have fewer side effects than the vaccine of the previous year since the technology for making vaccines will constantly improve."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -306,7 +321,10 @@
       "D": "Some sciences can yield mathematically precise results that are not inherently suspect.",
       "E": "If inherently suspect claims are usually false, then the majority of claims made by scientists are false as well."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -451,7 +469,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Binaries"
     ]
   },
   {

@@ -93,7 +93,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -114,7 +115,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Breadcrumbs"
     ]
   },
   {
@@ -136,7 +138,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -176,7 +179,10 @@
       "D": "Market researchers say they find data collection more enjoyable in observational research than in survey research, because observational research requires more creative judgment on their part.",
       "E": "Consumers are more likely to respond to oral surveys than they are to respond to written questionnaires."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -194,7 +200,10 @@
       "D": "various alternative solutions are possible for a single problem",
       "E": "a proposed solution for a problem could actually worsen that problem"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -215,7 +224,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -313,7 +323,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -332,7 +344,10 @@
       "D": "The union that represented reporters at the newspaper was different from the union that represented reporters at the newspaper’s competitors.",
       "E": "The newspaper was widely read throughout continental Europe and Great Britain as well as North America."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -373,7 +388,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -396,7 +413,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "First Sentence Conclusion",
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -441,7 +459,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal",
+      "Assumes Difference"
     ]
   },
   {

@@ -77,7 +77,10 @@
       "D": "Any measures to limit the mountain lion population would likely push the species to extinction.",
       "E": "If the population of mountain lions is not limited, the bighorn sheep species will not survive."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -115,7 +118,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
     ]
   },
   {
@@ -193,7 +198,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -374,7 +380,10 @@
       "D": "arguing that because something has a certain group of characteristics, it must also have another, closely related, characteristic",
       "E": "arguing that a type of human cognition is unreliable in one instance because it has been shown to be unreliable under similar circumstances"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -392,7 +401,10 @@
       "D": "Most of the entries that were received after the deadline for last year's photography contest were rejected by the judges' committee. Thus, the people whose entries were received after the deadline last year will probably send them in well before the deadline this year.",
       "E": "Most of the stone artifacts that have been found at the archaeological site have been domestic tools. Thus, if the next artifact found at the site is made of stone, it will probably be a domestic tool."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT133",

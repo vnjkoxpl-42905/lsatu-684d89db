@@ -87,7 +87,10 @@
       "D": "the rise in organic food production shows people to have a greater concern for the environment than they had before",
       "E": "people can be persuaded to have a greater concern for the environment than they now have"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -123,7 +126,10 @@
       "D": "For some food additives, the level at which the substance has been shown to lead to cancer is lower than the level at which the additive provides any benefit.",
       "E": "All food additives have substitutes that can be used in their place."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -144,7 +150,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -163,7 +170,10 @@
       "D": "has its most valuable achievements in medical applications",
       "E": "has any value apart from its role in providing new technologies to save lives"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -435,7 +445,10 @@
       "D": "It fails to consider that just because one phenomenon is known to affect another, the latter does not also affect the former.",
       "E": "It takes for granted that the contention that one phenomenon causes another must be baseless if the latter phenomenon has persisted despite steady increases in the pervasiveness of the former."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT120",

@@ -51,7 +51,10 @@
       "D": "Tourists who have read about a place beforehand tend to stay longer in that place.",
       "E": "Some tourists are unconcerned about gaining information about a place other than what is necessary for their immediate enjoyment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -190,7 +193,10 @@
       "D": "those not responsible for the current condition of the libraries should bear the cost for remedying it",
       "E": "funds for library improvements could be raised without additional student fees"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -247,7 +253,11 @@
       "D": "does not consider the views of the builders who have the most experience working with the material",
       "E": "fails to consider that most builders might not regularly use papercrete precisely because they are familiar with its properties"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference",
+      "Battle of Opinions"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -309,7 +319,10 @@
       "D": "the appropriateness of trying to find criteria that all mystery movies must meet",
       "E": "whether the filmmaker wanted viewers to be able to solve the murder"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT137",

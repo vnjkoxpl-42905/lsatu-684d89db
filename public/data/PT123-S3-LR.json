@@ -51,7 +51,10 @@
       "D": "contains instructions according to which Sulston was created",
       "E": "is actually a portrait of Sulston"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -71,7 +74,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -90,7 +94,11 @@
       "D": "The ants to whom the particles were brought never carried the particles into their own colonies.",
       "E": "The entomologist cited retracted his conclusion when it was determined that the particles the ants carried came from their dumping site."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -126,7 +134,10 @@
       "D": "how often a person ought to deviate from the middle course in life",
       "E": "whether it is desirable for people to be moderately spontaneous"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -144,7 +155,10 @@
       "D": "the consumers tested find the benefits of using fabric softeners worth the expense",
       "E": "the consumers tested had the opportunity to evaluate fabric softeners other than Fabric-Soft"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -164,7 +178,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -203,7 +218,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Assumes Similarity"
     ]
   },
   {
@@ -224,7 +241,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -287,7 +305,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -349,7 +368,10 @@
       "D": "takes for granted that there is no moral obligation to obey the law",
       "E": "takes for granted that the parents mentioned in the example are not mistaken about their child's innocence"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -367,7 +389,10 @@
       "D": "Governmental intrusion into the lives of voters is no more burdensome in nondemocratic countries than it is in democracies.",
       "E": "Politicians who promise to do what they actually believe ought to be done are rarely elected."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -406,7 +431,10 @@
       "D": "Although prime farmland near metropolitan areas is being lost rapidly to suburban development, we could reverse this trend by choosing to live in areas that are already urban.",
       "E": "Nutritionists agree that a diet composed solely of grain products is not adequate for human health."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",

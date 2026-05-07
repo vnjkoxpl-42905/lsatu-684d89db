@@ -54,7 +54,10 @@
       "D": "David and Lin disagree over how much leverage should be accorded companies in their negotiations with strikers.",
       "E": "Lin believes it is unfair to forbid companies from hiring permanent replacements for their striking employees."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -90,7 +93,12 @@
       "D": "treats two kinds of things that differ in important respects as if they do not differ",
       "E": "has a conclusion that contradicts what is asserted in its premise"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -318,7 +326,12 @@
       "D": "dust from the impact of an asteroid on the Earth would not have had any cooling effect on the climate",
       "E": "no more than one large asteroid struck the Earth during the period when the dinosaurs were becoming extinct"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -357,7 +370,10 @@
       "D": "whether any other universities in North America permit their students to fulfill a foreign language requirement by learning American Sign Language",
       "E": "whether the fact that a language is the native language of many North Americans justifies prohibiting its use to fulfill the university's foreign language requirement"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -377,7 +393,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Analogies"
     ]
   },
   {
@@ -396,7 +413,10 @@
       "D": "Consuming engineered foods that provide nutrients that can be obtained more easily elsewhere is unhealthy.",
       "E": "Growth of muscle mass enhances muscle strength only when accompanied by growth of connective tissue."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -473,7 +493,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
