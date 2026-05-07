@@ -199,7 +199,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A year ago several regional hospitals attempted to reduce the number of patient injuries resulting from staff errors by implementing a plan to systematically record all such errors. The incidence of these injuries has substantially decreased at these hospitals since then. Clearly, the knowledge that their errors were being carefully monitored made the hospitals’ staffs much more meticulous in carrying out their patient-care duties.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -210,7 +210,10 @@
       "D": "The decrease in the incidence of the injuries did not begin at any hospital until the staff there became aware that the records were being closely analyzed.",
       "E": "Under the plan, the hospitals’ staff members who were found to have made errors that caused injuries to patients received only reprimands for their first errors."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -377,7 +380,7 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Method",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Patterson: Bone flutes dating to the Upper Paleolithic are the earliest evidence for music. Thus it is likely that music first arose during this period.\nGarza: But the Upper Paleolithic is exceptional for the intensive use of bone, which typically survives well in archaeological contexts, unlike other materials commonly used for musical instruments, such as wood.",
     "questionStem": "Garza responds to Patterson by doing which one of the following?",
@@ -388,7 +391,10 @@
       "D": "presenting an argument analogous to Patterson’s argument to reveal a potential flaw in Patterson’s reasoning",
       "E": "using Patterson’s evidence to draw a conclusion inconsistent with the conclusion drawn in Patterson’s argument"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -431,7 +437,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Editorial: Teenagers tend to wake up around 8:00 A.M., the time when they stop releasing melatonin, and are sleepy if made to wake up earlier. Since sleepiness can impair driving ability, car accidents involving teenagers driving to school could be reduced if the school day began later than 8:00 A.M. Indeed, when the schedule for Granville’s high school was changed so that school began at 8:30 A.M. rather than earlier, the overall number of car accidents involving teenage drivers in Granville declined.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument in the editorial?",
@@ -442,7 +448,10 @@
       "D": "Many of the car accidents involving teenage drivers in Granville occurred in the evening rather than in the morning.",
       "E": "Car accidents involving teenage drivers rose in the region surrounding Granville during the time they declined in Granville."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT148",

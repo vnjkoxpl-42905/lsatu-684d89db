@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researcher: During the rainy season, bonobos (an ape species closely related to chimpanzees) frequently swallow whole the rough-surfaced leaves of the shrub Manniophyton fulvum. These leaves are likely ingested because of their medicinal properties, since ingestion of these leaves facilitates the elimination of gastrointestinal worms.",
     "questionStem": "Which one of the following, if true, most strengthens the researcher’s argument?",
@@ -15,7 +15,10 @@
       "D": "The leaves of M. fulvum are easier to swallow whole when they are wet.",
       "E": "The rainy season is the time when bonobos are most likely to be infected with gastrointestinal worms."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -40,7 +43,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Sampling",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Letter to the Editor: The arts section of this paper shows a lamentable bias toward movies and against local theatrical productions. Over the last year alone, the paper has published over five times as many movie reviews as reviews of live plays.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -53,7 +56,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -139,7 +143,7 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Monarch butterflies must contend with single-celled parasites that can cause deformities that interfere with their flight. In populations of monarch butterflies that have not migrated, as many as 95 percent are heavily infected by the parasites, while less than 15 percent of those in migrating populations are infected. This shows that migrating allows monarch butterflies to avoid these parasites.",
     "questionStem": "The reasoning in the argument is flawed in that the argument overlooks the possibility that",
@@ -150,7 +154,10 @@
       "D": "monarch butterflies infected with parasites are typically unable to migrate",
       "E": "populations of monarch butterflies tend not to migrate if they have stable food sources"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -214,7 +221,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "A study found that most of the strokes diagnosed by doctors occurred in the left side of patients’ brains. This suggests that right-side strokes are more likely than left- side strokes to go undiagnosed since _______.",
     "questionStem": "The conclusion of the argument is strongly supported if which one of the following completes the passage?",
@@ -225,7 +232,10 @@
       "D": "the symptoms of right-side strokes tend to be different than the symptoms of left-side strokes",
       "E": "other studies have suggested that a large number of minor strokes go undiagnosed"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -427,7 +437,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Male boto dolphins often carry objects such as weeds or sticks. Researchers first thought this was play behavior, but it is more likely to be a mating display. If it were play rather than a mating display, we would expect females and juveniles to engage in the behavior, but only adult males do.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
@@ -438,7 +448,10 @@
       "D": "If construction of that building were on schedule, then I would expect the foundation to have been completed already. But work on the foundation has just started, so construction is probably behind schedule.",
       "E": "If Tamika makes a big sale today, I would expect her to celebrate tonight. So, since Tamika will probably make a big sale today, she will probably celebrate tonight."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -463,7 +476,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Stallworth claims that she supported the proposal to build a new community center. If Henning also supported that proposal, it would have received government approval. Since the proposal did not gain government approval, Henning must have failed to back it, despite his claims to the contrary.",
     "questionStem": "Which one of the following arguments is most similar in its flawed reasoning to the argument above?",
@@ -474,6 +487,9 @@
       "D": "According to Harris’s political rivals, she consistently favors the interests of property developers. A good mayor must be willing to stand up to the city’s powerful interests, including property developers. Harris is thus a poor choice for mayor.",
       "E": "According to the latest government figures, the regional unemployment rate declined in the last six months. But the region lost thousands of manufacturing jobs in that period. The government’s unemployment figures must therefore be inaccurate."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

@@ -169,7 +169,7 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Weaken",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Magazine editor: In recent years, subscriptions to our magazine have declined, but newsstand sales have increased. Since subscribers receive issues at a lower cost per issue than do newsstand purchasers, the magazine would increase revenue by eliminating discounted subscriptions altogether.",
     "questionStem": "Which one of the following is an assumption on which the editor’s argument depends?",
@@ -180,7 +180,10 @@
       "D": "The magazine’s content will remain the same after eliminating discounted subscriptions.",
       "E": "The total number of readers of the magazine would not decrease if discounted subscriptions were eliminated."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -373,7 +376,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Weaken",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Literary critic: The works of author X are often praised for their originality. But originality is not a virtue in itself. Many original works are bad, and many unoriginal works are good. Therefore, praising author X’s works for their originality alone is mistaken.",
     "questionStem": "Which one of the following most accurately\nexpresses the main conclusion of the critic’s argument?",
@@ -384,7 +387,10 @@
       "D": "Many unoriginal works are good.",
       "E": "The works of author X are not original."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT108",

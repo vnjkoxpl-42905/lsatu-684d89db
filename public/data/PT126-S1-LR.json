@@ -86,7 +86,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Many scientists believe that bipedal locomotion (walking on two feet) evolved in early hominids in response to the move from life in dense forests to life in open grasslands. Bipedalism would have allowed early hominids to see over tall grasses, helping them to locate food and to detect and avoid predators. However, because bipedalism also would have conferred substantial advantages upon early hominids who never left the forest—in gathering food found within standing reach of the forest floor, for example—debate continues concerning its origins. It may even have evolved, like the upright threat displays of many large apes, because it bettered an individual's odds of finding a mate.",
     "questionStem": "Which one of the following statements is most supported by the information above?",
@@ -97,7 +97,10 @@
       "D": "Bipedal locomotion probably evolved among early hominids who exclusively inhabited forest environments.",
       "E": "For early hominids, gathering food was more relevant to survival than was detecting and avoiding predators."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -122,7 +125,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "In 1955, legislation in a certain country gave the government increased control over industrial workplace safety conditions. Among the high-risk industries in that country, the likelihood that a worker will suffer a serious injury has decreased since 1955. The legislation, therefore, has increased overall worker safety within high-risk industries.",
     "questionStem": "Which one of the following, if true, most weakens the argument above?",
@@ -133,7 +136,10 @@
       "D": "The number of work-related injuries occurring within industries not considered high-risk has increased annually since 1955.",
       "E": "Workplace safety conditions in all industries have improved steadily since 1955."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -212,7 +218,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Critic: A novel cannot be of the highest quality unless most readers become emotionally engaged with the imaginary world it describes. Thus shifts of narrative point of view within a novel, either between first and third person or of some other sort, detract from the merit of the work, since such shifts tend to make most readers focus on the author.",
     "questionStem": "Which one of the following is an assumption necessary for the critic's conclusion to be properly drawn?",
@@ -291,7 +297,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Philosopher: An event is intentional if it is a human action performed on the basis of a specific motivation. An event is random if it is not performed on the basis of a specific motivation and it is not explainable by normal physical processes.",
     "questionStem": "Which one of the following inferences conforms most closely to the philosopher's position?",
@@ -372,7 +378,7 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A study of rabbits in the 1940s convinced many biologists that parthenogenesis—reproduction without fertilization of an egg-sometimes occurs in mammals. However, the study's methods have since been shown to be flawed, and no other studies have succeeded in demonstrating mammalian parthenogenesis. Thus, since parthenogenesis is known to occur in a wide variety of nonmammalian vertebrates, there must be something about mammalian chromosomes that precludes the possibility of parthenogenesis.",
     "questionStem": "A flaw in the reasoning of the argument is that the argument",
@@ -385,7 +391,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -414,7 +421,7 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Psychologist: It is well known that becoming angry often induces temporary incidents of high blood pressure. A recent study further showed, however, that people who are easily angered are significantly more likely to have permanently high blood pressure than are people who have more tranquil personalities. Coupled with the long-established fact that those with permanently high blood pressure are especially likely to have heart disease, the recent findings indicate that heart disease can result from psychological factors.",
     "questionStem": "Which one of the following would, if true, most weaken the psychologist's argument?",
@@ -425,7 +432,10 @@
       "D": "Those who discover that they have heart disease tend to become more easily frustrated by small difficulties.",
       "E": "The physiological factors that cause permanently high blood pressure generally make people quick to anger."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -450,7 +460,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Advertisement: Researchers studied a group of people trying to lose weight and discovered that those in the group who lost the most weight got more calories from protein than from carbohydrates and ate their biggest meal early in the day. So anyone who follows our diet, which provides more calories from protein than from anything else and which requires that breakfast be the biggest meal of the day, is sure to lose weight.",
     "questionStem": "The reasoning in the advertisement is most vulnerable to criticism on the grounds that the advertisement overlooks the possibility that",
@@ -461,7 +471,10 @@
       "D": "some people in the group studied lost no weight yet got more calories from protein than from carbohydrates and ate their biggest meal early in the day",
       "E": "people who eat their biggest meal at night tend to snack more during the day and so tend to take in more total calories than do people who eat their biggest meal earlier in the day"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",

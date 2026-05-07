@@ -79,7 +79,7 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Heavy tapestry fabrics are appropriate only for use in\napplications that will not need to be laundered frequently.\nThese applications do not include any types of clothing—\nsuch as skirts or even jackets—but instead include\nswags and balloon valances, which are types of window\ntreatments.",
     "questionStem": "Which one of the following statements is most supported\nby the information above?",
@@ -251,7 +251,7 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "A new computer system will not significantly increase\nan organization’s efficiency unless the computer system\nrequires the organization’s employees to adopt new,\nmore productive ways of working. The Ministry of\nTransportation is having a new computer system custom\nbuilt to fit the ministry’s existing ways of working, so\n_______.",
     "questionStem": "Which one of the following most logically completes the\nargument?",
@@ -416,7 +416,10 @@
       "D": "The bacteria show no tendency to move into areas lit with blue even when those areas are lit so brightly that the bacteria’s chlorophyll produces as much energy in those areas as it does in the red areas.",
       "E": "There are species of bacteria that do not contain chlorophyll but do move into areas lit with particular colors when placed in a test tube lit with different colors in different places."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",

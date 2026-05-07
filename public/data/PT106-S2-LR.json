@@ -174,7 +174,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "The art critic’s response to the curator would provide the strongest support for which one of the following conclusions?",
@@ -185,7 +185,10 @@
       "D": "The value of an artist’s work is not necessarily compromised when that work is tampered with by later artists.",
       "E": "Veronese did not originally intend the central figure’s cloak to be green."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -264,7 +267,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Rhonda will see the movie tomorrow afternoon only if Paul goes to the concert in the afternoon. Paul will not go to the concert unless Ted agrees to go to the concert. However, Ted refuses to go to the concert. So Rhonda will not see the movie tomorrow afternoon.",
     "questionStem": "The pattern of reasoning displayed above is most closely paralleled in which one of the following?",

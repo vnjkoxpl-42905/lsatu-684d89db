@@ -172,7 +172,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "In an experiment, scientists changed a single gene in cloned flies of a certain species. These cloned flies lacked the eye cells that give flies ultraviolet vision, even though cloned siblings with unaltered, otherwise identical genes had normal vision. Thus, scientists have shown that flies of this species lacking ultraviolet vision must have some damage to this gene.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -183,7 +183,10 @@
       "D": "The gene change had no effect on the flies other than the lack of ultraviolet vision cells.",
       "E": "Ultraviolet vision is an environmentally influenced trait in the species of flies in the experiment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -208,7 +211,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Poor nutrition is at the root of the violent behavior of many young offenders. Researchers observed that in a certain institution for young offenders, the violent inmates among them consistently chose, from the food available, those items that were low in nutrients. In a subsequent experiment, some of the violent inmates were placed on a diet high in nutrients. There was a steady improvement in their behavior over the four months of the experiment. These results confirm the link between poor nutrition and violent behavior.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -219,7 +222,10 @@
       "D": "A further study investigated young offenders who chose a high-nutrient diet on their own and found that many of them were nonviolent.",
       "E": "The violent inmates in the institution who were not placed on a high-nutrient diet did not show an improvement in behavior."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -262,7 +268,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "If all works of art evoke intense feelings, and this sculpture is a work of art, then it follows that this sculpture evokes intense feelings. But this sculpture does not evoke intense feelings at all. So either this sculpture is not a work of art, or not all works of art evoke intense feelings.",
     "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",
@@ -284,7 +290,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "With decreased production this year in many rice-growing countries, prices of the grain on world markets have increased. Analysts blame this increase on the fact that only a small percentage of world production is sold commercially, with government growers controlling most of the rest, distributing it for local consumption. With so little rice being traded freely, even slight changes in production can significantly affect the amount of rice available on world markets.",
     "questionStem": "Which one of the following, if true, would most call into question the analysts' explanation of the price increase?",
@@ -295,7 +301,10 @@
       "D": "Governments that distribute the rice crop for local consumption purchase the grain commercially in the event of production shortfalls.",
       "E": "During reduced rice harvests, rice-importing countries import other kinds of crops, although this fails to compensate for decreased rice imports."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -320,7 +329,7 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Health officials now recommend that people reduce their intake of foods that are high in cholesterol, such as red meat. The recent decline in the total consumption of beef indicates that many people are following this recommendation. But restaurants specializing in steak are flourishing despite an overall decline in the restaurant industry. So clearly there still are a lot of people completely ignoring the health recommendation.",
     "questionStem": "The argument is vulnerable to criticism on which one of the following grounds?",
@@ -331,7 +340,10 @@
       "D": "It mistakes the correlation of the decline in beef consumption and the decline in the restaurant industry for a causal relation.",
       "E": "It fails to consider whether the people who patronize steak restaurants have heeded the health officials by reducing their cholesterol intake in their at-home diets."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT122",

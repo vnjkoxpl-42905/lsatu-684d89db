@@ -200,7 +200,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "A rise in the percentage of all 18-year-olds who were recruited by the armed services of a small republic between 1980 and 1986 correlates with a rise in the\npercentage of young people who dropped out of high school in that republic. Since 18-year-olds in the republic are generally either high school graduates or high school dropouts, the correlation leads to the conclusion that the republic’s recruitment rates for 18-year-olds depend substantially on recruitment rates for high school dropouts.",
     "questionStem": "Which one of the following statements, if true, most weakens the argument?",
@@ -213,7 +213,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -308,7 +309,10 @@
       "D": "Mercury poisoning can cause deafness in people with venereal disease.",
       "E": "Beethoven suffered from psychological problems of the same severity as Newton’s."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -394,7 +398,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If the law punishes littering, then the city has an obligation to provide trash cans. But the law does not punish littering, so the city has no such obligation.",
     "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to that in the argument above?",
@@ -430,7 +434,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -456,7 +461,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Surviving seventeenth-century Dutch landscapes attributed to major artists now equal in number those attributed to minor ones. But since in the seventeenth century many prolific minor artists made a living supplying the voracious market for Dutch landscapes, while only a handful of major artists painted in the genre, many attributions of seventeenth-century Dutch landscape paintings to major artists are undoubtedly erroneous.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -467,14 +472,17 @@
       "D": "Seventeenth-century art dealers paid minor artists extra money to leave their landscapes unsigned so that the dealers could add phony signatures and pass such works off as valuable paintings.",
       "E": "More seventeenth-century Dutch landscapes were painted than have actually survived, and that is true of those executed by minor artists as well as of those executed by major artists."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT106",
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The interstitial nucleus, a subregion of the brain’s hypothalamus, is typically smaller for male cats than for female cats. A neurobiologist performed autopsies on male cats who died from disease X, a disease affecting no more than .05 percent of male cats, and found that these male cats had interstitial nuclei that were as large as those generally found in female cats. Thus, the size of the interstitial nucleus determines whether or not male cats can contract disease X.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
@@ -485,7 +493,10 @@
       "D": "Of 1,000 autopsies on male cats who did not contract disease X, 5 revealed interstitial nuclei larger than those of the average male cat.",
       "E": "The hypothalamus is known not to be causally linked to disease Y, and disease X is a subtype of disease Y."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT106",

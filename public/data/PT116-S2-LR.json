@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Pettengill: Bebop jazz musicians showed their distaste for jazz classics by taking great liberties with them, as though the songs could be made interesting only through radical reshaping.\nRomney: Only compelling, versatile songs can stand such radical reshaping. Bebop musicians recognized this, and their revolutionary approach to the jazz classics enabled them to discover previously unknown depths in the music.",
     "questionStem": "Pettengill and Romney disagree over whether",
@@ -15,7 +15,10 @@
       "D": "jazz music requires musicians to adhere closely to the original version in order to be widely popular",
       "E": "bebop musicians were influenced by the more conservative styles of their predecessors"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -346,7 +349,7 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Marc: The fact that the people of our country look back on the past with a great deal of nostalgia demonstrates that they regret the recent revolution.\nRobert: They are not nostalgic for the recent past, but for the distant past, which the prerevolutionary regime despised; this indicates that although they are troubled, they do not regret the revolution.",
     "questionStem": "Their dialogue provides the most support for the claim that Marc and Robert agree that the people of their country",
@@ -357,7 +360,10 @@
       "D": "are concerned about the country's current situation and this is evidenced by their nostalgia",
       "E": "tend to be most nostalgic for the things that are the farthest in their past"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT116",

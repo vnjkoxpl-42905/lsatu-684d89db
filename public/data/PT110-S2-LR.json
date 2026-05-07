@@ -46,7 +46,7 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Restaurant manager: In response to requests from our patrons for vegetarian main dishes, we recently introduced three: an eggplant and zucchini casserole with tomatoes, brown rice with mushrooms, and potatoes baked with cheese. The first two are frequently ordered, but no one orders the potato dish, although it costs less than the other two. Clearly, then, our patrons prefer not to eat potatoes.",
     "questionStem": "Which one of the following is an error of reasoning in the restaurant manager’s argument?",
@@ -59,7 +59,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -157,7 +158,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "A university study reported that between 1975 and 1983 the length of the average workweek in a certain country increased significantly. A governmental study, on the other hand, shows a significant decline in the length of the average workweek for the same period. Examination of the studies shows, however, that they used different methods of investigation; thus there is no need to look further for an explanation of the difference in the studies’ results.",
     "questionStem": "The argument’s reasoning is flawed because the argument fails to",
@@ -168,7 +169,10 @@
       "D": "recognize that two different methods of investigation can yield identical results",
       "E": "recognize that varying economic conditions result in the average workweek changing in length"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT110",

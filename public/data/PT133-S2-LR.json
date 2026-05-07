@@ -158,7 +158,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Letter to the editor: I have never seen such flawed reasoning and distorted evidence as that which you tried to pass off as a balanced study in the article \"Speed Limits, Fatalities, and Public Policy.\" The article states that areas with lower speed limits had lower vehicle-related fatality rates than other areas. However, that will not be true for long, since vehicle-related fatality rates are rising in the areas with lower speed limits. So the evidence actually supports the view that speed limits should be increased.",
     "questionStem": "The reasoning in the letter writer's argument is flawed because the argument",
@@ -169,7 +169,10 @@
       "D": "fails to consider the possibility that the vehicle-related fatality rates in other areas are also rising",
       "E": "does not present any claims as evidence against the opposing viewpoint"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -327,7 +330,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "The flagellum, which bacteria use to swim, requires many parts before it can propel a bacterium at all. Therefore, an evolutionary ancestor of bacteria that had only a few of these parts would gain no survival advantage from them.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -350,7 +353,7 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Style manual: Archaic spellings and styles of punctuation in direct quotations from older works are to be preserved if they occur infrequently and do not interfere with a reader's comprehension. However, if they occur frequently, the editor may modernize them, inserting a note with an explanation to this effect in the text, or if similar modernizing has been done in more than one quotation, inserting a general statement in the preface. On the other hand, obvious typographical errors in quotations from modern works may be corrected without explanation.",
     "questionStem": "Which one of the following follows logically from the statements above?",
@@ -451,7 +454,7 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Ecologists predict that the incidence of malaria will increase if global warming continues or if the use of pesticides is not expanded. But the use of pesticides is known to contribute to global warming, so it is inevitable that we will see an increase in malaria in the years to come.",
     "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",

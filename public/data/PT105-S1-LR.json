@@ -75,7 +75,10 @@
       "D": "All of the hyperactive adults in the study had been treated for hyperactivity with a medication that is known to depress activity in some regions of the brain, while none of the nonhyperactive adults had been so treated.",
       "E": "The test was performed only on adults because even though the method by which the test measured brain activity is harmless to adults, it does require the use of radiation, which could be harmful to children."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -214,7 +217,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "Alice will volunteer to work on the hospital fund-raising drive only if her brother Bruce also volunteers and a majority of the others working on the drive promise to select Bruce to manage the drive. However, although Bruce is willing to volunteer, none of the others working on the drive will promise to select Bruce to manage the drive. Thus it is certain that Alice will not volunteer.",
     "questionStem": "In which one of the following arguments is the pattern of reasoning most similar to the pattern of reasoning in the argument above?",

@@ -157,7 +157,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Among people who have a history of chronic trouble falling asleep, some rely only on sleeping pills to help them fall asleep, and others practice behavior modification techniques and do not take sleeping pills. Those who rely only on behavior modification fall asleep more quickly than do those who rely only on sleeping pills, so behavior modification is more effective than are sleeping pills in helping people to fall asleep.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -168,7 +168,10 @@
       "D": "The people who are the most likely to take sleeping pills rather than practice behavior modification techniques are those who have previously had the most trouble falling asleep.",
       "E": "The people who are the most likely to practice behavior modification techniques rather than take sleeping pills are those who prefer not to use drugs if other treatments are available."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -250,7 +253,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Archaeologist: An ancient stone building at our excavation site was composed of three kinds of stone—quartz, granite, and limestone. Of these, only limestone occurs naturally in the area. Most of the buildings at the site from the same time period had limestone as their only stone component, and most were human dwellings. Therefore, the building we are studying probably was not a dwelling.",
     "questionStem": "Which one of the following, if true, would most strengthen the archaeologist's reasoning?",
@@ -261,14 +264,17 @@
       "D": "Most of the buildings at the site were used as dwellings.",
       "E": "No quartz has been discovered on the site other than that found in the building being studied."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Theodore will be able to file his tax return on time only in the event that he has an accountant prepare his tax return and the accountant does not ask Theodore for any additional documentation of his business expenses. If he does have an accountant prepare his return, the accountant will necessarily ask Theodore to provide this additional documentation. Therefore, Theodore will not be able to file on time.",
     "questionStem": "The pattern of reasoning in which one of the following arguments most closely parallels the pattern of reasoning in the argument above?",
@@ -371,7 +377,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Scientists studying a common type of bacteria have discovered that most bacteria of that type are in hibernation at any given time. Some microbiologists have concluded from this that bacteria in general are usually in hibernation. This conclusion would be reasonable if all types of bacteria were rather similar. But, in fact, since bacteria are extremely diverse, it is unlikely that most types of bacteria hibernate regularly.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion of the argument?",
@@ -384,7 +390,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -392,7 +399,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Any student who is not required to hand in written homework based on the reading assignments in a course will not complete all of the reading assignments. Even highly motivated students will neglect their reading assignments if they are not required to hand in written homework. Therefore, if the students in a course are given several reading assignments and no written assignments, no student in that course will receive a high grade for the course.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -450,7 +457,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "It is popularly believed that a poem has whatever meaning is assigned to it by the reader. But objective evaluation of poetry is possible only if this popular belief is false; for the aesthetic value of a poem cannot be discussed unless it is possible for at least two readers to agree on the correct interpretation of the poem.",
     "questionStem": "Which one of the following is an assumption required by the argument?",

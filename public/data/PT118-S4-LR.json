@@ -206,7 +206,10 @@
       "D": "Are bluefin cod prone to any naturally occurring diseases that can cause fin deformities of the same kind as those displayed by the bluefin cod of Cod Bay?",
       "E": "Are there gene-altering pollutants present in Cod Bay other than the chemical wastes that were dumped by the companies?"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT118",

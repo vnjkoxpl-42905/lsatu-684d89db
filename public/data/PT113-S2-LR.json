@@ -252,7 +252,10 @@
       "D": "Office workers who experienced frequent headaches were more likely than other workers to overestimate how much time they spent using VDTs.",
       "E": "Office workers who regularly used VDTs experienced the same amount of job-related stress as workers who did not use VDTs."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -358,7 +361,7 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Antarctic seals dive to great depths and stay submerged for hours. They do not rely solely on oxygen held in their lungs, but also store extra oxygen in their blood. Indeed, some researchers hypothesize that for long dives these seals also store oxygenated blood in their spleens.",
     "questionStem": "Each of the following, if true, provides some support for the researchers' hypothesis except:",
@@ -369,7 +372,10 @@
       "D": "The spleen is much larger in the Antarctic seal than in aquatic mammals that do not make long dives.",
       "E": "The spleens of Antarctic seals contain greater concentrations of blood vessels than are contained in most of their other organs."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT113",

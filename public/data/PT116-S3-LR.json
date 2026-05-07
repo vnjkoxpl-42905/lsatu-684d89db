@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The Fenwicks returned home from a trip to find two broken bottles on their kitchen floor. There was no sign of forced entry and nothing in the house appeared to have been taken. Although the Fenwicks have a pet cat that had free run of the house while they were away, the Fenwicks hypothesized that they had left a back door unlocked and that neighborhood children had entered through it, attempted to raid the kitchen, and left after breaking the bottles.",
     "questionStem": "Each of the following, if true, helps to support the Fenwicks' hypothesis except:",
@@ -33,7 +33,10 @@
       "D": "There have been several recent burglaries in the Fenwicks' neighborhood in which neighborhood children were suspected.",
       "E": "The Fenwicks returned home from their trip later than they had planned."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -115,7 +118,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Very little is known about prehistoric hominid cave dwellers. However, a recent study of skeletons of these hominids has revealed an important clue about their daily activities: skeletal fractures present are most like the type and distribution of fractures sustained by rodeo riders. Therefore, it is likely that these cave dwellers engaged in activities similar to rodeo riders—chasing and tackling animals.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argumentation above?",
@@ -128,7 +131,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -404,7 +408,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Taking advanced mathematics courses should increase a student's grade point average, for, as numerous studies have shown, students who have taken one or more advanced mathematics courses are far more likely to have high grade point averages than students who have not taken such courses.",
     "questionStem": "The flawed pattern of reasoning in the argument above is most similar to that in which one of the following?",
@@ -417,7 +421,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -436,7 +441,10 @@
       "D": "If blood glucose levels fall too low, then brain cells starve, resulting in loss of consciousness and death.",
       "E": "The reason brain cells starve if deprived of glucose is that they can produce energy only from glucose."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT116",

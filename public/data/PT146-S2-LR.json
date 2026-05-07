@@ -200,7 +200,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Human skin gives off an array of gaseous substances, including carbon dioxide and lactic acid, both of which attract mosquitoes. However, neither of these two substances, whether alone or combined with one another, will attract mosquitoes as much as a bare human arm will, even in complete darkness, where a mosquito has no visual cues. Therefore, some other gaseous substance given off by human skin also attracts mosquitoes.",
     "questionStem": "The reasoning in the argument requires which one of the following assumptions?",
@@ -211,7 +211,10 @@
       "D": "Mosquitoes are no more successful in finding a bare human arm in darkness than in light.",
       "E": "Human skin never gives off any gaseous substances that repel mosquitoes."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -236,7 +239,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "A six-month public health campaign sought to limit the spread of influenza by encouraging people to take precautions such as washing their hands frequently and avoiding public places when they experience influenza symptoms. Since the incidence of influenza was much lower during those months than experts had predicted, the public evidently heeded the campaign.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -247,7 +250,10 @@
       "D": "Independently of the public health campaign, the news media spread the message that one’s risk of contracting influenza can be lessened by frequent hand washing.",
       "E": "In a survey completed before the campaign began, many people admitted that they should do more to limit the spread of influenza."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -329,7 +335,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Role in Argument",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The consensus among astronomers, based upon observations of the surfaces of pulsars, is that pulsars are spinning balls of neutrons compressed into a sphere some 10 kilometers in diameter with a mass roughly equal to that of our sun. However, their observed properties are also consistent with some pulsars actually being filled with quarks, the building blocks of neutrons. Because the core of a quark-filled pulsar, unlike a neutron-filled one, would have an overall positive charge, it would attract a layer of negatively charged particles that could support a crust of neutrons.",
     "questionStem": "The statement that the core of a quark-filled pulsar would have an overall positive charge plays which one of the following roles in the argument above?",
@@ -340,7 +346,10 @@
       "D": "It presents a new finding that challenges the consensus view of the structure of pulsars.",
       "E": "It points out a problem with the view that pulsars have a mass roughly equal to that of our sun."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -368,7 +377,7 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Voting records regularly show that people over 65 vote in the highest percentages while young adults are least likely to vote. This indicates that citizens are becoming increasingly disconnected from the political system with each passing generation.",
     "questionStem": "The argument’s reasoning is questionable in that the argument",
@@ -379,7 +388,10 @@
       "D": "confuses the cause of an effect with the effect itself",
       "E": "overlooks the possibility that voting patterns among age groups will change in the future"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -404,7 +416,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "In a recent study, one group of participants watched video recordings of themselves running on treadmills, and a second group watched recordings of other people running on treadmills. When contacted later, participants in the first group reported exercising, on average, 1 hour longer each day than did the other participants. This shows that watching a recording of yourself exercising can motivate you to exercise more.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -415,7 +427,10 @@
       "D": "In studies of identical twins, participants who observed their twin reading overreported by a significant amount how much time they themselves spent reading in the days that followed.",
       "E": "A third group of participants who watched recordings of themselves sitting on couches afterwards reported being sedentary for more time each day than did the other participants."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",

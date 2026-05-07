@@ -22,7 +22,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Anthropologist: One of the distinctive traits of humans is the ability to support a large brain with a small gut, which requires getting more calories from less food. It was likely the development of cooking that made this possible. After all, our ancestors developed large brains around the time that they began to control fire. And even today, people who choose to eat only raw food have difficulty getting enough calories.",
     "questionStem": "Which one of the following, if true, most strengthens the anthropologist’s argument?",
@@ -33,7 +33,10 @@
       "D": "The human body uses more calories to process raw food than it uses to process cooked food.",
       "E": "Domesticated plants and animals are richer in calories than their wild counterparts are."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -72,7 +75,10 @@
       "D": "According to field observations, the populations of migratory birds fluctuated less during the period from 1980 to 2000 than the populations of nonmigratory birds.",
       "E": "Birds that prey on songbirds became more common in Nova Scotia between 1980 and 2000."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -172,7 +178,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Miscellaneous",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "One year ago, a municipality banned dishwasher detergents containing phosphates. Anecdotal evidence indicates that many residents continued to use detergents containing phosphates; they just purchased them from out-of-town stores. However, it is clear that some residents did switch to phosphate-free detergents, since phosphate pollution from the municipal wastewater treatment plant decreased significantly in the past year. The answer to",
     "questionStem": "which one of the following questions would most help in evaluating the argument above?",
@@ -183,7 +189,10 @@
       "D": "Does most of the phosphate pollution in the municipality’s waterways come from treated wastewater from the municipal treatment plant?",
       "E": "Did municipal officials try to stop people from bringing detergents containing phosphates into the municipality?"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT145",

@@ -43,7 +43,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The reason music with a simple recurring rhythm exerts a strong primordial appeal is that it reminds us of the womb environment. After all, the first sound heard within the womb is the comforting sound of the mother’s regular heartbeat. So in taking away from us the warmth and security of the womb, birth also takes away a primal and constant source of comfort. Thus it is extremely natural that in seeking sensations of warmth and security throughout life, people would be strongly drawn toward simple recurring rhythmic sounds.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the reasoning above?",
@@ -56,7 +56,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -143,7 +144,7 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Factory manager: One reason the automobile parts this factory produces are expensive is that our manufacturing equipment is outdated and inefficient. Our products would be more competitively priced if we were to refurbish the factory completely with new, more efficient equipment. Therefore, since to survive in today’s market we have to make our products more competitively priced, we must completely refurbish the factory in order to survive.",
     "questionStem": "The reasoning in the factory manager’s argument is flawed because this argument",
@@ -205,7 +206,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researcher: This fall I returned to a research site to recover the armadillos I had tagged there the previous spring. Since a large majority of the armadillos I recaptured were found within a few hundred yards of the location of their tagging last spring, I concluded that armadillos do not move rapidly into new territories.",
     "questionStem": "Which one of the following is an assumption required by the researcher’s argument?",
@@ -216,7 +217,10 @@
       "D": "The tags identifying the armadillos cannot be removed by the armadillos, either by accident or deliberately.",
       "E": "A large majority of the recaptured armadillos did not move to a new territory in the intervening summer and then move back to the old territory by the fall."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -316,7 +320,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Critic: Works of modern literature cannot be tragedies as those of ancient playwrights and storytellers were unless their protagonists are seen as possessing nobility, which endures through the calamities that befall one. In an age that no longer takes seriously the belief that human endeavors are governed by fate, it is therefore impossible for a contemporary work of literature to be a tragedy.",
     "questionStem": "Which one of the following is an assumption required by the critic’s argument?",
@@ -359,7 +363,7 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Anyone who believes in democracy has a high regard for the wisdom of the masses. Griley, however, is an elitist who believes that any artwork that is popular is unlikely to be good. Thus, Griley does not believe in democracy.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -421,7 +425,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "A book tour will be successful if it is well publicized and the author is an established writer. Julia is an established writer, and her book tour was successful. So her book tour must have been well publicized.",
     "questionStem": "Which one of the following exhibits a pattern of flawed reasoning most closely parallel to the pattern of flawed reasoning exhibited by the argument above?",
@@ -455,14 +459,17 @@
       "D": "There is no independent evidence of a volcanic event strong enough to have created the high-pressure shocks that are characteristic of meteorites slamming into Earth.",
       "E": "No known single meteor shower has created exactly eight impact craters that form a straight line."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "The genuine creative genius is someone who is dissatisfied with merely habitual assent to widely held beliefs; thus these rare innovators tend to anger the majority. Those who are dissatisfied with merely habitual assent to widely held beliefs tend to seek out controversy, and controversy seekers enjoy demonstrating the falsehood of popular viewpoints.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",

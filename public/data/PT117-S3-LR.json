@@ -103,7 +103,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Antonia: The stock market is the best place to invest your money these days; although it is often volatile, it provides the opportunity to make a large profit quickly.\nMaria: I agree that the stock market provides the opportunity to make large profits quickly, but one is just as likely to take a huge loss. I think it is better to invest in savings bonds, which provide a constant, reliable income over many years.",
     "questionStem": "Antonia's and Maria's statements provide the most support for holding that they disagree about whether",
@@ -116,7 +116,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -124,7 +125,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Very little is known about prehistoric hominid cave dwellers. However, a recent study of skeletons of these hominids has revealed an important clue about their daily activities: skeletal fractures present are most like the type and distribution of fractures sustained by rodeo riders. Therefore, it is likely that these cave dwellers engaged in activities similar to rodeo riders—chasing and tackling animals.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argumentation above?",

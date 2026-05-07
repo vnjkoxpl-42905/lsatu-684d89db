@@ -239,7 +239,7 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Tent caterpillars’ routes between their nests and potential food sources are marked with chemical traces called pheromones that the caterpillars leave behind. Moreover, routes from food sources back to the nest are marked more heavily than are merely exploratory routes that have failed to turn up a food source. Thus, tent caterpillars are apparently among the insect species that engage in communal foraging, which consists in the conveying of information concerning the location of food to other members of the colony, nest, or hive.",
     "questionStem": "Which one of the following, if true, adds the most support to the argument?",
@@ -250,7 +250,10 @@
       "D": "The pheromones left by tent caterpillars are different from the pheromones left by other animals.",
       "E": "The pheromones that tent caterpillars leave behind are detectable by certain other species of caterpillars."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -297,7 +300,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Therapist: The ability to trust other people is essential to happiness, for without trust there can be no meaningful emotional connection to another human being, and without meaningful emotional connections to others we feel isolated.",
     "questionStem": "Which one of the following, if assumed, allows the conclusion of the therapist’s argument to be properly inferred?",
@@ -320,7 +323,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Of all the Arabic epic poems that have been popular at various times, only Sirat Bani Hilal is still publicly performed. Furthermore, while most other epics were only recited, Sirat Bani Hilal has usually been sung. The musical character of the performance, therefore, is the main reason for its longevity.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -334,7 +337,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -406,7 +410,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Unknown",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "George: Throughout the 1980s and early 1990s, hardly anyone learned ballroom dancing.",
     "questionStem": "Why is it that a large number of people now take ballroom dancing lessons?",
@@ -417,7 +421,10 @@
       "D": "account for the beginning of the revival of interest in ballroom dancing",
       "E": "demonstrate that all types of ballroom dancing are currently popular"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -442,7 +449,7 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "A summer day is “pleasant” if there are intermittent periods of wind and the temperature stays below 84°F (29°C) all afternoon. A summer day with high humidity levels is “oppressive” either if the temperature stays above 84°F (29°C) all afternoon or if there is no wind.",
     "questionStem": "Which one of the following summer weather reports most closely conforms to the principles stated above?",

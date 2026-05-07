@@ -244,7 +244,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "We learn to use most of the machines in our lives through written instructions, without knowledge of the machines' inner workings, because most machines are specifically designed for use by nonexperts. So, in general, attaining technological expertise would prepare students for tomorrow's job market no better than would a more traditional education stressing verbal and quantitative skills.",
     "questionStem": "The argument depends on assuming which one of the following?",
@@ -255,7 +255,10 @@
       "D": "Students cannot attain technological expertise and also receive an education that does not neglect verbal and quantitative skills.",
       "E": "When learning to use a machine, technological expertise is never more important than verbal and quantitative skills."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT113",

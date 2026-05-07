@@ -4,7 +4,7 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A nonprofit organization concerned with a social issue sent out a fund-raising letter to 5,000 people. The letter was accompanied by a survey soliciting recipients’ opinions. Of the 300 respondents, 283 indicated in the survey that they agreed with the organization’s position on the social issue. This suggests that most of the 5,000 people to whom the letter was sent agreed with that position.",
     "questionStem": "The argument is most vulnerable to criticism on which one of the following grounds?",
@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "During periods when the Roman empire was thriving, Europe consistently experienced weather that was favorable for agriculture.",
       "E": "Total food production in Europe was likely greater in the years around 550 A.D. than in the years around 250 A.D."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -119,7 +123,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The Kuna, a people native to several Panamanian islands, generally have a low incidence of high blood pressure. But Kuna who have moved to the Panamanian mainland do not have a low incidence of high blood pressure. Kuna who live on the islands, unlike those who live on the mainland, typically drink several cups of cocoa a day. This cocoa is minimally processed and thus high in flavonoids.",
     "questionStem": "Of the following, which one is most strongly supported by the information above?",
@@ -130,7 +134,10 @@
       "D": "Kuna who live on the Panamanian mainland generally have higher blood pressure than other people who live on the mainland.",
       "E": "Drinking several cups of flavonoid-rich cocoa per day tends to prevent high blood pressure."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -148,7 +155,10 @@
       "D": "whether jurors typically draw upon their own scientific knowledge when weighing scientific evidence presented at trial",
       "E": "how jurors respond to situations in which different expert witnesses give conflicting assessments of scientific evidence"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -227,7 +237,7 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Parallel Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Pollution is a problem wherever there are people who are indifferent to their environment, and nature’s balance is harmed wherever there is pollution. So wherever there are people who are indifferent to their environment, nature’s balance is harmed.",
     "questionStem": "The reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -259,14 +269,17 @@
       "D": "It provides evidence in support of the conclusion of the argument.",
       "E": "It expresses the conclusion of the argument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "A good manager must understand people and be able to defuse tense situations. But anyone who is able to defuse tense situations must understand people. Since Ishiko is able to defuse tense situations, she must be a good manager.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -381,7 +394,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Journalist: People whose diets contain a relatively large amount of iron are significantly more likely to develop Parkinson’s disease than are those whose diets contain less of this mineral. Limiting one’s intake of meats, seafood, and other foods rich in iron should thus reduce one’s chances of contracting this disease.",
     "questionStem": "Which one of the following, if true, most strengthens the journalist’s reasoning?",
@@ -392,7 +405,10 @@
       "D": "The iron in some foods is much less easily absorbed by the body than the iron contained in other foods.",
       "E": "The amounts of iron-rich foods consumed by people starts to decline beginning at age 50."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -435,7 +451,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "For a work to be rightly thought of as world literature, it must be received and interpreted within the writer’s own national tradition and within external national traditions. A work counts as being interpreted within a national tradition if authors from that tradition use the work in at least one of three ways: as a positive model for the development of their own tradition, as a negative case of a decadent tendency that must be consciously avoided, or as an image of radical otherness that prompts refinement of the home tradition.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",

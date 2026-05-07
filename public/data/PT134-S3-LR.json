@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "Principle: If you sell an item that you know to be defective, telling the buyer that the item is sound, you thereby commit fraud. Application: Wilton sold a used bicycle to Harris, knowing very little about its condition. Wilton told Harris that the bicycle was in good working condition, but Harris soon learned that the brakes were defective. Wilton was therefore guilty of fraud.",
     "questionStem": "The application of the principle is most vulnerable to criticism on the grounds that",
@@ -101,7 +101,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Local resident: An overabundance of algae must be harmful to the smaller fish in this pond. During the fifteen or so years that I have lived here, the few times that I have seen large numbers of dead small fish wash ashore in late summer coincide exactly with the times that I have noticed abnormally large amounts of algae in the water.",
     "questionStem": "The local resident’s argument is most vulnerable to criticism on the grounds that it",
@@ -114,7 +114,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -218,7 +219,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Some gardening books published by Garden Path Press recommend tilling the soil and adding compost before starting a new garden on a site, but they do not explain the difference between hot and cold composting. Since any gardening book that recommends adding compost is flawed if it does not explain at least the basics of composting, some books published by Garden Path are flawed.",
     "questionStem": "The argument requires the assumption that",
@@ -326,14 +327,17 @@
       "D": "The protein BA directly interferes with the cognitive functions of the brain.",
       "E": "Immune reactions by microglia occur in certain diseases of the brain other than Alzheimer’s."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT134",
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Lawyer: One is justified in accessing information in computer files without securing authorization from the computer’s owner only if the computer is typically used in the operation of a business. If, in addition, there exist reasonable grounds for believing that such a computer contains data usable as evidence in a legal proceeding against the computer’s owner, then accessing the data in those computer files without the owner’s authorization is justified.",
     "questionStem": "The principles stated by the lawyer most strongly support which one of the following judgments?",
@@ -375,7 +379,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "One should not play a practical joke on someone if it shows contempt for that person or if one believes it might bring significant harm to that person.",
     "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
@@ -396,7 +400,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Economics professor: Marty’s Pizza and Checkers Pizza are the two major pizza parlors in our town. Marty’s sold coupon books including coupons good for one large plain pizza at any local pizza parlor, at Marty’s expense. But Checkers refused to accept these coupons, even though they were redeemed by all other local pizza parlors. Accepting them would have cost Checkers nothing and would have satisfied those of its potential customers who had purchased the coupon books. This shows that Checkers’s motive in refusing to accept the coupons was simply to hurt Marty’s Pizza.",
     "questionStem": "Which one of the following, if assumed, enables the economics professor’s conclusion to be properly drawn?",
@@ -409,7 +413,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -471,7 +476,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Journalist: The trade union members at AutoFaber Inc. are planning to go on strike. Independent arbitration would avert a strike, but only if both sides agree to accept the arbitrator’s recommendations as binding. However, based on past experience, the union is quite unlikely to agree to this, so a strike is likely.",
     "questionStem": "Which one of the following arguments exhibits a pattern of reasoning most similar to that exhibited by the journalist’s argument?",

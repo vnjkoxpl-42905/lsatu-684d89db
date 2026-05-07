@@ -118,7 +118,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Although many political candidates object to being made the target of advertising designed to cast them in an adverse light, such advertising actually benefits its targets because most elections have been won by candidates who were the targets of that kind of advertising.",
     "questionStem": "The pattern of flawed reasoning in the argument most closely parallels that in which one of the following?",
@@ -131,7 +131,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -211,7 +212,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "City councilperson: Many city residents oppose the city art commission's proposed purchase of an unusual stone edifice, on the grounds that art critics are divided over whether the edifice really qualifies as art. But I argue that the purpose of art is to cause experts to debate ideas, including ideas about what constitutes art itself. Since the edifice has caused experts to debate what constitutes art itself, it does qualify as art.",
     "questionStem": "Which one of the following, if assumed, enables the conclusion of the city councilperson's argument to be properly inferred?",
@@ -251,7 +252,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Theater managers will not rent a film if they do not believe it will generate enough total revenue—including food-and-beverage concession revenue—to yield a profit. Therefore, since film producers want their films to be shown as widely as possible, they tend to make films that theater managers consider attractive to younger audiences.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -291,7 +292,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Corporate businesses, like species, must adapt to survive. Businesses that are no longer efficient will become extinct. But sometimes a business cannot adapt without changing its core corporate philosophy. Hence, sometimes a business can survive only by becoming a different corporation.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -448,7 +449,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The Kiffer Forest Preserve, in the northernmost part of the Abbimac Valley, is where most of the bears in the valley reside. During the eight years that the main road through the preserve has been closed the preserve's bear population has nearly doubled. Thus, the valley's bear population will increase if the road is kept closed.",
     "questionStem": "Which one of the following, if true, most undermines the argument?",
@@ -459,14 +460,17 @@
       "D": "The bear population in areas of the Abbimac Valley outside the Kiffer Forest Preserve has decreased over the past eight years.",
       "E": "The bear population in the Abbimac Valley has remained about the same over the past eight years."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "If a wig has any handmade components, it is more expensive than one with none. Similarly, a made-to-measure wig ranges from medium-priced to expensive. Handmade foundations are never found on wigs that do not use human hair. Furthermore, any wig that contains human hair should be dry-cleaned. So all made-to-measure wigs should be dry-cleaned.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",

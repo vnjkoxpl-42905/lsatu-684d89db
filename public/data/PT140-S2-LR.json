@@ -75,7 +75,10 @@
       "D": "The health problems that some people have developed shortly after receiving vaccinations have been more serious than the health problems that the vaccines were intended to prevent.",
       "E": "In a few cases in which people developed serious health problems shortly after taking other medications, these problems were initially attributed to coincidence but were later determined to be due to the medications."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -191,7 +194,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -403,7 +407,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If the budget does not allow for more dairy inspectors to be hired, most of the large dairies in the central valley will not meet federal standards governing the disposal of natural wastes, which can seep into streams and groundwater. The new district budget, however, does not allow for the hiring of more dairy inspectors. Consequently, most of the district’s drinking water is likely to become polluted.",
     "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
@@ -424,7 +428,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Company president: Almost every really successful product introduced in the last ten years has been launched by a massive television advertising campaign. We are using a massive television advertising campaign to introduce the Vegetaste Burger. So the Vegetaste Burger will probably be very successful.",
     "questionStem": "The flawed nature of the company president’s argument can most effectively be demonstrated by noting that, by parallel reasoning, we could conclude that",

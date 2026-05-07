@@ -15,7 +15,10 @@
       "D": "evidence that knee-level switches are not in fact hazardous",
       "E": "an indication that Acme Engines had been aware of the potential dangers of knee-level switches before the wreck occurred"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -290,7 +293,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Travaillier Corporation has recently hired employees with experience in the bus tour industry, and its executives have also been negotiating with charter bus companies that subcontract with bus tour companies. But Travaillier has traditionally focused on serving consumers who travel primarily by air, and marketing surveys show that Travaillier's traditional consumers have not changed their vacation preferences. Therefore, Travaillier must be attempting to enlarge its consumer base by attracting new customers.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -301,14 +304,17 @@
       "D": "Some of Travaillier's competitors have increased profits by concentrating their attention on their customers who spend the most on vacations.",
       "E": "The industry consultants employed by Travaillier typically recommend that companies expand by introducing their current customers to new products and services."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT133",
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Educator: Traditional classroom education is ineffective because education in such an environment is not truly a social process and only social processes can develop students' insights. In the traditional classroom, the teacher acts from outside the group and interaction between teachers and students is rigid and artificial.",
     "questionStem": "The educator's conclusion follows logically if which one of the following is assumed?",
@@ -406,7 +412,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Principle: A police officer is eligible for a Mayor's Commendation if the officer has an exemplary record, but not otherwise; an officer eligible for the award who did something this year that exceeded what could be reasonably expected of a police officer should receive the award if the act saved someone's life.\nConclusion: Officer Franklin should receive a Mayor's Commendation but Officer Penn should not.",
     "questionStem": "From which one of the following sets of facts can the conclusion be properly drawn using the principle?",

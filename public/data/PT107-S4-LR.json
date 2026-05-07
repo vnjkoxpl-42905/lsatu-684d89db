@@ -83,7 +83,7 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The following passage is used for Section 4, questions 4 through 5.\nPolitical opinion and analysis outside the mainstream rarely are found on television talk shows, and it might be thought that this state of affairs is a product of the political agenda of the television stations themselves. In fact, television stations are driven by the same economic forces as sellers of more tangible goods. Because they must attempt to capture the largest possible share of the television audience for their shows, they air only those shows that will appeal to large numbers of people. As a result, political opinions and analyses aired on television talk shows are typically bland and innocuous.",
     "questionStem": "The explanation offered by the author of the passage makes the assumption that",
@@ -96,7 +96,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -200,7 +201,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Sometimes when their trainer gives the hand signal for “Do something creative together,” two dolphins circle a pool in tandem and then leap through the air simultaneously. On other occasions the same signal elicits synchronized backward swims or tail-waving. These behaviors are not simply learned responses to a given stimulus. Rather, dolphins are capable of higher cognitive functions that may include the use of language and forethought.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -211,14 +212,17 @@
       "D": "Dolphins do not interact with humans the way they interact with one another.",
       "E": "Some of the behaviors mentioned are exhibited by dolphins in their natural habitat."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT107",
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Editorialist: Drivers with a large number of demerit points who additionally have been convicted of a serious driving-related offense should either be sentenced to jail or be forced to receive\ndriver re-education, since to do otherwise would be to allow a crime to go unpunished. Only if such drivers are likely to be made more responsible drivers should driver re-education be recommended for them. Unfortunately, it is always almost impossible to make drivers with a large number of demerit points more responsible drivers.",
     "questionStem": "If the editorialist’s statements are true, they provide the most support for which one of the following?",
@@ -395,7 +399,10 @@
       "D": "The natural habitat of amphibians has not become smaller over the past century.",
       "E": "Amphibian populations have declined continuously for the last 50 years."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -438,7 +445,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Must be True",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Quasars—celestial objects so far away that their light\ntakes at least 500 million years to reach Earth—have been seen since 1963. For anything that far away to appear from Earth the way quasars do, it would have to burn steadily at a rate that produces more light than 90 billion suns would produce. But nothing that burns at a rate that produces that much light could exist for more than about 100 million years.",
     "questionStem": "If the statements above are true, which one of the following must also be true on the basis of them?",
@@ -459,7 +466,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Medical researcher: As expected, records covering the last four years of ten major hospitals indicate that babies born prematurely were more likely to have low birth weights and to suffer from health problems than were babies not born prematurely. These records also indicate that mothers who had received adequate prenatal care were less likely to have low birth weight babies than were mothers who had received inadequate prenatal care. Adequate prenatal care, therefore, significantly decreases the risk of low birth weight babies.",
     "questionStem": "Which one of the following, if true, most weakens the medical researcher’s argument?",
@@ -470,7 +477,10 @@
       "D": "Some babies not born prematurely, whose mothers received adequate prenatal care, have low birth weights.",
       "E": "Women who receive adequate prenatal care are less likely to give birth prematurely than are women who do not receive adequate prenatal care."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT107",

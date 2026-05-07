@@ -22,7 +22,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "Acme’s bank loan must be immediately repaid in full if Acme’s earnings fall below $1 million per year. If Acme has to repay the entire loan immediately, it will have to declare bankruptcy. Acme had seemed safe from bankruptcy, having reported annual earnings of well over $1 million in each year it has had the bank loan. However, Acme has now admitted overstating its earnings for last year, so it will have to declare bankruptcy.",
     "questionStem": "The argument requires the assumption that",
@@ -165,7 +165,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Cereal advertisement: Fitness experts say that regular exercise is the most effective way to become physically fit, and studies have shown that adults who eat cereal every day exercise more regularly than adults who do not eat cereal. So by eating Fantastic Flakes every morning, you too will be on the most effective path to physical fitness.",
     "questionStem": "The argumentation in the advertisement is flawed in that it",
@@ -178,7 +178,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -261,7 +262,7 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Psychology researchers observed that parents feel emotion while singing to their infants. The researchers hypothesized that this emotion noticeably affects the sound of the singing. To test this hypothesis the parents were recorded while singing to their infants and while singing with no infant present. They were instructed to make the two renditions as similar as possible. These recordings were then played for psychologists who had not observed the recordings being made. For 80 percent of the recordings, these psychologists were able to correctly identify, by listening alone, which recordings were of parents singing to their children. The researchers concluded that their hypothesis was correct.",
     "questionStem": "Which one of the following, if true, would most strengthen the researchers’ reasoning?",
@@ -272,7 +273,10 @@
       "D": "When a person feels emotion, that emotion provokes involuntary physiological responses that affect the vocal cords and lungs.",
       "E": "Most of the parents who participated in the study believed that the emotion they felt while singing to their infants affected their singing."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -300,7 +304,7 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Voter: Our prime minister is evidently seeking a job at an international organization. Anyone seeking a job at an international organization would surely spend a lot of time traveling abroad, and our prime minister has spent more days abroad than at home so far this year.",
     "questionStem": "Which one of the following arguments is most similar in its flawed reasoning to the voter’s argument?",
@@ -373,7 +377,10 @@
       "D": "There is clear evidence that at least some groups of Neanderthals living more recently than 60,000 years ago developed methods of preserving meat other than smoking it.",
       "E": "The ability to preserve meat through smoking would have made the Neanderthal humans less vulnerable to poor periods of hunting."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -419,7 +426,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "After a hepadnavirus inserts itself into a chromosome of an animal, fragments of the virus are passed on to all of that animal’s descendants. A hepadnavirus fragment is present in a chromosome of the zebra finch and in precisely the same location in a corresponding chromosome of the dark-eyed junco. The fact that these two bird species diverged from each other about 25 million years ago therefore means that the hepadnavirus is at least 25 million years old.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -430,7 +437,10 @@
       "D": "Many bird species other than the zebra finch and the dark-eyed junco contain fragments of the hepadnavirus.",
       "E": "The presence of a hepadnavirus in an animal species does not affect the likelihood of that species’ survival."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT147",

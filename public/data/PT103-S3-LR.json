@@ -251,7 +251,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Classification Confidence:** High 14. A commercial insect trap consists of a small box containing pesticide mixed with glucose, a sweet substance known to attract insect pests. Yet in households where this type of trap has been used regularly for the past several years, recently installed traps are far less effective in eliminating insect pests than were traps of that type installed several years ago. Research scientists have hypothesized that traps in those households decreased in effectiveness because successive generations of the pests developed a resistance to the pesticide in the traps.",
     "questionStem": "Which one of the following, if true, most seriously undermines the hypothesis?",
@@ -262,7 +262,10 @@
       "D": "After the manufacturer of the traps increased the concentration of the pesticide used in the traps, the traps were no more effective in eliminating household insect pests than were the original traps.",
       "E": "The kind of glucose used to bait the traps is one of several different kinds of glucose that occur naturally."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT103",

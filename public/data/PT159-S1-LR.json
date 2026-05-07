@@ -79,7 +79,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Researchers gave each of eighteen subjects a playing card, then offered them money to lie to a computer about the identity of the card while undergoing a scan by functional magnetic resonance imaging (fMRI). When subjects lied, the scans revealed increased activity in several regions of the brain known to be stimulated by stress. This supports the idea that fMRI can eventually form the basis of an effective lie detector.",
     "questionStem": "Which one of the following would, if true, most weaken the argument above?",
@@ -90,14 +90,17 @@
       "D": "Telling a carefully planned lie causes less stress than telling a lie spontaneously.",
       "E": "Stress reactions in the brains of subjects who are being truthful are similar to those that occur in the brains of subjects who are lying."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Prominent government officials have denied that their policies have produced serious environmental degradation. But the facts show otherwise. Last year, at the urging of certain mining companies, the government repealed a long-standing provision prohibiting the dumping of mining wastes into streams. Since that time, hundreds of miles of vital streams have been buried under bulldozed mining wastes.",
     "questionStem": "The argument relies on which one of the following assumptions?",
@@ -108,14 +111,17 @@
       "D": "The government is generally more responsive to pressures from the mining industry than from environmentalists.",
       "E": "If the ban on dumping mining wastes in streams had not been repealed, considerably less mining waste would have found its way into streams."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Critic: It generally holds true of concert pianists that the more famous the musician, the greater the pleasure of his or her audience. In my view, this is only fair and should give no cause for cynicism about the ability of audiences to distinguish good playing from bad.",
     "questionStem": "Which one of the following, if true, most strongly supports the critic’s view?",
@@ -126,14 +132,17 @@
       "D": "Even the finest concert pianists cannot play consistently well at every performance.",
       "E": "The very best concert pianists often perform works that are difficult for audiences to appreciate."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Scientists found the remains of several species of mites trapped in rocks in a high-altitude cave. Radioactive dating shows that the mites were trapped about 2,000 years ago. The mite species in the rocks no longer live in the vicinity of the cave, but they are found a few miles away in a cooler area. Therefore, the area around the cave was probably cooler 2,000 years ago, since _______.",
     "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
@@ -144,7 +153,10 @@
       "D": "the mite species found in the rocks only live at high altitudes",
       "E": "there are fewer mite species living in the vicinity of the cave today than there were 2,000 years ago"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -286,7 +298,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "A recent study carefully tracked the specific behaviors of five East African chimpanzee groups of one subspecies, and of two West African groups of another subspecies, in activities such as grooming and foraging. The study found that one of the East African groups was behaviorally more similar to the West African groups than to the other East African groups. It is therefore likely that these behaviors are determined by cultural factors rather than by genetics.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
@@ -297,7 +309,10 @@
       "D": "The behavioral differences in the chimpanzee groups studied are sufficient to make each group recognizably distinct from all the others.",
       "E": "Of the chimpanzee groups studied, the five East African groups live in closer proximity to each other than do the two West African groups."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT159",

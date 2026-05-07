@@ -133,7 +133,7 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Toddlers are not being malicious when they bite people. For example, a child may want a toy, and feel that the person he or she bites is preventing him or her from having it.",
     "questionStem": "The situation as described above most closely conforms to which one of the following generalizations?",
@@ -144,14 +144,17 @@
       "D": "Toddlers do not recognize that by biting people they often thwart their own ends.",
       "E": "Resorting to biting people is in some cases an effective way for toddlers to get what they want."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Consumer advocate: Last year's worldwide alarm about a computer 'virus'—a surreptitiously introduced computer program that can destroy other programs and data—was a fraud. Companies selling programs to protect computers against such viruses raised worldwide concern about the possibility that a destructive virus would be activated on a certain date. There was more smoke than fire, however; only about a thousand cases of damage were reported around the world. Multitudes of antivirus programs were sold, so the companies' warning was clearly only an effort to stimulate sales.",
     "questionStem": "The reasoning in the consumer advocate's argument is flawed because this argument",
@@ -162,7 +165,10 @@
       "D": "uses inflammatory language as a substitute for providing any evidence",
       "E": "overlooks the possibility that the protective steps taken did work and, for many computers, prevented the virus from causing damage"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -180,7 +186,10 @@
       "D": "When Drosophila fruit flies were placed before a Glomosus web and a synthetic web of similar pattern that also reflected ultraviolet light and both webs were illuminated with white light containing an ultraviolet component, many of the fruit flies flew to the Glomosus web.",
       "E": "When Drosophila fruit flies were placed before two Glomosus webs, one illuminated with white light containing an ultraviolet component and one illuminated with white light without an ultraviolet component, the majority flew to the ultraviolet reflecting web."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT102",

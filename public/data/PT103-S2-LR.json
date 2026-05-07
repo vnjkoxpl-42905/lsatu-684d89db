@@ -212,7 +212,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The higher the average fat intake among the residents of a country, the higher the incidence of cancer in that country; the lower the average fat intake, the lower the incidence of cancer. So individuals who want to reduce their risk of cancer should reduce their fat intake.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -223,7 +223,10 @@
       "D": "The countries with high average fat intake are also the countries with the highest levels of environmental pollution.",
       "E": "An individual resident of a country whose population has a high average fat intake may have a diet with a low fat intake."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -287,7 +290,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Every new play that runs for more than three months is either a commercial or a critical success. Last year, all new plays that were critical successes were also commercial successes. Therefore, every new play that ran for more than three months last year was a commercial success.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",

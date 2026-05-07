@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Analogy",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Researcher: It is widely believed that, given its northerly latitude, England’s mild winters must be due to the Gulf Stream, which brings warm water flowing northeastward across the Atlantic Ocean. But this belief is mistaken. While it is true that the Gulf Stream brings tropical water to England, in the Pacific Ocean the analogous Kuroshio Current brings tropical water only as far north as Oregon. Yet North America’s west coast has mild winters well north of that point.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the researcher’s argument?",
@@ -15,7 +15,10 @@
       "D": "In the Pacific Ocean, the Kuroshio Current brings tropical water only as far north as Oregon.",
       "E": "North America’s west coast has mild winters well north of Oregon."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -58,7 +61,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Warner: Until recently, most competitive swimmers were high school or university students. Now, more and more competitive swimmers are continuing well beyond their university years. Clearly, better training regimens have allowed today’s competitive swimmers to stay fitter longer than swimmers of the past. Young: Not necessarily. No one has the time to both be a competitive swimmer and hold an outside job. But unlike in the past, today’s competitive swimmers can make a living at their sport.",
     "questionStem": "Young responds to Warner’s argument by",
@@ -71,7 +74,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -208,7 +212,7 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "The Amazon River flows eastward into the Atlantic Ocean from its source in the western part of South America. The land through which the Amazon flows is now cut off from the Pacific Ocean to the west by the Andes Mountains. Yet certain freshwater fish that inhabit the Amazon are descended from now-extinct saltwater fish known to have inhabited the Pacific Ocean but not the Atlantic. For this reason, some scientists hypothesize that the Amazon River once flowed into the Pacific Ocean.",
     "questionStem": "Which one of the following, if true, provides additional evidence in support of the hypothesis that the Amazon River once flowed into the Pacific Ocean?",
@@ -219,7 +223,10 @@
       "D": "The Andes Mountains extend from the northernmost to the southernmost extremes of the South American continent.",
       "E": "There are very few fish species that are known to be able to survive in both fresh and salt water."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -338,7 +345,7 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Evaluate",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "European wood ants incorporate large quantities of solidified conifer resin into their nests. Conifer resin is a natural disinfectant that has been shown to kill strains of bacteria that can cause disease in wood ants. Thus, the wood ants’ use of conifer resin probably came about as a disease-protection measure.",
     "questionStem": "Which one of the following would be most useful to know in order to evaluate the strength of the argument?",
@@ -349,7 +356,10 @@
       "D": "whether the use of conifer resin affords structural benefits to European wood ants’ nests",
       "E": "whether the disinfectant properties of conifer resin evolved as a disease-protection measure for conifer trees"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT152",

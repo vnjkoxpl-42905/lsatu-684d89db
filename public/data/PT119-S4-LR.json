@@ -58,7 +58,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Anne: Halley's Comet, now in a part of its orbit relatively far from the Sun, recently flared brightly enough to be seen by telescope. No comet has ever been observed to flare so far from the Sun before, so such a flare must be highly unusual.\nSue: Nonsense. Usually no one bothers to try to observe comets when they are so far from the Sun. This flare was observed only because an observatory was tracking Halley's Comet very carefully.",
     "questionStem": "Sue challenges Anne's reasoning by",
@@ -71,7 +71,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -100,7 +101,7 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Skeletal remains of early humans indicate clearly that our ancestors had fewer dental problems than we have. So, most likely, the diet of early humans was very different from ours.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -113,7 +114,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -312,7 +314,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Researcher: Hard water contains more calcium and magnesium than soft water contains. Thus, those who drink mostly soft water incur an increased risk of heart disease, stroke, and hypertension, for people being treated for these conditions tend to have lower levels of magnesium in their blood.",
     "questionStem": "Which one of the following, if true, most undermines the researcher's argument?",
@@ -323,7 +325,10 @@
       "D": "The ingestion of magnesium supplements inhibits the effectiveness of many medicines used to treat high blood pressure and heart disease.",
       "E": "Compounds commonly used to treat hypertension and heart disease diminish the body's capacity to absorb and retain magnesium."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -405,7 +410,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "All highly successful salespersons are both well organized and self-motivated, characteristics absent from many salespersons who are not highly successful. Further, although only those who are highly successful are well known among their peers, no salespersons who are self-motivated regret their career choices.",
     "questionStem": "If all of the statements above are true, which one of the following must be true?",
@@ -426,7 +431,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The fact that people who exercise vigorously are sick less often than average does not prove that vigorous exercise prevents illness, for whether one exercises vigorously or not depends in part on one's preexisting state of health.",
     "questionStem": "The reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -437,14 +442,17 @@
       "D": "The fact that taller children often outperform other children at basketball does not show that height is a decisive advantage in basketball, for taller children tend to play basketball more frequently than do other children.",
       "E": "The fact that two diseases have similar symptoms does not establish that they have the same underlying cause, for dissimilar causes can have similar effects."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT119",
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Must be True",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Biologist: We know the following things about plant X. Specimens with fuzzy seeds always have long stems but never have white flowers. Specimens with curled leaves always have white flowers, and specimens with thorny seedpods always have curled leaves. A specimen of plant X in my garden has a long stem and curled leaves.",
     "questionStem": "From the biologist's statements, which one of the following can be properly inferred about the specimen of plant X in the biologist's garden?",

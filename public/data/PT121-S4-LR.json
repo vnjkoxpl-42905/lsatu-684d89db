@@ -25,7 +25,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Sleep research has demonstrated that sleep is characterized by periods of different levels of brain activity. People experience dreams during only one of these periods, known as REM (rapid eye movement) sleep. Test subjects who are chronically deprived of REM sleep become irritable during waking life. This shows that REM sleep relieves the stresses of waking life.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -36,7 +36,10 @@
       "D": "Only some people awakened during REM sleep can report the dreams they were having just before being awakened.",
       "E": "Other factors being equal, people who normally have shorter periods of REM sleep tend to experience more stress."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -156,7 +159,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A recent study of several hundred female physicians showed that their tendency to develop coronary disease was inversely proportional to their dietary intake of two vitamins, folate and B6. The researchers concluded that folate and B6 inhibit the development of heart disease in women.",
     "questionStem": "Which one of the following would, if true, most weaken the researchers' conclusion?",
@@ -167,7 +170,10 @@
       "D": "The physicians in the study had not been screened in advance to ensure that none had preexisting heart conditions.",
       "E": "The vitamins folate and B6 are present only in very small amounts in most foods."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -292,7 +298,7 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Economist: A tax is effective if it raises revenue and burdens all and only those persons targeted by the tax. A tax is ineffective, however, if it does not raise revenue and it costs a significant amount of money to enforce.",
     "questionStem": "Which one of the following inferences is most strongly supported by the principles stated by the economist?",
@@ -406,7 +412,7 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "If there is an election, you can either vote or not. If you vote, you have the satisfaction of knowing you influenced the results of the election; if you do not vote, you have no right to complain about the results. So, following an election, either you will have the satisfaction of knowing you influenced its results or you will have no right to complain.",
     "questionStem": "The reasoning in which one of the following most closely resembles that in the argument above?",

@@ -4,7 +4,7 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Carl is clearly an incompetent detective. He has solved a smaller percentage of the cases assigned to him in the last 3 years—only 1 out of 25—than any other detective on the police force.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument above?",
@@ -15,7 +15,10 @@
       "D": "Carl was previously a detective in a police department in another city, and in the 4 years he spent there, he solved only 1 out of 30 crimes.",
       "E": "Many of the officers in the police department in which Carl serves were hired or promoted within the last 5 years."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -61,7 +64,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In his book, published in 1892, Grey used the same metaphor that Jordan used in her book, which was published in 1885. The metaphor is so unusual that there is little chance that two different people independently created it. Therefore, it is highly likely that Grey read Jordan's book.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -72,7 +75,10 @@
       "D": "Jordan used the same metaphor in a work that she wrote in 1894 and published in 1895.",
       "E": "According to most scholars, Grey was generally a more inventive writer than Jordan and developed many original metaphors."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -246,7 +252,7 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In 1963, a young macaque monkey was observed venturing into a hot spring to retrieve food which had fallen in. Soon, other macaques began to enter the spring, and over a few years this behavior was adopted by the entire troop. Prior to 1963, no macaques had ever been observed in the hot spring; by 1990, the troop was regularly spending time there during the winters. Thus, these macaques are able to adopt and pass on new patterns of social behavior, and are not complete captives of their genetic heritage.",
     "questionStem": "Which one of the following is an assumption required by the argument above?",
@@ -257,7 +263,10 @@
       "D": "The social behaviors of macaques are completely independent of their genetic heritage.",
       "E": "The macaques' new pattern of behavior will persist over several generations."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -326,7 +335,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "While it is true that bees' vision is well suited to the task of identifying flowers by their colors, it is probable that flowers developed in response to the type of vision that bees have, rather than bees' vision developing in response to flower color.",
     "questionStem": "Which one of the following, if true, most strongly supports the statement above?",
@@ -337,7 +346,10 @@
       "D": "Many nonflowering plants rely on bees.",
       "E": "Present-day bees rely exclusively on flowers for their food."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT126",

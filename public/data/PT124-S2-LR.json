@@ -190,7 +190,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "In order to maintain a high standard of living, a nation must maintain a functioning infrastructure. Major investment in the improvement of its infrastructure will, over time, reward a nation with a corresponding rise in its standard of living. Hence a nation whose standard of living is on the rise can be safely assumed to be a nation that has invested heavily in improving its infrastructure.",
     "questionStem": "The reasoning in the argument is flawed because the argument fails to take into account that",
@@ -212,7 +212,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Method",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Yang: Yeast has long been known to be a leaven, that is, a substance used in baking to make breads rise. Since biblical evidence ties the use of leavens to events dating back to 1200 B.C., we can infer that yeast was already known to be a leaven at that time.\nCampisi: I find your inference unconvincing; several leavens other than yeast could have been known in 1200 B.C.",
     "questionStem": "Campisi counters Yang's argument by",
@@ -225,7 +225,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -447,7 +448,7 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Newscaster: In order for the public to participate in a meaningful way in the current public policy debate, one requirement is that the issues be stated in terms the public can understand. The mayor's speech has just stated these issues in such terms, so now the public at least might be able to participate in a meaningful way in the current public policy debate.",
     "questionStem": "Which one of the following most closely parallels the newscaster's argument in its reasoning?",

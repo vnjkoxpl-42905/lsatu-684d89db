@@ -115,7 +115,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "If you know a lot about history, it will be easy for you to impress people who are intellectuals. But unfortunately, you will not know much about history if you have not, for example, read a large number of history books. Therefore, if you are not well versed in history due to a lack of reading, it will not be easy for you to impress people who are intellectuals.",
     "questionStem": "The argument’s reasoning is flawed because the argument overlooks the possibility that",
@@ -276,7 +276,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "It is often said that beauty is subjective. But this judgment has to be false. If one tries to glean the standard of beauty of earlier cultures from the artistic works they considered most beautiful, one cannot but be impressed by its similarity to our own standard. In many fundamental ways, what was considered beautiful in those cultures is still considered beautiful in our own time.",
     "questionStem": "Which one of the following statements, if true, most weakens the argument?",
@@ -287,7 +287,10 @@
       "D": "Much of what passes for important artistic work today would not be considered beautiful even by contemporary standards.",
       "E": "In most cultures art is owned by a small social elite."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -333,7 +336,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Book publishers have traditionally published a few books that they thought were of intrinsic merit even though these books were unlikely to make a profit. Nowadays, however, fewer of these books are being published. It seems, therefore, that publishers now, more than ever, are more interested in making money than in publishing books of intrinsic value.",
     "questionStem": "Which one of the following statements, if true, most\nseriously weakens the argument?",
@@ -344,7 +347,10 @@
       "D": "There have always been authors unwilling to be published unless a profit is guaranteed.",
       "E": "In recent years, profits in the book publishing industry have been declining."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -362,7 +368,10 @@
       "D": "Most people can cope with a very high information density.",
       "E": "Some people are being overwhelmed by too much information."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -458,14 +467,17 @@
       "D": "It is the tentative conclusion of previous research that appears to be falsified by the scientists’ discovery of the mechanism by which bacteria become resistant to mercury poisoning.",
       "E": "It is a generalization assumed by the scientists to conclusively prove that the explanation of their problem case must involve reference to the genetic makeup of the penicillin-resistant bacteria."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT104",
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "All any reporter knows about the accident is what the press agent has said. Therefore, if the press agent told every reporter everything about the accident, then no reporter knows any more about it than any other reporter. If no reporter knows any more about the accident than any other reporter, then no reporter can scoop all of the other reporters. However, the press agent did not tell every reporter everything about the accident. It follows that some reporter can scoop all of the other reporters.",
     "questionStem": "The argument’s reasoning is flawed because the argument fails to recognize that which one of the following is consistent with the facts the argument presents?",

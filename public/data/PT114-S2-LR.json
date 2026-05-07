@@ -162,7 +162,10 @@
       "D": "The students in Ontario reported having more dreams overall, per student, than the students in California did.",
       "E": "The students in Ontario who reported having dreams about earthquakes recorded the dreams as having occurred after the California earthquake."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -322,7 +325,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "It is impossible to do science without measuring. It is impossible to measure without having first selected units of measurement. Hence, science is arbitrary, since the selection of a unit of measurement—kilometer, mile, fathom, etc.—is always arbitrary.",
     "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",

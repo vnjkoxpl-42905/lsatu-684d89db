@@ -341,7 +341,10 @@
       "D": "If a compromise between the proponents of economic growth and the environmentalists had been enacted rather than the current policies, the environment would have seen significantly less improvement.",
       "E": "The concern demonstrated by a nation for the health and integrity of its natural ecosystems leads to an increase in that nation's wealth."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT118",

@@ -43,7 +43,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "More women than men suffer from Alzheimer’s disease—a disease that is most commonly contracted by elderly persons. This discrepancy has often been attributed to women’s longer life span, but this theory may be wrong. A recent study has shown that prescribing estrogen to women after menopause, when estrogen production in the body decreases, may prevent them from developing the disease. Men’s supply of testosterone may help safeguard them against Alzheimer’s disease because much of it is converted by the body to estrogen, and testosterone levels stay relatively stable into old age.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
@@ -54,7 +54,10 @@
       "D": "The conversion of testosterone into estrogen may help safeguard men from Alzheimer’s disease.",
       "E": "Testosterone is necessary for preventing Alzheimer’s disease in older men."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -162,7 +165,10 @@
       "D": "It is offered as evidence for the claim that certain behaviors are often responsible for divorce.",
       "E": "It is cited as an established finding for which the argument proposes an explanation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -187,7 +193,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Method",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Linguist: Some people have understood certain studies as showing that bilingual children have a reduced “conceptual map” because bilingualism overstresses the child’s linguistic capacities. Vocabulary tests taken by bilingual children appear to show that these children tend to have a smaller vocabulary than do most children of the same age group. But these studies are deeply flawed, since the tests were given in only one language. Dual-language tests revealed that the children often expressed a given concept with a word from only one of their two languages.",
     "questionStem": "The linguist’s argument proceeds by",
@@ -198,7 +204,10 @@
       "D": "providing a different explanation for the apparent advantages of bilingualism from the explanation suggested by the results of certain studies",
       "E": "pointing out a methodological error in the technique used to obtain the purported evidence of a problem with bilingualism"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -236,7 +245,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -302,7 +312,7 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The following passage is used for Section 1, questions 16 through 17.\nOn the basis of the available evidence, Antarctica has generally been thought to have been covered by ice for at least the past 14 million years. Recently, however, three-million-year-old fossils of a kind previously found only in ocean-floor sediments were discovered under the ice sheet covering central Antarctica. About three million years ago, therefore, the Antarctic ice sheet must temporarily have melted. After all, either severe climatic warming or volcanic activity in Antarctica’s mountains could have melted the ice sheet, thus raising sea levels and submerging the continent.",
     "questionStem": "The reasoning in the argument is most vulnerable to which one of the following criticisms?",
@@ -315,7 +325,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -440,7 +451,7 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "In every case of political unrest in a certain country, the police have discovered that some unknown person or persons organized and fomented that unrest. Clearly, therefore, behind all the cases of political unrest in that country there has been a single mastermind who organized and fomented them all.",
     "questionStem": "The flawed reasoning in the argument above most closely parallels that in which one of the following?",

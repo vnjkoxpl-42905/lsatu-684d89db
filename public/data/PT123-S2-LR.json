@@ -79,7 +79,7 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Scientist: Earth's average annual temperature has increased by about 0.5 degrees Celsius over the last century. This warming is primarily the result of the buildup of minor gases in the atmosphere, blocking the outward flow of heat from the planet.",
     "questionStem": "Which one of the following, if true, would count as evidence against the scientist's explanation of Earth's warming?",
@@ -90,7 +90,10 @@
       "D": "Volcanic dust and other particles in the atmosphere reflect much of the Sun's radiation back into space before it can reach Earth's surface.",
       "E": "The accumulation of minor gases in the atmosphere has been greater over the last century than at any other time in Earth's history."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -250,7 +253,7 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "A cup of raw milk, after being heated in a microwave oven to 50 degrees Celsius, contains half its initial concentration of a particular enzyme, lysozyme. If, however, the milk reaches that temperature through exposure to a conventional heat source of 50 degrees Celsius, it will contain nearly all of its initial concentration of the enzyme. Therefore, what destroys the enzyme is not heat but microwaves, which generate heat.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -261,7 +264,10 @@
       "D": "Milk that has been heated in a microwave oven does not taste noticeably different from milk that has been briefly heated by exposure to a conventional heat source.",
       "E": "Heating any liquid by microwave creates small zones within it that are much hotter than the overall temperature that the liquid will ultimately reach."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -355,7 +361,10 @@
       "D": "No other major party in Banestria specifically addressed the issues of people who lived in semirural areas in 1935.",
       "E": "The greater the degree of economic distress someone is in, the more likely that person is to vote."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -380,7 +389,7 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Driver: My friends say I will one day have an accident because I drive my sports car recklessly. But I have done some research, and apparently minivans and larger sedans have very low accident rates compared to sports cars. So trading my sports car in for a minivan would lower my risk of having an accident.",
     "questionStem": "The reasoning in the driver's argument is most vulnerable to criticism on the grounds that this argument",
@@ -393,7 +402,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -419,7 +429,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Philosopher: An action is morally right if it would be reasonably expected to increase the aggregate well-being of the people affected by it. An action is morally wrong if and only if it would be reasonably expected to reduce the aggregate well-being of the people affected by it. Thus, actions that would be reasonably expected to leave unchanged the aggregate well-being of the people affected by them are also right.",
     "questionStem": "The philosopher's conclusion follows logically if which one of the following is assumed?",

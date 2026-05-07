@@ -40,7 +40,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Science columnist: It is clear why humans have so many diseases in common with cats. Many human diseases are genetically based, and cats are genetically closer to humans than are any other mammals except nonhuman primates. Each of the genes identified so far in cats has an exact counterpart in humans.",
     "questionStem": "Which one of the following, if true, most weakens the science columnist's explanation for the claim that humans have so many diseases in common with cats?",
@@ -51,7 +51,10 @@
       "D": "Many of the diseases humans have in common with cats are mild and are rarely diagnosed.",
       "E": "Humans have more genes in common with nonhuman primates than with cats."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -118,7 +121,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Superconductors are substances that conduct electricity without resistance at low temperatures. Their use, however, will never be economically feasible, unless there is a substance that superconducts at a temperature above minus 148 degrees Celsius. If there is such a substance, that substance must be an alloy of niobium and germanium. Unfortunately, such alloys superconduct at temperatures no higher than minus 160 degrees Celsius.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -325,14 +328,17 @@
       "D": "People's moods seem to vary with the color of the clothes they wear. Dark colors are associated with gloomy moods, and bright colors are associated with cheerful moods. This correlation resolves nothing, however. We cannot say whether it is the colors that cause the moods or the converse.",
       "E": "Linguists propose that the similarities between Greek and Latin are due to their common descent from an earlier language. But how are we to know that the similarities are not actually due to the two languages having borrowed structures from one another, as with the languages Marathi and Telegu?"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT124",
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Salesperson: When a salesperson is successful, it is certain that that person has been in sales for at least three years. This is because to succeed as a salesperson, one must first establish a strong client base, and studies have shown that anyone who spends at least three years developing a client base can eventually make a comfortable living in sales.",
     "questionStem": "The reasoning in the salesperson's argument is vulnerable to criticism on the grounds that it fails to consider the possibility that",
@@ -394,7 +400,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "The trees always blossom in May if April rainfall exceeds 5 centimeters. If April rainfall exceeds 5 centimeters, then the reservoirs are always full on May 1. The reservoirs were not full this May 1 and thus the trees will not blossom this May.",
     "questionStem": "Which one of the following exhibits a flawed pattern of reasoning most similar to the flawed pattern of reasoning in the argument above?",

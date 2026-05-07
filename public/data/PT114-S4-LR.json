@@ -76,7 +76,7 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Strengthen EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Toxicologist: A survey of oil-refinery workers who work with MBTE, an ingredient currently used in some smog-reducing gasolines, found an alarming incidence of complaints about headaches, fatigue, and shortness of breath. Since gasoline containing MBTE will soon be widely used, we can expect an increased incidence of headaches, fatigue, and shortness of breath.",
     "questionStem": "Each of the following, if true, strengthens the toxicologist’s argument except:",
@@ -87,7 +87,10 @@
       "D": "Regions in which only gasoline containing MBTE is used have a much greater incidence of headaches, fatigue, and shortness of breath than do similar regions in which only MBTE-free gasoline is used.",
       "E": "The oil-refinery workers surveyed were carefully selected to be representative of the broader population in their medical histories prior to exposure to MBTE, as well as in other relevant respects."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -112,7 +112,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Unlike newspapers in the old days, today’s newspapers and televised news programs are full of stories about murders and assaults in our city. One can only conclude from this change that violent crime is now out of control, and, to be safe from personal attack, one should not leave one’s home except for absolute necessities.",
     "questionStem": "Which one of the following, if true, would cast the most serious doubt on the conclusion?",
@@ -123,7 +123,10 @@
       "D": "Murder comprised a larger proportion of violent crimes in the old days than it does today.",
       "E": "News magazines play a more important role today in informing the public about crime than they did in the old days."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -206,7 +209,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Some people claim that the reason herbs are not prescribed as drugs by licensed physicians is that the medical effectiveness of herbs is seriously in doubt. No drug can be offered for sale, however, unless it has regulatory-agency approval for medicinal use in specific illnesses or conditions. It costs about $200 million to get regulatory-agency approval for a drug, and only the holder of a patent can expect to recover such large expenses. Although methods of extracting particular substances from herbs can be patented, herbs themselves and their medicinal uses cannot be. Therefore, under the current system licensed physicians cannot recommend the medicinal use of herbs.",
     "questionStem": "Which one of the following most accurately describes the argumentative technique used in the argument?",
@@ -219,7 +222,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -373,7 +377,10 @@
       "D": "The rats that preferred fatty foods had the higher concentrations of galanin in their brains before they were offered fatty foods.",
       "E": "Rats that metabolize fat less efficiently than do other rats develop high concentrations of galanin in their brains."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT109",

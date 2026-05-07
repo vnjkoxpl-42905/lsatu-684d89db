@@ -58,7 +58,7 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A study claims that the average temperature on Earth has permanently increased, because the average temperature each year for the last five years has been higher than any previous yearly average on record. However, periods of up to ten years of average temperatures that have consistently been record highs are often merely part of the random fluctuations in temperature that are always occurring.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -69,14 +69,17 @@
       "D": "Random fluctuations in Earth's average temperature typically last less than ten years.",
       "E": "The average temperature on Earth never increases except in cases of random temperature fluctuation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT117",
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Shipping Coordinator: If we send your shipment by air express, it will arrive tomorrow morning. If we send your shipment via ground carrier, it will arrive either tomorrow or the next day. Ground carrier is less expensive than air express, so which do you prefer?\nCustomer: If I don't choose air express, then I will not receive my shipment tomorrow, so I clearly have no choice but to spend the extra money and have it sent via air express.",
     "questionStem": "The customer's response can best be explained on the assumption that she has misinterpreted the shipping coordinator to mean which one of the following?",
@@ -87,7 +90,10 @@
       "D": "Unless the shipment is sent by air express, it will not arrive tomorrow.",
       "E": "The greater the shipping cost, the faster the shipment will arrive."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -223,7 +229,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Davis: The only relevant factor in determining appropriate compensation for property damage or theft is the value the property loses due to damage or the value of the property stolen; the harm to the victim is directly proportional to the pertinent value.\nHiguchi: I disagree. More than one factor must be considered: A victim who recovers the use of personal property after two years is owed more than a victim who recovers its use after only one year.",
     "questionStem": "Davis's and Higuchi's statements most strongly support the view that they would disagree with each other about which one of the following?",
@@ -263,7 +269,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Kendrick: Governments that try to prevent cigarettes from being advertised are justified in doing so, since such advertisements encourage people to engage in an unhealthy practice. But cigarette advertisements should remain legal since advertisements for fatty foods are legal, even though those advertisements also encourage people to engage in unhealthy practices.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict between Kendrick's statements?",
@@ -276,7 +282,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -370,7 +377,10 @@
       "D": "Many people exhibit behavioral tendencies as adults that they did not exhibit as children.",
       "E": "The gene variant studied by the scientist is correlated with other types of behavior in addition to thrill-seeking behavior."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -452,7 +462,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The first bicycle, the Draisienne, was invented in 1817. A brief fad ensued, after which bicycles practically disappeared until the 1860s. Why was this? New technology is accepted only when it coheres with the values of a society. Hence some change in values must have occurred between 1817 and the 1860s.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -465,7 +475,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   }
 ]

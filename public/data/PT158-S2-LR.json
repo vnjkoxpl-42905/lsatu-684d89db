@@ -178,7 +178,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Historian: In the fourteenth and fifteenth centuries, the\n Swahili civilization of East Africa built tombs\n with large pillars and paneled facades. Such\n structures are widespread among the Oromo\n people of Somalia and Kenya, but are unknown\n among any other people with whom the Swahili\n civilization had contact. This indicates that\n Swahili culture was, to some extent, influenced\n by Oromo culture.",
     "questionStem": "The historian’s argument is most vulnerable to criticism\n on the grounds that it",
@@ -189,7 +189,10 @@
       "D": "takes for granted that there was no third civilization responsible for creating the first tombs of the kind found in both the Oromo and Swahili cultures",
       "E": "takes for granted that the Oromo people began constructing tombs with large pillars and paneled facades earlier than the Swahili civilization did"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -338,7 +341,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Records reveal that of physical therapy patients who\n received less than six weeks of treatment, about 31\n percent showed major improvement, regardless of\n whether they were treated by a general practitioner or by\n a specialist. Of patients who received physical therapy\n for a longer time, again regardless of whether they were\n treated by a general practitioner or by a specialist, about\n 50 percent showed major improvement. Therefore,\n the choice between seeing a specialist or a general\n practitioner for necessary physical therapy will not affect\n one’s chances of major improvement.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
@@ -349,7 +352,10 @@
       "D": "fails to indicate whether the number of patients surveyed who saw a general practitioner was equal to the number who saw a specialist",
       "E": "overlooks the possibility that specialists and general practitioners each tend to excel at treating a different type of injury"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -470,7 +476,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "If you complete 24 graduate credits and a thesis in\n our department, you are eligible to receive a master’s\n degree. Roger has completed 24 graduate credits in our\n department, yet he is not eligible to receive a master’s\n degree. So he must not have finished his thesis yet.",
     "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following?",

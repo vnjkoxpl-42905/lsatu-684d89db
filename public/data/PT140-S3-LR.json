@@ -61,7 +61,7 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The Magno-Blanket is probably able to relieve arthritic pain in older dogs. A hospital study of people suffering from severe joint pain found that 76 percent of those who were treated with magnets reported reduced pain after just 3 weeks. Dogs and humans have similar physiologies and the Magno-Blanket brings magnets into the same proximity to the dog’s joints as they were to patients’ joints in the hospital study.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -72,7 +72,10 @@
       "D": "The patients in the hospital study suffering from severe joint pain who, after being treated with magnets, did not report reduced pain tended not to be those suffering from the most severe pain.",
       "E": "Most of the patients in the hospital study suffering from severe joint pain who received a placebo rather than treatment with magnets did not report reduced pain."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -118,7 +121,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "More pedestrian injuries occur at crosswalks marked by both striping on the roadway and flashing lights than occur at crosswalks not so marked. Obviously these so- called safety features are a waste of taxpayer money.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism because the argument",
@@ -129,14 +132,17 @@
       "D": "takes for granted that crosswalks with both striping and flashing lights have no other safety features",
       "E": "fails to consider that, in accidents involving pedestrians and cars, the injuries to pedestrians are nearly always more serious than the injuries to occupants of cars"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "John of Worcester, an English monk, recorded the sighting, on December 8, 1128, of two unusually large sunspots. Five days later a brilliant aurora borealis (northern lights) was observed in southern Korea. Sunspot activity is typically followed by the appearance of an aurora borealis, after a span of time that averages five days. Thus, the Korean sighting helps to confirm John of Worcester’s sighting.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -147,7 +153,10 @@
       "D": "Because it is impossible to view sunspots with the naked eye under typical daylight conditions, the sighting recorded by John of Worcester would have taken place under unusual weather conditions such as fog or thin clouds.",
       "E": "John of Worcester’s account included a drawing of the sunspots, which could be the earliest illustration of sunspot activity."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -307,14 +316,17 @@
       "D": "The variation from cycle to cycle in the magnitude of the highs and lows in snowshoe hare populations is highly correlated with variations from cycle to cycle in the intensity of highs and lows in sunspot activity.",
       "E": "Sunspot activity is correlated with increases and decreases in the nutritional value of vegetation eaten by the hares."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Science teacher: In any nation, a flourishing national scientific community is essential to a successful economy. For such a community to flourish requires that many young people become excited enough about science that they resolve to become professional scientists. Good communication between scientists and the public is necessary to spark that excitement.",
     "questionStem": "The science teacher’s statements provide the most support for which one of the following?",
@@ -371,7 +383,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Taylor: From observing close friends and relatives, it is clear to me that telepathy is indeed possible between people with close psychic ties. The amazing frequency with which a good friend or family member knows what one is thinking or feeling cannot be dismissed as mere coincidence.",
     "questionStem": "Taylor’s reasoning is most vulnerable to criticism on the grounds that it",
@@ -382,14 +394,17 @@
       "D": "presumes, without providing justification, that one can never know what a stranger is thinking or feeling",
       "E": "appeals to a premise one would accept only if one already accepted the truth of the conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Prolonged exposure to sulfur fumes permanently damages one’s sense of smell. In one important study, 100 workers from sulfur-emitting factories and a control group of 100 workers from other occupations were asked to identify a variety of chemically reproduced scents, including those of foods, spices, and flowers. On average, the factory workers successfully identified 10 percent of the scents compared to 50 percent for the control group.",
     "questionStem": "Each of the following, if true, weakens the argument except:",
@@ -402,7 +417,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -446,7 +462,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "If the concrete is poured while the ground is wet, it will not form a solid foundation. If the concrete does not form a solid foundation, it will either settle unevenly or crack. So if the concrete settles evenly, either it was poured while the ground was dry or it will crack.",
     "questionStem": "Which one of the following arguments is most closely parallel in its reasoning to the reasoning in the argument above?",
@@ -468,7 +484,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "New evidence indicates that recent property development bordering a national park has not adversely affected the park’s wildlife. On the contrary, a comparison of the most recent survey of the park’s wildlife with one conducted just prior to the development shows that the amount of wildlife has in fact increased over the intervening decade. Moreover, the park’s resources can support its current wildlife populations without strain.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -479,7 +495,10 @@
       "D": "The most recent techniques for surveying wildlife are better at locating difficult-to-find animals than were older techniques.",
       "E": "The more recent survey not only involved counting the animals found in the park but, unlike the earlier survey, also provided an inventory of the plant life found within the park."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT140",

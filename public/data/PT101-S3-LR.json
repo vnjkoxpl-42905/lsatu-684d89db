@@ -298,7 +298,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Method",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
     "questionStem": "The argument in the passage proceeds by doing which one of the following?",
@@ -311,7 +311,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -319,7 +320,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -330,7 +331,10 @@
       "D": "retail sales depend on people’s expectations as well as on their current resources",
       "E": "people in the region who continue to be employed have debts they are paying off at an accelerated rate"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -379,7 +383,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw: no matter how diligent the effort, the laws are impossible to enforce. Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law. That is why there should be no legal prohibition against gambling.",
     "questionStem": "Which one of the following, if assumed, allows the argument’s conclusion to be properly drawn?",
@@ -400,7 +404,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Copernicus’s astronomical system is superior to Ptolemy’s and was so at the time it was proposed, even though at that time all observational evidence was equally consistent with both theories. Ptolemy believed that the stars revolved around the earth at great speeds. This struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
     "questionStem": "The argument most closely conforms to which one of the following principles?",
@@ -411,14 +415,17 @@
       "D": "Other things being equal, the more complex of two competing theories is the inferior theory.",
       "E": "Other things being equal, the simpler of two competing theories is the more scientifically important theory."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Essayist: The existence of a moral order in the universe— i.e., an order in which bad is always eventually punished and good rewarded—depends upon human souls being immortal. In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated, in others it results from the actions of a supreme being who metes out justice to people after their death. But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
     "questionStem": "Which one of the following most accurately describes a flaw in the essayist’s reasoning?",
@@ -429,14 +436,17 @@
       "D": "The argument treats two fundamentally different conceptions of a moral order as essentially the same.",
       "E": "The argument’s conclusion is presupposed in the definition it gives of a moral order."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT101",
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "No mathematical proposition can be proven true by observation. It follows that it is impossible to know any mathematical proposition to be true.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",

@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Randy: After Mega Cable Television Company refused to carry the competing Azco News Service alongside its own news channels, the mayor used her influence to get Azco time on a community channel, demonstrating her concern for keeping a diversity of news programming in the city.\nMarion: The mayor's action is fully explained by cruder motives: she's rewarding Azco's owner, a political supporter of hers.",
     "questionStem": "Of the following, which one, if true, is the logically strongest counter Randy can make to Marion's objection?",
@@ -33,7 +33,10 @@
       "D": "The many people whose jobs depend on Azco's continued presence on a community channel are a potential source of political support for the mayor.",
       "E": "The number of people who watch Mega Cable Television Company's programming has decreased during the mayor's term."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -219,7 +222,7 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "One can never tell whether another person is acting from an ulterior motive; therefore, it is impossible to tell whether someone's action is moral, and so one should evaluate the consequences of an action rather than its morality.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning above?",
@@ -258,7 +261,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "If legislators are to enact laws that benefit constituents, they must be sure to consider what the consequences of enacting a proposed law will actually be. Contemporary legislatures fail to enact laws that benefit constituents. Concerned primarily with advancing their own political careers, legislators present legislation in polemical terms; this arouses in their colleagues either repugnance or enthusiasm for the legislation.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -413,7 +416,7 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Economist: Real wages in this country will increase significantly only if productivity increases notably. Thus, it is unlikely that real wages will increase significantly in the near future, since this country's businesses are currently investing very little in new technology and this pattern is likely to continue for at least several more years.",
     "questionStem": "Which one of the following, if assumed about the economist's country, allows the economist's conclusion to be properly drawn?",

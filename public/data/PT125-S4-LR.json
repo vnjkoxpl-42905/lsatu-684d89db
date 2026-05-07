@@ -118,7 +118,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In an experiment, biologists repeatedly shone a bright light into a tank containing a sea snail and simultaneously shook the tank. The snail invariably responded by tensing its muscular \"foot,\" a typical reaction in sea snails to ocean turbulence. After several repetitions of this procedure, the snail tensed its \"foot\" whenever the biologists shone the light into its tank, even when the tank was not simultaneously shaken. Therefore, the snail must have learned to associate the shining of the bright light with the shaking of the tank.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -129,7 +129,10 @@
       "D": "The appearance of a bright light alone would ordinarily not result in the sea snail's tensing its \"foot.\"",
       "E": "Tensing of the muscular \"foot\" in sea snails is an instinctual rather than a learned response to ocean turbulence."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -197,7 +200,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Australia has considerably fewer species of carnivorous mammals than any other continent does but about as many carnivorous reptile species as other continents do. This is probably a consequence of the unusual sparseness of Australia's ecosystems. To survive, carnivorous mammals must eat much more than carnivorous reptiles need to; thus carnivorous mammals are at a disadvantage in ecosystems in which there is relatively little food.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
@@ -208,7 +211,10 @@
       "D": "The reason that carnivorous mammals are at a disadvantage in ecosystems in which there is relatively little food is that they must eat much more in order to survive than carnivorous reptiles need to.",
       "E": "Because Australia's ecosystems are unusually sparse, carnivorous mammals there are at a disadvantage relative to carnivorous reptiles."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -309,7 +315,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "Ethicist: An action is wrong if it violates a rule of the society in which the action is performed and that rule promotes the general welfare of people in the society. An action is right if it is required by a rule of the society in which the action is performed and the rule promotes the general welfare of the people in that society.",
     "questionStem": "Which one of the following judgments most closely conforms to the principle cited by the ethicist?",
@@ -433,7 +439,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Politician: The current crisis in mathematics education must be overcome if we are to remain competitive in the global economy. Alleviating this crisis requires the employment of successful teaching methods. No method of teaching a subject can succeed that does not get students to spend a significant amount of time outside of class studying that subject.",
     "questionStem": "Which one of the following statements follows logically from the statements above?",
@@ -472,7 +478,7 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "To get the free dessert, one must order an entree and a salad. But anyone who orders either an entree or a salad can receive a free soft drink. Thus, anyone who is not eligible for a free soft drink is not eligible for a free dessert.",
     "questionStem": "The reasoning in the argument above is most similar to the reasoning in which one of the following arguments?",

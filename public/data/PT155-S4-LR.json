@@ -22,7 +22,7 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Brian: I used to eat cheeseburgers from fast-food restaurants almost every day. But then I read that eating bread and meat in the same meal interferes with digestion. So I stopped eating cheeseburgers and switched to a diet of lean meats, fruits, and vegetables. Since starting this new diet, I feel much better and my cholesterol level and blood pressure are lower. This proves that eating bread and meat in the same meal is unhealthy.",
     "questionStem": "The reasoning in Brian’s argument is flawed in that the argument",
@@ -35,7 +35,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -146,7 +147,7 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Statistics show clearly that in those countries with the most severe penalties for driving while intoxicated, a smaller percentage of drivers have traffic accidents involving alcohol use than in other countries. This refutes those who claim that would-be drunk drivers will not be deterred by the prospect of severe penalties.",
     "questionStem": "Which one of the following would, if true, most undermine the argument?",
@@ -157,7 +158,10 @@
       "D": "Only a relatively small minority of those who drive while intoxicated are actually apprehended while doing so.",
       "E": "All countries impose severer penalties on those who cause accidents while driving intoxicated than on those who are merely apprehended while driving intoxicated."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -198,7 +202,10 @@
       "D": "Experiments with types of spiders other than jumping spiders suggest that these other types of spiders do not defend EFN-producing plants.",
       "E": "Regions with large populations of ants also tend to have large populations of EFN-producing plants."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -287,7 +294,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Candidate: In each election in the last ten years, the candidate who supported property tax reform received a significant majority of the votes in the northeastern part of my district. In no other part of my district has there been any discernible pattern of voting for or against property tax reform. Therefore, in order to attract additional voters in the northeastern part of my district without alienating voters elsewhere, all I need to do is to go on record as favoring property tax reform.",
     "questionStem": "The reasoning in the candidate’s argument is most vulnerable to criticism on the grounds that the candidate",
@@ -300,7 +307,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -344,7 +352,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Economist: Machinery firms in this country argue that in order to grow big enough to compete successfully with foreign rivals, the protection that they have been receiving from foreign competition must be extended for several more years. Yet these firms have been receiving protection from foreign competition for the last ten years. If it were possible for protection from foreign competition to enable this country’s machinery firms to grow big enough to compete successfully with foreign rivals, ten years would be a sufficient time frame for this to happen.",
     "questionStem": "The economist’s statements, if true, most strongly support which one of the following?",
@@ -357,7 +365,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -383,7 +392,7 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Political scientist: Democracy depends on free choices, and choices cannot be free unless they are made on the basis of well-reasoned opinions. In the Information Age, reading skills have become essential to forming well-reasoned opinions. Thus, in the Information Age, a highly literate society will be a democratic one.",
     "questionStem": "The political scientist’s reasoning is flawed in that it",
@@ -447,7 +456,7 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Researcher: Consumption of turmeric, a basic ingredient in curry dishes, probably slows cognitive decline. Our research team analyzed a database of information about the cognitive function, ethnicity, and diet of elderly residents of Singapore. Those who eat curries regularly had higher scores on cognitive-function tests than those who rarely or never eat curries; this relationship was strongest for the elderly Singapore residents of Indian ethnicity.",
     "questionStem": "Which one of the following, if true, most strengthens the researcher’s explanation of the research team’s findings?",
@@ -460,7 +469,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {

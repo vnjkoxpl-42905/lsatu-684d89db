@@ -79,7 +79,7 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Pundit: Clearly, the two major political parties in this city\n have become sharply divided on the issues. In the\n last four elections, for example, the parties were\n separated by less than 1 percent of the vote.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
@@ -90,7 +90,10 @@
       "D": "fails to indicate how what is happening in one city compares with what is happening in other cities",
       "E": "takes for granted that an almost even division in votes indicates a sharp division on issues"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT150",

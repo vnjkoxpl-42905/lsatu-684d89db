@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Although the audience for part one of the television documentary Train Stories shown on Thursday night was small, the audience for part two on Friday night was not significantly smaller. Thus, most of the viewers who watched the program the first night liked it enough to tune in again the next night.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -33,7 +33,10 @@
       "D": "Many of the viewers who tuned in to the program the first night but not the second night were unable to watch television on the second night.",
       "E": "Many of the viewers who watched the program the first night were people who generally like to watch television documentaries."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -76,7 +79,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Of the dinosaurs of the birdlike group called ornithomimids, the later ones had toothless beaks and weak jaw muscles. A fossil of the later ornithomimid species Gallimimus bullatus was found to have remnants of a comblike plate inside the beak. Such plates are found in modern ducks and geese, animals that strain small bits of food from water and mud. Paleontologists therefore hypothesize that G. bullatus fed by filtering food from water and mud.",
     "questionStem": "Which one of the following, if true, most bolsters the support for the paleontologists’ hypothesis?",
@@ -87,7 +90,10 @@
       "D": "Most G. bullatus fossils have been found in sediments deposited in lakes, rivers, and other wet environments.",
       "E": "Paleontologists have not found evidence that any dinosaurs other than G. bullatus had comblike plates."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -123,14 +129,17 @@
       "D": "Some cities with even more truck traffic than in the transportation official’s city also have ruts in their roads.",
       "E": "Most places that have little snowfall do not allow the use of studded snow tires."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "A person who does not have both a high school diploma and a demonstrated competence in the techniques of cardiopulmonary resuscitation will not be licensed as an emergency medical technician. Since Marie has both a high school diploma and a demonstrated competence in the techniques of cardiopulmonary resuscitation, she will be licensed as an emergency medical technician.",
     "questionStem": "Which one of the following contains flawed reasoning that most closely parallels the flawed reasoning in the argument above?",
@@ -174,7 +183,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Dentist: Five recently conducted studies all show that the proportion of children with decayed, missing, or filled teeth is lower in Europe, where water is not fluoridated, than in the United States, where it is. This is convincing evidence that fluoridation of water does not have a substantial tendency to prevent tooth decay.",
     "questionStem": "Which one of the following, if true, would most strengthen the dentist’s argument?",
@@ -185,14 +194,17 @@
       "D": "On average, children in Europe receive dental checkups more frequently than children in the United States.",
       "E": "The diets of children in the United States are not generally worse for teeth than those of children in Europe."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Science writer: Studies indicate that North Americans are becoming more lethargic. One researcher has concluded from these data that fast-food consumption has an adverse effect on people’s health. In the early 1970s the average North American family consumed one fast-food meal a week, while in the 1990s an average family consumed one fast-food meal a day. However, few lethargic adults exercise regularly, and lack of exercise can contribute to lethargy. Thus, the lethargy studies do not settle the question of whether fast food is unhealthy.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the science writer’s argument?",
@@ -203,7 +215,10 @@
       "D": "The lethargy studies failed to consider one probable cause of lethargy.",
       "E": "The researcher’s conclusion was not adequately justified by the lethargy studies."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -271,7 +286,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Most cats like to go outside to play when the temperature is above freezing. However, Jamil does not allow his cat to go outside unless at least one member of his family is outside, and Jamil’s family members go outside only when the sun is shining or it is hot outside.",
     "questionStem": "Which one of the following can be properly inferred from the information above?",
@@ -313,7 +328,7 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "For several years the Technology Institute has used a new experimental curriculum in its plumbing program. A survey last year found that only one-third of the Institute’s plumbing graduates—well below the national average—were able to pass the plumber’s certification test. This shows that the new curriculum has lowered the quality of plumbing instruction.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -326,7 +341,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -352,7 +368,7 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Productivity growth in industrialized nations has dropped substantially since computer technology became widespread in the 1960s and 1970s. Furthermore, productivity growth has dropped the most in industries that rely most heavily on computer technology. Thus, a business that has increased its reliance on computer technology probably has not improved its productivity growth by doing so.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -363,7 +379,10 @@
       "D": "Within any given industry, the businesses whose productivity growth has been greatest have been those that have invested most heavily in computer technology.",
       "E": "Within the next few years, recent technological advances will almost certainly make investments in computer technology among the most effective ways for any business to improve productivity."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -430,7 +449,7 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "On Earth, biological activity leads to a change in the ratio of isotope S-34 to isotope S-32. However, a newly discovered meteorite of Martian origin exhibits ratios of these elements found only in terrestrial minerals dating from before the beginning of life on Earth. Therefore, it is unlikely that life occurred on Mars.",
     "questionStem": "Each of the following, if true, would weaken the argument except:",
@@ -441,14 +460,17 @@
       "D": "Relatively few terrestrial mineral samples contain S-34 and S-32 in the ratio that indicates the presence of biological activity.",
       "E": "The current ratio of S-34 to S-32 on Mars is different from that at the time the material in the meteorite left Mars."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT155",
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Editorial: Last year, many polls found that most people in our country claimed to be tired of television news programs’ obsession with celebrity scandals and to be unwilling to watch such programs. But at the same time, ratings of television news shows soared. This indicates that when responding to polls, whether or not they are aware of it, people often portray themselves as they wish to be perceived, rather than as they actually are.",
     "questionStem": "Which one of the following is an assumption that the argument in the editorial requires?",
@@ -461,7 +483,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -469,7 +492,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "The rise of book megastores in the 1990s increased sales of best-sellers, but decreased sales of less commercial, more literary books. In 1986, best-selling hardcover titles accounted for about 7 percent of all hardcover sales. By 1996, that figure had nearly doubled. Megastores can offer deeper discounts than independent stores and offer their biggest discounts on best-selling hardcovers, which discourages sales of other hardcovers.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -480,6 +503,9 @@
       "D": "By 1996, there were about 20 percent more titles in print than in 1986.",
       "E": "Books that are not expected to be best-sellers are featured more often in independent bookstores than in book megastores."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

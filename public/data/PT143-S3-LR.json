@@ -33,7 +33,10 @@
       "D": "Hydro buyers are more likely to have neighbors who also drive Hydros.",
       "E": "Hydro buyers have less interest in environmental causes than buyers of other highly fuel-efficient automobiles."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -94,7 +97,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "If newly hatched tobacco hornworms in nature first feed\non plants from the nightshade family, they will not eat\nleaves from any other plants thereafter. However, tobacco\nhornworms will feed on other sorts of plants if they feed\non plants other than nightshades just after hatching. To\nexplain this behavior, scientists hypothesize that when\na hornworm’s first meal is from a nightshade, its taste\nreceptors become habituated to the chemical indioside\nD, which is found only in nightshades, and after this\nhabituation nothing without indioside D tastes good.",
     "questionStem": "Which one of the following, if true, adds the most\nsupport for the hypothesis?",
@@ -105,7 +108,10 @@
       "D": "Indioside D is not the only chemical that occurs only in nightshade plants.",
       "E": "The taste receptors of the tobacco hornworm have physiological reactions to several naturally occurring chemicals."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -208,7 +214,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Policy: The factory’s safety inspector should not approve\na new manufacturing process unless it has been\nused safely for more than a year at another\nfactory or it will demonstrably increase safety at\nthe factory.\nApplication: The safety inspector should not approve the\nproposed new welding process, for it cannot be\nshown to increase safety at the factory.",
     "questionStem": "Which one of the following, if true, justifies the above\napplication of the policy?",
@@ -350,7 +356,7 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "A recent study showed that the immune system blood\ncells of the study’s participants who drank tea but no\ncoffee took half as long to respond to germs as did the\nblood cells of participants who drank coffee but no tea.\nThus, drinking tea boosted the participants’ immune\nsystem defenses.",
     "questionStem": "Which one of the following is an assumption on which\nthe argument depends?",
@@ -361,7 +367,10 @@
       "D": "Coffee drinkers in general are no more likely to exercise and eat healthily than are tea drinkers.",
       "E": "Coffee and tea do not have in common any chemicals that fight disease in the human body."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT143",

@@ -79,7 +79,7 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Researchers asked 100 fifty-year-olds and 100 twenty-year-olds whether they gave blood. Because nearly twice as many fifty-year-olds as twenty-year-olds reported that they sometimes gave blood, the researchers concluded that, on average, fifty-year-olds are more altruistic than twenty-year-olds. But there is reason for skepticism. Many people hesitate to admit that their behavior does not conform to societal expectations.",
     "questionStem": "The reasoning above calls into question a conclusion drawn from statistical data by",
@@ -90,7 +90,10 @@
       "D": "criticizing the motives of the researchers",
       "E": "offering a specific counterexample"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -151,7 +154,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "In a recent field study of prairie plants, the more plant species a prairie plot had, the more vigorously the plants grew and the better the soil retained nutrients. Thus, having more plant species improves a prairie’s ability to support plant life.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -162,7 +165,10 @@
       "D": "bases a general conclusion on data that is likely to be unrepresentative",
       "E": "takes an increase in number to indicate an increase in proportion"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -376,7 +382,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Most kinds of soil contain clay, and virtually every kind of soil contains either sand or organic material, or both. Therefore, there must be some kinds of soil that contain both clay and sand and some that contain both clay and organic material.",
     "questionStem": "The pattern of flawed reasoning in which one of the following arguments is most parallel to that in the argument above?",
@@ -457,7 +463,7 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Critic: The Gazette-Standard newspaper recently increased its editorial staff to avoid factual errors. But this clearly is not working. Compared to its biggest competitor, the Gazette-Standard currently runs significantly more corrections acknowledging factual errors.",
     "questionStem": "Which one of the following, if true, most seriously weakens the critic’s argument?",
@@ -468,6 +474,9 @@
       "D": "The Gazette-Standard’s articles are each checked by more editors than are the articles of its biggest competitor.",
       "E": "The increase in the Gazette-Standard’s editorial staff has been offset by a decrease in the reporting staff at the newspaper."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   }
 ]

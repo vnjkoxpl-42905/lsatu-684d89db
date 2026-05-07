@@ -22,7 +22,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "Among people who live to the age of 100 or more, a large proportion have led “unhealthy” lives: smoking, consuming alcohol, eating fatty foods, and getting little exercise. Since such behavior often leads to shortened life spans, it is likely that exceptionally long-lived people are genetically disposed to having long lives.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -33,7 +33,10 @@
       "D": "Some people who do not live to the age of 100 also lead unhealthy lives.",
       "E": "Nearly all people who live to 100 or more have siblings who are also long-lived."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -271,7 +274,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Speaker: Like many contemporary critics, Smith argues that the true meaning of an author's statements can be understood only through insight into the author's social circumstances. But this same line of analysis can be applied to Smith's own words. Thus, if she is right we should be able, at least in part, to discern from Smith's social circumstances the \"true meaning\" of Smith's statements. This, in turn, suggests that Smith herself is not aware of the true meaning of her own words.",
     "questionStem": "The speaker's main conclusion logically follows if which one of the following is assumed?",
@@ -293,7 +296,7 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Tissue biopsies taken on patients who have undergone throat surgery show that those who snored frequently were significantly more likely to have serious abnormalities in their throat muscles than those who snored rarely or not at all. This shows that snoring can damage the throat of the snorer.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -304,14 +307,17 @@
       "D": "People who have undergone throat surgery are no more likely to snore than people who have not undergone throat surgery.",
       "E": "The abnormalities in the throat muscles discovered in the study do not cause snoring."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT132",
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "One should never sacrifice one's health in order to acquire money, for without health, happiness is not obtainable.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -352,7 +358,7 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "In West Calverton, most pet stores sell exotic birds, and most of those that sell exotic birds also sell tropical fish. However, any pet store there that sells tropical fish but not exotic birds does sell gerbils; and no independently owned pet stores in West Calverton sell gerbils.",
     "questionStem": "If the statements above are true, which one of the following must be true?",
@@ -466,7 +472,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "University president: Our pool of applicants has been shrinking over the past few years. One possible explanation of this unwelcome phenomenon is that we charge too little for tuition and fees. Prospective students and their parents conclude that the quality of education they would receive at this institution is not as high as that offered by institutions with higher tuition. So, if we want to increase the size of our applicant pool, we need to raise our tuition and fees.",
     "questionStem": "The university president's argument requires the assumption that",
@@ -477,7 +483,10 @@
       "D": "there is no additional explanation for the university's shrinking applicant pool",
       "E": "the amount charged by the university for tuition has not increased in recent years"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT132",

@@ -187,7 +187,7 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "High school students who feel that they are not succeeding in school often drop out before graduating and go to work. Last year, however, the city's high school dropout rate was significantly lower than the previous year's rate. This is encouraging evidence that the program instituted two years ago to improve the morale of high school students has begun to take effect to reduce dropouts.",
     "questionStem": "Which one of the following, if true about the last year, most seriously weakens the argument?",
@@ -198,14 +198,17 @@
       "D": "High schools in the city established placement offices to assist their graduates in obtaining employment.",
       "E": "The antidropout program was primarily aimed at improving students' morale in those high schools with the highest dropout rates."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "The television show Henry was not widely watched until it was scheduled for Tuesday evenings immediately after That's Life, the most popular show on television. During the year after the move, Henry was consistently one of the ten most-watched shows on television. Since Henry's recent move to Wednesday evenings, however, it has been watched by far fewer people. We must conclude that Henry was widely watched before the move to Wednesday evenings because it followed That's Life and not because people especially liked it.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -216,7 +219,10 @@
       "D": "After its recent move to Wednesday, Henry was aired at the same time as the second most popular show on television.",
       "E": "That's Life was not widely watched during the first year it was aired."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -299,7 +305,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Researchers have found that people who drink five or more cups of coffee a day have a risk of heart disease 2.5 times the average after corrections are made for age and smoking habits. Members of the research team say that, on the basis of their findings, they now limit their own daily coffee intake to two cups.",
     "questionStem": "Which one of the following, if true, indicates that the researchers' precaution might not have the result of decreasing their risk of heart disease?",
@@ -310,7 +316,10 @@
       "D": "Subsequent studies have consistently shown that heavy smokers consume coffee at about 3 times the rate of nonsmokers.",
       "E": "Subsequent studies have shown that heavy coffee consumption tends to cause an elevated blood-cholesterol level, an immediate indicator of increased risk of heart disease."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT112",

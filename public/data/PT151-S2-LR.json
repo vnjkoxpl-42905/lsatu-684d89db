@@ -143,7 +143,7 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Normally, political candidates send out campaign\nmaterial in order to influence popular opinion. But the\nrecent ads for Ebsen’s campaign were sent to too few\nhouseholds to serve this purpose effectively. The ads\nwere evidently sent out to test their potential to influence\npopular opinion. They covered a wide variety of topics,\nand Ebsen’s campaign has been spending heavily on\nfollow-up to gauge their effect on recipients.",
     "questionStem": "Which one of the following most accurately expresses\nthe conclusion drawn in the argument above?",
@@ -154,14 +154,17 @@
       "D": "The recent ads for Ebsen’s campaign covered a wide variety of topics.",
       "E": "Ebsen’s campaign has been spending heavily on follow-up surveys to gauge the ads’ effect on recipients."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Last year, pharmaceutical manufacturers significantly\nincreased the amount of money they spent promoting\nnew drugs, which they do mainly by sending sales\nrepresentatives to visit physicians in their offices.\nHowever, two years ago there was an average of 640\nsuch visits per representative, whereas last year that\nfigure fell to 501. So the additional promotion must have\nbeen counterproductive, making physicians less willing\nto receive visits by pharmaceutical sales representatives.",
     "questionStem": "Which one of the following, if true, most weakens the\nargument?",
@@ -172,7 +175,10 @@
       "D": "Most physicians who agree to receive a visit from a pharmaceutical sales representative will see that representative more than once during a given year.",
       "E": "The more visits a physician receives from a pharmaceutical sales representative, the more likely he or she is to prescribe drugs made by that representative’s company."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -192,7 +198,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -218,7 +225,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "An independent computer service company tallied the\nservice requests it receives for individual brands of\npersonal computers. It found that, after factoring in each\nbrand’s market share, KRV brand computers had the\nlargest proportion of service requests, whereas ProBit\nbrand computers had the smallest proportion of service\nrequests. Obviously, ProBit is the more reliable personal\ncomputer brand.",
     "questionStem": "Which one of the following, if true, most seriously\nweakens the argument?",
@@ -229,7 +236,10 @@
       "D": "The computer brands covered in the computer service company’s tally differ greatly with respect to their market share.",
       "E": "ProBit has been selling personal computers for many more years than has KRV ."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -340,14 +350,17 @@
       "D": "Fairy circles tend to form in areas that already have numerous other fairy circles.",
       "E": "Species of animals that feed on sand termites are often found living near fairy circles."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT151",
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Munroe was elected in a landslide. It is impossible for\nMunroe to have been elected without both a fundamental\nshift in the sentiments of the electorate and a well-run\ncampaign. Thus, one cannot avoid the conclusion that\nthere has been a fundamental shift in the sentiments of\nthe electorate.",
     "questionStem": "Which one of the following arguments is most closely\nparallel in its reasoning to the argument above?",
@@ -404,7 +417,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Must Be False",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Counselor: To be kind to someone, one must want that\nperson to prosper. Yet, even two people who\ndislike each other may nevertheless treat each\nother with respect. And while no two people who\ndislike each other can be fully content in each\nother’s presence, any two people who do not\ndislike each other will be kind to each other.",
     "questionStem": "If the counselor’s statements are true, then which one of\nthe following must be false?",

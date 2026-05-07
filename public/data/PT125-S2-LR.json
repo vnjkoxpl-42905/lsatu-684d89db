@@ -82,7 +82,7 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Byrne: One of our club's bylaws specifies that any officer who fails to appear on time for any one of the quarterly board meetings, or who misses two of our monthly general meetings, must be suspended. Thibodeaux, an officer, was recently suspended. But Thibodeaux has never missed a monthly general meeting. Therefore, Thibodeaux must have failed to appear on time for a quarterly board meeting.",
     "questionStem": "The reasoning in Byrne's argument is flawed in that the argument",
@@ -238,7 +238,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Consumers seek to purchase the highest quality at the lowest prices. Companies that do not offer products that attract consumers eventually go bankrupt. Therefore, companies that offer neither the best quality nor the lowest price will eventually go bankrupt.",
     "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
@@ -271,7 +271,10 @@
       "D": "The annual number of accidents on Park Road that did not result in hospitalization remained roughly constant from 1981 to 1990.",
       "E": "Until 1986 accidents were classified as \"serious\" only if they resulted in an extended hospital stay."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -332,7 +335,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 5,
     "stimulus": "Columnist: Taking a strong position on an issue makes one likely to misinterpret or ignore additional evidence that conflicts with one's stand. But in order to understand an issue fully, it is essential to consider such evidence impartially. Thus, it is best not to take a strong position on an issue unless one has already considered all important evidence conflicting with that position.",
     "questionStem": "The columnist's reasoning most closely conforms to which one of the following principles?",
@@ -432,7 +435,7 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "At Southgate Mall, mattresses are sold only at Mattress Madness. Every mattress at Mattress Madness is on sale at a 20 percent discount. So every mattress for sale at Southgate Mall is on sale at a 20 percent discount.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -492,7 +495,7 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "The government will purchase and install new severe weather sirens for this area next year if replacement parts for the old sirens are difficult to obtain. The newspaper claims that public safety in the event of severe weather would be enhanced if new sirens were to be installed. The local company from which replacement parts were purchased last year has since gone out of business. So, if the newspaper is correct, the public will be safer during severe weather in the future.",
     "questionStem": "The argument's conclusion follows logically from its premises if which one of the following is assumed?",

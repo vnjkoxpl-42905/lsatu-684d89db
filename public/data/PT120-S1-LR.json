@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 1,
     "stimulus": "While it might be expected that those neighborhoods most heavily patrolled by police have the least crime, the statistical evidence overwhelmingly supports the claim that such neighborhoods have the most crime. This shows that the presence of police does not decrease crime in a neighborhood.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -183,7 +184,10 @@
       "D": "offering an alternate explanation of the correlation cited",
       "E": "proving that governments must do what community organizations fail to do"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT120",

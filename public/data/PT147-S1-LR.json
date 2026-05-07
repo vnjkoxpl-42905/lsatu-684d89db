@@ -22,7 +22,7 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A lack of trust in one’s neighbors leads to their lack of respect for the law. A new study provides compelling evidence for this. Neighborhoods in which people routinely lock their doors have higher burglary rates than neighborhoods in which people do not routinely lock their doors.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -36,7 +36,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -173,7 +174,10 @@
       "D": "Certain fox and mouse species on an Indonesian island have evolved into smaller versions of their common counterparts.",
       "E": "Environmental pressure can cause species living on islands to become smaller over time."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -390,7 +394,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "People with higher-than-average blood levels of a normal dietary by-product called homocysteine are twice as likely to be diagnosed with Alzheimer’s disease as are those with average or below-average homocysteine levels. Thus, it is likely that the risk of developing Alzheimer’s disease could be reduced by including in one’s diet large amounts of B vitamins and folic acid, which convert homocysteine into substances known to have no relation to Alzheimer’s disease.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -401,7 +405,10 @@
       "D": "People whose relatives contracted Alzheimer’s disease are much more likely to develop Alzheimer’s than those whose relatives did not.",
       "E": "Alzheimer’s disease tends to increase the levels of homocysteine in the blood."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -480,7 +487,7 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Some eloquent speakers impress their audiences with the vividness and clarity of the messages conveyed. Speakers who resort to obscenity, however, are not genuinely eloquent, so none of these speakers impress their audiences.",
     "questionStem": "The flawed reasoning in which one of the following is most similar to that in the argument above?",

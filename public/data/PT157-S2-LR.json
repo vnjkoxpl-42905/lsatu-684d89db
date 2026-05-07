@@ -133,7 +133,7 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Buyer: As a buyer for a large chain of department stores,\n I will buy a garment only if it is fashionable\n and not too expensive for our clientele. The\n evening dress from the fall collection by Peruka\n is certainly fashionable, but it is far too expensive\n for our clientele. Therefore, I will not buy that\n dress.",
     "questionStem": "The pattern of reasoning in which one of the following\n arguments most closely resembles the pattern of\n reasoning in the buyer’s argument?",
@@ -234,7 +234,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "In northern Europe, archaeologists have discovered\n 400,000-year-old sharpened wooden poles alongside\n flint cutting implements and the remains of horses.\n Since it is normally assumed that Homo sapiens did not\n inhabit Europe prior to 200,000 years ago, this discovery\n effectively disproves the widespread belief that the\n humanlike precursors of Homo sapiens were entirely\n gatherers and scavengers and did not hunt.",
     "questionStem": "Which one of the following, if true, would add the most\n support to the argument?",
@@ -245,7 +245,10 @@
       "D": "The humanlike precursors of Homo sapiens developed widely divergent patterns of behavior in the very different ecosystems they inhabited.",
       "E": "Prehistoric Homo sapiens who adopted hunting as a means of food acquisition did not abandon scavenging and gathering."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT157",

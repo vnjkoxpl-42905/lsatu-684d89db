@@ -76,7 +76,7 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "Those who participate in risky sports often do so to confront their fears. For example, rock climbers are more likely than others to have once suffered from a fear of heights. Those who participate in such risk-taking activities also have more self-confidence than others, so it is probably true that confronting one's fears increases one's self-confidence.",
     "questionStem": "Which one of the following, if true, most weakens the reasoning above?",
@@ -87,7 +87,10 @@
       "D": "Participating in risky sports is not the only way to confront one's fears.",
       "E": "Most of those who do not participate in risky sports believe that they lack the capacity to excel in such activities."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT128",

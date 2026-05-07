@@ -154,7 +154,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A television commercial argued as follows: both the product advertised and its competitor contain the same active ingredients, but the product advertised contains them in higher concentrations; tests show that the higher concentrations are completely safe; since a product that provides faster relief is always preferable, one should use the product advertised.",
     "questionStem": "The television commercial's argument is most vulnerable to criticism on the grounds that it",
@@ -165,7 +165,10 @@
       "D": "attempts to manipulate the emotions of potential customers of the advertised product rather than presenting logically sound reasons for preferring the product advertised",
       "E": "takes for granted that the product with the higher concentration of active ingredients provides faster relief than its competitor"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -211,7 +214,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Clothes dryers manufactured by Archway Appliances, Inc. are of poor quality. Crucial bolts are missing and some sections are assembled in the wrong order, thereby creating a shock and fire hazard. Concern for safety and quality is conspicuously lacking. So Archway must use shoddy, substandard components in its clothes dryers.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it fails to consider the possibility that",
@@ -270,7 +273,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "The number of deer living in North America has increased dramatically since the 1960s even though hunters kill no fewer deer today. Moreover, the number of natural predators of deer, such as wolves, is on the rise, and suburbs increasingly encroach on deer habitats.",
     "questionStem": "Which one of the following, if true, would most help to explain the apparent discrepancy described above?",
@@ -345,7 +348,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -374,7 +378,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 4,
     "stimulus": "Professor Gandolf says that all political systems that aim at preventing conflict are legitimate. However, totalitarian political systems are usually good at preventing conflict, since those who are not in power are subject to the will of the powerful. But since all totalitarian political systems are illegitimate, Professor Gandolf's principle must be false.",
     "questionStem": "Which one of the following is an assumption required by the argument?",

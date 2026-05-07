@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 1,
     "stimulus": "All works of art are beautiful and have something to teach us. Thus, since the natural world as a whole is both beautiful and instructive, it is a work of art.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -177,7 +177,7 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "Only people who are willing to compromise should undergo mediation to resolve their conflicts. Actual litigation should be pursued only when one is sure that one's position is correct. People whose conflicts are based on ideology are unwilling to compromise.",
     "questionStem": "If the statements above are true, then which one of the following must be true?",
@@ -199,7 +199,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 4,
     "stimulus": "Scientists have long thought that omega-3 fatty acids in fish oil tend to lower blood cholesterol and strongly suspected that a diet that includes a modest amount of fish would provide substantial health benefits. Now these views have acquired strong support from a recent study showing that middle-aged people who eat fish twice a week are nearly 30 percent less likely to develop heart disease than are those who do not eat fish.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -210,7 +210,10 @@
       "D": "The test subjects in the recent study who ate fish twice a week were not significantly more likely than those who did not to engage regularly in activities known to augment cardiorespiratory health.",
       "E": "The test subjects in the recent study who ate fish twice a week were no more likely than those who did not to have sedentary occupations."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -256,7 +259,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 2,
     "stimulus": "If Juan went to the party, it is highly unlikely that Maria would have enjoyed the party. But in fact it turned out that Maria did enjoy the party; therefore, it is highly unlikely that Juan was at the party.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following?",
@@ -314,7 +317,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 2,
     "stimulus": "A group of mountain climbers was studied to determine how they were affected by diminished oxygen in the air at high altitudes. As they climbed past 6,100 meters above sea level, the climbers slurred words, took longer to understand simple sentences, and demonstrated poor judgment. This combination of worsened performances disproves the theory that the area of the brain controlling speech is distinct from that controlling other functions.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it overlooks the possibility that",
@@ -325,7 +328,10 @@
       "D": "some of the effects described were apparent just before the climbers reached 6,100 meters",
       "E": "many of the climbers had engaged in special training before the climb because they wanted to improve the efficiency with which their bodies use oxygen"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -404,7 +410,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Columnist: Several recent studies show, and insurance statistics confirm, that more pedestrians are killed every year in North American cities when crossing with the light than when crossing against it. Crossing against the light in North American cities is therefore less dangerous than crossing with the light.",
     "questionStem": "The columnist's reasoning is most vulnerable to criticism on the grounds that it",
@@ -417,7 +423,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

@@ -331,7 +331,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 5,
     "stimulus": "Some killer whales eat fish exclusively, but others also eat seals. Different groups of killer whales “chatter” in distinct dialects, and the dialects of seal-eating killer whales are recognizably different from those of killer whales that do not eat seals. Harbor seals use their ability to distinguish between different killer-whale dialects to avoid seal-eating killer whales. Marine biologists hypothesize that young harbor seals start with an aversion to all killer whales but then learn to ignore those that do not eat seals.",
     "questionStem": "Which one of the following, if true, provides the strongest support for the biologists’ hypothesis?",
@@ -342,14 +342,17 @@
       "D": "Young harbor seals show no natural aversion to any seal predators other than killer whales.",
       "E": "If a fish-eating killer whale mistakenly attacks a harbor seal, that seal, if it survives, will subsequently avoid all killer whales that chatter in the attacker’s dialect, but other harbor seals will not."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT153",
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Trainer: An athlete developed lower back pain after a strenuous athletic competition. For several days, she tried to overcome the pain by daily stretching, but the pain continued. Then, on the advice of a friend, she used a heating pad. Within a few days the pain was gone. This shows that the use of heating pads is generally more effective at relieving lower back pain than stretching is.",
     "questionStem": "The trainer’s argument is vulnerable to criticism on each of the following grounds except:",
@@ -362,7 +365,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {

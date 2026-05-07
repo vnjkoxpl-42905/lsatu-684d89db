@@ -130,7 +130,7 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "Consumer advocate: There is ample evidence that the model of car one drives greatly affects the chances that one’s car will be stolen. The model of car stolen most often in our country last year, for example, was also the model stolen most often in the preceding year.",
     "questionStem": "The consumer advocate’s reasoning is most vulnerable to criticism on the grounds that it",
@@ -143,7 +143,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -304,7 +305,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Conditional",
     "questionDifficulty": 3,
     "stimulus": "Art critic: Abstract paintings are nonrepresentational, and so the only measure of their worth is their interplay of color, texture, and form. But for a painting to spur the viewer to political action, instances of social injustice must be not only represented, but also clearly comprehensible as such. Therefore, abstract painting can never be a\npolitically significant art form.",
     "questionStem": "Which one of the following is an assumption that is required by the art critic’s argument?",

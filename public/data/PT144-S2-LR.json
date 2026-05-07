@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Explain Curious Fact"
     ]
   },
   {
@@ -144,7 +145,10 @@
       "D": "raising a counterexample to the general conclusion that Merton draws",
       "E": "suggesting that alternative explanations for the study’s findings need to be ruled out"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -162,7 +166,10 @@
       "D": "Several other lakes in the Pawpaw mountains have recently had increases in their fish populations.",
       "E": "There used to be a greater variety of fish species in Highwater Lake than in Quapaw Lake, but there no longer is."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -208,7 +215,7 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": "Causation",
     "questionDifficulty": 3,
     "stimulus": "In an experiment, two groups of mice—one whose diet included ginkgo extract and one that had a normal diet— were taught to navigate a maze. The mice whose diet included ginkgo were more likely to remember how to navigate the maze the next day than were the other mice. However, the ginkgo may not have directly enhanced memory. Other studies have found that ginkgo reduces stress in mice, and lowering very high stress levels is known to improve recall.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -219,7 +226,10 @@
       "D": "Scientists have not yet determined which substances in ginkgo are responsible for reducing stress in mice.",
       "E": "The mice who received the ginkgo took just as long as the other mice to learn to navigate the maze."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Explain Curious Fact"
+    ]
   },
   {
     "practiceTest": "PT144",
