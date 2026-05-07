@@ -69,7 +69,10 @@
       "D": "If chemists modify the structure of THC, THC can be safely incorporated into medications to prevent herpes.",
       "E": "To lessen the undesirable side effects of chemotherapy, the use of marijuana has been recommended for cancer patients who are free of the herpesvirus."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -195,7 +198,10 @@
       "D": "The amount credit-card customers pay for shipping the merchandise ordered by mail does not increase the amount customers spend to an amount greater than they would spend if they purchased the same merchandise in retail stores.",
       "E": "The merchandise available to the company’s credit-card customers using the bonus points is frequently sold in retail stores at prices that are higher than the manufacturers’ suggested retail prices."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT105",

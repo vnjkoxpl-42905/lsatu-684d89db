@@ -324,7 +324,10 @@
       "D": "babies are less likely to be born during a night with a full moon than during a night without a full moon",
       "E": "the idea that medical patients have an instinctual ability to predict sudden changes in their medical status is not a widely held belief"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -381,7 +384,10 @@
       "D": "Even though this painting is highly regarded by critics, it cannot legitimately be deemed great art. Most art that was produced in the last hundred years is not great art, and this painting, beautiful though it is, was probably painted only 40 years ago.",
       "E": "Even though the influenza vaccine does not always prevent influenza, it sometimes reduces the severity of its symptoms. Therefore it is incorrect to say that some people who receive the vaccine derive no benefit from it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT144",

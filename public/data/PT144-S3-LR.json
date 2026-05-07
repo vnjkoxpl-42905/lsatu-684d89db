@@ -189,7 +189,10 @@
       "D": "Similarly, you could conclude that Ken, Norma, and Mary routinely drive faster than the speed limit. After all, if you routinely exceed the speed limit, you can expect to get a speeding ticket eventually, and these three people have gotten speeding tickets.",
       "E": "Similarly, you could conclude that Jack, Stephen, and Tina can expect to get jobs after they complete their university education. After all, these three people attend Perry University, and most people who graduated from Perry last year found jobs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT144",

@@ -201,7 +201,10 @@
       "D": "Polls of those who graduated from a university more than five years before being polled show a higher percentage of people in favor of reducing government social services than do polls of the overall population.",
       "E": "In the polls cited, graduating university students were more likely to express strong opinions about the question of reducing government social services than were students entering a university."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -459,7 +462,10 @@
       "D": "The longer fruit is kept, the more likely it is to become rotten. While these peaches seem to be fine, they have been kept for a rather long time. So it is best to throw them away now before they begin to rot.",
       "E": "This budget is based on the assumption that revenue will increase for the next two years. However, revenue figures for past years show that assumption to be untenable. Therefore, this budget should be replaced by a more realistic one. S T"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT145",

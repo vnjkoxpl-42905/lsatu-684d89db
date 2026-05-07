@@ -417,7 +417,10 @@
       "D": "A teacher is someone who teaches. In addition, there are people who teach but are not called teachers. So while the number of those called teachers is large, the number of those who teach is even larger.",
       "E": "Because someone intervened in the conflict, the effects of that intervention can be discerned. But since no one can investigate what does not happen, it is impossible to discern what would have happened had someone not intervened."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT146",

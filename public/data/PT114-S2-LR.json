@@ -216,7 +216,10 @@
       "D": "Some questions asked in the studies suggested that reasonable people would want to be told if they had a serious medical condition.",
       "E": "The people surveyed in the studies were all young students in introductory psychology courses."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT114",

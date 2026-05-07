@@ -216,7 +216,10 @@
       "D": "If Earth’s population continues to increase, it will eventually outstrip all available resources.",
       "E": "The percentage of fresh water used for agriculture is likely to grow more quickly than is the percentage used for industry."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT140",

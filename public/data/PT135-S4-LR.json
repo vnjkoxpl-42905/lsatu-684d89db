@@ -303,7 +303,10 @@
       "D": "Our understanding of silent films is incomplete, because few filmmakers of the time realized that the film stock they were using would disintegrate over time.",
       "E": "Our notion of fashion trends will probably be accurate if we rely on TV fashion programs, despite the fact that these programs deliberately select the most outrageous outfits in order to get the viewers’ attention."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT135",

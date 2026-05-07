@@ -15,7 +15,10 @@
       "D": "concludes that a component of a service must have a property that the service as a whole possesses",
       "E": "concludes that a claim must be false because of the mere absence of evidence in its favor"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -270,7 +273,10 @@
       "D": "Predatory birds, like many predatory animals, are generally solitary hunters. Some predatory mammals hunt alone because there is not enough food to support a pack of them in one area. Thus hawks, which are predatory birds, probably hunt alone.",
       "E": "Hiking trails in British Columbia, like those in New Mexico, are concentrated in mountainous regions. In New Mexico this is partly because low-lying areas are too hot and arid for comfortable hiking. Thus hikers must also feel less comfortable hiking in low-lying areas of British Columbia."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT140",

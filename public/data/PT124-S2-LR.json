@@ -403,7 +403,10 @@
       "D": "Tooth size among adult woolly mammoths was always directly proportional to the overall size of those mammoths.",
       "E": "Woolly mammoths of the kind that lived on the island had the same number and variety of teeth as mammoths that lived elsewhere had."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT124",

@@ -370,7 +370,10 @@
       "D": "Competition in wool sales increased during the period in question, leaving Australian wool producers in a less favorable position than previously.",
       "E": "Among Australian sheep farmers, the percentage who made their living exclusively from international wool sales increased significantly during the period in question."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT140",
