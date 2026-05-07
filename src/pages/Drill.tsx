@@ -1982,7 +1982,7 @@ function DrillContent() {
   const isOfficialLayout = searchParams.get('layout') === 'official';
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
-    const showOfficialAnswerNavigator = isFullSection;
+    const showOfficialAnswerNavigator = true;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
     if (sectionTimer) {
