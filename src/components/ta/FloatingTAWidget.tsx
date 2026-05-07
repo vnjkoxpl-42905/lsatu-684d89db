@@ -14,7 +14,7 @@ import TAChatView from "./TAChatView";
 
 const LS_KEY = "ta-selected-student";
 
-const HIDDEN_ROUTES = ["/foyer"];
+const HIDDEN_ROUTES = ["/foyer", "/drill"];
 
 export default function FloatingTAWidget() {
   const navigate = useNavigate();
