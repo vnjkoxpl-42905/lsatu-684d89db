@@ -360,7 +360,10 @@
       "D": "The conclusion that bacteria in general are usually in hibernation would be reasonable if all types of bacteria were rather similar.",
       "E": "It is likely that only one type of bacteria hibernates regularly."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT126",

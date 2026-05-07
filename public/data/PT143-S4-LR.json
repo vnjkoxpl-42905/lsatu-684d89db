@@ -177,7 +177,10 @@
       "D": "Societal demand for government control of the economy is growing.",
       "E": "In general, people should feel no more responsible for economic disasters than for military invasions."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT143",

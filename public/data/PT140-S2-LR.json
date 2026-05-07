@@ -416,7 +416,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -453,7 +454,10 @@
       "D": "Stars do not move at tremendously great speeds.",
       "E": "A star that is more than a million miles from Earth could reappear in roughly the same position each night."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT140",

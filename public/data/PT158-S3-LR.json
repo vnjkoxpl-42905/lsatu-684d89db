@@ -141,7 +141,10 @@
       "D": "is based on the report of a biased participant in the controversy",
       "E": "fails to make a necessary distinction between the professor’s grading criteria and the objective criteria of a paper’s quality"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -177,7 +180,10 @@
       "D": "It is possible that radioactive elements were created when the universe began.",
       "E": "Due to their instability, most of the universe’s radioactive elements decay within at most a few million years into other, nonradioactive elements."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -249,7 +255,10 @@
       "D": "Some principals are harsh disciplinarians. No adviser to a debate team is a harsh disciplinarian. Hence, some principals are not advisers to a debate team.",
       "E": "Some teachers who let their students leave early are popular. No coaches allow their students to leave before three o’clock. Therefore, some popular teachers are not coaches."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -321,7 +330,10 @@
       "D": "It is a premise that guarantees the truth of the argument’s conclusion.",
       "E": "It is an ancillary conclusion drawn in the argument. 3 3 -25-3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",

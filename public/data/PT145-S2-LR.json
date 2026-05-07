@@ -231,7 +231,10 @@
       "D": "there is no way to eliminate conflict among nations",
       "E": "only nations that have some interaction with one another have knowledge of one another’s needs and problems"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -411,7 +414,10 @@
       "D": "Most of the mines that Moradco operates in Velyena are not gold mines.",
       "E": "Most of the mines that Moradco operates throughout the world are not gold mines."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT145",

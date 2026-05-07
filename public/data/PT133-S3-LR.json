@@ -267,7 +267,10 @@
       "D": "James thought that the chair of the Anthropology Department would have endorsed all of the recommendations that he proposed to the Core Curriculum Committee.",
       "E": "The draft proposal that the chair of the Anthropology Department had seen did not include all of the recommendations in James's proposal to the Core Curriculum Committee."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT133",

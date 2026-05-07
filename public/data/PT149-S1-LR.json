@@ -107,7 +107,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -288,7 +289,10 @@
       "D": "bases a conclusion that an attribute is always irrelevant to success on evidence that it is sometimes irrelevant to success",
       "E": "presents only one instance of a phenomenon as the basis for a broad generalization about that phenomenon"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -324,7 +328,10 @@
       "D": "If the general assembly does not begin at 7:00 P.M. today, then the standards committee has a quorum.",
       "E": "If the standards committee has a quorum, then the awards committee does not have a quorum."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -452,7 +459,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   }
 ]

@@ -249,7 +249,10 @@
       "D": "Visual aids can be very useful in effectively teaching math skills, because they generally allow vivid conceptualization of math principles. If such visual aids were never employed, therefore, teaching math skills might sometimes be more difficult.",
       "E": "An understanding of the rules of perspective is necessary for achieving success as a painter, since it is the understanding of these most basic rules that allows the painter to paint realistically. Thus, painters with an understanding of the rules of perspective will achieve success."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT127",

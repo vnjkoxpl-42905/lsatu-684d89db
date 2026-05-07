@@ -123,7 +123,10 @@
       "D": "It points out that Sam’s argument presupposes the truth of the conclusion Sam is defending.",
       "E": "It presents new information that implies that Sam’s conclusion is false."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -377,7 +380,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

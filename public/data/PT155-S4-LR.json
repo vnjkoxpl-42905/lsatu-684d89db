@@ -51,7 +51,10 @@
       "D": "In cases of injury to the striatum, newly formed neurons will not help to heal the injury.",
       "E": "In most cases of brain injury, newly formed neurons do not help to heal the injury."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -359,7 +362,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

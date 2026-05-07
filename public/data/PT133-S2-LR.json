@@ -249,7 +249,10 @@
       "D": "A chemical substance habitually used by a person throughout life without significant psychological or physiological difficulty is nonaddictive.",
       "E": "\"Addiction\" is a term that is impossible to define with precision."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -323,7 +326,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

@@ -195,7 +195,10 @@
       "D": "In reality, it is difficult to emulate fictional characters.",
       "E": "It is rarely evident which qualities of fictional characters are intended to be attractive qualities."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -215,7 +218,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -272,7 +276,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

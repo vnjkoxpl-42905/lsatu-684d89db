@@ -231,7 +231,10 @@
       "D": "fails to consider whether the law ever dissuades people who sometimes but not always cross against red lights",
       "E": "provides no evidence that crossing against red lights is more dangerous than crossing on green lights"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT111",

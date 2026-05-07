@@ -393,7 +393,10 @@
       "D": "infers merely because something was likely to occur that it did occur",
       "E": "appeals to the authority of biologists who may not be representative of all biologists with expertise in the relevant area 4 4 4 4"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT142",

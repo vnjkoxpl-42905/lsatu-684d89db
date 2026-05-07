@@ -429,7 +429,10 @@
       "D": "A book will not give its readers pleasure unless it was intended by its author to have that effect.",
       "E": "A book can be popular for reasons other than its ability to give readers pleasure."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT144",

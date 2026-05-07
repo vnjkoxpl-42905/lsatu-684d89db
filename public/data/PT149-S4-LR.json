@@ -51,7 +51,10 @@
       "D": "The newspaper reporter who panned the restaurant is not a true restaurant critic.",
       "E": "A newspaper would never call someone a drama critic who had no special training in theater."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -69,7 +72,10 @@
       "D": "Researchers have found iron-60 in meteorites that were formed relatively late in the solar system’s history.",
       "E": "If there had been iron-60 present in the early history of the solar system, it would be found in meteorites formed early in the solar system’s history."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT149",

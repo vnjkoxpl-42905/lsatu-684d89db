@@ -375,7 +375,10 @@
       "D": "presupposing that if an action’s having a certain property is necessary for its being a certain type of action, then having that property is sufficient for being that type of action",
       "E": "presupposing that if a certain property is shared by two types of action, then that property is the only property distinguishing the two types of action from actions of other types"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT109",

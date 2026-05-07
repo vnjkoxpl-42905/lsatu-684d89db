@@ -465,6 +465,9 @@
       "D": "whether the fact that the anthropologist’s assumption led to such successful predictions provides sufficient grounds for the claim that the vervet monkeys had knowledge of their dominance hierarchy",
       "E": "whether the behavior exhibited by vervet monkeys in experimental situations can be used as the basis for a generalization concerning all vervet monkeys"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   }
 ]

@@ -15,7 +15,10 @@
       "D": "Hermann usually requests substantial changes to interview articles before approving them",
       "E": "Hermann believes that the Messenger frequently edits interviews in ways that result in unflattering portrayals of the interviewees"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT144",

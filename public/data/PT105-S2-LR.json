@@ -357,7 +357,10 @@
       "D": "The mixture is widely enough known that almost everybody with a cold is aware of it.",
       "E": "There are no effective cold remedies available that many people who have colds prefer to the mixture."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT105",

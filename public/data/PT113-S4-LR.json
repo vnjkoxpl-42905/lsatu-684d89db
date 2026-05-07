@@ -69,7 +69,10 @@
       "D": "Quite a few opera singers carry a bent nail onstage for good luck. Therefore George, an opera singer, must owe his good luck to the bent nail that he always carries.",
       "E": "A great many successful opera singers studied more than one language. Hence Eileen must be a successful opera singer, since she studied more than one language."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT113",

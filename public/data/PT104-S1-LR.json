@@ -195,7 +195,10 @@
       "D": "Apes are defined by having, among other characteristics, opposable thumbs and no external tail. Recently, fossil remains of a previously unknown animal were found. Because this animal had opposable thumbs, it must have been an ape.",
       "E": "The only animal that could have produced a track similar to this one is a bear. But there are no bears in this area of the country, so this animal track is a fake."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT104",

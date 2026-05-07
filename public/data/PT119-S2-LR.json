@@ -33,7 +33,10 @@
       "D": "One person could not have written both the love poetry and the dramas attributed to Shakespeare.",
       "E": "Shakespeare may have written the love poetry but did not write the dramas attributed to him."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -123,7 +126,10 @@
       "D": "All organisms with large brains are biologically equipped for flexible behavior.",
       "E": "Only organisms with brains of insect size or smaller engage in purely instinctual behavior."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT119",

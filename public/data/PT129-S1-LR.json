@@ -159,7 +159,10 @@
       "D": "If a word is neither a main word nor a first or last word of a title, then it should not be capitalized.",
       "E": "Prepositions and conjunctions with five or more letters should be capitalized in any text."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -309,7 +312,10 @@
       "D": "Statistics show that people are generally living longer and healthier lives than ever before. However, more people are overweight and fewer people exercise than ever before. Therefore, being lean and physically fit is essential neither to long life nor to good health.",
       "E": "People tend to watch only those television programs that they enjoy and appreciate. Since there are more television viewers today than there were ten years ago, it must be the case that viewers today are satisfied with at least some of the programs shown on television."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT129",

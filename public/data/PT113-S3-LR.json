@@ -375,7 +375,10 @@
       "D": "Alex holds that the chances of Sandy's winning in a given week are unaffected by whether anyone has won the week before.",
       "E": "Sandy holds that the chances of there being a winner go up if no one has won the lottery for quite a while."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT113",

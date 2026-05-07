@@ -420,7 +420,10 @@
       "D": "It takes for granted that any decrease in the amount of time a child spends interacting with others detracts from that child’s social development.",
       "E": "It takes a necessary condition for an activity’s being healthy as a sufficient condition for its being so."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT134",

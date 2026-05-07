@@ -381,7 +381,10 @@
       "D": "At least one student who received a grade of B minus or higher missed one or more class sessions.",
       "E": "More than half of the students received a grade of B minus or higher."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT141",

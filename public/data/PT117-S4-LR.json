@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -396,7 +397,10 @@
       "D": "It fails to consider the possibility that the benefits of neutering a dog early might outweigh the risk of arthritis.",
       "E": "It fails to consider the possibility that dogs with properly developed bones can develop arthritis."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT117",

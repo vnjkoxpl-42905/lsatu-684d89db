@@ -105,7 +105,10 @@
       "D": "Some people who have been injected with proteins extracted from the tuberculosis bacterium will contract tuberculosis as a result of the injection.",
       "E": "The body's immune system cannot recognize infectious bacteria unless there are sufficient quantities of the bacteria to cause overt symptoms of disease."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT102",

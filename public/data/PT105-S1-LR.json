@@ -215,7 +215,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

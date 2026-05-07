@@ -15,7 +15,10 @@
       "D": "If something were badly wrong with the legal system, judges would be ill-equipped to determine whether a government minister's decisions are reasonable.",
       "E": "If judges are well-equipped to determine whether an administrative decision is reasonable, there is not anything badly wrong with the legal system."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT115",

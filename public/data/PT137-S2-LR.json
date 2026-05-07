@@ -201,7 +201,10 @@
       "D": "Sulfur-33 is rarely found in diamonds that were formed more recently than 2.9 billion years ago.",
       "E": "The formation of diamonds occurs only in the presence of ultraviolet light."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT137",

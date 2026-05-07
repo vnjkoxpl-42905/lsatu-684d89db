@@ -177,7 +177,10 @@
       "D": "Photons and neutrinos were the only kinds of particles that reached Earth from the supernova.",
       "E": "Prior to the simultaneous arrival of photons and neutrinos from the supernova, there was no empirical evidence for Einstein's claim that gravity is a property of space itself."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -447,7 +450,10 @@
       "D": "Sarah's dog is not a dachshund, for he hunts very well, and most dachshunds hunt poorly.",
       "E": "There is usually more traffic at this time of day, unless it is a holiday. But since today is not a holiday, it is surprising that there is so little traffic."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT116",

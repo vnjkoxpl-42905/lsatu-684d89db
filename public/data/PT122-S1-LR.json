@@ -269,7 +269,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -396,7 +397,10 @@
       "D": "confuses the routine nonpunishment of violations of a rule with sometimes not punishing violations of the rule",
       "E": "takes for granted that all of a society's explicit rules result in equally serious consequences when broken"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT122",

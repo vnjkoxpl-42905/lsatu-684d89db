@@ -342,7 +342,10 @@
       "D": "data should not be admitted as evidence in a court of law without scientific witnesses having agreed about how reliable they are",
       "E": "there are also controversies about reliability of evidence in noncriminal cases"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT134",

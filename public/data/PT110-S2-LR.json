@@ -195,7 +195,10 @@
       "D": "accepts a claim on mere authority, without requiring sufficient justification",
       "E": "fails to consider that other psychologists may disagree with the psychologists cited"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT110",

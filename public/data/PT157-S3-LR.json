@@ -249,7 +249,10 @@
       "D": "takes for granted that a necessary ingredient of the best seafood gumbo is also a necessary ingredient of good seafood gumbo",
       "E": "fails to consider the possibility that on some days Chris’s might be serving seafood gumbo made with fresh okra -24- 3 33"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -341,7 +344,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -380,7 +384,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

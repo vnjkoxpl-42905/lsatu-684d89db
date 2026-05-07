@@ -435,7 +435,10 @@
       "D": "Adults usually feel a pleasant nostalgia when hearing the music they listened to as adolescents, but since adolescents often like music specifically because they think it annoys their parents, adults rarely appreciate the music that their children will later listen to with nostalgia.",
       "E": "All self-employed businesspeople have salaries that fluctuate with the fortunes of the general economy, but government bureaucrats are not self-employed. Therefore, not everyone with an income that fluctuates with the fortunes of the general economy is a government bureaucrat."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT135",

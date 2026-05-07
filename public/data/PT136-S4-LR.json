@@ -87,7 +87,10 @@
       "D": "Some elements of nature cannot be represented adequately by great art.",
       "E": "Sounds that do not imitate nature are not great music."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT136",

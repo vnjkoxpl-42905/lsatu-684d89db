@@ -177,7 +177,10 @@
       "D": "When consumers know that a product has been manufactured by a subcontractor, they are generally dubious about the product’s quality.",
       "E": "When a company manufactures some products in-house and subcontracts the manufacturing of others, the products made in-house will be of uniformly better quality."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -434,7 +437,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
