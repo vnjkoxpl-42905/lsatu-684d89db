@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Anna: Did you know that rainbows always occur opposite the sun, appearing high in the sky when the sun is low, and low in the sky when the sun is high? The Roman scholar Pliny the Elder claimed that this was so, in the first century A.D. William: His claim cannot be correct. After all, Pliny the Elder wrote that there are tribes of dog- headed people and beings with no heads or necks but with eyes on their shoulders, and said that smearing snails on your forehead cures headaches! William’s argument against Anna’s claims about rainbows is most vulnerable to criticism because it",
@@ -27,7 +29,10 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Shareholder: The company’s current operations are time-proven successes. The move into food services may siphon off funds needed by these other operations. Also, the food service industry is volatile, with a higher inherent risk than with, for instance, pharmaceuticals, another area into which the company has considered expanding.",
     "questionStem": "If the shareholder’s statements are true, which one of the following is most strongly supported by them?",
@@ -49,7 +54,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Mariah: Joanna has argued that Adam should not judge the essay contest because several of his classmates have entered the contest. However, the essays are not identified by author to the judge and, moreover, none of Adam’s friends are classmates of his. Still, Adam has no experience in critiquing essays. Therefore, I agree with Joanna that Adam should not judge the contest.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify Mariah’s argument?",
@@ -72,7 +79,10 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The manufacturers of NoSmoke claim that their product reduces smokers’ cravings for cigarettes. However, in a recent study, smokers given the main ingredient in NoSmoke reported no decrease in cravings for cigarettes. Thus, since NoSmoke has only two ingredients, if similar results are found for the second ingredient, we can conclude that NoSmoke does not reduce smokers’ cravings.",
     "questionStem": "The argument above is flawed in that it",
@@ -97,7 +107,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Gardener: Researchers encourage us to allow certain kinds of weeds to grow among garden vegetables because they can repel caterpillars from the garden. While it is wise to avoid unnecessary use of insecticides, the researchers’ advice is premature. For all we know, those kinds of weeds can deplete the soil of nutrients and moisture that garden crops depend on, and might even attract other kinds of damaging pests.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the gardener’s argument?",
@@ -119,7 +132,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Executive: We recently ran a set of advertisements in the print version of a travel magazine and on that magazine’s website. We were unable to get any direct information about consumer response to the print ads. However, we found that consumer response to the ads on the website was much more limited than is typical for website ads. We concluded that consumer response to the print ads was probably below par as well.",
     "questionStem": "The executive’s reasoning does which one of the following?",
@@ -142,7 +157,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Conservation officers justified their decision to remove a pack of ten coyotes from a small island by claiming that the coyotes, which preyed on wild cats and plover, were decimating the plover population and would soon wipe it out. After the coyotes were removed, however, the plover population plummeted dramatically, and within two years plover could no longer be found on the island.",
     "questionStem": "Which one of the following would, if true, most help explain the phenomenon described above?",
@@ -164,7 +182,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Economist: During a recession, a company can cut personnel costs either by laying off some employees without reducing the wages of remaining employees or by reducing the wages of all employees without laying off anyone. Both damage morale, but layoffs damage it less, since the aggrieved have, after all, left. Thus, when companies must reduce personnel costs during recessions, they are likely to lay off employees.",
     "questionStem": "Which one of the following, if true, most strengthens the economist’s reasoning?",
@@ -189,7 +210,10 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "There are far fewer independent bookstores than there were 20 years ago, largely because chain bookstores prospered and multiplied during that time. Thus, chain bookstores’ success has been to the detriment of book consumers, for the shortage of independent bookstores has prevented the variety of readily available books from growing as much as it otherwise would have.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -213,7 +237,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Concert promoter: Some critics claim that our concert series lacks popular appeal. But our income from the sales of t-shirts and other memorabilia at the concerts is equal to or greater than that for similar sales at comparable series. So those critics are mistaken.",
     "questionStem": "The concert promoter’s argument is flawed in that it",
@@ -236,7 +262,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The sun emits two types of ultraviolet radiation that damage skin: UV-A, which causes premature wrinkles, and UV-B, which causes sunburn. Until about ten years ago, sunscreens protected against UV-B radiation but not against UV-A radiation.",
     "questionStem": "Which one of the following is best supported by the information above?",
@@ -257,7 +286,10 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Advice columnist: Several scientific studies have shown that, when participating in competitive sports, those people who have recently been experiencing major stress in their lives are several times more likely to suffer serious injuries than are other participants in competitive sports. Since risking serious injury is unwise, no sports activity should be used as a method for coping with stress.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the advice columnist’s argument?",
@@ -279,7 +311,10 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Tent caterpillars’ routes between their nests and potential food sources are marked with chemical traces called pheromones that the caterpillars leave behind. Moreover, routes from food sources back to the nest are marked more heavily than are merely exploratory routes that have failed to turn up a food source. Thus, tent caterpillars are apparently among the insect species that engage in communal foraging, which consists in the conveying of information concerning the location of food to other members of the colony, nest, or hive.",
     "questionStem": "Which one of the following, if true, adds the most support to the argument?",
@@ -301,7 +336,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Many movies starring top actors will do well at the box office because the actors are already well known and have a loyal following. Movies starring unknown actors are therefore unlikely to do well.",
     "questionStem": "The flawed reasoning in the argument above is most similar to that in which one of the following?",
@@ -323,7 +360,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "As part of a new trend in the writing of history, an emphasis on the details of historical events and motivations has replaced the previous emphasis on overarching historical trends and movements, with the result that the latter are often overlooked. In consequence, the ominous parallels that may exist between historical trends and current trends are also overlooked, which lessens our ability to learn from history.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -345,7 +385,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Therapist: The ability to trust other people is essential to happiness, for without trust there can be no meaningful emotional connection to another human being, and without meaningful emotional connections to others we feel isolated.",
     "questionStem": "Which one of the following, if assumed, allows the conclusion of the therapist’s argument to be properly inferred?",
@@ -369,7 +411,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Of all the Arabic epic poems that have been popular at various times, only Sirat Bani Hilal is still publicly performed. Furthermore, while most other epics were only recited, Sirat Bani Hilal has usually been sung. The musical character of the performance, therefore, is the main reason for its longevity.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -392,7 +436,10 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Fund-raiser: A charitable organization rarely gives its donors the right to vote on its policies. The inability to directly influence how charities spend contributions makes potential donors feel less of an emotional connection to the charity. Thus, most charities could probably increase the amount of money they raise through donations by giving donors the right to vote.",
     "questionStem": "Which one of the following is an assumption that the fund-raiser’s argument depends on?",
@@ -415,7 +462,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Main Conclusion",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Leslie: I’ll show you that your quest for the treasure is irrational. Suppose you found a tablet inscribed, “Whoever touches this tablet will lose a hand, yet will possess the world.” Would you touch it? Erich: Certainly not. Leslie: Just as I expected! It is clear from your answer that your hands are more important to you than possessing the world. But your entire body is necessarily more important to you than your hands. Yet you are ruining your health and harming your body in your quest for a treasure that is much less valuable than the whole world. I rest my case.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in Leslie’s argument?",
@@ -439,7 +488,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Newspaper article: People who take vitamin C supplements tend to be healthier than average. This was shown by a study investigating the relationship between high doses of vitamin C and heart disease, which showed that people who regularly consume high doses of vitamin C supplements have a significantly lower than average risk of heart disease.",
     "questionStem": "Which one of the following, if true, would most weaken the argument in the newspaper article?",
@@ -465,7 +516,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "George: Throughout the 1980s and early 1990s, hardly anyone learned ballroom dancing.",
     "questionStem": "Why is it that a large number of people now take ballroom dancing lessons?",
@@ -487,7 +541,11 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "On the basis of relatively minor morphological differences, some scientists suggest that Neanderthals should be considered a species distinct from Cro- Magnons, the forerunners of modern humans. Yet the fact that the tools used by these two groups of hominids living in different environments were of exactly the same type indicates uncanny behavioral similarities, for only if they faced the same daily challenges and met them in the same way would they have used such similar tools. This suggests that they were members of the same species, and that the morphological differences are due merely to their having lived in different environments.",
     "questionStem": "If the statements above are true, then each of the following could be true except:",
@@ -509,7 +567,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A summer day is “pleasant” if there are intermittent periods of wind and the temperature stays below 84°F (29°C) all afternoon. A summer day with high humidity levels is “oppressive” either if the temperature stays above 84°F (29°C) all afternoon or if there is no wind.",
     "questionStem": "Which one of the following summer weather reports most closely conforms to the principles stated above?",
@@ -531,7 +591,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The local radio station will not win the regional ratings race this year. In the past ten years the station has never finished better than fifth place in the ratings. The station’s manager has not responded to its dismal ratings by changing its musical format or any key personnel, while the competition has often sought to respond to changing tastes in music and has aggressively recruited the region’s top radio personalities.",
     "questionStem": "The reasoning in which one of the following is most similar to that in the argument above?",
@@ -555,7 +617,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Chef: This mussel recipe’s first step is to sprinkle the live mussels with cornmeal. The cornmeal is used to clean them out: they take the cornmeal in and eject the sand that they contain. But I can skip this step, because the mussels available at seafood markets are farm raised and therefore do not contain sand.",
     "questionStem": "Which one of the following is an assumption required by the chef’s argument?",

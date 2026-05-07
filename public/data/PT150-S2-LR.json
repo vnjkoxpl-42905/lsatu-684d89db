@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Philosopher: I have been told that most university students today have no interest in philosophical issues, but I know from my own experience that this isn’t true. I often go to university campuses to give talks, and the students at my talks have a deep interest in philosophical issues.",
     "questionStem": "The reasoning in the philosopher’s argument is flawed in that the argument",
@@ -26,7 +28,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Ancient humans in eastern North America hunted mammoths until the mammoth disappeared from the area around 13,000 years ago. Recently, a fossil bone with an engraving that depicts a mammoth was found in an ancient settlement in eastern North America. This shows that the settlement was occupied at a time when mammoths lived in this area.",
     "questionStem": "The argument requires the assumption that",
@@ -48,7 +52,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Durham: The mayor will agree to a tax increase because that is the only way the city council will agree to her road repair proposal, and that proposal is her top priority.\nEspinoza: The mayor will not get her road repair proposal passed because it is more important to her that taxes not increase.",
     "questionStem": "The dialogue provides the most support for the claim that Durham and Espinoza agree about which one of the following?",
@@ -69,7 +76,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "When politicians describe their opponents’ positions, they typically make those positions seem implausible and unattractive. In contrast, scholars try to make opposing positions seem as plausible and attractive as possible. Doing so makes their arguments against those positions more persuasive to their professional colleagues. Politicians should take note: they could persuade more voters with their arguments if they simply followed the scholars in charitably formulating their opponents’ positions.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that it",
@@ -92,7 +101,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Lawyer: In a risky surgical procedure that is performed only with the patient’s informed consent, doctors intentionally cause the patient’s heart and brain functions to stop by drastically reducing the\npatient’s body temperature. When the procedure is completed, body temperature is quickly restored. Because the doctors deliberately stop the patient’s life functions, if these functions do not resume following the procedure, the medical team is technically guilty of manslaughter.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the lawyer’s analysis?",
@@ -113,7 +124,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "John’s literature professor believes that the ability to judge the greatness of literary works accurately can be acquired only after years of specialized training. Such training is, in fact, what is required to become a literature professor. She is also well aware that the vast majority of the reading public does not have access to this specialized training.",
     "questionStem": "Which one of the following statements must be true if what John’s literature professor believes is true?",
@@ -131,7 +144,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Geothermal power plants produce power using heat from underground reservoirs of hot water or steam heated by the surrounding rock. In the limited areas of the world where such underground hot water and steam can currently be reached by drilling, geothermal power plants produce power more economically than conventional, fossil fuel power plants. However, advocates contend that in the near future economical power from geothermal power plants will be available in most areas.",
     "questionStem": "Which one of the following, if true, most helps to justify the advocates’ contention?",
@@ -149,7 +164,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "One should not confuse a desire for money with a desire for material possessions. Much of what money can buy— education, travel, even prestige—are not material goods at all. Material goods themselves, moreover, are seldom desired for their own sake but rather for the experiences or activities they make possible.",
     "questionStem": "The claim that one should not confuse a desire for money with a desire for material possessions plays which one of the following roles in the argument?",
@@ -167,7 +184,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Yu: The menu at Jason’s Restaurant states that no food served there contains products grown with chemical pesticides, but this cannot be true. I recently visited Kelly’s Grocery, where Jason goes personally to buy the restaurant’s produce, and I noticed workers unloading produce from a\ntruck belonging to MegaFarm, which I know uses chemical pesticides on all of its crops.",
     "questionStem": "Which one of the following, if true, most undermines Yu’s claim?",
@@ -185,7 +204,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Various studies have concluded that song overlapping, the phenomenon where one bird begins a song while another of its species is singing, is a signal of aggression. These studies are based solely on receiver-response tests, which seek to derive conclusions about the intent of a signal based on how others respond to it. However, any response—even no response—can be interpreted as a reaction to perceived aggression. Therefore, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -206,7 +227,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Psychologists have found that candidates for top political offices who blink excessively during televised debates are judged by viewers to have done less well than competing candidates who exhibit average blink rates. Any impact this phenomenon has on election results is surely deleterious: Many features—knowledgeableness, confidence, and so forth—contribute to a political official’s ability to perform well in office, but having an average blink rate is certainly not such a feature.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -224,7 +247,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Scientist: Some pundits claim that the public is afraid of scientists. This isn’t true. I have been a scientist\nfor several decades, and I have never met anyone who is afraid of scientists.",
     "questionStem": "Which one of the following is an assumption required by the scientist’s argument?",
@@ -246,7 +271,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Scientist: It seems likely that the earliest dinosaurs to fly did so by gliding out of trees rather than, as some scientists think, by lifting off the ground from a running start. Animals gliding from trees are able to fly with very simple wings. Such wings represent evolutionary middle stages toward developing the large wings that we associate with flying dinosaurs.",
     "questionStem": "Each of the following, if true, strengthens the scientist’s argument except:",
@@ -267,7 +294,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The arousal of anger is sometimes a legitimate artistic aim, and every legitimate artwork that has this aim calls intentionally for concrete intervention in the world. Even granting that most art is concerned with beauty in some way, it follows that those critics who maintain that a concern for beauty is a characteristic of all legitimate art are mistaken.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -289,7 +318,7 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Children clearly have a reasonably sophisticated understanding of what is real and what is pretend. Once they have acquired a command of language, we can ask them which is which, and they generally get it right.\nEven a much younger child who runs away when she sees her father roaring and prowling like a lion does not act as though she thinks her father is actually a lion. If she believed that, she would be terrified. The pleasure children get from make-believe would be impossible to explain if they could not distinguish the real from the pretend.",
     "questionStem": "Which one of the following most accurately expresses the overall conclusion drawn in the argument?",
@@ -310,7 +339,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Environment minister: Many countries have signed an international agreement that is intended to reduce pollution in the world’s oceans. While conformity to this agreement probably would significantly reduce pollution in the world’s oceans, it would also probably reduce economic growth in our country and others. Therefore, our country should not sign the agreement.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the environment minister’s argument?",
@@ -332,7 +363,10 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Advocate: A study of people who had recently recovered from colds found that people who took cold medicine for their colds reported more severe symptoms than those people who did not take cold medicine. Therefore, taking cold medicine is clearly counterproductive.",
     "questionStem": "The reasoning in the advocate’s argument is flawed because the argument",
@@ -353,7 +387,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some people prefer to avoid facing unpleasant truths and resent those whose unwanted honesty forces them into such a confrontation. Others dislike having any information, however painful, knowingly withheld from them. It is obvious then that if those in the former group are guided by the directive to treat others as they themselves want to be treated, _______.",
     "questionStem": "Which one of the following most reasonably completes the argument above?",
@@ -374,7 +410,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If you study history, then you will appreciate the vast differences among past civilizations, and you will appreciate these differences provided that you reflect on your own civilization. Hence, if you study history you will reflect on your own civilization.",
     "questionStem": "Which one of the following is most closely parallel in its flawed reasoning to the flawed reasoning in the argument above?",
@@ -392,7 +430,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A philosophical paradox is a particularly baffling sort of argument. Your intuitions tell you that the conclusion of a philosophical paradox is false, but they also tell you that its conclusion follows logically from true premises. Solving a philosophical paradox requires accepting any one of three things: that its conclusion is true, that at least one of its premises is not true, or that its conclusion does not really follow logically from its premises.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -410,7 +450,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A chimp who displays feelings of affection toward the other members of its social group is more likely to be defended by these group members from raiders outside of the group—even at the risk of harm to these defenders—than are those chimps who rarely or never display feelings of affection toward their associates. This shows that, from a sociological perspective, affection plays the same role in chimp communities as in human communities, since humans are more willing to face risks to protect those toward whom they have feelings of affection.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -434,7 +476,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The writers of the television show Ambitions could make their characters more realistic than they currently are, but they know their viewership would shrink if they did. The writers will choose to maximize their audience, so the characters will not be developed in a more realistic manner.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -455,7 +499,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "It has been argued that the immense size of Tyrannosaurus rex would have made it so slow that it could only have been a scavenger, not a hunter, since it would not have been able to chase down its prey. This, however, is an overly hasty inference. T. rex’s prey, if it was even larger than T. rex, would probably have been slower than T. rex.",
     "questionStem": "The claim that T. rex could only have been a scavenger, not a hunter, plays which one of the following roles in the argument?",
@@ -476,7 +522,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Legal theorist: Only two types of theories of criminal sentencing can be acceptable—retributivist theories, which hold that the purpose of sentences is simply to punish, and rehabilitationist theories, which hold that a sentence is a means to reform the offender. A retributivist theory is not acceptable unless it conforms to the principle that the harshness of a punishment should be proportional to the seriousness of the offense. Retributivist theories that hold that criminals should receive longer sentences for repeat offenses than for an initial offense violate this principle, since repeat offenses may be no more serious than the initial offense.",
     "questionStem": "Which one of the following can be properly inferred from the legal theorist’s statements?",
@@ -494,7 +542,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Sociologists study folktales because they provide a means of understanding the distinctive values of a culture. However, the folktales in almost all cultures are adaptations of the same ancient narratives to the local milieu.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",

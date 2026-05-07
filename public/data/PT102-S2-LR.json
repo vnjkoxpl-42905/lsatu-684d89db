@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Psychiatrist: We are learning that neurochemical imbalances can cause behavior ranging from extreme mental illness to less serious but irritating behavior such as obsessive fantasizing, petulance, or embarrassment. These findings will promote compassion and tolerance when looking at a mental illness, quirk, or mere difference between two persons, since being mentally healthy can now begin to be seen as simply having the same neurochemical balances as most people.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the psychiatrist's argument?",
@@ -26,7 +26,10 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "No one wants this job as much as Joshua does, but he is not applying for it. It follows that there will not be any applicants, no matter how high the salary that is being offered.",
     "questionStem": "The flawed reasoning in the argument above most closely parallels that in which one of the following?",
@@ -44,7 +47,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Most Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Many people limit the intake of calories and cholesterol in their diet in order to lose weight and reduce the level of cholesterol in their blood. When a person loses weight, the fat cells in that person's body decrease in size but not in number. As they decrease in size, fat cells spill the cholesterol they contain into the bloodstream. Therefore, a person who goes on a low-calorie, low-cholesterol diet _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -67,7 +72,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Advances in photocopying technology allow criminals with no printing expertise to counterfeit paper currency. One standard anticounterfeiting technique, microprinting, prints paper currency with tiny designs that cannot be photocopied distinctly. Although counterfeits of microprinted currency can be detected easily by experts, such counterfeits often circulate widely before being detected. An alternative, though more costly, printing technique would print currency with a special ink. Currency printed with the ink would change color depending on how ordinary light strikes it, whereas photocopied counterfeits of such currency would not. Because this technique would allow anyone to detect photocopied counterfeit currency easily, it should be adopted instead of microprinting, despite the expense.",
     "questionStem": "Which one of the following, if true, provides the most support for the recommendation made by the argument?",
@@ -91,7 +98,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Advances in photocopying technology allow criminals with no printing expertise to counterfeit paper currency. One standard anticounterfeiting technique, microprinting, prints paper currency with tiny designs that cannot be photocopied distinctly. Although counterfeits of microprinted currency can be detected easily by experts, such counterfeits often circulate widely before being detected. An alternative, though more costly, printing technique would print currency with a special ink. Currency printed with the ink would change color depending on how ordinary light strikes it, whereas photocopied counterfeits of such currency would not. Because this technique would allow anyone to detect photocopied counterfeit currency easily, it should be adopted instead of microprinting, despite the expense.",
     "questionStem": "Which one of the following, if true, most seriously undermines the argument?",
@@ -113,7 +122,10 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "One test to determine whether a person has been infected with tuberculosis consists of injecting the person with proteins extracted from the tuberculosis bacterium. Once a person has been infected by a bacterium, the person's immune system subsequently recognizes certain proteins present in that bacterium and attacks the bacterium. This recognition also takes place in the test and results in a skin irritation at the injection site. Hence the physicians who designed the test reasoned that anyone who reacts in this manner to an injection with the tuberculosis proteins has been infected with tuberculosis.",
     "questionStem": "Which one of the following is an assumption on which the physicians' reasoning depends?",
@@ -139,7 +151,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Generations of European-history students have been taught that a political assassination caused the First World War. Without some qualification, however, this teaching is bound to mislead, since the war would not have happened without the treaties and alliances that were already in effect and the military force that was already amassed. These were the deeper causes of the war, whereas the assassination was a cause only in a trivial sense. It was like the individual spark that happens to ignite a conflagration that was, in the prevailing conditions, inevitable.",
     "questionStem": "Which one of the following most accurately restates the main point of the passage?",
@@ -162,7 +176,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Toddlers are not being malicious when they bite people. For example, a child may want a toy, and feel that the person he or she bites is preventing him or her from having it.",
     "questionStem": "The situation as described above most closely conforms to which one of the following generalizations?",
@@ -185,7 +201,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Consumer advocate: Last year's worldwide alarm about a computer 'virus'—a surreptitiously introduced computer program that can destroy other programs and data—was a fraud. Companies selling programs to protect computers against such viruses raised worldwide concern about the possibility that a destructive virus would be activated on a certain date. There was more smoke than fire, however; only about a thousand cases of damage were reported around the world. Multitudes of antivirus programs were sold, so the companies' warning was clearly only an effort to stimulate sales.",
     "questionStem": "The reasoning in the consumer advocate's argument is flawed because this argument",
@@ -209,7 +227,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Insects can see ultraviolet light and are known to identify important food sources and mating sites by sensing the characteristic patterns of ultraviolet light that these things reflect. Insects are also attracted to Glomosus spiderwebs, which reflect ultraviolet light. Thus, insects are probably attracted to these webs because of the specific patterns of ultraviolet light that these webs reflect.",
     "questionStem": "Which one of the following, if true, most strongly supports the argument?",
@@ -231,7 +251,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "A Habitat Conservation Plan (HCP) is based on a law that allows developers to use land inhabited by endangered species in exchange for a promise to preserve critical habitat or provide replacement land nearby. Some individuals of endangered species are lost in return for assurances by the owner or developer that habitat for those remaining animals will be protected. Environmentalists are pleased that HCPs allow them to win concessions from developers who would otherwise ignore rarely enforced environmental laws. Satisfied property owners prefer HCPs to more restrictive prohibitions of land use.",
     "questionStem": "The situation described above most closely conforms to which one of the following principles?",
@@ -254,7 +274,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "It has long been thought that lizards evolved from a group of amphibians called anthracosaurs, no fossils of which have been found in any rocks older than 300 million years. However, a fossil of a lizard was recently found that is estimated to be 340 million years old. Lizards could not have evolved from creatures that did not exist until after the first lizards. Therefore, lizards could not have evolved from anthracosaurs.",
     "questionStem": "An assumption made in the argument is that there are no",
@@ -279,7 +301,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Numismatist: In medieval Spain, most gold coins were minted from gold mined in West Africa, in the area that is now Senegal. The gold mined in this region was the purest known. Its gold content of 92 percent allowed coins to be minted without refining the gold, and indeed coins minted from this source of gold can be recognized because they have that gold content. The mints could refine gold and produced other kinds of coins that had much purer gold content, but the Senegalese gold was never refined.",
     "questionStem": "Which one of the following inferences about gold coins minted in medieval Spain is most strongly supported by the information the numismatist gives?",
@@ -300,7 +324,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Numismatist: In medieval Spain, most gold coins were minted from gold mined in West Africa, in the area that is now Senegal. The gold mined in this region was the purest known. Its gold content of 92 percent allowed coins to be minted without refining the gold, and indeed coins minted from this source of gold can be recognized because they have that gold content. The mints could refine gold and produced other kinds of coins that had much purer gold content, but the Senegalese gold was never refined. As a preliminary to negotiating prices, merchants selling goods often specified that payment should be in the coins minted from Senegalese gold.",
     "questionStem": "Which one of the following, if true, most helps to explain this preference?",
@@ -321,7 +348,10 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Some plants have extremely sensitive biological thermometers. For example, the leaves of rhododendrons curl when the temperature of the air around them is below 0°C (Celsius). Similarly, mature crocus blossoms open in temperatures above 2°C. So someone who simultaneously observed rhododendrons with uncurled leaves, crocuses with mature but unopened blossoms, and a thermometer showing 1°C could determine that the thermometer's reading was accurate to within plus or minus 1°C.",
     "questionStem": "Which one of the following, if true, most seriously undermines the reasoning above?",
@@ -344,7 +374,10 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Political scientist: The dissemination of political theories is in principle able to cause change in existing social structures. However, all political theories are formulated in the educationally privileged setting of the university, leading to convoluted language that is alienating to many individuals outside academia who would be important agents of change. It follows that, with respect to political theory, there is a special role for those outside the university context to render it into accessible language.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -369,7 +402,10 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Nicotine has long been known to cause heart attacks and high blood pressure. Yet a recent study has shown that the incidence of heart attacks and high blood pressure is significantly higher among cigarette smokers who do not chew tobacco than among nonsmokers exposed to an equal amount of nicotine through tobacco chewing.",
     "questionStem": "Which one of the following, if true, helps least to resolve the apparent discrepancy described above?",
@@ -390,7 +426,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "President of Central Supply Company: Profits are at an all-time low this fiscal year because of decreased demand for our products. If this situation continues, the company may have to declare bankruptcy. So it is important to prevent any further decrease in profits. Consequently, the only options are to reduce planned expansion or to eliminate some less profitable existing operations.",
     "questionStem": "Which one of the following most accurately describes a flaw in the company president's reasoning?",
@@ -413,7 +451,10 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In all mammalian species, the period of a young mammal's life in which it is most frequently playful coincides with the period of most rapid growth of the neural connections in the mammal's brain that give rise to various complex patterns of movement, posture, and social response. Indeed, the neural connections created by frequent play during this period later become indispensable for the mammal's survival and well-being as an adult.",
     "questionStem": "The statements above, if true, serve least well as evidence for which one of the following?",
@@ -435,7 +476,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Physicist: Determinism is the view that every event has a preceding cause sufficient for its occurrence. That is, if determinism is true, then the events that are presently occurring could not have failed to occur given the state of the universe a moment ago. Determinism, however, is false because it is impossible to know the complete state of the universe at any given time since it is impossible to measure accurately both the position and velocity of any given subatomic particle at a particular time.",
     "questionStem": "The physicist's reasoning is most vulnerable to criticism on which one of the following grounds?",
@@ -458,7 +501,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If this parking policy is unpopular with the faculty, then we should modify it. If it is unpopular among students, we should adopt a new policy. And, it is bound to be unpopular either with the faculty or among students.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -479,7 +524,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "It is an absurd idea that whatever artistic endeavor the government refuses to support it does not allow, as one can see by rephrasing the statement to read: No one is allowed to create art without a government subsidy.",
     "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",
@@ -501,7 +546,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Politician: Nobody can deny that homelessness is a problem, yet there seems to be little agreement on how to solve it. One thing, however, is clear: ignoring the problem will not make it go away. Only if the government steps in and provides the homeless with housing will this problem disappear, and this necessitates increased taxation. For this reason, we should raise taxes.",
     "questionStem": "Which one of the following principles, if valid, most supports the politician's argument?",
@@ -524,7 +571,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Trade official: Country X deserves economic retribution for its protectionism. However, it is crucial that we recognize that there are overriding considerations in this case. We should still sell to X the agricultural equipment it ordered; there is high demand in our country for agricultural imports from X.",
     "questionStem": "The argument depends on assuming which one of the following principles?",
@@ -547,7 +596,7 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Jack's aunt gave him her will, asking him to make it public when she died; he promised to do so. After her death, Jack looked at the will; it stipulated that all her money go to her friend George. Jack knew that if he made the will public, George would squander the money, benefiting neither George nor anyone else. Jack also knew that if he did not make the will public, the money would go to his own mother, who would use it to benefit herself and others, harming no one. After reflection, he decided not to make the will public.",
     "questionStem": "Which one of the following principles, if valid, would require Jack to act as he did in the situation described?",

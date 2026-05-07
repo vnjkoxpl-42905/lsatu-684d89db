@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "An electric utility has determined that a new power plant is needed and has decided to build either a natural gas- fired plant or a waste-to-energy plant that would serve as both a trash incinerator and a power plant. Surprisingly, although the waste-to-energy plant would produce roughly three times as much air pollution as the gas-fired plant, environmentalists have come out in unanimous support of this option.",
     "questionStem": "Which one of the following, if true, most helps to justify the environmentalists’ position?",
@@ -26,7 +28,10 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Necessary assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Anthropologist: One of the distinctive traits of humans is the ability to support a large brain with a small gut, which requires getting more calories from less food. It was likely the development of cooking that made this possible. After all, our ancestors developed large brains around the time that they began to control fire. And even today, people who choose to eat only raw food have difficulty getting enough calories.",
     "questionStem": "Which one of the following, if true, most strengthens the anthropologist’s argument?",
@@ -51,7 +56,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Necessary assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The current sharp decline in commercial honeybee populations has been attributed to the same viral and bacterial infections, pesticide poisonings, and mite infestations that devastated bees in the past. Whichever of these adverse conditions is the immediate cause, it is highly likely that there is also a long-ignored underlying condition, and that is inbreeding. Decades of breeding practices meant to maximize pollinating efficiency have limited honeybees’ genetic diversity.",
     "questionStem": "Which one of the following is an assumption that is required by the argument?",
@@ -73,7 +81,10 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The northern cardinal, a nonmigratory songbird, was rare in Nova Scotia in 1980; the province was considered to be beyond that bird’s usual northern range. By 2000, however, field observations indicated that northern cardinals were quite common there. The average winter temperature rose slightly over that period, so warmer winters are probably responsible for the northern cardinal’s proliferation in Nova Scotia.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -95,7 +106,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A person’s personality is linked to that person’s genes. And since a person’s genes do not ordinarily change over time, it follows that a person’s personality remains unchanged with the passing of time.",
     "questionStem": "Which one of the following is most closely parallel in its reasoning to the flawed reasoning in the argument above?",
@@ -116,7 +129,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Political analyst: Several years ago, McFarlane, the military dictator, had Brooks, the former prime minister, arrested on charges of corruption. After years of negotiation, McFarlane has pardoned Brooks, and she has agreed to join his government. Almost all of McFarlane’s supporters believe that Brooks is guilty of corruption. Moreover, almost all of McFarlane’s opponents will oppose anyone who agrees to join his government. So Brooks will have few supporters in this country. The political analyst’s argument depends on the assumption that",
@@ -142,7 +157,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Amber—fossilized tree resin sold as a gemstone—is particularly valuable when it contains fossilized life forms. Forgers can create fake amber and, in an attempt to improve its value, often embed small, normal- appearing insects in it. Therefore, pieces that are sold as amber are far more likely to be fake if they contain normal-appearing insects than if they do not.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -163,7 +181,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Principle",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Widespread use of the Internet has led to an increase in certain crimes such as information theft and to new crimes like hacking. This seems due, at least in part, to the impersonal nature of the Internet. People seem to feel more free to harm others through the Internet than in person, suggesting that people feel less morally constrained when they use the Internet. For this reason, steps should be taken to educate people about the ethical use of the Internet.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
@@ -185,7 +206,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: Video games are not works of art. No matter how rich the aesthetic experience produced by a video game might be, it is interactive: players make choices that affect the outcome of the game. For something to be a work of art, it must produce an aesthetic experience that is controlled by the artist or artists who created the work.",
     "questionStem": "The conclusion of the columnist’s argument can be properly drawn if which one of the following is assumed?",
@@ -207,7 +230,10 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "One year ago, a municipality banned dishwasher detergents containing phosphates. Anecdotal evidence indicates that many residents continued to use detergents containing phosphates; they just purchased them from out-of-town stores. However, it is clear that some residents did switch to phosphate-free detergents, since phosphate pollution from the municipal wastewater treatment plant decreased significantly in the past year. The answer to",
     "questionStem": "which one of the following questions would most help in evaluating the argument above?",
@@ -228,7 +254,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Farmers who use genetically engineered plants on a large scale are at great financial risk because at any time a study could be published that would undermine what little confidence consumers have in genetically engineered foods. It is unwise for farmers to grow such crops. They do not fetch a high enough price to compensate for the risk.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the argument as a whole?",
@@ -250,7 +276,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "When doctors vaccinate a patient, their intention is to expose him or her to a weakened form of a disease- causing pathogen and thus to make the patient better able to resist the pathogen and less likely to develop a severe form of that disease later.",
     "questionStem": "Which one of the following best illustrates the principle that the passage illustrates?",
@@ -272,7 +300,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Fill in the blank",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Nations that have little interaction with one another have little knowledge of one another’s needs and problems. Because both sympathy and justice depend largely on understanding the needs and problems of others, it follows that _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -296,7 +326,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "Activist: Medical conditions such as cancer and birth defects have been linked to pollutants in water. Organic pollutants such as dioxins, and inorganic pollutants such as mercury, are ingested by fish and move up the food chain to people, where they accumulate in tissue. Since most cancers and birth defects are incurable, we need to aim at their prevention. Clearly, the only effective way to reduce significantly their overall incidence is to halt industries known to produce these pollutants, given that such industries are unlikely to comply adequately with strict environmental regulations. A flaw in the activist’s reasoning is that it",
@@ -320,7 +352,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Must be true",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Political leader: In this political dispute, our side will benefit from showing a desire to compromise with the opposition. If the opposition responds positively, then a compromise will be reached. If they do not, then they will be held responsible for the failure to reach a compromise and our side will benefit.",
     "questionStem": "The conclusion of the political leader’s argument follows logically if which one of the following is assumed?",
@@ -343,7 +377,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some people see no harm in promoting a folk remedy that in fact has no effect. But there is indeed harm: many people who are convinced to use an ineffective remedy continue with it for years rather than pursuing conventional treatments that would almost certainly help them.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument?",
@@ -365,7 +401,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "The radio station claims that its new format is popular with listeners because more than three-quarters of the listeners who call in requests to the station say they are pleased with the format. This, however, is hardly conclusive. It would be like trying to determine whether a political candidate is popular with voters by interviewing only those people who have already decided to vote for the candidate. The argument proceeds by",
@@ -386,7 +424,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "Historian: Those who claim that Shakespeare did not write the plays commonly attributed to him are motivated purely by snobbery. Shakespeare was the son of a glove maker, whereas every other person proposed as the true author of the plays was an aristocrat, and many of those who argue that one or another of these aristocrats wrote the plays are the aristocrats’ descendants. The reasoning in the historian’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -408,7 +448,10 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Resolve reconcile or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A recent study examined the daytime and nighttime activity patterns of two populations of tree-dwelling lemurs—the first living in a rain forest, where tree canopy cover is consistent year-round, and the second living in a deciduous forest, where many trees lose their leaves during the winter months. Both groups of lemurs were found to be more nocturnal during winter months than they were the rest of the year. However, the winter increase in nocturnal activity was significantly more pronounced for the population living in the deciduous forest than it was for the population living in the rain forest.",
     "questionStem": "Which one of the following, if true, most helps to explain the difference between the two lemur populations with respect to winter activity patterns?",
@@ -429,7 +472,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Critic: It is common to argue that there is a distinction between “literary” and “genre” fiction. The first should be interpreted, so this argument goes, while the second is merely a source of easy pleasure. But this is a specious distinction—not because every work should be interpreted, but because no work should be. When we evaluate a work principally for its themes and ideas, we cut ourselves off from the work’s emotional impact.",
     "questionStem": "Which one of the following most accurately describes the role played in the critic’s argument by the claim that when we evaluate a work principally for its themes and ideas, we cut ourselves off from the work’s emotional impact?",
@@ -447,7 +492,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Principle: If one does not criticize a form of behavior in oneself or vow to stop it, then one should not criticize that form of behavior in another. Application: If Shimada does not vow to stop being tardy himself, he should not criticize McFeney for tardiness.",
     "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
@@ -469,7 +516,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Everyone should have access to more than one newspaper, for there are at least two sides to every story. Since all sides of an important story should be covered, and no newspaper adequately covers all sides of every one of its stories, some important stories would not be adequately covered if there were only one newspaper.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
@@ -491,7 +540,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Most of the mines that Moradco operates in the province of Velyena have never violated environmental regulations. Every one of the gold mines that Moradco operates throughout the world has at some time or another violated environmental regulations.",
     "questionStem": "Which one of the following statements follows logically from the statements above?",
@@ -514,7 +565,10 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Tariffs on particular products tend to protect the small percentage of the population that works in industries that make those products while hurting everyone else through higher costs. Polls show that in fact most people oppose such tariffs. So politicians would be more likely to be reelected if they voted against these tariffs.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -538,7 +592,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Among small- to medium-sized marine mammals such as seals and dolphins, the longer an animal can stay submerged during a dive, the greater the depth the animal can reach. Dolphins can dive to greater depths than northern fur seals can, and elephant seals can stay submerged longer than Weddell seals can. If the information above is accurate, then each of the following statements could be true except:",

@@ -4,7 +4,10 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "After a major toll highway introduced a system of electronic toll paying, delays at all of its interchanges declined significantly. Travel time per car trip decreased by an average of 10 percent. Tailpipe pollution for each trip decreased commensurately. Despite this, the total air pollution from vehicles on that highway did not decrease measurably.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -25,7 +28,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A lack of trust in one’s neighbors leads to their lack of respect for the law. A new study provides compelling evidence for this. Neighborhoods in which people routinely lock their doors have higher burglary rates than neighborhoods in which people do not routinely lock their doors.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -48,7 +53,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "In recent decades, government efforts to fight counterfeiting have been extremely successful, especially efforts to remove counterfeit bills from circulation. Yet counterfeiters are not finding it at all difficult to get away with passing counterfeit bills to merchants and even banks.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -66,7 +73,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If a civilization as technologically advanced as human civilization existed on another planet and that planet were within 50 light years of Earth, that civilization would have found evidence of intelligent life on Earth and could have easily contacted us. Scientists can thus rule out the possibility of finding a civilization as technologically advanced as our own within 50 light years of Earth.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -92,7 +101,10 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Recently, many traffic lights and street markings were temporarily removed from a heavily traveled street in a major metropolitan area. Given that this street experiences significant volumes of automobile traffic, the number of accidents on the street was expected to increase. However, even though the street experienced no reduction in traffic, the number of accidents was greatly reduced.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict described above?",
@@ -113,7 +125,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some have argued that body size influences mating decisions throughout all societies. Their argument rests largely on self-reports of university-age students and on analyses of personal advertisements in newspapers for dating partners.",
     "questionStem": "The reasoning in the argument described above is most vulnerable to criticism on the grounds that the argument",
@@ -135,7 +149,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Journalist: The new mayor is undeniably bold. His assertions are made with utter certainty and confidence. While these kinds of assertions may make him popular with the public, they also demonstrate that he is not an introspective person.",
     "questionStem": "Which one of the following is an assumption required by the journalist’s argument?",
@@ -156,7 +172,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "While studying a large colony of macaque monkeys, scientists interacting with baby monkeys under a week old found that the babies would imitate some, but not all, of the scientists’ actions. The babies readily smacked their lips and stuck out their tongues when the scientists did, but stared impassively when the scientists opened and closed their mouths or made hand gestures. Of these four kinds of actions, only lip smacking and sticking out the tongue are used by adult macaques when interacting with babies.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -177,7 +195,7 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Identify The Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Some scientists believe that small humanoid skeletons found on an Indonesian island are the remains of human beings with a growth disorder. It is more likely that they represent a distinct human species that became smaller over time due to environmental pressure. These skeletons do not fit the pattern of known growth disorders. And evidence suggests that certain fox and mouse species on the island have evolved into smaller versions of their common counterparts.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
@@ -201,7 +219,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The more sunlight our planet reflects back into space, the cooler the global atmosphere tends to become. Snow and ice reflect much more sunlight back into space than do ocean water or land without snow cover. Therefore, the greater the area of Earth’s surface that is covered with snow and ice, the cooler, on average, the global atmosphere is likely to become.",
     "questionStem": "Which one of the following, if true, would most strengthen the argument?",
@@ -222,7 +242,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Point at Issue",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Nick: The Pincus family and their construction company have supported our university financially for decades. The university should not give the contract for building its new library to the family’s main competitor. Doing so would be disloyal to a friend of the university.\nPedro: Accepting a donation does not oblige the university to give the donor any special privileges. If it did, then it wouldn’t really be a charitable contribution. We should award the contract to whatever company makes the most competitive bid.",
     "questionStem": "The dialogue provides the most support for the claim that Nick and Pedro disagree over whether",
@@ -244,7 +264,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Complete the Argument",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Ampicillin and other modern antibiotics kill a much wider variety of bacteria than penicillin does. They also carry higher profit margins, so drug companies now have an incentive to stop manufacturing the older, less profitable antibiotics. This could cause a penicillin shortage, forcing doctors to use the much more powerful new antibiotics in cases where they might otherwise be unnecessary. Thus, these newer antibiotics are likely to result in an outbreak of diseases caused by drug-resistant bacteria, since _______.",
     "questionStem": "The conclusion of the argument is most strongly supported if which one of the following completes the passage?",
@@ -267,7 +289,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Weingarten claims that keeping animals in zoos is unethical. He points out that it involves placing animals in unnatural environments merely for the sake of human amusement. However, since Weingarten sees nothing wrong with owning pets, and keeping pets surely involves placing an animal in an unnatural environment merely for human amusement, his claim should be rejected.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -289,7 +313,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Activist: President Zagel should resign, because she is unable to govern effectively given the widespread belief that she rigged the election.\nPresident Zagel: Over the last decade, scandals have forced two presidents of this country to resign. If I were to resign, the rest of the world would see us as a country whose political system is hopelessly unstable. That would be unacceptable, so I must remain in office.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the activist’s argument in the face of President Zagel’s argument?",
@@ -312,7 +338,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A popular book argues that people who are successful in business have, without exception, benefited from a lot of luck on their way to success. But this is ridiculous. Anyone who has studied successful people knows that success requires a lot of hard work.",
     "questionStem": "The argument commits which one of the following errors of reasoning?",
@@ -333,7 +361,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "University president: When a faculty member’s falsification of research was uncovered, the media treated it as evidence of the university’s low standards, even though in truth it was a mere case of dishonesty. But since vigilance with respect to academic standards is always necessary, it’s good that standards have become a topic of discussion.",
     "questionStem": "Which one of the following conforms most closely to the principle illustrated above?",
@@ -354,7 +384,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Argument Evaluation",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Politician: Over the next decade, our city will be replacing all of its street signs with signs that are designed for improved readability. But since no one is complaining about the current signs, installing the new ones is a colossal waste of time and money.",
     "questionStem": "Which one of the following would be most useful to know in evaluating the politician’s argument?",
@@ -376,7 +408,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A large survey of scientists found that almost all accept Wang’s Law, and almost all know the results of the Brown-Eisler Experiment. But those results together with Wang’s Law contradict the Minsk Hypothesis. Therefore, most of the scientists surveyed reject the Minsk Hypothesis.",
     "questionStem": "The argument requires assuming which one of the following?",
@@ -400,7 +434,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Any literary translation is a compromise between two goals that cannot be entirely reconciled: faithfulness to the meaning of the text and faithfulness to the original author’s style. Thus, even the most skillful translation will be at best a flawed approximation of the original work.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the argument above?",
@@ -422,7 +458,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Sociologist: Television, telephones, and other electronic media encourage imprecise, uncritical thinking. Yet critical thinking is the only adequate protection against political demagogues, who seek to exploit people by presenting emotionally loaded language as an objective description of reality.",
     "questionStem": "If the sociologist’s statements are true, then each of the following statements could be true except:",
@@ -443,7 +481,10 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "People with higher-than-average blood levels of a normal dietary by-product called homocysteine are twice as likely to be diagnosed with Alzheimer’s disease as are those with average or below-average homocysteine levels. Thus, it is likely that the risk of developing Alzheimer’s disease could be reduced by including in one’s diet large amounts of B vitamins and folic acid, which convert homocysteine into substances known to have no relation to Alzheimer’s disease.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -465,7 +506,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Role in Argument",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Consumer advocate: Economists reason that price gouging—increasing the price of goods when no alternative seller is available—is efficient because it allocates goods to people whose willingness to pay more shows that they really need those goods. But willingness to pay is not proportional to need. In the real world, some people simply cannot pay as much as others. As a result, a price increase will allocate goods to the people with the most money, not to those with the most need.",
     "questionStem": "Which one of the following most accurately describes the role played in the consumer advocate’s argument by the claim that willingness to pay is not proportional to need?",
@@ -487,7 +530,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Zoologist: Plants preferentially absorb heavy nitrogen from rainwater. Heavy nitrogen consequently becomes concentrated in the tissues of herbivores, and animals that eat meat in turn exhibit even higher concentrations of heavy nitrogen in their bodily tissues. We compared bone samples from European cave bears of the Ice Age with blood samples from present-day bears fed meat-enriched diets, and the levels of heavy nitrogen present in these samples were identical. Thus, the prehistoric European cave bears were not exclusively herbivores.",
     "questionStem": "Which one of the following, if true, would most strengthen the zoologist’s argument?",
@@ -508,7 +553,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Biologist: Some computer scientists imagine that all that is required for making an artificial intelligence is to create a computer program that encapsulates the information contained in the human genome. They are mistaken. The operation of the human brain is governed by the interactions of proteins whose structures are encoded in the human genome.",
     "questionStem": "Which one of the following is an assumption required by the biologist’s argument?",
@@ -533,7 +580,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some advertisers offer certain consumers home computers free of charge. Advertisements play continuously on the computers’ screens whenever they are in use. As consumers use the computers to browse the Internet, information about their browsing patterns is sent to the advertisers, enabling them to transmit to each consumer advertising that accurately reflects his or her individual interests. The advertisers can afford to offer the computers for free because of the increased sales that result from this precise targeting of individual consumers.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -555,7 +604,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Some eloquent speakers impress their audiences with the vividness and clarity of the messages conveyed. Speakers who resort to obscenity, however, are not genuinely eloquent, so none of these speakers impress their audiences.",
     "questionStem": "The flawed reasoning in which one of the following is most similar to that in the argument above?",

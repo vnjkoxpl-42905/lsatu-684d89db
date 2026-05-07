@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Yuriko: Our city’s campaign to persuade parents to have their children vaccinated ought to be imitated by your city. In the 16 months since the enactment of legislation authorizing the campaign, vaccinations in our city have increased by 30 percent. Susan: But the major part of that increase occurred in the first 6 months after that legislation was enacted, right after your city’s free neighborhood health clinics opened, and before the vaccination campaign really got going. In responding to Yuriko, Susan does which one of the",
     "questionStem": "following?",
@@ -27,7 +29,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The process by which nylon is manufactured releases large amounts of the gas nitrous oxide, which is harmful to the environment. Since the processing of cotton fiber does not release environmentally harmful gases, there would be less environmental damage done if cotton fiber rather than nylon were used to make products such as thread and rope.",
     "questionStem": "Which one of the following, if true, would weaken the argument?",
@@ -50,7 +54,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Principle-PSA",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "John: It was wrong of you to blame me for that traffic accident. You know full well that the accident was due to my poor vision, and I certainly cannot be held responsible for the fact that my vision has deteriorated. Michiko: But I can hold you responsible for your hazardous driving, because you know how poor your vision is. People are responsible for the consequences of actions that they voluntarily undertake, if they know that those actions risk such consequences.",
     "questionStem": "The principle that Michiko invokes, if established, would justify which one of the following judgments?",
@@ -71,7 +75,7 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Psychiatrist: Take any visceral emotion you care to consider. There are always situations in which it is healthy to try to express that emotion. So, there are always situations in which it is healthy to try to express one’s anger.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -89,7 +93,7 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Cigarette companies claim that manufacturing both low- and high-nicotine cigarettes allows smokers to choose how much nicotine they want. However, a recent study has shown that the levels of nicotine found in the blood of smokers who smoke one pack of cigarettes per day are identical at the end of a day’s worth of smoking, whatever the level of nicotine in the cigarettes they smoke.",
     "questionStem": "Which one of the following, if true, most helps to explain the finding of the nicotine study?",
@@ -107,7 +111,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Editorial: The premier’s economic advisor assures her that with the elimination of wasteful spending the goal of reducing taxes while not significantly decreasing government services can be met. But the premier should not listen to this advisor, who in his youth was convicted of embezzlement. Surely his economic advice is as untrustworthy as he is himself, and so the premier should discard any hope of reducing taxes without a significant decrease in government services.",
     "questionStem": "Which one of the following is a questionable argumentative strategy employed in the editorial’s argument?",
@@ -130,7 +134,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 3, questions 7 through 8. Figorian Wildlife Commission: The development of wetlands in industrialized nations for residential and commercial uses has endangered many species. To protect wildlife we must regulate such development in Figoria: future wetland development must be offset by the construction of replacement wetland habitats. Thus, development would cause no net reduction of wetlands and pose no threat to the species that inhabit them. Figorian Development Commission: Other nations have flagrantly developed wetlands at the expense of wildlife. We have conserved. Since Figorian wetland development might not affect wildlife and is necessary for growth, we should allow development. We have as much right to govern our own resources as countries that have already put their natural resources to commercial use. 7.",
     "questionStem": "Which one of the following is an assumption on which the argument advanced by the Figorian Wildlife Commission depends?",
@@ -155,7 +162,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Principle-PSA",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "Which one of the following principles, if accepted, would most strongly support the Figorian Development Commission’s position against the Figorian Wildlife Commission’s position?",
@@ -179,7 +188,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "High blood cholesterol levels are bad for the heart. Like meat, eggs, and poultry, shellfish contains cholesterol. But shellfish is not necessarily bad for the heart; it is very low in saturated fat, which affects blood cholesterol levels much more than dietary cholesterol does.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -200,7 +211,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Every moral theory developed in the Western tradition purports to tell us what a good life is. However, most people would judge someone who perfectly embodied the ideals of any one of these theories not to be living a good life—the kind of life they would want for themselves and their children.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -222,7 +235,7 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Biologist: Humans have five fingers because we descended from a fish with five phalanges in its fins. Despite our prejudices to the contrary, our configuration of fingers is no more or less useful than several other possible configurations, e.g., six per hand. So, if humans had descended from a fish with six phalanges in its fins and had six fingers on each hand, then we would be just as content with that configuration.",
     "questionStem": "Which one of the following, if true, most strengthens the biologist’s argument?",
@@ -240,7 +253,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Surrealist: Many artists mistakenly think that models need be taken only from outside the psyche. Although human sensibility can confer beauty upon even the most vulgar external objects, using the power of artistic representation solely to preserve and reinforce objects that would exist even without artists is an ironic waste.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the surrealist’s argument?",
@@ -262,7 +275,7 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Harrold Foods is attempting to dominate the soft-drink market by promoting “Hero,” its most popular carbonated drink product, with a costly new advertising campaign. But survey results show that, in the opinion of 72 percent of all consumers, “Hero” already dominates the market. Since any product with more than 50 percent of the sales in a market is, by definition, dominant in that market, Harrold Foods dominates the market now and need only maintain its current market share in order to continue to do so.",
     "questionStem": "The argument commits which one of the following errors in reasoning?",
@@ -286,7 +299,10 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Theoretically, analog systems are superior to digital systems. A signal in a pure analog system can be infinitely detailed, while digital systems cannot produce signals that are more precise than their digital units. With this theoretical advantage there is a practical disadvantage, however. Since there is no limit on the potential detail of the signal, the duplication of an analog representation allows tiny variations from the original, which are errors. These errors tend to accumulate as signals are duplicated, until this “noise” obliterates the information embodied in the original signal.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -308,7 +324,9 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Flaw EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Psychologist: Doctors should never prescribe sedatives for people with insomnia. Most cases of insomnia that psychologists treat are known to be caused by psychological stress. This suggests that insomniacs do not need drugs that alter their biochemistry, but rather need psychotherapy to help them alleviate the stress causing their insomnia.",
     "questionStem": "Each of the following describes a flaw in the psychologist’s reasoning except:",
@@ -334,7 +352,10 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Numerous paintings and engravings representing warfare can be found in remains of all civilizations going back to and including the Neolithic period, when agriculture was first developed. However, no paintings or engravings of warfare are found dating from before the Neolithic period. Therefore, warfare must have first developed as a result of the transition to an agricultural society.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -357,7 +378,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "An antidote for chicken pox has been developed, but researchers warn that its widespread use could be dangerous, despite the fact that this drug has no serious side effects and is currently very effective at limiting the duration and severity of chicken pox.",
     "questionStem": "Which one of the following, if true, helps most to reconcile the apparent discrepancy indicated above?",
@@ -378,7 +399,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Principle-PSA",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The tendency toward overspecialization in the study of artifacts is unfortunate. Scholars can enhance their understanding of a certain artistic period by studying art from earlier periods that had a significant influence on it. For instance, because of its influence on Spanish artisans, a proper understanding of Arabic porcelain is indispensable for a proper understanding of Spanish porcelain.",
     "questionStem": "Of the following, which one most closely conforms to the principle that the passage as a whole illustrates?",
@@ -399,7 +420,10 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorial: Medical schools spend one hour teaching preventive medicine for every ten hours spent teaching curative medicine, even though doctors’ use of the techniques of preventive medicine cuts down medical costs greatly. Therefore, if their goal is to make medicine more cost-effective, medical schools spend insufficient time teaching preventive medicine.",
     "questionStem": "Which one of the following is an assumption on which the editorial’s argument depends?",
@@ -426,7 +450,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Point at Issue (Disagree)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Dana: It is wrong to think that the same educational methods should be used with all children. Many children have been raised in more communal environments than others and would therefore learn better through group, rather than individual, activities. A child’s accustomed style of learning should always dictate what method is used. Pat: No, not always. The flexibility of being able to work either on one’s own or in a group is invaluable in a world where both skills are in demand. The conversation lends the most support to the claim that Dana and Pat disagree on which one of the",
     "questionStem": "following?",
@@ -447,7 +471,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Experimental psychology requires the application of statistics to interpret empirical data and assess their significance. A person will not be able to understand such applications without training in statistics. Therefore, the more training one has in statistics, the better one will be at research in experimental psychology.",
     "questionStem": "Which one of the following arguments exhibits a flawed pattern of reasoning most similar to that exhibited by the argument above?",
@@ -468,7 +494,7 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Argument Part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Some vegetarians have argued that there are two individually sufficient reasons for not eating meat—one based on health considerations, and the other based on the aversion to living at the expense of other conscious creatures. But suppose that eating meat were essential to good health for humans. Then it would be less clear that an aversion to living at the expense of other conscious creatures is enough of a reason to stop eating meat.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the supposition that eating meat is essential to good health?",
@@ -486,7 +512,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The increasing complexity of scientific inquiry has led to a proliferation of multiauthored technical articles. Reports of clinical trials involving patients from several hospitals are usually coauthored by physicians from each participating hospital. Likewise, physics papers reporting results from experiments using subsystems developed at various laboratories generally have authors from each laboratory. If all of the statements above are true, which one of the",
     "questionStem": "following must be true?",
@@ -507,7 +533,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "Helena: Extroversion, or sociability, is not biologically determined. Children whose biological parents are introverted, when adopted by extroverts, tend to be more sociable than children of introverted parents who are not adopted. Jay: Your conclusion does not follow. Some of these children adopted by extroverts remain introverted no matter how young they are when adopted. Jay’s response suggests that he interpreted Helena’s remarks to mean that",

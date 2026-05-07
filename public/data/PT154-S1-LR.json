@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Rhett: Otto gives me a ride to work every morning and expects me to help pay for fuel. But I shouldn’t have to pay. Giving me a ride doesn’t increase the amount he spends on fuel, since he has to go right by my house anyway.\nBarbara: By that flawed logic, you would be entitled to the warm air that heats the unused spare room of my house, if you could divert it to your house without increasing my expenses.",
     "questionStem": "The dialogue provides the most support for the claim that Rhett and Barbara disagree over whether",
@@ -26,7 +28,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Classicist: In the ancient Athenian democracy, unlike in any other political system in world history, the legislature consisted of all eligible voters. Athenian voters, not elected representatives, made all political decisions by direct vote after public debate in the Assembly. Thus, if the world has ever known true democracy, it was only in ancient Athens.",
     "questionStem": "The conclusion of the classicist’s argument follows logically if which one of the following is assumed?",
@@ -44,7 +48,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Near-Earth objects (NEOs) such as asteroids threaten the Earth because they have the potential to collide with it. The goal of NEO research is to develop measures to counteract a possible hit by a sizable NEO. Government funding of this research is not a waste of money. Buying home insurance makes good fiscal sense, and governments fund NEO research for the same reason that people insure their homes.",
     "questionStem": "The statement that buying home insurance makes good fiscal sense plays which one of the following roles in the argument?",
@@ -65,7 +71,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Oscar: Clearly, student evaluations provide the best assessment of teacher performance. Who is in a better position to judge a teacher than that teacher’s students?\nBettina: Student evaluations of teachers are usually conducted at the end of a class. However, students generally fail to appreciate the impact of a teacher until many years later. So, peer evaluations of teachers might be a good supplement or a better alternative.",
     "questionStem": "The dialogue provides the most support for the claim that Oscar and Bettina disagree over whether",
@@ -86,7 +94,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Taste buds were the primary tool early humans used for testing foods. Sour taste warns of possible spoilage of food while bitterness is a warning of many poisons. Early humans also recognized sweet foods and salty foods as meeting nutritional needs. So the fact that people can now clearly distinguish these four tastes—sour, bitter, sweet, and salty—is completely explained by people’s use of taste to test for the healthfulness of foods.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -107,7 +117,10 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "To discourage congestion, a city raised on-street parking rates in a downtown business district. For restaurants in the district, whose customers require short-term parking, the surprising result was a small increase in sales.",
     "questionStem": "Which one of the following, if true, contributes to an explanation of the increase in sales at restaurants in the district?",
@@ -125,7 +138,9 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Mark: Advances in technology have caused the decline of newspaper sales. News can be reported in articles on the Internet as it happens and at any time of day. No print newspaper can possibly keep up with that.\nFatuma: Newspaper writing is hampered by conventions that do not add to readers’ understanding of the news. It is not the fault of technology that newspapers are losing their audience to the Internet. Newspaper articles are just too long. On the Internet, news articles get to the point.",
     "questionStem": "Mark and Fatuma disagree over the truth of which one of the following?",
@@ -146,7 +161,9 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Statistics teachers often debate whether to teach the mathematical theories underlying statistics or to focus on the use of statistical methods to solve real problems. This is like the difference between learning to build a car and learning to drive one. Almost all statistics courses teach “building,” and if there is extra time, they may cover a tip or two on “driving.” But, just as ordinary drivers do not need to know how to build a car in order to drive one, _______.",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -168,7 +185,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Gecko lizards are found in any environment where there is an abundant population of gnats. Gnats can survive only in wet climates. Because there are no gecko lizards living here, there must not be an abundant population of gnats here. Consequently, the climate here must not be wet.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -186,7 +205,9 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "If Thompson appeals to moderates, his most ardent supporters will desert him and he will not have enough votes to win the election. However, if he does not appeal to moderates, these moderates will vote for his opponent and he will not have enough votes to win the election. Either way, Thompson is bound to lose the election.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -204,7 +225,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "It is morally praiseworthy to be honest only if one is honest out of respect for morality. Strictly speaking, therefore, Downing did not act in a manner worthy of such praise when he told the judge the truth about his business partner’s fraudulence. Downing was motivated by concern for his own well-being—even though what he did was certainly honest.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
@@ -225,7 +248,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Art history professor: Costa criticizes my theories about the distinction between baroque and neoclassical Austrian painting. He argues that since there are no features possessed by all and only the works from a given historical period, assigning works of art to period styles is intellectually bankrupt. His reasoning can be discounted, however, since his own current theories on the transition from classical to romantic French opera also presuppose such an assignment.",
     "questionStem": "Which one of the following most accurately describes a flaw in the art history professor’s argument?",
@@ -247,7 +272,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Columnist: Computer voice-recognition technology currently cannot distinguish between homophones such as “their” and “there.” As a consequence, until voice-recognition technology is improved to recognize and utilize grammatical and semantic relations among words, voice-recognition programs will not accurately translate a computer user’s spoken words into written text.",
     "questionStem": "Which one of the following is an assumption required by the columnist’s argument?",
@@ -269,7 +296,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Although early jazz music featured a great deal of improvisation, this improvisation did not stray too far from the rather simple, catchy melodies upon which it was based. So, however interesting it may be, later music featuring improvisation that strays far from the melody ought not to be classified as jazz.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -292,7 +321,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Method",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In the winter, ravens survive by eating carcasses; in fact, an individual raven may survive for weeks on one carcass. Yet, according to many reports, ravens will often recruit more ravens to help eat a carcass. This seemingly altruistic behavior struck Bernd Heinrich as being worthy of investigation. He set up observation blinds from which he had a clear view of an open meadow in which he placed meat. He found that the mated pair of ravens in whose territory the meadow was located laid exclusive claim to the meat; so, to avoid starvation, juvenile ravens—who do not yet have territories—had to assemble in groups large enough to drive the resident pair away from the meat.",
     "questionStem": "Which one of the following descriptions best fits Bernd Heinrich’s study as reported in the passage above?",
@@ -310,7 +341,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The prevailing view among historians is that medieval European peasants were deeply dedicated to religion. But the record keepers in medieval Europe were members of the clergy. It should not surprise us that chroniclers who were professionally occupied with religion would exaggerate people’s religious devotion. Thus, there is reason to doubt the prevailing view of medieval peasants’ piety.",
     "questionStem": "Which one of the following, if true, would most weaken the argument above?",
@@ -328,7 +361,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Beads were used as currency for centuries. But why beads? The striking fact about many objects that have been used as currency—gold, silver, and feathers, to name a few—is that they were first used mainly, and often solely, as decorative objects. Thus, it is natural that beads, which were initially valued as objects of adornment, also came to be used as currency.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the argument above?",
@@ -349,7 +384,11 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "In many families adults speak to babies in simplified language. Yet constantly repeating simple phrases like “Nice kitty. See the kitty?” does not provide extra help to children in learning a language. We know this because there are families in which no one speaks to babies this way, yet the children in these families master the grammatical structure of their language just as well and as quickly as other children do.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -372,7 +411,10 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Medical researcher: At the Flegco Corporation, all employees whose work involves lifting heavy objects wear back belts to prevent back injuries. However, a study found that Flegco employees who wear back belts are actually more likely to suffer back injuries than are employees who do not wear back belts. This suggests that back belts do not help to prevent back injuries.",
     "questionStem": "The reasoning in the medical researcher’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -394,7 +436,9 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "That Shakespeare’s The Winter’s Tale (1610–1611) is modeled after Euripides’ Alcestis (fifth century B.C.) seems undeniable. However, it is generally accepted that Shakespeare knew little or no Greek, so Euripides’ original play would be an unlikely source. Thus, it seems most likely that Shakespeare came to know Euripides’ play through a Latin translation.",
     "questionStem": "Which one of the following, if true, least strengthens the argument?",
@@ -416,7 +460,10 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Restaurant critic: Most people agree that the food at Marva’s Diner is exceptional, while the food at the more popular Traintrack Inn is fairly ordinary. This discrepancy should come as no surprise, since the Traintrack Inn’s more convenient location is by itself almost enough to guarantee a steady flow of customers.",
     "questionStem": "Which one of the following is a principle that, if valid, most helps to justify the restaurant critic’s reasoning?",
@@ -437,7 +484,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Newspaper: Increases in produce prices apparently have led to an increase in the planting of personal gardens. The two largest retail seed companies each reported sales increases of around 19 percent in the last year alone, a year in which the price of produce spiked.",
     "questionStem": "Which one of the following, if true, most seriously weakens the newspaper’s argument?",
@@ -458,7 +507,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Inventor: All highly successful entrepreneurs have as their main desire the wish to leave a mark on the world. Highly successful entrepreneurs are unique in that whenever they see a solution to a problem, they implement that idea. All other people see solutions to problems but are too interested in leisure time or job security to always have the motivation to implement their ideas.",
     "questionStem": "If the inventor’s statements are true, which one of the following must also be true?",
@@ -476,7 +527,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Nuts are high in calories. All else being equal, the more calories one consumes, the more likely one is to become overweight. However, studies have found that people who eat nuts regularly are actually less likely to be overweight than people who never eat nuts.",
     "questionStem": "Which one of the following, if true, would most help to resolve the apparent discrepancy described above?",
@@ -494,7 +547,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Each major earthquake in this region has been preceded by a series of minor tremors. Since the region has recently experienced a series of minor tremors, a major earthquake will strike the region in the near future.",
     "questionStem": "Which one of the following arguments exhibits a pattern of questionable reasoning most similar to that exhibited by the argument above?",
@@ -512,7 +567,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Philosopher: A person is morally responsible for an action only if that action is performed freely. And an action is free only if there is an alternative action that is genuinely open to the person. But an alternative action is genuinely open only if performing that alternative action is not morally wrong.",
     "questionStem": "If the philosopher’s statements are true, which one of the following must also be true?",

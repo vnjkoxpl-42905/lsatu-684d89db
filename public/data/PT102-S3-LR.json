@@ -4,7 +4,7 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Director of Ace Manufacturing Company: Our management consultant proposes that we reassign staff so that all employees are doing both what they like to do and what they do well. This, she says, will \"increase productivity by fully exploiting our available resources\". But Ace Manufacturing has a long-standing commitment not to exploit its workers. Therefore, implementing her recommendations would cause us to violate our own policy.",
     "questionStem": "The director's argument for rejecting the management consultant's proposal is most vulnerable to criticism on which one of the following grounds?",
@@ -26,7 +26,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A large number of drivers routinely violate highway speed limits. Since driving at speeds that exceed posted limits is a significant factor in most accidents, installing devices in all cars that prevent those cars from traveling faster than the speed limit would prevent most accidents.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -48,7 +50,10 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Most Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In a recession, a decrease in consumer spending causes many businesses to lay off workers or even to close. Workers who lose their jobs in a recession usually cannot find new jobs. The result is an increase in the number of people who are jobless. Recovery from a recession is defined by an increase in consumer spending and an expansion of business activity that creates a need for additional workers. But businesspeople generally have little confidence in the economy after a recession and therefore delay hiring additional workers as long as possible.",
     "questionStem": "The statements above, if true, provide most support for which one of the following conclusions?",
@@ -66,7 +71,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Scientists analyzing air bubbles that had been trapped in Antarctic ice during the Earth's last ice age found that the ice-age atmosphere had contained unusually large amounts of ferrous material and surprisingly small amounts of carbon dioxide. One scientist noted that algae absorb carbon dioxide from the atmosphere. The scientist hypothesized that the ferrous material, which was contained in atmospheric dust, had promoted a great increase in the population of Antarctic algae such as diatoms.",
     "questionStem": "Which one of the following, if true, would most seriously undermine the scientist's hypothesis?",
@@ -84,7 +91,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Adults who work outside the home spend, on average, 100 minutes less time each week in preparing dinner than adults who do not work outside the home. But, contrary to expectation, comparisons show that the dinners eaten at home by the two groups of adults do not differ significantly with respect to nutritional value, variety of menus, or number of courses.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",
@@ -102,7 +112,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Legislator: Your agency is responsible for regulating an industry shaken by severe scandals. You were given funds to hire 500 investigators to examine the scandals, but you hired no more than 400. I am forced to conclude that you purposely limited hiring in an attempt to prevent the full extent of the scandals from being revealed.\n\nRegulator: We tried to hire the 500 investigators but the starting salaries for these positions had been frozen so low by the legislature that it was impossible to attract enough qualified applicants.",
     "questionStem": "The regulator responds to the legislator's criticism by",
@@ -123,7 +133,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A commonly accepted myth is that left-handed people are more prone to cause accidents than are right-handed people. But this is, in fact, just a myth, as is indicated by the fact that more household accidents are caused by right-handed people than are caused by left-handed people.",
     "questionStem": "The reasoning is flawed because the argument",
@@ -141,7 +154,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Ornithologist: The curvature of the claws of modern tree-dwelling birds enables them to perch in trees. The claws of Archeopteryx, the earliest known birdlike creature, show similar curvature that must have enabled the creature to perch on tree limbs. Therefore, Archeopteryx was probably a tree-dwelling creature.\n\nPaleontologist: No, the ability to perch in trees is not good evidence that Archeopteryx was a tree-dwelling bird. Chickens also spend time perched in trees, yet chickens are primarily ground-dwelling.",
     "questionStem": "In responding to the ornithologist's hypothesis that Archeopteryx was tree-dwelling, the paleontologist",
@@ -163,7 +178,10 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Ornithologist: The curvature of the claws of modern tree-dwelling birds enables them to perch in trees. The claws of Archeopteryx, the earliest known birdlike creature, show similar curvature that must have enabled the creature to perch on tree limbs. Therefore, Archeopteryx was probably a tree-dwelling creature.\n\nPaleontologist: No, the ability to perch in trees is not good evidence that Archeopteryx was a tree-dwelling bird. Chickens also spend time perched in trees, yet chickens are primarily ground-dwelling.",
     "questionStem": "Which one of the following is an assumption on which the ornithologist's reasoning depends?",
@@ -188,7 +206,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Principle-Identify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "There are rumors that the Premier will reshuffle the cabinet this week. However, every previous reshuffle that the Premier has made was preceded by meetings between the Premier and senior cabinet members. No such meetings have occurred or are planned. Therefore the rumors are most likely false.",
     "questionStem": "Which one of the following most accurately expresses a principle of reasoning employed by the argument?",
@@ -214,7 +234,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Carl: Researchers who perform operations on animals for experimental purposes are legally required to complete detailed pain protocols indicating whether the animals will be at risk of pain and, if so, what steps will be taken to minimize or alleviate it. Yet when human beings undergo operations, such protocols are never required. If lawmakers were as concerned about human beings as they seem to be about animals, there would be pain protocols for human beings too.\n\nDebbie: But consider this: a person for whom a doctor wants to schedule surgery can simply be told what pain to expect and can then decide whether or not to undergo the operation. So you see, pain protocols are unnecessary for human beings.",
     "questionStem": "Debbie attempts to counter Carl's argument by",
@@ -235,7 +257,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Carl: Researchers who perform operations on animals for experimental purposes are legally required to complete detailed pain protocols indicating whether the animals will be at risk of pain and, if so, what steps will be taken to minimize or alleviate it. Yet when human beings undergo operations, such protocols are never required. If lawmakers were as concerned about human beings as they seem to be about animals, there would be pain protocols for human beings too.\n\nDebbie: But consider this: a person for whom a doctor wants to schedule surgery can simply be told what pain to expect and can then decide whether or not to undergo the operation. So you see, pain protocols are unnecessary for human beings.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument made by Debbie in response to Carl's argument?",
@@ -256,7 +280,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A company with long-outstanding bills owed by its customers can assign those bills to a collection agency that pays the company a fraction of their amount and then tries to collect payment from the customers. Since these agencies pay companies only 15 percent of the total amount of the outstanding bills, a company interested in reducing losses from long-outstanding bills would be well advised to pursue its debtors on its own.",
     "questionStem": "The argument depends on the assumption that",
@@ -280,7 +306,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Herbalist: Many of my customers find that their physical coordination improves after drinking juice containing certain herbs. A few doctors assert that the herbs are potentially harmful, but doctors are always trying to maintain a monopoly over medical therapies. So there is no reason not to try my herb juice.",
     "questionStem": "The reasoning in the herbalist's argument is flawed because the argument",
@@ -298,7 +324,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Because of the lucrative but illegal trade in rhinoceros horns, a certain rhinoceros species has been hunted nearly to extinction. Therefore an effective way to ensure the survival of that species would be to periodically trim off the horns of all rhinoceroses, thereby eliminating the motivation for poaching.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -320,7 +349,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Dispute",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Motorcoach driver: Professional drivers spend much more time driving, on average, than do other people and hence are more competent drivers than are other, less experienced drivers. Therefore, the speed limit on major highways should not be reduced, because that action would have the undesirable effect of forcing some people who are now both law-abiding and competent drivers to break the law.\n\nPolice officer: All drivers can drive within the legal speed limit if they wish, so it is not true to say that reducing the speed limit would be the cause of such illegal behavior.",
     "questionStem": "The point at issue between the motorcoach driver and the police officer is whether",
@@ -341,7 +370,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "People cannot devote themselves to the study of natural processes unless they have leisure, and people have leisure when resources are plentiful, not when resources are scarce. Although some anthropologists claim that agriculture, the cultivation of crops, actually began under conditions of drought and hunger, the early societies that domesticated plants must first have discovered how the plants they cultivated reproduced themselves and grew to maturity. These complex discoveries were the result of the active study of natural processes.",
     "questionStem": "The argument is structured to lead to the conclusion that",
@@ -363,7 +392,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "In the past decade, a decreasing percentage of money spent on treating disease X went to pay for standard methods of treatment, which are known to be effective though they are expensive and painful. An increasing percentage is being spent on nonstandard treatments, which cause little discomfort. Unfortunately, the nonstandard treatments have proved to be ineffective. Obviously, less money is being spent now on effective treatments of disease X than was spent ten years ago.",
     "questionStem": "Which one of the following, if assumed, allows the conclusion above to be properly drawn?",
@@ -389,7 +420,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Complete the Argument",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "When an ordinary piece of steel is put under pressure, the steel compresses; that is, its volume slightly decreases. Glass, however, is a fluid, so rather than compressing, it flows when put under pressure; its volume remains unchanged. Any portion of a sheet of glass that is under sustained pressure will very slowly flow to areas under less pressure. Therefore, if a single, extremely heavy object is placed in the middle of a horizontal sheet of glass of uniform thickness and if the glass is able to support the weight without cracking, then the sheet of glass will eventually",
     "questionStem": "Which one of the following most logically completes the argument?",
@@ -410,7 +443,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Anyone who insists that music videos are an art form should also agree that television gave rise to an art form, since television gave rise to music videos.",
     "questionStem": "The pattern of reasoning displayed in the argument above most closely parallels that displayed in which one of the following?",
@@ -428,7 +463,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Medieval Arabs had manuscripts of many ancient Greek texts, which were translated into Arabic when there was a demand for them. Medieval Arab philosophers were very interested in Aristotle's Poetics, an interest that evidently was not shared by medieval Arab poets, because a poet interested in the Poetics would certainly have wanted to read Homer, to whose epics Aristotle frequently refers. But Homer was not translated into Arabic until modern times.",
     "questionStem": "Which one of the following, if true, most strongly supports the argument above?",
@@ -450,7 +487,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Congenial guests and a plentiful supply of good things to eat and drink will ensure a successful dinner party. Since Sylvia has prepared more than enough to eat and drink and her guests are all congenial people, her dinner party is certain to be a success.",
     "questionStem": "The pattern of flawed reasoning exhibited by the argument above is most similar to that exhibited by which one of the following?",
@@ -468,7 +507,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A museum director, in order to finance expensive new acquisitions, discreetly sold some paintings by major artists. All of them were paintings that the director privately considered inferior. Critics roundly condemned the sale, charging that the museum had lost first-rate pieces, thereby violating its duty as a trustee of art for future generations. A few months after being sold by the museum, those paintings were resold, in an otherwise stagnant art market, at two to three times the price paid to the museum. Clearly, these prices settle the issue, since they demonstrate the correctness of the critics' evaluation.",
     "questionStem": "The reasoning in the argument is vulnerable to the criticism that the argument does which one of the following?",
@@ -489,7 +530,10 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The United States ranks far behind countries such as Sweden and Canada when it comes to workplace safety. In all three countries, joint labor-management committees that oversee workplace safety conditions have been very successful in reducing occupational injuries. In the United States, such committees are found only in the few companies that have voluntarily established them. However, in Sweden and several Canadian provinces, joint safety committees are required by law and exist in all medium-sized and large workplaces.",
     "questionStem": "Which one of the following is supported by the information above?",

@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Mary to Jamal: You acknowledge that as the legitimate\nowner of this business I have the legal right to\nsell it whenever I wish. But also you claim that\nbecause loyal employees will suffer if I sell it, I\ntherefore have no right to do so. Obviously, your\nstatements taken together are absurd.",
     "questionStem": "Mary’s reasoning is most vulnerable to the criticism\nthat she",
@@ -25,7 +27,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Since there is no survival value in an animal’s having an\norgan that is able to function when all its other organs\nhave broken down to such a degree that the animal dies,\nit is a result of the efficiency of natural selection that\nno organ is likely to evolve in such a way that it greatly\noutlasts the body’s other organs.",
     "questionStem": "Of the following, which one illustrates a principle that is\nmost similar to the principle illustrated by the passage?",
@@ -47,7 +51,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Commentator: If a political administration is both\neconomically successful and successful at\nprotecting individual liberties, then it is an overall\nsuccess. Even an administration that fails to care\nfor the environment may succeed overall if it\nprotects individual liberties. So far, the present\nadministration has not cared for the environment\nbut has successfully protected individual liberties.",
     "questionStem": "If all of the statements above are true, then which one of\nthe following must be true?",
@@ -65,7 +71,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The legislature is considering a proposed bill that would\nprohibit fishing in Eagle Bay. Despite widespread\nconcern over the economic effect this ban would have\non the local fishing industry, the bill should be enacted. The bay has one of the highest water pollution levels in\nthe nation, and a recent study of the bay’s fish found that\n80 percent of them contained toxin levels that exceed\ngovernmental safety standards. Continuing to permit\nfishing in Eagle Bay could thus have grave effects on\npublic health.",
     "questionStem": "The argument proceeds by presenting evidence that",
@@ -86,7 +94,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Vandenburg: This art museum is not adhering to its\npurpose. Its founders intended it to devote\nas much attention to contemporary art as to\nthe art of earlier periods, but its collection of\ncontemporary art is far smaller than its other\ncollections.\nSimpson: The relatively small size of the museum’s\ncontemporary art collection is appropriate. It’s\nan art museum, not an ethnographic museum\ndesigned to collect every style of every period.\nIts contemporary art collection is small because\nits curators believe that there is little high-quality\ncontemporary art.",
     "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning in Simpson’s response to\nVandenburg?",
@@ -108,7 +118,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Over the last five years, every new major alternative-\nenergy initiative that initially was promised government\nfunding has since seen that funding severely curtailed.\nIn no such case has the government come even close to\nproviding the level of funds initially earmarked for these\nprojects. Since large corporations have made it a point\nto discourage alternative-energy projects, it is likely that\nthe corporations’ actions influenced the government’s\nfunding decisions.",
     "questionStem": "Which one of the following, if true, most strengthens the\nreasoning above?",
@@ -129,7 +141,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Talbert: Chess is beneficial for school-age children. It is enjoyable, encourages foresight and\nlogical thinking, and discourages carelessness,\ninattention, and impulsiveness. In short, it\npromotes mental maturity. Sklar: My objection to teaching chess to children is that\nit diverts mental activity from something with\nsocietal value, such as science, into something\nthat has no societal value.",
     "questionStem": "Talbert’s and Sklar’s statements provide the strongest\nsupport for holding that they disagree with each other\nover whether",
@@ -150,7 +164,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Marcia: Not all vegetarian diets lead to nutritional\ndeficiencies. Research shows that vegetarians can\nobtain a full complement of proteins and minerals\nfrom nonanimal foods. Theodora: You are wrong in claiming that vegetarianism\ncannot lead to nutritional deficiencies. If most\npeople became vegetarians, some of those losing\njobs due to the collapse of many meat-based\nindustries would fall into poverty and hence be\nunable to afford a nutritionally adequate diet.",
     "questionStem": "Theodora’s reply to Marcia’s argument is most\nvulnerable to criticism on the grounds that her reply",
@@ -171,7 +187,10 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Musicologist: Classification of a musical instrument\ndepends on the mechanical action through which\nit produces music. So the piano is properly\ncalled a percussion instrument, not a stringed\ninstrument. Even though the vibration of the\npiano’s strings is what makes its sound, the\nstrings are caused to vibrate by the impact of\nhammers.",
     "questionStem": "Which one of the following most accurately expresses\nthe main conclusion of the musicologist’s argument?",
@@ -189,7 +208,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In a vast ocean region, phosphorus levels have doubled\nin the past few decades due to agricultural runoff pouring\nout of a large river nearby. The phosphorus stimulates\nthe growth of plankton near the ocean surface. Decaying\nplankton fall to the ocean floor, where bacteria devour\nthem, consuming oxygen in the process. Due to the\nresulting oxygen depletion, few fish can survive in this\nregion.",
     "questionStem": "Which one of the following can be properly inferred\nfrom the information above?",
@@ -211,7 +232,10 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Psychologists observing a shopping mall parking lot\nfound that, on average, drivers spent 39 seconds leaving\na parking space when another car was quietly waiting\nto enter it, 51 seconds if the driver of the waiting car\nhonked impatiently, but only 32 seconds leaving a space\nwhen no one was waiting. This suggests that drivers feel\npossessive of their parking spaces even when leaving\nthem, and that this possessiveness increases in reaction to\nindications that another driver wants the space.",
     "questionStem": "Which one of the following, if true, most weakens the\nreasoning?",
@@ -232,7 +256,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Shark teeth are among the most common vertebrate\nfossils; yet fossilized shark skeletons are much less\ncommon—indeed, comparatively rare among fossilized\nvertebrate skeletons.",
     "questionStem": "Which one of the following, if true, most helps to resolve\nthe apparent paradox described above?",
@@ -253,7 +279,9 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Critic: Photographers, by deciding which subjects to\ndepict and how to depict them, express their\nown worldviews in their photographs, however\nrealistically those photographs may represent\nreality. Thus, photographs are interpretations of\nreality.",
     "questionStem": "The argument’s conclusion is properly drawn if which\none of the following is assumed?",
@@ -274,7 +302,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Geologists recently discovered marks that closely\nresemble worm tracks in a piece of sandstone. These\nmarks were made more than half a billion years earlier\nthan the earliest known traces of multicellular animal life.\nTherefore, the marks are probably the traces of geological\nprocesses rather than of worms.",
     "questionStem": "Which one of the following, if true, most weakens the\nargument?",
@@ -297,7 +327,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Often a type of organ or body structure is the only\nphysically feasible means of accomplishing a given\ntask, so it should be unsurprising if, like eyes or wings,\nthat type of organ or body structure evolves at different\ntimes in a number of completely unrelated species. After\nall, whatever the difference of heritage and habitat, as\norganisms animals have fundamentally similar needs and\nso _______.",
     "questionStem": "Which one of the following most logically completes the\nlast sentence of the passage?",
@@ -320,7 +352,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Engineer: Thermophotovoltaic generators are devices\nthat convert heat into electricity. The process\nof manufacturing steel produces huge amounts\nof heat that currently go to waste. So if steel-\nmanufacturing plants could feed the heat they\nproduce into thermophotovoltaic generators, they\nwould greatly reduce their electric bills, thereby\nsaving money.",
     "questionStem": "Which one of the following is an assumption on which\nthe engineer’s argument depends?",
@@ -345,7 +379,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Herbalist: While standard antibiotics typically have\njust one active ingredient, herbal antibacterial\nremedies typically contain several. Thus, such\nherbal remedies are more likely to retain their\neffectiveness against new, resistant strains of\nbacteria than are standard antibiotics. For a strain\nof bacteria, the difficulty of developing resistance\nto an herbal antibacterial remedy is like a cook’s\ndifficulty in trying to prepare a single meal that\nwill please all of several dozen guests, a task far\nmore difficult than preparing one meal that will\nplease a single guest.",
     "questionStem": "In the analogy drawn in the argument above, which one\nof the following corresponds to a standard antibiotic?",
@@ -367,7 +403,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "To find out how barn owls learn how to determine the\ndirection from which sounds originate, scientists put\ndistorting lenses over the eyes of young barn owls\nbefore the owls first opened their eyes. The owls with\nthese lenses behaved as if objects making sounds were\nfarther to the right than they actually were. Once the owls\nmatured, the lenses were removed, yet the owls continued\nto act as if they misjudged the location of the source of\nsounds. The scientists consequently hypothesized that\nonce a barn owl has developed an auditory scheme for\nestimating the point from which sounds originate, it\nceases to use vision to locate sounds.",
     "questionStem": "The scientists’ reasoning is vulnerable to which one of\nthe following criticisms?",
@@ -389,7 +427,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "As often now as in the past, newspaper journalists use\ndirect or indirect quotation to report unsupported or false\nclaims made by newsmakers. However, journalists are\nbecoming less likely to openly challenge the veracity of\nsuch claims within their articles.",
     "questionStem": "Each of the following, if true, helps to explain the trend\nin journalism described above except:",
@@ -410,7 +450,9 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "When people show signs of having a heart attack an\nelectrocardiograph (EKG) is often used to diagnose\ntheir condition. In a study, a computer program for EKG\ndiagnosis of heart attacks was pitted against a very\nexperienced, highly skilled cardiologist. The program\ncorrectly diagnosed a significantly higher proportion of\nthe cases that were later confirmed to be heart attacks\nthan did the cardiologist. Interpreting EKG data,\ntherefore, should be left to computer programs.",
     "questionStem": "Which one of the following, if true, most weakens the\nargument?",
@@ -432,7 +474,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A government study indicates that raising speed limits\nto reflect the actual average speeds of traffic on level,\nstraight stretches of high-speed roadways reduces the\naccident rate. Since the actual average speed for level,\nstraight stretches of high-speed roadways tends to be\n120 kilometers per hour (75 miles per hour), that should\nbe set as a uniform national speed limit for level, straight\nstretches of all such roadways.",
     "questionStem": "Which one of the following principles, if valid, most\nhelps to justify the reasoning above?",
@@ -453,7 +497,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Psychiatrist: In treating first-year students at this\nuniversity, I have noticed that those reporting the\nhighest levels of spending on recreation score\nat about the same level on standard screening\ninstruments for anxiety and depression as\nthose reporting the lowest levels of spending\non recreation. This suggests that the first-year\nstudents with high levels of spending on recreation\ncould reduce that spending without increasing\ntheir anxiety or depression.",
     "questionStem": "Each of the following, if true, strengthens the\npsychiatrist’s argument except:",
@@ -475,7 +521,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Every brick house on River Street has a front yard. Most\nof the houses on River Street that have front yards also\nhave two stories. So most of the brick houses on River\nStreet have two stories.",
     "questionStem": "Which one of the following is most appropriate as an\nanalogy demonstrating that the reasoning in the\nargument above is flawed?",
@@ -497,7 +545,10 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Historian: It is unlikely that someone would see history\nas the working out of moral themes unless he or\nshe held clear and unambiguous moral beliefs.\nHowever, one’s inclination to morally judge\nhuman behavior decreases as one’s knowledge of\nhistory increases. Consequently, the more history\na person knows, the less likely that person is to\nview history as the working out of moral themes.",
     "questionStem": "The conclusion of the argument is properly drawn if\nwhich one of the following is assumed?",
@@ -519,7 +570,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A recent poll revealed that most students at our university\nprefer that the university, which is searching for a new\npresident, hire someone who has extensive experience as\na university president. However, in the very same poll,\nthe person most students chose from among a list of\nleading candidates as the one they would most like to see\nhired was someone who has never served as a university\npresident.",
     "questionStem": "Which one of the following, if true, most helps to\naccount for the apparent discrepancy in the students’\npreferences?",

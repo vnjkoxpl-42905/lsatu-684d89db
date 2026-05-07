@@ -4,7 +4,7 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Many people who simply enjoy listening to popular\n music do not realize that it has been used to express\n religious and political messages. After all, popular music\n has repeatedly been adopted by social movements to\n express their viewpoints, since it has the potential to\n contribute to the “conversion” of nonmembers to the\n movement’s position, as well as to raise the morale and to\n express the solidarity of the movement’s participants.",
     "questionStem": "Which one of the following most accurately expresses\n the main conclusion of the argument?",
@@ -25,7 +25,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Council president: Councilmember Smith has proposed\n a new city ordinance prohibiting the use of the\n “bait-and-switch” sales tactic. Smith must have\n amnesia. Four years ago he owned an appliance\n store that was famous for its use of bait-and-\n switch. Clearly, Smith’s proposed ordinance does\n not even merit consideration.",
     "questionStem": "The council president’s reasoning is most vulnerable to\n criticism on the grounds that the president",
@@ -47,7 +49,9 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Bovine remains found in a certain region of Africa date\n back to a time when the climate was arid. While there\n were people in the region at this time, there were no\n other large mammals there. Any natural sources of water\n available to these bovines would have brought other\n large mammals to the area. Thus, these bovines had been\n domesticated and the people living in the region were no\n longer exclusively hunter-gatherers.",
     "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
@@ -69,7 +73,10 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Cerrato: Economists argue both that the higher turnover\n rate of part-time workers shows them to be\n much more likely to be dissatisfied with their\n jobs than full-time workers are and that lower-\n paid, part-time workers threaten to take jobs\n from full-time employees. But because job\n efficiency is positively correlated with job\n satisfaction, companies are unlikely to replace\n satisfied employees with dissatisfied ones.\n Therefore, _______.",
     "questionStem": "Which one of the following most logically completes\n Cerrato’s argument?",
@@ -91,7 +98,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "On the plains where it lives, an individual zebra stands\n out because of its black-and-white stripes, which contrast\n with the green or brown of the surrounding vegetation.\n Yet zebras are a prey species, and the lions that hunt them\n can see stripes clearly. It seems surprising that zebras\n would survive with such vivid markings.",
     "questionStem": "Which one of the following, if true, most adequately\n resolves the problem raised above?",
@@ -109,7 +118,10 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Dark honey tends to have a higher antioxidant content\n than light-colored honey, and the most healthful strains\n of honey are all unusually high in antioxidants. However,\n certain strains of honey produced by bees harvesting\n primarily sage nectar are among the most healthful\n strains of honey, even though they are also among the\n lightest-colored strains of honey.",
     "questionStem": "Which one of the following is most strongly supported\n by the information above?",
@@ -130,7 +142,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Researcher: In a recent study of elementary school\n computers, we found that all keyboards and\n most monitors were positioned higher than\n recommended for children. Consequently,\n children were seated in ways that encouraged\n craned necks, awkwardly placed wrists, and other\n unhealthy postures. Evidently, most elementary\n school computers are installed without\n consideration of their effect on posture, and thus\n put children at the same risk for repetitive stress\n injuries as office workers.",
     "questionStem": "Which one of the following, if true, most seriously\n weakens the researcher’s argument?",
@@ -153,7 +168,9 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Sociologist: Some anthropologists claim that cultures can\n most effectively respond to the threat of cultural\n decay by replacing or abandoning many of their\n traditions so that other traditions may endure.\n But since each of its traditions is essential to a\n culture’s identity, this strategy _______.",
     "questionStem": "Which one of the following most logically completes the\n sociologist’s argument?",
@@ -176,7 +193,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Scholar: The purpose of a law is to deter certain actions\n by threatening to punish those performing the\n actions. This threat works only if potential\n violators believe that they are likely to be\n punished. But the likelihood that someone will\n be apprehended and punished for committing a\n prohibited act decreases as the number of types\n of prohibited actions increases. Therefore, a\n successful legal system prohibits only those few\n behaviors that citizens find absolutely intolerable.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the scholar’s argument by the\n statement that the purpose of a law is to deter certain\n actions by threatening to punish those performing the\n actions?",
@@ -197,7 +214,10 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Historian: In the fourteenth and fifteenth centuries, the\n Swahili civilization of East Africa built tombs\n with large pillars and paneled facades. Such\n structures are widespread among the Oromo\n people of Somalia and Kenya, but are unknown\n among any other people with whom the Swahili\n civilization had contact. This indicates that\n Swahili culture was, to some extent, influenced\n by Oromo culture.",
     "questionStem": "The historian’s argument is most vulnerable to criticism\n on the grounds that it",
@@ -221,7 +241,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The chorus in a play, like a narrator in a novel, introduces\n a point of view not tied to any of the characters, and both\n chorus and narrator allow the author to comment on the\n characters’ actions and to introduce information about the\n context in which these actions take place. However, since\n the information introduced by the chorus in a play is\n sometimes not consistent with the rest of the information\n in the play, the chorus in a play is not equivalent to the\n narrator in a novel.",
     "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
@@ -244,7 +266,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some of the rare pygmy bears should be moved from\n their native island to the neighboring island. The bears\n risk extinction from the loss of habitat on their native\n island, and since the neighboring island is the only place\n that has a similar habitat, this move represents the only\n viable chance of saving these valuable animals.",
     "questionStem": "Which one of the following principles, if valid, most\n helps to justify the reasoning above?",
@@ -267,7 +291,7 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The widespread use of encryption software, which makes\n electronic documents accessible by password only, will\n bring the writing of biographical history virtually to an\n end. Public figures’ private correspondence and diaries\n are intended to be confidential when written, but they\n later become biographers’ principal sources. In the future,\n most such documents are likely to be stored as encrypted\n text, so the most interesting, revealing material will be\n unavailable to historians unless they have the necessary\n passwords.",
     "questionStem": "Which one of the following most accurately expresses\n the main conclusion drawn in the argument?",
@@ -289,7 +313,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Unlike stars, planets do not generate light, but only reflect\n it. Besides stars, there are many other celestial objects in\n this galaxy that are not planets. Hence, there are celestial\n objects in this galaxy that generate light but are not stars.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument fails to\n consider the possibility that",
@@ -314,7 +341,10 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Psychologist: We measured the “cognitive plasticity,” or\n the willingness to accept new ideas, of a group of\n people of both genders and of all ages. The first-\n born children in the study consistently exhibited\n less cognitive plasticity than did their siblings.\n It is reasonable to think that those who are open\n to new ideas will be adventurous in other ways.\n Hence, our study suggests that siblings of first-\n born children will tend to be more adventurous\n than will the first-borns.",
     "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
@@ -336,7 +366,10 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Historians have found that significant intellectual\n advances generally occur in cities or countries that have\n a stable political system. But these same historians\n acknowledge that in ancient Athens, Plato and Aristotle\n made unparalleled intellectual progress during a period of\n great political and social unrest.",
     "questionStem": "Which one of the following, if true, most helps to\n reconcile the historians’ apparent counterexample with\n their general rule?",
@@ -357,7 +390,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "To establish a human colony on Mars would involve\n assembling tremendous quantities of basic materials\n at the site of the colony. But because the costs of\n transporting such materials through space would be so\n high, it will not be economically feasible to\n colonize Mars.",
     "questionStem": "Which one of the following is an assumption required by\n the argument?",
@@ -381,7 +416,10 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Records reveal that of physical therapy patients who\n received less than six weeks of treatment, about 31\n percent showed major improvement, regardless of\n whether they were treated by a general practitioner or by\n a specialist. Of patients who received physical therapy\n for a longer time, again regardless of whether they were\n treated by a general practitioner or by a specialist, about\n 50 percent showed major improvement. Therefore,\n the choice between seeing a specialist or a general\n practitioner for necessary physical therapy will not affect\n one’s chances of major improvement.",
     "questionStem": "The reasoning in the argument is most vulnerable to\n criticism on the grounds that the argument",
@@ -407,7 +445,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The differences in distance from Earth between the stars\n in any one distant galaxy are negligible compared to the\n vast distance to the galaxy itself. Thus, if two stars are in\n the same distant galaxy, any significant difference in the\n apparent brightness of those stars results from differences\n in how brightly each is actually burning. Therefore,\n we should be able to determine how a star’s relative\n actual brightness correlates with other characteristics by\n studying stars in the same distant galaxy.",
     "questionStem": "Which one of the following is an assumption the\n argument requires?",
@@ -430,7 +470,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A research psychologist used a personality test to classify\n high school students as “repressors”—people who\n repress upsetting thoughts and feelings from conscious\n awareness—or as “sensitizers”—those especially\n attuned to internal states who freely express distress.\n The researcher found that, compared to sensitizers,\n the repressors were less shy and anxious, could better\n tolerate frustration, and had superior social skills, higher\n grades, and a greater sense of self-esteem.",
     "questionStem": "Each of the following, if true, contributes to an\n explanation of the repressors’ characteristics mentioned\n above except:",
@@ -453,7 +496,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A geologist recently claimed to have discovered in clay\n a previously unknown form of life: “nanobes,” one-tenth\n the size of the smallest known bacteria. However, it is\n unlikely that nanobes truly are living things. They are\n probably inanimate artifacts of the clay’s microscopic\n structure, because a nanobe is too small to contain a\n reproductive mechanism, a prerequisite for life.",
     "questionStem": "Which one of the following, if true, most seriously\n weakens the argument?",
@@ -475,7 +520,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Devan has never bothered to be kind to me. Nor has he\n offered help or companionship. So, since he does not\n meet any of these basic criteria for friendship, he is my\n enemy.",
     "questionStem": "Which one of the following exhibits flawed reasoning\n most similar to the flawed reasoning exhibited in the\n argument above?",
@@ -497,7 +544,10 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Journalist: Drivers of sport utility vehicles correctly\n tend to believe that occupants of such vehicles\n carry lower risk of serious injury as a result of\n accidents, and such drivers therefore tend to drive\n less carefully than they would in more traditional\n vehicles. Thus, the discovery of powerful cures\n for certain high-incidence forms of cancer would\n probably trigger an increase in behaviors such as\n smoking and overexposure to sun that are known\n to increase the risks of such cancers.",
     "questionStem": "The journalist’s reasoning most closely conforms to\n which one of the following principles?",
@@ -521,7 +571,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Filmmaker: Many people feel that independent films\n have more integrity as works of art than films\n produced by major studios, since independent\n films are typically less conventional than major\n studio films. However, like major studios, all\n independent filmmakers need to make profits on\n their films, and this affects the artistic decisions\n made in creating most independent films. Thus,\n most independent films do not have absolute\n integrity as works of art.",
     "questionStem": "The filmmaker’s conclusion is properly drawn if which\n one of the following is assumed?",
@@ -543,7 +595,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If you complete 24 graduate credits and a thesis in\n our department, you are eligible to receive a master’s\n degree. Roger has completed 24 graduate credits in our\n department, yet he is not eligible to receive a master’s\n degree. So he must not have finished his thesis yet.",
     "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following?",

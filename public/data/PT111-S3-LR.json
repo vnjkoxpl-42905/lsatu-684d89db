@@ -4,7 +4,7 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "More and more computer programs that provide solutions to mathematical problems in engineering are being produced, and it is thus increasingly unnecessary for practicing engineers to have a thorough understanding of fundamental mathematical principles. Consequently, in training engineers who will work in industry, less emphasis should be placed on mathematical principles, so that space in the engineering curriculum will be available for other important subjects.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument given for the recommendation above?",
@@ -22,7 +22,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Raymond Burr played the role of lawyer Perry Mason on television. Burr’s death in 1993 prompted a prominent lawyer to say “Although not a lawyer, Mr. Burr strove for such authenticity that we feel as if we lost one of our own.” This comment from a prestigious attorney provides appalling evidence that, in the face of television, even some legal professionals are losing their ability to distinguish fiction from reality.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -44,7 +44,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Opponents of peat harvesting in this country argue that it would alter the ecological balance of our peat-rich wetlands and that, as a direct consequence of this, much of the country’s water supply would be threatened with contamination. But this cannot be true, for in Ireland, where peat has been harvested for centuries, the water supply is not contaminated. We can safely proceed with the harvesting of peat.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -62,7 +62,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "For next year, the Chefs’ Union has requested a 10 percent salary increase for each of its members, whereas the Hotel Managers’ Union has requested only an 8 percent salary increase for each of its members. These facts demonstrate that the average dollar amount of the raises that the Chefs’ Union has requested for next year is greater than that of the raises requested by the Hotel Managers’ Union.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -84,7 +86,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Principle",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Parent: I had tried without success to get my young child to brush her teeth. I had hoped that she would imitate me, or that she would be persuaded by reason to brush her teeth. Then, I made a point of brushing her teeth for her immediately before reading her a story before her naps and at night. After several weeks, when I would pick up a storybook at these times, she began automatically to retrieve her toothbrush and brush her teeth herself. The parent’s experience with the child most closely",
     "questionStem": "conforms to which one of the following generalizations?",
@@ -107,7 +112,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The student body at this university takes courses in a wide range of disciplines. Miriam is a student at this university, so she takes courses in a wide range of disciplines.",
     "questionStem": "Which one of the following arguments exhibits flawed reasoning most similar to that exhibited by the argument above?",
@@ -129,7 +136,7 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Comparison",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "The following passage is used for Section 3, questions 7 through 8. Opponent of offshore oil drilling: The projected benefits of drilling new oil wells in certain areas in the outer continental shelf are not worth the risk of environmental disaster. The oil already being extracted from these areas currently provides only 4 percent of our country’s daily oil requirement, and the new wells would only add one-half of 1 percent. Proponent of offshore oil drilling: Don’t be ridiculous! You might just as well argue that new farms should not be allowed, since no new farm could supply the total food needs of our country for more than a few minutes. 7. The drilling proponent’s reply to the drilling opponent proceeds by",
@@ -152,7 +159,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Which one of the following, if true, most weakens the drilling proponent’s reply?",
@@ -175,7 +184,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "A running track with a hard surface makes for greater running speed than a soft one, at least under dry conditions, because even though step length is shorter on a hard surface, the time the runner’s foot remains in contact with the running surface is less with a hard surface.",
     "questionStem": "Which one of the following, if true, is evidence that the explanation given above is only a partial one?",
@@ -193,7 +202,7 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Point at Issue (Disagree)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Goswami: I support the striking workers at Ergon Foods. They are underpaid. The majority of them make less than $20,000 per year. Nordecki: If pay is the issue, I must disagree. The average annual salary of the striking workers at Ergon Foods is over $29,000. Goswami and Nordecki disagree over the truth of which",
     "questionStem": "one of the following statements?",
@@ -214,7 +223,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Teacher to a student: You agree that it is bad to break promises. But when we speak to each other we all make an implicit promise to tell the truth, and lying is the breaking of that promise. So even if you promised Jeanne that you would tell me she is home sick, you should not tell me that, if you know that she is well.",
     "questionStem": "Which one of the following is an assumption on which the teacher’s argument depends?",
@@ -237,7 +249,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Paradox EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Despite the fact that antilock brakes are designed to make driving safer, research suggests that people who drive cars equipped with antilock brakes have more accidents than those who drive cars not equipped with antilock brakes.",
     "questionStem": "Each of the following, if true, would help resolve the apparent discrepancy described above except:",
@@ -258,7 +270,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "President of the Regional Chamber of Commerce: We are all aware of the painful fact that almost no new businesses have moved into our region or started up here over the last ten years. But the Planning Board is obviously guilty of a gross exaggeration in its recent estimate that businesses are leaving the region at the rate of about four a week. After all, there were never more than about one thousand businesses in the region, so if they were really leaving at such a rate, they would all have been gone long ago.",
     "questionStem": "The argument is most vulnerable to criticism on the ground that it",
@@ -281,7 +295,9 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Parallel Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "It is inaccurate to say that a diet high in refined sugar cannot cause adult-onset diabetes, since a diet high in refined sugar can make a person overweight, and being overweight can predispose a person to adult-onset diabetes.",
     "questionStem": "The argument is most parallel, in its logical structure, to which one of the following?",
@@ -304,7 +320,10 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "During the recent economic downturn, banks contributed to the decline by loaning less money. Prior to the downturn, regulatory standards for loanmaking by banks were tightened. Clearly, therefore, banks will lend more money if those standards are relaxed.",
     "questionStem": "The argument assumes that",
@@ -330,7 +349,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Zoos have served both as educational resources and as entertainment. Unfortunately, removing animals from their natural habitats to stock the earliest zoos reduced certain species’ populations, endangering their survival. Today most new zoo animals are obtained from captive breeding programs, and many zoos now maintain breeding stocks for continued propagation of various species. This makes possible efforts to reestablish endangered species in the wild.",
     "questionStem": "Which one of the following statements is most strongly supported by the information above?",
@@ -348,7 +369,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Only a very small percentage of people from the service professions ever become board members of the 600 largest North American corporations. This shows that people from the service professions are underrepresented in the most important corporate boardrooms in North America.",
     "questionStem": "Which one of the following points out a flaw committed in the argument?",
@@ -369,7 +390,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If there are any inspired musical performances in the concert, the audience will be treated to a good show. But there will not be a good show unless there are sophisticated listeners in the audience, and to be a sophisticated listener one must understand one’s musical roots. If all of the statements above are true, which one of the",
     "questionStem": "following must also be true?",
@@ -390,7 +413,7 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Principle EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Columnist: A recent study suggests that living with a parrot increases one’s risk of lung cancer. But no one thinks the government should impose financial impediments on the owning of parrots because of this apparent danger. So by the same token, the government should not levy analogous special taxes on hunting gear, snow skis, recreational parachutes, or motorcycles.",
     "questionStem": "Each of the following principles is logically consistent with the columnist’s conclusion except:",
@@ -413,7 +436,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Scientist: Some critics of public funding for this research project have maintained that only if it can be indicated how the public will benefit from the project is continued public funding for it justified. If the critics were right about this, then there would not be the tremendous public support for the project that even its critics acknowledge. If the scientist’s claims are true, which one of the",
     "questionStem": "following must also be true?",
@@ -431,7 +454,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The new agriculture bill will almost surely fail to pass. The leaders of all major parties have stated that they oppose it.",
     "questionStem": "Which one of the following, if true, adds the most support for the prediction that the agriculture bill will fail to pass?",
@@ -454,7 +480,10 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The folktale that claims that a rattlesnake’s age can be determined from the number of sections in its rattle is false, but only because the rattles are brittle and sometimes partially or completely break off. So if they were not so brittle, one could reliably determine a rattlesnake’s age simply from the number of sections in its rattle, because one new section is formed each time a rattlesnake molts.",
     "questionStem": "Which one of the following is an assumption the argument requires in order for its conclusion to be properly drawn?",
@@ -479,7 +508,7 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 3, questions 23 through 24. Tony: A new kind of videocassette has just been developed. It lasts for only half as many viewings as the old kind does but costs a third as much. Therefore, video rental stores would find it significantly more economical to purchase and stock movies recorded on the new kind of videocassette than on the old kind. Anna: But the videocassette itself only accounts for 5 percent of the price a video rental store pays to buy a copy of a movie on video; most of the price consists of royalties the store pays to the studio that produced the movie. So the price that video rental stores pay per copy would decrease by considerably less than 5 percent, and royalties would have to be paid on additional copies. 23. Anna’s reply is structured to lead to which one of the",
     "questionStem": "following conclusions?",
@@ -497,7 +526,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Which one of the following, if true, would contribute most to a defense of Tony’s position against Anna’s reply?",
@@ -519,7 +550,10 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Physician: Heart disease generally affects men at an earlier age than it does women, who tend to experience heart disease after menopause. Both sexes have the hormones estrogen and testosterone, but when they are relatively young, men have ten times as much testosterone as women, and women abruptly lose estrogen after menopause. We can conclude, then, that testosterone tends to promote, and estrogen tends to inhibit, heart disease. The physician’s argument is questionable because it presumes which one of the following without providing",
     "questionStem": "sufficient justification?",
@@ -541,7 +575,7 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "People ought to take into account a discipline’s blemished origins when assessing the scientific value of that discipline. Take, for example, chemistry. It must be considered that many of its landmark results were obtained by alchemists—a group whose superstitions and appeals to magic dominated the early development of chemical theory.",
     "questionStem": "The reasoning above is most susceptible to criticism because the author",

@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "According to the official results of last week's national referendum, 80 percent voted in favor of the proposal. But those results must be rigged. Everyone I know voted against the proposal, which is clear evidence that most people voted against it.",
     "questionStem": "Which one of the following most accurately describes a flaw in the reasoning of the argument?",
@@ -26,7 +28,10 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: It is usually desirable for people to have access to unregulated information, such as is found on the Internet. But a vast array of misinformation will always show up on the Internet, and it is difficult to determine which information is accurate. Accurate information is useless unless it can easily be distinguished from misinformation; thus, the information on the Internet should somehow be regulated.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the editorial's argument?",
@@ -47,7 +52,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Some members have criticized the club's president for inviting Dr. Hines to speak at the annual awards banquet without consulting other club members beforehand. But a few years ago the previous club president hired a tax accountant even though he had not discussed it with club members beforehand. So the current president acted appropriately in the way in which she invited Dr. Hines.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -72,7 +79,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Company spokesperson: Household Products magazine claims that our Filterator X water filter does not remove chemical contaminants in significant amounts. This attack on the quality of our product is undermined by the experience of the millions of Filterator X owners who are satisfied with the product's performance.",
     "questionStem": "Which one of the following, if true, most seriously undermines the company spokesperson's argument?",
@@ -96,7 +105,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A famous artist once claimed that all great art imitates nature. If this claim is correct, then any music that is great art would imitate nature. But while some music may imitate ocean waves or the galloping of horses, for example, most great music imitates nothing at all.",
     "questionStem": "Which one of the following most accurately expresses the main point of the argument?",
@@ -121,7 +132,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Patricia: During Japan's Tokugawa period, martial arts experts known as ninjas were trained for the purposes of espionage and assassination. Yet at that time there was actually very little ninja activity in Japan, and most Japanese did not fear ninjas.\nTamara: That is not true. Many wealthy Japanese during the Tokugawa period had their houses constructed with intentionally squeaky floors so that they would receive warning if a ninja were in the house.",
     "questionStem": "Of the following, which one, if true, is the strongest counter Patricia can make to Tamara's objection?",
@@ -139,7 +152,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Philosopher: Both the consequences and the motives of human actions have bearing on the moral worth of those actions. Nonetheless, to be a moral agent one must have free will, because one cannot be a moral agent without desiring to conform to a principle.",
     "questionStem": "The philosopher's argument requires the assumption that",
@@ -162,7 +177,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A significant amount of the acquisition budget of a typical university library is spent on subscriptions to scholarly journals. Over the last several years, the average subscription rate a library pays for such a journal has increased dramatically, even though the costs of publishing a scholarly journal have remained fairly constant. Obviously, then, in most cases publishing a scholarly journal must be much more profitable now than it was several years ago.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -184,7 +201,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Terrence Gurney suggests that because his books appeal to a wide audience, he is not given due credit for his literary achievements. Surely he is mistaken. Gurney's books tell interesting stories, but the writing is flat, leaving no lasting impression on the reader. This is likely the reason that Gurney has not received praise for literary achievement.",
     "questionStem": "Which one of the following most accurately states the argument's overall conclusion?",
@@ -207,7 +224,10 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In an experiment designed to show how life may have begun on Earth, scientists demonstrated that an electrical spark—or lightning—could produce amino acids, the building blocks of Earth's life. However, unless the spark occurs in a \"reducing\" atmosphere, that is, one rich in hydrogen and lean in oxygen, amino acids do not form readily and tend to break apart when they do form. Scientists now believe that Earth's atmosphere was actually rich in oxygen and lean in nitrogen at the time life began.",
     "questionStem": "Assuming that the scientists' current belief about Earth's atmosphere at the time life began is correct, which one of the following, if true, would most help to explain how lightning could have produced the first amino acids on Earth?",
@@ -225,7 +245,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Art critic: The Woerner Journalism Award for criticism was given to Nan Paulsen for her reviews of automobiles. This is inappropriate. The criticism award should be given for criticism, which Paulsen's reviews clearly were not. After all, cars are utilitarian things, not works of art. And objects that are not works of art do not reveal important truths about the culture that produced them.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the art critic's argument?",
@@ -246,7 +268,10 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Manager: Our company's mail-order sales have recently increased 25 percent. This increase started around the time we started offering unlimited free shipping, rather than just free shipping on orders over $50. Thus, our change in policy probably caused the increase.",
     "questionStem": "Which one of the following, if true, most strengthens the manager's argument?",
@@ -267,7 +292,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Parallel",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Proponents of nuclear power point out that new nuclear plants are so technologically sophisticated that the chances of a meltdown are extremely small. This is true, but it would still be unwise to build nuclear power plants, since the consequences of a meltdown are absolutely catastrophic.",
     "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",
@@ -285,7 +312,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "University president: Research institutions have an obligation to promote research in any field of theoretical investigation if that research shows some promise of yielding insights into the causes of practical problems that affect people's quality of life.",
     "questionStem": "The principle stated by the university president, if valid, most helps to justify which one of the following actions?",
@@ -307,7 +336,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Carpal tunnel syndrome, a nerve disorder that affects the hands and wrists, is often caused by repetitive motions such as typing on a keyboard. A recent study of office workers found that, among those who do similar amounts of typing, workers reporting the least control over their own work had almost three times the risk of developing carpal tunnel syndrome as did those who reported the most control.",
     "questionStem": "Which one of the following, if true, most helps to explain the study's findings?",
@@ -325,7 +356,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Principle Strengthen",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Principle: Employees of telemarketing agencies should never do anything that predisposes people to dislike the agencies' clients.\nApplication: If an employee of a telemarketing agency has been told by a person the employee has called that he or she does not want to buy the product of a client of the agency, the employee should not try to talk that person into doing so.",
     "questionStem": "Which one of the following, if true, justifies the given application of the principle above?",
@@ -347,7 +380,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Although Pluto has an atmosphere and is much larger than any asteroid, Pluto is not a true planet. Pluto formed in orbit around the planet Neptune and was then ejected from orbit around Neptune when Triton, Neptune's largest moon, was captured by Neptune's gravity.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -370,7 +405,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A high-calorie diet providing adequate fats was a crucial requirement for the evolution of the anatomically modern human brain, a process that began among our early human ancestors. Food resources that could support such a diet were most abundant and reliable in the shore environments that were available to early humans. Nevertheless, the human brain's evolution took place almost exclusively in savanna and woodland areas.",
     "questionStem": "Which one of the following, if true, would most help to resolve the apparent conflict presented above?",
@@ -388,7 +425,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Editor Y: This is a good photograph: the composition is attractive, especially in the way the image is blurred by smoke in one corner.\nEditor Z: It's very pretty, but it's a bad photograph. It doesn't make a statement; there's no obvious reason for the smoke to be there.",
     "questionStem": "The editors' dialogue provides the most support for the claim that they disagree with each other about whether",
@@ -409,7 +448,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "University president: We will be forced to reduce spending next year if we do not increase our enrollment. So, if we are to maintain the quality of the education we provide, we must market our programs more aggressively. Without such marketing we will be unable to increase our enrollment.",
     "questionStem": "The conclusion of the university president's argument can be properly drawn if which one of the following is assumed?",
@@ -430,7 +471,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If the city starts requiring residents to sort the materials that they put out for recycling, then many residents will put more recyclables in with their regular garbage. This will result in more recyclables being buried in the city's landfill. However, because of the cost of having city workers do the sorting, the sanitation department will not stay within its budget unless the sorting requirement for residents is implemented.",
     "questionStem": "Which one of the following statements logically follows from the information above?",
@@ -451,7 +494,10 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Meerkat \"sentinels,\" so-called because they watch for predators while other meerkat group members forage, almost never fall victim to those predators, yet the foragers often do. This advantage accruing to the sentinel does not mean that its watchful behavior is entirely self-interested. On the contrary, the sentinel's behavior is an example of animal behavior motivated at least in part by altruism. The loud bark emitted by the sentinel as it dashes for the cover of the nearest hole alerts other group members to the presence of danger.",
     "questionStem": "Which one of the following is a questionable reasoning technique employed in the argument?",
@@ -469,7 +515,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Alex: Shrimp farming results in damage to the environment, because investors make quick profits from such farming and then abandon the farms.\nJolene: I disagree. Although some shrimp farms have proved unsustainable and have been quickly abandoned, properly built shrimp farms take a long time to construct and are costly to operate. Most owners try to make sure that their farms are productive for many years.",
     "questionStem": "Their dialogue provides the most support for the claim that Alex and Jolene disagree with each other over whether",
@@ -490,7 +538,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No one who works at Leila's Electronics has received both a poor performance evaluation and a raise. Lester has not received a raise, so it must be that he has received a poor performance evaluation.",
     "questionStem": "The flawed reasoning in the argument above is most similar to the reasoning in which one of the following arguments?",
@@ -512,7 +562,10 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Numerous studies have demonstrated a pronounced negative correlation between high-fiber diets and the incidence of colon cancer. For example, the colon cancer rate in Western countries is much higher than in many non-Western countries where people eat more fiber-rich foods, such as fruits and vegetables. Furthermore, in Scandinavia it has been conclusively shown that the higher the colon cancer rate in a given area, the lower the consumption in that area of cereals, which, like fruits and vegetables, are high in fiber. All of this shows that insufficient consumption of fiber causes colon cancer, and sufficient consumption of fiber prevents it.",
     "questionStem": "The argument's reasoning is vulnerable to criticism because the argument overlooks the possibility that",
@@ -534,7 +587,7 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Anthropologist: Many people think that if human language evolved, then something like it must be present in those species most closely related to humans, such as chimpanzees. They reason that since new traits evolve gradually, something like human language, albeit cruder, must exist in some species from which humans evolved. This general line of argument may be reasonable, but it simply does not follow that chimpanzees have anything like human language, because humans did not evolve from chimpanzees. While chimpanzees are indeed closely related to humans, this is because both evolved from a common ancestor. The evolution of human language might easily have begun after the extinction of that common ancestor.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the anthropologist's argument?",

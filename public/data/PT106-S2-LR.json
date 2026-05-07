@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Critic: People today place an especially high value on respect for others; yet, in their comedy acts, many of today’s most popular comedians display blatant disrespect for others. But when people fail to live up to the very ideals they hold in highest esteem, exaggeration of such failings often forms the basis of successful comedy. Thus the current popularity of comedians who display disrespect in their acts is hardly surprising.",
     "questionStem": "The critic’s argument depends on which one of the following assumptions?",
@@ -27,7 +29,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The law firm of Sutherlin, Pérez, and Associates is one of the most successful law firms whose primary specialization is in criminal defense cases. In fact, the firm has a better than 90 percent acquittal rate in such cases. Dalton is an attorney whose primary specialization is in divorce cases, so Dalton certainly cannot be a member of Sutherlin, Pérez, and Associates. The reasoning in the argument is flawed because the",
     "questionStem": "argument",
@@ -49,7 +53,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Opponents of allowing triple-trailer trucks to use the national highway system are wrong in claiming that these trucks are more dangerous than other commercial vehicles. In the western part of the country, in areas where triple-trailers are now permitted on some highways, for these vehicles the rate of road accident fatalities per mile of travel is lower than the national rate for other types of commercial vehicles. Clearly, triple- trailers are safer than other commercial vehicles.",
     "questionStem": "Which one of the following, if true, most substantially weakens the argument?",
@@ -67,7 +74,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Whittaker: There can be no such thing as the number of medical school students who drop out before their second year, because if they drop out, they never have a second year. Hudson: By your reasoning I cannot help but become rich, because there is similarly no such thing as my dying before my first million dollars is in the bank.",
     "questionStem": "Hudson responds to Whittaker by",
@@ -89,7 +98,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Strengthen EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A newly developed light bulb is much more cost-effective than conventional light bulbs: it costs only about 3 times what a conventional light bulb costs but it lasts up to 10 times as long as a conventional light bulb. Despite the manufacturer’s intense efforts to publicize the advantages of the new bulb, one analyst predicts that these new bulbs will prove to sell very poorly. Each of the following, if true, provides support for the",
     "questionStem": "analyst’s prediction except:",
@@ -110,7 +121,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The Rienzi, a passenger ship, sank as a result of a hole in its hull, possibly caused by sabotage. Normally, when a holed ship sinks as rapidly as the Rienzi did, water does not enter the ship quickly enough for the ship to be fully flooded when it reaches the ocean floor. Full flooding can be achieved, however, by sabotage. Any ship that sinks deep into the ocean when not fully flooded will implode. Deep-sea photographs, taken of the sunken Rienzi where it rests on the ocean floor, reveal that the Rienzi did not implode.",
     "questionStem": "Which one of the following must be true on the basis of the information above?",
@@ -128,7 +141,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Argument Evaluation",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "For every 50 dogs that contract a certain disease, one will die from it. A vaccine exists that is virtually 100 percent effective in preventing this disease. Since the risk of death from complications of vaccination is one death per 5,000 vaccinations, it is therefore safer for a dog to receive the vaccine than not to receive it.",
     "questionStem": "Which one of the following would it be most helpful to know in order to evaluate the argument?",
@@ -154,7 +169,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The symptoms of mental disorders are behavioral, cognitive, or emotional problems. Some patients with mental disorders can be effectively treated with psychotherapy. But it is now known that in some patients mental disorders result from chemical imbalances affecting the brain. Thus these patients can be effectively treated only with medication that will reduce or correct the imbalance.",
     "questionStem": "The argument depends on assuming which one of the following?",
@@ -178,7 +196,7 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Argument Part",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "The assertion that a later artist tampered with Veronese’s painting serves which one of the following functions in the curator’s argument?",
@@ -202,7 +220,7 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "The art critic’s response to the curator would provide the strongest support for which one of the following conclusions?",
@@ -225,7 +243,9 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "John works five days each week except when on vacation or during weeks in which national holidays occur. Four days a week he works in an insurance company; on Fridays he works as a blacksmith. Last week there were no holidays, and John was not on vacation. Therefore, he must have worked in the insurance company on Monday, Tuesday, Wednesday, and Thursday last week.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -248,7 +268,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "After several attempts to distract his young parrot from chewing on furniture, George reluctantly took an expert’s advice and gently hit the parrot’s beak whenever the bird started to chew furniture. The bird stopped chewing furniture, but it is now afraid of hands and will sometimes bite. Since chewing on the furniture would not have hurt the bird, George should not have hit it. When Carla’s puppy escaped from her yard, it bounded into a busy street. Although Carla does not generally approve of physical discipline, she hit the puppy sharply with her hand. Now the puppy enters the street only when accompanied by Carla, so Carla was justified in disciplining the puppy.",
     "questionStem": "Which one of the following principles, if established, would justify the judgments about George’s and Carla’s actions?",
@@ -269,7 +292,10 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported Fill-in",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Mature white pines intercept almost all the sunlight that shines on them. They leave a deep litter that dries readily, and they grow to prodigious height so that, even when there are large gaps in a stand of such trees, little light reaches the forest floor. For this reason white pines cannot regenerate in their own shade. Thus, when in a dense forest a stand of trees consists of nothing but mature white pines, it is a fair bet that _______.",
     "questionStem": "Which one of the following most logically concludes the argument?",
@@ -287,7 +313,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Advertisement: A leading economist has determined that among people who used computers at their place of employment last year, those who also owned portable (“laptop”) computers earned 25 percent more on average than those who did not. It is obvious from this that owning a laptop computer led to a higher-paying job.",
     "questionStem": "Which one of the following identifies a reasoning error in the argument?",
@@ -305,7 +334,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Rhonda will see the movie tomorrow afternoon only if Paul goes to the concert in the afternoon. Paul will not go to the concert unless Ted agrees to go to the concert. However, Ted refuses to go to the concert. So Rhonda will not see the movie tomorrow afternoon.",
     "questionStem": "The pattern of reasoning displayed above is most closely paralleled in which one of the following?",
@@ -326,7 +357,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Private industry is trying to attract skilled research scientists by offering them high salaries. As a result, most research scientists employed in private industry now earn 50 percent more than do comparably skilled research scientists employed by the government. So, unless government-employed research scientists are motivated more by a sense of public duty than by their own interests, the government is likely to lose its most skilled research scientists to private industry, since none of these scientists would have problems finding private- sector jobs.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -350,7 +383,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Using fossil energy more efficiently is in the interest of the nation and the global environment, but major improvements are unlikely unless proposed government standards are implemented to eliminate products or practices that are among the least efficient in their class. Objection: Decisions on energy use are best left to the operation of the market.",
     "questionStem": "Which one of the following, if true, most directly undermines the objection above?",
@@ -371,7 +406,7 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Dobson: Some historians claim that the people who built a ring of stones thousands of years ago in Britain were knowledgeable about celestial events. The ground for this claim is that two of the stones determine a line pointing directly to the position of the sun at sunrise at the spring equinox. There are many stones in the ring, however, so the chance that one pair will point in a celestially significant direction is large. Therefore, the people who built the ring were not knowledgeable about celestial events.",
     "questionStem": "Which one of the following is an error of reasoning in Dobson’s argument?",
@@ -394,7 +429,10 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Nearly all mail that is correctly addressed arrives at its destination within two business days of being sent. In fact, correctly addressed mail takes longer than this only when it is damaged in transit. Overall, however, most mail arrives three business days or more after being sent.",
     "questionStem": "If the statements above are true, which one of the following must be true?",
@@ -416,7 +454,7 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The report released by the interior ministry states that within the past 5 years the national land-reclamation program has resulted in a 19 percent increase in the amount of arable land within the country. If these figures are accurate, the program has been a resounding success. Senator Armand, a distinguished mathematician and a woman of indisputable brilliance, maintains, however, that the reclamation program could not possibly have been successful. Clearly, therefore, the figures cited in the report cannot be accurate.",
     "questionStem": "The argument above exhibits an erroneous pattern of reasoning most similar to that exhibited by which one of the following?",
@@ -434,7 +472,7 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "The point at issue between Wirth and Chang is whether",
@@ -455,7 +493,7 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Which one of the following most accurately expresses Chang’s criticism of Wirth’s argument?",
@@ -478,7 +516,10 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Weaken EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Garbage dumps do not harm wildlife. Evidence is furnished by the Masai-Mara reserve in Kenya, where baboons that use the garbage dumps on the reserve as a food source mature faster and have more offspring than do baboons on the reserve that do not scavenge on garbage. Each of the following statements, if true, casts doubt on",
     "questionStem": "the argument except:",
@@ -500,7 +541,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Which one of the following principles, if valid, most helps to support Marianne’s argument against the order?",
@@ -521,7 +564,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Which one of the following, if true, most undermines Marianne’s argument against the order?",
@@ -544,7 +589,7 @@
     "sectionNumber": 2,
     "questionNumber": 26,
     "questionType": "Resolve/Reconcile/Explain EXCEPT",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Smoking in bed has long been the main cause of home fires. Despite a significant decline in cigarette smoking in the last two decades, however, there has been no comparable decline in the number of people killed in home fires. Each one of the following statements, if true over the last two decades, helps to resolve the apparent",
     "questionStem": "discrepancy above except:",

@@ -6,7 +6,7 @@ export interface LRQuestion {
   section: number;
   qnum: number;
   qtype: string;
-  reasoningType?: string; // e.g., "Conditional", "Causal", "Comparison", or "Conditional + Causal"
+  reasoningType?: string[]; // multi-valued: any of "Causation", "Conditional Reasoning", "Comparative Reasoning"
   questionFeatures?: string[]; // e.g., ["Conditional Diagramming"] — orthogonal to qtype/reasoningType
   difficulty: number;
   stimulus?: string;
@@ -549,7 +549,7 @@ export class QuestionBank {
             section,
             qnum,
             qtype,
-            reasoningType: item.reasoningType,
+            reasoningType: Array.isArray(item.reasoningType) ? item.reasoningType : (item.reasoningType ? [item.reasoningType] : []),
             questionFeatures: Array.isArray(item.questionFeatures) ? item.questionFeatures : undefined,
             difficulty,
             stimulus: item.stimulus,

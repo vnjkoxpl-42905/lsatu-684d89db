@@ -4,7 +4,10 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Community organizer: Before last year’s community cleanup, only 77 of the local residents signed up to participate, but then well over 100 actually participated. This year, 85 residents have signed up to participate. Since our community cleanup will be a success if we have at least 100 participants, we can be confident that this year’s cleanup will be a success.",
     "questionStem": "The reasoning in the community organizer’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -30,7 +33,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Bell: Commentators in the media are wrong to criticize the policies Klein implemented. Although her policies are unpopular, they avoided an impending catastrophe. Klein is just the person we need making important decisions in the future.\nSoltan: Klein’s policies have been effective, but politics matters. In the future, important decisions will need to be made, and she will not have the political support to make them. So she should step down.",
     "questionStem": "Bell and Soltan disagree with each other about which one of the following?",
@@ -51,7 +56,10 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Psychologist: In our study, participants who were offered the opportunity to purchase a coffee mug were not willing to pay more than $5. If, however, they were given a very similar mug and asked immediately afterwards how much they would be willing to sell it for, most of them held out for more than $5.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
@@ -69,7 +77,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Ecologist: Before finding a mate, male starlings decorate their nests with fragments of aromatic plants rich in compounds known to kill parasitic insects. Since these parasites are potentially harmful to nestlings, some researchers have hypothesized that the function of these decorations is nestling protection. However, males cease to incorporate such greenery once egg laying starts, which suggests instead that the function of the decorations is to attract females.",
     "questionStem": "Which one of the following, if true, most strengthens the support for the ecologist’s conclusion?",
@@ -91,7 +101,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A commission has been formed to report on the nation’s preparedness for a major natural disaster. The commission’s report will not be effective unless the commission speaks with a unified voice. Since individual members of the commission have repeatedly expressed their own opinions about disaster preparedness in the news media well in advance of completion of the report, it will not be effective.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -114,7 +126,10 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Principle",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Engineer: Wide roads free of obstructions have been shown to encourage drivers to take more risks. Likewise, a technical fix to slow or reverse global warming by blocking out a portion of the sun’s rays would encourage more carbon dioxide emissions, which might cause more global warming in the future.",
     "questionStem": "The engineer’s argument can most reasonably be interpreted as invoking which one of the following principles?",
@@ -137,7 +152,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Although some animals exhibit a mild skin reaction to urushiol, an oil produced by plants such as poison oak and poison ivy, it appears that only humans develop painful rashes from touching it. In fact, wood rats even use branches from the poison oak plant to build their nests. Therefore, urushiol probably did not evolve in these plants as a chemical defense.",
     "questionStem": "Which one of the following, if true, adds the most support for the conclusion of the argument?",
@@ -159,7 +177,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Principle Justify",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Politician: Some cities have reversed the decay of aging urban areas by providing tax incentives and zoning variances that encourage renovation and revitalization in selected areas. But such legislation should not be commended. Its principal beneficiaries have turned out to be well-to-do professionals who could afford the cost of restoring deteriorating buildings; the long-term residents these programs were intended to help now face displacement due to increased rent and taxes.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the politician’s criticism?",
@@ -180,7 +200,7 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Pundit: It is good to have national leaders voted out of office after a few years. The reason is that reforms are generally undertaken early in a new government. If leaders do not act quickly to solve a problem and it becomes an issue later, then they must either deny that there is a problem or deny that anything could have been done about it; otherwise, they will have to admit responsibility for the persistence of the problem.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the pundit’s argument?",
@@ -201,7 +221,10 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Farmer: Agricultural techniques such as crop rotation that do not use commercial products may solve agricultural problems at least as well as any technique, such as pesticide application, that does use such products. Nonetheless, no private for-profit corporation will sponsor research that is unlikely to lead to marketable products. Thus, for the most part, only government-sponsored research investigates agricultural techniques that do not use commercial products.",
     "questionStem": "Which one of the following, if true, most strengthens the farmer’s argument?",
@@ -219,7 +242,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "University spokesperson: Most of the students surveyed at the university said they would prefer that the current food vendor be replaced with a different food vendor next year. Several vendors have publicly expressed interest in working for the university. For a variety of reasons, however, the only alternative to the current vendor is Hall Dining Services, which served as the university’s food vendor up until this past year. Since, other things being equal, the preferences of the majority of students should be adhered to, we should rehire Hall Dining next year.",
     "questionStem": "The spokesperson’s argument is most vulnerable to criticism on the grounds that it",
@@ -240,7 +265,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "On average, cats fed canned cat food eat fewer ounces of food per day than do cats fed dry cat food; the canned food contains more calories per ounce than does the dry food. Nonetheless, feeding a cat canned cat food typically costs more per day than does feeding it dry cat food.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -262,7 +289,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The Frauenkirche in Dresden, a historic church destroyed by bombing in World War II, has been reconstructed to serve as a place for church services and cultural events. The foundation doing the reconstruction took extraordinary care to return the church to its original form. It is a puzzle, then, why the foundation chose not to rebuild the eighteenth-century baroque organ originally designed for the church and instead built a modern organ, even though a donor had offered to pay the full cost of rebuilding the original.",
     "questionStem": "Which one of the following, if true, would most help to resolve the puzzle described above?",
@@ -280,7 +309,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Principle: A government should reduce taxes on imports if doing so would financially benefit many consumers in its domestic economy. There is a notable exception, however: it should never reduce import taxes if one or more of its domestic industries would be significantly harmed by the added competition.\nConclusion: The government should not reduce taxes on textile imports.",
     "questionStem": "Which one of the following is a statement from which the conclusion can be properly drawn using the principle?",
@@ -302,7 +333,10 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Global warming has contributed to a rise in global sea level not only because it causes glaciers and ice sheets to melt, but also simply because when water is heated its volume increases. But this rise in global sea level is less than it otherwise would be, since over the years artificial reservoirs have been built all around the world that collectively contain a great deal of water that would otherwise reach the sea.",
     "questionStem": "Which one of the following can most reasonably be concluded on the basis of the information above?",
@@ -324,7 +358,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Last year, a software company held a contest to generate ideas for their new logo. According to the rules, everyone who entered the contest would receive several prizes, including a T-shirt with the company’s new logo. Juan has a T-shirt with the company’s new logo, so he must have entered the contest.",
     "questionStem": "The reasoning in the argument is flawed in that the argument",
@@ -345,7 +381,10 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "When expert witnesses give testimony, jurors often do not understand the technical information and thereby are in no position to evaluate such testimony. Although expert witnesses on opposite sides often make conflicting claims, the expert witnesses on both sides frequently seem competent, leaving the jury unable to assess the reliability of their testimonies.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -366,7 +405,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Tax reformer: The proposed tax reform legislation is being criticized by political groups on the right for being too specific and by political groups on the left for being too vague. Since one and the same statement cannot be both too specific and too vague, the criticisms just go to show that the legislation is framed just as it should be.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -389,7 +430,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The recent concert was probably not properly promoted. Wells, who is quite knowledgeable about the concert business, was certain that it would sell out unless it was poorly promoted. But the concert did not sell out.",
     "questionStem": "The pattern of reasoning in which one of the following is most similar to that in the argument above?",
@@ -410,7 +453,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Economist: Global recessions can never be prevented, for they could be prevented only if they were predictable. Yet economists, using the best techniques at their disposal, consistently fail to accurately predict global recessions.",
     "questionStem": "The economist’s argument is most vulnerable to the criticism that it",
@@ -432,7 +477,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Principle Conform",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Letter to the editor: When your newspaper reported the (admittedly extraordinary) claim by Mr. Hanlon that he saw an alien spaceship, the tone of your article was very skeptical despite the fact that Hanlon has over the years proved to be a trusted member of the community. If Hanlon claimed to have observed a rare natural phenomenon like a large meteor, your article would not have been skeptical. So your newspaper exhibits an unjustified bias.",
     "questionStem": "The argument in the letter conflicts with which one of the following principles?",
@@ -454,7 +501,10 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Fish with teeth specialized for scraping algae occur in both Flower Lake and Blue Lake. Some biologists argue that because such specialized characteristics are rare, fish species that have them should be expected to be closely related. If they are closely related, then the algae-scraping specialization evolved only once. But genetic tests show that the two algae-scraping species, although possibly related, are not closely related. Thus, the algae-scraping specialization evolved more than once.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -476,7 +526,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The constitution of Country F requires that whenever the government sells a state-owned entity, it must sell that entity for the highest price it can command on the open market. The constitution also requires that whenever the government sells a state-owned entity, it must ensure that citizens of Country F will have majority ownership of the resulting company for at least one year after the sale.",
     "questionStem": "The government of Country F must violate at least one of the constitutional requirements described above if it is faced with which one of the following situations?",
@@ -497,7 +549,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The makers of Activite, a natural dietary supplement, claim that it promotes energy and mental alertness. To back up their claim, they offer a month’s supply of Activite free to new customers. Clearly, Activite must be effective, since otherwise it would not be in the company’s interest to make such an offer.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -519,7 +573,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Of the citizens who disapprove of the prime minister’s overall job performance, most disapprove because of the prime minister’s support for increasing the income tax. However, Theresa believes that the income tax should be increased. So Theresa probably approves of the prime minister’s overall job performance.",
     "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most parallel to that in the argument above?",
@@ -540,7 +596,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Bird watcher: The decrease in the mourning-dove population in this area is probably a result of the loss of nesting habitat. Many mourning doves had formerly nested in the nearby orchards, but after overhead sprinklers were installed in the orchards last year, the doves ceased building nests there.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",

@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Automated flight technology can guide an aircraft very reliably, from navigation to landing. Yet this technology, even when functioning correctly, is not a perfect safeguard against human error.",
     "questionStem": "Which one of the following, if true, most helps to explain the situation described above?",
@@ -22,7 +24,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "To keep one’s hands warm during the winter, one never needs gloves or mittens. One can always keep one’s hands warm simply by putting on an extra layer of clothing, such as a thermal undershirt or a sweater. After all, keeping one’s vital organs warm can keep one’s hands warm as well.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -45,7 +49,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The reason music with a simple recurring rhythm exerts a strong primordial appeal is that it reminds us of the womb environment. After all, the first sound heard within the womb is the comforting sound of the mother’s regular heartbeat. So in taking away from us the warmth and security of the womb, birth also takes away a primal and constant source of comfort. Thus it is extremely natural that in seeking sensations of warmth and security throughout life, people would be strongly drawn toward simple recurring rhythmic sounds.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in the reasoning above?",
@@ -68,7 +74,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Principle-Conform",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Linguist: Most people can tell whether a sequence of words in their own dialect is grammatical. Yet few people who can do so are able to specify the relevant grammatical rules.",
     "questionStem": "Which one of the following best illustrates the principle underlying the linguist’s statements?",
@@ -91,7 +99,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Company president: For the management consultant position, we shall interview only those applicants who have worked for management consulting firms generally recognized as in the top 1 percent of firms worldwide. When we finally select somebody, then, we can be sure to have selected one of the best management consultants available.",
     "questionStem": "The company president’s reasoning is most vulnerable to criticism on the grounds that it",
@@ -114,7 +124,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Beginners typically decide each chess move by considering the consequences. Expert players, in contrast, primarily use pattern-recognition techniques. That is, such a player recognizes having been in a similar position before and makes a decision based on information recalled about the consequences of moves chosen on that prior occasion.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -135,7 +147,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Farmer: Because water content is what makes popcorn pop, the kernels must dry at just the right speed to trap the correct amount of water. The best way to achieve this effect is to have the sun dry the corn while the corn is still in the field, but I always dry the ears on a screen in a warm, dry room.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy between the farmer’s theory and practice?",
@@ -156,7 +171,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Factory manager: One reason the automobile parts this factory produces are expensive is that our manufacturing equipment is outdated and inefficient. Our products would be more competitively priced if we were to refurbish the factory completely with new, more efficient equipment. Therefore, since to survive in today’s market we have to make our products more competitively priced, we must completely refurbish the factory in order to survive.",
     "questionStem": "The reasoning in the factory manager’s argument is flawed because this argument",
@@ -179,7 +196,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Two months ago a major shipment of pythons arrived from Africa, resulting in a great number of inexpensive pythons in pet stores. Anyone interested in buying a python, however, should beware: many pythons hatched in Africa are afflicted with a deadly liver disease. Although a few pythons recently hatched in North America have this disease, a much greater proportion of African-hatched pythons have it. The disease is difficult to detect in its early stages, and all pythons die within six months of contracting the disease.",
     "questionStem": "Which one of the following statements can be properly inferred from the statements above?",
@@ -200,7 +219,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Nutritionists believe that a person’s daily requirement for vitamins can readily be met by eating five servings of fruits and vegetables daily. However, most people eat far less than this. Thus, most people need to take vitamin pills.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
@@ -224,7 +245,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Unknown",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Researcher: This fall I returned to a research site to recover the armadillos I had tagged there the previous spring. Since a large majority of the armadillos I recaptured were found within a few hundred yards of the location of their tagging last spring, I concluded that armadillos do not move rapidly into new territories.",
     "questionStem": "Which one of the following is an assumption required by the researcher’s argument?",
@@ -248,7 +271,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Sahira: To make a living from their art, artists of great potential would have to produce work that would gain widespread popular acclaim, instead of their best work. That is why governments are justified in subsidizing artists. Rahima: Your argument for subsidizing art depends on claiming that to gain widespread popular acclaim, artists must produce something other than their best work; but this need not be true.",
     "questionStem": "In her argument, Rahima",
@@ -270,7 +295,10 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Adult frogs are vulnerable to dehydration because of their highly permeable skins. Unlike large adult frogs, small adult frogs have such a low ratio of body weight to skin surface area that they cannot survive in arid climates. The animals’ moisture requirements constitute the most important factor determining where frogs can live in the Yucatán peninsula, which has an arid climate in the north and a wet climate in the south.",
     "questionStem": "The information above most strongly supports which one of the following conclusions about frogs in the Yucatán peninsula?",
@@ -288,7 +316,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Editorial: A recent survey shows that 77 percent of people feel that crime is increasing and that 87 percent feel the judicial system should be handing out tougher sentences. Therefore, the government must firmly address the rising crime rate.",
     "questionStem": "The reasoning in the editorial’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -311,7 +341,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Proofs relying crucially on computers provide less certainty than do proofs not requiring computers. Human cognition alone cannot verify computer-dependent proofs; such proofs can never provide the degree of certainty that attends our judgments concerning, for instance, simple arithmetical facts, which can be verified by human calculation. Of course, in these cases one often uses electronic calculators, but here the computer is a convenience rather than a supplement to human cognition.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -332,7 +364,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Unknown",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Madden: Industrialists address problems by simplifying them, but in farming that strategy usually leads to oversimplification. For example, industrialists see water retention and drainage as different and opposite functions-that good topsoil both drains and retains water is a fact alien to industrial logic. To facilitate water retention, they use a terrace or a dam; to facilitate drainage, they use drain tile, a ditch, or a subsoiler. More farming problems are created than solved when agriculture is the domain of the industrialist, not of the farmer.",
     "questionStem": "The situation as Madden describes it best illustrates which one of the following propositions?",
@@ -354,7 +388,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Unknown",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Critic: Works of modern literature cannot be tragedies as those of ancient playwrights and storytellers were unless their protagonists are seen as possessing nobility, which endures through the calamities that befall one. In an age that no longer takes seriously the belief that human endeavors are governed by fate, it is therefore impossible for a contemporary work of literature to be a tragedy.",
     "questionStem": "Which one of the following is an assumption required by the critic’s argument?",
@@ -378,7 +414,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Despite the efforts of a small minority of graduate students at one university to unionize, the majority of graduate students there remain unaware of the attempt. Most of those who are aware believe that a union would not represent their interests or that, if it did, it would not effectively pursue them. Thus, the graduate students at the university should not unionize, since the majority of them obviously disapprove of the attempt.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -401,7 +439,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Unknown",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Anyone who believes in democracy has a high regard for the wisdom of the masses. Griley, however, is an elitist who believes that any artwork that is popular is unlikely to be good. Thus, Griley does not believe in democracy.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -425,7 +465,10 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A recent study confirmed that salt intake tends to increase blood pressure and found that, as a result, people with high blood pressure who significantly cut their salt intake during the study had lower blood pressure by the end of the study. However, it was also found that some people who had very high salt intake both before and throughout the study maintained very low blood pressure.",
     "questionStem": "Which one of the following, if true, contributes the most to an explanation of the results of the study?",
@@ -446,7 +489,10 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The odds of winning any major lottery jackpot are extremely slight. However, the very few people who do win major jackpots receive a great deal of attention from the media. Thus, since most people come to have at least some awareness of events that receive extensive media coverage, it is likely that many people greatly overestimate the odds of their winning a major jackpot.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -469,7 +515,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A book tour will be successful if it is well publicized and the author is an established writer. Julia is an established writer, and her book tour was successful. So her book tour must have been well publicized.",
     "questionStem": "Which one of the following exhibits a pattern of flawed reasoning most closely parallel to the pattern of flawed reasoning exhibited by the argument above?",
@@ -492,7 +540,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Eight large craters run in a long straight line across a geographical region. Although some of the craters contain rocks that have undergone high-pressure shocks characteristic of meteorites slamming into Earth, these shocks could also have been caused by extreme volcanic events. Because of the linearity of the craters, it is very unlikely that some of them were caused by volcanoes and others were caused by meteorites. Thus, since the craters are all different ages, they were probably caused by volcanic events rather than meteorites.",
     "questionStem": "Which one of the following statements, if true, would most strengthen the argument?",
@@ -517,7 +567,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Unknown",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The genuine creative genius is someone who is dissatisfied with merely habitual assent to widely held beliefs; thus these rare innovators tend to anger the majority. Those who are dissatisfied with merely habitual assent to widely held beliefs tend to seek out controversy, and controversy seekers enjoy demonstrating the falsehood of popular viewpoints.",
     "questionStem": "The conclusion of the argument follows logically if which one of the following is assumed?",
@@ -540,7 +592,10 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Claude: When I’m having lunch with job candidates, I watch to see if they salt their food without first tasting it. If they do, I count that against them, because they’re making decisions based on inadequate information. Larissa: That’s silly. It’s perfectly reasonable for me to wear a sweater whenever I go into a supermarket, because I already know supermarkets are always too cool inside to suit me. And I never open a credit card offer that comes in the mail, because I already know that no matter how low its interest rate may be, it will never be worthwhile for me.",
     "questionStem": "The two analogies that Larissa offers can most reasonably be interpreted as invoking which one of the following principles to criticize Claude’s policy?",

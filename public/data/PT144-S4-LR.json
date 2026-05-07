@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Aisha: Vadim is going to be laid off. Vadim’s work as a programmer has been exemplary since joining the firm. But management has already made the decision to lay off a programmer. And this firm strictly follows a policy of laying off the most recently hired programmer in such cases. Aisha’s conclusion follows logically if",
     "questionStem": "which one of the following is assumed?",
@@ -28,7 +30,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Miscellaneous",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Wanda: It is common sense that one cannot create visual art without visual stimuli in one’s work area, just as a writer needs written stimuli. A stark, empty work area would hinder my creativity. This is why there are so many things in my studio. Vernon: But a writer needs to read good writing, not supermarket tabloids. Are you inspired by the piles of laundry and empty soda bottles in your studio?",
     "questionStem": "Which one of the following most accurately expresses the principle underlying Vernon’s response to Wanda?",
@@ -53,7 +57,10 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The official listing of an animal species as endangered triggers the enforcement of legal safeguards designed to protect endangered species, such as tighter animal export and trade restrictions and stronger antipoaching laws. Nevertheless, there have been many cases in which the decline in the wild population of a species was more rapid after that species was listed as endangered than before it was so listed.",
     "questionStem": "Which one of the following, if true, does most to account for the increase in the rate of population decline described above?",
@@ -71,7 +78,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Point at issue",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Annette: To persuade the town council to adopt your development plan, you should take them on a trip to visit other towns that have successfully implemented plans like yours. Sefu: But I have a vested interest in their votes. If council members were to accept a trip from me, it would give the appearance of undue influence. The dialogue provides the most support for the claim that Annette and Sefu disagree over whether",
@@ -93,7 +102,10 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Scholar: Recently, some religions have updated the language of their traditional texts and replaced traditional rituals with more contemporary ones. These changes have been followed by increases in attendance at places of worship affiliated with these religions. This shows that any such modernization will result in increased numbers of worshipers. The scholar’s reasoning is flawed because the scholar presumes without giving sufficient justification that",
@@ -117,7 +129,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "If one is to participate in the regional band, one must practice very hard or be very talented. Therefore, Lily, who is first trombonist in the regional band and is very talented, does not practice hard. The flawed reasoning in",
     "questionStem": "which one of the following arguments most closely resembles the flawed reasoning in the argument above?",
@@ -138,7 +152,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Argument part",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Dietitian: Eating fish can lower one’s cholesterol level. In a study of cholesterol levels and diet, two groups were studied. The first group ate a balanced diet including two servings of fish per week. The second group ate a very similar diet, but ate no fish. The first group showed lower cholesterol levels, on average, than the second group. The two groups had displayed similar average cholesterol levels prior to the study.",
     "questionStem": "Which one of the following most accurately describes the role played in the dietitian’s argument by the claim that the two groups had displayed similar average cholesterol levels prior to the study?",
@@ -159,7 +176,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Satellite navigation systems (satnavs) for cars, in which computer voices announce directions as you drive, save fuel and promote safety. Studies show that, when assigned to novel destinations, drivers using satnavs took, on average, 7 percent fewer miles per journey than drivers using paper maps. Fewer miles driven means, on average, less fuel consumed. Also, the drivers who used satnavs drove more carefully in that they were not taking their eyes off the road to check paper maps.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -181,7 +200,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A manager cannot extract the best performance from employees by threatening them with termination or offering financial rewards for high productivity. Rather, employees must come to want to do a good job for its own sake. One of the best ways for a manager to achieve this is to delegate responsibility to them, especially for decisions that previously had to be made by the manager.",
     "questionStem": "Which one of the following propositions is best illustrated by the situation described in the passage?",
@@ -203,7 +224,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Point at issue",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Richard: Because it fails to meet the fundamental requirement of art—that it represent—abstract art will eventually be seen as an aberration. Jung-Su: Although artists, like musicians, may reject literal representation, makers of abstract art choose to represent the purely formal features of objects, which are discovered only when everyday perspectives are rejected. Thus, whatever others might come to say, abstract art is part of the artistic mainstream. Richard and Jung-Su disagree over whether",
@@ -224,7 +247,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Principle",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A person who knowingly brings about misfortune should be blamed for it. However, in some cases a person who unwittingly brings about misfortune should not be blamed for it. For example, a person should never be blamed for unwittingly bringing about misfortune if the person could not reasonably have foreseen it.",
     "questionStem": "The principles above, if valid, most help to justify the reasoning in which one of the following?",
@@ -245,7 +270,10 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Researcher: Research has shown that inhaling the scent of lavender has measurable physiological effects tending to reduce stress. It is known that intense stress can impair the immune system, making one more susceptible to illness. Therefore, it is likely that the incidence of illness among those who regularly inhale the scent of lavender is reduced by this practice.",
     "questionStem": "Which one of the following is an assumption that the researcher’s argument requires?",
@@ -267,7 +295,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Government statistics show that the real (adjusted for inflation) average income for families has risen over the last five years. Therefore, since this year the Andersen family’s income is average for families, the family’s real income must have increased over the last five years. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -289,7 +319,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Certain methods of creating high-quality counterfeit banknotes involve making accurate measurements of the images printed on genuine banknotes. Hence, if the production of high-quality counterfeit banknotes is to be prevented, some of the images on banknotes must be made very difficult or impossible to measure accurately.",
     "questionStem": "The argument’s conclusion can be properly drawn if which one of the following is assumed?",
@@ -312,7 +344,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Armstrong: For the treatment of a particular disease, Dr. Sullivan argues for using nutritional supplements rather than the pharmaceuticals that most doctors prescribe. But this is in his self-interest since he is paid to endorse a line of nutritional supplements. Thus, we should not use nutritional supplements in treating the disease. Armstrong’s argument is flawed in that it",
@@ -334,7 +368,10 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Economist: If the economy grows stronger, employment will increase, and hence more parents will need to find day care for their young children. Unfortunately, in a stronger economy many day- care workers will quit to take better-paying jobs in other fields. Therefore, a stronger economy is likely to make it much more difficult to find day care.",
     "questionStem": "Which one of the following is an assumption the economist’s argument requires?",
@@ -358,7 +395,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Most strongly supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Ostrich farming requires far less acreage than cattle ranching requires, and ostriches reproduce much faster than cattle. Starting out in cattle ranching requires a large herd of cows, one bull, and at least two acres per cow. By contrast, two pairs of yearling ostriches and one acre of similar land are enough to begin ostrich farming. The start-up costs for ostrich farming are greater, but it can eventually bring in as much as five times what cattle ranching does.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -379,7 +418,10 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Necessary assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "For several centuries there have been hairless dogs in western Mexico and in coastal Peru. It is very unlikely that a trait as rare as hairlessness emerged on two separate occasions. Since the dogs have never existed in the wild, and the vast mountainous jungle separating these two regions would have made overland travel between them extremely difficult centuries ago, the dogs must have been transported from one of these regions to the other by boat, probably during trading expeditions.",
     "questionStem": "Which one of the following is an assumption that the argument requires?",
@@ -403,7 +445,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Researchers working in Western Australia have discovered the oldest fragments of the Earth’s early crust that have yet been identified: microdiamonds. These microscopic crystals measure only 50 microns across and were formed 4.2 billion years ago. This discovery sheds light on how long it took for the Earth’s crust to form, since this date is only 300 million years after the formation of the Earth itself.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -425,7 +469,10 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The public square was an important tool of democracy in days past because it provided a forum for disparate citizens to discuss the important issues of the day. Today, a person with Internet access can discuss important issues with millions of people across the nation, allowing the Internet to play the role once played by the public square. Hence, we should ensure that Internet users have at least as much freedom of expression as did people speaking in the public square.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -449,7 +496,10 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Except",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "At a large elementary school researchers studied a small group of children who successfully completed an experimental program in which they learned to play chess. The study found that most of the children who completed the program soon showed a significant increase in achievement levels in all of their schoolwork. Thus, it is likely that",
     "questionStem": "the reasoning power and spatial intuition exercised in chess-playing also contribute to achievement in many other areas of intellectual activity. Which one of the following, if true, most tends to undermine the argument?",
@@ -470,7 +520,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Parallel method of reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "On Wednesdays, Kate usually buys some guava juice. But the only place she can buy guava juice is the local health food store. It follows that she must sometimes shop at the local health food store on Wednesdays.",
     "questionStem": "The argument above is most similar in its pattern of reasoning to which one of the following arguments?",
@@ -493,7 +545,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editor: The city’s previous recycling program, which featured pickup of recyclables every other week, was too costly. The city claims that its new program, which features weekly pickup, will be more cost effective, since the greater the volume of recyclables collected per year, the more revenue the city gains from selling the recyclables. But this is absurd. People will put out the same volume of recyclables overall; it will just be spread out over a greater number of pickups.",
     "questionStem": "Which one of the following, if true, most weakens the editor’s argument?",
@@ -515,7 +569,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Professor: Many introductory undergraduate science courses are intended to be “proving grounds,” that is, they are designed to be so demanding that only those students most committed to being science majors will receive passing grades in these courses. However, studies show that some of the students in these very demanding introductory courses who are least enthusiastic about science receive passing grades in these courses. Hence, designing introductory science courses to serve as proving grounds has not served its intended purpose.",
     "questionStem": "Which one of the following is an assumption that the professor’s argument requires?",
@@ -537,7 +593,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Many bird and reptile species use hissing as a threat device against potential predators. The way these species produce hissing sounds is similar enough that it is likely that this behavior developed in an early common ancestor. At the time this common ancestor would have lived, however, none of its potential predators would have yet acquired the anatomy necessary to hear hissing sounds.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the information above?",

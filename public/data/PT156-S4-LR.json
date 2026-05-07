@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Montoya: Many industrial chemical processes that\n currently use organic solvents could use ionic\n liquids instead. Ionic liquids are less hazardous\n to workers and generate less air pollution. Moreover, some reactions occur at a faster rate or\n yield smaller quantities of unwanted by-products\n when ionic liquids are used. So chemical\n companies should begin using ionic liquids\n for many reactions that currently use organic\n solvents. Peterson: Ionic liquids cost many times as much as\n organic solvents, so they are currently not\n practical for the chemical industry.",
     "questionStem": "Of the following, which one, if true, is the strongest\n counter Montoya could make to Peterson’s argument?",
@@ -27,7 +29,10 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "The relationship between money and the things it allows\n one to purchase is like that between a tool and the tasks it\n enables its user to accomplish. Therefore, since tools are\n useless if there is no task that needs to be done, _______.",
     "questionStem": "Which one of the following most logically completes the\n argument?",
@@ -49,7 +54,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "James: The world is increasingly divided between the\n computer literate and the computer illiterate. The economic gap between rich and poor is\n partly responsible for causing this division, but\n the economic gap will widen because of the\n increasing importance of computer literacy. Ariel: I disagree. Because of businesses’ increasing need\n for computer-literate employees, companies\n will have to train nearly all workers in computer\n skills. This will lessen the division between the\n computer literate and the computer illiterate. So\n whatever might cause the economic gap between\n rich and poor to widen in the future, it won’t be\n the importance of computer literacy.",
     "questionStem": "James and Ariel disagree over whether",
@@ -72,7 +79,10 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Overcrowding inclines human beings toward aggressive,\n competitive behavior. Just consider the behavior of\n normally considerate people driving in rush-hour traffic\n or attending crowded sporting events. This shows that, as\n world population continues to grow, aggressive behavior,\n including war and crime, will become more frequent and\n severe.",
     "questionStem": "Each of the following, if true, strengthens the argument\n except:",
@@ -97,7 +107,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Gahagan’s Greenstore sells a large volume of plants. The\n vast majority are sold wholesale to commercial buyers,\n most of them to landscape contractors. Gahagan’s also\n sells gardening implements, most of which are purchased\n retail by home gardeners.",
     "questionStem": "Which one of the following is most strongly supported\n by the information above?",
@@ -119,7 +131,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Anthropologist: During the last ice age, nomadic\n communities probably needed at least 15 or 20\n members to survive, and they were generally\n not much larger than this. Ice-age nomads are\n commonly portrayed as primarily big-game\n hunters, but most of their food must have in fact\n come from other sources, such as small game\n and plants. Hunting large animals is a dangerous\n activity that would have risked the lives of\n several members of the community.",
     "questionStem": "Which one of the following most accurately describes\n the role played in the argumentation by the statement\n that ice-age nomads are commonly portrayed as\n primarily big-game hunters?",
@@ -142,7 +156,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A truly visual art form—for example, painting—is one in\n which time plays no essential role. Though it takes time\n to look at a painting, there is no fixed order in which one\n must look at its parts, and no fixed amount of time one\n must spend examining it. In contrast, most art forms,\n such as poetry and music, are essentially temporal; that\n is, they require performance, which means they must\n be experienced in a fixed order and over a roughly fixed\n amount of time. Poetry, for instance, though often written\n down and thus seemingly a visual art, actually must\n be performed, even if the performance is only a silent\n reading to oneself.",
     "questionStem": "If the statements above are true, then on the basis of\n them which one of the following must be true?",
@@ -163,7 +180,10 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Actors generally learn their lines by focusing on the\n meanings of the words, the motivations of the characters\n uttering them, and the physical and emotional dimensions\n of their own performances. It seems likely that memory\n can be enhanced by factors such as emotion, action, and\n context, so this approach is probably more effective than\n mere rote memorization.",
     "questionStem": "Each of the following, if true, adds support for the\n conclusion drawn above except:",
@@ -185,7 +205,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Journalists often claim that their investigation of the\n private lives of political leaders is an effort to improve\n society by forcing the powerful to conform to the same\n standards of conduct as the less powerful. In reality,\n however, the tactic is detrimental to society. It makes\n public figures more concerned with mere appearances,\n and makes everyone else cynical about the character of\n their leaders.",
     "questionStem": "The claim that journalistic investigation of the private\n lives of political leaders is an effort to improve society\n plays which one of the following roles in the argument?",
@@ -207,7 +229,10 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "While the population of city X is approximately one-half\n that of city Y, the number of city X residents who are\n patients in hospitals is only one-fourth that of the number\n of city Y residents who are patients in hospitals.",
     "questionStem": "Each of the following, if true, contributes to an\n explanation of the difference in the number of residents\n who are patients in hospitals except:",
@@ -230,7 +255,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A law is futile unless most of the parties subject\n to it abide by it willingly. Thus, there can be no\n comprehensive international solution to the problem of\n pollution, since few nations would willingly give up their\n power over their own industries.",
     "questionStem": "Which one of the following is an assumption required by\n the argument?",
@@ -252,7 +279,10 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Ecologist: El Niño, a global weather phenomenon that\n occurs once every several years, is expected to\n become more frequent in coming decades due to\n the global warming caused by air pollution. In\n region T, El Niño causes heavy winter rainfall.\n Since rodent populations typically increase\n during long periods of sustained rain, it is likely\n that average rodent populations in region T will\n also increase in coming decades.",
     "questionStem": "Which one of the following, if true, would most weaken\n the ecologist’s argument?",
@@ -276,7 +306,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If the natural history museum stays within this year’s\n budget, it will be unable to stay within next year’s\n budget, for renovating next year will make the museum’s\n expenditures exceed next year’s very tight budget. After\n all, the museum will have to renovate next year if it\n does not do so this year, because work from previous\n renovations is deteriorating rapidly.",
     "questionStem": "The argument’s conclusion can be properly inferred if\n which one of the following is assumed?",
@@ -302,7 +334,10 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Science writer: Scientists often accept a scientific\n argument largely for social reasons, such as the\n argument’s acceptance by other scientists or the\n prestige of the scientist making the argument. But this is not at all to the sciences’ detriment,\n for similar social factors strongly influence every\n human endeavor.",
     "questionStem": "The science writer’s argument is most vulnerable to\n criticism on the grounds that it",
@@ -325,7 +360,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Historian: Scholars writing histories of an era’s business\n practices must, of course, analyze the practices\n and strategies employed by firms of that era.\n But historians probably study successful firms\n more frequently than they do unsuccessful firms.\n Therefore, it is reasonable to think that business\n histories overestimate the successes of past\n businesses.",
     "questionStem": "Which one of the following would, if true, most support\n the historian’s argument?",
@@ -343,7 +380,10 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Manager: I plan to put together a successful marketing\n team by choosing highly skilled, independent\n workers who prefer not to work as part of a\n tightly knit group. This strategy is bound to\n succeed because recent research shows that when\n a common purpose is shared, the flexibility of\n loosely bound groups enables them to function\n better than tightly knit ones.",
     "questionStem": "The reasoning in the manager’s argument is most\n vulnerable to criticism on the grounds that the argument",
@@ -365,7 +405,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Different cultures have independently reached the\n conclusion that ingesting honey daily promotes vigor\n and longevity. Thus, unless strong evidence emerges\n contradicting this conclusion, we should assume that it\n is true.",
     "questionStem": "The pattern of reasoning in which one of the following is\n most similar to that in the argument above?",
@@ -387,7 +429,10 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Land developer: In a certain nation, stringent regulations\n prevent private landowners from building on\n their land if any endangered species is present\n on it. These regulations make the presence of\n endangered species a severe financial liability\n for many landowners and thereby discourage\n the landowners from protecting the endangered\n species on their land. Therefore, endangered\n species would very likely not be harmed by\n removal of the regulations on land development.",
     "questionStem": "The reasoning in the land developer’s argument is most\n vulnerable to criticism on which one of the following\n grounds?",
@@ -410,7 +455,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "I promised Bernie that I would answer his question.\n He asked me whether his project had been approved. I\n misunderstood and thought he had asked whether I had\n approved it. I said, truthfully, “I would approve it if I\n could, but I don’t have the authority to do so—that is up\n to Dorothy, and she hasn’t yet made a decision.” Thus, I\n fulfilled my promise to Bernie.",
     "questionStem": "Which one of the following, if assumed, enables the\n conclusion above to be properly drawn?",
@@ -432,7 +479,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Azalea bushes flourish in acidic soil. Clay soil, while\n rarely acidic, can be mixed with other types of soil to\n create a soil that is acidic. Hence, azalea bushes can be\n made to flourish in clay soil.",
     "questionStem": "Which one of the following is an assumption on which\n the argument depends?",
@@ -454,7 +503,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Company policy: Eligible employees will be granted up\n to six weeks of paid parental leave following\n the birth or adoption of a child. To be eligible,\n an employee must apply for the benefit at least\n three months prior to the beginning of the leave\n period and must have at least one year of full-\n time employment with the company at the time of\n application.",
     "questionStem": "Which one of the following judgments most closely\n conforms to the company policy?",
@@ -475,7 +526,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "An effective acting performance does not call the\n audience’s attention to the fact that it is a performance. That would make it more difficult for the audience to\n empathize with the character the actor is playing, and\n effective dramatic performances do not detract from the\n audience’s appreciation of a play.",
     "questionStem": "The argument’s conclusion follows logically from the\n premises if which one of the following is assumed?",
@@ -499,7 +552,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The computer software industry is rapidly growing and\n has been for some time. For a company to grow rapidly,\n it must be innovative, which means it must have creative\n employees or a management that is open to new ideas.\n Logichut is a software company that is said to have no\n creative employees. If so, its management is evidently\n open to new ideas.",
     "questionStem": "The reasoning in the argument is flawed in that it",
@@ -525,7 +580,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A movie studio’s script readers discard all proposed\n scripts that are not submitted by agents, and they discard\n all scripts that are incorrectly formatted. So a script that\n is submitted by an agent and formatted correctly will not\n be discarded by the studio’s script readers.",
     "questionStem": "Which one of the following exhibits a flawed pattern of\n reasoning that most closely parallels that in the argument\n above?",
@@ -548,7 +605,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Translator: Dr. Abner, apparently scornful of my\n translation of an ancient poem on the grounds\n that it is inaccurate, says that my translation\n produces in most readers feelings other than\n those the original text was intended to produce. However, as Dr. Abner should realize, we do not\n know how people originally responded to the\n poem or how its author intended them to respond. So Dr. Abner’s criticism is unjustified.",
     "questionStem": "The translator’s argument is flawed in that it",
@@ -571,7 +630,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Letter to the editor: In calling on antinuclear activists to\n “live up to their own ideals” and help find better\n ways of disposing of nuclear waste, advocates of\n nuclear power merely prove their own dishonesty.\n Everyone knows that antinuclear activists\n want the world rid of nuclear power as soon\n as possible, and they believe any other option\n is environmentally irresponsible. But finding\n better ways of disposing of nuclear waste would\n probably make nuclear power acceptable to more\n people and thus likelier to continue.",
     "questionStem": "Which one of the following principles, if valid, most\n helps to justify the reasoning in the argument?",

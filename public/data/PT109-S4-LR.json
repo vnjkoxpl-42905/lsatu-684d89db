@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Advertisement: Among popular automobiles, Sturdimades stand apart. Around the world, hundreds of longtime Sturdimade owners have signed up for Sturdimade’s “long distance” club, members of which must have a Sturdimade they have driven for a total of at least 100,000 miles or 160,000 kilometers. Some members boast of having driven their Sturdimades for a total of 300,000 miles (480,000 kilometers)! Clearly, if you buy a Sturdimade you can rely on being able to drive it for a very long distance.",
     "questionStem": "Construed as an argument, the advertisement’s reasoning is most vulnerable to criticism on which one of the following grounds?",
@@ -27,7 +29,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Faced with a financial crisis, Upland University’s board of trustees reduced the budget for the university’s computer center from last year’s $4 million to $1.5 million for the coming year. However, the center cannot operate on less than $2.5 million.\nSince the board cannot divert funds from other programs to the computer center, there is no way that the center can be kept operating for the coming year.",
     "questionStem": "The conclusion of the argument is properly drawn if which one of the following is assumed?",
@@ -45,7 +49,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 4, questions 3 through 4.\nMuriel: I admire Favilla’s novels, but she does not deserve to be considered a great writer. The point is that, no matter how distinctive her style may be, her subject matter is simply not varied enough.\nJohn: I think you are wrong to use that criterion. A great writer does not need any diversity in subject matter; however, a great writer must at least have the ability to explore a particular theme deeply.",
     "questionStem": "Which one of the following is a point at issue between Muriel and John?",
@@ -66,7 +70,7 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "The following passage is used for Section 4, questions 3 through 4.\nMuriel: I admire Favilla’s novels, but she does not deserve to be considered a great writer. The point is that, no matter how distinctive her style may be, her subject matter is simply not varied enough.\nJohn: I think you are wrong to use that criterion. A great writer does not need any diversity in subject matter; however, a great writer must at least have the ability to explore a particular theme deeply.",
     "questionStem": "John’s statements commit him to which one of the following positions?",
@@ -84,7 +88,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Astronaut: Any moon, by definition, orbits some planet in a solar system. So, the moons in solar system S4 all orbit the planet Alpha.",
     "questionStem": "The astronaut’s conclusion follows logically if which one of the following is assumed?",
@@ -102,7 +108,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "A worker for a power company trims the branches of trees that overhang power lines as a prevention against damage to the lines anticipated because of the impending stormy season. The worker reasons that there will be no need for her to trim the overhanging branches of a certain tree because the owners of the tree have indicated that they might cut it down anyway.",
     "questionStem": "Which one of the following decisions is based on flawed reasoning that is most similar to the worker’s flawed\nreasoning?",
@@ -124,7 +132,7 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Must be True",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Currently, the city of Grimchester is liable for any injury\nincurred because of a city sidewalk in need of repair or maintenance. However, Grimchester’s sidewalks are so extensive that it is impossible to hire enough employees to locate and eliminate every potential danger in its sidewalks. Governments should be liable for injuries\nincurred on public property only if they knew about the danger beforehand and negligently failed to eliminate it.",
     "questionStem": "Which one of the following describes an injury for which the city of Grimchester is now liable, but should not be according to the principle cited above?",
@@ -142,7 +150,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Early in the development of a new product line, the critical resource is talent. New marketing ventures require a degree of managerial skill disproportionate to their short-term revenue prospects. Usually, however, talented managers are assigned only to established high-revenue product lines and, as a result, most new marketing ventures fail. Contrary to current practice, the best managers in a company should be assigned to development projects.",
     "questionStem": "Which one of the following, if true, most strengthens the author’s argument?",
@@ -163,7 +173,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Television news coverage gives viewers a sense of direct involvement with current events but does not provide the depth of coverage needed for the significance of those events to be appreciated. Newspapers, on the other hand, provide depth of coverage but no sense of direct involvement. Unfortunately, a full understanding of current events requires both an appreciation of their significance and a sense of direct involvement with them. Therefore, since few people seek out news sources other than newspapers and television, few people ever fully understand current events.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -181,7 +193,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Critic: Some writers have questioned Stalin’s sanity\nduring his last years. They typically characterized his vindictiveness and secrecy as “paranoia” and “morbid suspiciousness,” the latter almost a standard term applied by the Soviet writers under glasnost to explain this extraordinary man’s misdeeds. But Stalin’s cruelty and deviousness are not more apparent during those years than in earlier periods of his rule. “Morbid suspiciousness” has to be a characteristic of tyrants. Without it they would not remain long in power.",
     "questionStem": "Which one of the following most accurately expresses a point of disagreement between the critic and the writers?",
@@ -202,7 +214,10 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Even though apes are the only nonhuman creatures able to learn human language, no ape has ever used its human language skills to ask such philosophical questions as, “How am I different from all other creatures?” Therefore, philosophical thought is unique to humans.",
     "questionStem": "The conclusion in the passage above relies on which one of the following assumptions?",
@@ -225,7 +240,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Most adults in country X consume an increasing amount of fat as they grow older. However, for nearly all adults in country X, the percentage of fat in a person’s diet stays the same throughout adult life.",
     "questionStem": "The statements above, if true, most strongly support which one of the following conclusions about adults in country X?",
@@ -247,7 +264,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Politician: The bill that makes using car phones while driving illegal should be adopted. My support of this bill is motivated by a concern for public safety. Using a car phone seriously distracts the driver, which in turn poses a threat to safe driving. People would be deterred from using their car phones while driving if it were illegal to do so.",
     "questionStem": "The argument’s main conclusion follows logically if which one of the following is assumed?",
@@ -265,7 +284,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "When soil is plowed in the spring, pigweed seeds that\nhave been buried in the soil all winter are churned up to the surface and redeposited just under the surface. The brief exposure of the seeds to sunlight stimulates receptors, which have become highly sensitive to sunlight during the months the seeds were buried in the soil, and\nthe stimulated receptors trigger germination. Without the prolonged darkness, followed by exposure to sunlight, the seeds do not germinate.",
     "questionStem": "The statements above, if true, most strongly support which one of the following statements about a field that will be plowed in the spring and in which pigweed seeds have been buried in the soil all winter?",
@@ -283,7 +304,7 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "In 1992, there were over 250 rescues of mountain climbers, costing the government almost 3 million dollars. More than 25 people died in climbing mishaps that year. Many new climbers enter the sport each year. Members of a task force have proposed a bonding arrangement requiring all climbers to post a large sum of money to be forfeited to the government in case of calamity.",
     "questionStem": "Each of the following principles, if valid, supports the task force members’ proposal except:",
@@ -304,7 +325,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The familiar slogan “survival of the fittest” is popularly used to express the claim, often mistakenly attributed to evolutionary biologists, that the fittest are most likely to survive. However, biologists use the term “fittest” to mean “most likely to survive,” so the slogan is merely claiming that the most likely to survive are the most likely to survive. While this claim is clearly true, it is a tautology and so is neither informative nor of scientific interest.",
     "questionStem": "The argument above depends on assuming which one of the following?",
@@ -327,7 +350,7 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Paradox",
-    "reasoningType": "Comparison",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Council member: The preservation of individual property rights is of the utmost importance to the city council. Yet, in this city, property owners are restricted to little more than cutting grass and weeding. Anything more extensive, such as remodeling, is prohibited by our zoning laws.",
     "questionStem": "Which one of the following provides a resolution to the apparent inconsistency described by the council member?",
@@ -345,7 +368,7 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Coach: Our team has often been criticized for our\nenthusiasm in response to both our successes and our opponents’ failures. But this behavior is hardly unprofessional, as our critics have claimed. On the contrary, if one looks at the professionals in this sport, one will find that they are even more effusive. Our critics should leave the team alone and let the players enjoy the game.",
     "questionStem": "The coach’s argument is most vulnerable to the charge that it",
@@ -366,7 +389,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Speaker: Contemporary business firms need to recognize that avoiding social responsibility leads to the gradual erosion of power. This is Davis and Blomstrom’s Iron Law of Responsibility: “In the long run, those who do not use power in a manner which society considers responsible will tend to lose it.” The law’s application to human institutions certainly stands confirmed by history. Though the “long run” may require decades or even centuries in some instances, society ultimately acts to reduce power when society thinks it is not being used responsibly. Therefore, a business that wishes to retain its power as long as it can must act responsibly.",
     "questionStem": "Which one of the following statements, if true, most weakens the speaker’s argument?",
@@ -384,7 +409,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Parallel",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "It would be wrong to conclude that a person has a Streptococcus infection if there is no other evidence than the fact that Streptococcus bacilli are present in the person’s throat; after all, infection does not occur unless the host is physically run down.",
     "questionStem": "The reasoning in which one of the following is most similar to the reasoning in the argument above?",
@@ -402,7 +429,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Terry: Some actions considered to be bad by our society\nhave favorable consequences. But an action is good only if it has favorable consequences. So, some actions considered to be bad by our society are actually good.\nPat: I agree with your conclusion, but not with the reasons you give for it. Some good actions actually do not have favorable consequences. But no actions considered to be bad by our society have favorable consequences, so your conclusion, that some actions our society considers bad are actually good, still holds.",
     "questionStem": "Which one of the following correctly describes both an error in Terry’s reasoning and an error in Pat’s reasoning?",
@@ -427,7 +456,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Dinosaur expert: Some paleontologists have claimed that birds are descendants of a group of dinosaurs called dromeosaurs. They appeal to the fossil record, which indicates that dromeosaurs have characteristics more similar to birds than do most dinosaurs. But there is a fatal flaw in their argument; the earliest bird fossils that have been discovered date back tens of millions of years farther than the oldest known dromeosaur fossils. Thus the paleontologists’ claim is false.",
     "questionStem": "The expert’s argument depends on assuming which one of the following?",
@@ -454,7 +485,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The following passage is used for Section 4, questions 23 through 24.\nParty spokesperson: The opposition party’s proposal to stimulate economic activity in the province by refunding $600 million in provincial taxes to\ntaxpayers, who could be expected to spend the money, envisions an illusory benefit. Since the province’s budget is required to be in balance, either new taxes would be needed to make up the shortfall, in which case the purpose of the refund would be defeated, or else workers for the province would be dismissed. So either the province’s taxpayers or its workers, who are also residents of the province, will have the $600 million to spend, but there can be no resulting net increase in spending to stimulate the province’s economy.",
     "questionStem": "The spokesperson proceeds by",
@@ -472,7 +505,7 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "The following passage is used for Section 4, questions 23 through 24.\nParty spokesperson: The opposition party’s proposal to stimulate economic activity in the province by refunding $600 million in provincial taxes to taxpayers, who could be expected to spend the money, envisions an illusory benefit. Since the province’s budget is required to be in balance, either new taxes would be needed to make up the shortfall, in which case the purpose of the refund would be defeated, or else workers for the province would be dismissed. So either\nthe province’s taxpayers or its workers, who are also residents of the province, will have the $600 million to spend, but there can be no resulting net increase in spending to stimulate the province’s economy.",
     "questionStem": "The conclusion about whether there would be a resulting net increase in spending would not follow if the",
@@ -490,7 +523,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Essayist: Every contract negotiator has been lied to by someone or other, and whoever lies to anyone is practicing deception. But, of course, anyone who has been lied to has also lied to someone or other.",
     "questionStem": "If the essayist’s statements are true, which one of the following must also be true?",
@@ -508,7 +543,10 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A member of the British Parliament is reputed to have said, “The first purpose of good social reform is to increase the sum total of human happiness. So, any reform which makes somebody happy is achieving its purpose. Since the reform I propose would make my constituents happy, it is a good social reform.”",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument attributed to the member of Parliament?",

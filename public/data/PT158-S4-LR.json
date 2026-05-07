@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The government’s tax collection agency has not followed\n through on its plan, announced a year ago, to crack down\n on violations of corporate income tax law. Audits are\n the primary tool for detecting such violations, and over\n the past year, not a single audit of corporate income tax\n returns has been completed.",
     "questionStem": "Which one of the following, if true, most weakens the\n argument?",
@@ -29,7 +31,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: Making some types of products from\n recycled materials is probably as damaging to\n the environment as it would be to make those\n products from entirely nonrecycled materials. The recycling process for those products requires\n as much energy as producing them from raw\n materials, and almost all energy production\n damages the environment.",
     "questionStem": "The reasoning in the columnist’s argument is most\n vulnerable to criticism on the grounds that the argument",
@@ -52,7 +56,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Physician: We are constantly bombarded by warnings,\n based on initial studies’ tentative conclusions,\n about this or that food having adverse health\n effects. If the medical establishment wants people\n to pay attention to health warnings, it should\n announce only conclusive results, the kind that\n can come only from definitive studies. After all,\n people who are constantly subjected to fire drills\n eventually come to ignore the fire alarm.",
     "questionStem": "The statement that people who are constantly subjected\n to fire drills eventually come to ignore the fire alarm\n plays which one of the following roles in the physician’s\n argument?",
@@ -74,7 +78,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A club wanted to determine whether it could increase\n attendance by changing its weekly meetings from\n Tuesday to another day. At one Tuesday meeting, the\n club’s president took a survey of all members present. Of\n those surveyed, 95 percent said that they had no difficulty\n attending on Tuesdays. On the basis of this survey\n result, the club’s president concluded that the attendance\n problem was not due primarily to schedule conflicts.",
     "questionStem": "A questionable technique used in the club president’s\n reasoning is",
@@ -97,7 +103,9 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Method of Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The railway authority inspector who recently thoroughly\n checked the tracks testified that they were in good\n condition. Thus, since the inspector has no bias in\n the matter, we should be suspicious of the newspaper\n reporter’s claim that the tracks are in poor condition.",
     "questionStem": "The reasoning in the argument above is most similar to\n the reasoning in which one of the following arguments?",
@@ -118,7 +126,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If the proposed air pollution measures were to be\n implemented, ozone levels in the city’s air would be one\n fifth lower than current levels. Since the ozone in our air\n is currently responsible for over $5 billion in health costs,\n we would spend about a billion dollars less on these\n ozone-related health costs should the proposed measures\n be adopted.",
     "questionStem": "The argument is most vulnerable to criticism on the\n grounds that it",
@@ -141,7 +151,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Newspaper article: Recently discovered clay tablets\n from southern Egypt date to between 3300 and\n 3200 B.C. Though most of the tablets translated\n thus far are tax records, one of them appears\n to contain literary writing. Hence, these tablets\n challenge the widely held belief among historians\n that the Sumerian civilization in Mesopotamia\n was the first to create literature.",
     "questionStem": "The argument in the newspaper article requires the\n assumption that",
@@ -164,7 +176,7 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Climatologist: The waters off the Pacific coast of North\n America have warmed about 4 degrees over\n the past 15 years. Some scientists claim that\n this trend is a symptom of a more general,\n global warming caused by human-generated air\n pollution. However, this conclusion is far from\n justified—it is known that there are many natural\n cycles of ocean temperature changes that last 60\n years or more.",
     "questionStem": "Which one of the following most accurately expresses\n the main conclusion drawn in the climatologist’s\n argument?",
@@ -188,7 +200,10 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Robin: Archaeologists can study the artifacts left by\n ancient cultures to determine whether they were\n nomadic or sedentary. If the artifacts were made\n to last rather than to be quickly discarded, the\n culture was likely sedentary. Kendall: But what artifacts a people make is determined\n largely by the materials available to them.",
     "questionStem": "Their statements commit Robin and Kendall to\n disagreeing over whether",
@@ -210,7 +225,7 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Railroads rely increasingly on automation. Since fewer\n railroad workers are needed, operating costs have been\n reduced. This means that we can expect the volume of\n freight shipped by rail to grow. The chief competitor of\n railway shipping is shipping by truck, and no reduction in\n operating costs is predicted for the trucking industry.",
     "questionStem": "Which one of the following most accurately states the\n argument’s overall conclusion?",
@@ -232,7 +247,10 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In the past, infants who were not breast-fed were fed\n cow’s milk. Then doctors began advising that cow’s milk\n fed to infants should be boiled, as the boiling would\n sterilize the milk and prevent gastrointestinal infections\n potentially fatal to infants. Once this advice was widely\n implemented, there was an alarming increase among\n infants in the incidence of scurvy, caused by vitamin C\n deficiency. Breast-fed infants, however, did not contract\n scurvy.",
     "questionStem": "Which one of the following is most strongly supported\n by the information above?",
@@ -254,7 +272,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The only effective check on grass and brush fires is rain.\n If the level of rainfall is below normal for an extended\n period of time, then there are many more such fires. Yet\n grass and brush fires cause less financial damage overall\n during long periods of severe drought than during periods\n of relatively normal rainfall.",
     "questionStem": "Which one of the following, if true, would most help to\n resolve the apparent paradox described above?",
@@ -276,7 +296,10 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Medical researcher: A new screening test detects certain\n polyps at such an early stage that it is generally\n unclear whether the polyps are malignant. But\n the risk that a polyp might be malignant leads\n doctors, in most cases, to have such polyps\n surgically removed, which is a dangerous\n process. Yet some of those polyps turn out not to\n be malignant. Thus, the new screening test can\n prompt dangerous operations that actually are not\n medically necessary.",
     "questionStem": "Which one of the following is an assumption that the\n medical researcher’s argument requires?",
@@ -300,7 +323,10 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Psychologist: Most people’s blood pressure rises when\n they talk. But extroverted people experience\n milder surges when they speak than do\n introverted people, for whom speaking is more\n stressful. This suggests that the increases result\n from the psychological stress of communicating\n rather than from the physical exertion of speech\n production.",
     "questionStem": "Which one of the following, if true, most strengthens the\n psychologist’s argument?",
@@ -322,7 +348,10 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "One should only buy a frying pan that has a\n manufacturer’s warranty, even if it requires paying\n more, and even if one would never bother seeking\n reimbursement should the pan not work well or last\n long. Manufacturers will not offer a warranty on\n a product if doing so means that they will need to\n reimburse many customers because the product did not\n work well or last long.",
     "questionStem": "The conclusion of the argument is strongly supported if\n which one of the following is assumed?",
@@ -345,7 +374,11 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Journalist: When judges do not maintain strict control\n over their courtrooms, lawyers often try to\n influence jury verdicts by using inflammatory\n language and by badgering witnesses. These\n obstructive behaviors hinder the jury’s effort to\n reach a correct verdict. Whenever lawyers engage\n in such behavior, therefore, it is reasonable to\n doubt whether the verdict is correct.",
     "questionStem": "Which one of the following, if true, most weakens the\n journalist’s argument?",
@@ -366,7 +399,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Principle-Conform",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Mateo: Global warming has caused permafrost to melt\n under several arctic villages, forcing all their\n inhabitants to relocate at great expense. Since\n pollution from automobiles is a major contributor\n to global warming, the automotive industry\n should be required to help pay for the villagers’\n relocation.",
     "questionStem": "Which one of the following principles, if valid, would\n most help to justify Mateo’s argument?",
@@ -389,7 +424,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Lindsey: Several people claim that our company was\n unfair when it failed to give bonuses to the staff. Perhaps they recalled that the company had\n promised that if it increased its profits over last\n year’s, the staff would all get bonuses. However,\n the company’s profit was much smaller this year\n than it was last year. Clearly, then, the company\n acted fairly.",
     "questionStem": "The argument is flawed in that it",
@@ -411,7 +448,10 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "It is widely known that the rescue squads serving high\n mountain areas with treacherous weather save the lives\n of many mountain climbers every year. However, many\n experienced climbers believe that the rising annual toll of\n deaths and injuries among climbers in these regions can\n be significantly reduced only by completely abolishing\n the rescue squads.",
     "questionStem": "Which one of the following, if true, would most help to\n justify the apparently paradoxical belief of the\n experienced climbers?",
@@ -432,7 +472,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Paula: Earthlike planets seem to be the rule rather than\n the exception, so there probably are intelligent\n beings on other planets. Furthermore, we can\n expect our radio telescopes to detect signs of\n such beings. Alien scientists would have basically\n the same understanding of mathematics and\n physics that humans have. Thus they would\n inevitably discover gravity, electromagnetism,\n and other fundamental physical phenomena\n and then develop technologies such as radio\n communication. Ashley: That is like saying they would inevitably have\n the same legal or political systems that humans\n do. Our science, mathematics, and technology are\n unique outgrowths of our physiology, cognitive\n makeup, and environment. Using radio telescopes\n to search for intelligent life is a waste of time and\n money.",
     "questionStem": "The dialogue provides the most evidence that Paula and\n Ashley disagree with each other about whether",
@@ -455,7 +497,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Developer: The builders of the Glen Veil apartment\n complex will not complete the complex unless\n a road connecting it to the town of Sierra is\n built. The completed apartment complex would\n strengthen Sierra’s economy, and a stronger\n economy would benefit every Sierra resident.\n Therefore, the residents of Sierra should vote in\n favor of a local tax to fund construction of the\n proposed road.",
     "questionStem": "Which one of the following principles, if valid, would\n most help to justify the developer’s reasoning?",
@@ -477,7 +521,10 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Historian: Because medieval epistemology (theory of\n knowledge) is a complex subject, intellectual\n historians have, until recently, failed to produce\n a definition that would help to determine what\n should and what should not be included in\n it. Clearly, the solution is to define medieval\n epistemology simply as “the epistemological\n beliefs of the medieval epistemologists.” That\n way, if we want to know whether medieval\n epistemology includes some epistemological\n claim, we just ask whether any medieval\n epistemologists believed it. If any did, it is part\n of medieval epistemology; if any medieval\n epistemologists believed the opposite, then that\n opposite claim is part of medieval epistemology.",
     "questionStem": "Which one of the following, if true, would most weaken\n the historian’s argument?",
@@ -501,7 +548,10 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Official: Six months ago, the fines for parking violations\n on the city’s streets were raised to help pay for\n the parking garage that had just opened. Since\n then, parking violations on our streets have\n dropped by 50 percent. Hence, if we want there\n to be even fewer parking violations, the fines\n should be raised again.",
     "questionStem": "The reasoning in the official’s argument is flawed in that\n the argument",
@@ -526,7 +576,10 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Consumer advocate: Some agricultural crops are\n now being genetically engineered to produce\n important pharmaceuticals. However, this\n development raises the possibility that the drugs\n will end up in the general food supply, since if\n pollen from a drug-producing crop drifts into\n a nearby field in which an ordinary, non-drug-\n producing crop of the same species is being\n grown, the pollen could fertilize that crop and\n turn it into a drug-producing crop as well.",
     "questionStem": "Which one of the following, if true, would most weaken\n the consumer advocate’s argument?",
@@ -548,7 +601,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Most of the members of Bargaining Unit Number 17 of the\n government employees’ union are computer programmers.\n Thus it is certain that some of the government employees\n who work in the Hanson Building are computer\n programmers, since _______.",
     "questionStem": "The conclusion of the argument follows logically if which\n one of the following completes the passage?",
@@ -571,7 +626,10 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Every Labrador retriever in my neighborhood is a well-\n behaved dog. However, no pet would be well behaved\n if it were not trained. Thus it is training, not the genetic\n makeup of the breed, that accounts for these Labrador\n retrievers’ good behavior.",
     "questionStem": "The flawed reasoning in which one of the following is\n most closely parallel to the flawed reasoning in the\n argument above?",

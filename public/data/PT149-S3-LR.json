@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Advertisement: Most nutritionists recommend eating fish twice a week. Eating tilapia fillets is a perfect choice for those who want the benefits of eating fish but do not care for the taste of fish. Tilapia fillets lack the strong fishy taste that many people find objectionable.",
     "questionStem": "Which one of the following, if true, most seriously weakens the advertisement’s argument?",
@@ -25,7 +27,10 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Domestication of animals is a cooperative activity, and cooperative activities require a sophisticated means of communication. Language provides just such a means. It is likely, therefore, that language developed primarily to facilitate animal domestication.",
     "questionStem": "A flaw in the argument is that the argument",
@@ -46,7 +51,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Many employers treat their employees fairly. Thus, using others as a means to one’s own ends is not always morally reprehensible or harmful to others.",
     "questionStem": "The argument requires the assumption that",
@@ -69,7 +76,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Editorial: It is common to find essays offering arguments that seem to show that our nation is in decline. There is no cause for alarm, however. The anxious tone of these essays shows that the problem is with the psychological state of their writers rather than with the actual condition of our nation.",
     "questionStem": "Which one of the following most accurately describes a flaw in the editorial’s reasoning?",
@@ -92,7 +101,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Eating turmeric, a spice commonly found in curries, probably helps prevent Alzheimer’s disease. More turmeric is consumed per capita in India than in the rest of the world, and the incidence of Alzheimer’s disease is much lower there than it is worldwide. Furthermore, Alzheimer’s disease is characterized by the buildup of amyloid protein plaques in the brain, and studies on animals found that curcumin—a compound found in turmeric—reduces the accumulation of amyloid proteins.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -117,7 +128,10 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Role in Argument",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Forestry official: Many people think that if forest fires are not extinguished as quickly as possible, the Forestry Department is not doing its job properly. But relatively frequent, small fires clear out small trees and forest debris, which, if allowed to accumulate, would create the conditions for large, devastating fires. Therefore, it’s best to let small fires burn.",
     "questionStem": "The statement that relatively frequent, small fires clear out small trees and forest debris plays which one of the following roles in the official’s argument?",
@@ -139,7 +153,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Point at Issue",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Gerald: Unless a consumer secures his or her home wireless Internet service, anyone strolling by is able to access that person’s service with certain laptop computers or smartphones. Such use cannot be considered illegal under current laws: it’s no more like trespassing than is enjoying music playing on someone’s radio as you walk down the street.\nKendra: But unlike hearing music while walking by, accessing wireless service requires stopping for a considerable length of time. And that could be considered loitering or even harassment.",
     "questionStem": "Gerald’s and Kendra’s positions indicate that they disagree over whether accessing someone’s wireless Internet service while walking down the street",
@@ -161,7 +177,10 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Over the last thousand years, plant species native to islands have gone extinct at a much faster rate than have those native to mainland regions. Biologists believe that this is because island plants have not adapted the defenses against being eaten by large land mammals that mainland plants have. Ordinarily, populations of large land mammals are not established on islands until after the island is colonized by humans.",
     "questionStem": "Which one of the following, if true, most strongly supports the biologist’s explanation cited above?",
@@ -183,7 +202,10 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Complete the Argument",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "As regards memory, the brain responds best to repeated patterns, such as the melodic and rhythmic patterns of music. This is why we can remember long strings of information or text, which would normally be impossible to memorize, when they are put to music. Given that music aids memory, it might seem that funny jokes would be easy to remember, since, like music, they normally elicit an emotional response in us. However, jokes are usually very difficult to remember, since _______.",
     "questionStem": "Which one of the following most logically completes the passage?",
@@ -207,7 +229,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The prehistoric fish Tiktaalik is the earliest known animal with fingers. Since variations were so great among prehistoric fish species, Tiktaalik would not have stood out as unusual at the time. However, Tiktaalik’s fingers were an important development in animal evolution because it is likely that Tiktaalik is an ancestor to the many land animals with fingers.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
@@ -229,7 +253,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Point at Issue",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Gabriella: By raising interest rates, the government has induced people to borrow less money and therefore to spend less, thereby slowing the country’s economy.\nIvan: I disagree with your analysis. The country’s economy is tied to the global economy. Whatever happens to the global economy also happens here, and the global economy has slowed. Therefore, the government’s action did not cause the economy’s slowdown.",
     "questionStem": "Gabriella and Ivan disagree about whether",
@@ -252,7 +278,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Must Be False",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "In a scene in an ancient Greek play, Knights, the character Demosthenes opens a writing tablet on which an oracle had written a prophecy, and while looking at the tablet, he continuously expresses his amazement at its contents. His companion presses him for information, whereupon Demosthenes explains what the oracle had written.",
     "questionStem": "Of the following claims, which one can most justifiably be rejected on the basis of the statements above?",
@@ -273,7 +301,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Science cannot adequately explain emotional phenomena such as feeling frustrated, falling in love, or being moved by a painting. Since they cannot be explained by physics, chemistry, or neurophysiology, human emotions must not be physical phenomena.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -296,7 +326,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Several Tyrannosaurus rex skeletons found in North America contain tooth marks that only a large carnivore could have made. At the time T. rex lived, it was the only large carnivore in North America. The tooth marks could have resulted only from combat or feeding. But such tooth marks would have been almost impossible to inflict on the skeleton of a live animal.",
     "questionStem": "The information above most strongly supports which one of the following?",
@@ -314,7 +344,9 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "There is a popular view among literary critics that a poem can never be accurately paraphrased because a poem is itself the only accurate expression of its meaning. But these same critics hold that their own paraphrases of particular poems are accurate. Thus, their view that poetry cannot be accurately paraphrased is false.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -338,7 +370,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The tax bill passed 2 years ago provides substantial incentives for businesses that move to this area and hire 50 or more employees. Critics say the bill reduces the government’s tax revenues. Yet clearly it has already created many jobs in this area. Last year, Plastonica qualified for incentives under the bill by opening a new plastics factory here that hired 75 employees.",
     "questionStem": "The argument’s reasoning depends on which one of the following assumptions?",
@@ -361,7 +395,10 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Must Be True",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "When a chain of service stations began applying a surcharge of $0.25 per purchase on fuel paid for by credit card, the chain’s owners found that this policy made their customers angry. So they decided instead to simply raise the price of fuel a compensatory amount and give a $0.25 discount to customers paying with cash. Customers were much happier with this policy.",
     "questionStem": "Which one of the following generalizations does the situation described above most clearly illustrate?",
@@ -383,7 +420,10 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Herbalist: Many herbal medicines work best when they have a chance to influence the body gently over several months. However, many of these herbal medicines have toxic side effects when taken daily for such long periods. Therefore, at least some people who use herbal medicines daily should occasionally skip their usual dose for a day or two, to give the body a chance to recuperate.",
     "questionStem": "Which one of the following is an assumption required by the herbalist’s argument?",
@@ -407,7 +447,10 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Ana: On libertarian principles, I oppose the proposed smoking ban. It is not the government’s business to prevent people from doing things that harm only themselves.\nPankaj: But keep in mind that the ban would apply only to smoking in public places. People could still smoke all they want in private.",
     "questionStem": "The dialogue provides the most support for the claim that Ana and Pankaj disagree over whether",
@@ -430,7 +473,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Agricultural scientist: Wild apples are considerably smaller than cultivated apples found in supermarkets. In one particular region, archaeologists have looked for remains of cultivated apples dating from 5,000 years ago, around the time people first started cultivating fruit. But the only remains of apples that archaeologists have found from this period are from fruits the same size as the wild apples native to the region. So apples were probably not cultivated in this region 5,000 years ago.",
     "questionStem": "The agricultural scientist’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -452,7 +497,10 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Genuine happiness consists not in pleasurable feelings but instead in one’s sense of approval of one’s character and projects. Thus the happy life, in fact, tends to be the good life, where the good life is understood not—as it usually is these days—as a life of material well-being but rather as a morally virtuous life.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -473,7 +521,10 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Flawed Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The return of organic wastes to the soil is a good solution to waste disposal problems only if the wastes are nontoxic and not too much energy is expended in transporting them. In small-scale organic farming, the wastes are nontoxic and not too much energy is expended in transporting them. Hence, returning organic wastes to the soil is a good way for small-scale organic farms to solve their waste disposal problems.",
     "questionStem": "Which one of the following exhibits flawed reasoning most similar to the flawed reasoning exhibited by the argument above?",
@@ -495,7 +546,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Scientist: Some colonies of bacteria produce antibiotic molecules called phenazines, which they use to fend off other bacteria. We hypothesize that phenazines also serve as molecular pipelines that give interior bacteria access to essential nutrients in the environment surrounding the colony.",
     "questionStem": "Which one of the following, if true, provides the most support for the scientist’s hypothesis?",
@@ -520,7 +573,10 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Must Be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Library preservationist: Due to the continual physical deterioration of the medieval manuscripts in our library’s collection, we have decided to restore most of our medieval manuscripts that are of widely acknowledged cultural significance, though this means that some medieval manuscripts whose authenticity is suspect will be restored. However, only manuscripts whose safety can be ensured during the restoration process will be restored, and manuscripts that are not frequently consulted by researchers will not be restored.",
     "questionStem": "If all of the library preservationist’s statements are true, which one of the following must be true of the medieval manuscripts in the library’s collection?",
@@ -544,7 +600,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Direct-mail advertising usually consists of advertisements for products to be purchased from the home, so the perception that it is bad for the environment is misguided. Because of direct-mail advertising, millions of people buy products by phone or online—products whose purchase would otherwise require the use of a car, thus adding pollutants to the air.",
     "questionStem": "Which one of the following, if true, would most strengthen the argument?",
@@ -568,7 +626,9 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "The older a country is, the more likely it is to be ruled by a monarch. Thus, since most countries are not ruled by monarchs, if a country is particularly new it is probably not ruled by a monarch.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",

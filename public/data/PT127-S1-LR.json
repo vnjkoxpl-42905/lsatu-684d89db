@@ -4,7 +4,7 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Many newborn babies have a yellowish tinge to their skin because their blood contains a high level of the pigment bilirubin. One group of doctors treats newborns to reduce high levels of bilirubin, since bilirubin, if it enters the brain, might cause the tetanus that sometimes occurs in newborns. However, a second group of doctors argues for allowing bilirubin levels in newborn babies to remain high, since the brain’s own natural defenses normally prevent bilirubin from entering.",
     "questionStem": "Which one of the following, if true, most helps to support the position of the second group of doctors?",
@@ -25,7 +25,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Economist: Some sociologists argue that because capitalism intrinsically involves competition, it weakens the ties between the people of a community. Although this may formerly have been true, modern capitalism requires that there be large corporations. Thus, modern capitalism promotes, rather than weakens, communal ties.",
     "questionStem": "Which one of the following is an assumption on which the economist’s argument depends?",
@@ -46,7 +48,7 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Teacher: Participating in organized competitive athletics may increase a child’s strength and coordination. As critics point out, however, it also instills in those children who are not already well developed in these respects a feeling of inferiority that never really disappears. Yet, since research has shown that adults with feelings of inferiority become more successful than those free of such anxieties, funding for children’s athletic programs should not be eliminated.",
     "questionStem": "Which one of the following most accurately describes the role played in the teacher’s argument by the assertion that participating in organized competitive athletics may increase a child’s strength and coordination?",
@@ -68,7 +70,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: Donating items to charity may be a sign of generosity, but any generosity it may demonstrate is rarely a permanent virtue, since most donors make donations only intermittently.",
     "questionStem": "Which one of the following most accurately describes a flaw in the columnist’s argument?",
@@ -89,7 +93,10 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researchers have found that, hours after birth, infants are able to distinguish faces from other images. Infants stare at drawings of faces for longer periods of time than they do at blank ovals or drawings in which facial features are scrambled.",
     "questionStem": "Which one of the following, if true, most helps to explain the ability of newborn infants described above?",
@@ -107,7 +114,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Violent crime in this town is becoming a serious problem. Compared to last year, local law enforcement agencies have responded to 17 percent more calls involving violent crimes, showing that the average citizen of this town is more likely than ever to become a victim of a violent crime.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -130,7 +139,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Two different dates have been offered as the approximate end point of the last ice age in North America. The first date was established by testing insect fragments found in samples of sediments to determine when warmth-adapted open-ground beetles replaced cold-adapted arctic beetles. The second date was established by testing pollen grains in those same samples to determine when ice masses yielded to spruce forests. The first date is more than 500 years earlier than the second.",
     "questionStem": "The statements above, if true, most strongly support which one of the following conclusions about the last ice age and its aftermath in North America?",
@@ -151,7 +160,7 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "When presented with the evidence against him, Ellison freely admitted to engaging in illegal transactions using company facilities. However, the company obtained the evidence by illegally recording Ellison’s conversations. Therefore, although the company may demand that he immediately cease, it cannot justifiably take any punitive measures against him.",
     "questionStem": "Which one of the following judgments best illustrates the principle illustrated by the argument above?",
@@ -172,7 +181,9 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In a recent study, each member of two groups of people, Group A (composed of persons sixty-five to seventy-five years old) and Group B (composed of college students), was required to make a telephone call to a certain number at a specified time. The time when each call was initiated was recorded electronically. Group A proved far better at remembering to make a telephone call precisely at a specified time than did Group B. There were fourteen lapses in Group B but only one lapse in Group A. Clearly, at least one type of memory does not suffer as a person ages.",
     "questionStem": "Which one of the following, if all of them are true, is least helpful in establishing that the conclusion above is properly drawn?",
@@ -194,7 +205,7 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Prediction, the hallmark of the natural sciences, appears to have been made possible by reducing phenomena to mathematical expressions. Some social scientists also want the power to predict accurately and assume they ought to perform the same reduction. But this would be a mistake; it would neglect data that are not easily mathematized and thereby would only distort the social phenomena.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the argument?",
@@ -217,7 +228,7 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Studies have shown that the more high-stress points a bridge has, the more likely it is to fracture eventually. This might lead one to expect fractures to develop at high-stress points. Surprisingly, however, fractures develop not at high-stress points but elsewhere on the bridge.",
     "questionStem": "Which one of the following, if true, contributes most to an explanation of why bridges fracture elsewhere than at high-stress points?",
@@ -238,7 +249,9 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Many people say that the press should not pry into the personal lives of private individuals. But the press has the right to publish any story of interest to the public unless that story is libelous. So, if a story about a private individual is not libelous, the press has an obligation to publish it, for such information is clearly of interest to the public.",
     "questionStem": "The argument’s reasoning is vulnerable to criticism on the grounds that the argument presumes, without giving warrant, that",
@@ -261,7 +274,9 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Consumer advocate: A recent study concluded that top-loading washing machines are superior overall to front-loaders. But front-loaders have the controls and access in front. This is more convenient for wheelchair users, some of whom find it highly inconvenient to remove laundry from top-loaders. So for some consumers front-loaders are superior.",
     "questionStem": "Which one of the following is an assumption upon which the consumer advocate’s argument depends?",
@@ -285,7 +300,7 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Over 90 percent of the human brain currently serves no purpose, as is evident from the fact that many people with significant brain damage show no discernible adverse effects. So once humans begin to tap into this tremendous source of creativity and innovation, many problems that today seem insurmountable will be within our ability to solve.",
     "questionStem": "Which one of the following most accurately describes a flaw in the argument?",
@@ -307,7 +322,7 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Some scientists have expressed reservations about quantum theory because of its counterintuitive consequences. But despite rigorous attempts to show that quantum theory’s predictions were inaccurate, they were shown to be accurate within the generally accepted statistical margin of error. These results, which have not been equaled by quantum theory’s competitors, warrant acceptance of quantum theory.",
     "questionStem": "Which one of the following principles most helps to justify the reasoning above?",
@@ -329,7 +344,7 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Role",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Psychologist: The obligation to express gratitude cannot be fulfilled anonymously. However much society may have changed over the centuries, human psychology is still driven primarily by personal interaction. Thus, the important social function of positively reinforcing those behaviors that have beneficial consequences for others can be served only if the benefactor knows the source of the gratitude.",
     "questionStem": "Which one of the following most accurately describes the role played in the psychologist’s argument by the claim that the obligation to express gratitude cannot be fulfilled anonymously?",
@@ -350,7 +365,7 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Must be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Curator: Our museum displays only twentieth-century works, which are either on loan from private collectors or in the museum’s permanent collection. Prints of all of the latter works are available in the museum store. The museum store also sells prints of some works that are not part of the museum’s permanent collection, such as Hopper’s Nighthawks.",
     "questionStem": "If the curator’s statements are true, which one of the following must be true?",
@@ -371,7 +386,7 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Nutritionist: Because humans have evolved very little since the development of agriculture, it is clear that humans are still biologically adapted to a diet of wild foods, consisting mainly of raw fruits and vegetables, nuts and seeds, lean meat, and seafood. Straying from this diet has often resulted in chronic illness and other physical problems. Thus, the more our diet consists of wild foods, the healthier we will be.",
     "questionStem": "The claim that humans are still biologically adapted to a diet of wild foods plays which one of the following roles in the nutritionist’s argument?",
@@ -393,7 +408,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Editorialist: Some people argue that we have an obligation not to cut down trees. However, there can be no obligation to an entity unless that entity has a corresponding right. So if we have an obligation toward trees, then trees have rights. But trees are not the sort of things that can have rights. Therefore, we have no obligation not to cut down trees.",
     "questionStem": "The editorialist’s argument depends on assuming which one of the following?",
@@ -417,7 +434,10 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Flaw",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A recent study suggests that consuming three glasses of wine daily substantially decreases the risk of stroke. Critics of the study, defending earlier research recommending one glass of wine daily, claim that binge drinkers (who drink once a week or less, but drink three or more drinks when they do drink) are the people most likely to drink three glasses of wine in one day and are more likely to die from sudden heart attacks than are other drinkers. According to these critics, drinking three glasses of wine daily would not benefit health overall, since the decrease in the risk of stroke associated with that level of consumption is negated by its associated increased risk of sudden heart attack.",
     "questionStem": "The critics’ argument is most vulnerable to criticism on the grounds that it",
@@ -438,7 +458,7 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Role",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Scientist: Isaac Newton’s Principia, the seventeenth-century work that served as the cornerstone of physics for over two centuries, could at first be understood by only a handful of people, but a basic understanding of Newton’s ideas eventually spread throughout the world. This shows that the barriers to communication between scientists and the public are not impermeable. Thus recent scientific research, most of which also can be described only in language that seems esoteric to most contemporary readers, may also become part of everyone’s intellectual heritage.",
     "questionStem": "Which one of the following most accurately describes the role played in the scientist’s argument by the claim that recent scientific research can often be described only in language that seems esoteric to most contemporary readers?",
@@ -459,7 +479,7 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Only a minority of those who engage in political action do so out of a sense of social justice. Therefore, some people who have a sense of social justice do not engage in political action.",
     "questionStem": "Which one of the following uses flawed reasoning most similar to that used in the argument above?",
@@ -480,7 +500,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: Even if the primary purpose of university education is to make students employable, such education should emphasize the liberal arts rather than the more narrow kind of technical training that prepares one for a particular sort of job. This is because the reasoning\nskills one acquires from a liberal arts education allow one to adapt to new intellectual challenges and thus to perform jobs for which one has received no specialized training.",
     "questionStem": "Which one of the following, if true, most strengthens the columnist’s argument?",
@@ -501,7 +523,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Provinces and states with stringent car safety requirements, including required use of seat belts and annual safety inspections, have on average higher rates of accidents per kilometer driven than do provinces and states with less stringent requirements. Nevertheless, most highway safety experts agree that more stringent requirements do reduce accident rates.",
     "questionStem": "Which one of the following, if true, most helps to reconcile the safety experts’ belief with the apparently contrary evidence described above?",
@@ -522,7 +546,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Must be False",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "It is difficult to grow cacti in a humid climate. It is difficult to raise orange trees in a cold climate. In most parts of a certain country, it is either easy to grow cacti or easy to raise orange trees.",
     "questionStem": "If the statements above are true, which one of the following must be false?",
@@ -543,7 +569,9 @@
     "sectionNumber": 1,
     "questionNumber": 26,
     "questionType": "Must be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Essayist: Common sense, which is always progressing, is nothing but a collection of theories that have been tested over time and found useful. When alternative theories that prove even more useful are developed, they gradually take the place of theories already embodied in common sense. This causes common sense to progress, but, because it absorbs new theories slowly, it always contains some obsolete theories.",
     "questionStem": "If all of the essayist’s statements are true, then which one of the following must be true?",

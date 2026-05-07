@@ -4,7 +4,9 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Pundit: Grenier will almost certainly not be elected as mayor. Although she says she believes in raising city employees’ wages, it was only a few years ago that she was arguing that their wages should not be increased. Her claim that she has learned more about the issue since then—though sincere—will not matter to most voters, who will see her as insincere.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the pundit’s reasoning?",
@@ -26,7 +28,10 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Point at issue",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "",
     "questionStem": "Albert: Swenson’s popular book, which argues that sun exposure does not harm skin cells, is a model of poor scholarship. Nonetheless, it is valuable because it has stimulated new research on sun exposure. Yvonne: You’re kidding me! You might as well say that a virus is valuable because it stimulates epidemiologists. The dialogue provides the most support for the claim that Albert and Yvonne disagree over whether",
@@ -48,7 +53,9 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Resolve reconcile or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Researchers have found that the percentage of people who start new businesses is much higher in countries with high per capita income than in countries with moderate per capita income. This is to be expected since most entrepreneurs in high- and middle-income countries start businesses to take advantage of perceived business opportunities, and there are more such opportunities in high-income countries. Surprisingly, however, the researchers also found that the percentage of people who start businesses is even higher in low-income countries than in high-income ones.",
     "questionStem": "Which one of the following, if true, would most help to explain the researchers’ surprising finding?",
@@ -66,7 +73,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Miscellaneous",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Film director: It’s inaccurate to say that filmgoers stayed away from my film because it received one or two negative reviews. My film had such a small audience during its opening weekend simply because it was competing with several other films that appeal to the same type of filmgoer that mine does, and the number of such viewers is relatively small.",
     "questionStem": "Which one of the following, if true, most helps to support the film director’s explanation?",
@@ -88,7 +97,7 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "Some scientific issues are so complex and counterintuitive that they cannot be well understood by readers of popular magazines. Nonetheless, stories about these difficult scientific issues are frequently the ones that these readers would find most fascinating. Unfortunately, this means that some of the scientific stories that would be most interesting to readers are usually not covered in popular magazines since _______.",
     "questionStem": "The conclusion of the argument is strongly supported if which one of the following completes the passage?",
@@ -109,7 +118,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Miscellaneous",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Letter to the editor: Your newspaper’s advertisement claims that you provide coverage of the high school’s most popular sports. Clearly this is false advertising. Of the school’s students, 15 percent compete on the track team, while only 5 percent of the students play basketball. Hence, track is far more popular than basketball, yet track gets no coverage and basketball gets full-page coverage. The reasoning in the letter to the editor is most vulnerable to the criticism that it",
@@ -130,7 +141,9 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Argument part",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "It is widely believed that the most environmentally sensible thing to do is to buy food from local farmers whenever it is available. But the distance that food travels turns out to be only a small part of its environmental impact. Certain foods can be produced with far less impact in some places rather than others. So, sometimes it is environmentally preferable to buy food that is not produced locally, rather than buy locally produced food.",
     "questionStem": "The claim that the most environmentally sensible thing to do is to buy food from local farmers whenever it is available plays which one of the following roles in the argument?",
@@ -154,7 +167,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Technology is radically improving the quality of life in some communities, and not only by direct application of innovations. After all, the design, production, testing, and marketing of new technology has itself become a growing industry that is turning around the fortunes of once-ailing communities. The companies involved create jobs, add to the tax base, and contribute to an upbeat spirit of renewal.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn by the argument as a whole?",
@@ -175,7 +190,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Joshi is clearly letting campaign contributions influence his vote in city council. His campaign for re-election has received more financial support from property developers than any other city councilor’s has. And more than any other councilor’s, his voting record favors the interests of property developers. The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",
@@ -197,7 +214,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Columnist: Some people argue that the government should not take over failing private-sector banks because the government does not know how to manage financial institutions. However, rather than managing a bank’s day-to-day operations, the government would just need to select the bank’s senior management. Most politicians have never been military professionals, yet they appoint the top military officials entrusted with defending the country—at least as great a responsibility as managing a bank. The columnist’s statements, if true, provide reason for rejecting",
     "questionStem": "which one of the following?",
@@ -218,7 +237,10 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Polls have shown that a higher percentage of graduating university students are against proposals to reduce government social services than are students entering their first year at a university. These polls lead us to",
     "questionStem": "the conclusion that people with a university education are more likely to favor retaining or increasing the present level of government social services than are members of the overall population. Which one of the following, if true, most seriously weakens the argument?",
@@ -239,7 +261,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Flaw or descriptive weakening",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Several movie critics have claimed that this movie will inspire people to act in socially irresponsible ways, yet this claim relies entirely on survey data that have turned out to be deeply flawed. Thus these critics have made a claim that is not only untrue but also potentially harmful to the moviemakers’ reputations. The argument is flawed in that it",
@@ -260,7 +284,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Miscellaneous",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Most people who are skilled banjo players are also skilled guitar players. But most people who are skilled guitar players are not skilled banjo players.",
     "questionStem": "If the statements above are true, which one of the following must also be true?",
@@ -282,7 +308,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Obviously, entrepreneurial ability is needed to start a successful company. Yet many entrepreneurs who succeed in starting a company fail later for lack of managerial skills. For instance, they do not adequately analyze market trends and, consequently, they fail in managing company growth. Hence, the lack of managerial skills and the lack of entrepreneurial ability can each inhibit the development of successful companies. The proposition that certain entrepreneurs fail in managing company growth plays",
     "questionStem": "which one of the following roles in the argument above?",
@@ -303,7 +331,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Most strongly supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Outsiders in any field often believe that they can bring in fresh, useful solutions that have been overlooked by insiders. But in fact, attempts at creativity that are not grounded in relevant experience are futile. Problems can be solved only by people who really understand them, and no one gains such understanding without experience.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -326,7 +356,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Argument part",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Researcher: Dinosaurs lack turbinates—nasal cavity bone structures in warm-blooded species that minimize water loss during breathing. According to some paleobiologists, this implies that all dinosaurs were cold-blooded. These paleobiologists must be mistaken, however, for fossil records show that some dinosaur species lived in Australia and Alaska, where temperatures drop below freezing. Only warm-blooded animals could survive such temperatures.",
     "questionStem": "Which one of the following most accurately describes the role played in the researcher’s argument by the claim that only warm-blooded animals could survive temperatures below freezing?",
@@ -347,7 +379,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Principle: The government should not prevent someone from expressing a true belief unless expressing it would be harmful to people generally. Application: The government was wrong to prevent Calista from publicly expressing her belief that there is evidence that cancer rates have increased slightly over the last two decades and that this increase was due partly to excessive use of cell phones.",
     "questionStem": "Which one of the following, if true, would most help to justify the above application of the principle?",
@@ -368,7 +402,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Most strongly supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Psychologist: Phonemic awareness, or the knowledge that spoken language can be broken into component sounds, is essential for learning to read an alphabetic language. But one also needs to learn how sounds are symbolically represented by means of letters; otherwise, phonemic awareness will not translate into the ability to read an alphabetic language. Yet many children who are taught by the whole-language method, which emphasizes the ways words sound, learn to read alphabetic languages.",
     "questionStem": "Which one of the following can be properly inferred from the psychologist’s statements?",
@@ -389,7 +425,10 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Argument part",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Studies have shown that pedestrians are struck by cars when crossing streets in crosswalks more often than they are struck when crossing outside of crosswalks. This is because crosswalks give many pedestrians an overly strong sense of security that oncoming cars will follow the signals, and these pedestrians are less likely to look both ways before crossing the street.",
     "questionStem": "Which one of the following, if true, most undermines the explanation proposed above?",
@@ -411,7 +450,9 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Selena claims to have psychic powers. So if we find out whether Selena’s claim is true, we will thereby determine whether it is possible to have psychic powers.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
@@ -434,7 +475,10 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Except",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "In a recent study, researchers collected current prices for the 300 most common pharmaceutical drugs from the leading wholesalers specializing in bulk sales. It was found that these prices average 60 to 80 percent below the suggested wholesale prices listed for the same drugs in the current annual edition of a widely used, independently published pharmaceutical price guidebook. Each of the following, if true, would help to explain the situation described above except:",
@@ -455,7 +499,9 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Argument part",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Theorist: Hatred and anger, grief and despair, love and joy are pairs of emotions that consist of the same core feeling and are distinguishable from each other only in terms of the social conditions that cause them and the behavior they in turn cause. So even if the meaning of a given piece of music is the emotion it elicits, this can mean only that music produces the core of a given emotion, for music is merely sound and, therefore, by itself creates neither social conditions nor human behavior.",
     "questionStem": "The claim that music is merely sound plays which one of the following roles in the theorist’s argument?",
@@ -476,7 +522,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Parallel method of reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "For a computer to be intelligent, it must possess at least one of three qualities: creativity, self-awareness, or the ability to learn from its mistakes. Because the QR3000 is not creative or self-aware, it must have the ability to learn from its mistakes if it is intelligent.",
     "questionStem": "Which one of the following arguments is most similar in its reasoning to the argument above?",
@@ -498,7 +546,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Mallotech portrays itself to the public as a socially responsible company, but critics charge that employees in many of its factories work in unsanitary conditions. Unless these critics are mistaken, then, Mallotech is not accurately portraying itself to the public.",
     "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
@@ -521,7 +571,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Many conceptual categories are parts of dichotomous (distinct and mutually exclusive) pairs: good or bad, right or wrong, rational or irrational, etc. However, advances in scientific understanding have shown some long-held dichotomies to be untenable. Some life forms have characteristics of both animals and plants; also, matter can be converted into energy and vice versa. Therefore, dichotomous classifications into mutually exclusive categories should generally be abandoned.",
     "questionStem": "Which one of the following exhibits flawed reasoning most similar to that in the argument above?",
@@ -543,7 +595,9 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "All oceangoing ships carry seawater ballast tanks whose weight improves stability. To maintain the ship’s proper stability, water must be pumped out of these tanks when cargo is loaded and into them when cargo is unloaded. As a result, sea creatures often get into the tanks and are then inadvertently deposited into new habitats, where they can wreak ecological havoc. One viable way of addressing this problem would be to empty and then immediately refill the tanks in midocean, since midocean creatures and coastal sea creatures usually cannot survive in one another’s habitats.",
     "questionStem": "Which one of the following is an assumption the argument requires?",

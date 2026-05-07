@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "North American eastern white cedars grow both on cliff faces and in forests. Cedars growing on exposed cliff faces receive very few nutrients, and rarely grow bigger than one-tenth the height of cedars growing in forests, where they benefit from moisture and good soil. Yet few eastern white cedars found in forests are as old as four hundred years, while many on cliff faces are more than five hundred years old.",
     "questionStem": "Which one of the following, if true, most helps to explain the difference in the ages of the cedars on cliff faces and those in forests?",
@@ -22,7 +24,7 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causation",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Brewer: All children should be given the opportunity to participate in competitive sports; these activities provide an unsurpassed opportunity to engage children’s emotions and so stimulate them to put maximum effort into attaining high athletic standards. Polanski: I disagree. Competitive athletics does, over time, produce a handful of highly motivated children with a desire to excel at an activity, but many children have no taste for competition, and to make them participate would only cause them to develop an antipathy toward athletics.",
     "questionStem": "Polanski’s response most strongly supports the contention that Polanski misunderstood Brewer to be asserting that",
@@ -44,7 +46,7 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Paradox EXCEPT",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "The most common bird in Stillwater Marsh is a species of marsh hen, yet this species is rarely seen, even by experienced bird-watchers who seek it. In fact, this bird is seen far less frequently than any other bird inhabiting the marsh, including those that are much smaller and much less abundant.",
     "questionStem": "Each of the following, if true, helps to reconcile the statements above except:",
@@ -66,7 +68,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Limited research indicates that therapeutic intervention before the onset of mental disorders can mitigate factors identified as major contributors to them. But a much more comprehensive research program is needed to verify these results and allow for the design of specific health care measures. Thus, in order to explore a potential means of cost-effectively helping people prone to mental disorders, we should increase funding for intervention research.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -88,7 +92,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The radiation absorbed by someone during an ordinary commercial airline flight is no more dangerous than that received during an ordinary dental X-ray. Since a dental X-ray does negligible harm to a person, we can conclude that the radiation absorbed by members of commercial airline flight crews will also do them negligible harm.",
     "questionStem": "A flaw in the argument is its failure to consider that",
@@ -110,7 +116,9 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The recent cleaning of frescoes in the Sistine Chapel has raised important aesthetic issues. Art historians are now acutely aware that the colors of the works they study may differ from the works’ original colors. Art historians have concluded from this that interpretations of the frescoes that seemed appropriate before the frescoes’ restoration may no longer be appropriate.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the art historians’ reasoning?",
@@ -131,7 +139,10 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Unlike newspapers in the old days, today’s newspapers and televised news programs are full of stories about murders and assaults in our city. One can only conclude from this change that violent crime is now out of control, and, to be safe from personal attack, one should not leave one’s home except for absolute necessities.",
     "questionStem": "Which one of the following, if true, would cast the most serious doubt on the conclusion?",
@@ -154,7 +165,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Most people invest in the stock market without doing any research of their own. Some of these people rely solely on their broker’s advice, whereas some others make decisions based merely on hunches. Other people do some research of their own, but just as often rely only on their broker or on hunches. Only a few always do their own research before investing. Nonetheless, a majority of investors in the stock market make a profit.",
     "questionStem": "If the statements in the passage are true, which one of the following must also be true?",
@@ -175,7 +188,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Principle",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "At some point in any discussion of societal justice, the only possible doctrinal defense seems to be “That is the way we do things here.” Different communities that each recognize the dignity and equality of all citizens will, for example, nevertheless settle on somewhat different provisions for the elderly. So we can see that general principles of justice are never sufficient to determine the details of social policies fixed within a particular state.",
     "questionStem": "Which one of the following statements, if true, most strengthens the argument concerning the general principles of justice?",
@@ -197,7 +210,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The importance of the ozone layer to terrestrial animals is that it entirely filters out some wavelengths of light but lets others through. Holes in the ozone layer and the dangers associated with these holes are well documented. However, one danger that has not been given sufficient attention is that these holes could lead to severe eye damage for animals of many species.",
     "questionStem": "Which one of the following is most strongly supported by the statements above, if they are true?",
@@ -219,7 +234,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Some people claim that the reason herbs are not prescribed as drugs by licensed physicians is that the medical effectiveness of herbs is seriously in doubt. No drug can be offered for sale, however, unless it has regulatory-agency approval for medicinal use in specific illnesses or conditions. It costs about $200 million to get regulatory-agency approval for a drug, and only the holder of a patent can expect to recover such large expenses. Although methods of extracting particular substances from herbs can be patented, herbs themselves and their medicinal uses cannot be. Therefore, under the current system licensed physicians cannot recommend the medicinal use of herbs.",
     "questionStem": "The argument depends on the assumption that",
@@ -245,7 +262,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Some people claim that the reason herbs are not prescribed as drugs by licensed physicians is that the medical effectiveness of herbs is seriously in doubt. No drug can be offered for sale, however, unless it has regulatory-agency approval for medicinal use in specific illnesses or conditions. It costs about $200 million to get regulatory-agency approval for a drug, and only the holder of a patent can expect to recover such large expenses. Although methods of extracting particular substances from herbs can be patented, herbs themselves and their medicinal uses cannot be. Therefore, under the current system licensed physicians cannot recommend the medicinal use of herbs.",
     "questionStem": "Which one of the following most accurately describes the argumentative technique used in the argument?",
@@ -269,7 +288,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Most Strongly Supported",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorialist: Some people argue that ramps and other accommodations for people using wheelchairs are unnecessary in certain business areas because those areas are not frequented by wheelchair users. What happens, however, is that once ramps and other accommodations are installed in these business areas, people who use wheelchairs come there to shop and work.",
     "questionStem": "Which one of the following is most strongly supported by the editorialist’s statements?",
@@ -290,7 +311,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Argument part",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Many people think that the only way to remedy the problem of crime is by increasing the number of police officers, but recent statistics show that many major cities had similar ratios of police officers to citizens, yet diverged widely in their crime rates.",
     "questionStem": "The statistics cited function in the argument to",
@@ -308,7 +329,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Scientists hoping to understand and eventually reverse damage to the fragile ozone layer in the Earth’s upper atmosphere used a spacecraft to conduct crucial experiments. These experiments drew criticism from a group of environmentalists who observed that a single trip by the spacecraft did as much harm to the ozone layer as a year’s pollution by the average factory, and that since the latter was unjustifiable so must be the former.",
     "questionStem": "The reasoning in the environmentalists’ criticism is questionable because it",
@@ -330,7 +351,9 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Curator: Since ancient times, the fine arts were developed and sustained with the aid of large subsidies from the aristocracies and religious institutions that were the public sectors of their day; it is doubtful that the arts would have survived without these subsidies. Clearly, contemporary societies should fulfill their obligation as stewards of cultural heritage without the assistance of aristocracies or religious institutions, so governments must help finance the maintenance, advancement, and enrichment of the fine arts today.",
     "questionStem": "The curator’s argument depends on assuming which one of the following?",
@@ -354,7 +377,7 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "In a business whose owners and employees all belong to one family, the employees can be paid exceptionally low wages. Hence, general operating expenses are much lower than they would be for other business ventures, making profits higher. So a family business is a family’s surest road to financial prosperity.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -375,7 +398,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Parallel flawed method of reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Studies have shown that photosynthesis, the process by which plants manufacture life-sustaining proteins from sunlight and carbon, is actually intensified if the level of carbon dioxide in the atmosphere is increased. Since carbon dioxide levels are increased by the burning of fossil fuels and by other human industrial activities, it is obvious that these industrial activities are purely beneficial to agriculture and those of us who depend upon it.",
     "questionStem": "The flawed reasoning in the argument above is most similar to that in which one of the following?",
@@ -396,7 +419,7 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Point at Issue",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Raphaela: Forcing people to help others is morally wrong. Therefore, no government has the right to redistribute resources via taxation. Anyone who wants can help others voluntarily. Edward: Governments do have that right, insofar as they give people the freedom to leave and hence not to live under their authority.",
     "questionStem": "Raphaela and Edward disagree about the truth of which one of the following?",
@@ -417,7 +440,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Galanin is a protein found in the brain. In an experiment, rats that consistently chose to eat fatty foods when offered a choice between lean and fatty foods were found to have significantly higher concentrations of galanin in their brains than did rats that consistently chose lean over fatty foods. These facts strongly support the conclusion that galanin causes rats to crave fatty foods.",
     "questionStem": "Which one of the following, if true, most supports the argument?",
@@ -441,7 +466,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Some government economists view their home countries as immune to outside influence. But economies are always open systems; international trade significantly affects prices and wages. Just as physicists learned the shortcomings of a mechanics based on idealizations such as the postulation of perfectly frictionless bodies, government economists must look beyond national borders if their nations’ economies are to prosper.",
     "questionStem": "The argument’s conclusion follows logically if which one of the following is assumed?",
@@ -459,7 +484,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Parallel method of reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "If relativity theory is correct, no object can travel forward in time at a speed greater than the speed of light. Yet quantum mechanics predicts that the tachyon, a hypothetical subatomic particle, travels faster than light. Thus, if relativity theory is correct, either quantum mechanics’ prediction about tachyons is erroneous or tachyons travel backward in time.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -484,7 +511,9 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Maria won this year’s local sailboat race by beating Sue, the winner in each of the four previous years. We can conclude from this that Maria trained hard.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -506,7 +535,10 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Dietician: “The French Paradox” refers to the unusual concurrence in the population of France of a low incidence of heart disease and a diet high in fat. The most likely explanation is that the French consume a high quantity of red wine, which mitigates the ill effects of the fat they eat. So North Americans, with nearly the highest rate of heart disease in the world, should take a cue from the French: if you want to be healthier without cutting fat intake, drink more red wine.",
     "questionStem": "Which one of the following statements, if true, most seriously undermines the conclusion of the dietician’s argument?",
@@ -528,7 +560,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "We are in a new industrial revolution that requires management trainees to develop “action learning” from real experience within business and industry, rather than getting tied up with theory and academia. Business schools seem unable, on their own, to tear themselves away from their largely academic roots and move closer to the realities of today’s business and industry; too often, trainees in business schools find themselves studying hypothetical cases instead of real ones. Furthermore, business schools have been slow to respond to the needs of business. Therefore, business schools should allow business executives to set curricula for management trainees that could then be taught by academics.",
     "questionStem": "The argument relies on which one of the following assumptions?",

@@ -4,7 +4,10 @@
     "sectionNumber": 4,
     "questionNumber": 1,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Dentist: I recommend brushing one’s teeth after every meal to remove sugars that facilitate the growth of certain bacteria; these bacteria produce acid that dissolves minerals in tooth enamel, resulting in cavities. And when brushing is not practical, I recommend chewing gum—even gum that contains sugar—to prevent the formation of cavities.",
     "questionStem": "Which one of the following, if true, would most help to reconcile the dentist’s apparently paradoxical recommendations?",
@@ -25,7 +28,9 @@
     "sectionNumber": 4,
     "questionNumber": 2,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "When the ancient fossils of a primitive land mammal were unearthed in New Zealand, they provided the first concrete evidence that the island country had once had indigenous land mammals. Until that discovery, New Zealand had no known native land mammals. The discovery thus falsifies the theory that New Zealand’s rich and varied native bird population owes its existence to the lack of competition from mammals.",
     "questionStem": "Which one of the following, if true, most seriously weakens the argument?",
@@ -46,7 +51,7 @@
     "sectionNumber": 4,
     "questionNumber": 3,
     "questionType": "Main Conclusion",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Restaurant owner: The newspaper reporter who panned my restaurant acknowledges having no special expertise about food and its preparation. His previous job was as a political reporter. He is a good writer, but he is not a true restaurant critic. A newspaper would never call someone a drama critic who had no special training in theater.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the restaurant owner’s argument?",
@@ -70,7 +75,9 @@
     "sectionNumber": 4,
     "questionNumber": 4,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "It has been hypothesized that our solar system was formed from a cloud of gas and dust produced by a supernova—an especially powerful explosion of a star. Supernovas produce the isotope iron-60, so if this hypothesis were correct, then iron-60 would have been present in the early history of the solar system. But researchers have found no iron-60 in meteorites that formed early in the solar system’s history, thereby disproving the hypothesis.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -95,7 +102,10 @@
     "sectionNumber": 4,
     "questionNumber": 5,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Safety expert: Tuna is often treated with carbon monoxide so that it will not turn brown as it ages. Treating tuna with carbon monoxide does not make it harmful in any way. Nonetheless, there is a danger that such treatment will result in more people getting sick from eating tuna.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent discrepancy in the safety expert’s statements?",
@@ -113,7 +123,9 @@
     "sectionNumber": 4,
     "questionNumber": 6,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Astrophysicist: Gamma ray bursts (GRBs)—explosions of powerful radiation from deep space—have traditionally been classified as either “short” or “long,” terms that reflect the explosion’s relative duration. However, an unusual GRB has been sighted. Its duration was long, but in every other respect it had the properties of a short GRB. Clearly, the descriptive labels “short” and “long” have now outlived their usefulness.",
     "questionStem": "The conclusion of the astrophysicist’s argument is most strongly supported if which one of the following is assumed?",
@@ -135,7 +147,10 @@
     "sectionNumber": 4,
     "questionNumber": 7,
     "questionType": "Flawed Reasoning",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In one study, hospital patients’ immune systems grew stronger when the patients viewed comic videos. This indicates that laughter can aid recovery from illness. But much greater gains in immune system strength occurred in the patients whose tendency to laugh was greater to begin with. So hospital patients with a greater tendency to laugh are helped more in their recovery from illness even when they laugh a little than other patients are helped when they laugh a greater amount.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it",
@@ -156,7 +171,9 @@
     "sectionNumber": 4,
     "questionNumber": 8,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A study of guppy fish shows that a male guppy will alter its courting patterns in response to feedback from a female guppy. Males with more orange on one side than the other were free to vary which side they showed to a female. Females were drawn to those males with more orange showing, and males tended to show the females their more orange side when courting.",
     "questionStem": "Which one of the following, if true, provides the most support for the argument?",
@@ -177,7 +194,9 @@
     "sectionNumber": 4,
     "questionNumber": 9,
     "questionType": "Main Conclusion",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Politician: Some proponents of unilateral nuclear arms reduction argue that it would encourage other countries to reduce their own nuclear arsenals, eventually leading to an international agreement on nuclear arms reduction. Our acting on the basis of this argument would be dangerous, because the argument ignores the countries presently on the verge of civil wars. These countries, many of which have nuclear capability, cannot be relied upon to conform to any international military policy.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the politician’s argument?",
@@ -198,7 +217,9 @@
     "sectionNumber": 4,
     "questionNumber": 10,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Advertisement: Auto accidents are the most common cause of whiplash injury, a kind of injury that is caused by a sudden sharp motion of the neck. However, many other types of accidents can produce a sudden sharp motion of the neck and thereby result in whiplash injury. A sudden sharp motion of the neck can be caused by a fall, a bump on the head, or even by being shoved from behind. That is why you should insist on receiving Lakeside Injury Clinic’s complete course of treatment for whiplash after any accident that involves a fall or a bump on the head.",
     "questionStem": "Which one of the following, if true, provides the strongest basis for criticizing the reasoning in the advertisement?",
@@ -220,7 +241,9 @@
     "sectionNumber": 4,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A group of citizens opposes developing a nearby abandoned railroad grade into a hiking trail. Its members argue that trail users will likely litter the area with food wrappers and other debris. But this objection is groundless. Most trail users will be dedicated hikers who have great concern for the environment. Consequently, development of the trail should proceed.",
     "questionStem": "The argument above is flawed in that it",
@@ -241,7 +264,9 @@
     "sectionNumber": 4,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "For years, university administrators, corporations, and government agencies have been predicting an imminent and catastrophic shortage of scientists and engineers. But since there is little noticeable upward pressure on the salaries of scientists and engineers, and unemployment is as high in these fields as any other, these doomsayers are turning out to be wrong.",
     "questionStem": "Which one of the following would, if true, most strengthen the argument above?",
@@ -259,7 +284,9 @@
     "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Principle Justify",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Rhonda: As long as the cost is not too great, you should use your time, energy, or money to help others. People who are active participants in charitable causes have richer lives than miserly hermits, however prosperous the hermits may be.\nBrad: You should ignore the problems of complete strangers and focus your generosity on your immediate relatives and close friends, since these are the people who will remember your sacrifices and return the kindness when you yourself need help.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify both Rhonda’s and Brad’s arguments?",
@@ -281,7 +308,9 @@
     "sectionNumber": 4,
     "questionNumber": 14,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Columnist: Wildlife activists have proposed that the practice of stringing cable TV lines from the same poles that carry electric power lines should be banned because cable TV lines, while electrically neutral themselves, make it easier for animals to climb near electric power lines, risking electrocution. This particular argument for banning the practice fails, however, since some animals are electrocuted by power lines even where cable TV lines are all underground.",
     "questionStem": "Which one of the following most accurately describes a flaw in the columnist’s reasoning?",
@@ -304,7 +333,9 @@
     "sectionNumber": 4,
     "questionNumber": 15,
     "questionType": "Role",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The ancient reptile Thrinaxodon, an ancestor of mammals, had skull features suggesting that it had sensory whiskers. If Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature. Therefore, Thrinaxodon was probably warm-blooded, for such insulation would be of little use to a cold-blooded animal.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the statement that if Thrinaxodon had whiskers, it clearly also had hair on other parts of its body, which would have served as insulation that regulated body temperature?",
@@ -326,7 +357,9 @@
     "sectionNumber": 4,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Economist: Currently, many countries rely primarily on taxing income to fund government expenditures. But taxing income does nothing to promote savings and investment. Taxing consumption, on the other hand, would encourage savings. The most important challenge facing these countries is improving their economies, and the only way to accomplish this is to increase their savings rates.",
     "questionStem": "Which one of the following most logically completes the economist’s argument?",
@@ -349,7 +382,9 @@
     "sectionNumber": 4,
     "questionNumber": 17,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Meade: People who are injured as a result of their risky behaviors not only cause harm to themselves but, because we all have important ties to other people, inevitably impose emotional and financial costs on others. To protect the interests of others, therefore, governments are justified in outlawing behavior that puts one’s own health at risk.",
     "questionStem": "Which one of the following principles, if valid, most undermines the reasoning in Meade’s argument?",
@@ -370,7 +405,9 @@
     "sectionNumber": 4,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Sanderson intentionally did not tell his cousin about overhearing someone say that the factory would close, knowing that if he withheld this information, his cousin would assume it would remain open. Clearly this was morally wrong. After all, lying is morally wrong. And making a statement with the intention of misleading someone is lying. True, it was Sanderson’s failing to state something that misled his cousin. Yet there is no moral difference between stating and failing to state if they are done with the same intention.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -395,7 +432,9 @@
     "sectionNumber": 4,
     "questionNumber": 19,
     "questionType": "Principle Application",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "After a judge has made the first ruling on a particular point of law, judges must follow that precedent if the original ruling is not contrary to the basic moral values of society. In the absence of precedent, when judges’ own legal views do not contradict any widespread public opinion—and only then—they may abide by their own legal views in deciding a case.",
     "questionStem": "Of the rulings described below, which one conforms most closely to the principles stated above?",
@@ -416,7 +455,10 @@
     "sectionNumber": 4,
     "questionNumber": 20,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Neuroscientists subjected volunteers with amusia—difficulty telling different melodies apart and remembering simple tunes—to shifts in pitch comparable to those that occur when someone plays one piano key and then another. The volunteers were unable to discern a difference between the tones. But the volunteers were able to track timed sequences of musical tones and perceive slight changes in timing.",
     "questionStem": "The statements above, if true, most strongly support which one of the following hypotheses?",
@@ -437,7 +479,9 @@
     "sectionNumber": 4,
     "questionNumber": 21,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Literary critic: There is little of social significance in contemporary novels, for readers cannot enter the internal world of the novelist’s mind unless they experience that world from the moral perspective of the novel’s characters. But in contemporary novels, the transgressions committed by some characters against others are sensationalistic spectacles whose only purpose is to make readers wonder what will happen next, rather than events whose purpose is to be seen as the injustices they are.",
     "questionStem": "Which one of the following principles, if valid, would most help to justify the literary critic’s argument?",
@@ -459,7 +503,10 @@
     "sectionNumber": 4,
     "questionNumber": 22,
     "questionType": "Flawed Reasoning",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A recent study revealed that people who follow precisely all the standard recommendations for avoidance of infection by pathogenic microorganisms in meat-based foods are more likely to contract diseases caused by these pathogens than are those who deviate considerably from the standard recommendations. Hence, the standard recommendations for avoidance of infection by these pathogens must be counterproductive.",
     "questionStem": "The argument is most vulnerable to criticism on the grounds that it fails to take into account which one of the following possibilities?",
@@ -480,7 +527,9 @@
     "sectionNumber": 4,
     "questionNumber": 23,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No nonfiction book published by Carriage Books has ever earned a profit. Since Carriage Books earned a profit on every book it published last year, it clearly did not publish a nonfiction book last year.",
     "questionStem": "The pattern of reasoning in the argument above is most similar to that in which one of the following arguments?",
@@ -498,7 +547,9 @@
     "sectionNumber": 4,
     "questionNumber": 24,
     "questionType": "Principle Justify",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A contract between two parties is valid only if one party accepts a legitimate offer from the other; an offer is not legitimate if someone in the position of the party to whom it was made would reasonably believe the offer to be made in jest.",
     "questionStem": "The principle stated above, if valid, most helps to justify the reasoning in which one of the following arguments?",
@@ -520,7 +571,9 @@
     "sectionNumber": 4,
     "questionNumber": 25,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Scientist: A small group of islands near Australia is inhabited by several species of iguana; closely related species also exist in the Americas, but nowhere else. The islands in question formed long after the fragmentation of Gondwana, the ancient supercontinent that included present-day South America and Australia. Thus, these species’ progenitors must have rafted on floating debris across the Pacific Ocean from the Americas.",
     "questionStem": "Which one of the following, if true, most weakens the scientist’s argument?",
@@ -538,7 +591,7 @@
     "sectionNumber": 4,
     "questionNumber": 26,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "A recent archaeological find in what was once the ancient kingdom of Macedonia contains the remains of the largest tomb ever found in the region. It must be the tomb of Alexander the Great since he was the greatest Macedonian in history, and so would have had the largest tomb. After all, he conquered an empire that stretched from Greece to much of Asia, though it collapsed after his death.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on the grounds that the argument",

@@ -4,7 +4,9 @@
     "sectionNumber": 1,
     "questionNumber": 1,
     "questionType": "Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Several years ago, most of one country’s large banks failed and were taken over by a government agency. The agency is now selling these banks, aiming to strengthen the banking system in the process. But the banking system will not be strengthened if the former owners of these banks buy them back. So the agency is unlikely to achieve its goal, since _______.",
     "questionStem": "The conclusion of the argument is properly drawn if which one of the following completes the passage?",
@@ -27,7 +29,9 @@
     "sectionNumber": 1,
     "questionNumber": 2,
     "questionType": "Paradox",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Accountant: The newspaper industry habitually cites the rising cost of newsprint to explain falling profits. But when corrected for inflation, the cost of newsprint is no more than it was ten years ago. Far from being victims of high costs, newspapers have been benefiting from cheap newsprint for decades. The real threats to their profitability are falling circulation and falling advertising.",
     "questionStem": "The accountant’s argument proceeds by",
@@ -48,7 +52,9 @@
     "sectionNumber": 1,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Peter: Recent evidence suggests that moderate alcohol consumption has certain beneficial effects on health. In particular, alcohol creates an inhospitable environment in the human body for certain bacteria that can cause illness. Thus, alcohol consumption is, on balance, beneficial.",
     "questionStem": "Which one of the following most accurately expresses a flaw in the reasoning in Peter’s argument?",
@@ -72,7 +78,9 @@
     "sectionNumber": 1,
     "questionNumber": 4,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Consultant: Children taught using innovative new educational methods learn to think more creatively than children taught using rote methods such as drills, but they are less adept at memorizing large amounts of information. Most jobs at Grodex Corporation require the ability to think creatively but do not require a strong ability to memorize. So Grodex should probably conduct its employee-training seminars using the innovative methods, because _______.",
     "questionStem": "Which one of the following most logically completes the consultant’s argument?",
@@ -95,7 +103,9 @@
     "sectionNumber": 1,
     "questionNumber": 5,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Essayist: If Earth’s population continues to grow geometrically, then in a few centuries there will be ten people for every square meter (approximately one person per square foot) of Earth’s surface. Some people have claimed that this will probably not be a problem, since humans will have learned by then how to colonize other planets. This would, however, be a temporary solution at best: if the population continues to double every 30 years, and if in the year 2500 half of Earth’s population emigrated to Mars, then by the year 2530 Earth would be just as crowded as it had been before the emigration.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the essayist’s argument?",
@@ -117,7 +127,9 @@
     "sectionNumber": 1,
     "questionNumber": 6,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A recent taste test reveals that most people like low-fat chocolate ice cream as much as its full-fat counterpart. Previous tests with vanilla ice cream found that people tended to dislike low-fat versions, complaining of a harsher taste. Chemists point out that chocolate is a very complex flavor, requiring around 500 distinct chemical compounds to produce it. Hence, this complexity probably masks any difference in taste due to the lack of fat.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -140,7 +152,7 @@
     "sectionNumber": 1,
     "questionNumber": 7,
     "questionType": "Unknown",
-    "reasoningType": "Comparison",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Ethicist: Robert Gillette has argued that because a thorough knowledge of genetics would enable us to cure the over 3,000 inherited disorders that affect humanity, deciphering the human genetic code will certainly benefit humanity despite its enormous cost. Gillette’s argument is not persuasive, however, because he fails to consider that such knowledge might ultimately harm human beings more than it would benefit them.",
     "questionStem": "Which one of the following most accurately expresses the conclusion of the ethicist’s argument?",
@@ -163,7 +175,10 @@
     "sectionNumber": 1,
     "questionNumber": 8,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Many uses have been claimed for hypnosis, from combating drug addiction to overcoming common phobias. A recent experimental study helps illuminate the supposed connection between hypnosis and increased power of recall. A number of subjects listened to a long, unfamiliar piece of instrumental music. Under subsequent hypnosis, half the subjects were asked to recall salient passages from the musical piece and half were asked to describe scenes from “the film they had just viewed,” despite their not having just seen a film. The study found that the subjects in the second group were equally confident and detailed in their movie recollections as the subjects in the first group were in their music recollections.",
     "questionStem": "Which one of the following statements is most supported by the information above?",
@@ -184,7 +199,10 @@
     "sectionNumber": 1,
     "questionNumber": 9,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Records from 1850 to 1900 show that in a certain region, babies’ birth weights each year varied with the success of the previous year’s crops: the more successful the crops, the higher the birth weights. This indicates that the health of a newborn depends to a large extent on the amount of food available to the mother during her pregnancy.",
     "questionStem": "The argument proceeds by",
@@ -206,7 +224,10 @@
     "sectionNumber": 1,
     "questionNumber": 10,
     "questionType": "Agree/Disagree",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Vincent: No scientific discipline can study something that cannot be measured, and since happiness is an entirely subjective experience, it cannot be measured. Yolanda: Just as optometry relies on patients’ reports of what they see, happiness research relies on subjects’ reports of how they feel. Surely optometry is a scientific discipline.",
     "questionStem": "Vincent’s and Yolanda’s statements provide the most support for concluding that they disagree over which one of the following?",
@@ -227,7 +248,9 @@
     "sectionNumber": 1,
     "questionNumber": 11,
     "questionType": "Role",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Although large cities are generally more polluted than the countryside, increasing urbanization may actually reduce the total amount of pollution generated nationwide. Residents of large cities usually rely more on mass transportation and live in smaller, more energy- efficient dwellings than do people in rural areas. Thus, a given number of people will produce less pollution if concentrated in a large city than if dispersed among many small towns.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that increasing urbanization may actually reduce the total amount of pollution generated nationwide?",
@@ -250,7 +273,10 @@
     "sectionNumber": 1,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Climatologist: Over the coming century, winter temperatures are likely to increase in the Rocky Mountains due to global warming. This will cause a greater proportion of precipitation to fall as rain instead of snow. Therefore, the mountain snowpack will probably melt more rapidly and earlier in the season, leading to greater spring flooding and less storable water to meet summer demands.",
     "questionStem": "Which one of the following, if true, most strengthens the climatologist’s argument?",
@@ -273,7 +299,10 @@
     "sectionNumber": 1,
     "questionNumber": 13,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Animal feed should not include genetically modified plants. A study found that laboratory rats fed genetically modified potatoes for 30 days tended to develop intestinal deformities and a weakened immune system, whereas rats fed a normal diet of foods that were not genetically modified did not develop these problems.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -295,7 +324,9 @@
     "sectionNumber": 1,
     "questionNumber": 14,
     "questionType": "Paradox",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Some philosophers explain visual perception by suggesting that when we visually perceive an object, a mental image of that object forms in our mind. However, this hypothesis cannot be correct, since it would require an inner self visually perceiving the newly formed mental image; this would in turn require that the inner self have a mental image of that mental image, and so on. But such an infinite regress is absurd.",
     "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",
@@ -316,7 +347,9 @@
     "sectionNumber": 1,
     "questionNumber": 15,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Greatly exceeding the recommended daily intake of vitamins A and D is dangerous, for they can be toxic at high levels. For some vitamin-fortified foods, each serving, as defined by the manufacturer, has 100 percent of the recommended daily intake of these vitamins. But many people overestimate what counts as a standard serving of vitamin-fortified foods such as cereal, consuming two to three times what the manufacturers define as standard servings.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -337,7 +370,9 @@
     "sectionNumber": 1,
     "questionNumber": 16,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "At the end of 1997 several nations stated that their oil reserves had not changed since the end of 1996. But oil reserves gradually drop as old oil fields are drained and rise suddenly as new oil fields are discovered. Therefore, oil reserves are unlikely to remain unchanged from one year to the next. So most of the nations stating that their oil reserves were unchanged are probably incorrect.",
     "questionStem": "Which one of the following is an assumption the argument requires?",
@@ -362,7 +397,9 @@
     "sectionNumber": 1,
     "questionNumber": 17,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If a motor is sound-insulated, then it is quiet enough to use in home appliances. If a motor is quiet enough to use in home appliances, then it can be used in institutional settings. None of the motors manufactured by EM Industries are quiet enough to use in home appliances.",
     "questionStem": "If the statements above are true, which one of the following must be true?",
@@ -385,7 +422,9 @@
     "sectionNumber": 1,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Mayor: A huge protest against plans to build a chemical plant in this town was held yesterday. The protesters claim that the factory could cause health problems. But this worry can be dismissed. Most of the protesters were there only because they were paid to show up by property developers who are concerned that the factory would lower the value of nearby land that they own.",
     "questionStem": "Which one of the following most accurately expresses a flaw in reasoning in the mayor’s argument?",
@@ -406,7 +445,9 @@
     "sectionNumber": 1,
     "questionNumber": 19,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "One should not intentionally misrepresent another person’s beliefs unless one’s purpose in doing so is to act in the interest of that other person.",
     "questionStem": "Which one of the following actions most clearly violates the principle stated?",
@@ -427,7 +468,10 @@
     "sectionNumber": 1,
     "questionNumber": 20,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Adjusted for inflation, the income earned from wool sales by a certain family of Australian sheep farmers grew substantially during the period from 1840 to 1860. This is because the price for wool sold on the international market was higher than the price paid on domestic markets and the percentage and amount of its wool that this family sold internationally increased dramatically during that period. But even though the family generated more income from selling their wool, they failed to enjoy a commensurate increase in prosperity.",
     "questionStem": "Which one of the following would, if true, help most to resolve the apparent paradox described above?",
@@ -449,7 +493,9 @@
     "sectionNumber": 1,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Lawyer: If you take something that you have good reason to think is someone else’s property, that is stealing, and stealing is wrong. However, Meyers had no good reason to think that the compost in the public garden was anyone else’s property, so it was not wrong for Meyers to take it.",
     "questionStem": "The reasoning in the lawyer’s argument is flawed in that the argument",
@@ -470,7 +516,9 @@
     "sectionNumber": 1,
     "questionNumber": 22,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "From time to time there is a public outcry against predatory pricing-where a company deliberately sells its products at prices low enough to drive its competitors out of business. But this practice clearly should be acceptable, because even after its competitors go out of business, the mere threat of renewed competition will prevent the company from raising its prices to unreasonable levels.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -494,7 +542,9 @@
     "sectionNumber": 1,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "If the prosecutor wanted to charge Frank with embezzlement, then Frank would already have been indicted. But Frank has not been indicted. So clearly Frank is not an embezzler.",
     "questionStem": "The flawed pattern of reasoning exhibited by which one of the following is most similar to that exhibited by the argument above?",
@@ -516,7 +566,9 @@
     "sectionNumber": 1,
     "questionNumber": 24,
     "questionType": "Unknown",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Pediatrician: Swollen tonsils give rise to breathing problems during sleep, and the surgical removal of children’s swollen tonsils has been shown to alleviate sleep disturbances. So removing children’s tonsils before swelling even occurs will ensure that the children do not experience any breathing problems during sleep.",
     "questionStem": "The pediatrician’s argument is most vulnerable to the criticism that it",
@@ -537,7 +589,9 @@
     "sectionNumber": 1,
     "questionNumber": 25,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "It is unethical for government officials to use their knowledge of impending policies to financially benefit themselves if that knowledge is not available to the general public.",
     "questionStem": "Which one of the following actions would be unethical according to the principle stated above?",

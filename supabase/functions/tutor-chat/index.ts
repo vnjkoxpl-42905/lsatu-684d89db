@@ -19,7 +19,7 @@ interface QuestionInput {
   answerChoices: { [key: string]: string };
   correctAnswer: string;
   userAnswer: string;
-  reasoningType?: string;
+  reasoningType?: string | string[];
   breakdown?: any;
   answerChoiceExplanations?: any;
 }
@@ -146,7 +146,15 @@ async function getCoachingKnowledge(supabase: any, question: any) {
     // Resolve the reasoning-type key: use the question's own tag first, then
     // fall back to the strategy row's first related reasoning type. Skip
     // umbrella values like "All" that don't correspond to a guidance row.
-    let reasoningKey: string | null = question.reasoningType || null;
+    // Map our authoritative labels to the DB guidance-table primary keys.
+    const RT_DB_MAP: Record<string, string> = {
+      'Conditional Reasoning': 'Conditional Logic',
+      'Comparative Reasoning': 'Comparison',
+      'Causation': 'Causation',
+    };
+    const rtRaw = question.reasoningType;
+    const rtFirst = Array.isArray(rtRaw) ? rtRaw[0] : rtRaw;
+    let reasoningKey: string | null = rtFirst ? (RT_DB_MAP[rtFirst] || rtFirst) : null;
     if (!reasoningKey && strategy?.related_reasoning_types?.length) {
       const candidate = strategy.related_reasoning_types.find(
         (t: string) => t && t !== 'All'

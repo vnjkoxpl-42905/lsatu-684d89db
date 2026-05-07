@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Flaw",
-    "reasoningType": "Analogy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Student: My university recently enacted new penalties for drinking alcohol in on-campus student housing. But the university has attempted to curb on-campus drinking many times in the past, and these attempts have never been successful. Thus, these new penalties are bound to be just as ineffective.",
     "questionStem": "The reasoning in the student’s argument is most vulnerable to criticism on the grounds that the argument",
@@ -22,7 +24,9 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Anderson: Taking the long view, history shows that word usage and grammar rules are constantly changing and evolving—sometimes resulting in entirely new languages. Since they will change regardless of our efforts, we shouldn’t worry about violations of grammar rules. Lipton: That’s like arguing that we shouldn’t worry about enforcing laws since, in the larger scheme of things, laws change and nations come and go. But of course it is good that laws are enforced.",
     "questionStem": "The dialogue provides the most support for the claim that Anderson and Lipton disagree over whether",
@@ -43,7 +47,10 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Requiring that passwords conform to rules of length, complexity, and unpredictability increases the likelihood of someone gaining unauthorized access to a user’s account. Since most user accounts are automatically locked after a certain number of incorrect password guesses, it is usually impossible to gain access by guessing a password. However, because complex passwords can be hard to remember, users often write them down.",
     "questionStem": "The overall conclusion of the argument is strongly supported if which one of the following is assumed?",
@@ -64,7 +71,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In view of the considerable length of the police chief’s tenure as head of the department, the chief should be held accountable for the widespread corruption in the department. That no evidence was discovered that the chief was involved in any way in the corruption does not allow us to escape this conclusion.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the argument?",
@@ -85,7 +94,10 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Except",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "A store was vandalized repeatedly over a six-month period. When discussing the problem with a friend, the store owner mentioned having heard that bright lighting around the perimeter of commercial establishments had been known to reduce the incidence of vandalism. Three months later, the store owner reported to the same friend that there had been no incidents of vandalism since their previous conversation. The friend concluded that bright lighting had been installed around the perimeter of the store.",
     "questionStem": "Each of the following, if true, would call into question the friend’s conclusion except:",
@@ -106,7 +118,10 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Fact vs. Belief vs. Knowledge",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researchers studying athletes found that those who played mainly for the love of their sport actually had sharper vision during athletic competitions than those whose main goal was winning a trophy or championship. The vision of the first group of athletes was sharper because the concentration necessary for acute vision during an activity is typically possessed to a greater degree by those whose attention is focused on the activity itself.",
     "questionStem": "Which one of the following is most strongly supported by the statements above?",
@@ -127,7 +142,10 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Economist: ChesChem, a chemical manufacturer located in Chester, uses natural gas for its enormous energy needs. Currently, natural gas costs twice as much in Chester as it does in Tilsen. If the cost of natural gas in Chester becomes more than twice that in Tilsen, ChesChem will move its manufacturing operations to Tilsen. So if the cost of natural gas in Chester increases at all, ChesChem will move its manufacturing operations to Tilsen.",
     "questionStem": "The economist’s argument requires assuming that",
@@ -152,7 +170,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "When researchers discovered that cuttlefish have the ability to make themselves suddenly appear larger, they presumed that this behavior, called a “startle display,” was used to scare off predators. A long-term study, however, reveals that cuttlefish never use startle displays to scare off predators but instead only use such displays to scare off small fish that do not prey on cuttlefish.",
     "questionStem": "Which one of the following, if true, most helps to explain why cuttlefish use startle displays?",
@@ -170,7 +191,10 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Strengthen",
-    "reasoningType": "Sampling",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "If the winner of a promotional contest is selected by a lottery, the lottery must be fair, giving all entrants an equal chance of winning. Since 90 percent of the winners selected by the lottery in a recent promotional contest submitted their entry forms within the first 2 days of the 30-day registration period, it is clear that this lottery did not meet the fairness requirement.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -191,7 +215,10 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Main Conclusion",
-    "reasoningType": "Miscellaneous",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Godinez: In the past, land was sometimes measured by the amount of time required to plow it. Thus, two plots of equal physical dimensions were considered unequal if one was more difficult to plow than the other. However, knowing how long an area takes to plow reveals little about how many apartment complexes it can hold. Therefore, it became necessary to adopt new measures of land, such as acreage, when land uses diversified.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion drawn in Godinez’s argument?",
@@ -209,7 +236,10 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Last year the Lalolah River was ranked by the Sunvale Water Commission as the most polluted of the fifteen rivers in the Sunvale Water District. Measures taken to clean up the river must be working, though, since this year the Lalolah River is ranked as only the third most polluted river in the district.",
     "questionStem": "The reasoning in the argument is flawed because the argument",
@@ -232,7 +262,10 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "If an activity significantly reduces chronic lower back pain, doctors should be prepared to discuss the merits of that activity with patients who ask about it. A recent study compared practicing yoga to taking stretching classes with a physical therapist and found that both activities lead to equal reductions in chronic lower back pain. Thus, doctors treating patients with chronic lower back pain should be prepared to discuss the merits of yoga.",
     "questionStem": "Which one of the following is an assumption required by the argument?",
@@ -256,7 +289,10 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Shelton: The recent sharp decline in the number of moose in this region was caused by a large increase in the white-tailed deer population. While the deer do not compete with moose for food, they carry a dangerous parasite that can be transferred to any moose living nearby. Russo: The neighboring region has also experienced a large increase in the white-tailed deer population, but the moose population there has remained stable.",
     "questionStem": "Which one of the following, if true, most helps to resolve the apparent conflict between Shelton’s and Russo’s statements?",
@@ -274,7 +310,10 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Principle-Conform",
-    "reasoningType": "Net Effect",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Until fairly recently, classroom computers were considered a luxury. Today, educators argue that students who have not had training in computer skills will lack the skills necessary to compete in the global marketplace. However, studies show that schools emphasizing computer technology spend more time teaching computer skills but less time developing students’ basic math and reading skills.",
     "questionStem": "Which one of the following propositions is best illustrated by the statements above?",
@@ -295,7 +334,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Weaken",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A scientific team compared gold samples from several ancient artifacts with gold samples from an ancient mine in western Asia. The ratios of the trace elements in these samples were all very similar, and they were unlike the trace-element ratios from any other known mine. It is therefore likely that the gold in the artifacts was dug from the ancient mine.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -313,7 +354,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Most pet owners who take allergy medication are allergic to pets. Therefore, since Chuck owns a pet dog, it is likely that he will take allergy medication if he develops an allergy to pets.",
     "questionStem": "Which one of the following arguments exhibits flawed reasoning that is most similar to that exhibited by the argument above?",
@@ -334,7 +377,10 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Paradox",
-    "reasoningType": "Fact vs. Belief vs. Knowledge",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Scientist: A number of errors can plague a data-collection process. Since examining the collected data enables researchers to detect many of these errors, it is standard practice for researchers to correct collected data. However, in my field, there is a striking tendency for such corrections to favor Jones’s theory; that is, the majority of corrections result in the corrected data’s being closer than the uncorrected data to what Jones’s theory predicts.",
     "questionStem": "Which one of the following, if true, most helps to explain the tendency of corrections in the scientist’s field to favor Jones’s theory?",
@@ -352,7 +398,10 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Doctor: Angiotensinogen is a protein in human blood. Typically, the higher a person’s angiotensinogen levels are, the higher that person’s blood pressure is. Disease X usually causes an increase in angiotensinogen levels. Therefore, disease X must be a cause of high blood pressure.",
     "questionStem": "The doctor’s argument is most vulnerable to criticism on which one of the following grounds?",
@@ -377,7 +426,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Some species of tarantula make good pets. However, no creature with poison fangs makes a good pet. Therefore, not all tarantula species have poison fangs.",
     "questionStem": "Which one of the following arguments is most similar in its pattern of reasoning to the argument above?",
@@ -398,7 +449,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Method of Reasoning",
-    "reasoningType": "Fact vs. Belief vs. Knowledge",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Pulford: Scientists who study the remains of ancient historical figures to learn about their health history need to first ask themselves if their investigation is a legitimate scientific inquiry or is motivated by mere curiosity. An investigation into a private matter such as health history is justified only if it is done for the advancement of scientific knowledge. Varela: You forget that curiosity is the root of scientific inquiry. Many great scientific discoveries were motivated by curiosity alone.",
     "questionStem": "Varela responds to Pulford’s argument by",
@@ -421,7 +475,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Ethicist: It is morally right to reveal a secret only if one has a legal obligation to do so and will not harm oneself by doing so. At the same time, it is morally wrong to reveal a secret if one has promised not to do so and if revealing the secret is likely to result in any harm to others.",
     "questionStem": "The principles cited by the ethicist most help to justify the reasoning in which one of the following?",
@@ -442,7 +498,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Flaw",
-    "reasoningType": "Lack of Support vs. False Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Although human economic exchange predates historical records, it is clear that the very first economies were based on barter and that money came later. This can be inferred from occasions in history when, in isolated places, currency largely disappeared from the local economy. At such times, the economy typically reverts to the original barter system, but then quickly abandons this form of exchange when currency becomes available again.",
     "questionStem": "Which one of the following most accurately describes a flaw in the argument’s reasoning?",
@@ -460,7 +518,9 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "A scientific study provides evidence that crows are capable of recognizing threatening people and can even pass their concerns on to other crows. Researchers wearing rubber caveman masks trapped wild crows and then released them in the same area. Years later, people wearing the same masks near where the crows had been trapped were shrieked at and dive-bombed by crows.",
     "questionStem": "The argument depends on the assumption that",
@@ -484,7 +544,9 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Must be false",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Political scientist: When a bill comes before a legislative body, the majority of the representatives are usually prepared to vote for it. Moreover, when a bill is at first unlikely to get approval by the majority, a compromise regarding the content of the bill is usually possible, allowing its passage into law. Such compromises are impossible, however, when the bill concerns an issue of fundamental importance to a large bloc of representatives.",
     "questionStem": "If the political scientist’s statements are true, which one of the following must be false?",
@@ -502,7 +564,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Link Assumption",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The more demand there is for something, the easier it is to sell. Any junkyard will buy a used car that is less than ten years old, because the parts can easily be resold. However, because there is little demand for car parts that are ten years old or older, junkyards tend not to buy those cars. Thus, used cars that are less than ten years old are generally easier to sell than are cars that are ten years old or older.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",

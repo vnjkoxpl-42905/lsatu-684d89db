@@ -4,7 +4,9 @@
     "sectionNumber": 2,
     "questionNumber": 1,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Editorial: The city has chosen a contractor to upgrade the heating systems in public buildings. Only 40 percent of the technicians employed by this contractor are certified by the Heating Technicians Association. So the city selected a contractor 60 percent of whose technicians are unqualified, which is an outrage.",
     "questionStem": "Which one of the following is an assumption required by the argument in the editorial?",
@@ -27,7 +29,7 @@
     "sectionNumber": 2,
     "questionNumber": 2,
     "questionType": "Resolve, reconcile, or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "Jeneta: Increasingly, I’ve noticed that when a salesperson thanks a customer for making a purchase, the customer also says “Thank you” instead of saying “You’re welcome.” I’ve even started doing that myself. But when a friend thanks a friend for a favor, the response is always “You’re welcome.”",
     "questionStem": "Which one of the following, if true, most helps to explain the discrepancy that Jeneta observes in people’s responses?",
@@ -45,7 +47,7 @@
     "sectionNumber": 2,
     "questionNumber": 3,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Some video game makers have sold the movie rights for popular games. However, this move is rarely good from a business perspective. After all, StarQuanta sold the movie rights to its popular game Nostroma, but the poorly made film adaptation of the game was hated by critics and the public alike. Subsequent versions of the Nostroma video game, although better than the original, sold poorly. The reasoning in the argument is most vulnerable to criticism in that the argument",
@@ -67,7 +69,9 @@
     "sectionNumber": 2,
     "questionNumber": 4,
     "questionType": "PSA - Find or complete the application (Principle)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Principle: The executive in a given company whose compensation package is determined by advice of an external consultant is likely to be overcompensated if the consultant also has business interests with the company the executive manages.",
     "questionStem": "Which one of the following judgments conforms most closely to the principle stated above?",
@@ -90,7 +94,9 @@
     "sectionNumber": 2,
     "questionNumber": 5,
     "questionType": "Flaw (Flaw)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Science writer: Lemaître argued that the universe began with the explosion of a “primeval atom,” a singular point of infinite gravity in space and time. If this is correct, our current observations should reveal galaxies accelerating away from one another. This is precisely what we observe. Yet because there is another theory—the oscillating universe theory—that makes exactly this same prediction, Lemaître’s theory must be considered inadequate.",
     "questionStem": "Which one of the following most accurately describes a flaw in the science writer’s reasoning?",
@@ -108,7 +114,9 @@
     "sectionNumber": 2,
     "questionNumber": 6,
     "questionType": "PSA - Find the rule (Principle)",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Critic: The criticism of the popular film comedy Quirks for not being realistic is misguided. It is certainly true that the characters are too stylized to be real people. That could be problematic, but in this case the resulting film is funny. And that is the important thing for a comedy.",
     "questionStem": "Which one of the following principles, if valid, most helps to justify the reasoning in the critic’s argument?",
@@ -130,7 +138,9 @@
     "sectionNumber": 2,
     "questionNumber": 7,
     "questionType": "Parallel flawed method of reasoning (Parallel, Flaw)",
-    "reasoningType": null,
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Party X has recently been accused by its opposition, Party Y, of accepting international campaign contributions, which is illegal. Such accusations are, however, ill founded. Three years ago, Party Y itself was involved in a scandal in which it was discovered that its national committee seriously violated campaign laws.",
     "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning in the argument above?",
@@ -153,7 +163,10 @@
     "sectionNumber": 2,
     "questionNumber": 8,
     "questionType": "Necessary assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Biologist: Marine animals known as box jellyfish have eyes with well-formed lenses capable of producing sharp images that reveal fine detail. But the box jellyfish’s retinas are too far forward to receive a clear image, so these jellyfish can receive only a blurry image that reveals prominent features of objects but not fine detail. This example shows that eyes are adapted only to an animal’s needs rather than to some abstract sense of how a good eye would be designed.",
     "questionStem": "The argument requires assuming which one of the following?",
@@ -175,7 +188,9 @@
     "sectionNumber": 2,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Columnist: Research shows significant reductions in the number of people smoking, and especially in the number of first-time smokers in those countries that have imposed stringent restrictions on tobacco advertising. This provides substantial grounds for disputing tobacco companies’ claims that advertising has no significant causal impact on the tendency to smoke.",
     "questionStem": "Which one of the following, if true, most undermines the columnist’s reasoning?",
@@ -197,7 +212,9 @@
     "sectionNumber": 2,
     "questionNumber": 10,
     "questionType": "Sufficient assumption",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Actor: Bertolt Brecht’s plays are not genuinely successful dramas. The roles in Brecht’s plays express such incongruous motives and beliefs that audiences, as well as the actors playing the roles, invariably find it difficult, at best, to discern any of the characters’ personalities. But, for a play to succeed as a drama, audiences must care what happens to at least some of its characters.",
     "questionStem": "The conclusion of the actor’s argument can be properly drawn if which one of the following is assumed?",
@@ -220,7 +237,7 @@
     "sectionNumber": 2,
     "questionNumber": 11,
     "questionType": "Main conclusion or main point",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Municipal legislator: The mayor proposes that the city accept a lighting company’s gift of several high-tech streetlights. Surely there would be no problem in accepting these despite some people’s fear that the company wants to influence the city’s decision regarding park lighting contracts. The only ulterior motive I can find is the company’s desire to have its products seen by mayors who will visit the city for an upcoming convention. In any case, favoritism in city contracts is prevented by our competitive-bidding procedure.",
     "questionStem": "Which one of the following most accurately expresses the main conclusion of the municipal legislator’s argument?",
@@ -242,7 +259,9 @@
     "sectionNumber": 2,
     "questionNumber": 12,
     "questionType": "Sufficient assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The chairperson should not have released the Election Commission’s report to the public, for the chairperson did not consult any other members of the commission about releasing the report before having it released.",
     "questionStem": "The argument’s conclusion can be properly inferred if which one of the following is assumed?",
@@ -263,7 +282,10 @@
     "sectionNumber": 2,
     "questionNumber": 13,
     "questionType": "Flaw (Flaw)",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "Reformer: A survey of police departments keeps track of the national crime rate, which is the annual number of crimes per 100,000 people. The survey shows no significant reduction in the crime rate in the past 20 years, but the percentage of the population in prison has increased substantially, and public expenditure on prisons has grown at an alarming rate. This demonstrates that putting more people in prison cannot help to reduce crime. A flaw in the reformer’s argument is that it",
@@ -284,7 +306,9 @@
     "sectionNumber": 2,
     "questionNumber": 14,
     "questionType": "Method of reasoning or descriptive",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "",
     "questionStem": "Inez: Space-exploration programs pay for themselves many times over, since such programs result in technological advances with everyday, practical applications. Space exploration is more than the search for knowledge for its own sake; investment in space exploration is such a productive investment in developing widely useful technology that we can’t afford not to invest in space exploration. Winona: It is absurd to try to justify funding for space exploration merely by pointing out that such programs will lead to technological advances. If technology with practical applications is all that is desired, then it should be funded directly. Winona responds to Inez by",
@@ -307,7 +331,9 @@
     "sectionNumber": 2,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "",
     "questionStem": "Marketing consultant: Last year I predicted that LRG’s latest advertising campaign would be unpopular with customers and ineffective in promoting new products. But LRG ignored my predictions and took the advice of a competing consultant. This season’s sales figures show that sales are down and LRG’s new products are selling especially poorly. Thus, the advertising campaign was ill conceived. The marketing consultant’s reasoning is most vulnerable to criticism on the grounds that",
@@ -329,7 +355,9 @@
     "sectionNumber": 2,
     "questionNumber": 16,
     "questionType": "Method of reasoning or descriptive",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "",
     "questionStem": "The top prize in architecture, the Pritzker Prize, is awarded for individual achievement, like Nobel Prizes for science. But architects are judged by their buildings, and buildings are the result of teamwork. As achievements, buildings are not like scientific discoveries, but like movies, which compete for awards for best picture. Thus, it would be better if the top prize in architecture were awarded to the best building rather than the best architect. The argument proceeds by",
@@ -350,7 +378,9 @@
     "sectionNumber": 2,
     "questionNumber": 17,
     "questionType": "Parallel method of reasoning (Parallel)",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "If Suarez is not the most qualified of the candidates for sheriff, then Anderson is. Thus, if the most qualified candidate is elected and Suarez is not elected, then Anderson will be.",
     "questionStem": "The reasoning in which one of the following is most similar to the reasoning in the argument above?",
@@ -371,7 +401,9 @@
     "sectionNumber": 2,
     "questionNumber": 18,
     "questionType": "Flaw (Flaw)",
-    "reasoningType": "Comparison",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "Critic: An art historian argues that because fifteenth- century European paintings were generally more planimetric (that is, two-dimensional with no attempt at suggesting depth) than were sixteenth- century paintings, fifteenth-century painters had a greater mastery of painting than did sixteenth- century painters. However, this conclusion is wrong. Fifteenth-century European painters did not have a greater mastery of painting, for the degree to which a painting is planimetric is irrelevant to the painter’s mastery. The argument is flawed in that it",
@@ -393,7 +425,9 @@
     "sectionNumber": 2,
     "questionNumber": 19,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A carved flint object depicting a stylized human head with an open mouth was found in a Stone Age tomb in Ireland. Some archaeologists believe that the object was a weapon—the head of a warrior’s mace—but it is too small for that purpose. Because of its size and the fact that an open mouth symbolizes speaking, the object was probably the head of a speaking staff, a communal object passed around a small assembly to indicate who has the right to speak.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -417,7 +451,10 @@
     "sectionNumber": 2,
     "questionNumber": 20,
     "questionType": "Necessary assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "",
     "questionStem": "The advent of chemical fertilizers led the farmers in a certain region to abandon the practice of periodically growing a “green-manure” crop, such as alfalfa, in a field to rejuvenate its soil. As a result, the soil structure in a typical farm field in the region is poor. So to significantly improve the soil structure, farmers will need to abandon the use of chemical fertilizers. The argument relies on the assumption that",
@@ -441,7 +478,9 @@
     "sectionNumber": 2,
     "questionNumber": 21,
     "questionType": "Must be true",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Most of the students who took Spanish 101 at the university last semester attended every class session. However, each student who received a grade lower than B minus missed at least one class session.",
     "questionStem": "Which one of the following statements about the students who took Spanish 101 at the university last semester can be properly inferred from the information above?",
@@ -466,7 +505,9 @@
     "sectionNumber": 2,
     "questionNumber": 22,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Because the native salmon in Lake Clearwater had nearly disappeared, sockeye salmon were introduced in 1940. After being introduced, this genetically uniform group of sockeyes split into two distinct populations that do not interbreed, one inhabiting deep areas of the lake and the other inhabiting shallow areas. Since the two populations now differ genetically, some researchers hypothesize that each has adapted genetically to its distinct habitat. Which",
     "questionStem": "of the following, if true, most strongly supports the researchers’ hypothesis?",
@@ -489,7 +530,10 @@
     "sectionNumber": 2,
     "questionNumber": 23,
     "questionType": "Most strongly supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "A developing country can substantially increase its economic growth if its businesspeople are willing to invest in modern industries that have not yet been pursued there. But being the first to invest in an industry is very risky. Moreover, businesspeople have little incentive to take this risk since if the business succeeds, many other people will invest in the same industry, and the competition will cut into their profits.",
     "questionStem": "The statements above, if true, most strongly support which one of the following claims?",
@@ -511,7 +555,10 @@
     "sectionNumber": 2,
     "questionNumber": 24,
     "questionType": "Resolve, reconcile, or explain",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "A survey of a city’s concertgoers found that almost all of them were dissatisfied with the local concert hall. A large majority of them expressed a strong preference for wider seats and better acoustics. And, even though the survey respondents were told that the existing concert hall cannot feasibly be modified to provide these features, most of them opposed the idea of tearing down the existing structure and replacing it with a concert hall with wider seats and better acoustics.",
     "questionStem": "Which one of the following, if true, most helps to explain the apparent conflict in the concertgoers’ views, as revealed by the survey?",
@@ -529,7 +576,9 @@
     "sectionNumber": 2,
     "questionNumber": 25,
     "questionType": "Fill in the blank (Fill-in-the-blank)",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Student: Before completing my research paper, I want to find the book from which I copied a passage to quote in the paper. Without the book, I will be unable to write an accurate citation, and without an accurate citation, I will be unable to include the quotation. Hence, since the completed paper will be much better with the quotation than without, _______.",
     "questionStem": "Which one of the following most logically completes the student’s argument?",

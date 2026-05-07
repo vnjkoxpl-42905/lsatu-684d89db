@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Critic: While the political message in this short story is interesting enough that the author could have based an essay, or a different short story, around that message alone, it should not have been included in this story. The story’s primary focus is humor, and the political message distracts from the story’s humorous effect.",
     "questionStem": "Which one of the following principles, if valid, most strongly supports the critic’s reasoning?",
@@ -26,7 +28,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Entertainment reporter: Unlike most major motion pictures, the release of the upcoming film Escapade II has not been preceded by free, advance screenings that show the film to select audiences for promotional purposes. With movie research showing awareness of the film at 96 percent, and with around 60 percent of filmgoers indicating “definite interest” in the film, the film’s distributors must have decided not to do anything that could reduce interest in the film.",
     "questionStem": "The entertainment reporter’s explanation for why there have been no advance screenings of Escapade II relies on assuming that the distributors believe that",
@@ -48,7 +52,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Classification",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Anthropology professor: The new class I’m offering has been listed in the course catalog as a literature class, but it should be listed instead as an anthropology class. The texts we will study are all novels, but we will be examining them as sources of information about different cultures. Dean: The class is listed as it should be. All the readings in the class are works of literature.",
     "questionStem": "The dialogue provides the most support for the claim that the anthropology professor and the dean disagree over whether",
@@ -71,7 +77,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Ad Hominem / Hypocrisy",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Toy manufacturer: Our competitors argue that we should withdraw our KlopperKidz toys from stores because several children have allegedly been injured by them, and manufacturers should voluntarily withdraw toys that can lead to injury. Their allegations, however, have not been proved. Furthermore, even if they were proved, our competitors’ argument would still not merit serious attention, because their toys have caused injuries, and they have not volunteered to withdraw them from stores.",
     "questionStem": "The toy manufacturer’s argument is most vulnerable to the criticism that it",
@@ -93,7 +101,10 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Researcher: Some scholars maintain that the first government other than China to issue any form of paper currency was the Massachusetts colony in 1690. But these scholars are incorrect. During a coin shortage in New France in 1685, its government was unable to use coins to pay soldiers stationed in Quebec. Instead, playing cards were assigned an official value and issued as pay. These cards, which could be used to buy goods, were convertible to coins, which later arrived on supply ships from France.",
     "questionStem": "The researcher’s conclusion is properly drawn if which one of the following is assumed?",
@@ -117,7 +128,7 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "A tiny crab that lives 550 meters below the surface of the Gulf of Mexico has been found to have eyes that are sensitive to ultraviolet light. But ultraviolet light from the sun cannot penetrate to that depth. If the crab’s ultraviolet receptors developed as an adaptation to the depths, they are probably for detecting light from bioluminescent organisms. In that case, since the crab is not itself bioluminescent, it probably hunts bioluminescent prey.",
     "questionStem": "Which one of the following, if true, would most weaken the argument?",
@@ -135,7 +146,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Paradox",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Last year a local advertising agency produced many of its television commercials in a studio with improperly installed equipment. As a result, the sound in these commercials was not perfectly synchronized with the picture; this was particularly noticeable when people were shown talking, and it even prompted complaints from some viewers. However, local automobile dealerships that relied on television commercials from this agency tended to have greater sales increases during this period than did local dealerships using television commercials from other agencies instead.",
     "questionStem": "Which one of the following, if true, most helps to explain the sales discrepancy described above?",
@@ -153,7 +166,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Role",
-    "reasoningType": "Argument Part",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Sinking large, obsolete pieces of equipment in coral areas is said to provide much-needed habitats for marine life. This, proponents say, shows that the practice is ecologically sound. However, it may be that this practice is ecologically unsound even if it does provide much-needed habitats, for the practice may upset an area’s ecological balance in unknown ways.",
     "questionStem": "Which one of the following most accurately describes the role played in the argument by the claim that the practice of sinking large, obsolete pieces of equipment in coral areas may upset an area’s ecological balance in unknown ways?",
@@ -175,7 +190,9 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Having cameras at traffic intersections to automatically ticket cars that run red lights might raise revenue for municipalities but does not increase traffic safety. Accidents actually increase at intersections that have cameras: There are fewer side-impact collisions but significantly more rear-impact collisions.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
@@ -199,7 +216,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Relative vs. Absolute",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "For years, Glenville had the highest apartment rents in the metropolitan region in which it is located. This year, Glenville has only the third highest apartment rents in the region. Therefore, it must cost less to rent an apartment in Glenville now than it used to.",
     "questionStem": "Which one of the following arguments demonstrates most effectively by parallel reasoning that the argument above is flawed?",
@@ -222,7 +241,9 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Paradox",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "The crocodiles of Lake Victoria, in East Africa, sometimes attack humans that venture into their habitat. The number of attacks on people by these crocodiles has increased significantly in the last 20 years. This is despite the fact that the number of crocodiles in the lake has not increased in that time and the crocodiles have no less food available.",
     "questionStem": "Which one of the following, if true, most helps to explain the increase in the incidence of crocodile attacks on humans?",
@@ -245,7 +266,9 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "When the annual period of daylight saving time begins, and clocks are set forward one hour, many people lose an hour of sleep. On the following day, according to government statistics, the incidence of traffic accidents is 7 percent greater than the average for that time of year. It is therefore likely that sleep deprivation is responsible for this spike in traffic accidents.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
@@ -269,7 +292,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Main Conclusion",
-    "reasoningType": "Main Conclusion",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Every human’s brain contains a mental representation of the external world. Yet, this representation necessarily leaves out much detail. After all, the external world is much larger and more complex than the human brain, and there is no way an object could completely represent something larger and more complex than itself.",
     "questionStem": "Which one of the following most accurately expresses the conclusion drawn in the argument?",
@@ -290,7 +315,7 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Principle-Conform",
-    "reasoningType": "Principle",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Generally, open discussion of a false and pernicious idea diminishes its appeal. Even in a flourishing democracy, however, certain misconceptions are so alluring that they tend to gain in popularity when they are debated.",
     "questionStem": "Which one of the following principles is most clearly illustrated by the statements above?",
@@ -313,7 +338,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Flaw",
-    "reasoningType": "Straw Man",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Schmidt: In enforcing township rules on how homeowners maintain their property, it is a mistake to encourage residents to report violations by their neighbors. Doing so engenders bad feelings among neighbors and leads to tips based on spite. Chandha: It’s not a mistake. Without rules on how homeowners maintain their property, a single homeowner could degrade the appearance of an entire neighborhood.",
     "questionStem": "Chandha’s response is most vulnerable to criticism on the grounds that it",
@@ -334,7 +359,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Role",
-    "reasoningType": "Argument Part",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Some have argued that once it becomes necessary for us to think about computers in terms of beliefs and desires in order to understand how they function, we can rightly say that computers have beliefs and desires. However, we already need to think about what computers believe and desire in order to understand how they function, and thus the suggested criterion for ascribing beliefs and desires to computers implies that the computers that exist now have beliefs and desires. So the suggested criterion is obviously flawed.",
     "questionStem": "The claim that the computers that exist now have beliefs and desires plays which one of the following roles in the argument above?",
@@ -358,7 +383,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Manufacturer: If our biggest competitor were to go out of business, some of the specialized suppliers that we both use would be bankrupted. So, in order for us to stay in business, our biggest competitor must stay in business.",
     "questionStem": "The conclusion drawn above follows logically if which one of the following is assumed?",
@@ -381,7 +408,7 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Parallel Reasoning",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Jack’s dog howls whenever a train goes by. Occasionally a train goes by while Jack is washing his dog. So Jack’s dog must sometimes howl while he is washing it.",
     "questionStem": "The pattern of reasoning in which one of the following arguments is most similar to that in the argument above?",
@@ -403,7 +430,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Most Strongly Supported",
-    "reasoningType": "Causal Reasoning",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "When plants are growing quickly, they take more carbon dioxide out of the atmosphere than they release into it. But when they are growing very slowly, the reverse is true. Any substantial increase in the amount of carbon dioxide released into the atmosphere causes temperatures to increase in the tropics, where the bulk of Earth’s plants are found. And the more temperatures increase in the tropics, the more slowly, on average, the plants there grow.",
     "questionStem": "Which one of the following is most strongly supported by the information above?",
@@ -425,7 +454,7 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Main Conclusion",
-    "reasoningType": "Main Conclusion",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Essayist: Since ancient times humans have relied on myths to try to explain our place in the cosmos. In this respect the claims of science are not different from stories about the gods of Homer. The question of the truth of science, as with myth, is merely the question of how well it helps us to cope with the human condition. So while science undoubtedly can count some successes, that it falls short of complete truth is amply demonstrated by the degree to which science is responsible for the breakdown of society’s key institutions.",
     "questionStem": "Which one of the following most accurately states the main conclusion of the essayist’s argument?",
@@ -447,7 +476,7 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Flaw",
-    "reasoningType": "Net Effect",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "Sodium nitrate is frequently added to sausages to make them pink. However, sodium nitrate does not contribute to preventing spoilage of the meat, and excessive use of it increases the level of sodium in the sausages beyond what is necessary for good taste. Because consumption of an excessive level of sodium can lead to health problems, clearly sodium nitrate should never be added to sausages.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on which one of the following grounds?",
@@ -469,7 +498,7 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Must Be True",
-    "reasoningType": "Conditional Reasoning",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "For a zoo to make a valuable contribution to the community, it must be well run. All large zoos that are well run have some full-time veterinarians on staff, but many small zoos that are well run have only part-time veterinarians. In addition, there are many large zoos that make valuable contributions to their communities and are open all year, while most small zoos are closed in winter.",
     "questionStem": "If the statements above are true, then which one of the following must also be true?",
@@ -491,7 +520,7 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Flaw",
-    "reasoningType": "Grouping / Overlap",
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Principal: All of our school’s rural students participate in the school’s lunch program because they live too far away to go home for lunch, while roughly one half of their urban counterparts also take part in the program. Some participants in this program, including some of the school’s strongest academic achievers, also participate in extracurricular activities such as sports and drama. Therefore, we know that some of the participants in extracurricular activities are rural students and some are urban students.",
     "questionStem": "The reasoning in the principal’s argument is flawed because this argument",
@@ -513,7 +542,7 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": "Rule-Application",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Principle: An author of an article that has appeared in a magazine should be allowed to respond in that magazine to harsh criticism of the article if the criticism was published in the same magazine, or, alternatively, if the criticism was published in another magazine and is unfair. Application: McFinton should be allowed to publish a response in Speculator’s Digest to Wallace’s most recent article, because Wallace’s article is harshly critical of McFinton’s essay on self-deception.",
     "questionStem": "Which one of the following, if true, justifies the above application of the principle?",
@@ -536,7 +565,7 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Lack of Support vs. False Conclusion",
+    "reasoningType": [],
     "questionDifficulty": 5,
     "stimulus": "Paleontologist: Most biologists accept that birds evolved from dinosaurs known as maniraptors. Some biologists have not accepted this theory, because the oldest known bird fossils predate the oldest known maniraptor fossils by several million years. This reasoning is misguided, however; the fact that no maniraptor fossils of a certain age have been discovered hardly rules out the possibility that such fossils exist.",
     "questionStem": "The paleontologist’s argument is most vulnerable to criticism on which one of the following grounds?",

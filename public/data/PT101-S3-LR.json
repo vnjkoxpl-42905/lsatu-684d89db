@@ -4,7 +4,9 @@
     "sectionNumber": 3,
     "questionNumber": 1,
     "questionType": "Agree/Disagree",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Francis: Failure to become properly registered to vote prevents one-third of the voting-age citizens of Lagonia from voting. Some local election boards have been absorbing this fact by hiring extra help and holding training sessions for staff who help register citizens. However, these measures make the process more cumbersome, not less, and undermine public confidence in the effects of voting.\nSharon: The high number of citizens not registered to vote has persisted despite many attempts by local election boards to simplify the registration process. Thus, failure to register is due to apathy, not to any problems with the registration process.",
     "questionStem": "The main issue in dispute between Francis and Sharon is",
@@ -25,7 +27,9 @@
     "sectionNumber": 3,
     "questionNumber": 2,
     "questionType": "Flaw",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Advertisement: Anyone who thinks moisturizers are not important for beautiful skin should consider what happens to the earth, the skin of the world, in times of drought. Without regular infusions of moisture the ground becomes lined and cracked and its lush loveliness fades away. Thus your skin, too, should be protected from the ravages caused by lack of moisture; give it the protection provided by regular infusions of Dewyfresh, the drought-defying moisturizer.",
     "questionStem": "The Dewyfresh advertisement exhibits which one of the following errors of reasoning?",
@@ -46,7 +50,9 @@
     "sectionNumber": 3,
     "questionNumber": 3,
     "questionType": "Method",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 2,
     "stimulus": "M: The Greek alphabet must have been invented by some individual who knew the Phoenician writing system and who wanted to have some way of recording Homeric epics and thereby preserving expressions of a highly developed tradition of oral poetry.\nP: Your hypothesis is laughable! What would have been the point of such a person’s writing Homeric epics down? Surely a person who knew them well enough to write them down would not need to read them; and no one else could read them, according to your hypothesis.",
     "questionStem": "Which one of the following is an argumentative strategy that P uses in responding to M?",
@@ -68,7 +74,9 @@
     "sectionNumber": 3,
     "questionNumber": 4,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "M: The Greek alphabet must have been invented by some individual who knew the Phoenician writing system and who wanted to have some way of recording Homeric epics and thereby preserving expressions of a highly developed tradition of oral poetry.\nP: Your hypothesis is laughable! What would have been the point of such a person’s writing Homeric epics down? Surely a person who knew them well enough to write\nthem down would not need to read them; and no one else could read them, according to your hypothesis.",
     "questionStem": "P’s argument is vulnerable to which one of the following criticisms?",
@@ -86,7 +94,9 @@
     "sectionNumber": 3,
     "questionNumber": 5,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Bacteria from food can survive for several days on the surface of plastic cutting boards, but bacteria can penetrate wooden cutting boards almost immediately, leaving the surface free of contamination. Therefore, wooden cutting boards, unlike plastic cutting boards, need not be washed in order to prevent their contaminating food that is cut on them; wiping them off to remove food debris is sufficient.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
@@ -111,7 +121,10 @@
     "sectionNumber": 3,
     "questionNumber": 6,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Asthmagon was long considered the most effective of the drugs known as beta-2 agonists, designed to alleviate asthma attacks. However, studies conducted in Rhiago between 1981 and 1987 revealed that nearly one out of every five of the asthma patients under observation who took asthmagon suffered serious side effects after taking the drug. Citing this statistic, some doctors argue that asthmagon should be banned as an anti-asthma drug.",
     "questionStem": "Which one of the following, if true, most weakens the case for the proposed ban of asthmagon?",
@@ -132,7 +145,9 @@
     "sectionNumber": 3,
     "questionNumber": 7,
     "questionType": "Most Supported",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 1,
     "stimulus": "In response to requests made by the dairy industry the government is considering whether to approve the synthetic hormone BST for use in dairy cows. BST increases milk production but also leads to recurring udder inflammation, decreased fertility, and symptoms of stress in cows who receive the hormone. All of these problems can be kept under control with constant veterinary care, but such levels of veterinary\nhelp would cost big farms far less per cow than they would small farms.",
     "questionStem": "If the statements above are true, which one of the following claims is most strongly supported by them?",
@@ -150,7 +165,9 @@
     "sectionNumber": 3,
     "questionNumber": 8,
     "questionType": "Must be True",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "Jones is selling a house to Smith. The contract between the two specifies that for up to a year after ownership is transferred, Jones will be responsible for repairing any “major structural defects,” defined as defects in the roof or roof-supporting components of the house, that might be found. Jones is not responsible for any other repairs. The house has a truss roof, which means that the only walls that support the roof are the exterior walls.",
     "questionStem": "It can be properly concluded from the information above that",
@@ -168,7 +185,7 @@
     "sectionNumber": 3,
     "questionNumber": 9,
     "questionType": "Weaken",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "The play Mankind must have been written between 1431 and 1471. It cannot have been written before 1431, for in that year the rose noble, a coin mentioned in the play, was first circulated. The play cannot have been written after 1471, since in that year King Henry VI died, and he is mentioned as a living monarch in the play’s dedication.",
     "questionStem": "The argument would be most seriously weakened if which one of the following were discovered?",
@@ -189,7 +206,9 @@
     "sectionNumber": 3,
     "questionNumber": 10,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "All material bodies are divisible into parts, and everything divisible is imperfect. It follows that all material bodies are imperfect. It likewise follows that the spirit is not a material body.",
     "questionStem": "The final conclusion above follows logically if which one of the following is assumed?",
@@ -210,7 +229,10 @@
     "sectionNumber": 3,
     "questionNumber": 11,
     "questionType": "Must be True",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Special kinds of cotton that grow fibers of green or brown have been around since the 1930s but only recently became commercially feasible when a long-fibered variety that can be spun by machine was finally bred. Since the cotton need not be dyed, processing plants avoid the expense of dyeing and the ecological hazards of getting rid of leftover dye and by-products.",
     "questionStem": "Which one of the following can be properly inferred from the passage?",
@@ -228,7 +250,7 @@
     "sectionNumber": 3,
     "questionNumber": 12,
     "questionType": "Flaw",
-    "reasoningType": "Famous Flaws",
+    "reasoningType": [],
     "questionDifficulty": 3,
     "stimulus": "People in the tourist industry know that excessive development of seaside areas by the industry damages the environment. Such development also hurts the tourist industry by making these areas unattractive to tourists, a fact of which people in the tourist industry are well aware. People in the tourist industry would never knowingly do anything to damage the industry. Therefore, they would never knowingly damage the seaside environment, and people who are concerned about damage to the seaside environment thus have nothing to fear from the tourist industry.",
     "questionStem": "The reasoning in the argument is most vulnerable to criticism on which one of the following grounds?",
@@ -246,7 +268,9 @@
     "sectionNumber": 3,
     "questionNumber": 13,
     "questionType": "Necessary Assumption",
-    "reasoningType": null,
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 1,
     "stimulus": "Health officials claim that because the foods and beverages mentioned or consumed on many television programs are extremely low in nutritional\nvalue, watching television has a bad influence on the dietary habits of television viewers.",
     "questionStem": "The claim by health officials depends on the presupposition that",
@@ -269,7 +293,10 @@
     "sectionNumber": 3,
     "questionNumber": 14,
     "questionType": "Paradox",
-    "reasoningType": "Curious Fact",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "In an effort to boost sales during the summer months, which are typically the best for soft-drink sales, Foamy Soda lowered its prices. In spite of this, however, the sales of Foamy Soda dropped during the summer months.",
     "questionStem": "Each of the following, if true, contributes to reconciling the apparent discrepancy indicated above except:",
@@ -290,7 +317,7 @@
     "sectionNumber": 3,
     "questionNumber": 15,
     "questionType": "Must be True",
-    "reasoningType": null,
+    "reasoningType": [],
     "questionDifficulty": 4,
     "stimulus": "Dr. Z: Many of the characterizations of my work offered by Dr. Q are imprecise, and such characterizations do not provide an adequate basis for sound criticism of my work.",
     "questionStem": "Which one of the following can be properly inferred from Dr. Z’s statement?",
@@ -311,7 +338,7 @@
     "sectionNumber": 3,
     "questionNumber": 16,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [],
     "questionDifficulty": 1,
     "stimulus": "K, a research scientist, was accused of having falsified laboratory data. Although the original data in question have disappeared, data from K’s more recent experiments have been examined and clearly none of them were falsified. Therefore, the accusation should be dismissed.",
     "questionStem": "Which one of the following contains questionable reasoning that is most similar to that in the argument above?",
@@ -334,7 +361,9 @@
     "sectionNumber": 3,
     "questionNumber": 17,
     "questionType": "Method",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 3,
     "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
     "questionStem": "The argument in the passage proceeds by doing which one of the following?",
@@ -356,7 +385,9 @@
     "sectionNumber": 3,
     "questionNumber": 18,
     "questionType": "Necessary Assumption",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 5,
     "stimulus": "The widespread staff reductions that accompanied the recent downturn in the economy were often accompanied by a fall in retail sales. A region’s retail sales depend on the spending power of people employed in the region: the more people employed, the greater are their resources, and so the higher are their expenditures. Since the downturn, employment has fallen. Therefore, retail sales have fallen because people are spending less than they used to.",
     "questionStem": "Which one of the following is an assumption on which the argument relies?",
@@ -382,7 +413,9 @@
     "sectionNumber": 3,
     "questionNumber": 19,
     "questionType": "Sufficient Assumption",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 3,
     "stimulus": "In Australia the population that is of driving age has grown larger over the last five years, but the annual number of traffic fatalities has declined. This leads to the conclusion that, overall, the driving-age population of Australia consists of more skillful drivers now than five years ago.",
     "questionStem": "Each of the statements below, if true, weakens the argument except:",
@@ -406,7 +439,9 @@
     "sectionNumber": 3,
     "questionNumber": 20,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Anthropological studies indicate that distinct cultures differ in their moral codes. Thus, as long as\nthere are distinct cultures, there are no values shared across cultures.",
     "questionStem": "Each of the following, if true, would weaken the argument except:",
@@ -428,7 +463,9 @@
     "sectionNumber": 3,
     "questionNumber": 21,
     "questionType": "Parallel Flaw",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 2,
     "stimulus": "Newspaper editor: Law enforcement experts, as well as most citizens, have finally come to recognize that legal prohibitions against gambling all share a common flaw: no matter how diligent the effort, the laws are impossible to enforce. Ethical qualms notwithstanding, when a law fails to be effective, it should not be a law. That is why there should be no legal prohibition against gambling.",
     "questionStem": "Which one of the following, if assumed, allows the argument’s conclusion to be properly drawn?",
@@ -451,7 +488,9 @@
     "sectionNumber": 3,
     "questionNumber": 22,
     "questionType": "Weaken",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Copernicus’s astronomical system is superior to Ptolemy’s and was so at the time it was proposed, even though at that time all observational evidence was equally consistent with both theories. Ptolemy believed that the stars revolved around the earth at great speeds. This struck Copernicus as unlikely; he correctly thought that a simpler theory is that the earth rotates on its axis.",
     "questionStem": "The argument most closely conforms to which one of the following principles?",
@@ -474,7 +513,10 @@
     "sectionNumber": 3,
     "questionNumber": 23,
     "questionType": "Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Causation",
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "Essayist: The existence of a moral order in the universe— i.e., an order in which bad is always eventually punished and good rewarded—depends upon human souls being immortal. In some cultures this moral order is regarded as the result of a karma that controls how one is reincarnated, in others it results from the actions of a supreme being who metes out justice to people after their death. But however a moral order is represented, if human souls are immortal, then it follows that the bad will be punished.",
     "questionStem": "Which one of the following most accurately describes a flaw in the essayist’s reasoning?",
@@ -495,7 +537,9 @@
     "sectionNumber": 3,
     "questionNumber": 24,
     "questionType": "Principle-Conform",
-    "reasoningType": "Conditional",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 5,
     "stimulus": "No mathematical proposition can be proven true by observation. It follows that it is impossible to know any mathematical proposition to be true.",
     "questionStem": "The conclusion follows logically if which one of the following is assumed?",
@@ -519,7 +563,9 @@
     "sectionNumber": 3,
     "questionNumber": 25,
     "questionType": "Flaw",
-    "reasoningType": "Conditional Logic",
+    "reasoningType": [
+      "Comparative Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Economist: In order to decide what to do about protecting the ozone layer, we must determine the monetary amount of the economic resources that we would willingly expend to protect it. Such a determination amounts to a calculation of the monetary value of the ozone layer. Environmentalists argue that the ozone layer does not have a calculable monetary value. However, we would not willingly expend an amount equal to all of the world’s economic resources to protect the ozone layer,\nso the ozone layer is demonstrably worth less than that amount. Thus, the ozone layer has a calculable monetary value.",
     "questionStem": "The reasoning in the economist’s argument is flawed in that the argument",
@@ -541,7 +587,9 @@
     "sectionNumber": 3,
     "questionNumber": 26,
     "questionType": "Principle-Strengthen",
-    "reasoningType": "Causation",
+    "reasoningType": [
+      "Conditional Reasoning"
+    ],
     "questionDifficulty": 4,
     "stimulus": "Columnist on the arts: My elected government representatives were within their rights to vote to support the arts with tax dollars. While funded by the government, however, some artists have produced works of art that are morally or aesthetically offensive to many taxpayers. Nonetheless, my conclusion is that no taxpayers have been treated unjustly whose tax dollars are used to fund some particular work of art that they may find abominable.",
     "questionStem": "Which one of the following principles, if valid, most supports the columnist’s argument?",
