@@ -34,6 +34,9 @@ interface HomeworkSetRow {
   id: string;
   title: string;
   question_qids: string[] | null;
+  is_guided_set?: boolean | null;
+  guided_set_type?: string | null;
+  estimated_minutes?: number | null;
 }
 
 import { BOOTCAMPS } from '@/lib/bootcamps';
@@ -91,9 +94,12 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     if (type !== 'homework') return;
     let cancelled = false;
     (async () => {
-      const { data } = await supabase
+      // Guided-set columns aren't in the auto-generated Supabase types yet.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (supabase as any)
         .from('homework_sets')
-        .select('id,title,question_qids')
+        .select('id,title,question_qids,is_guided_set,guided_set_type,estimated_minutes')
+        .order('is_guided_set', { ascending: false })
         .order('created_at', { ascending: false })
         .limit(50);
       if (!cancelled) setHomeworkSets((data ?? []) as HomeworkSetRow[]);
@@ -290,9 +296,41 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
               className="mt-1 w-full text-sm rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-zinc-100"
             >
               <option value="">— No specific set —</option>
-              {homeworkSets.map((h) => (
-                <option key={h.id} value={h.id}>{h.title}</option>
-              ))}
+              {(() => {
+                const guided = homeworkSets.filter((h) => h.is_guided_set);
+                const regular = homeworkSets.filter((h) => !h.is_guided_set);
+                return (
+                  <>
+                    {guided.length > 0 && (
+                      <optgroup label="Guided drill sets (with instruction card)">
+                        {guided.map((h) => {
+                          const meta = [
+                            h.guided_set_type,
+                            h.estimated_minutes != null ? `~${h.estimated_minutes} min` : null,
+                          ]
+                            .filter(Boolean)
+                            .join(' · ');
+                          return (
+                            <option key={h.id} value={h.id}>
+                              {h.title}
+                              {meta ? `  (${meta})` : ''}
+                            </option>
+                          );
+                        })}
+                      </optgroup>
+                    )}
+                    {regular.length > 0 && (
+                      <optgroup label={guided.length > 0 ? 'Regular sets' : 'Sets'}>
+                        {regular.map((h) => (
+                          <option key={h.id} value={h.id}>
+                            {h.title}
+                          </option>
+                        ))}
+                      </optgroup>
+                    )}
+                  </>
+                );
+              })()}
             </select>
           </div>
         )}
