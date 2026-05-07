@@ -173,6 +173,10 @@ export default function AcademyFoyer() {
           )[0];
         const route = lastBootcamp ? resolveItemRoute(lastBootcamp) : null;
         navigate(route ?? "/bootcamps");
+      } else if (itemId === "find") {
+        // Find is a content-overlay node — single click opens the inline
+        // FoyerFindCard via renderOrbitalExpanded. Double-click on Find is
+        // intentionally a no-op so the overlay doesn't navigate away.
       }
     },
     [navigate, prefs.orbital, classroomItems],
