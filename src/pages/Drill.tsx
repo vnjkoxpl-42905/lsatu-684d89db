@@ -1539,12 +1539,12 @@ function DrillContent() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentQuestion, brEnabled]);
 
-  // Start timer on mount if applicable
+  // Start timer on mount if a TimerProvider is present (countdown OR stopwatch).
   React.useEffect(() => {
-    if (hasTimer && timer && !timer.running) {
+    if (timer && !timer.running && !timer.isPaused) {
       timer.start();
     }
-  }, [hasTimer, timer]);
+  }, [timer]);
 
   // Handle session completion and post-section flow
   // Show post-section screens (must be BEFORE the session/currentQuestion check)
