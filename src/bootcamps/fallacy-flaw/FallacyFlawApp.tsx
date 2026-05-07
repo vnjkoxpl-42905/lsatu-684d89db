@@ -8,6 +8,7 @@
 
 import React, { useState, useCallback, lazy, Suspense } from 'react';
 import type { DayId } from './lib/store';
+import { ModuleStoreContext, mainModuleStore, previewModuleStore } from './lib/store';
 import './fallacy-flaw.css';
 
 const BootcampLanding = lazy(() =>
@@ -54,10 +55,12 @@ function ViewFallback() {
 
 interface Props {
   userName: string;
+  previewMode?: boolean;
 }
 
-export default function FallacyFlawApp({ userName }: Props) {
+export default function FallacyFlawApp({ userName, previewMode = false }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const store = previewMode ? previewModuleStore : mainModuleStore;
 
   const selectDay = useCallback((day: DayId) => {
     setActiveTab(day);
@@ -75,64 +78,66 @@ export default function FallacyFlawApp({ userName }: Props) {
   }, []);
 
   return (
-    <div className="ff-bootcamp bg-paper text-ink min-h-screen">
-      {/* Masthead */}
-      <header className="border-b border-rule">
-        <div className="mx-auto grid max-w-6xl grid-cols-3 items-baseline gap-4 px-6 py-5">
-          <div className="protocol text-ink-mute">Vol. I · No. 01</div>
-          <button
-            type="button"
-            onClick={goOverview}
-            className="text-center display-title text-2xl md:text-3xl text-ink hover:text-verdigris-deep transition-colors"
-          >
-            Flaw &amp; Famous Flaws
-          </button>
-          <div className="protocol text-right text-ink-mute">
-            {userName}
+    <ModuleStoreContext.Provider value={store}>
+      <div className="ff-bootcamp bg-paper text-ink min-h-screen">
+        {/* Masthead */}
+        <header className="border-b border-rule">
+          <div className="mx-auto grid max-w-6xl grid-cols-3 items-baseline gap-4 px-6 py-5">
+            <div className="protocol text-ink-mute">Vol. I · No. 01</div>
+            <button
+              type="button"
+              onClick={goOverview}
+              className="text-center display-title text-2xl md:text-3xl text-ink hover:text-verdigris-deep transition-colors"
+            >
+              Flaw &amp; Famous Flaws
+            </button>
+            <div className="protocol text-right text-ink-mute">
+              {previewMode ? 'Student View' : userName}
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Tab navigation */}
-      <nav className="border-b border-rule-soft bg-paper-bright/40 backdrop-blur-sm overflow-x-auto">
-        <ol className="mx-auto flex max-w-6xl items-center gap-1 px-6 py-2 protocol text-ink-mute">
-          {TABS.map((t, i) => {
-            const active = activeTab === t.id;
-            return (
-              <li key={String(t.id)} className="flex items-center gap-1 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => handleTabClick(t.id)}
-                  aria-current={active ? 'page' : undefined}
-                  className={`rounded-sm px-3 py-1.5 text-xs transition-colors ${
-                    active
-                      ? 'bg-verdigris-tint text-verdigris-deep'
-                      : 'hover:text-ink hover:bg-paper-bright'
-                  }`}
-                >
-                  {t.label}
-                </button>
-                {i < TABS.length - 1 && (
-                  <span aria-hidden className="text-rule">/</span>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+        {/* Tab navigation */}
+        <nav className="border-b border-rule-soft bg-paper-bright/40 backdrop-blur-sm overflow-x-auto">
+          <ol className="mx-auto flex max-w-6xl items-center gap-1 px-6 py-2 protocol text-ink-mute">
+            {TABS.map((t, i) => {
+              const active = activeTab === t.id;
+              return (
+                <li key={String(t.id)} className="flex items-center gap-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleTabClick(t.id)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`rounded-sm px-3 py-1.5 text-xs transition-colors ${
+                      active
+                        ? 'bg-verdigris-tint text-verdigris-deep'
+                        : 'hover:text-ink hover:bg-paper-bright'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                  {i < TABS.length - 1 && (
+                    <span aria-hidden className="text-rule">/</span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
 
-      {/* Content */}
-      <main>
-        <Suspense fallback={<ViewFallback />}>
-          {activeTab === 'overview' && <BootcampLanding onSelectDay={selectDay} />}
-          {activeTab === 1 && <Day1View />}
-          {activeTab === 2 && <Day2View />}
-          {activeTab === 3 && <Day3View />}
-          {activeTab === 4 && <Day4View />}
-          {activeTab === 5 && <Day5View />}
-          {activeTab === 6 && <Day6View />}
-        </Suspense>
-      </main>
-    </div>
+        {/* Content */}
+        <main>
+          <Suspense fallback={<ViewFallback />}>
+            {activeTab === 'overview' && <BootcampLanding onSelectDay={selectDay} />}
+            {activeTab === 1 && <Day1View />}
+            {activeTab === 2 && <Day2View />}
+            {activeTab === 3 && <Day3View />}
+            {activeTab === 4 && <Day4View />}
+            {activeTab === 5 && <Day5View />}
+            {activeTab === 6 && <Day6View />}
+          </Suspense>
+        </main>
+      </div>
+    </ModuleStoreContext.Provider>
   );
 }
