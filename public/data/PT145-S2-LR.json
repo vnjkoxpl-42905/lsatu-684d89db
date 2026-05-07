@@ -252,7 +252,10 @@
       "D": "fails to consider whether industries may voluntarily decrease their output of pollutants",
       "E": "fails to consider the possibility that chemicals now classified as pollutants have some beneficial effects not yet discovered"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -306,7 +309,10 @@
       "D": "providing a direct counterexample to a conclusion in order to show that the conclusion is false",
       "E": "claiming that an inference leads to a contradiction in order to show that the inference is unreasonable"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT145",

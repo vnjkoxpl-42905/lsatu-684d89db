@@ -74,7 +74,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Part vs. Whole"
     ]
   },
   {
@@ -373,7 +374,10 @@
       "D": "High doses of vitamin C supplements tend to reduce slightly one’s resistance to certain common infectious diseases.",
       "E": "Taking vitamin C supplements has been found to lower one’s risk of developing cancer."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT127",

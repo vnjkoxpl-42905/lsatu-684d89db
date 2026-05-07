@@ -381,7 +381,10 @@
       "D": "It is misleading to present testimony from close friends and thereby imply that they must agree with each other.",
       "E": "It is misleading to present the opinions of a potentially nonrepresentative sample of people as if they represent public opinion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT116",

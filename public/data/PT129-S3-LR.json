@@ -450,7 +450,10 @@
       "D": "provides no evidence that the revolutionary party's goals were not overambitious",
       "E": "fails to consider other major criticisms of the revolutionary party"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT129",

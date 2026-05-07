@@ -87,7 +87,10 @@
       "D": "The total number of tickets to the school fair sold by the students in Ms. Ramirez’s Milton Elementary School class was greater than the number sold by Milton students from any other class. Therefore, the Milton student who sold the most tickets to the school fair was a student in Ms. Ramirez’s class.",
       "E": "Ms. Ventura’s Milton Elementary School class assembled more birdhouses than did any of the school’s other classes. Since Ms. Ventura’s class had fewer students than any other Milton class, her students assembled more birdhouses, on average, than did the students in any other Milton class."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -288,7 +291,10 @@
       "D": "O, an auto mechanic, has been accused of selling stolen auto parts. The accusation seems to be justified since although no evidence links O directly to these sales, the pattern of distribution of the auto parts points to O as the source.",
       "E": "P, a politician, has been accused of failing to protect the public interest. From at least some points of view, however, the accusation will undoubtedly be considered false, because there is clearly disagreement about where the public interest lies."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Part vs. Whole"
+    ]
   },
   {
     "practiceTest": "PT101",
