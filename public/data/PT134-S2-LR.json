@@ -78,7 +78,10 @@
       "D": "In considering where to invest, most potential shareholders are interested in more than just the profitability of a corporation.",
       "E": "The president of a corporation has many functions besides advancing the important interests of the corporation’s shareholders."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -114,7 +117,10 @@
       "D": "regards accuracy as the sole criterion for judging the program’s value",
       "E": "fails to consider that the program could produce consistent but inaccurate output"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -186,7 +192,10 @@
       "D": "Raising revenue is a more important consideration for the city than is reducing traffic congestion.",
       "E": "A daily charge for driving downtown is the most effective way to reduce traffic congestion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -320,7 +329,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -357,7 +367,10 @@
       "D": "An officer of an organization should not make a particular decision on an issue unless a majority of the organization’s members would approve of that decision.",
       "E": "An organization’s procedures for making organizational decisions should maximize the power of each member of the organization to influence the decisions made."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -375,7 +388,10 @@
       "D": "The amygdala is not itself controlled by one or more other regions of the brain.",
       "E": "The degree of development of a set of neural connections is directly proportional to the influence transmitted across those connections."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -393,7 +409,10 @@
       "D": "Neither the Iliad nor the Odyssey taken by itself is completely consistent in all of the respects mentioned.",
       "E": "Both the Iliad and the Odyssey were the result of an extended process of oral composition in which many poets were involved."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -435,7 +454,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -474,7 +494,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   }
 ]

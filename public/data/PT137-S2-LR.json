@@ -105,7 +105,10 @@
       "D": "Reducing the difference in income between senior staff and employees paid only a fixed salary invariably increases a company's profitability.",
       "E": "Employees whose incomes rise as the profits of their employers rise are more productive than those paid only a fixed salary."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -144,7 +147,10 @@
       "D": "Awarding a contract to a financially troubled business should be regarded as taking excessive risk.",
       "E": "Benefiting one's family or friends should be regarded as benefiting oneself."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -261,7 +267,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -282,7 +289,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -339,7 +347,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

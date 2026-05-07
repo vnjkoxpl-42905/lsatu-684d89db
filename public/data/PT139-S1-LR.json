@@ -108,7 +108,10 @@
       "D": "Objects that are developed primarily to provide amusement should be subject to lower tariffs than other objects.",
       "E": "A company should market its products as collectibles rather than toys if doing so enables it to sell them for higher prices."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -128,7 +131,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

@@ -54,7 +54,10 @@
       "D": "making a profit from the labor of others is personally advantageous but never harmful",
       "E": "it is not possible to harm someone else without treating that person as a means to one’s own ends"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -240,7 +243,10 @@
       "D": "Whatever is not a physical phenomenon is an emotional one.",
       "E": "Every physical phenomenon can be explained by physics, chemistry, or neurophysiology."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -462,7 +468,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

@@ -148,7 +148,10 @@
       "D": "Only narratives written for a purpose other than sustaining readers’ interest can convey an undistorted awareness of history.",
       "E": "The implication that a few famous heroes and notorious villains have shaped all of history distorts history."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -434,7 +437,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -474,6 +478,9 @@
       "D": "Knowing what an object is made of is sufficient for determining its mass.",
       "E": "The gravitational force between the Sun and a planet is a factor in determining the distance between them. O P HER SECTION IN THE TEST."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

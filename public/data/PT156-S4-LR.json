@@ -195,7 +195,10 @@
       "D": "The problems created by pollution affect most of the world’s nations, but the pollution itself is produced by the industries of relatively few nations.",
       "E": "Most of the current international laws concerning pollution do not require nations to give up any of their power over their own industries."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -234,7 +237,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -253,7 +257,10 @@
       "D": "fails to consider the possibility that many scientists are unaware that they usually accept scientific arguments largely for social reasons",
       "E": "takes for granted that a behavior that is not detrimental to the sciences will not be detrimental to any other human endeavor"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -364,7 +371,10 @@
       "D": "Some plants do not flourish in acidic soil.",
       "E": "Azalea bushes do as well in treated clay soils as in naturally acidic soils."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -402,7 +412,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -468,7 +479,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -489,7 +501,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   }
 ]

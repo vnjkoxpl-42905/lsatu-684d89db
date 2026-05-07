@@ -201,7 +201,10 @@
       "D": "Many people who browse the web assume that information is not scientifically valid unless it is clearly written.",
       "E": "People attempting to diagnose their medical conditions will do themselves more harm than good only if they rely on quackery instead of scientifically valid information."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -278,7 +281,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -318,7 +322,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -391,7 +396,10 @@
       "D": "The data on the effects of the weed-killer are drawn from studies of the weed-killer under a variety of soil conditions similar to those in which the weed-killer is normally applied.",
       "E": "Data on the weed-killer's effects that rely solely on the examination of the effects of only one of the two forms of the weed-killer's molecules will almost certainly be misleading."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -430,7 +438,10 @@
       "D": "No one whose enjoyment of life depends, at least in part, on friends and associates who share many of the same personal beliefs should be deliberately prevented from having such friends and associates.",
       "E": "One may choose for oneself the people with whom one will associate, if doing so could make it easier to live an enjoyable life."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -448,7 +459,10 @@
       "D": "People who consume high quantities of calcium together with the active form of vitamin D and any other substances needed in order for the body to absorb calcium have normal blood pressure.",
       "E": "Anyone who has a deficiency in the active form of vitamin D also has a calcium deficiency."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",

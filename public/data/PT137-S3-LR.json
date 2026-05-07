@@ -53,7 +53,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -172,7 +173,10 @@
       "D": "Governments should not have the power to confiscate an individual's personal correspondence to use as evidence against the individual in a criminal trial.",
       "E": "Governments should do everything in their power to investigate and prosecute suspected wrongdoers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",

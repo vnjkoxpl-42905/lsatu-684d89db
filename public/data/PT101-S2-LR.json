@@ -15,7 +15,10 @@
       "D": "Other beverages besides coffee might contain stimulants that have some effect on the heart.",
       "E": "Drinking unusually large amounts of coffee could be caused by stress that itself directly harms the heart."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -168,7 +171,10 @@
       "D": "Fanaticism in pursuit of paradise constitutes inhumanity.",
       "E": "Enthusiasm in pursuit of what is eventually found to be unattainable constitutes fanaticism."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -392,7 +398,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -456,7 +463,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

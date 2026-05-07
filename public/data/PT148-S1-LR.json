@@ -78,7 +78,10 @@
       "D": "An additional charge on water bills should not be imposed unless it is approved by the legislature.",
       "E": "A water utility should not collect an additional charge unless the money collected is used for water-related expenditures."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -168,7 +171,10 @@
       "D": "Doubting one’s own ability to perform can decrease one’s overall performance.",
       "E": "Competitors who work to undermine the confidence of other participants often do better in competitions."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -322,7 +328,10 @@
       "D": "Lake trout do not alter their feeding habits from one part of the year to another.",
       "E": "In deep temperate lakes that have ice residues on the surface, late-winter “turnover” has not yet occurred."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -358,7 +367,10 @@
       "D": "All of the past leaders who supported higher taxes performed their jobs adequately.",
       "E": "All of the past leaders who supported higher taxes were hardworking."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",

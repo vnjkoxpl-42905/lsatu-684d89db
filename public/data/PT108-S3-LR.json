@@ -15,7 +15,10 @@
       "D": "Trained editors are able to detect at least some biases of journalists.",
       "E": "Journalists’ reporting that is not objective is not taken seriously by trained editors."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -267,7 +270,10 @@
       "D": "something other than written texts is the best source for historical understanding",
       "E": "the other sources for historical understanding mentioned by the historians surveyed are not important repositories of historical knowledge"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT108",

@@ -73,7 +73,10 @@
       "D": "Statistical data should not be manipulated to make a radical solution to a problem seem more justified than it actually is.",
       "E": "Radical solutions to problems can cause other problems and end up doing more harm than good."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -127,7 +130,10 @@
       "D": "Moral codes that include the requirement that people disregard their own welfare in order to help others have arisen within some civilized societies.",
       "E": "People who feel empathy tend to ignore their own welfare for the sake of others."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",

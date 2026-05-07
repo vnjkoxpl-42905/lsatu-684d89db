@@ -418,7 +418,10 @@
       "D": "Anyone who lies in order to advance his or her own career is more deserving of blame than someone who lies in order to promote a good cause.",
       "E": "Anyone who accepts responsibility for a wrongful act that he or she committed is less deserving of blame than someone who tries to conceal his or her own wrongdoing."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",

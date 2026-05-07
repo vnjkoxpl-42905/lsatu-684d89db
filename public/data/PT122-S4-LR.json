@@ -219,7 +219,10 @@
       "D": "treats the absence of evidence that the oil industry has the highest profits among all industries as proof that the oil industry does not have the highest profits among all industries",
       "E": "illicitly draws a general conclusion from a specific example that there is reason to think is atypical"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -237,7 +240,10 @@
       "D": "Some ancient paintings known to early archaeologists depicted sculptures.",
       "E": "As modern sculptors come to believe that ancient sculpture was painted, they will begin to create polychromatic works."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -291,7 +297,10 @@
       "D": "Only the best artworks are beautiful.",
       "E": "An artwork's beauty is inherently subjective and depends on who is viewing it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -365,7 +374,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

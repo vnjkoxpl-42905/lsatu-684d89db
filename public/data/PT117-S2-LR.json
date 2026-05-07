@@ -159,7 +159,10 @@
       "D": "attack employers' motives instead of addressing their arguments",
       "E": "make a generalization based on a sample that there is reason to believe is biased"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -233,7 +236,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -270,7 +274,10 @@
       "D": "Governments should try to prevent the advertisement of cigarettes by means of financial disincentives rather than by legal prohibition.",
       "E": "Governments should place restrictions on cigarette advertisements so as to keep them from encouraging people to engage in unhealthy practices, but should not try to prevent such advertisements."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -417,7 +424,10 @@
       "D": "Anything causing a loss in life's charm is unjustifiable unless this loss is compensated by some gain.",
       "E": "Technology inherently limits the well-being of its users."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",

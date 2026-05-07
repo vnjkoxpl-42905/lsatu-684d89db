@@ -54,7 +54,10 @@
       "D": "In selecting a contest judge, fairness concerns should override concern for the appropriate expertise.",
       "E": "A contest judge, no matter how well qualified, cannot judge properly if the possibility of bias exists."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -148,7 +151,10 @@
       "D": "When companies cut personnel costs during recessions by reducing wages, some employees usually resign.",
       "E": "Some companies that have laid off employees during recessions have had difficulty finding enough qualified employees once economic growth resumed."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -166,7 +172,10 @@
       "D": "The average bookstore today is smaller than the average bookstore of 20 years ago.",
       "E": "Some book consumers value low prices more highly than wide selection."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -184,7 +193,10 @@
       "D": "draws a conclusion about the popularity of a series based on a comparison with other, dissimilar events",
       "E": "fails to adequately distinguish the series as a whole from individual concerts in it"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -299,7 +311,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -340,7 +353,10 @@
       "D": "Most potential donors to a charity are unwilling to give that charity any money if there is no possible way for them to have any influence on that charity’s policies.",
       "E": "The emotional connection potential donors feel to a charity can affect the amount of money that charity raises through donations."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -479,6 +495,9 @@
       "D": "The chef’s mussel recipe was written before farm-raised mussels became available.",
       "E": "The mussels the chef is using for the mussel recipe came from a seafood market."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

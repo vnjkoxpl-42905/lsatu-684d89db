@@ -309,7 +309,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -372,7 +373,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -435,7 +437,10 @@
       "D": "A sharp decline in the population of P. australis is typically mirrored by a corresponding drop in the local anchovy population.",
       "E": "P. australis cannot survive in large numbers in seawater that does not contain significant quantities of domoic acid along with numerous other compounds."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT131",

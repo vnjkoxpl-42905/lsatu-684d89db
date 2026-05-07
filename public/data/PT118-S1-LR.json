@@ -468,5 +468,28 @@
       "E": "New residents of most small cities do not start paying city taxes for at least a year."
     },
     "correctAnswer": "E"
+  },
+  {
+    "practiceTest": "PT118",
+    "sectionNumber": 1,
+    "questionNumber": 26,
+    "questionType": "Strengthen",
+    "reasoningType": "Comparison",
+    "questionDifficulty": 3,
+    "stimulus": "Rapid population growth can be disastrous for a small city. Ideally there should be at least one municipal employee for every hundred residents; when too many people move in at once, city services responsible for utilities and permits are quickly overloaded. Most city budgets do not allow for the immediate hiring of new staff.",
+    "questionStem": "Which one of the following, if true, most strengthens the argument?",
+    "answerChoices": {
+      "A": "During budget shortages, small cities tend to place a high priority on basic municipal services while cutting back on less essential services.",
+      "B": "New residents of any city bring with them new ideas about how a city should be run.",
+      "C": "Some large cities can absorb rapid population growth more readily than many small cities can.",
+      "D": "A low unemployment rate is one of the main reasons that new residents move to a city.",
+      "E": "New residents of most small cities do not start paying city taxes for at least a year."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Defender",
+      "Focused on Evidence",
+      "First Sentence Conclusion"
+    ]
   }
 ]

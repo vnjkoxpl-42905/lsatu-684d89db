@@ -162,7 +162,10 @@
       "D": "Writers who do not collaborate on books have a smaller chance of writing a book that will sell well.",
       "E": "Writers who collaborate on books, if they are good writers, usually produce books that sell well."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",

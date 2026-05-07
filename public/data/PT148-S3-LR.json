@@ -111,7 +111,10 @@
       "D": "Editorial writers should be free to use loaded, partisan words.",
       "E": "News reporters should not report on wrongdoing and scandal that is not a matter of public interest."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -147,7 +150,10 @@
       "D": "When players cannot easily identify with the figure or icon whose movements they control in a video game, they usually find that game less compelling than it otherwise would be.",
       "E": "If some aspect of a video game’s technical sophistication makes it less compelling to players, then that video game contains a human figure with whom it is difficult for players to identify."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -219,7 +225,10 @@
       "D": "Regardless of the range of choices available to humans, they choose on the basis of their emotions alone.",
       "E": "Humans would now be able to make wiser choices than in centuries past only if an essential change had taken place in humans’ emotional dispositions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -278,7 +287,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -390,7 +400,10 @@
       "D": "Attaining happiness is the real goal of people who strive for material well-being.",
       "E": "Material well-being does not increase one’s sense of approval of one’s character and projects."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",

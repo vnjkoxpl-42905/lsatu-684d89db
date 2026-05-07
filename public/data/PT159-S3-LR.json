@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -93,7 +94,10 @@
       "D": "The Massachusetts colony’s issue of paper currency was not prompted by a coin shortage.",
       "E": "Every government that issued paper currency in the 1600s left records pertaining to that currency."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -316,7 +320,10 @@
       "D": "The manufacturer will stay in business if its specialized suppliers are not bankrupted.",
       "E": "The manufacturer will stay in business only if its specialized suppliers are not bankrupted."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT159",

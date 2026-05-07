@@ -128,7 +128,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -276,7 +277,10 @@
       "D": "If one type of medicine must be taken in more frequent doses than another type of medicine, it is more important for the former to be carefully tested than for the latter.",
       "E": "It is generally more important for a medicine than it is for a nonmedical product to be carefully tested to ensure its safety unless more people's health would be at risk from the nonmedical product than from the medicine."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -312,7 +316,10 @@
       "D": "The possession of intelligence entails the possession of consciousness.",
       "E": "Some intelligent human behavior is neither complex nor goal-oriented."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -330,7 +337,10 @@
       "D": "takes for granted that what is interconnected cannot, through abstraction, be thought of as separate",
       "E": "takes for granted that a phenomenon that can best be understood as having certain properties can best be understood only through reasoning that shares those properties"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -348,7 +358,10 @@
       "D": "Any salary that a team owner is willing to pay for the services of a professional athlete is a fair salary.",
       "E": "If a professional athlete's salary is fair, then that salary is determined by what an individual is willing to pay for the athlete's services in an unrestricted free market."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",

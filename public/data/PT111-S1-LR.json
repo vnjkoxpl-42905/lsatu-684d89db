@@ -33,7 +33,10 @@
       "D": "If a generalization is confirmed to the extent current science allows, then it is considered a scientific law.",
       "E": "Whatever is regarded as a scientific law will eventually be conclusively verified."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -254,7 +257,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -405,7 +409,10 @@
       "D": "No members of the family Hominidae are chordates.",
       "E": "No chordates are members of Pteropsida."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT111",

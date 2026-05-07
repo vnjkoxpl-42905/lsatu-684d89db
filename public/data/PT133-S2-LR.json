@@ -33,7 +33,10 @@
       "D": "In any form of government, if anybody gains a greater share of political power than others have, then somebody's rights will be violated.",
       "E": "People who have more political power than others have tend to use it to acquire an even greater share of political power."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -71,7 +74,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -278,7 +282,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -336,7 +341,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -477,6 +483,9 @@
       "D": "Litigants believed jurors to be more impressed by litigants who were of the same economic class as the jurors.",
       "E": "Litigants believed jurors were likely to render their decisions based on a good understanding of the law."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

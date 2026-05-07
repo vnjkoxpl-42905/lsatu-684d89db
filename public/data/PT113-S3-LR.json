@@ -405,7 +405,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -442,7 +443,10 @@
       "D": "arguing that the newspaper article's conclusion is motivated by a desire to change the role of unions",
       "E": "pointing to common interests among unions and management which the newspaper article ignores"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",

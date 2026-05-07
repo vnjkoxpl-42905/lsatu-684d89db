@@ -109,7 +109,10 @@
       "D": "People who regret the missed opportunities of youth should cherish their close personal relationships more deeply.",
       "E": "People with few close personal relationships should cherish the ones they have."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -368,7 +371,10 @@
       "D": "If the company’s president was told about the procedural changes before they were made, then the contract was not violated.",
       "E": "If no lawyer in the company’s legal department was told about the procedural changes before they were made, then the contract was violated."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",

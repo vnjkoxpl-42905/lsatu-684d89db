@@ -90,7 +90,10 @@
       "D": "When fictional works portray characters as precognitive, those characters’ perceptions of future events are generally central to the plots of those works.",
       "E": "No work of fiction has portrayed a truly precognitive character."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -126,7 +129,10 @@
       "D": "Children enjoy films only if the films include animation.",
       "E": "Children do not attend to some details in films aimed at adults."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -162,7 +168,10 @@
       "D": "Owners of private property are alone responsible for the economic risks associated with government regulations that affect the use of that property.",
       "E": "A government can appropriate private property only if it is in response to a compelling public interest."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -348,7 +357,10 @@
       "D": "two different states of affairs could each causally contribute to the same effect even though neither causally contributes to the other",
       "E": "certain states of affairs that lead families to visit the doctor less frequently could also make them more likely to have a medical self-help book in the home"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -366,7 +378,10 @@
       "D": "A government ministry should issue scientific assessments of certain issues if that ministry can successfully resist political pressures to modify the contents of those assessments.",
       "E": "The government ministry in charge of issuing assessments relating to health issues should firmly resist any political pressures regarding those assessments."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -384,7 +399,10 @@
       "D": "It overlooks the possibility that a consequence that would surely follow if all farmers adopted the practice of organic farming would still ensue even if not all of them did.",
       "E": "It takes for granted that damage to the environment due to the continued use of artificial fertilizers would not be detrimental to human health."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",

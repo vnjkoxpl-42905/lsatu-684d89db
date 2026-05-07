@@ -221,7 +221,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -429,7 +430,10 @@
       "D": "The most characteristic feature of Cassatt’s work is her brush style.",
       "E": "No painter other than Cassatt would be able to match Cassatt’s brush style perfectly."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",

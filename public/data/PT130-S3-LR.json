@@ -167,7 +167,10 @@
       "D": "Taking steps to prevent heart disease is one of the most effective ways of increasing life expectancy.",
       "E": "It is difficult to move from a diet that is high in saturated fat to a diet that includes very little fat."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -243,7 +246,10 @@
       "D": "No article about a current event treats that event as merely a repetition of historical incidents unless it uses historical photographs to illustrate that article.",
       "E": "If journalists believe current events to be mere repetitions of historical incidents, then public understanding of the present will be distorted."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT130",

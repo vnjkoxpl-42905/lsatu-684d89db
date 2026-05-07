@@ -216,7 +216,10 @@
       "D": "If the public were afraid of scientists, then over several decades a scientist would encounter at least one person who was afraid of scientists.",
       "E": "Anyone who claims to be afraid of scientists is actually afraid of scientists."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT150",

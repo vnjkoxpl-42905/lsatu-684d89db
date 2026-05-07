@@ -198,7 +198,10 @@
       "D": "Speaking in human language is easier than thinking in human language.",
       "E": "It is more difficult to learn human language than to express philosophical questions."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -288,7 +291,10 @@
       "D": "Informative scientific claims cannot use terms in the way they are popularly used.",
       "E": "The truth of a purported scientific claim is not sufficient for it to be of scientific interest."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",

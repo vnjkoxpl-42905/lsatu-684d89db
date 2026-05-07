@@ -147,7 +147,10 @@
       "D": "A product defect is more likely to be discovered by a consumer than by a producer.",
       "E": "The best interests of consumers never coincide with the best interests of producers."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -334,7 +337,10 @@
       "D": "News that primarily entertains does not give us information on which to act.",
       "E": "A news industry that aims to make a profit inevitably presents news as entertainment."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -442,7 +448,10 @@
       "D": "The government should finance a given activity if doing so will further a vested interest of society.",
       "E": "Private funding for political campaigns should be encouraged only if it redresses an imbalance among candidates’ financial means."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",

@@ -237,7 +237,10 @@
       "D": "The issues that are of interest to lawyers and diplomats are of little interest to others.",
       "E": "People express themselves more cautiously when something important is at stake."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -314,7 +317,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

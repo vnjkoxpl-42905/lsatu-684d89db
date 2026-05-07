@@ -165,7 +165,10 @@
       "D": "inferring from records concerning two phenomena the existence of a common cause of the phenomena and then presenting a hypothesis about that common cause",
       "E": "inferring the existence of one causal connection from that of another and then providing an explanation for the existence of the two causal connections"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -222,7 +225,10 @@
       "D": "On average, in the regions of the world with the mildest winters, there is more spring flooding and less storable water than in regions of the world with much colder winters.",
       "E": "The larger a mountain snowpack is, the greater the amount of spring flooding it is likely to be responsible for producing."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -297,7 +303,10 @@
       "D": "If a nation incorrectly stated at the end of 1997 that its oil reserves had not changed since the end of 1996, then during 1997 that nation drained its old oil fields and discovered new ones.",
       "E": "If a nation’s oil reserves change from one year to the next, then that nation is obligated to report the change correctly."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -418,7 +427,10 @@
       "D": "It is only competition or the threat of competition that keeps companies from raising prices.",
       "E": "Any pricing practice that does not result in unreasonable prices should be acceptable."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",

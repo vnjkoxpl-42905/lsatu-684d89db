@@ -15,7 +15,10 @@
       "D": "Most people prefer to buy apples that have the lowest price.",
       "E": "Many consumers prefer the appearance of apples grown using conventional methods to that of apples grown organically. ION III 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best completely answers the question and mark that response on your"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -213,7 +216,10 @@
       "D": "fails to consider the possibility that crime will increase even in the absence of vagrancy laws",
       "E": "does not adequately distinguish between an increase in criminal activity and the reclassification of certain occurrences as crimes 3 3 -23-3"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -231,7 +237,10 @@
       "D": "People who injure other people in the pursuit of their own welfare will eventually be treated in the same fashion by others.",
       "E": "The more interest people have in promoting their own welfare, the less likely they are to be injured by others."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",

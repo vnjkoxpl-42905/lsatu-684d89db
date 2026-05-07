@@ -134,7 +134,10 @@
       "D": "People whose assertions are uncertain and lack confidence are introspective.",
       "E": "Politicians who are not bold are unpopular with the public."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -359,7 +362,10 @@
       "D": "Any translation that is not entirely faithful to both the meaning of the text and the original author’s style will be at best a flawed approximation of that work.",
       "E": "Not even the most skillful literary translation could be faithful to both the literal meaning of the text and the original author’s style."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",

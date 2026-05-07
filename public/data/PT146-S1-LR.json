@@ -15,7 +15,10 @@
       "D": "Surveys should be allowed to gather any information that might be needed to meet their purposes.",
       "E": "Surveys should gather detailed personal information only if survey respondents are first told about how that information will be used."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -345,7 +348,10 @@
       "D": "No secondary school science courses currently teach students how to evaluate science-based arguments regarding practical issues.",
       "E": "The ability to evaluate science-based arguments regarding practical issues is sometimes useful in making the decisions that adults typically make in their daily lives."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",

@@ -249,7 +249,10 @@
       "D": "Celia did not read the insurance policy thoroughly before signing it, and a reasonable person in her position would assume that the policy would cover hail damage.",
       "E": "Celia did not read the written insurance policy thoroughly before signing it, and a reasonable person in her position would not have done so either."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -287,7 +290,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -306,7 +310,10 @@
       "D": "people who have little confidence in the overall economy generally take a pessimistic view concerning their own immediate economic situations",
       "E": "an economic slowdown usually has a greater impact on the economic situations of individuals if it takes people by surprise than if people are forewarned"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -436,7 +443,10 @@
       "D": "Good journalism will always provide people with information that they desire or need.",
       "E": "Journalism that neither satisfies the public’s curiosity nor provides accurate information can never be considered good journalism."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",

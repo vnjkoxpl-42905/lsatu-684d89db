@@ -126,7 +126,10 @@
       "D": "More people would suffer from sleep deprivation today than did in the past if the average number of hours worked per week had not decreased.",
       "E": "The extent of one's sleep deprivation is proportional to the length of one's workday."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -219,7 +222,10 @@
       "D": "People can feel secure if they are governed by laws that are not vague.",
       "E": "Only people who feel secure can know for certain whether their actions are legal."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -294,7 +300,10 @@
       "D": "If reptiles were capable of complex reasoning, they would sometimes be able to make major changes in their behavior.",
       "E": "Complex reasoning and responses to stimuli cannot both contribute to the same behavior."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -330,7 +339,10 @@
       "D": "People are justified in feeling content with themselves when they have achieved some degree of personal excellence.",
       "E": "Happiness is not genuine unless it is based on something that is painful to obtain."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",

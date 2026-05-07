@@ -90,7 +90,10 @@
       "D": "There are more people who harbor M. tuberculosis than people who harbor H. pylori.",
       "E": "There are more people who harbor H. pylori than people who harbor M. tuberculosis."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -180,7 +183,10 @@
       "D": "Few, if any, computer manufacturers believe that computers can be made significantly faster.",
       "E": "Increasing the sophistication of a CPU chip without increasing its size will proportionally increase its speed."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -345,7 +351,10 @@
       "D": "Scientific theories cannot be correctly interpreted to be, or to imply, political programs.",
       "E": "The means of production will inevitably become socialized regardless of any political programs designed to make that occur."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",

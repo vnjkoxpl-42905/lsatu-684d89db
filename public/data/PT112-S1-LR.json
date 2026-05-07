@@ -280,7 +280,10 @@
       "D": "One should not invest in expensive teaching aids unless there are no other tools that are less expensive and at least as effective.",
       "E": "One should always provide students with a variety of educational materials so that each student can find the materials that best suit that student's learning style."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -334,7 +337,10 @@
       "D": "The data reported in the recent study are correct.",
       "E": "Hardening of the arteries increases the risk of blockage of the arteries due to blood clots."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -375,7 +381,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -412,7 +419,10 @@
       "D": "Most writers whose readers' enjoyment does not depend on attaining a precise understanding of the writers' words are poets.",
       "E": "Readers who have a precise understanding of what a writer has written derive their enjoyment from that understanding."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -469,7 +479,10 @@
       "D": "Individuals vary widely in the amount and kind of exercise they choose, when they do exercise regularly.",
       "E": "A regular program of moderate exercise tends to increase circulation, induce a feeling of well-being and energy, and decrease excess weight."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -487,6 +500,9 @@
       "D": "The several recurrent items that appeared in Vermeer's paintings had special sentimental importance for him.",
       "E": "If a dearth of props accounted for the recurrent objects in Vermeer's paintings, we would not see expensive props in any of them."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

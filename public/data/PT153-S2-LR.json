@@ -69,7 +69,10 @@
       "D": "Of dogs owned by apartment dwellers, those that live in large apartments are less likely to be troublesome than those that live in small apartments.",
       "E": "In general, the more often a dog gets exercise, the more likely it is that the dog will stay fit."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -105,7 +108,10 @@
       "D": "Mark had access to Rashmi’s clients’ e-mail addresses only because she unintentionally left them visible in an e-mail that she sent to both Mark and her clients.",
       "E": "Mark happened upon a list of many of the e-mail addresses of Rashmi’s clients while conducting market research."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -144,7 +150,10 @@
       "D": "In criticizing an opponent, political campaigns will not be strongly criticized as long as the words attributed to their opponent were actually said by their opponent.",
       "E": "In criticizing an opponent, political campaigns will avoid using techniques that leave their candidate open to effective counterattacks."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -408,7 +417,10 @@
       "D": "All of the nonrepresentational paintings ever produced in the critic’s city display bold brushwork.",
       "E": "All of the paintings from the critic’s city with a sharp contrast of light and shadow emerged from the city’s art movement."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -444,7 +456,10 @@
       "D": "Every public official has an official duty never to perform immoral actions.",
       "E": "Had Landis not spent the money redecorating the office, it would have been used to help alleviate poverty in the city."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",

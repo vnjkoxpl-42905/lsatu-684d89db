@@ -33,7 +33,10 @@
       "D": "an understanding of DNA is essential to making well-informed personal medical choices or to making good public policy decisions about health care",
       "E": "since 90 percent of the population believes itself to be well informed about health care, at least 70 percent of the population is mistaken in that belief"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -298,7 +301,10 @@
       "D": "All theories of sound change rely heavily on the classical theory.",
       "E": "For most languages, historical records of their earlier stages are scarce or nonexistent."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -448,7 +454,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

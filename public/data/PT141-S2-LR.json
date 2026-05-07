@@ -15,7 +15,10 @@
       "D": "Qualified technicians installed the heating systems to be upgraded.",
       "E": "The contractor hired by the city has personal ties to city officials."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -150,7 +153,10 @@
       "D": "Box jellyfish developed from jellyfish whose retinas received clear images.",
       "E": "Box jellyfish use vision as their main means of detecting prey."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -189,7 +195,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -376,7 +383,10 @@
       "D": "chemical fertilizers themselves have a destructive effect on the soil structure of farm fields",
       "E": "many, if not all, farmers in the region will not grow green-manure crops unless they abandon the use of chemical fertilizers"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT141",

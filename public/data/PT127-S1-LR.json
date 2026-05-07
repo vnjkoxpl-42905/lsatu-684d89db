@@ -33,7 +33,10 @@
       "D": "Having large corporations in a modern capitalist system promotes the strength of communal ties.",
       "E": "An economic system that does not encourage large corporations will be less successful economically than one that does."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -72,7 +75,10 @@
       "D": "The argument generalizes from too small a sample of cases.",
       "E": "The argument takes for granted that most people donate out of generosity."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -216,7 +222,10 @@
       "D": "if one has an obligation to do something then one has a right to do it",
       "E": "the press’s right to publish always outweighs the individual’s right not to be libeled"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -234,7 +243,10 @@
       "D": "Retrieving clothes from a top-loader is convenient for people who do not use wheelchairs.",
       "E": "Retrieving clothes from front-loaders is inconvenient for people who are not wheelchair users."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -252,7 +264,10 @@
       "D": "The argument infers that problems will be solved merely on the basis of the claim that they will be within our ability to solve.",
       "E": "The argument presumes, without providing justification, that the currently unused parts of the brain are a potential source of tremendous creativity and innovation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",

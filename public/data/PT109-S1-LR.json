@@ -180,7 +180,10 @@
       "D": "Public funds should support art.",
       "E": "Anything that shocks is art."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -236,7 +239,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -332,7 +336,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -351,7 +356,10 @@
       "D": "A lack of general education affects the ability to differentiate between legitimate and illegitimate calls for reform.",
       "E": "Any benign regime that fails to provide comprehensive general education will be toppled by a clever demagogue."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",

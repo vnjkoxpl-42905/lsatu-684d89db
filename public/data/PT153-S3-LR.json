@@ -51,7 +51,10 @@
       "D": "No investigation of the effects of high-tension power lines has established any health threat to people.",
       "E": "Rerouting high-tension power lines away from heavily populated areas would hinder our ability to study the effects of power lines on people."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -335,7 +338,10 @@
       "D": "It is wrong to knowingly put people at serious risk for the sake of profit.",
       "E": "Mr. Kapp either knew or ought to have known that using the inferior materials he used to build the library would put people at serious risk."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -392,7 +398,10 @@
       "D": "There are very few wealthy people who would not prefer to be wealthier.",
       "E": "Satisfying one’s desires is not the only relevant factor to one’s happiness."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -428,7 +437,10 @@
       "D": "There is a greater duty to protect a species as a whole than there is to protect any individual member of that species.",
       "E": "There is a greater duty to protect one individual organism over another only if the former organism is a member of an endangered species and the latter organism is not."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT153",

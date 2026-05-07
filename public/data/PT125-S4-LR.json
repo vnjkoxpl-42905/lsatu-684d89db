@@ -169,7 +169,10 @@
       "D": "Doing something for someone is laudable only if it is difficult for one to do so and it is wrong for one not to do so.",
       "E": "The only actions that are laudable are those that it would not be wrong to refrain from doing, whether or not it is difficult to do so."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -340,7 +343,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -419,7 +423,10 @@
       "D": "The morally preferable act for a business to execute and the short-term interests of the business usually conflict.",
       "E": "When a business's short-term and long-term interests conflict, morality alone is rarely the overriding consideration."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT125",

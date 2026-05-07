@@ -33,7 +33,10 @@
       "D": "fails to consider that recipients of a grant usually strive to meet a foundation's conditions",
       "E": "fails to consider the possibility that the work that was produced with the aid of the grant may have met all conditions other than avoiding detriment to the J Foundation's reputation"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -51,7 +54,10 @@
       "D": "most people who succeed in quitting smoking succeed only after several attempts",
       "E": "everyone who succeeds in quitting smoking is motivated either by social pressure or by health concerns"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -180,7 +186,10 @@
       "D": "The testimony of a witness to an assault should be included only if the witness claims to recognize both parties involved in the assault.",
       "E": "It is unlikely that anyone would fail to recognize the lawyer's client."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -314,7 +323,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -333,7 +343,10 @@
       "D": "It fails to consider the possibility that being able to write a good novel requires something more than creativity and resourcefulness.",
       "E": "It fails to consider the possibility that something could enhance a child's overall cognitive development without enhancing the child's creativity and resourcefulness."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -392,7 +405,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -449,7 +463,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

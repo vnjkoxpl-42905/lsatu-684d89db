@@ -263,7 +263,10 @@
       "D": "neither Britta nor Robert was in full command of the facts",
       "E": "winning a debate requires having a good command of the facts"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -378,7 +381,10 @@
       "D": "The less difficult it is to construct a computer model of a process the better understood is that process.",
       "E": "We should not underestimate the usefulness of computer modeling to the study of human cognition."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT149",

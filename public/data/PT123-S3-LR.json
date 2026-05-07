@@ -237,7 +237,10 @@
       "D": "No form of psychotherapy that focuses on changing the patient's unconscious beliefs and desires can be effective unless it also helps change beliefs that are under the patient's direct conscious control.",
       "E": "All of a patient's conscious beliefs are under the patient's conscious control, but other psychological states cannot be controlled effectively without the aid of psychotherapy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -255,7 +258,10 @@
       "D": "The form of software technology that best matches the values embodied in the activities that are central to the mission of universities is the form of software technology that is most efficient for universities to use.",
       "E": "A university should not pursue any activity that would block the achievement of the goals of academic scholarship at that university."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -311,7 +317,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -449,7 +456,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

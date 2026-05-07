@@ -195,7 +195,10 @@
       "D": "The moral praiseworthiness of an action can be judged only according to standards that refer to the circumstances of the person acting.",
       "E": "Morality demands that one be honest, even in cases where this could be detrimental to one’s own well-being."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -234,7 +237,10 @@
       "D": "Unless voice-recognition technology can distinguish between words that are homophones, it cannot recognize grammatical and semantic relations among words.",
       "E": "Computer programs that check the spelling and grammar of written text are currently able to distinguish between homophones."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -324,7 +330,10 @@
       "D": "Many linguists believe that speaking to babies in simplified language helps the babies learn language.",
       "E": "To learn a language one must acquire its vocabulary as well as its grammatical structure."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",

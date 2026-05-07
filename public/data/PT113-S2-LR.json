@@ -270,7 +270,10 @@
       "D": "The true intentions of the writer of a work of literature can never be known to a critic of that work.",
       "E": "The deepest understanding of a literary work requires that one know the writer's history."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",

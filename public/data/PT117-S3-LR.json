@@ -15,7 +15,10 @@
       "D": "A change in the present school calendar that shortened breaks would serve the interests of agricultural life.",
       "E": "A school calendar made up of periods of study without long breaks would serve the interests of children more than a school calendar with long breaks."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -51,7 +54,10 @@
       "D": "People who assess their talents accurately generally perform near their actual level of proficiency.",
       "E": "People who think that a superior performance will please those who are testing them generally try harder."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -69,7 +75,10 @@
       "D": "the phrase \"high on the list\" is not specific enough to give useful information about what parents desire from a school",
       "E": "it fails to discuss educators' attitudes toward discipline in schools"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -354,7 +363,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -391,7 +401,10 @@
       "D": "People generally do not find it easy to deceive themselves.",
       "E": "A doctor is justified in deceiving a patient whenever doing so is likely to make the patient healthier."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -427,7 +440,10 @@
       "D": "A consistent political policy does not hold that an action that comprises a worthy goal should not be performed.",
       "E": "Members of one political party never have inconsistent views on how to best approach a political issue."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT117",

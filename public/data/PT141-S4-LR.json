@@ -129,7 +129,10 @@
       "D": "The downtown area of a city should be designed in a way that complements the area’s civic buildings.",
       "E": "The purpose of a civic building is to encourage social cohesion and to make a city more alive."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -348,7 +351,10 @@
       "D": "If future generations believe that the future can be better, then pollution, poverty, and war will be eliminated.",
       "E": "The current prevalence of such problems as pollution and poverty stems from previous generations’ inability to believe that futures can be better."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT141",

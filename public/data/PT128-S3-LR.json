@@ -357,7 +357,10 @@
       "D": "No political system that fails to prevent conflict is legitimate.",
       "E": "Some political systems that are not totalitarian are illegitimate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -393,7 +396,10 @@
       "D": "Most historians cannot become aware of the presuppositions that they bring to their narratives.",
       "E": "Which pattern a historian imposes upon events is affected by that historian's presuppositions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -447,6 +453,9 @@
       "D": "Jason might eventually improve his supervisor's opinion of his work even if he never learns that his supervisor is displeased with his work.",
       "E": "Jason would benefit if he were able to improve his supervisor's opinion of his work."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

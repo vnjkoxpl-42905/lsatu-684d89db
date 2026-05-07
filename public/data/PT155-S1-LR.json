@@ -164,7 +164,10 @@
       "D": "A being with practical intelligence would get what it wants entirely through the use of its practical intelligence.",
       "E": "If a being were always deprived of what it wanted, it could not acquire practical intelligence."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -218,7 +221,10 @@
       "D": "Evidence regarding the health benefits of foods or drinks must be corroborated by accurate accounts of the mechanisms involved in order to be conclusive.",
       "E": "One should try to find a causal mechanism for the health benefits of a substance only if those benefits have been conclusively demonstrated."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -297,7 +303,10 @@
       "D": "People who fish in a public park should make every effort to be fully aware of the restrictions that govern fishing in the park.",
       "E": "People who are caught in the act of violating a law should be afforded the opportunity to explain why they think that law does not apply to them."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -411,7 +420,10 @@
       "D": "People develop their conception of what makes an individual admirable based on what they know about historical figures.",
       "E": "Moral virtue is the characteristic of historical figures that we find least engaging."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -447,7 +459,10 @@
       "D": "Last year, none of the people in the editorialist’s country who responded to polls about their views about television news programs portrayed themselves as they actually were.",
       "E": "Last year, at least some people responding to polls in the editorialist’s country wished to be perceived as unwilling to watch television news programs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",

@@ -87,7 +87,10 @@
       "D": "If commission members had not expressed their opinions about disaster preparedness in the news media before the report was completed, there would have been much public speculation about what those views were.",
       "E": "The commission’s report will not be effective if some of the commission members already had opinions about the nation’s disaster preparedness even before the commission was formed."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -252,7 +255,10 @@
       "D": "The domestic textile industry and consumers in the domestic economy would benefit less from reductions in taxes on textile imports than they would from other measures.",
       "E": "The added competition produced by any reduction of taxes on imports would significantly harm the domestic textile industry."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -363,7 +369,10 @@
       "D": "fails to address the possibility that the techniques available to economists for the prediction of global recessions will significantly improve",
       "E": "implicitly bases an inference that something will not occur solely on the information that its occurrence is not predictable"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT148",

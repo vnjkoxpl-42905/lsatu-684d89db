@@ -51,7 +51,10 @@
       "D": "In the past, viral infections and mites have devastated genetically diverse honeybee populations.",
       "E": "Lack of genetic diversity can make honeybees more vulnerable to adverse conditions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -159,7 +162,10 @@
       "D": "Typically, video game players do not themselves create video games.",
       "E": "Players’ choices that have no effect on the outcome of a video game are irrelevant to the aesthetic experience produced by that game."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -273,7 +279,10 @@
       "D": "The opposition would benefit from showing a desire to compromise.",
       "E": "The opposition will compromise if the political leader’s side shows a desire to compromise."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -387,7 +396,10 @@
       "D": "Shimada criticizes McFeney for regularly being tardy, but also criticizes himself for occasional tardiness.",
       "E": "Neither McFeney nor Shimada is regularly tardy, but Shimada criticizes McFeney for tardiness nonetheless."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",

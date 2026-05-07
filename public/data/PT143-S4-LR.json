@@ -237,7 +237,10 @@
       "D": "Most people seek out critical reviews of particular artworks before viewing those works.",
       "E": "The pleasure people take in something is typically influenced by what they think others feel about it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -462,7 +465,10 @@
       "D": "Social integrity is possible only if individual freedom prevails.",
       "E": "There can be no rule of law without individual freedom."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT143",

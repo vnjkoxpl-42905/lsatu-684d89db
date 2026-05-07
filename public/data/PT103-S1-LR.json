@@ -73,7 +73,10 @@
       "D": "employees are most productive during the part of the day when all employees are present",
       "E": "companies that are in competition with ABC Company also use a flextime schedule"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT103",

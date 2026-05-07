@@ -189,7 +189,10 @@
       "D": "In romance literature and satirical literature, characters’ moral qualities do not change during the course of the action.",
       "E": "Both comedy and tragedy require that the moral qualities of minor characters change during the course of the action."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -302,7 +305,10 @@
       "D": "It is unethical to encourage people to engage in behavior that could damage the integrity of their personal relationships.",
       "E": "Providing a friend’s personal information to a company in exchange for a financial reward will almost certainly damage the integrity of one’s personal relationship with that friend."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -374,7 +380,10 @@
       "D": "Most members of radio and television talk show audiences are seeking entertainment rather than high-quality psychological help.",
       "E": "Psychotherapists should never attempt to provide psychological help in a manner that makes it unlikely to be of high quality."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT127",

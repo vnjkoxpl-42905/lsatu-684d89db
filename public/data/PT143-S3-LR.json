@@ -221,7 +221,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -276,7 +277,10 @@
       "D": "Most consumers are aware that advertisements and promotional materials are not objective sources of vehicle safety information.",
       "E": "Anyone to whom safety is an important factor in purchasing a car will consult an objective source of vehicle safety information before buying."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -315,7 +319,10 @@
       "D": "For a rocket to work effectively, its engines’ exhaust gases must leave the nozzles at the same pressure as the surrounding atmosphere throughout the rocket’s ascent.",
       "E": "For a rocket to work most effectively at both low and high atmospheric pressures, it must have at least one engine that has both a short nozzle and a long nozzle. 3 3 3 3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -390,7 +397,10 @@
       "D": "There are few places outside of South America where maté is regularly consumed.",
       "E": "Typically, the longer a beverage has been in use in a particular place, the more widely that beverage is used there."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT143",

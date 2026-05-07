@@ -270,7 +270,10 @@
       "D": "The most important determinant of a novel's quality is the strength of its characters.",
       "E": "A dramatic novel cannot both be great and belong to the genre of science fiction."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -363,7 +366,10 @@
       "D": "Several well-established methods for forecasting earthquakes can predict within much narrower ranges than two and a half points on the Richter scale.",
       "E": "An earthquake-forecasting technique, even a perfectly reliable one, will probably be of little use if its predictions never distinguish between earthquakes that are imperceptibly small and those that cause catastrophic damage."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT128",

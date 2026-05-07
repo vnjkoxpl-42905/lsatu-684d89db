@@ -225,7 +225,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -321,7 +322,10 @@
       "D": "Warning labels on food products have proven to be effective in reducing consumption of those products.",
       "E": "Countries that institute new food labeling regulations often experience a change in consumer eating habits."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -360,7 +364,10 @@
       "D": "Since any psychiatrist's divulging to the public information about a patient could undermine the trust of other patients in their psychiatrists, no patient can release a psychiatrist from the obligation to keep patient information confidential.",
       "E": "If a patient has expressed an intention to make public information about himself or herself that is in a psychiatrist's possession, the psychiatrist is released from the obligation to keep that information confidential."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -458,7 +465,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Missing Link / Idea"
     ]
   },
   {

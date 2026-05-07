@@ -413,7 +413,10 @@
       "D": "It overlooks the possibility that taxing junk food would encourage people to consume even more junk food.",
       "E": "It confuses something that is conducive to public health with something that is required for public health."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -467,7 +470,10 @@
       "D": "Playtime operates with a narrow profit margin.",
       "E": "Preventing Playtime from going out of business depends on not opposing Playtime's fare increase."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT103",

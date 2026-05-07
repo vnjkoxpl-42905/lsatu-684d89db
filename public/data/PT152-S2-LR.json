@@ -51,7 +51,10 @@
       "D": "When users who forget their passwords are locked out of their own accounts, they must often go through a complicated process in order to have their accounts unlocked.",
       "E": "Passwords that conform to rules of length, complexity, and unpredictability are no harder to guess than passwords that do not conform to such rules."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -221,7 +224,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -463,6 +467,9 @@
       "D": "When determining the selling price of cars less than ten years old, the lack of demand would not be offset by a lack of supply.",
       "E": "The salability of cars that are ten years old or older is largely a function of the level of demand for their parts."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

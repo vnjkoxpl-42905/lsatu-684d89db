@@ -108,7 +108,10 @@
       "D": "If Murray did not have a felony conviction, he would be accepted for the position of Executive Administrator.",
       "E": "The felony charge on which Murray was convicted is relevant to the duties of the position of Executive Administrator."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT123",

@@ -108,7 +108,10 @@
       "D": "A career counselor should try to disabuse students of any unrealistic conceptions they may have about the likely consequences of choosing a particular career.",
       "E": "Career counselors are not doing their job properly if they encourage people to make career choices that are initially appealing but that those people will later regret."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -164,7 +167,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -261,7 +265,10 @@
       "D": "The less readers understand the meaning of a literary work, the less capable they will be of evaluating that work’s merits.",
       "E": "Critics who try to avoid rendering value judgments about the works they consider tend to influence readers’ judgments less than other critics do."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",

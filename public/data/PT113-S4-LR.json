@@ -222,7 +222,10 @@
       "D": "legislative compromise inevitably results in popular dissatisfaction with politicians",
       "E": "only elected public servants tend to elicit dissatisfaction among the public"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -276,7 +279,10 @@
       "D": "The threat of harsh punishment deters people from committing transgressions only if this threat is at least sometimes carried out.",
       "E": "Everyone has at least some tendency to feel guilt or shame for committing extremely severe transgressions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -348,7 +354,10 @@
       "D": "The primary purpose of an equal distribution of political power is to enhance the welfare of society.",
       "E": "Government by referendum is the only way to distribute political power equally and widely."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -366,7 +375,10 @@
       "D": "One deserves praise for advancing one's own interests only if one also advances the interests of others.",
       "E": "It is the motives rather than the consequences of one's actions that determine whether one deserves praise for them."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT113",

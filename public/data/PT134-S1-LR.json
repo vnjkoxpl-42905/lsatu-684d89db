@@ -202,7 +202,10 @@
       "D": "Many people interpret insincere flattery as sincere admiration.",
       "E": "Supervisors are almost never influenced by flattery when they notice it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -313,7 +316,10 @@
       "D": "Archaeological sites from which artifacts have been removed rarely mislead archaeologists who later study the site.",
       "E": "The removal of artifacts from archaeological sites rarely has any environmental impact."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -430,7 +436,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

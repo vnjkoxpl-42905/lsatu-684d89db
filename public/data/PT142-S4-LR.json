@@ -87,7 +87,10 @@
       "D": "The government should not assist in projects that are very likely to result in circumstances that could lead to serious injury.",
       "E": "Residents should be discouraged from rebuilding in any area that has had an extensive history of landslides."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -288,7 +291,10 @@
       "D": "A realistic painting usually does not depict the world as opulent, heroic, or extravagant.",
       "E": "Opulence, heroic sweep, and extravagance are not present in Caravaggio’s paintings."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",

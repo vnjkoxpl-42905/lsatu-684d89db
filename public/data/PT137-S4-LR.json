@@ -129,7 +129,10 @@
       "D": "One should not publish a book recommending a particular means of attaining a goal unless one knows that the particular means can bring about that goal.",
       "E": "One should not publish a book recommending a particular course of action if one either knows or ought to know that taking that course of action would be unhealthful."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -186,7 +189,10 @@
       "D": "What a country produces and in what quantities is not always completely controlled by corporate executives.",
       "E": "Public officials and business executives often cooperate in making decisions of national importance."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -204,7 +210,10 @@
       "D": "Most people unrealistically expect that technology that humanity will soon possess could satisfy the appetite for interstellar space exploration.",
       "E": "If the appetites science fiction has created in people could all be satisfied with technologies that humanity will soon possess, then science fiction could not create an unproductive dissatisfaction with the way the world is."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -240,7 +249,10 @@
       "D": "The shareholders have interests that can best be served by corporate managers.",
       "E": "All shareholders want to be served in identical ways."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -297,7 +309,10 @@
       "D": "The chemistry department's funding for basic science research is not likely to increase if its funding from sources other than profit-driven institutions does not increase.",
       "E": "The profit-driven institutions that currently provide almost all of the chemistry department's funding are not likely to benefit from basic scientific research."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT137",

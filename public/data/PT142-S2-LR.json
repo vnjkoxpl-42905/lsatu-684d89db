@@ -237,7 +237,10 @@
       "D": "Any interpretation of reality involves the expression of a worldview.",
       "E": "Nonrealistic photographs, like realistic photographs, express the worldviews of the photographers who take them."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -435,7 +438,10 @@
       "D": "The more clear and unambiguous one’s moral beliefs, the more likely one is to view history as the working out of moral themes.",
       "E": "People tend to be less objective regarding a subject about which they possess extensive knowledge than regarding a subject about which they do not possess extensive knowledge."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",

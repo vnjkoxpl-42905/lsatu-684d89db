@@ -87,7 +87,10 @@
       "D": "The cows are the only animals grazing on the new land who become ill after eating the fungus contained in the fescue grass.",
       "E": "The fungus that is contained in the fescue grass cannot be eradicated without destroying the grass itself."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -363,7 +366,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {

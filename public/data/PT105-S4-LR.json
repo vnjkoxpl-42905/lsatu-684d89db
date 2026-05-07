@@ -72,7 +72,10 @@
       "D": "Maude’s watch is not the only material thing she especially cares for.",
       "E": "People who are not materialistic tend to have merely sentimental attachments to things."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -259,7 +262,10 @@
       "D": "upper-income citizens would use the money gained from the tax cut in ways that increase investment",
       "E": "in the past, tax cuts for certain groups of people have tended to create new jobs"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -445,7 +451,10 @@
       "D": "Political self-determination is required if a community is to remain truly free.",
       "E": "Real freedom should not be imposed on a community by external forces."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT105",

@@ -76,7 +76,10 @@
       "D": "One should never perform an act until one has fully analyzed all the ways in which that act could impact others.",
       "E": "One has the right to perform an act as long as that act does not harm anyone else."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -94,7 +97,10 @@
       "D": "Voters are typically uninterested in the details of candidates’ policy proposals.",
       "E": "Most candidates’ policy proposals are grounded in an overarching ideological scheme."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -259,7 +265,10 @@
       "D": "Any common ancestor of humans and chimpanzees would have to have lived over 7 million years ago.",
       "E": "Some of the pictures of people used in the experiments were composites of several different people."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -488,6 +497,9 @@
       "D": "Advertising campaigns that target one demographic often alienate people who are not part of the target demographic.",
       "E": "Efforts to influence a target demographic do not pay off when the content of the advertising campaign falls short."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]
