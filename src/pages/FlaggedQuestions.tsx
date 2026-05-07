@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Flag, Trash2, Play, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { questionBank } from '@/lib/questionLoader';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 
@@ -23,8 +24,10 @@ interface FlaggedQuestion {
 export default function FlaggedQuestions() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isLoading: qbLoading, error: qbError } = useQuestionBank();
   const [flaggedQuestions, setFlaggedQuestions] = React.useState<FlaggedQuestion[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!user) {
@@ -36,7 +39,9 @@ export default function FlaggedQuestions() {
 
   const loadFlaggedQuestions = async () => {
     if (!user) return;
-    
+    setLoading(true);
+    setLoadError(null);
+
     try {
       const { data, error } = await supabase
         .from('flagged_questions')
@@ -47,7 +52,9 @@ export default function FlaggedQuestions() {
       if (error) throw error;
       setFlaggedQuestions(data || []);
     } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to load flagged questions';
       console.error('Error loading flagged questions:', err);
+      setLoadError(msg);
     } finally {
       setLoading(false);
     }
@@ -125,8 +132,24 @@ export default function FlaggedQuestions() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {flaggedQuestions.length === 0 ? (
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-4">
+        {qbError && (
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            <span className="font-semibold">Question bank failed to load.</span>{' '}
+            <span className="text-red-300/80">
+              Question stems and metadata won't display below. Try refreshing the page.
+            </span>
+          </div>
+        )}
+
+        {loadError ? (
+          <Card className="p-12 text-center">
+            <Flag className="w-12 h-12 mx-auto mb-4 text-red-400/70" />
+            <h2 className="text-xl font-semibold mb-2">Couldn't load flagged questions</h2>
+            <p className="text-muted-foreground mb-6">{loadError}</p>
+            <Button onClick={loadFlaggedQuestions}>Retry</Button>
+          </Card>
+        ) : flaggedQuestions.length === 0 ? (
           <Card className="p-12 text-center">
             <Flag className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
             <h2 className="text-xl font-semibold mb-2">No Flagged Questions</h2>
