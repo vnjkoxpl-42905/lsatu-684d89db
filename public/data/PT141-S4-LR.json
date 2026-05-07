@@ -211,7 +211,10 @@
       "D": "In planning to meet its future obligations, a company should follow the same practices that are appropriate for an individual who is planning for retirement.",
       "E": "Financial planners should advise their clients to save money for retirement only if retirement is many years away."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -265,7 +268,10 @@
       "D": "The only cost considered by most consumers when they are deciding how much to drive is the cost of gasoline.",
       "E": "Pollution from gasoline burned by cars will be reduced only if consumers give more consideration to the cost of that pollution when deciding how much to drive."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT141",

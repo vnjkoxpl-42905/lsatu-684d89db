@@ -54,7 +54,10 @@
       "D": "People who use an innovative or idiosyncratic writing style often incur criticism of their language usage.",
       "E": "The standard for what constitutes proper language usage should be set by the best users of a language."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -72,7 +75,10 @@
       "D": "The goal of the physical sciences is to predict the order in which events will occur.",
       "E": "The methods used to predict human behavior must involve reference to the psychological states of human agents."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT120",

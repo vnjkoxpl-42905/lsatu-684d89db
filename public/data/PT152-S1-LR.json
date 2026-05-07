@@ -36,7 +36,10 @@
       "D": "A reduction in total miles traveled would contribute more to safeguarding public health than would any automotive safety measure.",
       "E": "Traveling by car is itself a major risk factor for traffic fatalities."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT152",

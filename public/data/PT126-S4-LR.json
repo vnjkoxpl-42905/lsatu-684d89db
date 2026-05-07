@@ -132,7 +132,10 @@
       "D": "To succeed in the market, a new product should not be packaged in a way that creates expectations that it does not meet.",
       "E": "An improved version of an existing product will sell better than the earlier version unless the improved version is packaged like the earlier one."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT126",

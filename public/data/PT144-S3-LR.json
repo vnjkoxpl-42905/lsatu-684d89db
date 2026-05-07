@@ -346,7 +346,10 @@
       "D": "Most anthropologists know that when they live within a community being studied, the community is affected at least somewhat.",
       "E": "Most anthropologists underestimate how much of an effect the researcher’s presence has on a community being studied."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT144",

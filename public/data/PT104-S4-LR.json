@@ -269,7 +269,10 @@
       "D": "The second censor allowed some book manuscripts to be published that the first censor would have considered critical of Country Y’s government.",
       "E": "The number of writers who wrote unpublished manuscripts was greater under the first censor than under the second."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -308,7 +311,10 @@
       "D": "The recommendation that some food from the fruit and vegetable group be consumed daily constituted a reminder not to neglect this group, which provides needed vitamins, minerals, and fiber.",
       "E": "Encouraging the daily consumption of some product from each of the four food groups gave the impression that eating in that manner is sufficient for a healthy diet, but eating in that manner is consistent with the overconsumption of sweets and fats."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -449,7 +455,10 @@
       "D": "Hypatia’s latest novel is clearly better than the majority of today’s literature.",
       "E": "Hypatia’s latest novel has at least one property of good literature to a greater degree than her earlier works."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT104",

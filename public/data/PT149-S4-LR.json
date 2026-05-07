@@ -53,7 +53,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -376,7 +377,10 @@
       "D": "The ability to tell melodies apart depends on the discernment of pitch alone and not at all on the perception of timing.",
       "E": "Whereas perception of timing can apparently be learned, discernment of pitch is most likely innate."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT149",

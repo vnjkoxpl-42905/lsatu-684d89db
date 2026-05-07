@@ -132,7 +132,10 @@
       "D": "Orangutans dislike being caged more than chimpanzees do.",
       "E": "Not all nonhuman primates understand tool use."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -289,7 +292,10 @@
       "D": "Most fad diets fail to satisfy the dietary needs of some people.",
       "E": "There are very few if any nutrients that are contained in every food other than fruits and vegetables."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -506,6 +512,9 @@
       "D": "the evaluation of individual achievement in science is a highly subjective matter",
       "E": "Nobel Prizes are inaccurate indicators of scientists’ contributions to their disciplines"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   }
 ]

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -133,7 +134,10 @@
       "D": "Businesses that adopt new technologies are most likely to prosper in a period of general economic growth.",
       "E": "Economic growth increases business failures."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -187,7 +191,10 @@
       "D": "Many critics of consumerism fail to realize that certain things are essential to human happiness.",
       "E": "Critics of consumerism often use fuzzy distinctions to support their claims."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT133",

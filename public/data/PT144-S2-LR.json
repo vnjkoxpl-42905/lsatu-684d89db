@@ -286,7 +286,10 @@
       "D": "should not be thought of as a way of keeping an audience entertained",
       "E": "is of no value to people who are interested in journalism"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -322,7 +325,10 @@
       "D": "It would be reasonable for the city to adopt the new tourism plan.",
       "E": "The only way the city can create jobs is by increasing tourism."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT144",

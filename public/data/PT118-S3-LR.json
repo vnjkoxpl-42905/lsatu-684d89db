@@ -187,7 +187,10 @@
       "D": "A good life as described by moral theories in the Western tradition cannot be realized.",
       "E": "It is impossible to develop a theory that accurately describes what a good life is."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -268,7 +271,10 @@
       "D": "Analog systems are inferior to digital systems for most practical purposes.",
       "E": "Digital systems are preferable to analog systems when the signal must be reproduced many times."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT118",

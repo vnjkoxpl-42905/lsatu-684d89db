@@ -237,7 +237,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Important Pivot"
     ]
   },
   {
@@ -370,7 +371,10 @@
       "D": "Swift Airlines had never before canceled more than one or two scheduled flights on a single day.",
       "E": "All of the airplanes scheduled for the canceled flights are based at the same airport."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT106",

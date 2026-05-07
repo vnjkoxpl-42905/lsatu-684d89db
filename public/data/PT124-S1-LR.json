@@ -154,7 +154,10 @@
       "D": "The two studies in which no correlation was found did not examine enough children to provide significant support for any conclusion regarding a causal relationship between night-lights and nearsightedness.",
       "E": "In a fourth study involving 100 children who were older than those in any of the first three studies, several of the children who had slept with night-lights as infants were nearsighted."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -275,7 +278,10 @@
       "D": "It is an intermediate conclusion that is offered in support of the claim that some governmental control of television is needed and for which the claim that the television is on for more than five hours a day in the average home is offered as partial support.",
       "E": "It is a premise that is offered in support of the claim that television is the primary medium through which many voters obtain information about current affairs."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -311,7 +317,10 @@
       "D": "There is no statute that a nation's citizens have a moral obligation to obey.",
       "E": "A nation's laws can sometimes come into conflict with the moral code they express."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -439,7 +448,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Important Pivot"
     ]
   },
   {

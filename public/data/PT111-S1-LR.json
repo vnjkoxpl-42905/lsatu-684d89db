@@ -56,7 +56,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -206,7 +207,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -308,7 +310,10 @@
       "D": "What caused Antarctica to be submerged under the sea was the melting of the ice sheet that had previously covered the continent.",
       "E": "The ice sheet covering Antarctica was melted either as a result of volcanic activity in Antarctica’s mountains or as a result of severe climatic warming."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT111",

@@ -51,7 +51,10 @@
       "D": "Despite what people believe, a natural rhythm of life is unhealthy.",
       "E": "The amount of stress a person experiences depends on that person's rhythm of life."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -108,7 +111,10 @@
       "D": "The way a society is ordered by law should not reflect any moral convictions about the way society ought to be ordered.",
       "E": "The best way to promote cooperation among a society's institutions, organizations, and citizenry is to institute order in that society by means of law."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -342,7 +348,10 @@
       "D": "People read as much as they used to, but most of the works they now read are not novels.",
       "E": "A large number of high-quality newspapers, magazines, professional journals, and nonfiction books are currently published."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",

@@ -228,7 +228,10 @@
       "D": "On average, it costs no less to feed a cat that eats fewer ounces of food per day than it does to feed a cat that eats more ounces of food per day.",
       "E": "Canned cat food typically costs more per ounce than does dry cat food."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -285,7 +288,10 @@
       "D": "The amount of water in the world’s reservoirs is about equal to the amount of water that results from the melting of glaciers and ice sheets.",
       "E": "The amount of water that results from the melting of glaciers and ice sheets cannot be determined by looking at the rise in global sea level alone."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT148",

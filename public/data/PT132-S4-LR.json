@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -117,7 +118,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -232,7 +234,10 @@
       "D": "A politician criticizing his or her political opponents for presenting their political agendas in an incomprehensible manner is being insincere.",
       "E": "To mobilize large numbers of people in support of a political agenda, that political agenda must be presented in such a way that it cannot be misunderstood."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT132",

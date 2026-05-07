@@ -154,7 +154,10 @@
       "D": "It is the main conclusion of the argument.",
       "E": "It is a premise of the argument."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -254,7 +257,10 @@
       "D": "The human brain contains a mental representation of the external world.",
       "E": "It is impossible for any entity to completely represent anything larger and more complicated than itself."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -272,7 +278,10 @@
       "D": "Discussion and debate do not necessarily lead to a greater acceptance of the truth.",
       "E": "One of the reasons some ideas are appealing is that they are false."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT159",

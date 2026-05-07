@@ -339,7 +339,10 @@
       "D": "People are right to be unwilling to give the government the power it would need to operate an economy without paper money.",
       "E": "Even though it may be technologically feasible, no government will be able to operate an economy without the use of paper money."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT136",

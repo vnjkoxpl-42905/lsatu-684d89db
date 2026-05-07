@@ -15,7 +15,10 @@
       "D": "Blood going to the stomach to aid in digestion after a meal is not a cause of muscle cramps.",
       "E": "Blood going to the stomach to aid in digestion after a meal would not reduce blood flow to the muscles."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT154",

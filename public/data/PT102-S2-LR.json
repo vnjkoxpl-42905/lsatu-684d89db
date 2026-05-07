@@ -126,7 +126,10 @@
       "D": "If the assassination had occurred when it did but less military force had at that time been amassed, then the war's outbreak might have been considerably delayed or the war might not have occurred at all.",
       "E": "Although the conditions prevailing at the time the war started made war inevitable, if the war had not been triggered by the assassination it would not have taken the course with which students of history are familiar."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT102",

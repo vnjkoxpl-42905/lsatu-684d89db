@@ -15,7 +15,10 @@
       "D": "Physicians who are called upon to offer second opinions are always uncomfortable about evaluating the work of colleagues.",
       "E": "In many cases in which medical patients seek second opinions, they are concerned about offending the first physician."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT134",

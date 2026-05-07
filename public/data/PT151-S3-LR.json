@@ -275,7 +275,10 @@
       "D": "Rock music can sometimes benefit from the existence of commercial barriers rather than being harmed by them.",
       "E": "Rock music is best when it is made by musicians who do not think of themselves as being self- conscious artists."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT151",

@@ -150,7 +150,10 @@
       "D": "The ability to use landmarks to find one’s way home is probably not an innate ability in birds.",
       "E": "It is as false to claim that humans have an innate sense of direction as it is to claim that birds have an innate homing sense."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -206,7 +209,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Important Pivot"
     ]
   },
   {

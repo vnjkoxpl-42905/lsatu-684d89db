@@ -55,7 +55,10 @@
       "D": "One need not ascertain the cause of the current recession in order to improve the economy.",
       "E": "Long before the cause of myopia was known to be genetic, corrective lenses were being used as an effective treatment for the disease."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -194,7 +197,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {

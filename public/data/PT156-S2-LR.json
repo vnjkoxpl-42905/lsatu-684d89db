@@ -255,7 +255,10 @@
       "D": "Studying history is valuable, but not for the reason that Santayana suggests.",
       "E": "One should not try to avoid repeating the mistakes of previous generations by studying history. -16- 22"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT156",

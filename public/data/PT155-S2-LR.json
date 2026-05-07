@@ -176,7 +176,10 @@
       "D": "Of the mammal species in North America, the one with the most individual members is a species of rodent.",
       "E": "Most nonrodent mammal species can be found in North America."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT155",

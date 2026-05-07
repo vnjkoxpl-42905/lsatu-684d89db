@@ -416,7 +416,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -456,7 +457,10 @@
       "D": "A developing country will not experience economic growth unless its businesspeople invest in modern industries.",
       "E": "Investments in a modern industry in a developing country carry little risk as long as the country has at least one other business in that industry."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT141",

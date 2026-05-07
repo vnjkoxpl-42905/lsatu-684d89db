@@ -152,7 +152,10 @@
       "D": "Innovations in document storage technologies sometimes decrease, but never eliminate, the risk of destroying documents.",
       "E": "Advances in technology can lead to increases in both convenience and environmental soundness."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -231,7 +234,10 @@
       "D": "It is possible for scientists to both adhere to the traditional values of their field and violate a principle of ordinary morality.",
       "E": "The uses and effects of scientifically acquired knowledge can never be adequately foreseen."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT125",

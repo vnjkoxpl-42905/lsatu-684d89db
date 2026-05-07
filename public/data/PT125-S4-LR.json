@@ -93,7 +93,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Important Pivot"
     ]
   },
   {
@@ -233,7 +234,10 @@
       "D": "We do not know whether the Sapir-Whorf hypothesis is true or false.",
       "E": "Only the hypotheses of physical science should be taken seriously."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT125",

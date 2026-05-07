@@ -59,7 +59,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -277,7 +278,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Important Pivot"
     ]
   },
   {
@@ -381,7 +383,10 @@
       "D": "The sleeplessness that sometimes accompanies allergies can be effectively treated with antihistamines.",
       "E": "Any effect antihistamines may have in reducing cold symptoms does not result from blocking the action of histamine."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -435,7 +440,10 @@
       "D": "Not all hierarchical organizations operate in the same way.",
       "E": "Whether or not an organization is bureaucratically controlled has nothing to do with how that organization operates."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT104",

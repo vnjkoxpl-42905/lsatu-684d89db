@@ -15,7 +15,10 @@
       "D": "insect pests typically cause less damage to potato plants than other harmful organisms do",
       "E": "most aphid species that are harmful to potato plants cause greater harm to other edible food plants"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -253,7 +256,10 @@
       "D": "The company's trial on charges of engaging in monopolistic practices was worthwhile.",
       "E": "The penalty imposed on the company in the trial should have been larger."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT133",

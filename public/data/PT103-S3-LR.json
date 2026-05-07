@@ -123,7 +123,10 @@
       "D": "people who do not exercise when they are young will gain few benefits from beginning to exercise at a later age",
       "E": "if the physical changes of aging are to be slowed, it is more practical to rely on exercise than on drugs"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT103",

@@ -385,7 +385,10 @@
       "D": "The reduction in cholesterol levels in the volunteers is solely responsible for the change in their lipid profiles.",
       "E": "For at least some of the volunteers in the experiment, the risk of heart disease increased after having been put on the low-fat diet."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT130",

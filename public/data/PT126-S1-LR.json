@@ -352,7 +352,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Important Pivot"
     ]
   },
   {
@@ -371,7 +372,10 @@
       "D": "It is a claim that the argument derives from another claim and that it uses to support its conclusion.",
       "E": "It is a generalization that the argument uses to justify the relevance of the specific example it cites."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT126",

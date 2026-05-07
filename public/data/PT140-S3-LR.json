@@ -93,7 +93,10 @@
       "D": "if advertising changes consumers’ preferences, it generally does so in a positive way",
       "E": "it is not completely accurate to say that advertising changes people’s preferences"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT140",

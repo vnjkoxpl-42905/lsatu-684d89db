@@ -226,7 +226,10 @@
       "D": "It is not wrong for individuals to publish literature that is offensive.",
       "E": "It is not right for the government to restrict the publication of literature that does not cause serious harm."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT115",

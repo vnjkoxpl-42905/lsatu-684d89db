@@ -249,7 +249,10 @@
       "D": "It is used as evidence that songbirds’ predators will continue to have a habitat and so will continue to pose a threat to songbirds.",
       "E": "It is presented as evidence for the claim that songbirds’ predators are threatened by extinction unless they have open spaces and corridors that give them access to their prey."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT148",

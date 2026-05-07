@@ -207,7 +207,10 @@
       "D": "The extent of the cloud cover over the oceans is largely determined by the quantity of plankton in those oceans.",
       "E": "Species such as plankton alter the environment in ways that are less detrimental to the wellbeing of other species than are the alterations to the environment made by more highly evolved species."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -370,7 +373,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Important Pivot"
     ]
   },
   {
@@ -410,7 +414,10 @@
       "D": "Unlimited financial liability in the case of nuclear accidents poses no threat to the financial security of the country’s nuclear industry.",
       "E": "The only serious threat posed by a nuclear accident would be to the financial security of the nuclear industry."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT107",

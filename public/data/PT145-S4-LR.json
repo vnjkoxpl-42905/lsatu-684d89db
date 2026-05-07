@@ -132,7 +132,10 @@
       "D": "It is a view that is rejected by the argument.",
       "E": "It is the conclusion of the argument."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -291,7 +294,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -346,7 +350,10 @@
       "D": "Some children who are taught by the whole- language method are not prevented from learning how sounds are represented by means of letters.",
       "E": "The whole-language method succeeds in teaching many children how to represent sounds symbolically by means of letters."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT145",

@@ -345,7 +345,10 @@
       "D": "Radical environmentalists often put forth untenable positions in order to produce the fear that is required to bring about moderate reforms.",
       "E": "Radical environmentalists advocate positions without regard for factual support or economic feasibility."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT110",

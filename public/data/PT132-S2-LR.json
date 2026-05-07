@@ -192,7 +192,10 @@
       "D": "In 20 years, it will be impossible for airports to accommodate enough normal-sized planes to carry the number of passengers that are expected to be flying then.",
       "E": "In 20 years, most airline passengers will be flying in gigantic passenger planes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT132",
