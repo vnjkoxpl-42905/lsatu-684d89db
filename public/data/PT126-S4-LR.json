@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -77,7 +78,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -96,7 +98,10 @@
       "D": "Some back muscle injuries that have been aggravated by improper attempts at physical therapy, such as home massage, have been successfully treated with drugs.",
       "E": "Patients with injuries to other muscles show more improvement when treated with both drugs and physical therapy than when treated with physical therapy alone."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -207,7 +212,10 @@
       "D": "Inez and Antonio disagree about the overall value of the book.",
       "E": "Inez believes that the book's title should not mention matter without mentioning energy."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -249,7 +257,10 @@
       "D": "Scientists are not proper authorities with respect to the question of whether a given substance is addictive.",
       "E": "Scientists and governments have a duty to cooperate in regulating drugs to protect the public health."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -311,7 +322,10 @@
       "D": "Most stories about mad scientists express the author's antiscientific views.",
       "E": "Some stories that employ symbolism describe violations of the laws of nature."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -389,7 +403,10 @@
       "D": "Experts who give testimony on scientific or technical issues tend to hedge their conclusions by discussing the possibility of error.",
       "E": "Expert witnesses in specialized fields often command fees that are so high that many people involved in litigation cannot afford their services."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -443,7 +460,10 @@
       "D": "Superheating of gaslike substances causes bright light to be emitted.",
       "E": "All types of ball lightning have the same cause."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -482,7 +502,10 @@
       "D": "Some physicians have argued that attending weekly support group meetings gives patients less faith in the standard treatment for disease T.",
       "E": "Everyone in the group whose members attended weekly support group meetings reported after 1 year that those meetings had helped them to cope with the disease."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT126",

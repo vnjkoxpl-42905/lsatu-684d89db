@@ -33,7 +33,10 @@
       "D": "Common household bacteria are a serious health concern.",
       "E": "People should use household cleaning products with antibacterial agents to clean their homes."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -73,7 +76,10 @@
       "D": "The four other companies mentioned by the employee do not together account for very close to 60 percent of the total pollution by the 30 companies.",
       "E": "There is no significant variation in the quantities of pollutants released by the other 25 small chemical companies."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -251,7 +257,11 @@
       "D": "The items in the well were probably thrown there when people evacuated the area and would have been retrieved if the people had returned.",
       "E": "Items of jewelry found beneath the coins were probably made around 300 A.D."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -305,7 +315,10 @@
       "D": "if Luke would not expect Roxanne to finish the report under the circumstances, then it would not be wrong for Roxanne to fail to finish it",
       "E": "Luke would not expect Roxanne to finish the report and it would be wrong if she did finish it"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -364,7 +377,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -462,7 +476,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

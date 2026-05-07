@@ -33,7 +33,12 @@
       "D": "It assumes that Ms. Smith’s son is guilty when there is evidence to the contrary which the principal has disregarded.",
       "E": "It attempts to confuse the point at issue by introducing irrelevant facts about the incident."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -109,7 +114,10 @@
       "D": "Future advances in computer technology will not render computers capable of sorting through greater amounts of information.",
       "E": "Human experts rely heavily on intuition while they are developing a repertory of model situations."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -243,7 +251,10 @@
       "D": "Both groups rejected cereals low in sugar even when these cereals were heavily advertised on television.",
       "E": "Cereal preferences of adults who watch television are known to be significantly different from the cereal preferences of adults who do not watch television."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -261,7 +272,10 @@
       "D": "presumes, without providing justification, that total emissions for a given automobile trip are determined primarily by the amount of time the trip takes",
       "E": "presumes, without providing justification, that drivers run a significant risk of collision only if they spend a lot of time on the road"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -335,7 +349,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -393,7 +408,10 @@
       "D": "overlooks the possibility that democracy promotes political freedom without being necessary or sufficient by itself to produce it",
       "E": "bases its historical case on a personal point of view"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -486,6 +504,9 @@
       "D": "only short stories are used as novelists’ sketch pads",
       "E": "short stories provide glimpses of facets of character that are usually kept hidden"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

@@ -98,7 +98,10 @@
       "D": "many houses in the town have neither inadequate site drainage nor structural defects that could make them unsafe",
       "E": "some of the houses that have structural defects that could make them unsafe also have inadequate site drainage"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -197,7 +200,10 @@
       "D": "There will be more voters in the election who are 50 and over than there will be voters under 50.",
       "E": "Whalley would change her platform if she thought it would give her a better chance to win."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -236,7 +242,10 @@
       "D": "In the majority of cases, valid wills do not adequately meet the needs of the persons for whom the wills were prepared.",
       "E": "There is some way for an ill person to get a valid prescription without first consulting a doctor."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -453,7 +462,10 @@
       "D": "Does the businessperson have a tendency to be late to meetings?",
       "E": "Was it particularly important that the businessperson not be late to this meeting?"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT146",

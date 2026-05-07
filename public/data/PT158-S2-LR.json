@@ -135,7 +135,10 @@
       "D": "Office workers’ keyboards and monitors are usually not at the recommended heights for healthy postures for adults.",
       "E": "Office workers are more likely to report injuries than children are. -14- 22"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -215,7 +218,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies",
+      "Assumes Difference"
     ]
   },
   {
@@ -279,7 +284,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
     ]
   },
   {
@@ -337,7 +344,11 @@
       "D": "No significant benefit would result from establishing human habitation on Mars.",
       "E": "Mars is not a practical source of the basic materials required for establishing human habitation there."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -357,7 +368,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Assumes Similarity"
     ]
   },
   {
@@ -412,7 +426,10 @@
       "D": "Previous definitions of life were based on research done with inferior microscopes no longer in use.",
       "E": "Animals such as cold-blooded lizards can be physiologically simpler, though still larger, than other animals. -18- 22"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -432,7 +449,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -451,7 +469,11 @@
       "D": "People generally exercise more care when performing activities they know to have risky consequences than when performing activities of unknown risk.",
       "E": "Avoiding serious harm to themselves is given a high priority by people in their behavior, but avoiding lesser harms is frequently outweighed by various desires."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT158",

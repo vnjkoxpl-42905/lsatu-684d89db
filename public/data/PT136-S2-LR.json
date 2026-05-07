@@ -38,7 +38,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -75,7 +76,10 @@
       "D": "If chemical changes in the brain's neurochemistry correspond to improvements in patient behavior, then psychology and neuroscience will eventually be indistinguishable.",
       "E": "Direct intervention in the brain's neurochemistry is likely to become a less expensive way of treating psychological disorders than is \"talk\" therapy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -150,7 +154,10 @@
       "D": "concludes that a claim is false merely on the grounds that the evidence for it is insufficient",
       "E": "takes a condition that is sufficient for the conclusion to be true as one that is necessary for the conclusion to be true"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -188,7 +195,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Alternatives"
     ]
   },
   {
@@ -209,7 +217,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -381,7 +390,10 @@
       "D": "An action performed with the wrong motivations cannot be morally good.",
       "E": "If a person's motivations for acting are based on a sense of duty, then that person's action is morally good."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT136",

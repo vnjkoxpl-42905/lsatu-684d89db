@@ -18,7 +18,10 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -39,7 +42,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -58,7 +62,10 @@
       "D": "It is an analogy that forms part of a specific objection to the argument’s overall conclusion.",
       "E": "It is an analogy offered to clarify the distinction the physician makes between an initial study and a definitive study."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -79,7 +86,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Anti-Causal"
     ]
   },
   {
@@ -116,7 +124,10 @@
       "D": "attempts to support its conclusion by making an appeal to emotions",
       "E": "discusses air pollution in order to draw attention away from more significant sources of health- related costs"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -136,7 +147,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -158,7 +170,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -177,7 +190,11 @@
       "D": "the distinction that Robin makes between the different kinds of cultures is as important as many archaeologists have thought",
       "E": "studying a culture’s artifacts can reveal a great deal about the culture"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -291,7 +308,10 @@
       "D": "The most expensive frying pans are the ones most likely to work well for many years.",
       "E": "Most frying pan manufacturers’ warranties provide for full customer satisfaction."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -309,7 +329,10 @@
       "D": "Obstructive courtroom behavior by a lawyer is seldom effective in cases where jurors are also presented with legitimate evidence.",
       "E": "The selection of jurors is based in part on an assessment of the likelihood that they are free of bias."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -390,7 +413,10 @@
       "D": "there is likely to be intelligent life on other planets",
       "E": "scientists should spend more time and money on the search for intelligent extraterrestrial life -34- 4 44"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -449,7 +475,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

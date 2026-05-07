@@ -384,7 +384,11 @@
       "D": "The manipulation of the genetic code through selective breeding for desired traits is important for human survival.",
       "E": "Science can accomplish only what is already in some sense natural, and nothing natural is unethical."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT119",

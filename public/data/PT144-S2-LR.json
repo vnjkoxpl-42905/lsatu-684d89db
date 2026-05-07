@@ -18,7 +18,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -37,7 +38,11 @@
       "D": "foreign citizens should be eligible to serve as cabinet secretaries",
       "E": "cabinet undersecretaries should not be expected to stand in for cabinet secretaries"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -55,7 +60,10 @@
       "D": "all students who are involved in student government are outspoken",
       "E": "students will not become more outspoken unless they become involved in student government"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -91,7 +99,10 @@
       "D": "There are groups that are inhibited from staging a protest rally out of a fear of government response.",
       "E": "The government feared a backlash if it did not show acceptance of the recent protest rally."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -327,7 +338,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -348,7 +360,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Analogies",
+      "Assumes Similarity"
     ]
   },
   {
@@ -427,7 +441,10 @@
       "D": "At least some of the recipients of the company’s e-mails will follow the advice contained in the body of at least some of the e-mails they receive.",
       "E": "Some of the tax preparation company’s clients would try to illegally evade penalties if they knew how to do so."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -469,7 +486,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies"
     ]
   },
   {
@@ -488,7 +506,10 @@
       "D": "All of the new shows that Wilke & Wilke produced last year that were canceled were police dramas.",
       "E": "None of the most popular television shows last year were police dramas. S T"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT144",

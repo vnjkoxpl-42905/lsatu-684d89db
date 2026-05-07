@@ -33,7 +33,10 @@
       "D": "children should be required to participate in competitive sports regardless of their interests",
       "E": "children cannot be motivated without their emotions being engaged"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -87,7 +90,11 @@
       "D": "the longer and the more often one is exposed to radiation, the more radiation one absorbs and the more seriously one is harmed",
       "E": "flying at high altitude involves risks in addition to exposure to minor radiation"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -125,7 +132,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -226,7 +234,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -283,7 +292,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Assumes Similarity"
     ]
   },
   {
@@ -362,7 +372,10 @@
       "D": "Any government that redistributes resources via taxation forces people to help others.",
       "E": "Any government that forces people to help others should permit emigration."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -382,7 +395,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -421,7 +435,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Battle of Opinions"
     ]
   },
   {
@@ -461,7 +476,10 @@
       "D": "All evidence suggests that the healthiest way to decrease the chance of heart disease is to exercise and keep a diet low in fat.",
       "E": "Many other regions have much lower rates of heart disease than France, though their populations consume even less red wine than do North Americans."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -479,6 +497,9 @@
       "D": "Academic training outside of business schools is more responsive to the needs of business than is training within business schools.",
       "E": "Today’s business executives have valuable insight into business that academics in business schools do not have."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   }
 ]

@@ -129,7 +129,10 @@
       "D": "their business has an obligation to be as profitable as possible",
       "E": "electronic order processing would appear cold and inhuman to most of their customers"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -186,7 +189,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -205,7 +210,10 @@
       "D": "Red squirrels leave the sugar maple sap that slowly oozes out of the holes in the tree's trunk until much of the water in the sap has evaporated.",
       "E": "During the season when sap can be obtained from sugar maple trees, the weather often becomes cold enough to prevent sap from oozing out of the trees."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -225,7 +233,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Alternatives"
     ]
   },
   {
@@ -246,7 +255,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -265,7 +275,10 @@
       "D": "The fact that Roger wanted more companionship does not by itself explain why he adopted ten cats last year. He would not have adopted them all if anyone else had been willing to adopt some of them.",
       "E": "The fact that Thelma's goal is to become famous does not by itself explain why she took up theatrical acting. It is easier to become famous through writing or directing plays than through theatrical acting."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -304,7 +317,10 @@
       "D": "presumes, without giving justification, that a painting's emotional impact is irrelevant to the determination of that painting's authenticity",
       "E": "presumes, without offering evidence, that Rembrandt was better at conveying emotions in painting than were other painters"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -440,7 +456,10 @@
       "D": "most of the people who are affected by the problem Robert describes would be harmed by the installation of speed bumps and warning signs",
       "E": "problems of the kind that Robert describes do not occur on any nonresidential streets in Crownsbury"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -461,7 +480,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {

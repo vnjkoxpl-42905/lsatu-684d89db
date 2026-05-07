@@ -113,7 +113,11 @@
       "D": "support Marsha's unstated conclusion that most people seek only the appearance of democracy rather than democracy itself",
       "E": "reject Elena's conclusion that the best form of government is democracy"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -149,7 +153,10 @@
       "D": "dentists should be willing to schedule an after-hours appointment for anyone who asks",
       "E": "Aristotle recognizes that friendship sometimes morally outweighs justice"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -169,7 +176,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -212,7 +220,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -231,7 +240,10 @@
       "D": "The specific techniques and interventions used by therapists practicing different kinds of psychotherapy differ dramatically.",
       "E": "More-experienced therapists tend to use a wider range of techniques and interventions in psychotherapy than do inexperienced therapists."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -292,7 +304,10 @@
       "D": "Everyone whose emotional outlook on existence is untainted has a mind clouded by illusion.",
       "E": "It is better to be aware of the fragility and precariousness of human life than to have an untainted emotional outlook on existence."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -330,7 +345,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -403,7 +419,10 @@
       "D": "If an alternative to medication relieves a medical condition just as effectively as medication does, then it is always healthier to rely on that alternative than on medication to relieve that medical condition.",
       "E": "If two different methods of treating a medical condition have similar side effects, then it is healthier to rely on the more effective method."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -424,7 +443,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -443,7 +463,10 @@
       "D": "Several people who were in control groups and only given placebos claimed that the tablets induced sleep.",
       "E": "If melatonin were helpful in treating insomnia, then every person with insomnia who took doses of melatonin would appear to be significantly affected by it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -464,7 +487,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Anti-Causal"
     ]
   },
   {

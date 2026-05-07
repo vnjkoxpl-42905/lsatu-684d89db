@@ -17,7 +17,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker",
+      "Alternatives"
     ]
   },
   {
@@ -150,7 +152,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "2-Speaker"
     ]
   },
   {
@@ -169,7 +172,10 @@
       "D": "Foods low in saturated fat promote low blood cholesterol.",
       "E": "A serving of meat or poultry is typically larger than a serving of shellfish."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -292,7 +298,10 @@
       "D": "It overlooks the possibility that sedatives could help insomniacs cope with stress.",
       "E": "It presumes, without providing justification, that the cases of insomnia psychologists treat are representative of all cases of insomnia."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -367,7 +376,11 @@
       "D": "Improvements in doctors’ use of the techniques of curative medicine would only increase overall medical costs.",
       "E": "The time required to teach preventive medicine thoroughly is greater than one hour for every ten that are now spent teaching curative medicine."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -385,7 +398,10 @@
       "D": "The main purpose of education is to prepare children to meet the demands of the job market as adults.",
       "E": "It is sometimes desirable to tailor educational methods to the way a child learns best."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -457,6 +473,9 @@
       "D": "biological factors do not play any role in a child being extroverted",
       "E": "environmental factors can sometimes be more influential than biological factors in determining extroversion"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

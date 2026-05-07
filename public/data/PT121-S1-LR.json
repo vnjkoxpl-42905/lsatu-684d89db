@@ -15,7 +15,11 @@
       "D": "For people who are not lying, the tension of taking a lie-detector test can produce physiological reactions identical to the ones that accompany the act of lying.",
       "E": "When employers use lie-detector tests as part of their preemployment screening, some candidates tested are highly motivated to lie."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -56,7 +60,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -192,7 +197,10 @@
       "D": "Of the substantial items in the budget, the greatest increase was in administrative costs, facilities maintenance costs, and costs associated with the provision of athletic facilities.",
       "E": "Because enrollment projections at the university are very unreliable, it is difficult to accurately estimate the amount of money the university will collect from tuition fees ahead of time."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT121",

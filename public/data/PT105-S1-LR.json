@@ -57,7 +57,10 @@
       "D": "Project managers prefer to work on small projects rather than large ones.",
       "E": "Large space projects can explore a few places thoroughly, while small projects can investigate more regions, though less thoroughly."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -77,7 +80,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -152,7 +156,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -286,7 +291,10 @@
       "D": "Creating jobs through a public works project will ultimately benefit the public.",
       "E": "There is a better way to use the budget surplus than increasing government payments to those who are unemployed."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -397,7 +405,10 @@
       "D": "One is likely to find that both economic and psychological explanations have been proposed for any given historical event.",
       "E": "Appeals to both economic and psychological factors are needed to understand any historical event properly."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -492,7 +503,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   }
 ]

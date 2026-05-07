@@ -94,7 +94,10 @@
       "D": "tend to have clearly immoral characters in them",
       "E": "should help children learn the consequences of being bad"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -134,7 +137,10 @@
       "D": "The candidates with the best debating skills are the ones who are most qualified for the political offices for which they are running.",
       "E": "Political debates tend to have a major effect on which candidate among those participating in a debate will win the election."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -291,7 +297,11 @@
       "D": "Qualified economic development advisers generally demand higher salaries than many city councils are willing to spend.",
       "E": "Cities that have earned large returns due to hiring economic development advisers did not earn any returns at all in the advisers’ first few years of employment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -329,7 +339,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -371,7 +382,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Assumes Similarity"
     ]
   },
   {

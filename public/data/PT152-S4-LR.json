@@ -18,7 +18,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "the safety of anesthesia has improved in recent decades",
       "E": "the administration of anesthetics by a nurse should always be supervised by a doctor"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -55,7 +59,11 @@
       "D": "The new packaging cannot affect the smoking habits of people who regularly smoke cigarettes unless they frequently look at the packaging when taking out cigarettes.",
       "E": "Most people who regularly smoke cigarettes would be unable to describe the logo of their usual brand of cigarettes if asked to do so."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -76,7 +84,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -95,7 +104,10 @@
       "D": "Jennifer has been planning to visit historical sites in either Mexico or Peru. Travel to Mexico and Peru is currently inexpensive. So she should instead plan to visit both.",
       "E": "Jennifer would like to visit historical sites in Mexico and Peru. Travel to Mexico is currently cheaper than to Peru. So she should visit the historical sites in Mexico now and visit the sites in Peru at a later date."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -206,7 +218,10 @@
       "D": "presumes, without providing justification, that if Mary’s application is received in Gillespie City by October 1, she will satisfy all of the other requirements of the Gillespie Grant application",
       "E": "overlooks the possibility that Mary cannot be certain that her application will arrive in Gillespie City unless she sends it by express mail"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -245,7 +260,10 @@
       "D": "Athletes currently using PEDs cannot find doctors willing to prescribe them.",
       "E": "Using PEDs at unsafe levels does not create a big competitive advantage over using them at safe levels."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -321,7 +339,10 @@
       "D": "Voluntary vaccination policies at health-care facilities would not adequately protect patients from the risks posed by influenza viruses.",
       "E": "Society has already accepted the idea of mandatory vaccination in other contexts."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -362,7 +383,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -420,7 +442,10 @@
       "D": "People are unwilling to sell gifts chosen for them by others unless offered about one and a half times the gift’s actual price.",
       "E": "Most retailers require receipts before people can return gifts for refund or exchange."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -456,7 +481,11 @@
       "D": "fails to give an indication of why the characteristics it focuses on are sufficient for the eventual development of humanlike intelligence",
       "E": "presumes, without providing justification, that the people administering the Internet are interested in developing a system with humanlike intelligence"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT152",

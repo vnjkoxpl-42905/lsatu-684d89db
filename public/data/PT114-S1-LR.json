@@ -94,7 +94,10 @@
       "D": "the current computer system does not work well enough to do what it is supposed to do",
       "E": "the conversion to a new computer system should be delayed"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -112,7 +115,10 @@
       "D": "The argument presumes, without providing justification, that because expert opinion is trustworthy in one case, it must therefore be trustworthy in all cases.",
       "E": "The argument fails to consider that coffee may be harmful to one's health in some respects and beneficial in others."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -187,7 +193,10 @@
       "D": "A person who has learned one keyboard layout can readily learn to use a second one in place of the first, but only with difficulty learn to use a second one alongside the first.",
       "E": "It is now possible to construct typewriters and word-processing equipment in which a single keyboard can accommodate two or even more different keyboard layouts, each accessible to the operator at will."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -451,6 +460,9 @@
       "D": "The salty food fed to infants in order to change their taste preferences must taste pleasant.",
       "E": "Sweet food is better for infant development than is salty food."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   }
 ]

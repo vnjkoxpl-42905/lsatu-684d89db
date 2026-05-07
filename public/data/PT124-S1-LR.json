@@ -33,7 +33,10 @@
       "D": "an art museum ought to acquire an unusual example of a period or genre if more characteristic examples are prohibitively expensive",
       "E": "all of the artworks that experts identify as masterpieces are actually masterpieces"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -113,7 +116,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Analogies",
+      "Assumes Similarity"
     ]
   },
   {
@@ -156,7 +161,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal",
+      "Battle of Opinions"
     ]
   },
   {
@@ -178,7 +185,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -239,7 +247,10 @@
       "D": "decreases",
       "E": "hazard insurance"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -259,7 +270,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -340,7 +352,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -382,7 +395,10 @@
       "D": "Usually, the financial situation of a small company that has never advertised on the Internet will improve only if that company starts to advertise on the Internet. Therefore, a typical small company that has never advertised on the Internet can probably improve its financial situation by doing so.",
       "E": "A small company's financial situation usually improves soon after that company first begins to advertise on the Internet. Thus, most small companies that have never advertised on the Internet could probably become financially strong."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -449,7 +465,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Relative vs. Absolute",
-      "Important Pivot"
+      "Important Pivot",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -470,7 +487,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -489,7 +507,10 @@
       "D": "Some people are unable to distinguish red from green due to an absence in the retina of the photopigment sensitive to green.",
       "E": "Some people fail to report distinctions between certain shades of red because they lack the names for those shades."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT124",

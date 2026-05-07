@@ -114,7 +114,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -173,7 +174,10 @@
       "D": "The concentration of the chemicals leaking into the river is diluted, first by rainwater and then by the water in the river.",
       "E": "The water in the river is murky because of the runoff of silt from a number of nearby construction projects."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -193,7 +197,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -443,7 +448,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Battle of Opinions"
     ]
   },
   {

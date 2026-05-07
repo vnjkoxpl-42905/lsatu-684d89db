@@ -15,7 +15,10 @@
       "D": "the economic changes should not all be made at the same time",
       "E": "the current economic situation is grave"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -198,7 +201,10 @@
       "D": "Any field of study that is not a genuinely autonomous discipline lacks both a unique domain of inquiry and a unique methodology.",
       "E": "Any field of study that is not a genuinely autonomous discipline addresses issues also addressed by disciplines that are genuinely autonomous."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -238,7 +244,10 @@
       "D": "intellectual growth is more important than financial security",
       "E": "financial security is more important than intellectual growth"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -274,7 +283,10 @@
       "D": "There is no quick, practical, and relatively inexpensive way of telling for any individual case whether drug S will be as effective as drug T.",
       "E": "Drug T works significantly faster than drug S."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -294,7 +306,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {
@@ -432,7 +446,10 @@
       "D": "Inflation is no more likely to occur in the economist’s country than is deflation.",
       "E": "A stable money supply is the most effective means of preventing inflation."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT108",

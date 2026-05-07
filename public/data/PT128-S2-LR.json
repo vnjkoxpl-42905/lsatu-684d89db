@@ -54,7 +54,11 @@
       "D": "mulch containing paper and manure works better than methods of preventing soil erosion that do not involve mulch",
       "E": "mulch of pure manure provides nutrients to the soil that paper mulch does not"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -126,7 +130,10 @@
       "D": "Training home construction workers to work with steel is very costly.",
       "E": "The number of houses built each year is expected to decrease over the next decade."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -162,7 +169,10 @@
       "D": "fails to consider the possibility that, even if it gains the power to do so, the city council might never require voting by mail",
       "E": "has a premise that is logically incompatible with the main conclusion"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -180,7 +190,10 @@
       "D": "If raising the minimum wage helped low-income workers, this would be a good reason for raising it.",
       "E": "Changes in the minimum wage are generally not as beneficial to the economy as is commonly believed."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -219,7 +232,10 @@
       "D": "emits no pollutants at all",
       "E": "emits pollutants at its peak level"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -297,7 +313,10 @@
       "D": "just as people need different overcoats in different climates, so too do they need different moral theories on different occasions",
       "E": "a moral theory developed in the light of extreme cases is unlikely to provide adequate guidance in more usual cases"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -317,7 +336,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -456,7 +476,10 @@
       "D": "successfully doing natural science demands careful consideration of observations not stated precisely in quantitative terms",
       "E": "useful scientific theories require the application of mathematics"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT128",

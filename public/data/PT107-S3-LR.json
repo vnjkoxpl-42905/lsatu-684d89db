@@ -15,7 +15,11 @@
       "D": "Some symbol systems encode a piece of text by using dots that replicate the shape of letters of the alphabet.",
       "E": "Eventually it will be possible to train people to read braille by first training them in the use of the thermal screen."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -51,7 +55,11 @@
       "D": "show that the land developer’s line of reasoning would lead to an unacceptable conclusion if applied to a different situation",
       "E": "argue that there are problems that money, however judiciously spent, cannot solve"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -108,7 +116,10 @@
       "D": "Astorga has no strong opinions of her own about what the new mayor ought to do in office.",
       "E": "Astorga does not actually intend, if elected, to do what she has learned from the public opinion polls that voters want the new mayor to do."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -146,7 +157,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -261,7 +273,10 @@
       "D": "During a recession, decreases in the use of cars resulting from reductions in commuting to jobs are not offset by increased use of cars for other reasons.",
       "E": "During a recession, a higher proportion of people who commute in cars to their jobs lose those jobs than do people who do not use cars to commute to their jobs."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -360,7 +375,10 @@
       "D": "The recovered rocks melted as a result of the impact that formed the crater.",
       "E": "The mass extinction would have occurred soon after the impact that supposedly caused it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -378,7 +396,12 @@
       "D": "relying on the metaphor of “reading” to characterize how a painting is viewed presupposes the correctness of the conclusion to be drawn on the basis of that characterization",
       "E": "the absence of a particular path that the eye must follow does not entail that the eye follows no path"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies",
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -455,7 +478,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Battle of Opinions"
     ]
   },
   {

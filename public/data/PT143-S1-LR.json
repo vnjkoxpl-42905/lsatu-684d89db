@@ -15,7 +15,10 @@
       "D": "the revenue from parking fees is not the only factor that cities need to consider in setting the rates for parking fees",
       "E": "private companies assess and collect parking fees more efficiently than cities do"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -51,7 +54,11 @@
       "D": "The LPs being produced today have innovative album cover art.",
       "E": "Rock music is less sophisticated musically and more destructive socially now than it was in the 1960s and 1970s. 1 1 1"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -437,7 +444,11 @@
       "D": "Small children are not involved in accidents resulting from drivers going around the gates.",
       "E": "Any company’s responsibility to promote public safety is not unlimited. 1 1 1"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -455,7 +466,10 @@
       "D": "some people who know what answers an opinion surveyor expects to hear will purposefully try to thwart the surveyor’s expectations",
       "E": "the answers of opinion-survey respondents can be influenced by beliefs about the surveyor’s expectations even if those beliefs are unfounded"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -473,6 +487,9 @@
       "D": "Voting behavior is affected by factors other than political candidates’ records of political achievement. For example, a candidate who projects confidence will gain votes as a result, whereas a candidate with a supercilious facial expression will lose votes.",
       "E": "Adults read less than they once did because there are so many other activities to divert them. This can be seen from the fact that the more time they spend on such other activities, the less they read. Conversely, the less they read, the more time they spend on such other activities."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
   }
 ]

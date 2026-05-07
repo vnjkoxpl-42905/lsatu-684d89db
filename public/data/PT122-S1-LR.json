@@ -15,7 +15,10 @@
       "D": "not all rabbits are gray",
       "E": "not all criminals are suspected"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -112,7 +115,10 @@
       "D": "The type of directed learning in question is not a necessary part of the process of growing and adapting to the world.",
       "E": "General opportunities to learn are not typical of the early years of formal education."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -186,7 +192,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -346,7 +354,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -386,7 +395,10 @@
       "D": "people's voting behavior may be influenced in unpredictable ways by comments made by the participants in a televised debate",
       "E": "people who are committed to a particular candidate will vote even if their candidate is perceived as having lost a televised debate"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -461,7 +473,10 @@
       "D": "In cases where the best treatment option is unknown, a patient ceases to have the right to know the treatment plan and the alternatives.",
       "E": "The right of patients to informed consent is outweighed in at least some medical emergencies by the possible benefits of research conducted without their consent."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT122",

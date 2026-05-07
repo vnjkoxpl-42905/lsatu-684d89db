@@ -33,7 +33,10 @@
       "D": "understating the role that pride plays in accounting for the success of Austin Stables",
       "E": "asserting that Barr Motor Company has an older tradition of pride than does Austin Stables"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -75,7 +78,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -96,7 +100,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Battle of Opinions"
     ]
   },
   {
@@ -137,7 +142,10 @@
       "D": "in modern societies, people must rely on technology to effectively predict and interpret other people's actions",
       "E": "preagricultural societies lacked the complex social system that is needed to provide each person with an appropriate and stable social role or niche"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -331,7 +339,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -370,7 +379,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Binaries"
     ]
   },
   {

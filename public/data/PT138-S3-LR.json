@@ -53,7 +53,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -131,7 +132,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -152,7 +154,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies",
+      "Anti-Causal"
     ]
   },
   {
@@ -350,7 +354,10 @@
       "D": "Currently, most Acme employees have a commute of less than 30 minutes.",
       "E": "Acme’s move to Ocean View will not be accompanied by a significant pay raise for Acme employees."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -368,7 +375,10 @@
       "D": "teaching new students is rewarding but much more difficult than teaching more advanced students",
       "E": "the success of a student’s overall educational experience depends above all upon that student’s initial educational experience"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -425,7 +435,10 @@
       "D": "Since we have very little fabric, we will have to either buy more, or make valances instead of curtains. However, if we use this fabric to make valances, then we will have to buy blinds. Since it would be hard to buy fabric that matches what we already have, we should buy blinds.",
       "E": "We should either buy blinds or make curtains for the windows. If we buy blinds but do not make valances, the windows will look bare. We should not have bare windows. So if we do not make the curtains, we should make the valances."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -485,6 +498,9 @@
       "D": "whether local children’s television programming provides a beneficial educational experience to a greater number of children in the city than does the children’s museum",
       "E": "whether the children’s museum provides a rich educational experience for those children who visit it"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   }
 ]

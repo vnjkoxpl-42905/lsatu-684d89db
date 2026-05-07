@@ -72,7 +72,10 @@
       "D": "the importance of physical activity to health and well-being",
       "E": "how to creatively entertain themselves without watching television"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -129,7 +132,10 @@
       "D": "would do less damage than would result from the government’s not intervening",
       "E": "provides a solution to some otherwise insoluble problem"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -209,7 +215,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -285,7 +292,11 @@
       "D": "there is no one way to prevent all cases of death from iatrogenic disease",
       "E": "whenever a noniatrogenic disease occurs, there is a risk of iatrogenic disease"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -327,7 +338,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -346,7 +358,10 @@
       "D": "the easier it is to domesticate a wild large mammal species, the more worthwhile it is to do so",
       "E": "of all the domesticated large mammal species in existence today, the very first to be domesticated were the easiest to domesticate"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -366,7 +381,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -408,7 +424,10 @@
       "D": "some of the trees planted in response to the incentives are planted where native grasses would otherwise be growing",
       "E": "few if any governments have been interested in promoting the growth of native grasses"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -444,7 +463,10 @@
       "D": "professional supervision of trampoline use tends to reduce the number of trampoline-related injuries",
       "E": "trampoline use is an activity that warrants mandatory professional supervision"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT135",

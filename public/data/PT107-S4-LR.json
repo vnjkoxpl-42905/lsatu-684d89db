@@ -15,7 +15,10 @@
       "D": "Formaldehyde is a less potent carcinogen than benzene.",
       "E": "Since methanol is water soluble, methanol spills are more damaging to the environment than gasoline spills."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -182,7 +185,10 @@
       "D": "the cost of equipment to heat homes with oil has fallen sharply, while the price of heating with oil has fallen below the price of heating with natural gas",
       "E": "the use of oil to heat homes has continued to decline, while the price of heating oil has fallen to 1970 levels"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -220,7 +226,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -261,7 +268,10 @@
       "D": "whether closed copper-smelting furnaces are more fuel-efficient than open furnaces",
       "E": "whether cooling and reheating the copper will cost more than moving it in molten form"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -282,7 +292,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -323,7 +334,10 @@
       "D": "There is no rational basis for the salary difference between sports celebrities and Nobel laureates.",
       "E": "The social contributions made by sports celebrities should be greater than they currently are."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -407,7 +421,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -464,7 +479,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Breadcrumbs"
     ]
   },
   {
@@ -485,7 +501,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -504,6 +521,9 @@
       "D": "neglects to take into account the fact that, unlike students, professionals have devoted many years of study to one subject",
       "E": "fails to consider the possibility that the purposes of evaluation in the professional world and in school situations are quite dissimilar"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   }
 ]

@@ -73,7 +73,10 @@
       "D": "claiming that what Whittaker says cannot be true because Whittaker acts as if it were false",
       "E": "showing that Whittaker’s argument relies on analyzing an extreme and unrepresentative case"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -127,7 +130,10 @@
       "D": "the likelihood that a dog will contract another disease such as rabies",
       "E": "the likelihood that an unvaccinated dog will contract the disease in question"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -145,7 +151,10 @@
       "D": "Medication is always more effective in treating patients with mental disorders than is psychotherapy.",
       "E": "Treatment with psychotherapy has no effect on mental disorders other than a reduction of the symptoms."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -166,7 +175,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "2-Speaker"
     ]
   },
   {
@@ -206,7 +216,10 @@
       "D": "Last week John worked neither on Saturday nor on Sunday.",
       "E": "There were no days last week on which John both worked in the insurance company and also worked as a blacksmith."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -317,7 +330,10 @@
       "D": "When energy prices rise, consumers of energy tend to look for new ways to increase energy efficiency, such as by adding insulation to their houses.",
       "E": "Often the purchaser of a product, such as a landlord buying an appliance, chooses on the basis of purchase price because the purchaser is not the person who will pay for energy used by the product."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -393,7 +409,10 @@
       "D": "current research supports the claim that no one is genetically predisposed to manic-depression",
       "E": "the efforts made to find a gene that can produce a predisposition to manic-depression were thorough"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -413,7 +432,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -432,7 +452,10 @@
       "D": "The population of hyenas that live near unregulated garbage landfills north of the reserve has doubled in the last two years.",
       "E": "The rate of birth defects for the baboon population on the reserve has doubled since the first landfills were opened."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT106",

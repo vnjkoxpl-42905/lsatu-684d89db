@@ -108,7 +108,10 @@
       "D": "rephrasing the legislator's conclusion in terms more favorable to the regulator",
       "E": "showing that the legislator's statements are self-contradictory"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -144,7 +147,10 @@
       "D": "shows that the hypothesis contradicts one of the pieces of evidence used to support it",
       "E": "provides additional evidence to support the ornithologist's argument"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -162,7 +168,11 @@
       "D": "Archeopteryx was in fact the earliest birdlike creature.",
       "E": "The curvature of the claws is the only available evidence for the claim that Archeopteryx was tree-dwelling."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -183,7 +193,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -202,7 +213,10 @@
       "D": "drawing an analogy that illustrates a major flaw in Carl's argument",
       "E": "offering a specific example to demonstrate that Carl's argument is based on a claim that can be neither confirmed nor disproved"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -220,7 +234,10 @@
       "D": "Some surgical operations performed on infants are painful.",
       "E": "Unalleviated pain after an operation tends to delay the healing process."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -238,7 +255,10 @@
       "D": "at least 15 percent of the customers that owe money to companies eventually pay their bills whether or not those bills are assigned to a collection agency",
       "E": "unless most of the customers of a company pay their bills, that company in the long run will not be profitable"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -292,7 +312,10 @@
       "D": "professional drivers are more competent drivers than are other, less experienced drivers",
       "E": "all drivers wish to drive within the speed limit"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT102",

@@ -116,7 +116,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -171,7 +172,10 @@
       "D": "Both groups had unrestricted access to telephones for making the required calls.",
       "E": "The members of the two groups received their instructions approximately the same amount of time before they were to make their telephone calls."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -191,7 +195,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -369,7 +374,10 @@
       "D": "Avoiding cutting down trees is not an obligation owed to some entity other than trees.",
       "E": "One does not always have the right to cut down the trees on one’s own property."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -441,7 +449,10 @@
       "D": "Having a general understanding of life is more important than possessing practical skills.",
       "E": "Technical training does not help students acquire reasoning skills."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -459,7 +470,10 @@
       "D": "Psychological studies show that drivers who regularly wear seat belts often come to think of themselves as serious drivers, which for a few people discourages reckless driving.",
       "E": "Provinces and states with stringent car safety requirements have, on average, many more kilometers of roads than do other provinces and states."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT127",

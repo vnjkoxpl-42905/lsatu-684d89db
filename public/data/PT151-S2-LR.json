@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Anti-Causal"
     ]
   },
   {
@@ -57,7 +58,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -156,7 +158,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -314,7 +317,10 @@
       "D": "Traces of the sulfur dioxide from volcanic eruptions on Earth are detectable in the atmosphere years after the eruptions take place.",
       "E": "Most instances of sulfur dioxide spikes in the Earth’s atmosphere are caused by the burning of fossil fuels."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -471,7 +477,10 @@
       "D": "The economist’s country currently lags behind other countries in the development of new technology.",
       "E": "Productivity-enhancing new technology tends to quickly become outdated."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT151",

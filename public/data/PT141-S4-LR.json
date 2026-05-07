@@ -57,7 +57,10 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal",
+      "Assumes Similarity"
     ]
   },
   {
@@ -76,7 +79,10 @@
       "D": "claiming that the argument is based on a false analogy",
       "E": "suggesting that a supposed cause of a phenomenon is actually an effect of that phenomenon"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -115,7 +121,10 @@
       "D": "How long has the drug that helps to preserve existing bone been in use?",
       "E": "To what extent does the new drug retain its efficacy when used in combination with the other drugs?"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -193,7 +202,10 @@
       "D": "ignores the possibility that the amount of dirt removed in the test by the old vacuum cleaner is greater than the amount of dirt removed by the Super XL",
       "E": "ignores the possibility that if the Super XL had been used first it would have left behind just as much dirt as did the old vacuum cleaner"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -213,7 +225,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -250,7 +263,10 @@
       "D": "the methane that the scientists detected had been exposed to ultraviolet radiation",
       "E": "methane in Earth’s atmosphere does not fall apart as a result of exposure to ultraviolet radiation"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -289,7 +305,10 @@
       "D": "Red devil crayfish are found in many more locations than Hine’s emerald dragonflies are.",
       "E": "Populations of red devil crayfish in a wetland do not drop significantly if the local population of Hine’s emerald dragonflies dies out."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -325,7 +344,10 @@
       "D": "If high concentrations of many different pollutants in a city’s air are correlated with a high frequency of the ailment among that city’s population, then it is possible that two or more of those pollutants each causally contributes to the ailment.",
       "E": "In cities in which there are high concentrations of many air pollutants, there are generally also high concentrations of other forms of pollution that are very likely to contribute causally to the ailment."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -384,7 +406,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -506,7 +529,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Difference"
     ]
   }
 ]

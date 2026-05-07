@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Anti-Causal"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "rejecting the charge that a practice is immoral by trying to undercut the moral foundation of the charge",
       "E": "supporting a moral objection to a practice by trying to show that the practice is actually different from practices that might seem similar"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -114,7 +118,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -313,7 +318,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -456,7 +462,10 @@
       "D": "All the fruit we purchased yesterday was fresh. All the fruit we bought yesterday is in the refrigerator. Therefore, all the fruit in the refrigerator is fresh.",
       "E": "No sparrow eats seeds with hard shells. All seeds of this tree have hard shells. So no sparrow will eat the seeds of this tree."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT159",

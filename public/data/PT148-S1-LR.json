@@ -99,7 +99,10 @@
       "D": "Leopard magpie moths are not able to locate Natal grass cycads unless those plants are abundant.",
       "E": "None of the potential predators of the leopard magpie moth have developed a tolerance to macrozamin."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -117,7 +120,10 @@
       "D": "Because of underfunding, the government does not maintain adequate standards in the services it provides.",
       "E": "Government leaders want to use the country’s large budget surplus to pay down the national debt."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -135,7 +141,10 @@
       "D": "one should speak out against polluting even if doing so reveals one’s own hypocrisy",
       "E": "there is no moral difference between driving a gas guzzler and driving a smaller car"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -153,7 +162,10 @@
       "D": "Small abalone species tend to reproduce more rapidly than larger abalone species.",
       "E": "Otters have a preference for large abalones over small ones and so prefer waters in which large abalones are found."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -292,7 +304,10 @@
       "D": "paid more for each computer than it was worth",
       "E": "has been harshly criticized for purchasing the sixteen computers"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -313,7 +328,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Battle of Opinions"
     ]
   },
   {
@@ -353,7 +369,10 @@
       "D": "the effects of dramatic depictions of violence on audiences are at least partially understood",
       "E": "children are more likely than adults to be attracted to dramas involving characters who behave violently"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -394,7 +413,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

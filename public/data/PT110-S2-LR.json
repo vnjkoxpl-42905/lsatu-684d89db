@@ -60,7 +60,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -251,7 +253,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Assumes Similarity"
     ]
   },
   {
@@ -309,7 +312,11 @@
       "D": "Flawless photographic technique is needed to achieve the maximum image resolution possible with the materials and equipment being used.",
       "E": "The only factors important in determining the degree of detail reproduced in the final photographic print are the resolution of the camera’s lens and the resolution of the film."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -327,7 +334,10 @@
       "D": "Some North Americans who follow reducedcalorie diets are long-lived.",
       "E": "There is a strong correlation between diet and longevity in some species of animals."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -386,7 +396,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "2-Speaker"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "Many households that previously could afford only one car can now afford two.",
       "E": "Most people who bought the new car previously travelled by bicycle or motorcycle, which are less safe than the new car."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -36,7 +39,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -121,7 +125,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -163,7 +168,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -186,7 +192,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Anti-Causal"
     ]
   },
   {
@@ -207,7 +214,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Analogies"
     ]
   },
   {
@@ -311,7 +319,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Similarity"
     ]
   },
   {
@@ -388,7 +397,10 @@
       "D": "Many audience members at comedy venues enjoy watching stand-up comedians respond to heckling.",
       "E": "It is unwise for comedy venues to disregard long-standing traditions of stand-up comedy."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -430,7 +442,10 @@
       "D": "Harrison students living in Pulham are less likely than those living in Westerville to take more than one night class.",
       "E": "Night classes at Harrison have larger enrollments, on average, than day classes do."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -473,7 +488,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -512,7 +528,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Binaries"
     ]
   }
 ]

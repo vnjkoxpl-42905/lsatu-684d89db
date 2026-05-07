@@ -61,7 +61,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -98,7 +99,10 @@
       "D": "People who know that they are especially susceptible to skin cancer are generally disinclined to spend a large amount of time in the sun.",
       "E": "Those who use sunscreens most regularly are people who believe themselves to be most susceptible to skin cancer."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -347,7 +351,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -366,7 +372,10 @@
       "D": "A characteristic found in half of a given sample of the population might not occur in half of the entire population.",
       "E": "A factor that does not bring about a certain effect may nonetheless be more likely to be present when the effect occurs than when the effect does not occur."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT132",

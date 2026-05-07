@@ -53,7 +53,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -75,7 +76,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Anti-Causal"
     ]
   },
   {
@@ -115,7 +117,10 @@
       "D": "Prehistoric artists did not use anything other than vegetable matter to make their paints.",
       "E": "The proportion of carbon to other elements in limestone is the same in all samples of limestone."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -133,7 +138,10 @@
       "D": "whether the patients who most need the advice of medical specialists are likely to receive it through telemedicine",
       "E": "whether the technology of telemedicine will benefit rural patients in the long run"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -151,7 +159,10 @@
       "D": "invoking medical statistics that cast doubt on the premises used in Dr. Jones’s argument",
       "E": "providing grounds for dismissing Dr. Jones’s interpretation of a key term in medical technology"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -169,7 +180,10 @@
       "D": "The universe is correctly described by the non- Euclidean system of geometry that has the most empirical verification if prominent physicists maintain that it is.",
       "E": "Only physicists who are not prominent doubt the view that the universe is correctly described by the non-Euclidean system of geometry that has the most empirical verification."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -187,7 +201,10 @@
       "D": "anyone who lives in a village or other small political unit that is not excessively bureaucratic can find happiness",
       "E": "everyone is willing to live in villages or other small political units"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -280,7 +297,10 @@
       "D": "some smaller art galleries still exhibit creative new artwork",
       "E": "contemporary art, in general, is much less concerned with self-expression than older art is"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -342,7 +362,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -456,7 +477,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

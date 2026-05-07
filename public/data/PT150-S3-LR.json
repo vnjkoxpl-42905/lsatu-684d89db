@@ -15,7 +15,10 @@
       "D": "studying the principles fish use to navigate in schools could help engineers to design a self- driving robotic car that avoids common traffic problems",
       "E": "a self-driving robotic car using the navigational principles that fish use in schools would be better than a human-driven car at avoiding crashes and congestion"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -131,7 +134,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Assumes Difference"
     ]
   },
   {
@@ -190,7 +194,11 @@
       "D": "Hospital staff are instructed to use clothes dryers at temperatures high enough to kill Acinetobacter.",
       "E": "Water in residential washing machines reaches temperatures high enough to kill all dangerous bacteria other than Acinetobacter."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives",
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -244,7 +252,10 @@
       "D": "most employee strikes should be legally permitted",
       "E": "faculty strikes harm a university’s students"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -280,7 +291,10 @@
       "D": "the dating of the primate fossils that Olson cites is accurate",
       "E": "fossils of the first primate species that developed have been discovered"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -334,7 +348,11 @@
       "D": "Efforts to curb cigarette smoking would not be more successful if they emphasized the positive health effects of quitting rather than the dangers of smoking.",
       "E": "The majority of people who successfully quit smoking cite health concerns as the primary motivation for their success."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -370,7 +388,10 @@
       "D": "sources that are not peer reviewed often have solid support for the claims that they make",
       "E": "students should be allowed to read whatever they wish to in preparing to write a research paper for a history class"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT150",

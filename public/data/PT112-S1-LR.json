@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -36,7 +37,12 @@
       "D": "The nutritionist was a member of a panel that extensively evaluated early prototypes of home juicers.",
       "E": "Vitamin pills that supposedly contain nutrients available elsewhere only in fruits and vegetables often contain a form of those compounds that cannot be as easily metabolized as the varieties found in fruits and vegetables."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -56,7 +62,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Anti-Causal"
     ]
   },
   {
@@ -114,7 +122,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Alternatives"
     ]
   },
   {
@@ -136,7 +145,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -155,7 +165,10 @@
       "D": "Many scientific issues have important political implications and cannot be definitely settled on the basis of the available evidence.",
       "E": "Some television networks refuse to broadcast programs on issues that have important political implications and that cannot be definitely settled by the available evidence."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -253,7 +266,10 @@
       "D": "The amount of gas and dust emitted steadily increased during the period from September through November.",
       "E": "The comet passed close to the sun during this period and the gravitational strain caused it to break up."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -376,7 +392,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -417,7 +434,10 @@
       "D": "Jo imitated Layne. But Jo is different from Layne, so Jo could not have imitated Layne very well.",
       "E": "Harold's second novel is similar to his first. Therefore, his second novel must be enthralling, because his first novel won a prestigious literary prize."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -456,7 +476,10 @@
       "D": "Fire pits were much more common in caves early in the Upper Paleolithic period than they were later in that period.",
       "E": "More kinds of lamps were produced by the Magdalenian culture than by earlier cultures."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT112",

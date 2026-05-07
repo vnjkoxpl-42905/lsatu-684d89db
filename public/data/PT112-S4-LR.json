@@ -108,7 +108,10 @@
       "D": "inappropriately employs language that is vague",
       "E": "takes for granted that there is no way to increase available funds"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -144,7 +147,10 @@
       "D": "The argument incorrectly relies on words whose meanings are vague or imprecise.",
       "E": "The argument presumes that no other evidence is relevant to the issue at hand."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -200,7 +206,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -221,7 +228,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -261,7 +269,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -280,7 +289,10 @@
       "D": "Very small class sizes or very light teaching loads are common in the worst and the best universities.",
       "E": "Professors with very light teaching loads have no more office hours for students than professors with normal teaching loads."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -298,7 +310,10 @@
       "D": "an absurd consequence of its apparent assumption that a department's necessity earns it the highest priority",
       "E": "that the sales manager makes a generalization from an atypical case"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -318,7 +333,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -355,7 +371,10 @@
       "D": "The seed-eating bird does not have a lower body temperature than that of the nectar-eating bird.",
       "E": "The overall energy requirements of a given bird do not depend on factors such as the size of the bird, its nest-building habits, and the climate of the region in which it lives."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -394,7 +413,10 @@
       "D": "People have never attributed the same qualities to oceans and eccentrics.",
       "E": "The linkage between oceans and eccentricity predates the European Renaissance."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT112",

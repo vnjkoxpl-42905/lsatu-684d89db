@@ -60,7 +60,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies",
+      "Assumes Similarity"
     ]
   },
   {
@@ -81,7 +83,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -182,7 +185,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -380,7 +384,10 @@
       "D": "attractiveness by itself can make a photograph a good photograph",
       "E": "attractive composition and prettiness are the same feature"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -458,7 +465,10 @@
       "D": "abandonment of a shrimp farm results in damage to the environment",
       "E": "some shrimp farmers are environmentally irresponsible"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -521,7 +531,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   }
 ]

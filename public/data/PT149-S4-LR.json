@@ -15,7 +15,10 @@
       "D": "Sugars can be on teeth for as long as 24 hours before the teeth-damaging bacteria whose growth they facilitate begin to proliferate.",
       "E": "Chewing gum exercises and relaxes the jaw muscles and so contributes to the overall health of the oral tract."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -33,7 +36,10 @@
       "D": "Countries with rich and varied native land mammal populations do not have rich and varied native bird populations.",
       "E": "Some other island countries that are believed to have no native land mammals in fact had indigenous land mammals at one time."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -54,7 +60,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Analogies"
     ]
   },
   {
@@ -188,7 +195,10 @@
       "D": "It is very uncommon for falling or being bumped on the head to result in a sudden sharp motion of the neck.",
       "E": "The appropriate treatment for whiplash caused by a fall or a bump on the head is no different from that for whiplash caused by an auto accident."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -242,7 +252,10 @@
       "D": "One should make sacrifices for others only if they will eventually return the favor.",
       "E": "One should always act in a manner that one can reflect on with pride."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -302,7 +315,10 @@
       "D": "the tax laws of many countries should be revised to focus on taxing consumption rather than income",
       "E": "it is detrimental to the economic improvement of any country to continue to tax income"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -340,7 +356,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -416,7 +433,10 @@
       "D": "Preventing infection by pathogenic microorganisms is simply a matter of following the appropriate set of recommendations.",
       "E": "Those most concerned with avoiding pathogenic infections from meat-based foods are those most susceptible to them."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -452,7 +472,10 @@
       "D": "Hai’s offer to sell artworks to Lea was made in such a way that no one in Lea’s position would have reasonably believed it to be made in jest. Thus, if Lea accepts the offer, they have a valid contract.",
       "E": "The only offer that Sal made to Veronica was not a legitimate one. Thus, regardless of whether Sal made the offer in jest, there is no valid contract between them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT149",

@@ -15,7 +15,10 @@
       "D": "They are less original than his earlier films.",
       "E": "They provide evidence of the director’s creativity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -108,7 +111,11 @@
       "D": "In the city of Pulaski, the number of sporadic blood donors is significantly greater than the number of regular blood donors.",
       "E": "Almost all of the regular blood donors in the city of Pulaski are already giving blood as frequently as is medically safe."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -235,7 +242,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -337,7 +345,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -437,7 +446,10 @@
       "D": "whether contemporary public art creates only acrimony",
       "E": "whether it is wise for contemporary public art to help achieve a consensus on a subject"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -512,6 +524,9 @@
       "D": "treating behavior that can sometimes result in a certain consequence as behavior that always results in that consequence",
       "E": "inferring that one specific response to a problem is necessary without considering another equally supported response"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

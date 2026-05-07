@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -96,7 +97,11 @@
       "D": "Traffic laws in most locations state that the pedestrian always has the right of way, whether or not the pedestrian is crossing at a corner.",
       "E": "Good drivers anticipate jaywalkers as much as they anticipate pedestrians crossing at corners."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -114,7 +119,11 @@
       "D": "a writing style should not be more complex than the ideas expressed",
       "E": "alert readers are the only readers who are sensitive to writing style"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -150,7 +159,10 @@
       "D": "These chemicals are harmless by themselves but explosive when mixed together, so in order to be kept in the same laboratory without risk, they should be stored separately.",
       "E": "This island has two harbors but one of them is too shallow to permit large ships, so this ship will have to dock in the other harbor in order to unload its cargo."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -249,7 +261,10 @@
       "D": "Some victims are owed increased compensation because of the greater amount of time they are deprived of the use of their property.",
       "E": "The compensation owed to victims should be determined on a case-by-case basis rather than by some general rule."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -267,7 +282,10 @@
       "D": "Many residents of this locale have annual incomes that are twice what they were when the locale was primarily agricultural.",
       "E": "The loss of a family farm is often perceived as tragic even when no financial hardship results."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -305,7 +323,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -365,7 +384,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -465,7 +485,10 @@
       "D": "It should be illegal for anyone to smoke in a public place, for it certainly should be illegal to pollute public drinking water, and smoking even in the privacy of one's home can be more harmful to the health of others than polluting their water would be.",
       "E": "Vanessa should be allowed to let her dog run around in the park without a leash. She already lets the dog roam around her yard without a leash, and the park differs from her yard only in size."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT116",

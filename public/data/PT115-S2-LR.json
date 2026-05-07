@@ -75,7 +75,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Analogies"
     ]
   },
   {
@@ -151,7 +152,10 @@
       "D": "These chemicals are harmless by themselves but explosive when mixed together, so in order to be kept in the same laboratory without risk, they should be stored separately.",
       "E": "This island has two harbors but one of them is too shallow to permit large ships, so this ship will have to dock in the other harbor in order to unload its cargo."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -169,7 +173,10 @@
       "D": "The general public has little desire to become informed about foreign-policy issues precisely because it has little or no power to influence foreign-policy decisions.",
       "E": "Foreign governments friendly to France would be reluctant to share information with France if it might become public in a referendum debate."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -187,7 +194,10 @@
       "D": "Requiring a large minimum number of voters' signatures on a petition for a referendum would ensure that many people would consider the issue and treat it as important.",
       "E": "Elections decided mainly on foreign-policy issues have perhaps constituted ratifications by the public of past decisions, but certainly not judgments about future issues posing new problems."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -247,7 +257,10 @@
       "D": "the temperatures at the North Pole in January and February are lower than are the temperatures in April and May",
       "E": "research funding considerations outweigh the risk to researchers posed by the temperatures at the North Pole in January and February"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -362,7 +375,10 @@
       "D": "Scientists who perform experiments on animals should empathize with any mammal as much as they empathize with dogs or horses.",
       "E": "Scientific experimentation should be prohibited on any creature that is capable of feeling pain."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -437,7 +453,10 @@
       "D": "If a new generating station is to be built, the council should endorse a plant of the type specified by the design in question.",
       "E": "A plant of the type specified by the design in question would allow for the lowest electricity rates."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT115",

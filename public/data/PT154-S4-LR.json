@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Anti-Causal"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "the behavior of Gawain in Le Morte D’Arthur alternates between heroic and criminal",
       "E": "the sources for Malory’s characterization of Gawain vary significantly regarding the role played by Gawain"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -111,7 +115,10 @@
       "D": "Medieval communities were usually more close-knit than communities in industrial societies are today because, in medieval communities, people undertook group tasks requiring them to come together in respectful cooperation.",
       "E": "Communities in industrial societies today would probably become more close-knit if their members undertook group tasks requiring the participants to come together in respectful cooperation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -406,7 +413,10 @@
       "D": "The proportion of teenagers who participate in sports varies greatly from society to society and from decade to decade.",
       "E": "School programs designed to encourage inactive teenagers to participate in sports widely vary in success, with only a few being highly successful."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -447,7 +457,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {

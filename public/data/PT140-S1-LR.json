@@ -76,7 +76,10 @@
       "D": "the effects of teaching methods in the education of adults are generally very similar to the effects of those methods in the education of children",
       "E": "knowing how to think creatively helps people to compensate for deficiencies in memorization skills"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -117,7 +120,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -197,7 +201,10 @@
       "D": "Happiness research is as much a scientific discipline as optometry is.",
       "E": "Experiences that cannot be measured are entirely subjective experiences."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -259,7 +266,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -486,7 +494,10 @@
       "D": "fails to consider the possibility that there may be other medical reasons for surgically removing a child’s tonsils",
       "E": "fails to consider the possibility that some breathing problems during sleep may be caused by something other than swollen tonsils"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",

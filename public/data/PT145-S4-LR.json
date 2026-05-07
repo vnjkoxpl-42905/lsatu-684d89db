@@ -36,7 +36,11 @@
       "D": "Swenson’s book has stimulated new research on sun exposure",
       "E": "something that does not stimulate new research can have value"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -74,7 +78,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -196,7 +201,10 @@
       "D": "Banks that are owned by the government cannot be well managed.",
       "E": "The government should not take over private- sector banks that are financially sound."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -373,7 +381,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -392,7 +401,10 @@
       "D": "If Selena’s claim turns out to be false, we will not know whether it is possible to have psychic powers.",
       "E": "We will not be able to determine whether it is possible to have psychic powers unless we find out whether Selena’s claim is true."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -506,6 +518,9 @@
       "D": "Currently, seawater is pumped into or out of the ballast tanks of oceangoing ships to maintain proper stability only when unloading or loading cargo.",
       "E": "There are at least some oceangoing ships whose stability could be adequately maintained while emptying and refilling their ballast tanks in midocean."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

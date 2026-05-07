@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Assumes Similarity"
     ]
   },
   {
@@ -57,7 +58,11 @@
       "D": "Due to the poor economic conditions that have prevailed during the last five years, most libraries report substantial increases in the number of patrons seeking books on changing careers and starting new businesses.",
       "E": "The National Booksellers Association statistics do not include profits from selling novels by mail to overseas customers."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -193,7 +198,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker",
+      "Analogies"
     ]
   },
   {
@@ -279,7 +286,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -374,7 +382,10 @@
       "D": "presumes, without providing justification, that occurrences that have coincided in the past must continue to coincide",
       "E": "draws a conclusion about the value of computer analyses from a case in which computer analysis provided no facts beyond what was already known"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -473,7 +484,10 @@
       "D": "Worldwide, more methane is produced by cows raised for meat production than by those raised for milk production.",
       "E": "Per liter, methane contributes more to global warming than does carbon dioxide, a gas that is thought to be the most significant contributor to global warming."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT125",

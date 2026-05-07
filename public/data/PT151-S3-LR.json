@@ -54,7 +54,10 @@
       "D": "pharmaceutical companies have an incentive to create minor variants of existing drugs",
       "E": "drug patents can promote innovation"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -74,7 +77,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -111,7 +115,10 @@
       "D": "No non-native species should be introduced into a habitat unless all the potential effects of that introduction have been considered.",
       "E": "When seeking to increase the population of a given species, it is most important that one preserve the members of the species who are in the prime reproductive stage of their lives."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -173,7 +180,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -213,7 +221,10 @@
       "D": "skydiving is not dangerous because the number of injuries to skydivers has decreased in recent years",
       "E": "people with insurance do not need to lock their doors because if anything is stolen the insurance company will pay to replace it"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -234,7 +245,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -374,7 +386,10 @@
       "D": "If corporate executives could not increase their own salaries by cutting the pay and benefits of their corporations’ lowest-paid employees in the economist’s country, they would never change the wages of those employees.",
       "E": "If such a maximum wage law were enacted in the economist’s country, one or more corporate executives would not cut the pay and benefits of their corporations’ lowest-paid employees in the economist’s country."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -415,7 +430,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -493,7 +509,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   }
 ]

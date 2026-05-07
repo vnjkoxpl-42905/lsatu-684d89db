@@ -33,7 +33,10 @@
       "D": "long-distance runners are about evenly divided between those who use dissociative strategies during races and those who use associative strategies during races",
       "E": "in long-distance running, dissociative strategies are generally more effective for a day's training run than are associative strategies"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -252,7 +255,10 @@
       "D": "The typical doughnut eater does not add to doughnuts any substances that increase the total caloric intake.",
       "E": "Most typical doughnut eaters are not also bagel eaters."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -456,7 +462,10 @@
       "D": "The increase in the Sun's luminosity over the past 3 billion years roughly coincided with an increasing complexity of life forms on Earth.",
       "E": "Because the distance from Earth to the Sun has not changed significantly over the last 3 billion years, the increase in the Sun's luminosity has resulted in more radiation reaching Earth."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT131",

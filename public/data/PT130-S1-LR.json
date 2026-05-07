@@ -15,7 +15,11 @@
       "D": "No attempt to synthesize water will have an appreciable effect on the quantity of freshwater available.",
       "E": "No water conservation measure previously attempted yielded an increase in the supply of freshwater available for human use."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -90,7 +94,10 @@
       "D": "The vast majority of purveyors of alternative medicines are driven as much by the profit motive as by a regard for their patients' health.",
       "E": "Any pain relief or other benefits of many herbs have been proven to derive entirely from patients' belief in the remedy, rather than from its biochemical properties."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -110,7 +117,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Analogies"
     ]
   },
   {
@@ -132,7 +140,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -169,7 +178,11 @@
       "D": "people who know N5 contains zero calories tend to eat more foods prepared with N5 than do people who are unaware that N5 is calorie-free",
       "E": "the total fat intake of people who eat foods prepared with N5 tends to decrease even if their caloric intake does not"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -205,7 +218,10 @@
       "D": "The argument mistakes a cause for an effect.",
       "E": "The argument presumes, without providing warrant, that correlation implies causation."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -285,7 +301,10 @@
       "D": "No ethical dilemmas resulting from advances in genetic research arise without government or corporate funding.",
       "E": "As long as government continues to fund genetic research, that research will give rise to ethical dilemmas."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Binaries"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -346,7 +365,10 @@
       "D": "The argument takes for granted that airlines that are the safest are also the most reliable in documenting their safety.",
       "E": "The argument fails to address adequately the possibility that even airlines with long-standing, reliable records indicating their degree of safety are still likely to have one or more accidents."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",

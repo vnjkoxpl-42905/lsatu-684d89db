@@ -78,7 +78,10 @@
       "D": "A personal computer is usually sold as part of a package that includes accessories and free installation.",
       "E": "Computer manufacturers rarely take into account ease of installation when they are designing programs or accessories."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -96,7 +99,10 @@
       "D": "The silicate crystals are toxic only to the cells lining the bladder and not to other bladder cells.",
       "E": "High doses of other artificial sweeteners have been shown to produce silicate crystals in mice but not in rats."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -114,7 +120,10 @@
       "D": "If the new cable bridge is built, most people who see it will think the extra money well spent.",
       "E": "Building a cable bridge across Black River would produce a more aesthetically pleasing result than building a concrete skyway."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -150,7 +159,10 @@
       "D": "art subsidies provided by a democratic government benefit art",
       "E": "only governments that respect dissent ensure that art subsidies are fairly distributed"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -210,7 +222,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -231,7 +244,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Analogies"
     ]
   },
   {
@@ -460,7 +474,10 @@
       "D": "concludes that a claim is false on the basis of one purported fault in an argument in favor of that claim",
       "E": "fails to consider the possibility that the argument it disputes is intended to address a separate issue"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT118",

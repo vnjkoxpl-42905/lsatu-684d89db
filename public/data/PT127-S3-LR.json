@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "2-Speaker"
     ]
   },
   {
@@ -79,7 +80,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Anti-Causal"
     ]
   },
   {
@@ -116,7 +118,11 @@
       "D": "uses a case in which direct evidence is available to draw a conclusion about an analogous case in which direct evidence is unavailable",
       "E": "bases a prediction about future events on facts about recent comparable events"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -196,7 +202,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Analogies"
     ]
   },
   {
@@ -384,7 +391,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "2-Speaker",
+      "Analogies"
     ]
   },
   {
@@ -406,7 +415,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Part vs. Whole",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -487,7 +497,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Assumes Similarity"
     ]
   },
   {

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Breadcrumbs"
     ]
   },
   {
@@ -111,7 +112,11 @@
       "D": "The diamond market is so volatile that prices of the most expensive diamonds can change by hundreds of dollars from one day to the next.",
       "E": "The written certifications of diamonds at Gem World are provided by an independent company of gem specialists."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -183,7 +188,10 @@
       "D": "questions whether Mark accurately describes the kind of historical writing he deplores",
       "E": "gives reason to believe that Mark's recommendation is motivated by his professional self-interest"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -201,7 +209,10 @@
       "D": "Historians should aim to convey past events from the perspective of participants in those events.",
       "E": "Historians should use fictional episodes to supplement their accounts of past events if the documented record of those events is incomplete."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -237,7 +248,10 @@
       "D": "denying that the drivers' view of the road is relevant to the number of road accidents",
       "E": "providing additional evidence to undermine the claim that safer driving does not necessarily reduce the number of road accidents"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -257,7 +271,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -357,7 +372,11 @@
       "D": "People who practice hatha yoga for 75 minutes once a week are not damaging themselves physically.",
       "E": "Other forms of yoga are less effective than hatha yoga in helping people quit smoking."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -432,7 +451,10 @@
       "D": "a widespread refusal to buy new ivory will have a substantial effect on the survival of elephants",
       "E": "people concerned about endangered species should refuse to buy ivory objects that are less than 75 years old"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -450,7 +472,10 @@
       "D": "People concerned about endangered species should refrain from participating in trade in products produced from those species, but only if workers engaged in that trade also agree to such restraint.",
       "E": "People concerned about endangered species should act in ways that there is reason to believe will help reduce the undesirable results of the actions performed by people who do not share that concern."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",

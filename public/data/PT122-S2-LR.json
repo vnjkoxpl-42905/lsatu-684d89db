@@ -15,7 +15,10 @@
       "D": "stories that are well written can be somber and pessimistic",
       "E": "there are some characteristics of a story that are decisive in determining its aesthetic value"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -113,7 +116,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -154,7 +158,10 @@
       "D": "Between the 1970s and 1990 the cost of ingredients for soft drinks increased at a greater rate than the cost of telephone equipment.",
       "E": "Technological advances made telephone equipment more sophisticated between the 1970s and 1990."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -190,7 +197,10 @@
       "D": "it is rational to maximize one's ability to purchase whatever one wants only when the motive for doing so is something other than the desire for prestige",
       "E": "the motive for pursuing wealth beyond what one's basic needs require is ever anything other than the desire for prestige or high status"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -427,7 +437,10 @@
       "D": "Any mathematical proof that does not rely on the computer cannot proceed by surveying all possible types of instances to which the candidate theorem might apply.",
       "E": "The use of an independent computer program does not satisfy the requirement for independent verification of each step in a proof that is extended enough to be otherwise unverifiable."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -484,7 +497,10 @@
       "D": "The timber business on whose board Cecile sits is owned by a petrochemical company.",
       "E": "Cecile owns no investments in the petrochemical industry."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -502,6 +518,10 @@
       "D": "Stock market crashes are due, not to panic in the face of predicted economic downturns, but to mere rumormongering without any basis in fact. Hence, economic downturns cannot be accurately predicted.",
       "E": "The preponderance of mathematics graduates among professional computer programmers is due not to the intelligence of mathematicians but to the appropriateness of mathematical training for computer programming. Hence, most computer programmers have mathematical training."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

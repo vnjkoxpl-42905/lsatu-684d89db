@@ -55,7 +55,10 @@
       "D": "There have been no significant changes in oil drilling methods in the last five years.",
       "E": "Oil drilling is only one of several industrial activities that takes place at Alphin Bay."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -73,7 +76,10 @@
       "D": "In a typical community, the primary educational need is to prepare community residents for careers.",
       "E": "The main reason people have for attending a university is the same as the main reason people have for attending a community college."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -249,7 +255,10 @@
       "D": "If the advertisement that the program’s producers favored were used instead of the network’s advertisement, almost all of the viewers who tuned in to the first episode would tune in to subsequent episodes as well.",
       "E": "Most people who become loyal viewers of a program do not miss the program’s first episode."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT144",

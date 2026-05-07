@@ -115,7 +115,10 @@
       "D": "In actual situations involving moral dilemmas, children display a much higher level of moral reasoning than did the children who, in the study by the second group of psychologists, responded only to hypothetical dilemmas.",
       "E": "Some adults who respond to hypothetical moral dilemmas reason at about the same level as children who respond to the same hypothetical moral dilemmas. -14- 22"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Alternatives"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -135,7 +138,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "2-Speaker"
     ]
   },
   {
@@ -156,7 +160,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Difference"
     ]
   },
   {
@@ -179,7 +184,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -357,7 +363,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -415,7 +422,10 @@
       "D": "fails to consider that people who disagree about the artistic value of a given painting may be incorrectly applying the same evaluation criteria to that painting",
       "E": "fails to consider that the individuals judging and disagreeing about works of art may be experts in making such judgments"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -433,7 +443,10 @@
       "D": "Frightening experiences make up only a small fraction of experiences in general.",
       "E": "If an individual perceives a dangerous situation as nonfrightening, then the experience of that situation will not be accompanied by increased adrenaline secretions."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT156",

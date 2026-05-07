@@ -69,7 +69,10 @@
       "D": "mandatory sentences will deter most people who might otherwise commit violent crimes",
       "E": "severe penalties reduce the incidence of tax evasion"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -89,7 +92,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -144,7 +148,10 @@
       "D": "reach a conclusion based on evidence that is similar to evidence commonly thought to support an analogous case",
       "E": "reach a conclusion about what democratically governed societies actually do based on premises about what democratically governed societies should do"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -306,7 +313,10 @@
       "D": "Warning labels on food products have proven to be effective in reducing consumption of those products.",
       "E": "Countries that institute new food labeling regulations often experience a change in consumer eating habits."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT128",

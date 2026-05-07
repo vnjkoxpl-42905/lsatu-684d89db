@@ -69,7 +69,10 @@
       "D": "Any charity that accepts corporate donations needs to be able to account for how that money is spent.",
       "E": "Charities often solicit contributions from companies as well as private individuals."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -399,7 +402,10 @@
       "D": "If Pellman's corporate leaders had expected that the legal fees for going to trial would have been less costly than the settlement, they would have taken the lawsuit to trial.",
       "E": "If Pellman's corporate leaders had expected to win in court, then they would not have settled the lawsuit out of court for $1 million."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT138",

@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "crimes are committed in response to economic need",
       "E": "reducing crime requires focusing on assured punishments"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -59,7 +63,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Sampling"
+      "Sampling",
+      "Alternatives"
     ]
   },
   {
@@ -78,7 +83,10 @@
       "D": "Warblers often share their feeding areas with other kinds of birds, which often do not eat the same insects or seeds as warblers do.",
       "E": "The core areas of each feeding territory are the same size for each molting warbler."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -96,7 +104,12 @@
       "D": "fails to consider the possibility that painters may in fact try to please the museum-going public",
       "E": "offers a faulty analogy"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -114,7 +127,10 @@
       "D": "Potassium in fruits and vegetables has few negative side effects.",
       "E": "Fresh fruits and vegetables contain more potassium than do canned or frozen ones."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -176,7 +192,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "2-Speaker"
     ]
   },
   {
@@ -216,7 +233,10 @@
       "D": "establishing that experience teaches us the opposite of what Lance concludes",
       "E": "showing that it has no implications for any real cases"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -234,7 +254,10 @@
       "D": "overlooks the possibility that even many of the people in the nation who live in urban areas would have difficulty gaining access to electricity without the subsidy",
       "E": "fails to take into account that the subsidy could have helped many of the rural residents in the nation gain access to electricity even if many other rural residents in the nation were not helped in this way"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -254,7 +277,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Breadcrumbs"
     ]
   },
   {
@@ -338,7 +362,10 @@
       "D": "an emphasis on law’s purely procedural side results in government’s being overprotective of citizens’ rights",
       "E": "the cultivation of virtue among citizens should be the primary role of law"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -413,7 +440,10 @@
       "D": "fairness generally requires minimizing the influence of bias",
       "E": "the passionate engagement of the art critic with the artwork is the most important aspect of art criticism"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -431,7 +461,10 @@
       "D": "Judges spend much more time reading judicial decisions than reading works of high literary quality.",
       "E": "Judicial decisions issued by panels of judges are likely to be more widely read than are judicial decisions issued by a single judge who hears a case alone."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT127",

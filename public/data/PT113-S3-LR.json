@@ -15,7 +15,10 @@
       "D": "TV talk shows, by presenting immoral guests, are causing a moral decline",
       "E": "it is wrong not to let the viewers decide what they want to see"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -33,7 +36,11 @@
       "D": "No parasite of the sweet-potato whitefly is also a parasite of the silverleaf whitefly.",
       "E": "In the last three years, the entomologists found no parasites of the sweet-potato whitefly."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -53,7 +60,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -113,7 +121,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -260,7 +269,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -297,7 +307,10 @@
       "D": "If reptiles were capable of complex reasoning, they would sometimes be able to make major changes in their behavior.",
       "E": "Complex reasoning and responses to stimuli cannot both contribute to the same behavior."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -315,7 +328,10 @@
       "D": "No premodern general theory of art achieves its purpose unless music is not art.",
       "E": "No premodern general theory of art explains any aesthetic features of music that are not shared with painting and sculpture."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT113",

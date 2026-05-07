@@ -35,7 +35,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Analogies"
     ]
   },
   {
@@ -54,7 +55,10 @@
       "D": "whether any amateur athletes have the financial or material resources that are available to professional athletes",
       "E": "whether governments sponsor professional as well as amateur athletes in the modern Olympics"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -72,7 +76,10 @@
       "D": "In the modern Olympics there has been no noticeable correlation between the financial or material resources expended on the training of individual athletes and the eventual performance of those athletes.",
       "E": "Many amateur athletes who take part in international competitions receive no financial or material support from the governments of the countries that the amateurs represent."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT109",

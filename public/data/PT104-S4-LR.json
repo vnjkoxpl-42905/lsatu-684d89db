@@ -35,7 +35,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -72,7 +73,11 @@
       "D": "Savings in the cost of ice removal would not pay for the increased expense of using rubberized asphalt to pave roads.",
       "E": "The techniques the city currently uses for removing ice from city roads are not the least expensive possible, given the type of road surface in place."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -90,7 +95,10 @@
       "D": "White-footed mice to which deer ticks have attached themselves are not aware of the ticks.",
       "E": "White-footed mice are hosts to stable numbers of deer ticks, regardless of season of the year."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Breadcrumbs"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -108,7 +116,10 @@
       "D": "the proportion of the trees cut down by the woodcutters each year that are cut in the forests used by monarch butterflies for hibernation",
       "E": "the proportion of hibernating monarch butterflies that fall off the trees"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -130,7 +141,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Alternatives"
     ]
   },
   {
@@ -167,7 +179,11 @@
       "D": "A conventional spacecraft equipped with the device would not be appreciably more expensive to construct than current spacecraft typically are.",
       "E": "The device for manufacturing fuel for the return to Earth weighs less than the tanks of fuel that a conventional spacecraft would otherwise need to carry from Earth for the return trip."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -208,7 +224,10 @@
       "D": "it is useful to comply with the new safety regulations",
       "E": "the new safety regulations are likely to be obeyed in the laboratory"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -228,7 +247,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {
@@ -292,7 +312,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Argue the Anti-Conclusion"
     ]
   },
   {
@@ -355,7 +377,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -376,7 +399,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives",
+      "Binaries"
     ]
   },
   {
@@ -437,7 +462,10 @@
       "D": "transferee",
       "E": "escapee"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -501,7 +529,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Assumes Difference"
     ]
   }
 ]

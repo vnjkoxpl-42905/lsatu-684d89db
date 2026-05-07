@@ -58,7 +58,10 @@
       "D": "the dean has the power to decide how a new class is to be listed",
       "E": "an anthropology professor should be permitted to teach a literature class"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -175,7 +178,10 @@
       "D": "Side-impact collisions are a much greater safety threat than rear-impact collisions.",
       "E": "Automatically generated tickets can punish the owner of the car rather than the driver of the car at the time of the infraction."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -217,7 +223,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -299,7 +306,10 @@
       "D": "takes for granted that just because something is likely to happen on some occasions, it will always happen",
       "E": "confuses the cause of bad feelings among neighbors with a consequence of bad feelings among neighbors"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT159",

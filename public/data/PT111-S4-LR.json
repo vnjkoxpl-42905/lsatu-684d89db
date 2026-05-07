@@ -147,7 +147,11 @@
       "D": "the belief that 80-year-olds’ perception and memory are reduced results from prejudice against senior citizens",
       "E": "playing the study’s card game perfectly requires fairly low levels of perception and memory"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Alternatives",
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -242,7 +246,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Argue the Anti-Conclusion",
+      "Binaries"
     ]
   },
   {
@@ -297,7 +303,11 @@
       "D": "People ignore environmental problems unless they believe the problems will affect creatures with which they sympathize.",
       "E": "An organism can be environmentally significant only if it affects large ecosystems or agriculture."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -383,7 +393,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -476,7 +487,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "2-Speaker"
     ]
   },
   {

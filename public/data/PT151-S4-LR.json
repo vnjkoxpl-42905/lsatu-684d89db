@@ -15,7 +15,10 @@
       "D": "No vampire stories depict the vampire population as being very large.",
       "E": "In all vampire stories, every victim of a vampire becomes a vampire."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -51,7 +54,10 @@
       "D": "any form of speech may, one way or another, lead directly to serious harm",
       "E": "all but one of several possible reasons for restricting freedom of speech are unjustified"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -244,7 +250,10 @@
       "D": "presumes, without providing justification, that voters will oppose legislation that deters investment",
       "E": "fails to consider that the colleague’s opposition to the act may be a response to constituents’ wishes"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT151",

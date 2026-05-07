@@ -33,7 +33,12 @@
       "D": "Regular readers of columns by syndicated political columnists are less likely to be persuaded to vote a certain way by such columns than are people who seldom read such columns.",
       "E": "People rarely can be persuaded to change their minds about which candidate to vote for once they have made a decision."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal",
+      "Argue the Anti-Conclusion",
+      "Assumes Similarity"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -72,7 +77,10 @@
       "D": "the sort of school environment that most fosters children’s creativity",
       "E": "the extent to which schoolchildren are interested in fundamental academic subjects"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -90,7 +98,10 @@
       "D": "A plaintiff in a legal case should never be granted a right that is denied to a defendant.",
       "E": "A defendant’s legal counsel has the right to question the plaintiff."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -201,7 +212,10 @@
       "D": "He fails to apply a general rule to all relevant instances.",
       "E": "He presumes, without providing justification, that whatever is true of a part of a thing is also true of the whole."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Assumes Difference"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -237,7 +251,10 @@
       "D": "Hiring more teachers would not improve the achievement of any students in the school district if most or all of the teachers hired were underqualified.",
       "E": "Qualified teachers could not be persuaded to relocate in significant numbers to the educator’s region to take teaching jobs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -420,7 +437,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Assumes Similarity"
     ]
   },
   {
@@ -482,7 +500,10 @@
       "D": "envisaging radically new technologies rather than radically new social arrangements is a shortcoming of futuristic science fiction",
       "E": "criticism of current social arrangements is not effective when those arrangements are contrasted with radically different ones"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -500,6 +521,9 @@
       "D": "presumes, without providing warrant, that if an entity is the best among its competitors, then each individual part of that entity must also be the best",
       "E": "concludes that because an event is the most likely of a set of possible events, that event is more likely to occur than not"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   }
 ]

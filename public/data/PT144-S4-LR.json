@@ -37,7 +37,11 @@
       "D": "Messiness impairs artistic creativity.",
       "E": "One should be able to be creative even in a stark, empty work area."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker",
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -73,7 +77,10 @@
       "D": "other towns have successfully implemented similar development plans",
       "E": "the appearance of undue influence should be avoided"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -191,7 +198,10 @@
       "D": "abstract art will be seen as an aberration",
       "E": "abstract art is representational"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -266,7 +276,10 @@
       "D": "Few countries produce banknotes with images that are difficult for counterfeiters to measure accurately.",
       "E": "New designs in banknotes generally lead to decreases in the amount of counterfeit currency in circulation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -305,7 +318,10 @@
       "D": "The shortage of day care for children is unlikely to worsen unless employment increases and many day-care center employees quit to take better- paying jobs in other fields.",
       "E": "The total number of young children in day-care centers will decrease if the cost of day care increases significantly."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -343,7 +359,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Assumes Difference"
     ]
   },
   {
@@ -380,7 +397,10 @@
       "D": "The Internet is more often used to discuss important issues than to discuss frivolous issues.",
       "E": "Other than the Internet, no other public forum today is an important tool of democracy."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -440,7 +460,10 @@
       "D": "A weekly schedule for recyclables pickup is substantially easier for people to follow and adhere to than is a schedule of pickups every other week.",
       "E": "Because of the increase in the number of pickups under the new program, the amount charged by the contractor that collects the city’s recyclables will increase significantly."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Argue the Anti-Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",

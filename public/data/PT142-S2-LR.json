@@ -90,7 +90,10 @@
       "D": "An ethnographic museum’s purpose should be defined according to its curators’ beliefs.",
       "E": "The intentions of an art museum’s curators should not determine what is collected by that museum. 2 2 2 2 2"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -129,7 +132,10 @@
       "D": "children should be taught to play chess",
       "E": "children who neither play chess nor study science are mentally immature"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "2-Speaker"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -266,7 +272,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Anti-Causal"
     ]
   },
   {
@@ -285,7 +292,10 @@
       "D": "will resemble other species having different biological needs",
       "E": "will all develop eyes or wings as adaptations"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -321,7 +331,10 @@
       "D": "a cook",
       "E": "the ingredients available to a cook"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Analogies"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -341,7 +354,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Alternatives"
     ]
   },
   {
@@ -414,7 +428,10 @@
       "D": "The screening instruments used by the psychiatrist are extremely accurate in revealing levels of anxiety and depression among university students.",
       "E": "Several of the psychiatrist’s patients who are first- year students at the university have reduced their spending on recreation from very high levels to very low levels without increasing their anxiety or depression."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Anti-Causal"
+    ]
   },
   {
     "practiceTest": "PT142",
