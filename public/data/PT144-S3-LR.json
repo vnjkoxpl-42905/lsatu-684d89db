@@ -264,7 +264,10 @@
       "D": "Someone who hears testimony that contradicts a long-standing opinion will generally entertain doubts about the source of the testimony rather than the correctness of the opinion.",
       "E": "People are far less likely to renounce an allegiance that they have had for many years than to renounce an allegiance that is new to them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -356,7 +359,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Abstract Answers"
     ]
   },
   {

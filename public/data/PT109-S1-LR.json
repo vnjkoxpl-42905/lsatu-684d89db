@@ -33,7 +33,10 @@
       "D": "It distinguishes facts from value judgments.",
       "E": "It draws an inference from a general principle and a set of facts."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -231,7 +234,10 @@
       "D": "The pain relief produced by the placebo effect justifies the deception involved in administering a placebo.",
       "E": "Administering a placebo is not ethically justified if that treatment is not prescribed by a doctor."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -324,7 +330,10 @@
       "D": "Even well-intentioned attempts to solve problems sometimes make them worse.",
       "E": "Attempts to employ technology often have unforeseen consequences that may be negative."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT109",

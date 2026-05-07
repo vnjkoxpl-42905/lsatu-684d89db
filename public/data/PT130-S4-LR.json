@@ -69,7 +69,10 @@
       "D": "Those travelers who most enjoy their journeys are not always those most capable of vividly describing the details of those journeys to others.",
       "E": "Quite a few people know the rules of chess, but only a small number of them can play chess very well."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -261,7 +264,10 @@
       "D": "fails to distinguish between the crime rate’s actually rising and people’s believing that the crime rate is rising",
       "E": "presumes, without providing justification, that tougher sentences are the most effective means of alleviating the crime problem"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -336,7 +342,10 @@
       "D": "ignores the possibility that although a union might not effectively pursue graduate student interests, there are other reasons for unionizing",
       "E": "blurs the distinction between active disapproval and mere lack of approval"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -393,7 +402,10 @@
       "D": "Becoming aware of individuals who have won a major jackpot leads at least some people to incorrectly estimate their own chances of winning such a jackpot.",
       "E": "At least some people who are heavily influenced by the media do not believe that the odds of their winning a major jackpot are significant."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT130",

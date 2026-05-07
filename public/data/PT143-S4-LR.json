@@ -273,7 +273,10 @@
       "D": "draws a conclusion that merely restates a claim presented in support of that conclusion",
       "E": "treats a result that proves that the public supports a bill as a result that is merely consistent with public support for that bill 4 4 4 4"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -309,7 +312,10 @@
       "D": "It is a premise offered in support of the conclusion that water itself is among the biggest water polluters.",
       "E": "It is stated to provide an example of a typical kind of city pollution."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT143",

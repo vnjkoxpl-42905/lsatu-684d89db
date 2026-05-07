@@ -90,7 +90,10 @@
       "D": "recommends a choice based on the elimination of alternative options",
       "E": "supports one preference by arguing against those who have advocated alternatives"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -126,7 +129,10 @@
       "D": "The initial babbling stage is the first stage of the speech acquisition process.",
       "E": "Control of tongue and mouth movements requires a sophisticated level of mental development."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -312,7 +318,10 @@
       "D": "It is an example intended to disprove the conclusion of Graham’s argument.",
       "E": "It is the main conclusion of the philosopher’s argument."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -405,7 +414,10 @@
       "D": "Imported wines in all price ranges are comparable in quality to domestic wines that cost less.",
       "E": "An increase in the demand for a consumer product is compatible with an increase in demand for a competing product."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT135",

@@ -69,7 +69,10 @@
       "D": "compares teachers' salaries only to those of professional athletes rather than also to the salaries of other professionals",
       "E": "fails to compare salaries for teachers in the pundit's society to salaries for teachers in other societies"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -428,7 +431,10 @@
       "D": "It is, according to the argument, a commonly held opinion that is nevertheless false.",
       "E": "It reports an observation that, according to the argument, serves as evidence for the truth of its conclusion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT133",

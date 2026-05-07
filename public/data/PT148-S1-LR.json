@@ -36,7 +36,10 @@
       "D": "overlooks the possibility that the retail price of Wilson Appliance’s hair dryer may have increased over the past 5 years",
       "E": "provides no independent evidence that Wilson Appliance’s hair dryer is one of the company’s least profitable products"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT148",

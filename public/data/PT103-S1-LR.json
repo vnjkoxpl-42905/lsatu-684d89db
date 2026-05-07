@@ -325,7 +325,10 @@
       "D": "undermining the credibility of the politician by openly questioning the politician’s understanding of economics",
       "E": "attacking the politician’s argument by giving reason to doubt the truth of a premise"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT103",

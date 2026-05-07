@@ -255,7 +255,10 @@
       "D": "Some engineers define a structure’s foundation as that part of the structure that supports the rest of the structure. This definition is unfortunate, however, because it evokes the suggestion that the foundation itself does not have any support, which, of course, is absurd.",
       "E": "Some people claim that the first library was the library of Alexandria, which for many centuries contained the largest collection of books in the world. However, Alexandria’s collection was itself put together from smaller collections, small libraries in themselves. It follows that the library of Alexandria was not the first in the world."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT140",

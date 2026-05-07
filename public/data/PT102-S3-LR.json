@@ -180,7 +180,10 @@
       "D": "Even if in the past a phenomenon was caused by particular circumstances, it is erroneous to assume that the phenomenon will recur only under the circumstances in which it previously occurred.",
       "E": "If two statements are known to be inconsistent with each other and if one of the statements is known to be false, it cannot be deduced from these known facts that the other statement is true."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -324,7 +327,10 @@
       "D": "Most of the money spent on treating disease X during the last decade went to pay for nonstandard treatments.",
       "E": "The total amount of money spent on treating disease X slowly declined during the past decade."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -414,7 +420,10 @@
       "D": "It bases a firm conclusion about a state of affairs in the present on somewhat speculative claims about a future state of affairs.",
       "E": "It bases its conclusion on facts that could, in the given situation, have resulted from causes other than those presupposed by the argument."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT102",

@@ -380,7 +380,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Belief / Knowledge / Intent"
     ]
   },
   {
@@ -399,7 +400,10 @@
       "D": "Retail coffee-sellers do not expect that consumers are content to pay more for decaffeinated coffee than for regular coffee.",
       "E": "The beans used for producing decaffeinated coffee do not cost much more before processing than the beans used for producing regular coffee."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT113",

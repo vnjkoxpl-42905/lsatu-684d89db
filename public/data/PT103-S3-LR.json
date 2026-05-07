@@ -141,7 +141,10 @@
       "D": "One possible solution to a problem is claimed to be the only possible solution to that problem.",
       "E": "An action that would eliminate one cause of a problem is treated as if it would solve the entire problem."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -346,7 +349,10 @@
       "D": "It assumes that an increase in the proportion of knee injuries rules out a decrease in the number of knee injuries.",
       "E": "It proceeds as though there could be a greater decrease in injuries in each category of injury than there is in injuries overall."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT103",

@@ -318,7 +318,10 @@
       "D": "It hastily concludes that the association's report is accurate, without having studied it thoroughly.",
       "E": "It takes for granted that the association's information is not distorted by bias."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT103",

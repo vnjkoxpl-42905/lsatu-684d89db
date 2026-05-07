@@ -15,7 +15,10 @@
       "D": "Newton intended to credit some contemporary scientists other than Hooke for some of the advances that Newton made in the theory of light.",
       "E": "Newton was not familiar with Hooke’s work on the theory of light."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -421,7 +424,10 @@
       "D": "Loren claims to like the taste of the fish at the Diggin’s Diner. However, since according to everyone who knows anything about food, the fish at the Diggin’s Diner tastes dreadful, Loren’s claim must be false.",
       "E": "Douglas claims to have climbed the tallest mountain in the country. According to the atlas, however, the country contains two other mountains that are taller than the one Douglas climbed. Douglas’s claim, therefore, must be false."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT105",

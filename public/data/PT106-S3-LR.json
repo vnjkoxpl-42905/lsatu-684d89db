@@ -33,7 +33,10 @@
       "D": "judges only by subjective standards something that can be readily evaluated according to objective standards",
       "E": "generalizes on the basis of what could be exceptional cases"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -87,7 +90,10 @@
       "D": "It cites purported historical facts that cannot possibly be verified.",
       "E": "It relies on an ambiguity in the term “violence” to justify a claim."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -125,7 +131,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Abstract Answers"
     ]
   },
   {
@@ -144,7 +151,10 @@
       "D": "Many environmentalists provide only a noneconomic justification in questioning the defensibility of exploiting features of the environment.",
       "E": "Even if there is no economic reason for protecting the environment, there is a sound noneconomic justification for doing so."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",

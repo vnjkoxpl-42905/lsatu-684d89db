@@ -315,7 +315,10 @@
       "D": "uses a national average as a standard without specifying what that national average is",
       "E": "confuses a factor’s presence being required to produce a phenomenon with the factor’s presence being sufficient in itself to produce that phenomenon"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT155",

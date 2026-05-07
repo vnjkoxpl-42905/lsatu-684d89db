@@ -238,7 +238,10 @@
       "D": "fails to establish that there was a worldwide oil surplus prior to the crisis of 1973",
       "E": "fails to consider the possibility that events that occur simultaneously can be causally related"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT155",

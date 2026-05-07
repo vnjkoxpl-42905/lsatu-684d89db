@@ -72,7 +72,10 @@
       "D": "The average dollar amount of the raises that the members of the Chefs’ Union received last year was equal to the average dollar amount of the raises that the members of the Hotel Managers’ Union received.",
       "E": "The members of the Chefs’ Union received salary increases of 10 percent in each of the last two years, while the members of the Hotel Managers’ Union received salary increases of only 8 percent in each of the last two years."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -349,7 +352,10 @@
       "D": "The government should not create financial disincentives for people to race cars or climb mountains, even though these are dangerous activities.",
       "E": "The government would be justified in levying taxes to provide food and shelter for those who cannot afford to pay for them."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT111",

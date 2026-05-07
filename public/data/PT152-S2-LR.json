@@ -123,7 +123,10 @@
       "D": "the only benefit ChesChem would receive by moving its manufacturing operations to Tilsen is lower energy costs",
       "E": "ChesChem will not move its manufacturing operations to Tilsen unless the price of natural gas in Chester increases"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -195,7 +198,10 @@
       "D": "confuses the state of the individual rivers in the water district with that of the water district as a whole",
       "E": "equates a decrease relative to the other ranked rivers with an absolute decrease"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -213,7 +219,10 @@
       "D": "No previous studies have compared practicing yoga to taking stretching classes with a physical therapist.",
       "E": "Many doctors treating patients with chronic lower back pain discuss with their patients the merits of taking stretching classes with a physical therapist."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -323,7 +332,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {

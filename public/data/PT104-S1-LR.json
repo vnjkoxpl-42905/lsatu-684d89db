@@ -105,7 +105,10 @@
       "D": "proposing a general theory as a way of explaining a specific market situation",
       "E": "contending that the uses for one product are similar to the uses for another product"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -253,7 +256,10 @@
       "D": "It is used to illustrate what the critic takes to be the most important aspect of scientific theories.",
       "E": "It is used to suggest that the popular theories may not be as devoid of explanatory power as one may be led to believe."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -271,7 +277,10 @@
       "D": "She presents evidence that the two groups Tony has compared have no significant qualities in common.",
       "E": "She indicates that Tony has adopted questionable criteria for including certain people in the groups he is comparing."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -307,7 +316,10 @@
       "D": "It is a consequence of the argument.",
       "E": "It is used to illustrate the general principle that the argument presupposes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT104",

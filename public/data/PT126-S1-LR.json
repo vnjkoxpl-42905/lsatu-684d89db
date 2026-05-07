@@ -330,7 +330,10 @@
       "D": "Not all assessments people make of one another will be positive.",
       "E": "There is wisdom behind the injunction against being judgmental."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT126",

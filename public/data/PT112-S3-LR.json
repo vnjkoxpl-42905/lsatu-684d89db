@@ -177,7 +177,10 @@
       "D": "It supports one of Peter's premises although it undermines Peter's conclusion.",
       "E": "It supports the conclusion of Peter's argument by offering independent grounds for that conclusion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT112",

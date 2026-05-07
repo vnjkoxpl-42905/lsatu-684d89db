@@ -69,7 +69,10 @@
       "D": "argues that the analysts' conclusion is basically right, but suggests that it is somewhat too optimistic",
       "E": "argues in favor of the analysts' conclusion, but does so on the basis of a different body of evidence"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -123,7 +126,11 @@
       "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
       "E": "Basing a marriage on a natural affinity will ensure that it will endure."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent",
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",

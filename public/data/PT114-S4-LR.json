@@ -306,7 +306,10 @@
       "D": "a particular example illustrating a general claim",
       "E": "background information providing a context for the argument"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -199,7 +199,10 @@
       "D": "It supports the conclusion by ruling out an alternative way of achieving the benefits mentioned.",
       "E": "It illustrates a case where unfortunate consequences result from a failure to accept the recommendation offered."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -407,7 +410,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Relative vs. Absolute"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "Workers in exceptionally strong work groups are unfairly penalized under the ranking system.",
       "E": "Managers often give the highest rankings to workers who share the manager’s outside interests."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -255,7 +258,10 @@
       "D": "The students who spent the least time studying tended to be students with no more than average involvement in extracurricular activities.",
       "E": "Students who spent more time studying understood the course material better than other students did."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -291,7 +297,10 @@
       "D": "Anyone who believes in unicorns believes in centaurs. But there is no good reason to believe in centaurs, so a belief in unicorns is unjustified as well.",
       "E": "Anyone who believes in unicorns believes in centaurs. But it has been conclusively proven that there is no such thing as a unicorn, so a belief in centaurs is mistaken as well."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -425,7 +434,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Relative vs. Absolute"
     ]
   },
   {

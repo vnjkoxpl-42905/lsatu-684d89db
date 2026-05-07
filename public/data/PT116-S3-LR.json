@@ -51,7 +51,10 @@
       "D": "People who assess their talents accurately generally perform near their actual level of proficiency.",
       "E": "People who think that a superior performance will please those who are testing them generally try harder."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -216,7 +219,10 @@
       "D": "In dealing with an important issue, policymakers in a democracy appeal to a principle in dealing with an issue only when that principle has majority support.",
       "E": "Democracies appear to be more flexible than nondemocratic forms of government, but are not actually so."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT116",

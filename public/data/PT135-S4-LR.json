@@ -51,7 +51,10 @@
       "D": "A far greater proportion of an airline’s revenues is derived from business travelers than from leisure travelers.",
       "E": "Most leisure travelers buy airline tickets only when fares are discounted."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT135",

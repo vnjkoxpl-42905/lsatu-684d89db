@@ -51,7 +51,10 @@
       "D": "One substance can be more natural than another if only one is wholly derived from natural substances.",
       "E": "A substance is natural if the origins of its main components are natural."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -216,7 +219,10 @@
       "D": "calling into question a certain type of evidence by drawing an analogy between that evidence and other evidence that the argument shows is usually false",
       "E": "calling into question the motives of those presenting certain information, and concluding for this reason that the information is likely to be false"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -417,7 +423,10 @@
       "D": "It is a prediction for which the agricultural economist's first claim is offered as the primary justification.",
       "E": "It is an intermediate conclusion that is presented as evidence for the argument's main conclusion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",

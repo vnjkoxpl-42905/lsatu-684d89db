@@ -105,7 +105,10 @@
       "D": "it is safer to invest in savings bonds than to invest in the stock market",
       "E": "it is preferable to pick an investment offering a reliable income over a riskier opportunity to make a large profit quickly"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -145,7 +148,10 @@
       "D": "It substitutes description for giving a rationale for a policy.",
       "E": "It employs a term on two different occasions in different senses."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT117",

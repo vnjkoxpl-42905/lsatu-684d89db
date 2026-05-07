@@ -69,7 +69,10 @@
       "D": "does not adequately address the possibility that employee productivity is strongly affected by factors other than employees' motivation to work productively",
       "E": "fails to consider that even if employees are already motivated to work productively, motivational posters may increase that motivation"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT123",

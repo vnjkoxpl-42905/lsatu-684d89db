@@ -87,7 +87,10 @@
       "D": "Since lying is permissible in some situations, reporters are mistaken to think that it is absolutely taboo.",
       "E": "Reporters disagree on what sort of behavior qualifies as lying."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT125",

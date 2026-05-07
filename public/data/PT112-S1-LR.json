@@ -15,7 +15,10 @@
       "D": "She undermines a claim by showing that it rests on an ambiguity.",
       "E": "She establishes a conclusion by excluding the only plausible alternative to that conclusion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -123,7 +126,10 @@
       "D": "It demonstrates that the position being challenged is inconsistent with certain well-established facts.",
       "E": "It provides counterexamples to show that, contrary to the assumption on which the commonly held position rests, causes do not always precede their effects."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -179,7 +185,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {
@@ -345,7 +352,10 @@
       "D": "overlooks the fact that some citizens prosper in times of high unemployment",
       "E": "confuses irony with a general decline in public morale"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -438,7 +448,10 @@
       "D": "How many books by George Orwell other than 1984 were chosen?",
       "E": "How many of those surveyed had actually read the books they chose?"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT112",

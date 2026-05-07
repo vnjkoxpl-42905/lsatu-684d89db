@@ -420,7 +420,10 @@
       "D": "argues in support of one explanation of a phenomenon by citing evidence incompatible with a rival explanation",
       "E": "describes a hypothesis about the sequence of events involved in the origins of a phenomenon, and then argues that those events occurred in a different sequence"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT139",

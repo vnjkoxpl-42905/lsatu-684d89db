@@ -469,6 +469,9 @@
       "D": "treats evidence that someone will adopt a particular course of action as though that evidence excluded the possibility of an alternative course of action",
       "E": "overlooks the possibility that someone might occasionally adopt a given course of action without having a good reason for doing so"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   }
 ]

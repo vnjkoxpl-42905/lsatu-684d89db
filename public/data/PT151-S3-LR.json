@@ -126,7 +126,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Belief / Knowledge / Intent"
     ]
   },
   {
@@ -163,7 +164,10 @@
       "D": "overlooks a crucial difference between two situations that the argument presents as being similar",
       "E": "presumes that because research is new it is, on that basis alone, better than older research"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT151",

@@ -180,7 +180,10 @@
       "D": "most people think that they do not sleep as much as they should",
       "E": "some people incorrectly believe that they sleep less than most other people"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT159",

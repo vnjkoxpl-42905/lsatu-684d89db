@@ -21,6 +21,9 @@ for (const line of md.split('\n')) {
   // Format B: | # | PT | S | Q | ... (numeric-only cells)
   m = line.match(/^\|\s*\d+\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|/);
   if (m) { rows.push({ pt: +m[1], section: +m[2], qnum: +m[3] }); continue; }
+  // Format C: | PT | S | Q | ... (no leading index)
+  m = line.match(/^\|\s*(\d{3})\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|/);
+  if (m) { rows.push({ pt: +m[1], section: +m[2], qnum: +m[3] }); continue; }
 }
 console.log(`Parsed ${rows.length} rows from ${MD_PATH}`);
 console.log(`Feature: "${FEATURE}"`);

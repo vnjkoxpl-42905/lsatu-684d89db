@@ -69,7 +69,10 @@
       "D": "Many of the insects that were killed by the device are mosquito-eating insects.",
       "E": "The device does not succeed in killing all of the insects that it attracts."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -406,7 +409,10 @@
       "D": "Bookstore owners reported a general shift away from the sale of inexpensive paperback novels and toward the sale of lucrative hardback books.",
       "E": "Citing a lack of free time, many survey respondents indicated that they had canceled magazine subscriptions in favor of purchasing individual issues at bookstores when time permits."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -442,7 +448,11 @@
       "D": "claiming that whatever holds for each member of a group must hold for the whole group",
       "E": "inferring one general principle from another, more general, principle"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute",
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",

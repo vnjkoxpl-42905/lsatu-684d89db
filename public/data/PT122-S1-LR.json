@@ -51,7 +51,10 @@
       "D": "using an analogy to draw a conclusion that is inconsistent with the conclusion drawn by Xavier",
       "E": "showing that the evidence presented by Xavier has no bearing on the point at issue"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT122",

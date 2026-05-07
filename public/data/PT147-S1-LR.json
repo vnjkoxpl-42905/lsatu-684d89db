@@ -337,7 +337,10 @@
       "D": "The sample is large enough to be representative of scientists in the field.",
       "E": "Wang’s Law has in fact been shown to be true."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT147",

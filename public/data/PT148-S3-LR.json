@@ -273,7 +273,10 @@
       "D": "Many of the scientists who submitted articles with manipulated images did so in order to misrepresent the information conveyed by those images.",
       "E": "Scientific fraud is a widespread problem only among scientists who submit articles to journals of cellular biology."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT148",

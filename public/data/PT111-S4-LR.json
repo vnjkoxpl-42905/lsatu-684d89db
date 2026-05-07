@@ -463,7 +463,10 @@
       "D": "denying the truth of one of the stated premises of Zachary’s argument",
       "E": "demonstrating that Zachary’s conclusion is not consistent with the premises he uses to support it"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT111",

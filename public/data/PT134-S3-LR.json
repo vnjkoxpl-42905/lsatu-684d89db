@@ -360,7 +360,10 @@
       "D": "Disposal of tanning waste produced with biological catalysts does not cost significantly more than disposal of the same amount of waste produced with the conventional process.",
       "E": "The labor costs associated with tanning leather using biological catalysts are not any greater than the labor costs associated with the conventional tanning process."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT134",

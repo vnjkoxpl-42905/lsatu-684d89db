@@ -231,7 +231,10 @@
       "D": "Most of the subjects had acquired confirmation of their newly acquired beliefs by the time they were told that the original statements were false.",
       "E": "Most of the subjects were initially skeptical of the statements originally given to them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -303,7 +306,10 @@
       "D": "A claim that has a very general application is based entirely on evidence from a narrowly restricted range of cases.",
       "E": "An inconsistency that, as presented, has more than one possible resolution is treated as though only one resolution is possible."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -411,7 +417,10 @@
       "D": "takes for granted that one should accept some beliefs related to survival even when given adequate evidence against them",
       "E": "takes for granted that the beliefs we need in order to have many beliefs must all be correct beliefs"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT111",
