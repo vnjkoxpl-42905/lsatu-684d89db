@@ -295,7 +295,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Math-y Stuff"
     ]
   },
   {
@@ -473,7 +474,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Analogies",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Games-y LR"
     ]
   },
   {
@@ -516,7 +518,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {

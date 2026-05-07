@@ -99,7 +99,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -402,7 +403,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "eventually creates more jobs than it destroys",
       "E": "must take priority over any attempt to promote new industries"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -194,7 +197,10 @@
       "D": "confuses legal standards for guilt with moral standards for guilt",
       "E": "concludes that a judgment is suspicious merely on the grounds that it was reached quickly"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -381,7 +387,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -484,7 +491,10 @@
       "D": "In general, as a developing country becomes a more established tourist destination, local people become progressively poorer.",
       "E": "Tourists who obtain accommodations and other services directly from local people do not contribute in any way to the profits of foreign owners of tourist businesses."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT143",

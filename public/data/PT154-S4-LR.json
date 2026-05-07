@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -118,7 +119,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -173,7 +175,10 @@
       "D": "Measures aimed at achieving a certain outcome should only be taken when they are of demonstrable effectiveness at achieving that outcome.",
       "E": "If a project for reducing carbon emissions does not tackle the largest source of carbon emissions, then it is of limited value in reducing such emissions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -269,7 +274,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -485,7 +491,10 @@
       "D": "The commercial fishing industry’s harvest, by weight, was significantly lower in 2010 than it was in 1995.",
       "E": "No significant improvements in commercial fishing equipment occurred before 1960."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT154",

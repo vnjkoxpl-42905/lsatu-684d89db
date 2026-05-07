@@ -92,7 +92,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Logical Completion"
     ]
   },
   {
@@ -113,7 +114,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -485,7 +487,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {

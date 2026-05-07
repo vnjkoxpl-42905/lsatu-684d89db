@@ -228,7 +228,10 @@
       "D": "This chocolate is not quite dark enough for it to be the kind that Luis really likes, but that chocolate over there is darker, so it might be just right.",
       "E": "Health Dairy's sharp cheddar cheese is low enough in fat to meet the labeling standard for \"low fat\" cheddar cheese, and since its mild cheddar cheese is even lower in fat, it too must meet the labeling standard."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT116",

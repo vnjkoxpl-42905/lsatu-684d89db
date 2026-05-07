@@ -58,7 +58,10 @@
       "D": "Men in the study estimated their daily intake of fruits and vegetables to be significantly lower than it in fact was.",
       "E": "Most men in the study did not consume the amounts of fruits and vegetables that the nutritional guidelines recommend."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -201,7 +204,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Implicit Principles"
     ]
   },
   {

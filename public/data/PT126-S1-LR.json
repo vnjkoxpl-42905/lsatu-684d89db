@@ -225,7 +225,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Implicit Principles"
     ]
   },
   {
@@ -247,7 +248,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -414,7 +416,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Focused on Evidence"
     ]
   },
   {
@@ -437,7 +440,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Conditional Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -459,7 +463,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -503,7 +508,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {

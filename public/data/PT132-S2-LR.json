@@ -266,7 +266,10 @@
       "D": "A complicated hotel security system may cost more in customer goodwill than it saves in losses by theft.",
       "E": "An electronic keyboard may be cheaper to buy than a piano but more expensive to repair."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT132",

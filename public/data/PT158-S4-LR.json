@@ -126,7 +126,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Math-y Stuff"
     ]
   },
   {
@@ -505,7 +506,10 @@
       "D": "In crops genetically engineered to produce pharmaceuticals, the drugs are not present in any part of the plant used for food in ordinary crops of the same species.",
       "E": "If pollen from a drug-producing crop turned an ordinary crop of the same species into a drug-producing crop, it would be possible for scientists to identify the latter crop. S T 4 4 -35-4"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -525,7 +529,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Logical Completion"
     ]
   },
   {

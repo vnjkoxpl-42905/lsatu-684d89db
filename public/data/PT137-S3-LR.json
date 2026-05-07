@@ -289,7 +289,10 @@
       "D": "can satisfy their basic economic needs without obtaining happiness",
       "E": "cannot really be said to have satisfied their economic needs unless they are happy"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT137",

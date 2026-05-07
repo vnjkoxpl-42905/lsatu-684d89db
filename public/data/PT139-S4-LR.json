@@ -205,7 +205,10 @@
       "D": "When asked to judge the value of various pieces of antique furniture, I gave lower estimates on average than you did. So in those cases where we both gave the same estimate, I must have overestimated the piece's value.",
       "E": "Jean demonstrates a high level of visual acuity when she wears prescription glasses. Thus, it must be that without those prescription glasses, she would demonstrate a lower level of visual acuity."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -365,7 +368,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {

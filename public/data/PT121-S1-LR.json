@@ -121,7 +121,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -160,7 +161,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -199,7 +201,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Math-y Stuff"
     ]
   },
   {
@@ -278,7 +281,10 @@
       "D": "None of those with a building on one side have a judge's head on the other.",
       "E": "None of those with an explorer's head on one side have a building on the other."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Games-y LR"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -298,7 +304,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -400,7 +407,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Defender"
+      "Defender",
+      "Links Between Premises"
     ]
   },
   {
@@ -476,7 +484,10 @@
       "D": "a party needs the appropriate support of at least 30 percent of eligible voters in order to be viable and more than half of all eligible voters support the idea of an education party",
       "E": "some of the eligible voters who would donate money to an education party might not be prepared to join such a party"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT121",

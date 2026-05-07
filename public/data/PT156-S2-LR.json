@@ -38,7 +38,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Focused on Evidence"
     ]
   },
   {
@@ -101,7 +102,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "First Sentence Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -123,7 +125,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Focused on Evidence"
     ]
   },
   {
@@ -210,7 +213,10 @@
       "D": "Certain diseases other than heart disease have also been linked to average fat consumption, and the French have a higher incidence of these than do North Americans.",
       "E": "Cigarette smoking significantly increases the risk of heart disease and France has a higher percentage of cigarette smokers in its population than does North America."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -269,7 +275,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -461,7 +468,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Medical"
     ]
   },
   {
@@ -507,7 +515,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence",
+      "Medical"
     ]
   },
   {

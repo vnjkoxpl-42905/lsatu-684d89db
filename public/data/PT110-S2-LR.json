@@ -339,7 +339,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Medical"
     ]
   },
   {
@@ -381,7 +382,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Medical"
     ]
   },
   {

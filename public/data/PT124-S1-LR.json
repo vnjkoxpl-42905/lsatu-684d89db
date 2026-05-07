@@ -59,7 +59,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Implied Conclusion"
     ]
   },
   {
@@ -80,7 +81,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -101,7 +103,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Medical"
     ]
   },
   {
@@ -171,7 +174,8 @@
       "Important Pivot",
       "Anti-Causal",
       "Battle of Opinions",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Focused on Evidence"
     ]
   },
   {
@@ -280,7 +284,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -302,7 +307,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -481,7 +487,8 @@
       "Relative vs. Absolute",
       "Important Pivot",
       "Argue the Anti-Conclusion",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Medical"
     ]
   },
   {

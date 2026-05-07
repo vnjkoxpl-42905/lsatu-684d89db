@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -83,7 +84,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -148,7 +150,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -279,7 +282,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -346,7 +350,8 @@
       "Explain Curious Fact",
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Medical"
     ]
   },
   {
@@ -537,7 +542,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Implicit Principles"
     ]
   }
 ]

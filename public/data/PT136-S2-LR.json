@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Focused on Evidence"
     ]
   },
   {
@@ -82,7 +83,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Links Between Premises"
     ]
   },
   {
@@ -440,7 +442,10 @@
       "D": "Airlines using the airport base their schedules on the assumption that more than 30 planes an hour will be allowed to land at the airport.",
       "E": "In good weather, there are few if any seriously delayed flights at the airport."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT136",

@@ -101,7 +101,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Medical"
     ]
   },
   {
@@ -184,7 +185,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Breadcrumbs",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -373,7 +375,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -431,7 +434,10 @@
       "D": "Attaining happiness is the real goal of people who strive for material well-being.",
       "E": "Material well-being does not increase one’s sense of approval of one’s character and projects."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -474,7 +480,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Math-y Stuff"
     ]
   },
   {
@@ -495,7 +502,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Math-y Stuff"
     ]
   },
   {

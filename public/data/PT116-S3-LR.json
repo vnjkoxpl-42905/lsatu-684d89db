@@ -119,7 +119,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Focused on Evidence"
     ]
   },
   {
@@ -161,7 +162,10 @@
       "D": "Every human being has a physiological need for at least some sodium.",
       "E": "Any sodium not used by the body will increase blood pressure unless it is excreted."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -281,7 +285,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Implied Conclusion"
     ]
   },
   {
@@ -302,7 +307,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Math-y Stuff"
     ]
   },
   {
@@ -469,7 +475,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   },
   {

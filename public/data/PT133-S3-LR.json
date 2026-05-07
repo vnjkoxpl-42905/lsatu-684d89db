@@ -530,6 +530,9 @@
       "D": "Walker is currently up for reelection, and anticorruption groups in the city have expressed support for Walker's opponent.",
       "E": "Walker has defended himself against the accusations by arguing that the alleged ethics violations were the result of honest mistakes by his staff members."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   }
 ]

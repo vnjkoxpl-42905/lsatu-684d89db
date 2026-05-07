@@ -21,7 +21,8 @@
       "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
       "Breadcrumbs",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Medical"
     ]
   },
   {
@@ -61,7 +62,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Causal Chains"
+      "Causal Chains",
+      "Math-y Stuff"
     ]
   },
   {
@@ -103,7 +105,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Focused on Evidence"
     ]
   },
   {
@@ -161,7 +164,10 @@
       "D": "a victorious insurgent party always faces opposition from the party it recently ousted",
       "E": "it is impossible for the different factions of a victorious insurgent party to effect the compromises necessary to keep the new party in power"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -463,7 +469,10 @@
       "D": "all wealthy persons should be prohibited from spending their own money on political campaigns",
       "E": "each candidate should be allowed to spend as much money on a political campaign as any other candidate chooses to spend"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -502,7 +511,10 @@
       "D": "The medication described above is usually prescribed only for people whose cholesterol level is at least 30 percent above the average for their age group.",
       "E": "Within the population as a whole, approximately the same number of people have relatively high cholesterol levels as have relatively low cholesterol levels."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT117",

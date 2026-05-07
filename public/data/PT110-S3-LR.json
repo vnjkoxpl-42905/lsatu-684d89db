@@ -233,7 +233,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -290,7 +291,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -433,7 +435,10 @@
       "D": "The prices of nonfood items single persons purchase have risen faster than the price of food over the past thirty years.",
       "E": "Unlike single persons, families today spend about the same percentage of their income on food as they did thirty years ago."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT110",

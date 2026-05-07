@@ -369,7 +369,10 @@
       "D": "Last year, the rate at which the average hourly wage for full-time jobs increased varied considerably between different regions of the country.",
       "E": "Last year, hourly wages for most full-time jobs in the manufacturing sector declined while those for most full-time jobs in the service sector increased."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT143",

@@ -115,7 +115,11 @@
       "D": "distorts an argument against feeding cow's milk formula to infants and then attacks this distorted argument",
       "E": "confuses an absence of evidence in support of a claim with the existence of evidence against a claim"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Focused on Evidence",
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -177,7 +181,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -196,7 +201,10 @@
       "D": "It calls into question the basis of the biologists' conception of a tool.",
       "E": "It addresses a weakness in the biologists' announcements that stems from their ambiguous use of the word \"external.\""
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -216,7 +224,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Medical"
     ]
   },
   {
@@ -240,7 +249,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Links Between Premises"
     ]
   },
   {
@@ -305,7 +315,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Medical"
     ]
   },
   {
@@ -367,7 +378,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {

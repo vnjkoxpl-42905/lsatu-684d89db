@@ -262,7 +262,10 @@
       "D": "fails to consider the possibility that the Andersen family’s real income was above average in the recent past",
       "E": "presumes, without providing justification, that the government makes no errors in gathering accurate estimates of family income"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -344,7 +347,10 @@
       "D": "The average ostrich farm generates almost five times as much profit as the average cattle ranch.",
       "E": "Ostrich farmers typically lose money during their first year."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -385,7 +391,10 @@
       "D": "Microdiamonds were the first components of the Earth’s crust to form.",
       "E": "All naturally occurring microdiamonds were formed at the time the Earth’s crust was being formed."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -468,7 +477,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
     ]
   },
   {
@@ -489,7 +499,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

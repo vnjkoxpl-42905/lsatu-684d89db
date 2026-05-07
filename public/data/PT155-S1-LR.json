@@ -37,7 +37,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -457,7 +458,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

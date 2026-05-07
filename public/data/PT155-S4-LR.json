@@ -40,7 +40,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -149,7 +150,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -195,7 +197,8 @@
       "Abstract Answers",
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -344,7 +347,10 @@
       "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
       "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -362,7 +368,10 @@
       "D": "Parents should do everything they can to ensure that their children have significant achievements.",
       "E": "How much one achieves relative to one’s own potential is just as important as how much one achieves relative to others."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -450,7 +459,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Math-y Stuff"
     ]
   },
   {
@@ -495,7 +505,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Medical"
     ]
   },
   {

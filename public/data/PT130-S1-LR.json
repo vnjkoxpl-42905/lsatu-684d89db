@@ -40,7 +40,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Implicit Principles"
     ]
   },
   {
@@ -61,7 +62,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -103,7 +105,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -192,7 +195,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -234,7 +238,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -317,7 +322,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Medical"
     ]
   },
   {
@@ -426,7 +432,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Medical"
     ]
   },
   {
@@ -530,7 +537,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

@@ -75,7 +75,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -346,7 +347,10 @@
       "D": "It is irrelevant to smaller corporations whether the largest corporations in North America would agree to have significant numbers of workers from the service professions on the boards of the largest corporations.",
       "E": "The presence of people from the service professions on a corporate board does not necessarily imply that that corporation will be more socially responsible than it has been in the past."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT111",

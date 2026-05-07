@@ -267,7 +267,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -327,7 +328,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -428,7 +430,10 @@
       "D": "It summarizes a position that the argument as a whole is directed toward discrediting.",
       "E": "It provides a specific instance of the general principle that the argument as a whole is directed toward establishing."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -467,7 +472,11 @@
       "D": "fails to adequately distinguish between two distinct factors that are jointly responsible for causing a given phenomenon",
       "E": "takes for granted that because certain substances are present whenever a condition occurs, those substances are a cause of that condition"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT138",

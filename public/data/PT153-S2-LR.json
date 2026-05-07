@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -209,7 +210,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -315,7 +317,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Logical Completion"
     ]
   },
   {

@@ -421,7 +421,8 @@
     "questionFeatures": [
       "Part vs. Whole",
       "First Sentence Conclusion",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -529,7 +530,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   }
 ]

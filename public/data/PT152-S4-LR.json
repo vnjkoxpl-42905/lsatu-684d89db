@@ -125,7 +125,10 @@
       "D": "It is used to refute the claim that infants have no knowledge of language.",
       "E": "It states the hypothesis to be explained by the psychologist’s argument."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -224,7 +227,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -268,7 +272,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -305,7 +310,10 @@
       "D": "The average weight of adults must have increased in the last few years, since restaurants have increased the proportion of high-calorie dishes on their menus in recent years.",
       "E": "The average price of a house must be increasing, since the proportion of household income spent on housing has increased over the last eight years."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -433,7 +441,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -454,7 +463,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   },
   {

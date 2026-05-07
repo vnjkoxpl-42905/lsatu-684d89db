@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Implied Conclusion"
     ]
   },
   {
@@ -475,7 +476,10 @@
       "D": "All of the five original planners are responsible for this problem. Yet none of the original planners will admit responsibility for the problem. Thus some of the people responsible for the problem will not admit responsibility.",
       "E": "Some members of the Liberal Party are in favor of the proposed ordinance. But all members of the city council are opposed to the proposed ordinance. Hence some members of the city council are not Liberals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT118",

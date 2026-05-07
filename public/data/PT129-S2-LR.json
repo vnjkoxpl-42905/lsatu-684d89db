@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Medical"
     ]
   },
   {
@@ -39,7 +40,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -58,7 +60,10 @@
       "D": "Of the ten small companies, the three that had borrowed the largest amounts paid off their loans within three years.",
       "E": "For some loans made by MetroBank, the monthly payment decreases slightly over the term of the loan."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -144,7 +149,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Links Between Premises"
     ]
   },
   {
@@ -272,7 +278,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -377,7 +384,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Logical Completion",
+      "Medical"
     ]
   },
   {
@@ -488,7 +497,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Math-y Stuff"
     ]
   },
   {
@@ -509,7 +519,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

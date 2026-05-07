@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sampling",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Math-y Stuff"
     ]
   },
   {
@@ -99,7 +100,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -239,7 +241,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -468,7 +471,10 @@
       "D": "The government will sell National Telephone, a state-owned utility. The highest bid received was from a company in which citizens of Country F have majority ownership but noncitizens own a minority share. However, the second-highest bid, from a consortium of investors all of whom are citizens of Country F, was almost as high as the highest bid.",
       "E": "The government will sell StateRail, a state-owned railway. The government must place significant restrictions on who can purchase StateRail to ensure that citizens of Country F will gain majority ownership. However, any such restrictions will reduce the price the government receives for StateRail."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -527,7 +533,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   }
 ]

@@ -158,7 +158,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -223,7 +224,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -414,7 +416,10 @@
       "D": "It is the overall conclusion drawn in the argument.",
       "E": "It is a hypothesis for which evidence is explicitly offered, but it is not itself intended to support the argument’s overall conclusion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -514,7 +519,10 @@
       "D": "Software developers should refrain from using psychological terms to describe the performance of their programs, since this could influence their expectations about how those programs will handle unanticipated inputs.",
       "E": "People should be careful when attributing motives to another person in order to explain that person’s behavior, since psychological studies suggest that such attributions are frequently incorrect."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT153",

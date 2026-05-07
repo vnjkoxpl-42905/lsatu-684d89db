@@ -260,7 +260,10 @@
       "D": "a properly functioning society will recognize that some duties take priority over others",
       "E": "societies have no right to expect people always to perform their duties"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -360,7 +363,10 @@
       "D": "The temperature at any point at the top of the stratosphere is at least as great as the temperature at the top of the troposphere directly beneath that point.",
       "E": "Depletion of the earth’s ozone layer would increase the air temperature in the stratosphere and decrease the air temperature in the troposphere."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT120",

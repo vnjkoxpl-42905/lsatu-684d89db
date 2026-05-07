@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Logical Completion"
     ]
   },
   {
@@ -156,7 +157,10 @@
       "D": "be threatened only if the people of that culture fail to acquire the latest technical skills",
       "E": "be best maintained by ensuring gradual assimilation of new technical knowledge and skills"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -263,7 +267,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "EXCEPT"
+      "EXCEPT",
+      "Medical"
     ]
   },
   {

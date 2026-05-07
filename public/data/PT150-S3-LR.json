@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -137,7 +138,8 @@
       "Sampling",
       "Assumes Difference",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -236,7 +238,10 @@
       "D": "The new strain of flu is expected to be more dangerous than the strains of flu that were present last year.",
       "E": "There will be no decline this year in the number of cases of flu infection due to strains that were present last year."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT150",

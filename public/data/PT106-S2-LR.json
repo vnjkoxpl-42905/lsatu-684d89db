@@ -139,7 +139,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff",
+      "Medical"
     ]
   },
   {
@@ -161,7 +163,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -184,7 +187,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
-      "2-Speaker"
+      "2-Speaker",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -386,7 +390,10 @@
       "D": "A large proportion of mail is incorrectly addressed.",
       "E": "More mail arrives within two business days of being sent than arrives between two and three business days after being sent."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -505,7 +512,10 @@
       "D": "A person who hums involuntarily can easily learn to notice it and can thereby come to control it.",
       "E": "Not all of Marianne’s opponents are distracted by her humming during chess matches."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT106",

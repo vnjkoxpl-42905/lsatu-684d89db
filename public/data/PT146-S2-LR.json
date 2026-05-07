@@ -39,7 +39,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -124,7 +125,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Math-y Stuff"
     ]
   },
   {
@@ -189,7 +191,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions",
+      "Links Between Premises"
     ]
   },
   {
@@ -269,7 +273,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {
@@ -311,7 +316,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Medical"
     ]
   },
   {
@@ -333,7 +339,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Breadcrumbs",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Medical"
     ]
   },
   {
@@ -442,7 +449,10 @@
       "D": "Building the new highway along the proposed northern route would inevitably damage an adjoining wilderness area. The highway would also cause environmental damage if it follows the proposed southern route, but it would not harm any wilderness areas. Thus, if the highway is built, it should be built on the southern route.",
       "E": "Building a light rail line to serve the downtown core could involve cost overruns and expensive delays, but traffic congestion will become intolerable within ten years without a light rail line. A light rail line should therefore be built."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT146",

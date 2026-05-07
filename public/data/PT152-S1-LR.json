@@ -62,7 +62,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Math-y Stuff"
     ]
   },
   {
@@ -208,7 +209,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -249,7 +251,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Logical Completion"
     ]
   },
   {

@@ -80,7 +80,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Logical Completion"
     ]
   },
   {
@@ -140,7 +141,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -162,7 +164,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -399,7 +402,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {

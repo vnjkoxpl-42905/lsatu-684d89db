@@ -141,7 +141,10 @@
       "D": "does not consider the length of time needed for the treatment to begin taking effect",
       "E": "does not acknowledge that the effects of the treatment may not be of the same severity in all cases"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -229,7 +232,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -250,7 +254,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence",
+      "Medical"
     ]
   },
   {
@@ -335,7 +341,10 @@
       "D": "The grocery store in the study carries many expensive items that few other grocery stores carry.",
       "E": "The grocery store in the study places relatively few items on sale."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -396,7 +405,11 @@
       "D": "One should not support any political system whose destructive consequences could lead people to prefer totalitarian political regimes.",
       "E": "One should not support any political system that is based on unrealistic expectations about people's behavior under that system."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff",
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -479,7 +492,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -524,7 +538,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Math-y Stuff"
     ]
   }
 ]

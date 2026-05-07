@@ -123,7 +123,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Logical Completion"
     ]
   },
   {
@@ -160,7 +161,10 @@
       "D": "Doctors should focus their efforts on the health conditions that they are able to treat most effectively.",
       "E": "Doctors should be adequately trained to treat the underlying causes of preventable illness."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -309,7 +313,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions",
+      "Links Between Premises"
     ]
   },
   {
@@ -330,7 +336,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence"
     ]
   },
   {
@@ -436,7 +443,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Links Between Premises"
     ]
   },
   {

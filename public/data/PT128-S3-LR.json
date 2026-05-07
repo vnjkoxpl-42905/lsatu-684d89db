@@ -33,7 +33,10 @@
       "D": "A tendency to waste energy is the most significant disadvantage of metallic mirrors.",
       "E": "Metallic mirrors are unsuitable for applications where it is crucial to minimize energy loss."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -472,7 +475,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   }
 ]

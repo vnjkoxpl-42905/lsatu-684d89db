@@ -15,7 +15,10 @@
       "D": "Treatment Y is prescribed more often by physicians than treatment X.",
       "E": "A third treatment, treatment Z, is even quicker and less expensive than treatment X."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -218,7 +221,10 @@
       "D": "It describes a phenomenon for which the rest of the argument offers an explanation.",
       "E": "Premises are used to support it, and it is used to support the main conclusion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -276,7 +282,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -301,7 +308,8 @@
       "Missing Link / Idea",
       "Anti-Causal",
       "Causal Difference-Maker",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Links Between Premises"
     ]
   },
   {
@@ -409,7 +417,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Binaries",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {

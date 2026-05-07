@@ -97,7 +97,10 @@
       "D": "It demonstrates the government’s failure to search for evidence in its files.",
       "E": "If true, it effectively disproves the charge made on behalf of the defendant."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -154,7 +157,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -443,7 +447,10 @@
       "D": "Clients billed under a cost-plus contract are free to review individual billings in order to uncover wasteful expenditures, but they do so only when the contractor’s profit varies with cost.",
       "E": "The practice of submitting deliberately exaggerated cost estimates is most common in the case of fixed-profit contracts, because it makes the profit, as a percentage of estimated cost, appear modest."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT103",

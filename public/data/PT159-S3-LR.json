@@ -60,7 +60,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Focused on Evidence"
     ]
   },
   {
@@ -450,7 +451,10 @@
       "D": "Some zoos that are open all year have full-time veterinarians on staff.",
       "E": "Most small zoos make valuable contributions to their communities."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -468,7 +472,10 @@
       "D": "ignores the possibility that both rural and urban students have many other ways of occupying their time besides extracurricular activities",
       "E": "at first uses the word “participate” in one sense and then illicitly allows the word’s meaning to change"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT159",

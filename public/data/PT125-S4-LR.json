@@ -233,7 +233,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -374,7 +375,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -417,7 +419,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {

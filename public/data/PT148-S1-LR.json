@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Medical"
     ]
   },
   {
@@ -39,7 +40,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -60,7 +62,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -226,7 +229,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {
@@ -266,7 +270,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -456,7 +461,10 @@
       "D": "The number of new cars purchased last year by residents of Blomenville is greater than the number of new cars sold by Regis Motors.",
       "E": "Regis Motors’ share of the new car market in Blomenville last year increased over its share the year before."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -516,7 +524,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   }
 ]

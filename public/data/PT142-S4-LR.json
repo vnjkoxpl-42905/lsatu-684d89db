@@ -36,7 +36,11 @@
       "D": "the improvement in living standards that occurred during the Industrial Revolution was not due to the spread of a change in values",
       "E": "values such as hard work and thrift did not become widespread prior to the Industrial Revolution"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implied Conclusion",
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -139,7 +143,10 @@
       "D": "stress is probably an effect rather than a cause of reduced blood flow to the heart",
       "E": "heart patients suffering from reduced blood flow to the heart who are experiencing pain from the condition are more likely to require surgery than are such patients who are not experiencing pain 4 4 4 4"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -350,7 +357,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Medical"
     ]
   },
   {

@@ -72,7 +72,10 @@
       "D": "As the divisions were being eliminated some of their employees were assigned to other divisions.",
       "E": "Employees in the retained divisions were forced to work faster to offset the loss of the eliminated divisions."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -153,7 +156,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence"
     ]
   },
   {
@@ -193,7 +197,10 @@
       "D": "The symptoms known, respectively, as Creutzfeldt-Jakob disease and Alzheimer’s disease are different manifestations of the same disease.",
       "E": "Blood from rats without Creutzfeldt-Jakob disease produced no symptoms of the disease when injected into other experimental rats."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -252,7 +259,8 @@
       "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
       "Binaries",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {

@@ -59,7 +59,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -103,7 +104,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -146,7 +148,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Implicit Principles"
     ]
   },
   {
@@ -168,7 +171,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -340,7 +344,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -385,7 +390,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -404,7 +410,10 @@
       "D": "Most of the animals that can contract lathyrism are domestic.",
       "E": "Laboratory conditions are not conducive to the development of lathyrism."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -443,7 +452,10 @@
       "D": "Most people who suffer from nightmares experience them in the last hour of sleep before waking.",
       "E": "Worry about satisfying the need for sufficient sleep can make it more difficult to sleep."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -484,7 +496,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Math-y Stuff"
     ]
   },
   {

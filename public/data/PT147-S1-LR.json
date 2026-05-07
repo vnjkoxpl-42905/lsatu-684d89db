@@ -79,7 +79,8 @@
       "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
       "Contrapositive Logic",
-      "Defender"
+      "Defender",
+      "Focused on Evidence"
     ]
   },
   {
@@ -243,7 +244,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -325,7 +327,10 @@
       "D": "The latest government scandal has been analyzed as a case of simple corruption, although corruption had little to do with it. Because the true cause of the scandal was lack of oversight, attributing the cause of the scandal to simple corruption is harmful.",
       "E": "The latest government scandal has been analyzed as a case of simple corruption, with no mention of the role played by lack of oversight. Nonetheless, the focus on corruption is welcome, because corruption played the largest role in the scandal."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -443,7 +448,10 @@
       "D": "It is a general principle whose validity the argument questions.",
       "E": "It denies a claim that the argument takes to be assumed in the reasoning that it rejects."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT147",

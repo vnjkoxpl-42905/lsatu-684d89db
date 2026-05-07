@@ -38,7 +38,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -81,7 +82,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "EXCEPT"
+      "EXCEPT",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -100,7 +102,10 @@
       "D": "Gahagan’s sells a few gardening implements wholesale to landscape contractors.",
       "E": "A plant purchased from Gahagan’s is more likely to have been purchased by a landscape contractor than by a home gardener. 4 4 -29-4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -205,7 +210,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Medical"
     ]
   },
   {
@@ -271,7 +277,8 @@
       "Conditional Diagramming",
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -456,7 +463,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

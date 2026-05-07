@@ -139,7 +139,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -176,7 +177,10 @@
       "D": "The rules of the contest were posted conspicuously by those who organized the contest.",
       "E": "The number of people entering the contest far exceeded the expectations of the contest organizers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -238,7 +242,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

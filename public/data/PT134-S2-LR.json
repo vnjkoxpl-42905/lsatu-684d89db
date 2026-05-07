@@ -230,7 +230,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Medical"
     ]
   },
   {
@@ -270,7 +271,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "At least one type of flavonoid helps to prevent heart disease.",
       "E": "A diet deficient in antioxidants is a common cause of heart disease."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -229,7 +232,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Math-y Stuff"
     ]
   },
   {
@@ -295,7 +299,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Implied Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -381,7 +387,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -405,7 +412,8 @@
       "Important Pivot",
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -478,7 +486,8 @@
       "Explain Curious Fact",
       "Anti-Causal",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -517,7 +526,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Math-y Stuff"
     ]
   },
   {

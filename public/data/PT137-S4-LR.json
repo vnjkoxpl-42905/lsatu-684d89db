@@ -180,7 +180,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Math-y Stuff"
     ]
   },
   {
@@ -222,7 +223,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -410,7 +412,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {

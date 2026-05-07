@@ -60,7 +60,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Argue the Anti-Conclusion",
-      "Causal Chains"
+      "Causal Chains",
+      "Focused on Evidence"
     ]
   },
   {
@@ -206,7 +207,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -306,7 +308,10 @@
       "D": "confuses a condition whose presence would be sufficient to ensure the truth of the argument’s conclusion with a condition whose presence is required in order for the conclusion to be true",
       "E": "fails to address the possibility that a significant number of old houses on 20th Avenue contain three or more apartments"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -326,7 +331,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence"
     ]
   },
   {
@@ -429,7 +435,10 @@
       "D": "The interest rates that banks currently pay to borrow are higher than the rates they paid five years ago.",
       "E": "The interest rates that small and medium-sized companies pay to borrow are higher than those paid by large, financially strong companies."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT151",

@@ -161,7 +161,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -183,7 +184,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Focused on Evidence"
     ]
   },
   {
@@ -421,7 +423,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Math-y Stuff"
     ]
   },
   {

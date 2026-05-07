@@ -15,7 +15,10 @@
       "D": "Big-budget movies, because of their elaborate special effects, cost more in insurance premiums than low-budget movies do.",
       "E": "The more time a company spends on making a movie the more expensive the movie is."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -120,7 +123,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -141,7 +145,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Math-y Stuff"
     ]
   },
   {

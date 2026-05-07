@@ -341,7 +341,10 @@
       "D": "early agricultural societies knew more about the natural sciences than did early nonagricultural societies.",
       "E": "early societies could have discovered by accident how the plants they cultivated reproduced and grew."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implied Conclusion"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -362,7 +365,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Defender"
+      "Defender",
+      "Math-y Stuff",
+      "Medical"
     ]
   },
   {

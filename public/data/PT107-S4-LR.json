@@ -214,7 +214,10 @@
       "D": "A typical farmer is less likely to know what types of soil are most productive than is someone with an advanced degree in agricultural science.",
       "E": "Unlike society, one’s own conscience speaks with a single voice; it is better to follow the advice of one’s own conscience than the advice of society."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -258,7 +261,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Important Pivot"
     ]
   },
   {
@@ -279,7 +283,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Implied Conclusion"
     ]
   },
   {
@@ -366,7 +371,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Implicit Principles"
     ]
   },
   {
@@ -388,7 +394,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -493,7 +500,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Math-y Stuff"
     ]
   },
   {
@@ -515,7 +523,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {

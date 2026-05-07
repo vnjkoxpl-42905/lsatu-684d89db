@@ -41,7 +41,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Medical"
     ]
   },
   {
@@ -84,7 +85,10 @@
       "D": "The weight gain experienced by patients taking antidepressant drugs should be attributed to lack of dieting.",
       "E": "All patients taking antidepressant drugs should diet to maintain their weight."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -124,7 +128,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -147,7 +152,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -187,7 +193,10 @@
       "D": "Raisins, but not grapes, are available year-round, so many people get a greater share of their yearly iron intake from raisins than from grapes.",
       "E": "Raisins are often eaten in combination with other iron-containing foods, while grapes are usually eaten by themselves."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -332,7 +341,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -351,7 +361,10 @@
       "D": "In solving mathematical problems, the best method is to try out as many strategies as possible in the time allotted. This is particularly effective if the number of possible strategies is fairly small.",
       "E": "To make a great tennis shot, you should visualize where you want the shot to go. Then you can determine the position you need to be in to execute the shot properly."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -372,7 +385,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "Medical"
     ]
   },
   {
@@ -419,7 +433,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Links Between Premises"
     ]
   },
   {
@@ -504,7 +519,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -525,7 +541,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Medical"
     ]
   },
   {

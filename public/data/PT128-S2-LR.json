@@ -97,7 +97,10 @@
       "D": "assess the trustworthiness of employees who claim that they must miss work because they are ill",
       "E": "make any reliable predictions about an employee's future behavior from his or her absenteeism record"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -196,7 +199,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -217,7 +221,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Focused on Evidence"
     ]
   },
   {

@@ -35,7 +35,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Focused on Evidence",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -57,7 +59,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -79,7 +82,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Important Pivot"
+      "Important Pivot",
+      "Implicit Principles"
     ]
   },
   {
@@ -200,7 +204,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -341,7 +346,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -362,7 +368,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -384,7 +391,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -403,7 +411,10 @@
       "D": "At the beginning of the study, some people who had very low salt intake also had very high blood pressure.",
       "E": "Persons suffering from abnormally low blood pressure have heightened salt cravings, which ensure that their blood pressure does not drop too low."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT130",

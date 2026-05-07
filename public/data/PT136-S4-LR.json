@@ -84,7 +84,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
     ]
   },
   {
@@ -107,7 +108,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Implied Conclusion"
     ]
   },
   {
