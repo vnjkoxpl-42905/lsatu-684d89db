@@ -255,7 +255,10 @@
       "D": "It rejects an argument by criticizing the argument’s proponents rather than by criticizing its substance.",
       "E": "It rejects a proposal to address a problem merely on the grounds that other proposals to address the problem would also be effective."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -327,7 +330,10 @@
       "D": "Sanderson would have lied to his cousin if his cousin had asked him whether the factory would be closing.",
       "E": "Sanderson had something to gain by his cousin’s continuing to believe that the factory would remain open."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT149",

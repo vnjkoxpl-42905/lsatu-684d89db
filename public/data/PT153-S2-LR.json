@@ -453,7 +453,10 @@
       "D": "My chemistry professor says that most chemists are good at math. So, my chemistry professor might believe that most chemists are good at chess, since most people who are good at math are also good at chess.",
       "E": "Dr. Bowder says that eating garlic increases one’s alertness. So, since she knows that whatever improves one’s circulation increases one’s alertness, Dr. Bowder probably believes that eating garlic increases one’s circulation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT153",

@@ -199,7 +199,10 @@
       "D": "People who train diligently to play poker can achieve a certain level of proficiency, so those players owe their success to hard work alone.",
       "E": "Automobile engines that undergo regular oil changes are more likely to be problem free than are those that do not. So automobiles with engine problems probably have not had regular oil changes."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT153",

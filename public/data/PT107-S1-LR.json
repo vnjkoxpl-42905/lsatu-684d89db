@@ -364,7 +364,10 @@
       "D": "The average number of coach passengers per flight that Breezeway Airlines carries from Toronto to Dallas today is higher than the average number per flight a year ago.",
       "E": "The criteria that Breezeway Airlines uses for permitting passengers to buy discount coach tickets on the Toronto-to-Dallas route are different today than they were a year ago."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT107",

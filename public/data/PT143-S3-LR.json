@@ -123,7 +123,10 @@
       "D": "infers a generalization based only on a single case",
       "E": "confuses two distinct meanings of the key term “detail” 3 3 3 3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT143",

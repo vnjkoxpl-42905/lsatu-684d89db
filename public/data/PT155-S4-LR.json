@@ -96,7 +96,10 @@
       "D": "Listing defects in a description of an item tends to lead people to assume that no major defect has gone unmentioned.",
       "E": "With thousands of cars for sale, prospective buyers are unlikely to read detailed descriptions of more than a small fraction of them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT155",

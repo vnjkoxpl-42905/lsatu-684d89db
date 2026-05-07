@@ -72,7 +72,10 @@
       "D": "Very few people who own a Filterator X read Household Products on a consistent basis.",
       "E": "Household Products' evaluations of Filterator X water filters have been consistently negative."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT136",

@@ -255,7 +255,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Relative vs. Absolute"
     ]
   },
   {
@@ -346,7 +347,10 @@
       "D": "Most of the major downsizing during this period was completed within a year after the first survey.",
       "E": "In the mid-1990s, people were generally more optimistic about their lives, even in the face of hardship, than they were a decade before."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT107",

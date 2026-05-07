@@ -324,7 +324,10 @@
       "D": "Most of the money spent on treating disease X during the last decade went to pay for nonstandard treatments.",
       "E": "The total amount of money spent on treating disease X slowly declined during the past decade."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT102",

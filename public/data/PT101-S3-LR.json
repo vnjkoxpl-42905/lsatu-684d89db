@@ -453,7 +453,10 @@
       "D": "gives no reason for thinking that merely establishing an upper limit on a certain monetary value would allow the calculation of that monetary value",
       "E": "does not directly address the argument of the environmentalists"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT101",

@@ -108,7 +108,10 @@
       "D": "The bus drivers are each affected in roughly the same way and to the same extent by the presence of the supervisor.",
       "E": "The bus drivers themselves are able to deliver accurate assessments of their driving performance."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT133",

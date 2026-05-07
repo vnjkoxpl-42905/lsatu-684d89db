@@ -15,7 +15,10 @@
       "D": "the criminal justice system is inherently unfair",
       "E": "they deserve only a light sentence for their crimes"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -435,7 +438,10 @@
       "D": "concedes that the solution advocated by Robert would be effective, but insists that the reasons for this are not those given by Robert",
       "E": "charges that Robert's proposal would have no net effect on the problem he describes"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT113",

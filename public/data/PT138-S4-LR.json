@@ -277,7 +277,10 @@
       "D": "people who use water-saving faucets are satisfied with the low volume of water handled by such faucets",
       "E": "installing more water-saving faucets in her house would increase her savings"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT138",

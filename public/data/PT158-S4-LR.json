@@ -345,7 +345,10 @@
       "D": "Most of the people injured or killed while mountain climbing were not adequately prepared for the dangers they would face.",
       "E": "The lower the risk of climbing a particular mountain is perceived to be, the greater the number of less competent climbers who attempt to climb it. 4 4 -33-4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT158",

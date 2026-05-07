@@ -72,7 +72,10 @@
       "D": "The average dollar amount of the raises that the members of the Chefs’ Union received last year was equal to the average dollar amount of the raises that the members of the Hotel Managers’ Union received.",
       "E": "The members of the Chefs’ Union received salary increases of 10 percent in each of the last two years, while the members of the Hotel Managers’ Union received salary increases of only 8 percent in each of the last two years."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT111",

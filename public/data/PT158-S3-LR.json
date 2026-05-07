@@ -223,7 +223,10 @@
       "D": "It is presented as indisputable evidence that ozone can be dangerous for severe asthmatics even if found in levels much lower than maximum levels permitted by law.",
       "E": "It is the main conclusion drawn in the argument. -24- 3 33"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -427,7 +430,10 @@
       "D": "popular support for political parties is never a complex phenomenon",
       "E": "the decisions of individual voters are not usually influenced by their beliefs about which policies will yield them the greatest economic advantage"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -463,6 +469,9 @@
       "D": "Because Zabziew Pharmaceutical Corporation’s research is motivated by the desire to make profits and not by the desire to benefit customers, it has been of little help to people suffering from serious illness. So the government is justified in suspending Zabziew’s license to test new drugs.",
       "E": "To further her own political ambitions, Jill wanted to give a speech advocating the use of violence to achieve political ends. But her speech would most likely have caused a riot and people would have gotten hurt. Hence, the government was justified in preventing her from giving her speech. O P THER SECTION IN THE TEST."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   }
 ]

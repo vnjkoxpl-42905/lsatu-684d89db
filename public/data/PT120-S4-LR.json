@@ -198,7 +198,10 @@
       "D": "The most confident adults are those who developed the highest level of self-esteem in childhood.",
       "E": "If children’s loss of self-esteem makes them less confident as adults, then the traditional childrearing practice in question did not tend to cause significant loss of self-esteem."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT120",

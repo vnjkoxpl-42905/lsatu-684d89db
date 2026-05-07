@@ -360,7 +360,10 @@
       "D": "That it is impossible to know the complete state of the universe at any given time does not imply that there is no complete state of the universe at that time.",
       "E": "That the position and velocity of any given subatomic particle cannot be jointly measured with accuracy does not imply that this is the case for the position and velocity of all subatomic particles."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT102",

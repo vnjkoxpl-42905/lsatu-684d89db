@@ -51,7 +51,10 @@
       "D": "The newspaper does not have the space in the arts section to publish a review of every movie that is released or every live play that is locally performed.",
       "E": "The newspaper published more reviews of live plays in the last year than it did two years ago."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -288,7 +291,10 @@
       "D": "Participants who did not consistently rate the abstract expressionist paintings as aesthetically better nonetheless rated them better more often than not.",
       "E": "There were few stylistic similarities between the abstract expressionist paintings that participants were shown and the preschoolers’ paintings with which they were paired."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT152",

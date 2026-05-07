@@ -162,7 +162,10 @@
       "D": "No one who wants to improve society should accept any belief that makes him or her feel too helpless to act to change society for the better.",
       "E": "Each individual should act to improve society if individuals in general feel powerless in the face of vast historical forces."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT140",

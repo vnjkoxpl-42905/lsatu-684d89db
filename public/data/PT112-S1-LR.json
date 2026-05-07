@@ -345,7 +345,10 @@
       "D": "overlooks the fact that some citizens prosper in times of high unemployment",
       "E": "confuses irony with a general decline in public morale"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -438,7 +441,10 @@
       "D": "How many books by George Orwell other than 1984 were chosen?",
       "E": "How many of those surveyed had actually read the books they chose?"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT112",

@@ -216,7 +216,10 @@
       "D": "Parsley that is not both tasty and healthful should never be used in cooking.",
       "E": "In cooking, dried ingredients are inferior to fresh ingredients."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT138",

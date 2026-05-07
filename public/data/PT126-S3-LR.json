@@ -288,7 +288,10 @@
       "D": "Reporters tend not to seek out information about long-range future threats but to concentrate their attention on the immediate past and future.",
       "E": "The resources that are spent on avoiding product tampering are greater than the resources that are spent on avoiding threats that stem from the weather."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -306,7 +309,10 @@
       "D": "A home's sellers are morally obliged not to deliberately mislead any prospective buyers of their home about which belongings are included with the sale of the home and which are not.",
       "E": "If a home's sellers have indicated in some way that a large appliance is included with the home's purchase, then they are morally obliged not to remove that appliance after showing the home."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT126",

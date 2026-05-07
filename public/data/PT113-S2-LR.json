@@ -468,6 +468,9 @@
       "D": "The only frogs yet discovered on Scrag Island live in the lagoon. The diet of all the owls on Scrag Island consists entirely of frogs on the island, so the owls will probably never eat an animal that lives outside the lagoon.",
       "E": "Each frog on Scrag Island lives in the lagoon. No owl on Scrag Island is known to eat anything but frogs on the island. It follows that no owl on Scrag Island will eat anything that lives outside the lagoon."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   }
 ]

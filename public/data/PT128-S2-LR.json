@@ -414,7 +414,10 @@
       "D": "Some people believe humans will someday colonize other planets. Since anyone who believes that probably also believes overpopulation of Earth is not a problem, it follows that some people do not believe overpopulation of Earth is not a problem.",
       "E": "Some people believe there is life on planets other than Earth. Since anyone who believes that must also believe other planets have atmospheres that can support life, it follows that other planets do have atmospheres that can support life."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -450,7 +453,10 @@
       "D": "fails to take into account the possibility that the local fishing guide mistakenly believes that some fish species other than the bullhead catfish is the most populous fish species in Stillwater Pond",
       "E": "takes for granted that Stillwater Pond has only one species of catfish living in it"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT128",

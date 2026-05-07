@@ -15,7 +15,10 @@
       "D": "presumes, without providing justification, that swimmers cannot be the most knowledgeable about which times of day are safest for swimming",
       "E": "fails to take into account the possibility that the number of shark attacks at night would increase dramatically if more people swam at night"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT127",

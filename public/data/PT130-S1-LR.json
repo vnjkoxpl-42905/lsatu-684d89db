@@ -51,7 +51,10 @@
       "D": "The budget figures used in the original editorial were adjusted for inflation.",
       "E": "A restructuring act, passed in 2003, broadened the duties of the Planning Department."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -315,7 +318,10 @@
       "D": "Living conditions in an area generally improve only if residents perceive their situation as somehow in need of improvement.",
       "E": "Ten years ago the residents of area L were not aware that their living conditions were below the national average."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT130",

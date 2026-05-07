@@ -222,7 +222,10 @@
       "D": "people undergo significantly less exposure to carcinogens that are not synthetic than to those that are synthetic",
       "E": "people can vary greatly in their susceptibility to cancers caused by nonsynthetic carcinogens"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -336,7 +339,10 @@
       "D": "overlooks the possibility that the people who preferred small cities over the provincial capital did so not because of their general feelings about the sizes of cities, but because of their general feelings about capital cities",
       "E": "overlooks the possibility that most people may have voted for small cities even though a large city received more votes than any other single city"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT131",

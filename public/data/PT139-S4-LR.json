@@ -340,7 +340,10 @@
       "D": "The argument presumes, without providing justification, that the sole objective in managing the computer store should be maximizing profits.",
       "E": "The argument fails to recognize that future sales of low-end computers may not be the same as past sales."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT139",

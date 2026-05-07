@@ -278,7 +278,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Belief / Knowledge / Intent"
     ]
   },
   {
@@ -333,7 +334,10 @@
       "D": "Some members of the city council who voted for rent control stand to profit from rent control.",
       "E": "The city council sometimes acts in an arbitrary and irrational manner."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT156",

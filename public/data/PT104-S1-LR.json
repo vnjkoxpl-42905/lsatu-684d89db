@@ -271,7 +271,10 @@
       "D": "She presents evidence that the two groups Tony has compared have no significant qualities in common.",
       "E": "She indicates that Tony has adopted questionable criteria for including certain people in the groups he is comparing."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT104",

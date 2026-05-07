@@ -231,7 +231,10 @@
       "D": "Most of the subjects had acquired confirmation of their newly acquired beliefs by the time they were told that the original statements were false.",
       "E": "Most of the subjects were initially skeptical of the statements originally given to them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -411,7 +414,10 @@
       "D": "takes for granted that one should accept some beliefs related to survival even when given adequate evidence against them",
       "E": "takes for granted that the beliefs we need in order to have many beliefs must all be correct beliefs"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT111",

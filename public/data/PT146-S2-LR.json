@@ -307,7 +307,10 @@
       "D": "Film historians do not believe that film reviews in newspapers and magazines reveal typical film audience members’ views.",
       "E": "Films from the early part of the twentieth century were not usually reviewed in newspapers or magazines."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT146",

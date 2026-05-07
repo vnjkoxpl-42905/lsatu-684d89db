@@ -72,7 +72,10 @@
       "D": "It uses Marie's criterion as a means of solving a moral problem Julia herself faces.",
       "E": "It proposes a radically different principle by which Marie's action might be judged, but reserves judgment as to whether Marie acted rightly."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -90,7 +93,10 @@
       "D": "Traffic laws in most locations state that the pedestrian always has the right of way, whether or not the pedestrian is crossing at a corner.",
       "E": "Good drivers anticipate jaywalkers as much as they anticipate pedestrians crossing at corners."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Relative vs. Absolute"
+    ]
   },
   {
     "practiceTest": "PT115",

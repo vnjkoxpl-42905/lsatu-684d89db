@@ -123,7 +123,10 @@
       "D": "Personal relationships, such as marriage or friendship, are longer-lasting than professional relationships.",
       "E": "Basing a marriage on a natural affinity will ensure that it will endure."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT118",

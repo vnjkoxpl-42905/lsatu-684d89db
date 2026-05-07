@@ -292,7 +292,10 @@
       "D": "attempts to discredit a theory by discrediting those who espouse that theory",
       "E": "fails to consider that, even if an argument's conclusion is false, some of the assumptions used to justify that conclusion may nonetheless be true"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -348,7 +351,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Relative vs. Absolute"
     ]
   },
   {

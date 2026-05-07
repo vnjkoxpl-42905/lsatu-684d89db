@@ -306,7 +306,10 @@
       "D": "Three theater critics, none of whom had any influence on the others, said that Tales in Tokyo was not worth the price of admission. Thus, unless each of these critics happened to attend the play on the same night, it is unlikely that the play will be successful.",
       "E": "Several different physicians examined Janet, and none could agree on a diagnosis. Therefore, unless new evidence shows that Janet is unhealthy, she should instead assume that she is healthy."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -462,7 +465,10 @@
       "D": "rejects an argument merely because of the circumstances of the person who offered it",
       "E": "concludes that we cannot know that certain effects were not what the author intended merely because we do not know what specific effects the author did intend S T DO NOT WORK ON ANY OT 4 4 -35-4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -480,6 +486,9 @@
       "D": "It is irresponsible to try to induce others to find a practice acceptable if it is not one’s own belief that that practice is acceptable.",
       "E": "It is dishonest to ask people to live up to their ideals without revealing whether one’s own ideals conflict with theirs. O P THER SECTION IN THE TEST."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   }
 ]

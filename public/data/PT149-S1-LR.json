@@ -185,7 +185,10 @@
       "D": "Conspicuous black-and-white areas help animals of the same species avoid encounters with one another.",
       "E": "Black-and-white coloration is not as great a liability against predators at night as it is during the day."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Belief / Knowledge / Intent"
+    ]
   },
   {
     "practiceTest": "PT149",
