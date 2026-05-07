@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { TimerControls } from '@/components/drill/TimerControls';
 import OfficialDrillFrame from '@/components/drill/official/OfficialDrillFrame';
+import OfficialSessionStrip from '@/components/drill/official/OfficialSessionStrip';
 import OfficialDrillToolbar from '@/components/drill/official/OfficialDrillToolbar';
 import OfficialQuestionPane from '@/components/drill/official/OfficialQuestionPane';
 import OfficialAnswerNavigator from '@/components/drill/official/OfficialAnswerNavigator';
@@ -2037,24 +2038,31 @@ function DrillContent() {
           </AlertDialogContent>
         </AlertDialog>
 
-        <OfficialDrillFrame>
+        <OfficialDrillFrame
+          header={
+            <OfficialSessionStrip
+              sectionTitle={
+                isFullSection && currentQuestion.pt && currentQuestion.section
+                  ? `The Official LSAT PrepTest ${currentQuestion.pt} — Section ${currentQuestion.section}`
+                  : currentQuestion.pt && currentQuestion.section
+                  ? `PT${currentQuestion.pt} · S${currentQuestion.section}${currentQuestion.qnum ? ` · Q${currentQuestion.qnum}` : ''}`
+                  : 'Practice Drill'
+              }
+              timerLabel={timer?.label ?? ''}
+              isPaused={!!timer?.isPaused}
+              onTogglePause={handleTogglePauseClick}
+              onExit={() => navigate('/practice')}
+              onComplete={handleFinishSection}
+            />
+          }
+        >
           <OfficialDrillToolbar
-            sectionTitle={
-              isFullSection && currentQuestion.pt && currentQuestion.section
-                ? `The Official LSAT PrepTest ${currentQuestion.pt} — Section ${currentQuestion.section}`
-                : currentQuestion.pt && currentQuestion.section
-                ? `PT${currentQuestion.pt} · S${currentQuestion.section}${currentQuestion.qnum ? ` · Q${currentQuestion.qnum}` : ''}`
-                : 'Practice Drill'
-            }
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
             timerLabel={timer?.label ?? ""}
             totalMs={totalMs}
             remainingMs={timer?.ms}
             isFullSection={isFullSection}
-            isPaused={!!timer?.isPaused}
-            onTogglePause={handleTogglePauseClick}
-            onComplete={handleFinishSection}
           />
           <OfficialQuestionPane
             question={{

@@ -69,13 +69,13 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-6 sm:px-8 py-6 text-[15px] leading-[1.55] text-black">
-        <div className="flex items-start justify-between gap-3 mb-5">
+      <div className="px-6 sm:px-8 py-6 text-[15px] leading-[1.5] text-black">
+        <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
             onMouseUp={(e) => onTextSelection(e, "stem")}
           >
-            <span className="font-bold tabular-nums shrink-0 min-w-[18px]">
+            <span className="font-bold tabular-nums shrink-0 min-w-[20px]">
               {displayNumber}.
             </span>
             <div className="flex-1">
@@ -97,14 +97,14 @@ export default function OfficialQuestionPane({
           >
             <Flag
               className={cn(
-                "w-5 h-5 transition-colors",
-                isFlagged ? "text-orange-500 fill-orange-500" : "text-orange-500",
+                "w-5 h-5 transition-colors text-[#2563eb]",
+                isFlagged && "fill-[#2563eb]",
               )}
             />
           </button>
         </div>
 
-        <ul className="space-y-5 mt-5">
+        <ul className="space-y-3 mt-4">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
@@ -112,7 +112,7 @@ export default function OfficialQuestionPane({
               <li
                 key={key}
                 className={cn(
-                  "flex items-start gap-4 group",
+                  "flex items-start gap-3 group",
                   isEliminated && "opacity-50",
                 )}
               >
@@ -123,7 +123,7 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 w-7 h-7 mt-0.5 rounded-full border flex items-center justify-center text-[13px] font-medium transition-colors",
+                    "shrink-0 w-6 h-6 mt-0.5 rounded-full border flex items-center justify-center text-[12px] font-medium transition-colors",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
                       : "border-slate-400 bg-white text-slate-700 hover:border-slate-700",
@@ -137,7 +137,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[15px] leading-[1.6] pt-0.5",
+                    "flex-1 text-left text-[15px] leading-[1.5] pt-0.5",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
                 >
@@ -149,7 +149,7 @@ export default function OfficialQuestionPane({
                   aria-pressed={isEliminated}
                   aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  className="shrink-0 p-1 mt-1 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                  className="shrink-0 p-1 mt-0.5 text-slate-400 hover:text-slate-700 rounded transition-colors"
                 >
                   <Eye className="w-4 h-4" />
                 </button>

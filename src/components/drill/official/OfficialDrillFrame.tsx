@@ -1,20 +1,34 @@
 import * as React from "react";
 
 interface Props {
+  /**
+   * Optional content rendered on the navy backdrop, ABOVE the white "paper".
+   * Used for session-level chrome (Exit / pause / Finish / section title) so
+   * the testing surface itself stays faithful to the LawHub layout.
+   */
+  header?: React.ReactNode;
   children: React.ReactNode;
 }
 
 /**
- * Official LSAT testing-format shell. Pixel-flat container — no breadcrumb,
- * no card chrome, no navy outer. Matches the real LawHub testing surface.
+ * Official LSAT testing-format shell. Mirrors the LawHub layout: a dark
+ * navy backdrop framing a centered white "paper" surface that holds the
+ * toolbar, question pane, and bottom navigator.
  *
- * The toolbar inside `children` now owns the section title, pause icon,
- * and Finish button — they used to live here.
+ * The font-family is scoped to this frame so the testing surface uses
+ * Helvetica/Arial (matching the real test) while the rest of the app
+ * keeps its sans default.
  */
-export default function OfficialDrillFrame({ children }: Props) {
+export default function OfficialDrillFrame({ header, children }: Props) {
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
-      {children}
+    <div
+      className="min-h-screen bg-[#0f172a] py-3 sm:py-6 px-2 sm:px-4"
+      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+    >
+      {header}
+      <div className="mx-auto max-w-[1180px] bg-white text-black border border-slate-300 rounded-md shadow-2xl overflow-hidden">
+        {children}
+      </div>
     </div>
   );
 }
