@@ -26,6 +26,9 @@ interface QuestionPickerProps {
 interface FilterState {
   prepTests: number[];
   questionTypes: string[];
+  reasoningTypes: string[];
+  questionFeatures: string[];
+  sections: number[];
   difficulties: number[];
   searchQuery: string;
 }
@@ -42,6 +45,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   const [filters, setFilters] = useState<FilterState>({
     prepTests: [],
     questionTypes: [],
+    reasoningTypes: [],
+    questionFeatures: [],
+    sections: [],
     difficulties: [],
     searchQuery: '',
   });
@@ -62,8 +68,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   
   // Question type filter UI state
   const [qtypeSearch, setQtypeSearch] = useState('');
-  const [showZeroCounts, setShowZeroCounts] = useState(true);
-  
+  const [reasoningSearch, setReasoningSearch] = useState('');
+  const [featureSearch, setFeatureSearch] = useState('');
+
   // Get all canonical question types with counts
   const allQTypesWithCounts = useMemo(() => {
     return CANONICAL_QTYPES.allTypes.map(type => ({
@@ -71,7 +78,24 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       count: manifest.byQType[type] || 0
     }));
   }, [manifest]);
-  
+
+  const allReasoningTypes = useMemo(
+    () => Object.keys(manifest.byReasoningType || {}).sort(),
+    [manifest],
+  );
+  const allQuestionFeatures = useMemo(
+    () => Object.keys(manifest.byFeature || {}).sort(),
+    [manifest],
+  );
+  const allSections = useMemo(
+    () =>
+      Object.keys(manifest.bySection || {})
+        .map((s) => Number(s))
+        .filter((n) => Number.isFinite(n))
+        .sort((a, b) => a - b),
+    [manifest],
+  );
+
   const allDifficulties = [1, 2, 3, 4, 5];
   
   // Load attempt counts
@@ -108,18 +132,34 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     loadAttempts();
   }, [user]);
   
-  // Get count for a question type (reflecting current filters)
+  // Get count for a question type (reflecting current filters except qtype itself)
   const getQTypeCount = (qtype: string): number => {
     let questions = questionBank.getAllQuestions().filter(q => q.qtype === qtype);
-    
-    // Apply current filters (except questionTypes)
-    if (filters.prepTests.length > 0) {
-      questions = questions.filter(q => filters.prepTests.includes(q.pt));
-    }
-    if (filters.difficulties.length > 0) {
-      questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
-    }
-    
+    if (filters.prepTests.length > 0) questions = questions.filter(q => filters.prepTests.includes(q.pt));
+    if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
+    if (filters.sections.length > 0) questions = questions.filter(q => filters.sections.includes(q.section));
+    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
+    if (filters.questionFeatures.length > 0) questions = questions.filter(q => (q.questionFeatures || []).some(f => filters.questionFeatures.includes(f)));
+    return questions.length;
+  };
+
+  const getReasoningCount = (rtype: string): number => {
+    let questions = questionBank.getAllQuestions().filter(q => q.reasoningType === rtype);
+    if (filters.prepTests.length > 0) questions = questions.filter(q => filters.prepTests.includes(q.pt));
+    if (filters.questionTypes.length > 0) questions = questions.filter(q => filters.questionTypes.includes(q.qtype));
+    if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
+    if (filters.sections.length > 0) questions = questions.filter(q => filters.sections.includes(q.section));
+    if (filters.questionFeatures.length > 0) questions = questions.filter(q => (q.questionFeatures || []).some(f => filters.questionFeatures.includes(f)));
+    return questions.length;
+  };
+
+  const getFeatureCount = (feature: string): number => {
+    let questions = questionBank.getAllQuestions().filter(q => (q.questionFeatures || []).includes(feature));
+    if (filters.prepTests.length > 0) questions = questions.filter(q => filters.prepTests.includes(q.pt));
+    if (filters.questionTypes.length > 0) questions = questions.filter(q => filters.questionTypes.includes(q.qtype));
+    if (filters.difficulties.length > 0) questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
+    if (filters.sections.length > 0) questions = questions.filter(q => filters.sections.includes(q.section));
+    if (filters.reasoningTypes.length > 0) questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
     return questions.length;
   };
 
@@ -131,15 +171,27 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     if (filters.prepTests.length > 0) {
       questions = questions.filter(q => filters.prepTests.includes(q.pt));
     }
-    
+
     if (filters.questionTypes.length > 0) {
       questions = questions.filter(q => filters.questionTypes.includes(q.qtype));
     }
-    
+
+    if (filters.reasoningTypes.length > 0) {
+      questions = questions.filter(q => q.reasoningType ? filters.reasoningTypes.includes(q.reasoningType) : false);
+    }
+
+    if (filters.questionFeatures.length > 0) {
+      questions = questions.filter(q => (q.questionFeatures || []).some(f => filters.questionFeatures.includes(f)));
+    }
+
+    if (filters.sections.length > 0) {
+      questions = questions.filter(q => filters.sections.includes(q.section));
+    }
+
     if (filters.difficulties.length > 0) {
       questions = questions.filter(q => filters.difficulties.includes(q.difficulty));
     }
-    
+
     if (filters.searchQuery.trim()) {
       const query = filters.searchQuery.toLowerCase();
       questions = questions.filter(q => 
@@ -405,10 +457,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        // Get all visible types based on current search/filter
                         const visible = CANONICAL_QTYPES.allTypes.filter(qtype => {
                           const count = getQTypeCount(qtype);
-                          if (!showZeroCounts && count === 0) return false;
+                          if (count === 0) return false;
                           if (!qtypeSearch) return true;
                           return qtype.toLowerCase().includes(qtypeSearch.toLowerCase());
                         });
@@ -421,26 +472,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     >
                       Select all shown
                     </Button>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="show-zero"
-                        checked={showZeroCounts}
-                        onCheckedChange={(checked) => setShowZeroCounts(!!checked)}
-                      />
-                      <label htmlFor="show-zero" className="text-xs cursor-pointer">
-                        Show 0-count
-                      </label>
-                    </div>
                   </div>
-                  
+
                   {/* Types List - Grouped by Category */}
                   <div className="space-y-3 max-h-[300px] overflow-y-auto">
                     {CANONICAL_QTYPES.groups.map(group => {
-                      // Filter types in this group
                       const visibleTypes = group.types.filter(qtype => {
                         const count = getQTypeCount(qtype);
-                        if (!showZeroCounts && count === 0) return false;
+                        if (count === 0) return false;
                         if (!qtypeSearch) return true;
                         return qtype.toLowerCase().includes(qtypeSearch.toLowerCase());
                       });
@@ -476,17 +515,140 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
             
+            {/* Reasoning Type Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Reasoning Types {filters.reasoningTypes.length > 0 && `(${filters.reasoningTypes.length})`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+                <div className="space-y-3">
+                  <div className="font-medium text-sm">Select Reasoning Types</div>
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search..."
+                      value={reasoningSearch}
+                      onChange={(e) => setReasoningSearch(e.target.value)}
+                      className="pl-8 h-9"
+                    />
+                  </div>
+                  <div className="space-y-2 max-h-[340px] overflow-y-auto">
+                    {allReasoningTypes
+                      .filter((rt) => {
+                        const count = getReasoningCount(rt);
+                        if (count === 0) return false;
+                        if (!reasoningSearch) return true;
+                        return rt.toLowerCase().includes(reasoningSearch.toLowerCase());
+                      })
+                      .map((rt) => {
+                        const count = getReasoningCount(rt);
+                        return (
+                          <div key={rt} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`rt-${rt}`}
+                              checked={filters.reasoningTypes.includes(rt)}
+                              onCheckedChange={() => toggleFilter('reasoningTypes', rt)}
+                            />
+                            <label htmlFor={`rt-${rt}`} className="text-sm cursor-pointer flex-1">
+                              {rt} <span className="text-muted-foreground">({count})</span>
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Question Features Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Question Features {filters.questionFeatures.length > 0 && `(${filters.questionFeatures.length})`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+                <div className="space-y-3">
+                  <div className="font-medium text-sm">Select Question Features</div>
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search..."
+                      value={featureSearch}
+                      onChange={(e) => setFeatureSearch(e.target.value)}
+                      className="pl-8 h-9"
+                    />
+                  </div>
+                  <div className="space-y-2 max-h-[340px] overflow-y-auto">
+                    {allQuestionFeatures
+                      .filter((f) => {
+                        const count = getFeatureCount(f);
+                        if (count === 0) return false;
+                        if (!featureSearch) return true;
+                        return f.toLowerCase().includes(featureSearch.toLowerCase());
+                      })
+                      .map((f) => {
+                        const count = getFeatureCount(f);
+                        return (
+                          <div key={f} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`feat-${f}`}
+                              checked={filters.questionFeatures.includes(f)}
+                              onCheckedChange={() => toggleFilter('questionFeatures', f)}
+                            />
+                            <label htmlFor={`feat-${f}`} className="text-sm cursor-pointer flex-1">
+                              {f} <span className="text-muted-foreground">({count})</span>
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Section Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Section {filters.sections.length > 0 && `(${filters.sections.length})`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56" align="start">
+                <div className="space-y-2">
+                  <div className="font-medium text-sm mb-2">Select Sections</div>
+                  {allSections.map((s) => (
+                    <div key={s} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`section-${s}`}
+                        checked={filters.sections.includes(s)}
+                        onCheckedChange={() => toggleFilter('sections', s)}
+                      />
+                      <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
+                        Section {s} ({manifest.bySection?.[s] || 0})
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
             {/* Difficulty Filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm">
-                  Difficulty {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
+                  Levels {filters.difficulties.length > 0 && `(${filters.difficulties.length})`}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-64" align="start">
                 <div className="space-y-2">
-                  <div className="font-medium text-sm mb-2">Select Difficulties</div>
+                  <div className="font-medium text-sm mb-2">Select Levels</div>
                   {allDifficulties.map(diff => (
                     <div key={diff} className="flex items-center space-x-2">
                       <Checkbox
@@ -537,7 +699,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           </div>
           
           {/* Active Filters */}
-          {(filters.prepTests.length > 0 || filters.questionTypes.length > 0 || filters.difficulties.length > 0) && (
+          {(filters.prepTests.length > 0 ||
+            filters.questionTypes.length > 0 ||
+            filters.reasoningTypes.length > 0 ||
+            filters.questionFeatures.length > 0 ||
+            filters.sections.length > 0 ||
+            filters.difficulties.length > 0) && (
             <div className="flex flex-wrap gap-2">
               {filters.prepTests.map(pt => (
                 <Badge key={`pt-${pt}`} variant="secondary" className="gap-1">
@@ -549,6 +716,24 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 <Badge key={`qtype-${qtype}`} variant="secondary" className="gap-1">
                   {qtype}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('questionTypes', qtype)} />
+                </Badge>
+              ))}
+              {filters.reasoningTypes.map(rt => (
+                <Badge key={`rt-${rt}`} variant="secondary" className="gap-1">
+                  {rt}
+                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('reasoningTypes', rt)} />
+                </Badge>
+              ))}
+              {filters.questionFeatures.map(f => (
+                <Badge key={`feat-${f}`} variant="secondary" className="gap-1">
+                  {f}
+                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('questionFeatures', f)} />
+                </Badge>
+              ))}
+              {filters.sections.map(s => (
+                <Badge key={`section-${s}`} variant="secondary" className="gap-1">
+                  Section {s}
+                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter('sections', s)} />
                 </Badge>
               ))}
               {filters.difficulties.map(diff => (
