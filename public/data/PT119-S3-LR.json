@@ -54,7 +54,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -96,7 +97,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -120,7 +122,9 @@
       "Explain Curious Fact",
       "Conditional Conclusion",
       "Math-y Stuff",
-      "Predictions"
+      "Predictions",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -219,7 +223,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -364,7 +369,10 @@
       "D": "It presents evidence that the argument attempts to undermine.",
       "E": "It is an intermediate conclusion of the argument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -407,7 +415,9 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -429,7 +439,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -534,7 +545,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Defender",
-      "Plausibility"
+      "Plausibility",
+      "Science",
+      "Timeframes"
     ]
   }
 ]

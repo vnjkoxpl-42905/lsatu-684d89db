@@ -79,7 +79,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {
@@ -202,7 +203,8 @@
       "Abstract Answers",
       "Explain Curious Fact",
       "2-Speaker",
-      "Alternatives"
+      "Alternatives",
+      "Ruling Out Options"
     ]
   },
   {
@@ -223,7 +225,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -245,7 +248,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Alternatives"
+      "Alternatives",
+      "Refute a Conditional"
     ]
   },
   {
@@ -336,7 +340,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -417,7 +422,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -438,7 +444,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -482,7 +489,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {

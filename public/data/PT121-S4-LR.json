@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Sampling"
+      "Sampling",
+      "Rebuttals"
     ]
   },
   {
@@ -60,7 +61,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Timeframes"
     ]
   },
   {
@@ -122,7 +124,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Timeframes"
     ]
   },
   {
@@ -252,7 +255,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Rebuttals"
     ]
   },
   {

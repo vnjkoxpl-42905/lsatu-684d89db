@@ -154,7 +154,11 @@
       "D": "A city enacts a curfew for minors because most parents want their children home earlier.",
       "E": "A museum extends its hours because most visitors prefer to come in the evenings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -280,7 +284,8 @@
       "Assumes Difference",
       "Net Effect",
       "Plans / Recommendations",
-      "Quantifiers"
+      "Quantifiers",
+      "Rebuttals"
     ]
   },
   {
@@ -391,7 +396,8 @@
       "Famous Flaws",
       "2-Speaker",
       "Alternatives",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -519,7 +525,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {

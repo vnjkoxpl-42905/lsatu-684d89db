@@ -39,7 +39,10 @@
       "D": "fails to consider that a tool might not effectively perform its intended function",
       "E": "rejects a claim because of its source rather than it       t   t"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -59,7 +62,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -185,7 +190,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -228,7 +234,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "EXCEPT",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -375,7 +382,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -397,7 +405,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Repetitive Answers"
     ]
   },
   {
@@ -483,7 +492,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Worst of the Worst"
     ]
   },
   {
@@ -523,6 +533,9 @@
       "D": "Most owners of dumps for hazardous waste are willing to accept XTX for disposal in their facilities only in concentrations below 800 parts per million.",
       "E": "To manufacturers, the cost of diluting and disposing of waste products containing XTX is approximately the same as the cost of destroying these products by incineration."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   }
 ]

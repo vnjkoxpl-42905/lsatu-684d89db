@@ -15,7 +15,10 @@
       "D": "Socrates was a much more controversial figure in the years before his death than he was in his mid-forties.",
       "E": "Socrates had an influence on many subsequent philosophers who were primarily concerned with natural science."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -36,7 +39,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Rebuttals"
     ]
   },
   {
@@ -84,7 +88,8 @@
       "Assumes Similarity",
       "Net Effect",
       "Plans / Recommendations",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -151,7 +156,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Intermediate Conclusions",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -175,7 +181,8 @@
       "First Sentence Conclusion",
       "Binaries",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -221,7 +228,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -243,7 +251,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals"
     ]
   },
   {
@@ -264,7 +273,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -285,7 +295,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -307,7 +318,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Ruling Out Options",
+      "Timeframes"
     ]
   },
   {
@@ -399,7 +412,8 @@
       "Analogies",
       "Anti-Causal",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -424,7 +438,9 @@
       "Assumes Similarity",
       "Defender",
       "Dense Stimulus",
-      "Predictions"
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -449,7 +465,9 @@
       "Explain Curious Fact",
       "Contrapositive Logic",
       "Intermediate Conclusions",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -544,7 +562,8 @@
       "Conditional Diagramming",
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {

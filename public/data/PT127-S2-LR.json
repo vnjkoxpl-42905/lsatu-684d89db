@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -87,7 +88,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -111,7 +113,8 @@
       "2-Speaker",
       "Analogies",
       "Assumes Similarity",
-      "Causal Chains"
+      "Causal Chains",
+      "Rebuttals"
     ]
   },
   {
@@ -202,7 +205,9 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "2-Speaker",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -245,7 +250,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -268,7 +274,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -290,7 +297,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Timeframes"
     ]
   },
   {
@@ -335,7 +343,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -358,7 +367,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -380,7 +390,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -403,7 +414,9 @@
     "questionFeatures": [
       "Implicit Principles",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -532,7 +545,10 @@
       "D": "During the time of the early Byzantine Empire there were at most 40,000 documents of enough importance to prevent the removing and recycling of the seal.",
       "E": "During the time of the early Byzantine Empire there were fewer than 40,000 seals affixed to documents at any given time."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Untriggered Conditional"
+    ]
   },
   {
     "practiceTest": "PT127",

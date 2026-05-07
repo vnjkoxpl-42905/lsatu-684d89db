@@ -38,7 +38,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {
@@ -386,7 +387,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Refute a Conditional"
     ]
   },
   {
@@ -487,7 +489,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   }
 ]

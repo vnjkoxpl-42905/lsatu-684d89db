@@ -38,7 +38,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -80,7 +81,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -231,7 +233,10 @@
       "D": "It describes an observed phenomenon for which the argument seeks an explanation.",
       "E": "It is presented as the main explanation of the origin of an observed phenomenon."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -402,7 +407,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Repetitive Answers"
     ]
   },
   {
@@ -424,7 +430,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Defender",
-      "Net Effect"
+      "Net Effect",
+      "Ruling Out Options"
     ]
   },
   {
@@ -468,7 +475,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -507,7 +515,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Repetitive Answers",
+      "Worst of the Worst"
     ]
   },
   {

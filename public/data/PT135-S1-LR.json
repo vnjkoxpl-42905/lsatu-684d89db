@@ -190,7 +190,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -343,7 +344,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -365,7 +367,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -387,7 +390,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {

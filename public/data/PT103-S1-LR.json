@@ -101,7 +101,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -183,7 +184,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Science"
     ]
   },
   {
@@ -256,7 +258,10 @@
       "D": "Some deceitful politicians are ineffective.",
       "E": "Some scrupulously honest politicians are effective."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -362,7 +367,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals",
+      "Volume Dial"
     ]
   },
   {
@@ -477,7 +484,10 @@
       "D": "One of the orchestra’s players must be able to play the harp, since in one of the pieces they are playing at next week’s concert the composer specified that a harp should be played.",
       "E": "The emotion of the music is the only thing that can have caused the conductor to look so angry just then, since the orchestra was playing perfectly."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT103",

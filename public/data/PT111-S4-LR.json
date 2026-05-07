@@ -161,7 +161,9 @@
     "questionFeatures": [
       "Alternatives",
       "Anti-Causal",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -396,7 +398,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional"
     ]
   },
   {
@@ -455,7 +458,10 @@
       "D": "It has now been established that most multiple sclerosis sufferers do not have chronic viral infections.",
       "E": "The drug now used to treat multiple sclerosis is known to inhibit the activity of gamma interferon."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -491,7 +497,10 @@
       "D": "draws a conclusion regarding the effects of lowering cholesterol levels on heart disease, when in fact the conclusion should focus on the relation between pravastatin and cholesterol levels",
       "E": "fails to consider what percentage of the general population might be taking pravastatin"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -533,7 +542,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   }
 ]

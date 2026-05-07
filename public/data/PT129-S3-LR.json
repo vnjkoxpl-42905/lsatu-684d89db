@@ -15,7 +15,10 @@
       "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
       "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -35,7 +38,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -57,7 +61,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -98,7 +103,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Clarification/Misunderstanding",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -143,7 +149,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -165,7 +172,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -233,7 +241,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Medical",
-      "Predictions"
+      "Predictions",
+      "Science"
     ]
   },
   {
@@ -258,7 +267,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -346,7 +356,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Timeframes"
     ]
   },
   {
@@ -367,7 +378,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -456,7 +468,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Volume Dial"
     ]
   },
   {
@@ -478,7 +491,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals"
     ]
   },
   {
@@ -499,7 +513,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Timeframes"
     ]
   },
   {
@@ -522,7 +537,8 @@
     "questionFeatures": [
       "Part vs. Whole",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -544,7 +560,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   }
 ]

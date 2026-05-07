@@ -39,7 +39,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Science"
     ]
   },
   {
@@ -232,7 +233,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -297,7 +299,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -387,7 +390,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sampling",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -409,7 +413,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -520,7 +525,9 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Repetitive Answers",
+      "Ruling Out Options"
     ]
   },
   {

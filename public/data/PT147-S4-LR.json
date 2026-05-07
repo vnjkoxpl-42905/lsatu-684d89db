@@ -42,7 +42,8 @@
       "Conditional Diagramming",
       "Relative vs. Absolute",
       "Argue the Anti-Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -83,7 +84,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Argue the Anti-Conclusion",
-      "Binaries"
+      "Binaries",
+      "Ruling Out Options"
     ]
   },
   {
@@ -213,7 +215,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Volume Dial"
     ]
   },
   {
@@ -256,7 +261,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Rebuttals"
     ]
   },
   {
@@ -321,7 +327,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -477,7 +484,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {

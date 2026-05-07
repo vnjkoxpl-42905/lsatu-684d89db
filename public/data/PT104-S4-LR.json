@@ -89,7 +89,8 @@
       "Argue the Anti-Conclusion",
       "Defender",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -110,7 +111,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Timeframes"
     ]
   },
   {
@@ -131,7 +133,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -198,7 +201,8 @@
       "Assumes Difference",
       "Defender",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -334,7 +338,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -359,7 +365,8 @@
       "EXCEPT",
       "New Concept in Conclusion",
       "Plans / Recommendations",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -403,7 +410,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Timeframes"
     ]
   },
   {
@@ -427,7 +435,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Binaries",
-      "Defender"
+      "Defender",
+      "Ruling Out Options"
     ]
   },
   {
@@ -472,7 +481,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Dense Stimulus",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Rebuttals"
     ]
   },
   {

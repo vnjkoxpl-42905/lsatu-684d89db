@@ -104,7 +104,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Timeframes"
     ]
   },
   {
@@ -148,7 +149,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional"
     ]
   },
   {
@@ -215,7 +217,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Belief / Knowledge / Intent",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -260,7 +263,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Intermediate Conclusions",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Worst of the Worst"
     ]
   },
   {
@@ -281,7 +285,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -324,7 +331,11 @@
       "D": "It is cited as a reason that travel writing flourishes more today than it has in the past.",
       "E": "It is cited as a condition that has transformed the task of the travel writer."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals",
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -346,7 +357,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Volume Dial"
     ]
   },
   {
@@ -367,7 +379,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Volume Dial"
     ]
   },
   {
@@ -433,7 +446,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -520,7 +535,9 @@
     "questionFeatures": [
       "Assumes Difference",
       "EXCEPT",
-      "Predictions"
+      "Predictions",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -542,7 +559,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Rebuttals"
     ]
   }
 ]

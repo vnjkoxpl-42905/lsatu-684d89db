@@ -20,7 +20,8 @@
       "Missing Link / Idea",
       "Intermediate Conclusions",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -43,7 +44,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Anti-Causal",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -65,7 +67,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -110,7 +113,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Ruling Out Options"
     ]
   },
   {
@@ -157,7 +161,8 @@
       "Relative vs. Absolute",
       "Missing Link / Idea",
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Ruling Out Options"
     ]
   },
   {
@@ -179,7 +184,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -249,7 +255,10 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -318,7 +327,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Timeframes"
     ]
   },
   {
@@ -388,7 +398,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -409,7 +421,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -431,7 +444,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -520,7 +534,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Causal Chains",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Science"
     ]
   },
   {
@@ -564,7 +579,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Implicit Principles"
+      "Implicit Principles",
+      "Rebuttals",
+      "Timeframes",
+      "Weighing Tradeoffs"
     ]
   }
 ]

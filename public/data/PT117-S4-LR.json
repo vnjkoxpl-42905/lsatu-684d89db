@@ -111,7 +111,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sampling",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Timeframes"
     ]
   },
   {
@@ -254,7 +255,10 @@
       "D": "Prior to undergoing angioplasty, women should avoid coffee and tea.",
       "E": "Angioplasty should not be used to treat clogged arteries."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -294,7 +298,10 @@
       "D": "Babies generally prefer mother’s milk to formulas low in P-fat.",
       "E": "The eyesight of a fetus develops during the last trimester of pregnancy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -355,7 +362,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -458,7 +466,8 @@
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
       "Binaries",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Ruling Out Options"
     ]
   },
   {
@@ -521,7 +530,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {

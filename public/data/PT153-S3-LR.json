@@ -38,7 +38,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -166,7 +167,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {
@@ -366,7 +368,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Science"
     ]
   },
   {
@@ -494,7 +497,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Volume Dial"
     ]
   },
   {
@@ -555,7 +559,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
     ]
   }
 ]

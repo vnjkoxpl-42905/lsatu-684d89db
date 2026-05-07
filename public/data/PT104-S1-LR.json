@@ -67,7 +67,8 @@
       "Explain Curious Fact",
       "Important Pivot",
       "Alternatives",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Rebuttals"
     ]
   },
   {
@@ -134,7 +135,8 @@
       "Abstract Answers",
       "2-Speaker",
       "Analogies",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -291,7 +293,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -313,7 +316,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Important Pivot"
+      "Important Pivot",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -337,7 +341,8 @@
       "Relative vs. Absolute",
       "2-Speaker",
       "Implied Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Rebuttals"
     ]
   },
   {
@@ -473,7 +478,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -568,7 +574,8 @@
       "Battle of Opinions",
       "EXCEPT",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {

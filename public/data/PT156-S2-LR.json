@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Timeframes"
     ]
   },
   {
@@ -105,7 +106,9 @@
       "First Sentence Conclusion",
       "Dense Stimulus",
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -151,7 +154,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "2-Speaker",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -241,7 +245,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -287,7 +292,9 @@
     "questionFeatures": [
       "Important Pivot",
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -309,7 +316,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -373,7 +382,10 @@
       "D": "The scientists were able to accurately record the hull’s dimensions only if they used a line level.",
       "E": "If the scientists had measured the hull’s dimensions accurately, then at least one of them would have had experience measuring hulls."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -394,7 +406,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -417,7 +430,10 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Dense Stimulus",
-      "Plausibility"
+      "Plausibility",
+      "Science",
+      "Timeframes",
+      "Volume Dial"
     ]
   },
   {
@@ -485,7 +501,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Difference",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -534,7 +551,8 @@
       "First Sentence Conclusion",
       "EXCEPT",
       "Focused on Evidence",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -556,7 +574,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional",
+      "Science"
     ]
   }
 ]

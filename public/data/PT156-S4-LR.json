@@ -63,7 +63,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -87,7 +88,8 @@
       "Analogies",
       "EXCEPT",
       "Intermediate Conclusions",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -130,7 +132,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -194,7 +198,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -261,7 +266,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
-      "Predictions"
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -309,7 +316,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Science"
     ]
   },
   {
@@ -348,7 +356,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -481,7 +490,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -505,7 +515,9 @@
       "Conditional Diagramming",
       "Famous Flaws",
       "Part vs. Whole",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Ruling Out Options",
+      "Worst of the Worst"
     ]
   },
   {
@@ -550,7 +562,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals"
     ]
   },
   {

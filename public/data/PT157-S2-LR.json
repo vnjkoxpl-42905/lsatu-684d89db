@@ -62,7 +62,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Logical Completion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -106,7 +108,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -152,7 +155,8 @@
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Dense Stimulus",
-      "Logical Completion"
+      "Logical Completion",
+      "Science"
     ]
   },
   {
@@ -220,7 +224,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Analogies",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -286,7 +291,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -331,7 +337,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -459,7 +466,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Worst of the Worst"
     ]
   },
   {
@@ -502,7 +510,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Volume Dial"
     ]
   },
   {
@@ -547,7 +556,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Similarity",
-      "Medical"
+      "Medical",
+      "Rebuttals",
+      "Timeframes"
     ]
   }
 ]

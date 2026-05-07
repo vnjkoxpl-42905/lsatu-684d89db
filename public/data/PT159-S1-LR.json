@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -41,7 +42,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -126,7 +128,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Difference",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -147,7 +150,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Volume Dial"
     ]
   },
   {
@@ -170,7 +174,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Logical Completion",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -275,7 +280,10 @@
       "D": "rejects a definition on the grounds that if it were accepted as correct, the term being defined would apply to things to which it normally does not apply",
       "E": "argues against a proposed definition on the grounds that those who support it do so at least partly on an inappropriate appeal to authority"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -313,7 +321,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -486,7 +495,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Timeframes"
     ]
   },
   {
@@ -507,7 +517,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Logical Completion"
+      "Logical Completion",
+      "Rebuttals"
     ]
   },
   {

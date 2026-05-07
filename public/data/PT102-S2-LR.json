@@ -82,7 +82,8 @@
     "questionFeatures": [
       "Dense Stimulus",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -103,7 +104,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -128,7 +130,8 @@
       "Alternatives",
       "Conditional Conclusion",
       "Defender",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -150,7 +153,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -241,7 +245,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -264,7 +269,9 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -328,7 +335,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {
@@ -396,7 +404,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -417,7 +426,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -438,7 +448,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -457,7 +469,10 @@
       "D": "If this parking policy is popular among students, then we should adopt a new policy.",
       "E": "If this parking policy is popular with the faculty, then we should adopt a new policy."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -475,7 +490,11 @@
       "D": "The notion that every scientist who is supported by a government grant will be successful is absurd, as one can see by rewording it: No scientist lacking governmental support will be successful.",
       "E": "The notion that every scientist who has been supported by a government grant will be successful is absurd, as one can see by rewording it: No scientist is allowed to do research without a government grant."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Refute a Conditional",
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -519,7 +538,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -540,7 +560,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   }
 ]

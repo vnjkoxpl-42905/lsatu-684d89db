@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "EXCEPT",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -86,7 +87,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -109,7 +111,8 @@
     "questionFeatures": [
       "Causal Chains",
       "Medical",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -155,7 +158,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -180,7 +184,8 @@
       "Anti-Causal",
       "Battle of Opinions",
       "Conditional Conclusion",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Worst of the Worst"
     ]
   },
   {
@@ -250,7 +255,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -271,7 +277,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -294,7 +301,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -318,7 +326,8 @@
       "Important Pivot",
       "Dense Stimulus",
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -341,7 +350,8 @@
     "questionFeatures": [
       "Defender",
       "Plans / Recommendations",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -432,7 +442,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Repetitive Answers"
     ]
   },
   {
@@ -454,7 +465,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Sampling"
+      "Sampling",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -572,7 +585,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Science"
     ]
   }
 ]

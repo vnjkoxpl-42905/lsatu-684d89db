@@ -42,7 +42,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -87,7 +88,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -110,7 +112,8 @@
     "questionFeatures": [
       "Alternatives",
       "Defender",
-      "Predictions"
+      "Predictions",
+      "Science"
     ]
   },
   {
@@ -132,7 +135,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -197,7 +201,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -216,7 +221,10 @@
       "D": "Botanists have no techniques for determining whether distinct plant species have been given distinct names.",
       "E": "A person who consults the scientific record looking under only one of a plant’s names may miss available information about that plant."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -305,7 +313,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -373,7 +382,8 @@
       "Missing Link / Idea",
       "Conditional Conclusion",
       "Dense Stimulus",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -438,7 +448,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Timeframes"
     ]
   },
   {
@@ -525,7 +536,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {
@@ -549,7 +561,9 @@
       "First Sentence Conclusion",
       "Defender",
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science",
+      "Timeframes"
     ]
   }
 ]

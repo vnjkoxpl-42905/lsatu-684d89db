@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Logical Completion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -124,7 +125,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Science"
     ]
   },
   {
@@ -173,7 +175,8 @@
       "Alternatives",
       "Anti-Causal",
       "Focused on Evidence",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -300,7 +303,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Worst of the Worst"
     ]
   },
   {
@@ -412,7 +416,9 @@
       "Explain Curious Fact",
       "Alternatives",
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -454,7 +460,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Repetitive Answers"
     ]
   },
   {

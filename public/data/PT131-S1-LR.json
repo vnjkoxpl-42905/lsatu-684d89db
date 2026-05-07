@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "whether the driver of the first vehicle was a reliable witness",
       "E": "whether the driver of the second vehicle would have seen the turn signal flashing had it been on"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Untriggered Conditional"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -102,7 +106,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -123,7 +128,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -169,7 +175,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Assumes Difference",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -213,7 +220,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Battle of Opinions",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -259,7 +267,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -281,7 +290,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -302,7 +313,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -323,7 +335,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Rebuttals",
+      "Science",
+      "Worst of the Worst"
     ]
   },
   {
@@ -347,7 +362,9 @@
       "Conditional Diagramming",
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -416,7 +433,9 @@
       "Conditional Diagramming",
       "Missing Link / Idea",
       "Dense Stimulus",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -482,7 +501,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Medical"
+      "Medical",
+      "Timeframes"
     ]
   },
   {
@@ -526,7 +546,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Defender",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {

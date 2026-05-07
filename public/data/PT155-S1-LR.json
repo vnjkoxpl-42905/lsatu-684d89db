@@ -236,7 +236,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -429,7 +431,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -494,7 +497,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {

@@ -33,7 +33,11 @@
       "D": "Earthquakes produce enormous amounts of heat that have so far gone undetected.",
       "E": "Contrary to the current theory, earthquakes are not caused by adjoining plates of rock sliding past one another."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals",
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -53,7 +57,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -72,7 +77,10 @@
       "D": "the gene is more likely to be stimulated by chemicals in cigarette smoke than by other chemicals",
       "E": "smokers are less likely to develop lung cancer if they do not have the gene"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -156,7 +164,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -196,7 +205,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -262,7 +272,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -285,7 +296,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -328,7 +340,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -391,7 +404,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Net Effect"
+      "Net Effect",
+      "Science"
     ]
   },
   {
@@ -519,6 +533,9 @@
       "D": "The viruses that cause colds are not all the same, and they differ in their effects. Therefore, although it may be certain that a person has a cold, it is impossible to predict how the cold will progress.",
       "E": "Unless a person displays cold symptoms, it cannot properly be said that the person has a cold. But each of the symptoms of a cold is also the symptom of some other disease. Therefore, one can never be certain that a person has a cold."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   }
 ]

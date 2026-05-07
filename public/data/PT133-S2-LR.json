@@ -41,7 +41,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -106,7 +107,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Analogies",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -128,7 +131,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -172,7 +177,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Science"
     ]
   },
   {
@@ -253,7 +259,10 @@
       "D": "The position attacked by critics of environmentalism is actually the prevailing political position.",
       "E": "Serious environmentalism will eventually become a prevailing political position."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -273,7 +282,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -297,7 +307,8 @@
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Dense Stimulus",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -323,7 +334,8 @@
       "Anti-Causal",
       "Causal Difference-Maker",
       "Dense Stimulus",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Rebuttals"
     ]
   },
   {
@@ -438,7 +450,8 @@
     "questionFeatures": [
       "Binaries",
       "Dense Stimulus",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -460,7 +473,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Rebuttals"
     ]
   },
   {
@@ -506,7 +520,9 @@
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {

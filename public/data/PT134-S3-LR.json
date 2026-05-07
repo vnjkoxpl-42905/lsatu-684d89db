@@ -250,7 +250,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -354,7 +355,8 @@
       "Explain Curious Fact",
       "Breadcrumbs",
       "Focused on Evidence",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {

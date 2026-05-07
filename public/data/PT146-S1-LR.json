@@ -42,7 +42,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Battle of Opinions",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   },
   {
@@ -149,7 +150,10 @@
       "D": "The argument confuses an absence of evidence for the claim that the airport can safely permit air traffic in excess of its original design capacity with the existence of evidence against this claim.",
       "E": "The argument fails to consider that a slight increase in safety risks might be acceptable if it yields overriding benefits of another kind."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -300,7 +304,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Defender"
+      "Defender",
+      "Refute a Conditional"
     ]
   },
   {
@@ -364,7 +369,10 @@
       "D": "At the same time the new highway was being built, road repair work was being done on important streets leading to downtown Gastner.",
       "E": "In Gastner’s downtown area, traffic on the roads near the new highway became more congested after the new highway was opened."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -384,7 +392,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -451,7 +460,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {
@@ -472,7 +482,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {

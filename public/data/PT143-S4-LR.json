@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Causal Difference-Maker",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Science"
     ]
   },
   {
@@ -42,7 +43,8 @@
     "questionFeatures": [
       "Sampling",
       "Math-y Stuff",
-      "Percentages"
+      "Percentages",
+      "Rebuttals"
     ]
   },
   {
@@ -126,7 +128,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -165,7 +168,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Science"
     ]
   },
   {
@@ -186,7 +190,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {
@@ -424,7 +429,8 @@
       "Assumes Difference",
       "Conditional Conclusion",
       "Defender",
-      "Predictions"
+      "Predictions",
+      "Science"
     ]
   },
   {
@@ -445,7 +451,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -484,7 +491,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science"
     ]
   },
   {

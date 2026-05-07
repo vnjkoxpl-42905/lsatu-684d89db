@@ -40,7 +40,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -84,7 +85,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Medical"
+      "Medical",
+      "Rebuttals",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -147,7 +150,10 @@
       "D": "More people would suffer from sleep deprivation today than did in the past if the average number of hours worked per week had not decreased.",
       "E": "The extent of one's sleep deprivation is proportional to the length of one's workday."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -167,7 +173,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -243,7 +251,10 @@
       "D": "People can feel secure if they are governed by laws that are not vague.",
       "E": "Only people who feel secure can know for certain whether their actions are legal."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -283,7 +294,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -349,7 +361,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -449,7 +462,8 @@
       "Abstract Answers",
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -40,7 +41,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -62,7 +64,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -85,7 +88,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional"
     ]
   },
   {
@@ -108,7 +112,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -131,7 +137,8 @@
     "questionFeatures": [
       "Conditional Conclusion",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -154,7 +161,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {
@@ -173,7 +181,10 @@
       "D": "A crop that was once a large production crop in Kalotopia would, if it were grown there again, benefit that country's farmers and general economy.",
       "E": "Sunflower seed is a better crop for Kalotopia from both the environmental and the economic viewpoints than are most crops that could be grown there."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -194,7 +205,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -216,7 +228,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Chains",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Timeframes"
     ]
   },
   {
@@ -262,7 +275,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -283,7 +297,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -371,7 +386,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -395,7 +412,8 @@
       "Abstract Answers",
       "Important Pivot",
       "Dense Stimulus",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -440,7 +458,9 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Science",
+      "Timeframes"
     ]
   },
   {

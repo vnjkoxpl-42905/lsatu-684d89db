@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -319,7 +320,11 @@
       "D": "Whenever two existing atoms are made to collide and fuse together into a new atom, little energy is produced in the collision unless the new atom immediately splits apart.",
       "E": "If two atoms collide with considerably more energy than is needed for fusion to take place, the new atom will be likely to immediately split apart again."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science",
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -341,7 +346,9 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -363,7 +370,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Difference",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -404,7 +412,10 @@
       "D": "For most consumers, a mortgage is a much larger loan than any other loan the consumer obtains.",
       "E": "Most potential borrowers have credit scores that are neither very low nor very high."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -426,7 +437,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Volume Dial"
     ]
   },
   {
@@ -450,7 +462,8 @@
       "Explain Curious Fact",
       "Assumes Similarity",
       "Defender",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -494,7 +507,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {

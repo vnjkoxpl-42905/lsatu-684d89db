@@ -99,7 +99,10 @@
       "D": "contrary to popular opinion, a shift away from the use of paper products to the use of plastics would benefit the environment nationwide",
       "E": "at this time more harm is being done to the environment nationwide by the use of paper than by the use of plastics"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -347,7 +350,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Science"
     ]
   },
   {
@@ -413,7 +417,10 @@
       "D": "Those who did the cave paintings that were discovered on the islands had unusually advanced techniques of preserving meats.",
       "E": "The cave paintings on the islands were done by the original inhabitants of the islands who ate the meat of land animals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -520,7 +527,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   }
 ]

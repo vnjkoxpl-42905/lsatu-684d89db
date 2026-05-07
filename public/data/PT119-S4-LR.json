@@ -102,7 +102,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Battle of Opinions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -148,7 +149,8 @@
     "questionFeatures": [
       "Analogies",
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Timeframes"
     ]
   },
   {
@@ -209,7 +211,10 @@
       "D": "limitations",
       "E": "active"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -292,7 +297,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -332,7 +338,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -355,7 +362,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -417,7 +425,10 @@
       "D": "It is possible to write a best-selling novel and it is possible to write one that appeals to the critics. Therefore, an author could write a critically acclaimed novel that gains a large readership.",
       "E": "There are machines that brew coffee and there are machines that toast bread. And it is possible to make a machine that does both. So there will someday be a machine that does both."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -499,7 +510,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Games-y LR"
+      "Games-y LR",
+      "Science"
     ]
   },
   {

@@ -238,7 +238,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -282,7 +283,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -405,7 +407,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Worst of the Worst"
     ]
   },
   {

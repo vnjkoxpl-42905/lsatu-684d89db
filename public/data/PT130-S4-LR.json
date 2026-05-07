@@ -190,7 +190,10 @@
       "D": "The pythons are inexpensively priced because many of them suffer from the liver disease.",
       "E": "Pythons hatched in neither Africa nor North America are not afflicted with the liver disease."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -236,7 +239,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -257,7 +261,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -317,7 +322,10 @@
       "D": "If one can corroborate something by human calculation, one can be completely certain of it.",
       "E": "It is impossible to supplement the cognitive abilities of humans by means of artificial devices such as computers."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -361,7 +369,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -407,7 +416,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -498,7 +508,8 @@
       "Explain Curious Fact",
       "Anti-Causal",
       "Assumes Difference",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -544,7 +555,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Analogies",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   }
 ]

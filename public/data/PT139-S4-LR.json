@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -253,7 +254,10 @@
       "D": "It is offered as an illustration of the principle that social and political stability do not depend ultimately on force.",
       "E": "It is a premise used to justify the pharaohs' policy of spending scarce resources on structures that have only military utility."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -415,7 +419,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Worst of the Worst"
     ]
   },
   {
@@ -498,7 +503,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {

@@ -39,7 +39,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Science"
     ]
   },
   {
@@ -81,7 +82,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Science"
     ]
   },
   {
@@ -189,7 +191,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -253,7 +256,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -297,7 +301,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -533,7 +538,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Science"
     ]
   }
 ]

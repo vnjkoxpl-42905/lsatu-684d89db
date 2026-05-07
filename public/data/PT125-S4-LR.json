@@ -41,7 +41,9 @@
     "questionFeatures": [
       "2-Speaker",
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -87,7 +89,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -217,7 +221,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -239,7 +244,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {
@@ -260,7 +266,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -300,7 +308,10 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -321,7 +332,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -343,7 +355,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Volume Dial",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -411,7 +425,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Ruling Out Options"
     ]
   },
   {
@@ -518,7 +533,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {

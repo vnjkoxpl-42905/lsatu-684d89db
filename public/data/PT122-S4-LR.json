@@ -151,7 +151,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -274,7 +275,8 @@
       "Missing Link / Idea",
       "Defender",
       "New Concept in Conclusion",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -411,7 +413,8 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Causal Chains",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -471,7 +474,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Worst of the Worst"
     ]
   },
   {
@@ -493,7 +497,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {

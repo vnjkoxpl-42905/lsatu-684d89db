@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "Increasing calcium intake increases the amount of calcium eliminated through the intestines, which decreases the amount to be filtered by the kidneys.",
       "E": "Some kidney stones are composed of uric acid rather than a combination of calcium and oxalate."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -284,7 +288,11 @@
       "D": "ASA is a less expensive clot-dissolving agent than TPA.",
       "E": "Relatives of a patient who has died grieve more if the patient received ASA rather than TPA."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -343,7 +351,10 @@
       "2-Speaker",
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -450,7 +461,10 @@
       "D": "Two organisms will not undergo endosymbiosis unless at least one of them contains a nucleomorph.",
       "E": "Chlorarachniophytes emerged as the result of two organisms having undergone endosymbiosis."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -470,7 +484,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -511,7 +526,8 @@
     "questionFeatures": [
       "Sampling",
       "Assumes Similarity",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {

@@ -82,7 +82,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Analogies",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -126,7 +127,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -168,7 +170,10 @@
       "D": "explaining that the definition of knowledge is a matter of personal choice",
       "E": "demonstrating that the case of clairvoyance is not a case of knowledge and does not fit the definition of knowledge"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -188,7 +193,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -211,7 +217,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -232,7 +239,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -277,7 +286,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Dense Stimulus",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -346,7 +356,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -387,7 +398,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -406,7 +419,10 @@
       "D": "Erica enjoys studying physics, but not pure mathematics, which she says is boring. So it is not true that whoever enjoys studying physics enjoys studying pure mathematics.",
       "E": "People who do their own oil changes are car fanatics. My next-door neighbors are car fanatics, so it follows that they do their own oil changes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -426,7 +442,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -449,7 +468,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Math-y Stuff",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -495,7 +515,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Implied Conclusion",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -517,7 +538,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -565,7 +587,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Defender",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   }
 ]

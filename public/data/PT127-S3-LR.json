@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -39,7 +40,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -86,7 +88,8 @@
       "Famous Flaws",
       "Part vs. Whole",
       "Anti-Causal",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -107,7 +110,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -151,7 +155,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -175,7 +180,8 @@
       "Missing Link / Idea",
       "Conditional Conclusion",
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -198,7 +204,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Net Effect",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -220,7 +227,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -239,7 +247,10 @@
       "D": "People who wear sunscreen now are less likely to become sunburned than were people who spent the same amount of time in the sun wearing sunscreen ten years ago.",
       "E": "Until about ten years ago, people who wore sunscreen were no less likely to have premature wrinkles than were people who spent the same amount of time in the sun without wearing sunscreen."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -325,7 +336,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Timeframes"
     ]
   },
   {
@@ -418,7 +430,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -465,7 +478,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Timeframes"
     ]
   },
   {
@@ -532,7 +546,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -556,7 +571,9 @@
       "Missing Link / Idea",
       "Defender",
       "Intermediate Conclusions",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   }
 ]

@@ -139,7 +139,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -158,7 +159,10 @@
       "D": "After a new species of fern was introduced to Lisdok Island, native ferns were almost eliminated. However, this did not affect the population of the herbivores that had eaten the native ferns, since they also thrived on a diet of the new fern.",
       "E": "Plants that are a dietary staple of wild pigs on Sedif Island have flourished over the last three decades, and the population of the pigs has not changed much in spite of extensive hunting."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -304,7 +308,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   },
   {

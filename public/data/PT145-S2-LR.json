@@ -42,7 +42,8 @@
       "Explain Curious Fact",
       "Focused on Evidence",
       "Net Effect",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -132,7 +133,8 @@
       "Defender",
       "Math-y Stuff",
       "Predictions",
-      "Quantifiers"
+      "Quantifiers",
+      "Ruling Out Options"
     ]
   },
   {
@@ -239,7 +241,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -308,7 +311,8 @@
     "questionFeatures": [
       "Part vs. Whole",
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -330,7 +334,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Binaries"
+      "Binaries",
+      "Ruling Out Options"
     ]
   },
   {

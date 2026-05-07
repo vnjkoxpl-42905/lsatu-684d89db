@@ -102,7 +102,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -121,7 +122,10 @@
       "D": "Among the patients observed, only those who had very high cholesterol counts suffered side effects after taking asthmagon.",
       "E": "Asthmagon increases the severity of asthma attacks in some people because the drug can cause damage to heart tissues."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -175,7 +179,10 @@
       "D": "Although Henry VI was deposed in 1461, he was briefly restored to the throne in 1470.",
       "E": "In a letter written in early 1428, a merchant told of having seen the design for a much-discussed new coin called the “rose noble.”"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -318,7 +325,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -365,7 +373,8 @@
       "Alternatives",
       "Defender",
       "Math-y Stuff",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -388,7 +397,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Quantifiers"
+      "Quantifiers",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -432,7 +442,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Repetitive Answers"
     ]
   },
   {
@@ -499,7 +510,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Binaries",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Repetitive Answers"
     ]
   },
   {
@@ -542,7 +554,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   }
 ]

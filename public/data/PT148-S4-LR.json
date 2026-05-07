@@ -20,7 +20,9 @@
       "Sampling",
       "Assumes Similarity",
       "Math-y Stuff",
-      "Predictions"
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -103,7 +105,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -227,7 +230,10 @@
       "D": "overlooks the possibility that there is disagreement among students concerning the issue of food vendors",
       "E": "argues that a certain action ought to be undertaken merely on the grounds that it would be popular"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -373,7 +379,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals",
+      "Ruling Out Options"
     ]
   },
   {
@@ -502,7 +510,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Worst of the Worst"
     ]
   },
   {

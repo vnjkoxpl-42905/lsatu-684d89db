@@ -57,7 +57,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -144,7 +145,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Timeframes"
     ]
   },
   {
@@ -186,7 +188,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Refute a Conditional"
     ]
   },
   {
@@ -207,7 +210,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Science"
     ]
   },
   {
@@ -232,7 +236,8 @@
       "Missing Link / Idea",
       "Contrapositive Logic",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -340,7 +345,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -380,7 +386,10 @@
       "D": "It has been shown that one can obtain more vitamins and minerals from fresh fruits and vegetables than from processed fruits and vegetables. One ought, therefore, to completely abandon consumption of the latter in favor of the former.",
       "E": "Excessive use of penicillin tends to increase one’s susceptibility to penicillin-resistant infections. The best policy, therefore, is to avoid using penicillin, thereby strengthening the body’s innate ability to resist disease."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -423,7 +432,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -465,7 +475,8 @@
       "Sufficient vs. Necessary Flaw",
       "Battle of Opinions",
       "Conditional Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {

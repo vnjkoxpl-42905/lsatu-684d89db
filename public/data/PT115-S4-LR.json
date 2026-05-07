@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -39,7 +40,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Timeframes"
     ]
   },
   {
@@ -61,7 +63,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Timeframes"
     ]
   },
   {
@@ -163,7 +166,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -223,7 +228,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -242,7 +248,10 @@
       "D": "The basic engineering principles behind the design and construction of arch dams have been known for more than 100 years.",
       "E": "Arch dams under 100 meters high are less subject to collapse than are dams of other types also under 100 meters high."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -283,7 +292,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science"
     ]
   },
   {
@@ -490,7 +500,8 @@
     "questionFeatures": [
       "Implicit Principles",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {

@@ -81,7 +81,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -123,7 +124,10 @@
       "D": "The crust of Mars, at least at certain points on the planet, is thicker than the crust of the Earth.",
       "E": "At least some of the Earth's volcanoes would be larger than they actually are if the Earth's crust were thicker than it is."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -170,7 +174,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals"
     ]
   },
   {
@@ -214,7 +219,8 @@
     "questionFeatures": [
       "Defender",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -299,7 +305,11 @@
       "D": "Modern tree-dwelling kangaroos are descended from species of land-dwelling kangaroos that had been land-dwellers for many generations before modern tree-dwelling kangaroos started to develop.",
       "E": "Modern tree-dwelling kangaroos have smaller and weaker hind legs than modern land-dwelling kangaroos, and they move more slowly on land than do modern land-dwelling kangaroos."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science",
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -364,7 +374,9 @@
       "Belief / Knowledge / Intent",
       "First Sentence Conclusion",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -532,7 +544,9 @@
       "Missing Link / Idea",
       "2-Speaker",
       "Conditional Conclusion",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   },
   {

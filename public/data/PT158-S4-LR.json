@@ -108,7 +108,10 @@
       "D": "The reporter who recently interviewed the prime minister said the prime minister appeared to be in poor health. But despite the fact that the reporter works for a paper with opposition leanings, we should accept that the prime minister is in poor health. After all, reporters won’t let their bias affect them when the truth of their claims will eventually be discovered.",
       "E": "The snowblower salesperson claims that there will be above-average snowfall this winter, but because the salesperson is biased, we can discount that claim. -30- 4 44"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -152,7 +155,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -175,7 +179,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -218,7 +223,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Predictions"
+      "Predictions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -261,7 +267,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {
@@ -284,7 +291,8 @@
     "questionFeatures": [
       "Defender",
       "New Concept in Conclusion",
-      "Predictions"
+      "Predictions",
+      "Science"
     ]
   },
   {
@@ -394,7 +402,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -437,7 +446,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Science"
     ]
   },
   {
@@ -482,7 +492,8 @@
     "questionFeatures": [
       "Dense Stimulus",
       "Plans / Recommendations",
-      "Plausibility"
+      "Plausibility",
+      "Worst of the Worst"
     ]
   },
   {
@@ -506,7 +517,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Conditional Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {

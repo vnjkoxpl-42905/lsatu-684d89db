@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -126,7 +127,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Quantifiers"
+      "Quantifiers",
+      "Untriggered Conditional",
+      "Volume Dial"
     ]
   },
   {
@@ -230,7 +233,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Volume Dial"
     ]
   },
   {
@@ -254,7 +258,8 @@
       "Part vs. Whole",
       "Argue the Anti-Conclusion",
       "Conditional Conclusion",
-      "Predictions"
+      "Predictions",
+      "Rebuttals"
     ]
   },
   {
@@ -332,7 +337,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -415,7 +421,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Anti-Causal",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -437,7 +444,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Binaries",
-      "Quantifiers"
+      "Quantifiers",
+      "Worst of the Worst"
     ]
   },
   {
@@ -502,7 +510,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Science"
     ]
   },
   {
@@ -525,7 +534,9 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -546,7 +557,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Repetitive Answers",
+      "Worst of the Worst"
     ]
   }
 ]

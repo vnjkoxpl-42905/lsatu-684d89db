@@ -104,7 +104,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Causal Chains"
+      "Causal Chains",
+      "Science"
     ]
   },
   {
@@ -227,7 +228,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -289,7 +291,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Intermediate Conclusions",
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {
@@ -352,7 +355,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -398,7 +402,9 @@
       "Anti-Causal",
       "Defender",
       "EXCEPT",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -464,7 +470,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals"
     ]
   },
   {

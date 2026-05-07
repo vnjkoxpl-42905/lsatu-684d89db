@@ -20,7 +20,8 @@
       "Important Pivot",
       "Anti-Causal",
       "Medical",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -123,7 +124,8 @@
       "Assumes Similarity",
       "Conditional Conclusion",
       "Intermediate Conclusions",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -440,7 +442,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Worst of the Worst"
     ]
   },
   {
@@ -484,7 +487,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Worst of the Worst"
     ]
   },
   {

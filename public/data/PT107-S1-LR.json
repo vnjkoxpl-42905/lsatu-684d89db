@@ -130,7 +130,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Volume Dial"
     ]
   },
   {
@@ -176,7 +177,9 @@
       "Sufficient vs. Necessary Flaw",
       "Causal Chains",
       "Contrapositive Logic",
-      "Medical"
+      "Medical",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -219,7 +222,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Breadcrumbs",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -242,7 +246,10 @@
     "questionFeatures": [
       "Important Pivot",
       "Dense Stimulus",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -265,7 +272,10 @@
     "questionFeatures": [
       "Abstract Answers",
       "Dense Stimulus",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -337,7 +347,8 @@
       "Defender",
       "Dense Stimulus",
       "Medical",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -383,7 +394,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -456,7 +468,8 @@
       "Assumes Similarity",
       "Dense Stimulus",
       "Math-y Stuff",
-      "Percentages"
+      "Percentages",
+      "Timeframes"
     ]
   },
   {
@@ -571,7 +584,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Timeframes"
     ]
   }
 ]

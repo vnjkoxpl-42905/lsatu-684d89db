@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -169,7 +170,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Binaries",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -278,7 +280,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -341,7 +344,10 @@
       "D": "It is an assumption that both parties to the dispute use as a starting point for their arguments about human evolution.",
       "E": "It implies that either a match of mitochondrial DNA or a match of hemoglobin between lungfish and coelacanths would show that human beings evolved from one of these two species."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -408,7 +414,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -427,7 +434,10 @@
       "D": "presumes without giving justification that educating workers always results in an increase in their productivity",
       "E": "presumes without giving justification that high-tech equipment cannot contribute to increases in productivity"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -490,7 +500,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Weighing Tradeoffs"
     ]
   },
   {
