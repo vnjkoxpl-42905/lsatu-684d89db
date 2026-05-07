@@ -108,7 +108,10 @@
       "D": "attempts to demonstrate that an explanation of a phenomenon is flawed by showing that it fails to explain a particular instance of that phenomenon",
       "E": "applies an empirical generalization to reach a conclusion about a particular case"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",

@@ -131,7 +131,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -303,7 +304,10 @@
       "D": "People who are well informed about the risks posed by natural disasters tend to have become well informed in some way other than by watching television.",
       "E": "A person is more likely to watch an above-average amount of television if that person lives in an area that is prone to natural disasters than if that person lives in an area that is not."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",

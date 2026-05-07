@@ -159,7 +159,10 @@
       "D": "presumes, without giving justification, that those who rework downloaded music into new creations always publish those new creations on the Internet",
       "E": "takes for granted that Internet users always prefer music that is original to music that has been downloaded and reworked into a new creation"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -363,7 +366,10 @@
       "D": "The shortcomings of modern print-journalism can be attributed to the preferences of its readers.",
       "E": "Journalists should pay more attention to the public’s welfare than to its tastes when choosing which stories to focus on."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT154",

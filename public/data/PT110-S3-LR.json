@@ -252,7 +252,10 @@
       "D": "It is a generalization based on the claim that people complain about government intervention in their lives.",
       "E": "It is cited as evidence that people’s behavior never matches their political beliefs."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT110",

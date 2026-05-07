@@ -330,7 +330,10 @@
       "D": "If a sentient being on another planet cannot communicate with us, then the only way to detect its existence is by sending a spacecraft to its planet.",
       "E": "Any sentient beings on planets outside our solar system that are at least as intelligent as humans would be capable of communicating with us."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT132",

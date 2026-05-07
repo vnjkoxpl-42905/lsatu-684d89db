@@ -15,7 +15,10 @@
       "D": "is economizing on its bridge program to save money in case of emergencies",
       "E": "has bridges that are more expensive to maintain than they were to build"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -327,7 +330,10 @@
       "D": "Only organisms that can experience pain can be mistreated.",
       "E": "Any organism that has a nervous system can be mistreated."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT102",

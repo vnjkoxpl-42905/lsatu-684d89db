@@ -252,7 +252,10 @@
       "D": "The fossil record does not directly reveal the course of human evolution.",
       "E": "Paleontologists’ classifications of fossils are always influenced by the theories that these scientists are testing."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -288,7 +291,10 @@
       "D": "overlooks the possibility that some artists are paid very well",
       "E": "treats a criterion that must be satisfied in order for a career choice to be a good one as a criterion that will ensure that a career choice is a good one"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT153",

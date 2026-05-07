@@ -270,7 +270,10 @@
       "D": "Children would be terrified if they believed they were in the presence of a real lion.",
       "E": "The pleasure children get from make-believe would be impossible to explain if they could not distinguish between what is real and what is pretend."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT150",

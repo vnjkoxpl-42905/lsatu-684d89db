@@ -201,7 +201,10 @@
       "D": "It is a premise offered in support of the conclusion that large cities are generally more polluted than the countryside.",
       "E": "It is a claim that the rest of the argument is designed to establish."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",

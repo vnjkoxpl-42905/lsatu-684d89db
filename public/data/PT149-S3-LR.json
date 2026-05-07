@@ -93,7 +93,10 @@
       "D": "None of the other compounds found in turmeric have been studied to see whether they affect the accumulation of amyloid proteins.",
       "E": "The parts of India that have the highest per capita rates of curry consumption have the lowest incidence of Alzheimer’s disease."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -457,7 +460,10 @@
       "D": "Usually, a company that sends out direct-mail advertisements has good reason to think that the person to whom the advertisement is sent would be more interested in the product than would the average person.",
       "E": "Products purchased as the result of direct-mail advertising comprise an increasingly large portion of the consumer products purchased each year."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT149",

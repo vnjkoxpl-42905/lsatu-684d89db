@@ -15,7 +15,10 @@
       "D": "Samuels is quite likely to have a good chance of winning the coming election.",
       "E": "Those who designed the poll should have considered more carefully where to conduct the survey."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -72,7 +75,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -181,7 +185,10 @@
       "D": "If good arguments are presented for a proposal, then that proposal should be approved.",
       "E": "Arguments made by those who have a vested interest in the outcome of a proposal are not good arguments."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT121",

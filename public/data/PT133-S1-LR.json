@@ -147,7 +147,10 @@
       "D": "The recent studies indicating that the total number of wolves on Vancouver Island has remained roughly constant for 20 years were flawed.",
       "E": "The stability in the size of the Vancouver Island wolf population does not warrant the article's criticism of the environmentalists' claim."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT133",

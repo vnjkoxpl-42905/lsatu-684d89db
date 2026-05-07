@@ -318,7 +318,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -445,7 +446,10 @@
       "D": "Economy of expression is to be preferred over verbosity.",
       "E": "Ideas that cannot be discussed clearly should not be discussed at all."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT104",

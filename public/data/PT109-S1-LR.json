@@ -444,7 +444,10 @@
       "D": "the majority of the last five budget proposals deserved to be turned down",
       "E": "the likelihood that a budget proposal will be approved is influenced by the amount of money that budget proposal requests"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT109",

@@ -144,7 +144,10 @@
       "D": "Either the creation or the direct application of technological innovations is radically improving the quality of life in most communities.",
       "E": "The only ways in which technology is radically improving the quality of life in some communities are by creating jobs, adding to the tax base, and contributing to an upbeat spirit of renewal."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT145",

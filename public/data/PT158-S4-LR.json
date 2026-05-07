@@ -15,7 +15,10 @@
       "D": "It generally takes longer than one year to complete an audit of a corporate income tax return.",
       "E": "Over the last five years, fewer audits of corporate income tax returns have been completed than in the preceding five years. ION IV 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best ompletely answers the question and mark that response on your"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -33,7 +36,10 @@
       "D": "fails to consider that making products from recycled materials may have environmental benefits unrelated to energy consumption",
       "E": "presumes that simply because one phenomenon follows another phenomenon the earlier phenomenon must be a cause of the later one"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",

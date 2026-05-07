@@ -147,7 +147,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -166,7 +167,10 @@
       "D": "If the public is not fully informed about Marcia Garson’s record, she will not win the election.",
       "E": "At least 30 people from the political organizer’s group need to campaign for Marcia Garson in order to fully inform the public about her record."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT153",

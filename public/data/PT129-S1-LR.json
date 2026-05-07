@@ -305,7 +305,10 @@
       "D": "The legislatures of nondemocracies are less productive than are those of democracies.",
       "E": "Legislators in a multiparty democracy never all agree on important issues."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT129",

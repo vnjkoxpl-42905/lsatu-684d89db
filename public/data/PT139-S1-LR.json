@@ -165,7 +165,10 @@
       "D": "Taxing junk food would encourage people to reduce the proportion of junk food in their diets.",
       "E": "Junk food should be taxed if doing so would benefit public health."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT139",

@@ -186,7 +186,10 @@
       "D": "It is an inference drawn from the premise that consumers expect economic growth in the near future.",
       "E": "It is the primary evidence from which the argument’s conclusion is drawn."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -408,7 +411,10 @@
       "D": "Other things being equal, the more complex of two competing theories is the inferior theory.",
       "E": "Other things being equal, the simpler of two competing theories is the more scientifically important theory."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT101",

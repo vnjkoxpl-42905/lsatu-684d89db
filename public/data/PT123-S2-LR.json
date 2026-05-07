@@ -183,7 +183,10 @@
       "D": "Whenever possible, scientists should refrain from interpreting evidence on the basis of previously formed expectations and convictions.",
       "E": "Double-blind experimental techniques are often an effective way of ensuring scientific objectivity."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",

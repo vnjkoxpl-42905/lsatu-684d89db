@@ -51,7 +51,10 @@
       "D": "Most countries in the research sample already administer nationwide tests to their public school students.",
       "E": "The nationwide testing in the research sample will target as closely as possible grade levels that are comparable in the different countries in the research sample."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -335,7 +338,10 @@
       "D": "It is impossible to produce a big-budget film in a financially efficient manner.",
       "E": "A film studio's primary goal should be to maximize profits."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -374,7 +380,10 @@
       "D": "The meteorologist's station has a policy of not making weather forecasts more than three days in advance.",
       "E": "On most of the occasions when the meteorologist's station forecast that it would not rain, at least one of its competitors also forecast that it would not rain."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT125",

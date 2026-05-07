@@ -363,7 +363,10 @@
       "D": "Increased adrenaline production can make ADD more severe in children.",
       "E": "Sugar consumed with food substances other than candy does not substantially increase the level of adrenaline in the bloodstream of children with ADD."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT122",

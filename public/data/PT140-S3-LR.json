@@ -222,7 +222,10 @@
       "D": "Some canning companies include less food in cans of a given weight than others include.",
       "E": "The heavier of two cans of fruits or vegetables may include more water than the lighter of the two cans contains."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -390,7 +393,10 @@
       "D": "Every sulfur-emitting factory with workers participating in the study also emits other noxious fumes.",
       "E": "Because of the factories’ locations, the factory workers were less likely than those in the control group to have been exposed to many of the scents used in the study."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT140",

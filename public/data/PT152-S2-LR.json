@@ -424,7 +424,10 @@
       "D": "even in places where crows have never been captured, most crows will shriek at and dive- bomb people wearing caveman masks",
       "E": "crows can distinguish between people who are wearing caveman masks and those who are not, but they cannot recognize individual human faces"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",

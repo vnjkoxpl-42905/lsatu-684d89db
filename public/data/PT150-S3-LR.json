@@ -418,7 +418,10 @@
       "D": "Because of the vast amount of medical knowledge one needs in order to become a successful specialist and because few people have the motivation required to obtain such knowledge, most people are unlikely to become successful specialists.",
       "E": "Those who excel at one sport are unlikely to excel at another, because it is rare for someone who has the specialized talents necessary for success in one sport to also have the different specialized talents necessary for success in a different sport. S T"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT150",

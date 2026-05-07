@@ -184,7 +184,10 @@
       "D": "The uniformity of depth of the ancient tracks on the island of Malta is probably indicative of the wheel diameter of the carts that passed over them.",
       "E": "The ancient tracks on the island of Malta were utilized until they eroded to a depth that made vehicle passage impossible."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT151",

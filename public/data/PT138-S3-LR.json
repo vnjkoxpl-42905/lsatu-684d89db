@@ -198,7 +198,10 @@
       "D": "Personal conflicts are not inevitable.",
       "E": "Unlike a suspicion that a friend is unreliable, a belief that someone is reliable is normally built up only after many years of personal interaction."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",

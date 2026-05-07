@@ -69,7 +69,10 @@
       "D": "Business in the region must expand into new areas of manufacturing.",
       "E": "Outdated public policy inhibits business growth in the region."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -105,7 +108,10 @@
       "D": "All of the music that Jackie prefers to listen to on a regular basis is rock music.",
       "E": "Jackie's favorite Moral Vacuum songs have lyrics that are somber and marked by a strong political awareness."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -330,7 +336,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -469,7 +476,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "First Sentence Conclusion"
     ]
   }
 ]

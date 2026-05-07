@@ -162,7 +162,10 @@
       "D": "The Tasmanian tiger did not move and adapt to a different region in response to the loss of habitat.",
       "E": "Those who have reported sightings of the Tasmanian tiger are not experienced naturalists."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -306,7 +309,10 @@
       "D": "If the muscles on opposite sides of the spine are exercised unequally, one's back will be irreparably damaged.",
       "E": "One should exercise daily to ensure that the muscles on opposite sides of the spine keep the back in proper alignment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -441,7 +447,10 @@
       "D": "A society's institutions are the surest gauge of that society's values.",
       "E": "The whole does not determine the properties of the things that compose it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT123",

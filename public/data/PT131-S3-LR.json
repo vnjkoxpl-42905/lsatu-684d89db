@@ -159,7 +159,10 @@
       "D": "There is no good reason to suppose that employee training programs should promote creativity.",
       "E": "Creativity is in demand, but there is no evidence that it can be taught."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -321,7 +324,10 @@
       "D": "Since any psychiatrist's divulging to the public information about a patient could undermine the trust of other patients in their psychiatrists, no patient can release a psychiatrist from the obligation to keep patient information confidential.",
       "E": "If a patient has expressed an intention to make public information about himself or herself that is in a psychiatrist's possession, the psychiatrist is released from the obligation to keep that information confidential."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",

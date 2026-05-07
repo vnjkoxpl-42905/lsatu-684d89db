@@ -154,7 +154,10 @@
       "D": "Ideally, a material used for building houses in desert environments should enable those houses to maintain a pleasant, constant temperature.",
       "E": "Adobe is an especially suitable material to use for building houses in desert environments."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -211,7 +214,10 @@
       "D": "Universities at which the history courses are quite culturally inclusive do not always have courses in other subject areas that show the same inclusiveness.",
       "E": "University students who in their history courses are required only to read textbooks covering the history of a single culture will not get an in-depth and cosmopolitan education from these courses alone."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",

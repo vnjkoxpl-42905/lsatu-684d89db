@@ -145,7 +145,10 @@
       "D": "Movie reviewers see many more movies than most moviegoers see.",
       "E": "The role of movie reviewers is to help people determine which movies they might enjoy seeing, not to help people better appreciate movies."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -217,7 +220,10 @@
       "D": "The cost per automobile of testing and designing safety features is decreasing and will continue to decrease for the foreseeable future.",
       "E": "For years, the aviation industry has been successfully using computer simulations of airplane crashes to test the effectiveness of safety features of airplane designs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT151",

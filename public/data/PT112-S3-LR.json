@@ -105,7 +105,10 @@
       "D": "It supports the claim that donations of food from other countries will not end the chronic food shortages in the official's country.",
       "E": "It is supported by the claim that food producers and suppliers in the official's country may be forced out of business by donations of food from other countries."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -270,7 +273,10 @@
       "D": "Whoever wants to advance a political agenda ought to take the time to convince legislators that their own political careers are at stake in the matter at hand; otherwise, the agenda will simply be ignored.",
       "E": "Activists who want to prevent excessive globalization of the economy should assign top priority to an appeal to the economic self-interest of those who would be adversely affected by it, for if they fail in such an appeal, extreme economic globalization is inevitable."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",

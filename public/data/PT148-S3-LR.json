@@ -69,7 +69,10 @@
       "D": "Electric burners on high go well above 700°C.",
       "E": "Electric stovetop burners cause fires because they go well above 700°C when set on high."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",

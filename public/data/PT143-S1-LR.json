@@ -289,7 +289,10 @@
       "D": "It is the argument’s conclusion.",
       "E": "It is a claim for which the argument provides evidence, but which is not the argument’s conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT143",

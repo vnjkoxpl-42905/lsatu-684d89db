@@ -90,7 +90,10 @@
       "D": "The two studies cited did not reach a conclusion as to whether disorder Y results from procedure X.",
       "E": "Despite the opinions of many medical experts, it has not been established that there is a causal link between procedure X and disorder Y."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT122",

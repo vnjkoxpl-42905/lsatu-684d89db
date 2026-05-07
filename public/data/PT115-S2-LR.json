@@ -410,7 +410,10 @@
       "D": "a link between the extinction of species and the potentially decreased availability of new medicines",
       "E": "support for the hypothesis that only very narrowly focused efforts at deregulation of industrial activity actually have beneficial results"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT115",
