@@ -141,7 +141,10 @@
       "D": "all grammatical sentences can be diagrammed",
       "E": "some ungrammatical sentences are recognized as ungrammatical"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT105",

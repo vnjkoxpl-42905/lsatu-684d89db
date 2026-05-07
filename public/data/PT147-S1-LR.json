@@ -69,7 +69,10 @@
       "D": "A technologically advanced civilization on another planet would want to communicate with intelligent life that it detected on Earth.",
       "E": "Intelligent life forms on other planets would be able to recognize all signs of intelligent life on Earth."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT147",

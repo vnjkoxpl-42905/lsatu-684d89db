@@ -141,7 +141,10 @@
       "D": "People who wish to avoid gaining body fat should limit their intake of foods high in simple carbohydrates.",
       "E": "People who do not produce an excessive amount of insulin when they consume foods high in simple carbohydrates will not lose weight if they restrict only their intake of these foods."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -249,7 +252,10 @@
       "D": "Without having been there, Dr. Yuge has no way of knowing whether the light was sufficient.",
       "E": "During the robbery the moon’s light may have been interfered with by conditions such as cloud cover."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -393,7 +399,10 @@
       "D": "The government sometimes makes unsupported claims about what situations will arise, but it does not act to prevent a certain kind of situation from arising unless there is a real danger that such a situation will arise.",
       "E": "If a real financial threat to a major industry exists, then government action to limit that threat is justified."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT107",

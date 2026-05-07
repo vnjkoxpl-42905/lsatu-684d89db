@@ -267,7 +267,10 @@
       "D": "ignores the possibility that a state of affairs is desirable even if it cannot be attained",
       "E": "uses the difficulty of attaining a state of affairs as a reason for not attempting to attain it"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -375,7 +378,10 @@
       "D": "It overlooks the possibility that a consequence that would surely follow if all farmers adopted the practice of organic farming would still ensue even if not all of them did.",
       "E": "It takes for granted that damage to the environment due to the continued use of artificial fertilizers would not be detrimental to human health."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -411,7 +417,10 @@
       "D": "If construction of that building were on schedule, then I would expect the foundation to have been completed already. But work on the foundation has just started, so construction is probably behind schedule.",
       "E": "If Tamika makes a big sale today, I would expect her to celebrate tonight. So, since Tamika will probably make a big sale today, she will probably celebrate tonight."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -447,6 +456,9 @@
       "D": "According to Harris’s political rivals, she consistently favors the interests of property developers. A good mayor must be willing to stand up to the city’s powerful interests, including property developers. Harris is thus a poor choice for mayor.",
       "E": "According to the latest government figures, the regional unemployment rate declined in the last six months. But the region lost thousands of manufacturing jobs in that period. The government’s unemployment figures must therefore be inaccurate."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   }
 ]

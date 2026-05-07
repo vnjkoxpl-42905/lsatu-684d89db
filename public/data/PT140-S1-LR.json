@@ -15,7 +15,10 @@
       "D": "the banks sold by the agency will be financially weaker than the country’s other banks for some time",
       "E": "all of the bidders for the banks are their former owners"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -305,7 +308,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -414,7 +418,10 @@
       "D": "If Tamara believed she was getting a promotion, she would come in to work early. She did come in early. So apparently she is getting a promotion.",
       "E": "If Lucy believed she was going to be fired, she would not come in to work today. She is going to be fired, so clearly she will not be coming in today."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT140",

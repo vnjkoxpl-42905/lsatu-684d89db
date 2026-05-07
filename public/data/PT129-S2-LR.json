@@ -33,7 +33,10 @@
       "D": "long-distance runners are about evenly divided between those who use dissociative strategies during races and those who use associative strategies during races",
       "E": "in long-distance running, dissociative strategies are generally more effective for a day's training run than are associative strategies"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -341,7 +344,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -378,7 +382,10 @@
       "D": "It is claimed to be a false assumption on which the reasoning that the argument seeks to undermine rests.",
       "E": "It is used by the argument to attempt to undermine the reasoning behind a viewpoint."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT129",

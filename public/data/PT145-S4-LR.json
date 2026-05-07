@@ -267,7 +267,10 @@
       "D": "The experience required for effective problem- solving in a field does not vary depending on the field’s complexity.",
       "E": "Outsiders should be properly trained in a field before being given responsibility in that field."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT145",

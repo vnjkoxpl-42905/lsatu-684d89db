@@ -123,7 +123,10 @@
       "D": "is facilitated by students' taking responsibility for their own learning",
       "E": "becomes easier if students realize that some learning is not necessarily enjoyable"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT124",

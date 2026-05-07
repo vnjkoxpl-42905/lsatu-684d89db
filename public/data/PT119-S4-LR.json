@@ -249,7 +249,10 @@
       "D": "The argument, instead of providing adequate reasons in support of its conclusion, makes an appeal to popular opinion.",
       "E": "The argument takes for granted that it is desirable for a wide range of opinion on the important issues of the day to receive media exposure."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT119",

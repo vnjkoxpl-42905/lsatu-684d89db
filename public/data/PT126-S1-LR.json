@@ -381,7 +381,10 @@
       "D": "If one feels that a TV show is worth preserving, then one should take at least some actions to reduce the likelihood that the show will be canceled.",
       "E": "If a TV show would be canceled unless many people took certain actions, then those who feel most strongly that it is worth preserving should take those actions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -453,6 +456,9 @@
       "D": "Only art that is influential and involves original ideas is great art.",
       "E": "Some twentieth-century art is influential and involves original ideas."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   }
 ]

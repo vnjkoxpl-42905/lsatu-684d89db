@@ -447,7 +447,10 @@
       "D": "consider that innate dispositions and social conditioning could jointly affect the popularity of a type of music",
       "E": "consider whether any appreciation of nondiatonic music is demonstrated by some nonhuman species of animals"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT112",

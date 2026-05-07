@@ -89,7 +89,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -198,7 +199,10 @@
       "D": "It would be unwise to open a hardware store in the shopping plaza.",
       "E": "There has been no publicity concerning the opening of a hardware store in the shopping plaza."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -384,7 +388,10 @@
       "D": "Most of the pets taken to veterinarians are dogs. Therefore, it stands to reason that dogs are more prone to illness or accident than are other pets.",
       "E": "Most puppies are taken from their mothers at the age of eight weeks. Thus, a puppy that is older than eight weeks is likely to have been taken from its mother."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -459,7 +466,10 @@
       "D": "A person who faces danger in order to benefit others is acting courageously only if the person is afraid of the danger.",
       "E": "A person who has no fear of the situations that everyone else would fear cannot be said to be courageous in any situation."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT125",

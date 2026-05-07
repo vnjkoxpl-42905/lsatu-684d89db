@@ -249,7 +249,10 @@
       "D": "interprets an assertion that certain conditions are necessary as asserting that those conditions are sufficient",
       "E": "takes for granted that there are only two possible alternatives, either below or above 250 megahertz"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -455,7 +458,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   }
 ]

@@ -231,7 +231,10 @@
       "D": "A person who does not have positive letters of reference cannot get a good job. Therefore, the better the letters of reference a person has, the better the job that person will get.",
       "E": "People never learn to program a computer by reading poorly written directions. Therefore, if people read well-written directions, they will learn to program a computer."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT103",

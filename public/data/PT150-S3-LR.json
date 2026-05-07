@@ -141,7 +141,10 @@
       "D": "On this city map, a solid line designates the city limits. Solid lines also designate major thoroughfares. So there is no way of determining whether a particular solid line on the map is a thoroughfare or an indicator of the city limits.",
       "E": "The legend on this city map indicates that historical monuments are designated by purple dots. Hospitals are also designated by purple dots. There is a purple dot on Wilson Street. So there must be a hospital on Wilson Street."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT150",

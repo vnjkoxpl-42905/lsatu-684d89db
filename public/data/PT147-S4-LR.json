@@ -108,7 +108,10 @@
       "D": "Some animal studies take into consideration the differences between the living conditions of laboratory animals and those of other animals.",
       "E": "When provided with unlimited food over a long period of time, animals show little day-to-day variation in their eating habits."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -290,7 +293,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

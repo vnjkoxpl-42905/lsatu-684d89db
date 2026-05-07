@@ -360,7 +360,10 @@
       "D": "In a legal system, a concern for punishment is incompatible with an emphasis on deterrence.",
       "E": "Citizens without knowledge about how the legal system's punishments affect potential lawbreakers are incapable of criticizing experts in that area."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT112",

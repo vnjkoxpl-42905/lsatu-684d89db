@@ -411,7 +411,10 @@
       "D": "The function of a sealer on wood siding is to retard deterioration caused by weather. However, cedar is a wood that is naturally resistant to weather-related damage and thus does not need additional protection. Sealers, therefore, should not be applied to cedar siding.",
       "E": "Traffic patterns that involve one-way streets are meant to accelerate the flow of traffic in otherwise congested areas. However, it would be detrimental to the South Main Street area to have traffic move faster. So traffic patterns involving one-way streets should not be implemented there."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT119",

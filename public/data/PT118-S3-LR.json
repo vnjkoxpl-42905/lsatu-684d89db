@@ -141,7 +141,10 @@
       "D": "Environmental regulation must aim at preventing any further environmental damage and cannot allow for the different degrees to which different nations have already harmed the environment.",
       "E": "It is imprudent to allow further depletion of natural resources."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT118",

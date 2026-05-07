@@ -141,7 +141,10 @@
       "D": "constitutes the most effective response to the threat of cultural decay",
       "E": "can succeed if adopted by cultures whose traditions have been adopted only recently"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -249,7 +252,10 @@
       "D": "there are numerous features that distinguish stars from planets besides the ability to generate light",
       "E": "planets are not the only celestial objects that do not generate light"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -449,7 +455,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   }
 ]

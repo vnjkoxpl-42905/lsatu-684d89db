@@ -195,7 +195,10 @@
       "D": "some other substances, besides herbs, are not available as drugs because the illnesses they could effectively treat are too uncommon to allow those substances to be marketed profitably as drugs",
       "E": "the cost of medical care would be substantially reduced if faster ways of obtaining regulatory-agency approval for new drugs could be found"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -393,7 +396,10 @@
       "D": "Alexander the Great was buried either in Alexandria or in Siwa, Egypt. However, the burial place is more likely to be Siwa. A limestone table engraved by Ptolemy, Alexander’s lieutenant, was found in Siwa, attesting to Alexander’s burial place.",
       "E": "If the big bang theory is correct, the universe is currently expanding: the galaxies are moving away from each other and from the center of an original explosion. The same theory also predicts that, eventually, the gravitational forces among galaxies will counterbalance the galaxies’ kinetic energy. It follows that, at some point, the universe will stop expanding."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT109",

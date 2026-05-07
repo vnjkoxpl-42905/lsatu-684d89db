@@ -141,7 +141,10 @@
       "D": "The interests of the less fortunate impinge on the interests of others.",
       "E": "The welfare state relies on the generosity of wage earners."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT103",

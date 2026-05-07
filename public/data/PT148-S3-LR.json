@@ -396,7 +396,10 @@
       "D": "Those competitors—and only those—who meet all of the following criteria are eligible for the award: they must be under 19 years of age, be in secondary school, and have played the sport for at least the two years immediately preceding the competition. You meet all the criteria, so you are eligible.",
       "E": "A meal is nutritious only if it includes both carbohydrates and protein. Almost 80 percent of the calories in what I ate for lunch were from fat, so what I ate for lunch was not nutritious."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT148",

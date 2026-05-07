@@ -453,7 +453,10 @@
       "D": "takes a necessary condition for Roberta’s losing things to be a sufficient condition",
       "E": "takes a necessary condition for Roberta’s being irritable to be a sufficient condition"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT141",

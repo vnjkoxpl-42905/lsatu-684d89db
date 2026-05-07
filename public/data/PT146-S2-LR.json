@@ -339,7 +339,10 @@
       "D": "There currently is no natural-gas-powered electrical generation station near any of the three largest bodies of water.",
       "E": "Many residents who would oppose the construction of a new natural-gas-powered electrical station in their region would not oppose the construction of new transmission lines there."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -447,7 +450,10 @@
       "D": "The argument confuses a necessary condition for a phenomenon with a sufficient condition for that phenomenon.",
       "E": "The argument presumes, without providing warrant, that because certain conditions only sometimes precede a certain phenomenon, these conditions always bring about the phenomenon."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT146",

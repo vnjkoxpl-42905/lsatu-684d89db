@@ -288,7 +288,10 @@
       "D": "The chief executive officer of Silicon, Inc., will probably not accept stock in the company as a bonus next year, since next year’s tax laws will require companies to pay a new tax on stock given to executives.",
       "E": "The installation of bright floodlights on campus would render the astronomy department’s telescope useless. The astronomy department will not support any proposal that would render its telescope useless; it will therefore not support proposals to install bright floodlights on campus."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -399,7 +402,10 @@
       "D": "The evolutionary pressure to ensure a diverse gene pool does not have the effect of increasing the frequency of a gene for small size.",
       "E": "A diverse gene pool cannot be achieved in a goat population unless the average size of its members is reduced."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT107",

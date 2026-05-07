@@ -105,7 +105,10 @@
       "D": "The Anthropology Department duplicates more than 25 percent of the material covered in the proposed Area Studies Department.",
       "E": "The field of Area Studies has fewer than 50 people per year available for hire."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT132",

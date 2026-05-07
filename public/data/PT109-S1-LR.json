@@ -267,7 +267,10 @@
       "D": "The role of Santa Claus in a shopping mall is often played by an experienced actor. Erwin has played Santa Claus in shopping malls for years. Therefore, Erwin must be an experienced actor.",
       "E": "Any good skier can learn to ice-skate eventually. Erica is a world-class skier. Therefore, Erica could learn to ice-skate in a day or two."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT109",

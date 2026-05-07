@@ -72,7 +72,10 @@
       "D": "presents no reason why Bruch Industries would not want its membership in the trade group to be known",
       "E": "takes for granted the accuracy of a statement by a representative who had a reason to withhold information"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT134",

@@ -177,7 +177,10 @@
       "D": "Natural resources are a vital economic asset for every nation.",
       "E": "Changes in the environment have a value that is not represented in any accounting framework."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT120",

@@ -159,7 +159,10 @@
       "D": "If rodents are responsible for the lost grain from last year’s harvest, we would find signs of rodents in the warehouses. And we have found signs of rodents there. So rodents are responsible for the lost grain.",
       "E": "If their army is planning an attack, there would either be troop movements along the border or a transfer of weapons. But intelligence reports show no indication of either. So their army is not planning an attack."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -324,7 +327,10 @@
       "D": "The argument presumes, without providing justification, that if a warning overstates a danger, then the warning will fail to prevent injuries.",
       "E": "The argument relies on the unjustified assumption that an action has an effect only if it was performed in order to bring about that effect."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT143",

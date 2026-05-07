@@ -141,7 +141,10 @@
       "D": "takes a set of necessary conditions as sufficient",
       "E": "relies on a sample that is unlikely to be representative"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT155",

@@ -357,7 +357,10 @@
       "D": "Some conditions that are treated effectively by medicines are not also treatable through the reduction of stress.",
       "E": "Medicine used to treat high blood pressure does not itself reduce stress."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT121",

@@ -125,7 +125,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -180,7 +181,10 @@
       "D": "It attempts to support its conclusion by citing a generalization that is too broad.",
       "E": "It overlooks the possibility that some programs do not require a peripheral component such as a mouse."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -306,7 +310,10 @@
       "D": "This year corporate funding was the source of more than half of the Green Ensemble’s income.",
       "E": "Corporate funding for nonprofit theater groups like the Green Ensemble has recently increased."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -452,7 +459,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   }
 ]

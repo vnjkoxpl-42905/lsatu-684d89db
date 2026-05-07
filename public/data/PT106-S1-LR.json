@@ -35,7 +35,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -180,7 +181,10 @@
       "D": "Any nation in which the prevailing attitude of consumers is exclusively confidence will not experience economic growth.",
       "E": "Any nation in which consumer skepticism is balanced with a small amount of consumer confidence will experience economic growth."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -216,7 +220,10 @@
       "D": "on flat land there is no soil erosion",
       "E": "the only terraces in Dooney County are on farmland"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -234,7 +241,10 @@
       "D": "If I go grocery shopping when I am hungry, I buy snack foods and cannot resist eating them. Therefore, I cannot lose weight.",
       "E": "People who have many friends tend to go out often, so they need cars. Therefore, if Joe wants to have many friends, he must buy a car."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -254,7 +264,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -365,7 +376,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {
@@ -440,7 +452,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Sufficient vs. Necessary Flaw"
     ]
   },
   {

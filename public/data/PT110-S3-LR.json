@@ -411,7 +411,10 @@
       "D": "Poets frequently convey their thoughts via nonliteral uses of language such as metaphors and analogies. But journalists are not poets, so surely journalists always use language literally.",
       "E": "Technologically sophisticated machines often cause us more trouble than simpler devices serving the same function. Since computers are more technologically sophisticated than pencils, they must tend to be more troublesome."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT110",

@@ -267,7 +267,10 @@
       "D": "Because people can never completely separate what is true from what they wish to be true, no theory is ever completely true.",
       "E": "Even leaders of scientific revolutions are influenced by the false theories of their predecessors. Therefore, the influence of earlier false theories never completely disappears."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT156",

@@ -15,7 +15,10 @@
       "D": "For dust-mite allergy sufferers to get relief from their allergies, dust-mite allergens must be reduced by 90 to 95 percent.",
       "E": "All of the participants in the study were told that one group in the study would be sleeping on mite-proof bedding."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -231,7 +234,10 @@
       "D": "draws a conclusion about how the world actually is on the basis of claims about how it should be",
       "E": "infers that because a set of things has a certain property, each member of that set has the property"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -249,7 +255,10 @@
       "D": "The price of real estate in a particular town is increasing. And if the town’s economy were improving, the price of real estate there would increase. Thus, the town’s economy is improving.",
       "E": "The exports of a particular nation have recently decreased. But whenever that nation’s exports decrease, its trade deficit increases. Thus, the nation’s trade deficit has recently increased."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT148",

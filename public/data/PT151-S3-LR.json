@@ -123,7 +123,10 @@
       "D": "presumes, without justification, that examples of people acting in ways that are not personally beneficial greatly outnumber examples of people acting in ways that are personally beneficial",
       "E": "fails to consider that people acting in ways that result in no personal benefit may nonetheless have expected that acting in those ways would produce personal benefit"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -234,7 +237,10 @@
       "D": "It confuses a claim about the accuracy of a test for syndrome Q in an arbitrary group of individuals with a similar claim about the accuracy of the test for a single individual.",
       "E": "It confuses the test’s having no reliable results for the presence of syndrome Q with its having no reliable results for the absence of syndrome Q."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT151",
