@@ -36,7 +36,10 @@
       "D": "Athletes occasionally overdevelop some parts of their bodies to such a great extent that other parts of their bodies are more prone to injury as a result.",
       "E": "Automotive engineers find that it is not cost- effective to manufacture a given automobile part of such high quality that it outlasts all other parts of the automobile, as doing so would not raise the overall quality of the automobile. 2 2 2 2"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -72,7 +75,10 @@
       "D": "failure to enact the ban would carry with it unacceptable risks for the public welfare",
       "E": "the ban would reduce the level of toxins in the fish in Eagle Bay"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -297,7 +303,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -402,7 +409,10 @@
       "D": "In a considerable percentage of cases, EKG data alone are insufficient to enable either computer programs or cardiologists to make accurate diagnoses.",
       "E": "The cardiologist in the study was unrepresentative of cardiologists in general with respect to skill and experience. 2 2 2 2 2"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -480,7 +490,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

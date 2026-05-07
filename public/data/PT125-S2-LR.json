@@ -145,7 +145,10 @@
       "D": "distrust among nations is eliminated",
       "E": "a world government is established"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -186,7 +189,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Focused on Evidence",
+      "Math-y Stuff"
     ]
   },
   {
@@ -316,7 +321,10 @@
       "D": "presumes, without offering justification, that humans are no worse than other animals",
       "E": "fails to recognize that humans may possess a capacity without displaying it in a given activity"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -550,7 +558,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Links Between Premises"
     ]
   }
 ]

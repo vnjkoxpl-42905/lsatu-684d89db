@@ -158,7 +158,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -449,7 +450,10 @@
       "D": "It is a concession to the view that the argument seeks to refute.",
       "E": "It is the explanation proposed for the phenomenon the argument seeks to explain."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -485,7 +489,10 @@
       "D": "A greater number of large Victorian apartments than of small modern apartments have freestanding bathtubs, so there are more small modern apartments than there are large Victorian apartments, since a higher percentage of large Victorian apartments than of small modern apartments have freestanding bathtubs.",
       "E": "A smaller number of modern apartments than of Victorian apartments have freestanding bathtubs, even though there are fewer modern apartments than there are large Victorian apartments. This establishes that a higher proportion of Victorian apartments than of modern apartments have freestanding bathtubs. S T DO NOT WORK ON ANY OT 3 3 -27-3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -505,7 +512,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Medical"
     ]
   }
 ]

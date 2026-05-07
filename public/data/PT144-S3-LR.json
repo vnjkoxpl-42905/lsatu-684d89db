@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -304,7 +305,10 @@
       "D": "It overlooks the possibility that many people may prefer Sparkle Cola to competing colas for reasons such as the packaging or price of Sparkle Cola, rather than its taste.",
       "E": "It is based on a study that does not elicit consumers’ responses to any beverages other than colas."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT144",

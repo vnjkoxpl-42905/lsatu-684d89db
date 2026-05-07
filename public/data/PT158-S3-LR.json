@@ -143,7 +143,10 @@
       "D": "Several other members of the hospital staff prescribed medication A to patients who had trouble sleeping.",
       "E": "Dr. Faris knew that the patient was not taking any other medications that have sleep-inducing properties."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -186,7 +189,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -210,7 +214,8 @@
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
       "Conditional Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -274,7 +279,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -400,7 +406,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -502,7 +509,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {

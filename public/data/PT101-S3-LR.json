@@ -311,7 +311,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Focused on Evidence"
     ]
   },
   {
@@ -356,7 +357,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -419,7 +421,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Math-y Stuff"
     ]
   },
   {
@@ -506,7 +509,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {

@@ -103,7 +103,10 @@
       "D": "The number of cases of disease P that occur in any country fluctuates widely from year to year.",
       "E": "Because of its climate, more potentially fatal illnesses occur in Country X than in many other countries."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -121,7 +124,11 @@
       "D": "Were other species of wildlife besides sea otters negatively affected by the oil spill?",
       "E": "What was the eventual cost, per otter rehabilitated, of the rehabilitation operation?"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Focused on Evidence",
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -142,7 +149,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "Links Between Premises"
     ]
   },
   {

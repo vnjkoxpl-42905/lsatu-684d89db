@@ -510,7 +510,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {

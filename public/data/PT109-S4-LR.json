@@ -232,7 +232,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -311,7 +312,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -433,7 +435,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Focused on Evidence"
     ]
   },
   {

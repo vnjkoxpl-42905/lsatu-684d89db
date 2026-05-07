@@ -204,7 +204,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -335,7 +336,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -357,7 +359,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -507,7 +510,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {

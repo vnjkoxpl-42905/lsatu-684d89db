@@ -99,7 +99,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -488,7 +489,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Links Between Premises"
     ]
   },
   {

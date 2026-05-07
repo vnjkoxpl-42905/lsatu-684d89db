@@ -118,7 +118,10 @@
       "D": "The better the overall health of cancer patients while undergoing therapy, the more likely they are to experience a full recovery.",
       "E": "Certain side effects of cancer therapies that are detrimental to patients’ overall health are not affected by vitamin C."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -220,7 +223,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Important Pivot"
+      "Important Pivot",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -384,7 +388,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {

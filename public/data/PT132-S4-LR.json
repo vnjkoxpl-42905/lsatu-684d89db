@@ -144,7 +144,10 @@
       "D": "The average body size of the captive birds remained the same over the study period.",
       "E": "The researcher measured the beaks of some of the wild birds on more than one occasion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -479,7 +482,10 @@
       "D": "suggests that some people are more susceptible to weather-induced arthritis pain than are others",
       "E": "suggests that the scientific investigation of possible links between weather and arthritis pain is impossible"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT132",

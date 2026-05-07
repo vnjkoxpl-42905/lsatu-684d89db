@@ -98,7 +98,10 @@
       "D": "readers of popular magazines are generally unable to accurately assess their own understanding of complex scientific issues",
       "E": "most readers of popular magazines are unwilling to seek out other sources in order to read about scientific issues that they find interesting"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -264,7 +267,10 @@
       "D": "There are more people who are skilled at playing the guitar than there are people who are skilled at playing the banjo.",
       "E": "There are more people who are skilled at playing the banjo than there are people who are skilled at playing the guitar."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -282,7 +288,10 @@
       "D": "It is a premise that is intended to support the argument’s main conclusion directly.",
       "E": "It is an example that is offered in support of a premise that is intended to support the argument’s main conclusion directly."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -444,7 +453,10 @@
       "D": "It is a generalization the truth of which is claimed to be necessary to establish the conclusion of the argument.",
       "E": "It is a hypothesis that must be rejected, according to the argument, because it is inconsistent with certain evidence."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -483,7 +495,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Links Between Premises"
     ]
   },
   {

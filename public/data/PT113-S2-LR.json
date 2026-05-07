@@ -135,7 +135,10 @@
       "D": "Once a theory of physics is accepted, it will remain dominant for centuries.",
       "E": "If a long-accepted theory of physics is surpassed, it must be surpassed by a theory that is equally successful."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -174,7 +177,10 @@
       "D": "parents and peers are the most important influence on a child's learning of a language",
       "E": "innate mechanisms play a more important role in language acquisition than a child's immediate environment"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT113",

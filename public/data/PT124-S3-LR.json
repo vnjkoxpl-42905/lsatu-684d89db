@@ -59,7 +59,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -102,7 +103,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Medical"
     ]
   },
   {
@@ -147,7 +149,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -189,7 +192,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {

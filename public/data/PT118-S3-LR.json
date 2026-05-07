@@ -134,7 +134,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -306,7 +307,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "EXCEPT"
+      "EXCEPT",
+      "Intermediate Conclusions",
+      "Medical"
     ]
   },
   {
@@ -364,7 +367,10 @@
       "D": "To understand properly any academic discipline, one must have at least a superficial acquaintance with the practices of the wider academic community.",
       "E": "To understand completely Aristotle’s philosophy, one must be well acquainted with the philosophy of his intellectual mentor, Plato."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -387,7 +393,8 @@
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {

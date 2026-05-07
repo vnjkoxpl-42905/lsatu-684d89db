@@ -40,7 +40,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Math-y Stuff",
+      "Medical"
     ]
   },
   {
@@ -193,7 +195,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Math-y Stuff"
     ]
   },
   {
@@ -326,7 +329,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "2-Speaker"
+      "2-Speaker",
+      "Implied Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -347,7 +352,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -413,7 +419,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Anti-Causal",
-      "Causal Chains"
+      "Causal Chains",
+      "Medical"
     ]
   },
   {
@@ -496,7 +503,10 @@
       "D": "It draws an inference about one specific individual from evidence that describes only the characteristics of a class of individuals.",
       "E": "It presumes without warrant that drinking coffee always causes insomnia."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -517,7 +527,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -560,7 +571,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Math-y Stuff"
     ]
   }
 ]

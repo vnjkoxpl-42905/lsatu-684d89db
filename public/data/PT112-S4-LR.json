@@ -194,7 +194,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Medical"
     ]
   },
   {
@@ -257,7 +258,10 @@
       "D": "the principal claim that his argument is structured to refute",
       "E": "background information that neither supports nor undermines his argument's conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -444,7 +448,10 @@
       "D": "Body fat gain is not dependent solely on the number of calories one consumes.",
       "E": "The proportion of calories from alcohol in a diet is more significant for body fat gain than are the total calories from alcohol."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT112",

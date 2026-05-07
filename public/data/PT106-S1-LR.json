@@ -42,7 +42,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Conditional Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Math-y Stuff"
     ]
   },
   {
@@ -86,7 +87,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Medical"
     ]
   },
   {
@@ -130,7 +132,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -153,7 +156,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -239,7 +243,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Math-y Stuff",
+      "Medical"
     ]
   },
   {
@@ -285,7 +291,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -331,7 +338,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -372,7 +380,10 @@
       "D": "Most of the money spent in a large shopping mall is money that would have been spent elsewhere in the same community had that mall not been built.",
       "E": "Most of the jobs created by the construction of a large shopping mall are temporary, and most of the permanent jobs created are low paying."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -528,7 +539,9 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions",
+      "Links Between Premises"
     ]
   },
   {

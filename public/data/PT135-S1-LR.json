@@ -74,7 +74,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -114,7 +115,10 @@
       "D": "Updating our computer security system could lead to new contracts. The present system has no problems, but we could benefit from emphasizing a state-of-the-art system in new proposals. If we do not get new customers, the new system could be financed through higher fees for current customers.",
       "E": "Isabel Allende lived through the tragic events of her country’s recent history; no doubt her novels have been inspired by her memories of those events. Yet Allende’s characters are hopeful and full of joy, indicating that Allende’s own view of life has not been negatively marked by her experiences."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -134,7 +138,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -387,7 +392,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Focused on Evidence"
     ]
   },
   {
@@ -451,7 +457,10 @@
       "D": "It describes evidence that the argument ultimately refutes.",
       "E": "It is a premise offered in support of the conclusion drawn in the argument."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT135",

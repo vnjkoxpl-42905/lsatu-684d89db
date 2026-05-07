@@ -41,7 +41,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Relative vs. Absolute",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -123,7 +124,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Links Between Premises"
     ]
   },
   {
@@ -227,7 +229,10 @@
       "D": "Austronesian-speaking peoples originated in the homeland where Austronesian languages have been spoken longest.",
       "E": "Austronesian-speaking peoples probably originated in Taiwan and later migrated to other islands."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -247,7 +252,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Math-y Stuff"
     ]
   },
   {
@@ -268,7 +274,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Implicit Principles"
     ]
   },
   {
@@ -503,7 +510,10 @@
       "D": "It is the argument’s main conclusion and is inferred from two other statements in the argument, one of which is used to support the other.",
       "E": "It is the argument’s main conclusion and is inferred from two other statements in the argument, neither of which is used to support the other."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT147",

@@ -95,7 +95,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence"
     ]
   },
   {
@@ -137,7 +138,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -308,7 +310,10 @@
       "D": "Serum cholesterol levels cannot be affected by nondietary modifications in behavior, such as exercising more or smoking less.",
       "E": "People who consume less cholesterol and fat than the threshold cannot reduce their serum cholesterol levels."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -385,7 +390,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -446,7 +452,10 @@
       "D": "If she disagrees with each of the candidates on exactly three issues important to her, it is unacceptable for her to vote for any candidate in the election.",
       "E": "If there are more issues important to her on which she disagrees with a particular candidate than there are such issues on which she agrees with that candidate, it is unacceptable for her to vote for that candidate."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Games-y LR"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -466,7 +475,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Games-y LR"
     ]
   },
   {
@@ -485,7 +495,10 @@
       "D": "During the last 25 years, annual new-car sales and the population have both increased, but new-car sales have increased by a greater percentage.",
       "E": "Sales to individuals make up a smaller proportion of all new-car sales than they did 25 years ago. S T DO NOT WORK ON ANY OT"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -503,6 +516,9 @@
       "D": "Cities should impose high fines for littering. The risk of being caught littering is quite low, so the fine for those who are caught must be correspondingly high in order to deter people from littering.",
       "E": "Municipalities should use tax money to pay for the maintenance of municipal roads, since if individuals paid for only those roads they used, some important roads in remote areas would be inadequately maintained. O P MAY CHECK YOUR WORK ON THIS SECTION ONLY. THER SECTION IN THE TEST. --- ## Metadata Audit Table | Question | Question Type | Question Feature | Difficulty | Correct Answer | Confidence | |---|---|---|---:|:---:|---| | PT103-S1-Q1 | Flaw | None | 3 | D | High | | PT103-S1-Q2 | Method | None | 2 | A | High | | PT103-S1-Q3 | Flaw | None | 2 | E | High | | PT103-S1-Q4 | Necessary Assumption | None | 1 | B | High | | PT103-S1-Q5 | Method | None | 3 | A | Medium | | PT103-S1-Q6 | Flaw | None | 2 | C | High | | PT103-S1-Q7 | Strengthen | None | 2 | E | High | | PT103-S1-Q8 | Necessary Assumption | None | 3 | E | High | | PT103-S1-Q9 | Weaken | None | 3 | B | High | | PT103-S1-Q10 | Weaken | None | 5 | A | High | | PT103-S1-Q11 | Sufficient Assumption | None | 3 | B | High | | PT103-S1-Q12 | Most Supported | None | 4 | C | High | | PT103-S1-Q13 | Must Be False | None | 2 | E | High | | PT103-S1-Q14 | Necessary Assumption | None | 3 | B | High | | PT103-S1-Q15 | Strengthen | None | 3 | C | High | | PT103-S1-Q16 | Agree/Disagree | Point at issue | 4 | C | High | | PT103-S1-Q17 | Role | None | 4 | B | High | | PT103-S1-Q18 | Method | None | 2 | C | High | | PT103-S1-Q19 | Most Supported | None | 2 | C | High | | PT103-S1-Q20 | Paradox | Resolve / explain discrepancy | 3 | C | High | | PT103-S1-Q21 | Parallel Flaw | None | 5 | C | High | | PT103-S1-Q22 | Evaluate | None | 5 | D | High | | PT103-S1-Q23 | Paradox | Resolve / explain paradox | 5 | D | High | | PT103-S1-Q24 | Parallel | None | 4 | A | High | | PT103-S1-Q25 | Method | None | 3 | B | High | | PT103-S1-Q26 | Weaken | Counter response | 5 | D | High | | PT103-S2-Q1 | Flaw | None | 1 | B | High | | PT103-S2-Q2 | Principle Conform | None | 1 | B | High | | PT103-S2-Q3 | Agree/Disagree | Point at issue | 1 | A | High | | PT103-S2-Q4 | Flaw | None | 2 | C | High | | PT103-S2-Q5 | Weaken | None | 3 | A | High | | PT103-S2-Q6 | Must Be True | None | 2 | D | High | | PT103-S2-Q7 | Necessary Assumption | None | 2 | C | High | | PT103-S2-Q8 | Main Conclusion | None | 3 | A | High | | PT103-S2-Q9 | Most Supported | None | 3 | B | High | | PT103-S2-Q10 | Necessary Assumption | None | 3 | C | High | | PT103-S2-Q11 | Strengthen | None | 2 | A | High | | PT103-S2-Q12 | Weaken | None | 5 | D | High | | PT103-S2-Q13 | Necessary Assumption | None | 1 | A | High | | PT103-S2-Q14 | Paradox | Resolve / explain puzzling fact | 2 | D | High | | PT103-S2-Q15 | Flaw | None | 5 | C | High | | PT103-S2-Q16 | Parallel | None | 2 | C | High | | PT103-S2-Q17 | Flaw | Least vulnerable / EXCEPT | 4 | B | Medium | | PT103-S2-Q18 | Paradox | Resolve / explain result | 4 | C | High | | PT103-S2-Q19 | Must Be False | EXCEPT | 4 | B | High | | PT103-S2-Q20 | Parallel Flaw | None | 4 | C | High | | PT103-S2-Q21 | Flaw | None | 5 | E | High | | PT103-S2-Q22 | Necessary Assumption | EXCEPT | 5 | C | High | | PT103-S2-Q23 | Principle Strengthen | Find the rule | 4 | C | High | | PT103-S2-Q24 | Agree/Disagree | Point at issue, principle disagreement | 5 | E | High | | PT103-S2-Q25 | Necessary Assumption | None | 5 | E | High | | PT103-S3-Q1 | Paradox | Resolve / explain | 1 | B | High | | PT103-S3-Q2 | Method | None | 2 | B | High | | PT103-S3-Q3 | Strengthen | None | 3 | D | High | | PT103-S3-Q4 | Role | None | 2 | C | High | | PT103-S3-Q5 | Flaw | None | 1 | C | High | | PT103-S3-Q6 | Weaken | Counter objection | 2 | E | High | | PT103-S3-Q7 | Must Be True | Fill in the blank | 2 | E | High | | PT103-S3-Q8 | Flaw | None | 2 | E | High | | PT103-S3-Q9 | Necessary Assumption | None | 3 | C | High | | PT103-S3-Q10 | Flaw | None | 3 | D | High | | PT103-S3-Q11 | Necessary Assumption | None | 2 | A | High | | PT103-S3-Q12 | Must Be False | None | 2 | D | High | | PT103-S3-Q13 | Parallel Flaw | None | 3 | E | High | | PT103-S3-Q14 | Weaken | None | 4 | A | High | | PT103-S3-Q15 | Most Supported | None | 3 | C | High | | PT103-S3-Q16 | Method | None | 4 | D | High | | PT103-S3-Q17 | Flaw | None | 3 | D | High | | PT103-S3-Q18 | Paradox | Resolve / explain discrepancy | 4 | A | High | | PT103-S3-Q19 | Flaw | None | 4 | D | High | | PT103-S3-Q20 | Most Supported | Least supported / EXCEPT | 5 | B | High | | PT103-S3-Q21 | Sufficient Assumption | None | 4 | C | High | | PT103-S3-Q22 | Must Be True | None | 5 | D | High | | PT103-S3-Q23 | Principle Conform | Application | 5 | B | High | | PT103-S3-Q24 | Weaken | None | 5 | E | High | | PT103-S3-Q25 | Principle | Application / analogous argument | 4 | B | Medium |"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   }
 ]

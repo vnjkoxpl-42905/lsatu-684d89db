@@ -56,7 +56,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -161,7 +162,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -258,7 +260,10 @@
       "D": "None of the soft-drink cans in group L had been made from recycled aluminum.",
       "E": "Aluminum soft-drink cans are more easily recycled than are soft-drink cans made from other materials."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT123",

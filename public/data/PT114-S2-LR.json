@@ -233,7 +233,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Part vs. Whole",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
@@ -498,7 +499,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sampling",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Math-y Stuff"
     ]
   },
   {

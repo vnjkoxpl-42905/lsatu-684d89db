@@ -78,7 +78,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Focused on Evidence",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -232,7 +234,10 @@
       "D": "The argument fails to consider the possibility that money could be saved by training students as peer counselors.",
       "E": "The argument fails to consider that if more money is spent on a program, then more money cannot also be used for other purposes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -313,7 +318,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Games-y LR"
     ]
   },
   {
@@ -332,7 +338,10 @@
       "D": "Another person’s blood was substituted, and in otherwise identical circumstances, stained between 9.8 and 10.6 cm2 of the fabric.",
       "E": "Not all expert witnesses are the authorities in their fields that they claim to be."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -376,7 +385,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Causal Chains",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Links Between Premises"
     ]
   },
   {
@@ -475,7 +485,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Math-y Stuff"
     ]
   },
   {

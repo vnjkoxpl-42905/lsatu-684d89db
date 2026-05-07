@@ -241,7 +241,10 @@
       "D": "Polar bears are only one of many species of mammal whose members have been known to find their way home from considerable distances.",
       "E": "Polar bears often rely on their extreme sensitivity to smell in order to scent out familiar territory."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -259,7 +262,10 @@
       "D": "Significantly reducing the number of building starts would not, on balance, result in revenue loss to the city.",
       "E": "The mayor's family has a strong financial interest in preventing the passage of legislation that would impose real estate development fees."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT117",

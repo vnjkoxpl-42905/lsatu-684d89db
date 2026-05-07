@@ -248,7 +248,10 @@
       "D": "Most of the cookbooks purchased last year that were not intended for beginners were purchased by professional cooks.",
       "E": "Problem-Free Cooking sold more copies last year than did any cookbook written for professional cooks."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -374,7 +377,10 @@
       "D": "Aisha has proofread several issues of the journal Periodos and has encountered no errors. But there are seldom any errors in an issue of this journal. So there will probably be no errors in the next issue of the journal Periodos that she proofreads.",
       "E": "There usually are errors in each issue of the journal Periodos. Since Aisha has finished proofreading the latest issue of this journal and has detected no errors, Aisha has probably made a mistake in her proofreading."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -394,7 +400,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -417,7 +424,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {

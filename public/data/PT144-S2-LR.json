@@ -42,7 +42,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Logical Completion"
     ]
   },
   {
@@ -300,7 +301,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -319,7 +321,10 @@
       "D": "The argument fails to consider that the survey results might have been influenced by the political biases of the researchers who conducted the survey.",
       "E": "The argument uses evidence that supports only rough estimates to draw a precisely quantified conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -529,6 +534,9 @@
       "D": "If an athlete is found to have used banned performance-enhancing substances, that athlete should be prohibited from participating in all future athletic competitions.",
       "E": "If a convicted criminal writes a memoir describing the details of that criminal’s crime, any proceeds of the book should be donated to a charity chosen by a third party."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   }
 ]

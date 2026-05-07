@@ -56,7 +56,10 @@
       "D": "Human activity is part of what prevents plants from depleting the oxygen in Earth’s atmosphere on which plants and animals alike depend.",
       "E": "Just as animals are dependent on plants for their survival, plants are dependent on animals for theirs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -140,7 +143,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Implicit Principles"
     ]
   },
   {
@@ -201,7 +205,10 @@
       "D": "causes workers to feel less satisfaction in their work",
       "E": "eliminates many workers’ jobs"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT114",

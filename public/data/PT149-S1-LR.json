@@ -82,7 +82,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {
@@ -103,7 +104,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {
@@ -501,7 +503,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Logical Completion",
+      "Math-y Stuff"
     ]
   },
   {

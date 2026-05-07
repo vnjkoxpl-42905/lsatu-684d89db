@@ -238,7 +238,10 @@
       "D": "It is a statement for which no evidence is provided but which itself is used to support the argument’s only conclusion.",
       "E": "It is a statement used to support a conclusion that in turn is used to support the argument’s main conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -301,7 +304,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -382,7 +386,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
@@ -535,7 +540,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   }
 ]

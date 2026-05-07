@@ -294,7 +294,10 @@
       "D": "predict the effect of the information contained in the report on future high school dropout rates for the city",
       "E": "consider whether a diploma from the city’s high schools signaled the same level of achievement over time"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -395,7 +398,9 @@
       "Anti-Causal",
       "Contrapositive Logic",
       "Defender",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence",
+      "Intermediate Conclusions"
     ]
   },
   {

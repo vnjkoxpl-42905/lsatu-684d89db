@@ -39,7 +39,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Medical"
     ]
   },
   {
@@ -123,7 +124,10 @@
       "D": "The only way that smoking increases one’s risk of fatal heart disease is by influencing the levels of cholesterol in the blood.",
       "E": "The risk of fatal heart disease can be altered by certain changes in lifestyle."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -167,7 +171,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Causal Chains",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Medical"
     ]
   },
   {
@@ -209,7 +214,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Medical"
     ]
   },
   {
@@ -231,7 +237,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -253,7 +260,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -322,7 +330,8 @@
       "Argue the Anti-Conclusion",
       "Assumes Difference",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -345,7 +354,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Explain Curious Fact",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Implicit Principles"
     ]
   },
   {
@@ -406,7 +416,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Important Pivot"
+      "Important Pivot",
+      "Implicit Principles",
+      "Intermediate Conclusions",
+      "Links Between Premises"
     ]
   },
   {
@@ -429,7 +442,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Assumes Similarity",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Math-y Stuff"
     ]
   },
   {

@@ -38,7 +38,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Focused on Evidence"
     ]
   },
   {
@@ -125,7 +126,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Binaries",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -185,7 +187,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -243,7 +246,10 @@
       "D": "In some cases, a business will close down some of its operations, its intention being to position the company to be more profitable later even though this involves expenses in the current period.",
       "E": "Some police departments energetically pursue those who commit minor crimes; in doing so they intend to provide examples to deter people who might be tempted to commit more-serious crimes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -265,7 +271,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Causal Chains",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -516,7 +523,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Math-y Stuff"
     ]
   }
 ]

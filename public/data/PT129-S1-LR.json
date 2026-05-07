@@ -78,7 +78,10 @@
       "D": "People who value wealth tend to allow their desire for it to outweigh other concerns.",
       "E": "What people value can be a reliable indicator of how they will act."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -96,7 +99,10 @@
       "D": "Changes in one's environment tend to have a beneficial effect on one's health.",
       "E": "People in good health are more likely to move to new communities than are people in poor health."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -246,7 +252,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -290,7 +297,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Links Between Premises"
     ]
   },
   {
@@ -393,7 +401,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -454,7 +463,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -473,7 +483,10 @@
       "D": "Magazine publishers should not be allowed to invest in the companies that advertise in their magazines.",
       "E": "Financial advisers should inform their clients about any incentives the advisers receive for promoting investments in particular companies."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT129",

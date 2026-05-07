@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Defender",
-      "EXCEPT"
+      "EXCEPT",
+      "Links Between Premises"
     ]
   },
   {
@@ -350,7 +351,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Games-y LR"
     ]
   },
   {
@@ -373,7 +375,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "2-Speaker",
-      "Alternatives"
+      "Alternatives",
+      "Focused on Evidence"
     ]
   },
   {
@@ -416,7 +419,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {

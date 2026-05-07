@@ -15,7 +15,10 @@
       "D": "For Redhook to build a dam on the Smithfield River would be a mistake.",
       "E": "The Smithfield River floods cost Redhook $3 million every year."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -157,7 +160,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Medical"
     ]
   },
   {
@@ -199,7 +203,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Medical"
     ]
   },
   {
@@ -221,7 +226,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Math-y Stuff"
     ]
   },
   {
@@ -243,7 +249,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Medical"
     ]
   },
   {
@@ -264,7 +271,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -372,7 +380,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Math-y Stuff"
     ]
   },
   {
@@ -395,7 +404,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -460,7 +470,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Medical"
     ]
   },
   {
@@ -502,7 +513,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Focused on Evidence"
     ]
   },
   {

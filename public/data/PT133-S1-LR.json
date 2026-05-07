@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -143,7 +144,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Medical"
     ]
   },
   {
@@ -166,7 +168,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Focused on Evidence"
     ]
   },
   {
@@ -185,7 +188,10 @@
       "D": "From the mid-1990s into the next decade, a doubling in the cost of fabricating new computer microchips accompanied each doubling in the number of transistors on those microchips.",
       "E": "It is unlikely that engineers will ever be able to increase the computing speed of microchips without also increasing the cost of producing them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -327,7 +333,10 @@
       "D": "Most adults moving out of Weston were parents who had children living with them, whereas most adults remaining in or moving into the city were older people who lived alone.",
       "E": "Most people moving out of Weston were young adults who were hoping to begin a career elsewhere, whereas most adults remaining in or moving into the city had long-standing jobs in the city."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT133",

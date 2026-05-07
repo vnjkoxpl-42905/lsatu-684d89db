@@ -262,7 +262,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Medical"
     ]
   },
   {
@@ -305,7 +306,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Implicit Principles"
     ]
   },
   {
@@ -366,7 +368,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Links Between Premises"
     ]
   },
   {
@@ -423,7 +426,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Math-y Stuff"
     ]
   },
   {
@@ -465,7 +469,10 @@
       "D": "The reason for unions' existence is to work for goals such as profitable and humane working conditions by organizing strikes.",
       "E": "With strong unions it is possible for a modern industrial society to achieve profitable and humane working conditions, but without them it would be impossible."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implied Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",

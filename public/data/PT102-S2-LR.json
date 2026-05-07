@@ -15,7 +15,10 @@
       "D": "Being mentally healthy is a matter of having the same neurochemical balances as most people.",
       "E": "Advances in neurochemistry enhance our theories of mental illness."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -53,7 +56,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Logical Completion",
+      "Medical"
     ]
   },
   {
@@ -116,7 +121,8 @@
       "Sufficient vs. Necessary Flaw",
       "Alternatives",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Medical"
     ]
   },
   {
@@ -265,7 +271,10 @@
       "D": "No gold coins were minted that had a gold content of less than 92 percent.",
       "E": "The only unrefined gold from which coins could be minted was Senegalese gold."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -283,7 +292,10 @@
       "D": "Since gold coins' monetary value rested on the gold they contained, payments were frequently made using coins minted in several different countries.",
       "E": "Merchants obtaining gold to resell for use in jewelry could not sell the metal unless it was first refined."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -303,7 +315,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {

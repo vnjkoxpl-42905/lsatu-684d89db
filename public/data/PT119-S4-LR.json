@@ -145,7 +145,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -319,7 +320,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -341,7 +343,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -480,7 +483,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Games-y LR"
     ]
   },
   {
@@ -501,7 +505,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Intermediate Conclusions"
     ]
   }
 ]

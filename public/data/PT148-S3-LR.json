@@ -284,7 +284,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Medical"
     ]
   },
   {
@@ -349,7 +350,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Medical"
     ]
   },
   {
@@ -371,7 +373,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Medical"
     ]
   },
   {

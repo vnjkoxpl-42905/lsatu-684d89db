@@ -320,7 +320,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Logical Completion"
     ]
   },
   {

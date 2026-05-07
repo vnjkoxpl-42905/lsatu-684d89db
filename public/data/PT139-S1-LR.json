@@ -79,7 +79,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -144,7 +145,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Links Between Premises"
     ]
   },
   {
@@ -163,7 +165,10 @@
       "D": "One who is trying to improve one's personality by removing imperfections should not try to remove them all. Granted, the fewer imperfections one's personality has, the happier one will be. However, it is never possible to remove all of the imperfections from one's personality.",
       "E": "When one is trying to improve one's personality, one should not try to remove imperfections that do not cause one serious difficulties. Often, removing such an imperfection will only lead to greater imperfections."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -183,7 +188,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Medical"
     ]
   },
   {
@@ -320,7 +326,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {

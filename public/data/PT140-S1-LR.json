@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Logical Completion"
     ]
   },
   {
@@ -58,7 +59,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Medical"
     ]
   },
   {
@@ -79,7 +81,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Logical Completion"
     ]
   },
   {
@@ -228,7 +231,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -335,7 +339,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Intermediate Conclusions",
+      "Math-y Stuff"
     ]
   },
   {

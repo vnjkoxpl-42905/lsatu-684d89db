@@ -167,7 +167,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Logical Completion"
     ]
   },
   {
@@ -209,7 +210,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Focused on Evidence"
     ]
   },
   {
@@ -339,7 +341,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -503,7 +506,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Intermediate Conclusions"
     ]
   },
   {

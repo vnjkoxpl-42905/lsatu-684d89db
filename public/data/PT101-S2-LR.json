@@ -84,7 +84,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Breadcrumbs",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
@@ -105,7 +106,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Math-y Stuff"
     ]
   },
   {
@@ -368,7 +370,10 @@
       "D": "People in the region who continue to be employed are pessimistic about their prospects for increasing their incomes.",
       "E": "There exist no statistics about sales of goods in the region as a whole."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -411,7 +416,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
@@ -433,7 +439,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {

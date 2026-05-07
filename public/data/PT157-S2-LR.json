@@ -35,7 +35,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Focused on Evidence"
     ]
   },
   {
@@ -54,7 +55,10 @@
       "D": "is probably not occurring in accordance with manufacturers’ instructions",
       "E": "gives financial returns that diminish over time"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -72,7 +76,10 @@
       "D": "In countries other than the economist’s, passage of laws that made it very difficult for overseas investors to remove their capital have not entirely prevented the removal of capital invested by overseas investors.",
       "E": "Two years ago, the country enacted laws that place some restrictions on the removal of capital by overseas investors."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -137,7 +144,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Logical Completion"
     ]
   },
   {
@@ -222,7 +230,10 @@
       "D": "The high concentration of sugar in honey inhibits the growth of bacteria in wounds, including the bacteria contained in the honey itself.",
       "E": "The antibiotic ointment used in the study damages sensitive tissue in wounds, which slows healing, but honey does not have this effect if the wound has been cleaned."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -309,7 +320,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -514,7 +526,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Medical"
     ]
   }
 ]

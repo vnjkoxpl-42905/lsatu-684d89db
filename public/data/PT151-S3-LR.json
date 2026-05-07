@@ -100,7 +100,10 @@
       "D": "people with low self-esteem more frequently think that they are being treated disrespectfully than do people with high self-esteem",
       "E": "a person with low self-esteem will be more inclined to treat others disrespectfully than will a person with high self-esteem"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -253,7 +256,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Links Between Premises"
     ]
   },
   {
@@ -275,7 +279,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Medical"
     ]
   },
   {
@@ -501,7 +506,10 @@
       "D": "fails to consider to what extent people with university degrees participate in decisions about whether their households have a cat or dog",
       "E": "ignores the possibility that two things can be correlated without being causally connected"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT151",

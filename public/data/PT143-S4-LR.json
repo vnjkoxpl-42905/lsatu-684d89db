@@ -39,7 +39,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Math-y Stuff"
     ]
   },
   {
@@ -181,7 +182,10 @@
       "D": "Three thousand registered voters—1,500 members of the Liberal party and 1,500 members of the Conservative party—were asked which mayoral candidate they favored. Four hundred of the Liberals and 300 of the Conservatives favored Pollack. Therefore, Pollack has more support among Liberals than among Conservatives.",
       "E": "All of my livestock are registered with the regional authority. None of the livestock registered with the regional authority are free- range livestock. Therefore, none of my livestock are free-range livestock."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -284,7 +288,10 @@
       "D": "Because of the increasingly lucrative market for stolen automobile parts, many stolen cars are quickly disassembled and the parts are sold to various buyers across the country.",
       "E": "There are more adolescent car thieves now than there were five years ago, and the sentences given to young criminals tend to be far more lenient than those given to adult criminals."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT143",

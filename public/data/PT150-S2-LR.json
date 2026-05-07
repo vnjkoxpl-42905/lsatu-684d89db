@@ -191,7 +191,10 @@
       "D": "song overlapping has no communicative function",
       "E": "the conclusion of these studies is unconvincing"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -348,7 +351,10 @@
       "D": "those in the latter group will respond by concealing unpleasant truths",
       "E": "the result will meet with the approval of both groups"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT150",

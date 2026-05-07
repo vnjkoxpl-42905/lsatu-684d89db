@@ -104,7 +104,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Medical"
     ]
   },
   {
@@ -189,7 +190,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -290,7 +292,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Medical"
     ]
   },
   {
@@ -312,7 +315,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -333,7 +337,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -352,7 +357,10 @@
       "D": "It takes for granted that two conditions that together have a certain effect can, each by itself, produce the same effect.",
       "E": "It takes for granted that removing a condition that causally contributes to another condition suffices to eliminate the latter condition."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -373,7 +381,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Medical"
     ]
   },
   {
@@ -394,7 +403,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -416,7 +426,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -435,7 +446,10 @@
       "D": "If judges should be appointed, then it is likely that there are other public offices that should be changed from elected to appointed offices.",
       "E": "No public office for which election campaigning would be likely to produce conflicts of interest should be changed from an appointed to an elected office."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT155",

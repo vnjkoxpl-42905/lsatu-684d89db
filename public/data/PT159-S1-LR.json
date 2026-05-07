@@ -161,7 +161,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Logical Completion"
     ]
   },
   {
@@ -201,7 +202,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -489,7 +491,10 @@
       "D": "are exploited rather than created by advertisers",
       "E": "are generally what induce people to believe claims made by advertisers"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT159",

@@ -109,7 +109,10 @@
       "D": "The school system has been unfairly criticized for not making familiarity with computer technology a requirement. Computer studies could not be added to the curriculum without sacrificing some other subject.",
       "E": "CEOs of large companies have been unfairly criticized for not always using their knowledge of economic theory to run their companies. Economic theory is sometimes irrelevant to making wise corporate decisions."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT131",

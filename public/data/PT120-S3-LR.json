@@ -111,7 +111,10 @@
       "D": "Irresponsible dog owners are capable of producing dogs with bad dispositions regardless of generations of careful breeding.",
       "E": "The vicious-dog laws that are currently in effect do not address the effects of human behavior in raising and training dogs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -240,7 +243,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -363,7 +367,10 @@
       "D": "One can appreciate Taiko-drumming only if one understands how physically demanding it is. Thus, one should see Taiko-drumming and not just hear it in order to appreciate it fully.",
       "E": "One should travel through North America by train rather than by automobile, because train travel imparts the same sense of open space as does automobile travel, while also affording one the full leisure to attend to the scenery."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -477,7 +484,10 @@
       "D": "At the beginning of last year, the police department’s definition of “violent crime” was broadened to include 2 crimes not previously classified as “violent.”",
       "E": "The city enacted a policy 2 years ago requiring that 100 new police officers be hired in each of the 3 subsequent years."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT120",

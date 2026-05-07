@@ -132,7 +132,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Difference",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Medical"
     ]
   },
   {
@@ -387,7 +388,10 @@
       "D": "It is better to invest in a used piece of equipment than to purchase a new one. Although used equipment requires more repairs and is sometimes more costly in the long run, buying a new machine requires a far greater initial outlay of capital.",
       "E": "Sports cars are impractical for most drivers. While there is undoubtedly a certain thrill associated with driving these cars, their small size makes them incapable of transporting any but the smallest amounts of cargo."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -405,7 +409,10 @@
       "D": "None of the students taking rhetoric are taking literature.",
       "E": "There are students who are taking both art and literature."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Games-y LR"
+    ]
   },
   {
     "practiceTest": "PT127",

@@ -117,7 +117,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -214,7 +215,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -233,7 +235,10 @@
       "D": "When students choose courses, they choose those that require the least amount of work, not those in which they might learn the most.",
       "E": "When television executives choose programs to air, they choose the ones with the most sex and violence because that is what viewers want, not the shows with the highest artistic merit."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -436,7 +441,10 @@
       "D": "Without relevant evidence as to a novel's intended reading, one should avoid viewing the work allegorically.",
       "E": "The only relevant evidence in deciding the appropriate interpretation of a text is the text itself."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -494,7 +502,10 @@
       "D": "If the plants in one group of false chicory are not taller than those in another group of false chicory, then the two groups must have received the same amount of rainfall.",
       "E": "If a false chicory plant receives greater than twice the average rainfall of the species' usual habitat, then it will have a longer taproot than that of an average-sized false chicory plant."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT119",

@@ -36,7 +36,10 @@
       "D": "an example of a type of organism whose status, like Earth's, is unclear",
       "E": "an illustration of a type of organism out of which Earth is composed"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -120,7 +123,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Focused on Evidence"
     ]
   },
   {
@@ -246,7 +250,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Implicit Principles"
     ]
   },
   {
@@ -348,7 +353,10 @@
       "D": "Some small countries are in favor of a greater role for the United Nations in moderating regional disputes.",
       "E": "Some countries that are in favor of a greater role for the United Nations in moderating regional disputes are not located in the southern hemisphere."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -411,7 +419,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Focused on Evidence"
     ]
   },
   {
@@ -430,7 +439,10 @@
       "D": "relies for its plausibility on the vagueness of the term \"classical\"",
       "E": "ignores the possibility that the majority of people who recognize many of Clara Schumann's works are not classical pianists"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT117",

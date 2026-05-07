@@ -278,7 +278,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -339,7 +340,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Math-y Stuff"
     ]
   },
   {
@@ -383,7 +385,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Defender",
-      "EXCEPT"
+      "EXCEPT",
+      "Focused on Evidence"
     ]
   },
   {
@@ -425,7 +428,10 @@
       "D": "In Naota, a larger proportion of female workers than male workers are part-time workers, and part-time workers typically earn less than full- time workers earn.",
       "E": "In ten other countries where the proportion of women in the work force is similar to that of Naota, the average annual earnings of women who work full time ranges from a low of 50 percent to a high of 90 percent of the average annual earnings of men who work full time."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT107",

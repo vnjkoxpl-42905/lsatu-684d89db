@@ -35,7 +35,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Links Between Premises"
     ]
   },
   {
@@ -56,7 +57,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Logical Completion"
     ]
   },
   {
@@ -142,7 +144,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Intermediate Conclusions",
+      "Medical"
     ]
   },
   {
@@ -187,7 +191,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {
@@ -249,7 +254,10 @@
       "D": "The availability of television does not always cause a decline in the annual number of book titles published or in the number of books sold.",
       "E": "The introduction of television expanded the market for books in North America."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -427,7 +435,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Explain Curious Fact",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Intermediate Conclusions"
     ]
   },
   {
@@ -471,7 +480,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Medical"
     ]
   },
   {

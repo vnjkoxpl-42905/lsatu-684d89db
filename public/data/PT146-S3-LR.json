@@ -61,7 +61,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Logical Completion"
     ]
   },
   {
@@ -100,7 +101,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Math-y Stuff"
     ]
   },
   {
@@ -203,7 +205,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Math-y Stuff"
     ]
   },
   {
@@ -348,7 +351,10 @@
       "D": "It is the only consideration presented in support of the argument’s overall conclusion.",
       "E": "It is presented as support for a subsidiary conclusion drawn in the argument."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -513,7 +519,10 @@
       "D": "Most of the vegetables available at the Valley Food Co-op are organic, but most of the vegetables available at the Jumbo Supermarket are not. Thus, more organic vegetables are available at Valley Food than are available at Jumbo.",
       "E": "The Acme Realty website has photos of most of the houses, but of fewer than half of the condominiums, that Acme is offering for sale. So Acme must have more houses than condominiums for sale."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT146",

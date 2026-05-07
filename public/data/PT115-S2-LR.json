@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Implied Conclusion"
     ]
   },
   {
@@ -122,7 +123,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Logical Completion"
     ]
   },
   {
@@ -307,7 +309,10 @@
       "D": "Scientists are sometimes hostile to interim assessments of ongoing research, since such assessments might threaten continuity of funding.",
       "E": "Scientists often cite their colleagues' work when they think it is unfairly neglected by the scientific establishment."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Focused on Evidence"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -446,7 +451,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Intermediate Conclusions"
     ]
   },
   {

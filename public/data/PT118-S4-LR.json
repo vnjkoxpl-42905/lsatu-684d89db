@@ -37,7 +37,10 @@
       "D": "The most recent appointee to the prize committee should not be permitted to participate in the selection of this year's winner. Unlike each of the other committee members, the appointee has a relative in the contest.",
       "E": "Despite all the publicity, I am skeptical of the politician's claims of having just returned from the remote village. Just two days ago a reporter spoke with the villagers and said that not a single one reported seeing the politician in the past several months."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Implicit Principles"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -181,7 +184,10 @@
       "D": "No one who is fully informed about the diseases caused by microorganisms will ever fall victim to those diseases.",
       "E": "Some previous approaches to public health policy ignored the fact that disease-causing microorganisms reproduce at a rapid rate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Medical"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -348,7 +354,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Intermediate Conclusions",
+      "Links Between Premises"
     ]
   },
   {
@@ -385,7 +393,10 @@
       "D": "fails to specify the likelihood that, if such a meteorite should strike Earth, the meteorite would indeed cause an ice age",
       "E": "presumes, without providing justification, that some feasible means can be found to deter large meteorite strikes"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Math-y Stuff"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -459,7 +470,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Intermediate Conclusions"
     ]
   },
   {

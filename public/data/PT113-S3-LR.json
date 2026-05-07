@@ -83,7 +83,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Medical"
     ]
   },
   {
@@ -123,7 +124,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Medical"
     ]
   },
   {
@@ -296,7 +298,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Math-y Stuff"
     ]
   },
   {
@@ -317,7 +320,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Medical"
     ]
   },
   {

@@ -183,7 +183,10 @@
       "D": "The use of chemical fertilizers should be avoided.",
       "E": "A garden rich in earthworms is much more fertile than a garden that is devoid of earthworms."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Intermediate Conclusions"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -219,7 +222,10 @@
       "D": "the value of theoretical work in extending research has been emphasized by historians who recommend doing historical analysis within a theoretical framework",
       "E": "there is no difference between historical analysis that is placed within a theoretical framework and historical analysis that is not"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -258,7 +264,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Math-y Stuff"
     ]
   },
   {
@@ -355,7 +362,10 @@
       "D": "All of the bankers are lawyers.",
       "E": "None of the lawyers are athletes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Games-y LR"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -445,7 +455,10 @@
       "D": "most consumers would ignore the length of time a credit card company allows to pay the balance due before interest accrues",
       "E": "the most intense competition among credit card companies would be over the number of places that they can get to accept their credit card"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Logical Completion"
+    ]
   },
   {
     "practiceTest": "PT131",
