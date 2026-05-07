@@ -123,7 +123,10 @@
       "D": "The heavy rain caused the dam to break, and the breaking of the dam caused the fields downstream to be flooded. Therefore the heavy rain caused the flooding of the fields.",
       "E": "The power plant raised the water temperature, and whatever raised the water temperature is responsible for the decrease in fish. Therefore the power plant is responsible for the decrease in fish."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -273,7 +276,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

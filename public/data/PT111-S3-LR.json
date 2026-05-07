@@ -33,7 +33,10 @@
       "D": "focuses on a famous actor’s portrayal of a lawyer rather than on the usual way in which lawyers are portrayed on television",
       "E": "ignores the part of the lawyer’s remark that indicates an awareness of the difference between reality and fiction"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -105,7 +108,10 @@
       "D": "All older automobiles need frequent oil changes. This car is new, so its oil need not be changed as frequently.",
       "E": "The individual cells of the brain are incapable of thinking. Therefore, the brain as a whole is incapable of thinking."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT111",

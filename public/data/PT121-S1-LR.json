@@ -33,7 +33,10 @@
       "D": "what is true of the sales prospects of the publishing company's individual titles is not true of the sales prospects of the group of titles as a whole",
       "E": "the publishing company will sell even fewer books if it does not advertise its books efficiently"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -231,7 +234,10 @@
       "D": "The response depends for its plausibility on a personal attack made against the psychology professor.",
       "E": "The response takes for granted that unless the course textbook is the same the course content will not be the same."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -303,7 +309,10 @@
       "D": "what is true of the constituent elements of a whole is also true of the whole",
       "E": "what is true of a whole is also true of its constituent elements"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -414,7 +423,10 @@
       "D": "To determine which explanation of the origin of the universe is correct, we would need to know about the first moments of the existence of the universe. Due to the immense time that has passed since the universe began, it is impossible to get such information. Therefore, none of the explanations of the origin of the universe is likely to be correct.",
       "E": "A good way to explain historical events is to construct a coherent narrative about those events. In order to construct such a narrative, a great many details about the events must be known. Virtually no details can be known of certain very ancient historical events. Therefore, no historical explanation can be given for these events."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",

@@ -51,7 +51,10 @@
       "D": "fails to take into account measurements from the same time in previous seasons",
       "E": "does not consider whether any fish other than trout were caught"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -105,7 +108,10 @@
       "D": "neglects to specify how the drama of an architectural style contributes to its beauty",
       "E": "ignores the possibility that there are other architectural styles whose defining qualities include both drama and beauty"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -180,7 +186,10 @@
       "D": "The argument takes for granted that an action that does not accomplish its stated goals will not have any beneficial effects.",
       "E": "The argument treats a condition that is necessary for achieving an action's stated goals as if this condition were sufficient for achieving these goals."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",

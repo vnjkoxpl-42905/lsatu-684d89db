@@ -339,7 +339,10 @@
       "D": "does not provide any examples of successful films that were not well directed",
       "E": "concludes that a practice is misguided without considering any arguments in its favor"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT108",

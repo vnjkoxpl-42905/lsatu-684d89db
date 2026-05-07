@@ -143,7 +143,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -198,7 +199,10 @@
       "D": "appeals to the authority of those unlikely to be well informed about the topic at issue",
       "E": "disputes a claim on the basis of a supposed motive for making the claim rather than by assessing the evidence relevant to the claim"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",

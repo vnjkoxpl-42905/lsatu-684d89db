@@ -51,7 +51,10 @@
       "D": "ignores the possibility that if Joan has to do the class presentation to pass the course, then she did not get an A on her term paper",
       "E": "fails to take into account the possibility that some students get A's on their term papers but do not pass the course"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT113",

@@ -222,7 +222,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -313,7 +314,10 @@
       "D": "People with larger-than-average estates to manage usually find it helpful to have their own lawyers; so if you have a larger-than-average estate to manage, you should get your own lawyer.",
       "E": "In deciding who they will call, telemarketers target people who have purchased from telemarketers in the past. So if you do not want to receive calls from telemarketers, you should not purchase anything from them."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT157",

@@ -360,7 +360,10 @@
       "D": "It overlooks the possibility that small observational studies are far more common than large randomized trials.",
       "E": "It fails to rule out the possibility that a study’s having findings that sound dramatic is an effect rather than a cause of the study’s being reported on."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT135",

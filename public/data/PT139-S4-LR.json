@@ -51,7 +51,10 @@
       "D": "concludes that a claim must be false because of the mere absence of evidence in its favor",
       "E": "concludes that a phenomenon will have a certain property merely because the phenomenon's cause has that property"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -198,7 +201,10 @@
       "D": "infers that a claim is false on the grounds that an inadequate argument has been given for that claim",
       "E": "presumes that since one part of a whole lacks a certain characteristic, the whole must lack that characteristic as well"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -291,7 +297,10 @@
       "D": "takes a condition that is sufficient for the conclusion to be true as one that is necessary for the conclusion to be true",
       "E": "relies on the claims of an authority on a topic outside that authority's area of expertise"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -407,7 +416,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {

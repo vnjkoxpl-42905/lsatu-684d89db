@@ -357,7 +357,10 @@
       "D": "The committee should endorse the plan to postpone construction of the new expressway. Many residents of the neighborhoods that would be affected are fervently opposed to that construction, and the committee is obligated to avoid alienating those residents.",
       "E": "One should not borrow even small amounts of money unless it is absolutely necessary. Once one borrows a few dollars, the interest starts to accumulate. The longer one takes to repay, the more one ends up owing, and eventually a small debt has become a large one."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -414,7 +417,10 @@
       "D": "The argument overlooks the fact that a promise need not be unreliable just because the person who made it had an ulterior motive for doing so.",
       "E": "The argument overlooks the fact that a candidate who makes promises for selfish reasons may nonetheless be worthy of the office for which he or she is running."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -450,6 +456,9 @@
       "D": "fails to consider the possibility that Australopithecus afarensis had one or more characteristics that lessened its chances of surviving prehistoric times",
       "E": "fails to consider the possibility that, even if a condition caused a result to occur in one case, it was not necessary to cause the result to occur in a similar case"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

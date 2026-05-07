@@ -15,7 +15,10 @@
       "D": "fails to say whether reptiles other than alligators were examined for the same developmental abnormalities that were discovered in the alligators",
       "E": "uses evidence drawn from a sample of alligators that is unlikely to be representative of alligators in general"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -339,7 +342,10 @@
       "D": "presumes, without providing justification, that the argument it cites is the union leaders’ only argument for their view",
       "E": "presumes, without providing evidence, that leaders of all unions argue against increases in multinational control of manufacturing"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT144",

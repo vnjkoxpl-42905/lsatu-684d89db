@@ -69,7 +69,10 @@
       "D": "fails to consider the possibility that popular newspapers and magazines are able to review only a minuscule percentage of medical research articles",
       "E": "draws a conclusion that is logically equivalent to its premise"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -381,7 +384,10 @@
       "D": "fails to take into account the possibility that people would be better off if they did not do things that terrify them",
       "E": "overlooks the possibility that most people who have parachuted many times did not find it frightening initially"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -437,7 +443,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

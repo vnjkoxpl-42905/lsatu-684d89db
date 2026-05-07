@@ -393,7 +393,10 @@
       "D": "fails to rule out the possibility that the journal will remain in a precarious financial position whether it changes to an online version or not",
       "E": "bases its conclusion on the argument of an authority speaking outside the authority's field of expertise"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT128",

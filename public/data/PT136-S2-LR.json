@@ -15,7 +15,10 @@
       "D": "It fails to address the issue of the cost of traffic gridlock to the city's economy.",
       "E": "It presents a choice that is limited to two options, without giving reasons for not considering any other options."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -231,7 +234,10 @@
       "D": "conflates two different types of risk",
       "E": "reaches a generalization on the basis of a single case"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -375,7 +381,10 @@
       "D": "puts forward evidence that presupposes an important part of the claim that the argument attempts to support",
       "E": "rejects a position on the grounds that the motives of the person who has advanced the position were not disinterested"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT136",

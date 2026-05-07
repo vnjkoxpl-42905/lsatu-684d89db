@@ -105,7 +105,10 @@
       "D": "neglects the possibility that the birds have different patterns of food consumption during different parts of the day and night",
       "E": "fails to consider the possibility that the birds' diet has changed since the earlier belief about their diet was formed"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -234,7 +237,10 @@
       "D": "Each piece of wood in this chair is sturdy. Therefore this chair is sturdy.",
       "E": "Each sentence in this novel is well constructed. Therefore this is a well-constructed novel."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",

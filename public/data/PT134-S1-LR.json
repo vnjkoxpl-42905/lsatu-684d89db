@@ -123,7 +123,10 @@
       "D": "takes for granted that all results of nutritional research are eventually reported",
       "E": "fails to consider that there are many foods that are reported to be unhealthful"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -161,7 +164,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {
@@ -441,7 +445,10 @@
       "D": "takes for granted that if most consumers of a product would buy it even if they knew several of the ingredients in it, then they would buy the product even if they knew all the ingredients in it",
       "E": "confuses a claim that under certain conditions a certain action should be taken with a claim that the action need not be taken in the absence of those conditions"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT134",

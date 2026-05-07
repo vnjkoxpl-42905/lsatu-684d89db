@@ -459,6 +459,9 @@
       "D": "fails to establish that mathematics professors are not capable of teaching Statistics for the Social Sciences effectively",
       "E": "presumes, without providing justification, that any policies that apply to history courses must be justified with respect to mathematics courses"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

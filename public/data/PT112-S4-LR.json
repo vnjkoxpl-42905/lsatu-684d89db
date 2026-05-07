@@ -249,7 +249,10 @@
       "D": "It uses the term \"provable\" without defining it.",
       "E": "It fails to distinguish between a true claim that has mistakenly been believed to be false and a false claim that has mistakenly been believed to be true."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT112",

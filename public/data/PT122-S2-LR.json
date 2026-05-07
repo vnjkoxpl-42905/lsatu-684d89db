@@ -87,7 +87,10 @@
       "D": "fails to recognize that evidence advanced in support of a conclusion actually undermines that conclusion",
       "E": "generalizes about the behavior of all people on the basis of the behavior of a few"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -234,7 +237,10 @@
       "D": "It uses the term \"positive attitudes\" to mean two different things.",
       "E": "It identifies the secretaries' positive attitudes as the cause of their excellent job performance although their attitudes might be an effect of their performance."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -414,7 +420,10 @@
       "D": "It fails to indicate whether the speaker is aware of any evidence that could undermine the conclusion.",
       "E": "It presumes, without providing justification, that science can provide a complete account of any physical phenomenon."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",

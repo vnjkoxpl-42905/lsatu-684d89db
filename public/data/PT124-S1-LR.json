@@ -385,7 +385,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -404,7 +405,10 @@
       "D": "holds that if a person lacks a property that would suffice to make the person unhealthy, then that person must be healthy",
       "E": "mistakes a merely relative property for one that is absolute"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -458,6 +462,9 @@
       "D": "incorrectly infers that astronomical knowledge is scientific merely from the fact that such knowledge is needed to create an astrological chart",
       "E": "presumes, without providing justification, that any art must involve the synthesis of a multitude of factors and symbols"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

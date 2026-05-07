@@ -15,7 +15,10 @@
       "D": "fails to take into account that the sorts of governmental efforts that reduce unemployment may not be effective in creating more high-paying jobs",
       "E": "ignores other economic indicators, which may not have improved during the past two years"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -105,7 +108,10 @@
       "D": "fails to demonstrate that the myth was not borrowed from one of the cultures by the others",
       "E": "fails to explain why people use myth for the expression of unconscious thoughts"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -411,7 +417,10 @@
       "D": "overlooks the possibility that self-disparagement and being dismissive of others can result from something other than comparing oneself to others",
       "E": "takes for granted that whenever one compares oneself to others one sees them as more successful and more able than oneself or less successful and less able than oneself"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -429,7 +438,10 @@
       "D": "Most gardeners are people with a great deal of patience. Since most of Molly's classmates who garden are women, at least one female classmate of Molly's must be a person with a great deal of patience.",
       "E": "Most of Molly's classmates are gardeners with a great deal of patience. Since most of Molly's classmates are women, at least one female classmate of Molly's must be a gardener with a great deal of patience."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT122",

@@ -339,7 +339,10 @@
       "D": "draws a conclusion on the basis of a biased sample",
       "E": "fails to consider that crime might affect the neighborhood negatively without affecting businesses negatively"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT154",

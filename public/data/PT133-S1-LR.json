@@ -51,7 +51,10 @@
       "D": "It employs language that unfairly represents those who are likely to reject the argument's conclusion.",
       "E": "It treats a hypothesis as fact even though it is admittedly unsupported."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -423,7 +426,10 @@
       "D": "The argument attempts to draw its main conclusion from a set of premises that are mutually contradictory.",
       "E": "The argument applies a statistical generalization to a particular case to which it was not intended to apply."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -459,6 +465,9 @@
       "D": "confuses a motive for doing something with a motive for avoiding something",
       "E": "takes the refutation of an argument to be sufficient to show that the argument's conclusion is false"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

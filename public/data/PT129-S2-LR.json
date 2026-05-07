@@ -72,7 +72,10 @@
       "D": "draws a general conclusion based on too small a sample",
       "E": "incorrectly focuses on the behavior of the dissenting students rather than relating the reasons for that behavior"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -108,7 +111,10 @@
       "D": "takes for granted that certain actions are morally wrong simply because most people believe that they are morally wrong",
       "E": "draws a conclusion that simply restates a claim presented in support of that conclusion"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -144,7 +150,10 @@
       "D": "Thomas argued that because Natasha has driven her car to work every day since she bought it, she would probably continue to drive her car to work.",
       "E": "Jerod had never spotted a deer in his area and concluded from this that there are no deer in the area."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -478,6 +487,9 @@
       "D": "takes for granted that Flavius's attempt to discourage the arts was successful",
       "E": "fails to consider whether manual labor and moral temperance were widely regarded as virtues in ancient Rome"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

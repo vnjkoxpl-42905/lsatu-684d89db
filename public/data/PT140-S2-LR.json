@@ -51,7 +51,10 @@
       "D": "It uses two senses of the term “effective” without differentiating them.",
       "E": "It takes for granted that an advertisement’s only purpose is to convey its message."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT140",

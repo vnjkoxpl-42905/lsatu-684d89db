@@ -33,7 +33,10 @@
       "D": "concludes that one part of a change was responsible for an effect without ruling out the possibility that other parts of that change were responsible",
       "E": "concludes that making a dietary change improved the health of a particular person simply because that change results in improved health for most people"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -72,7 +75,10 @@
       "D": "it is unlikely that any character could qualify as a “self-identified agent”",
       "E": "some of Thompson’s claims contradict each other"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -270,7 +276,10 @@
       "D": "surmises from the fact that two phenomena are correlated that one causes the other",
       "E": "draws a conclusion based solely on data that are ten years old"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -363,7 +372,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -400,7 +410,10 @@
       "D": "Although Hopper claims to have been working in another part of the plant when the accident occurred, company records show that every person on the cleanup crew of which Hopper is a member was in the grain area at the time. Hence Hopper either has misremembered events, or is not telling the truth.",
       "E": "Two of the seven critical parts in that gear assembly are unsafe to use, even though this is not obvious upon a casual inspection. The assembly therefore is unsafe to rely on and ought to be repaired."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT155",

@@ -69,7 +69,10 @@
       "D": "Most mechanical engineers I have talked to say that it is healthier to refrain from eating meat. So most mechanical engineers are vegetarians.",
       "E": "For many years now, many people, some famous, have reported that they have seen or come in contact with unidentified flying objects. So there are probably extraterrestrial societies trying to contact us."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -231,7 +234,10 @@
       "D": "It presumes, without providing warrant, that a jury's finding a defendant not guilty is evidence of dishonesty on the part of someone who testified against the defendant.",
       "E": "It fails to consider that jury members sometimes disagree with each other about the significance of a particular person's testimony."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -267,7 +273,10 @@
       "D": "fails to address the possibility that the exhibit would have drawn enough visitors to prevent bankruptcy even without media coverage",
       "E": "presupposes the very conclusion that it is trying to prove"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -306,7 +315,10 @@
       "D": "takes for granted that a threat that is aggravated by certain factors could not occur in the absence of those factors",
       "E": "draws a conclusion about what is possible from a premise about what is actually the case"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -453,7 +465,10 @@
       "D": "fails to address the possibility that some forms of therapy have never been proven to be effective as treatments for psychological problems",
       "E": "takes for granted that the sample of people studied did not have significantly more psychological problems, on average, than the population as a whole"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT121",

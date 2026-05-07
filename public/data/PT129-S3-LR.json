@@ -33,7 +33,10 @@
       "D": "It rejects a position merely on the grounds that an inadequate argument has been given for it.",
       "E": "It rejects an argument on the basis of an appeal to popular opinion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -277,7 +280,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -332,7 +336,10 @@
       "D": "takes a condition that suffices to prove its conclusion to be a condition necessary for the truth of that conclusion",
       "E": "concludes that a hypothesis is false simply because it contradicts other beliefs held by the advocates of that hypothesis"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT129",

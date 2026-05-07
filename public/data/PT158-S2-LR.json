@@ -33,7 +33,10 @@
       "D": "draws a conclusion that simply restates a claim presented in support of that conclusion",
       "E": "generalizes from a limited number of instances of a certain kind to all instances of that kind ION II 5 minutes estions ing presented in a brief passage. In answering the questions, you ds implausible, superfluous, or incompatible with the passage. For bly answer the question. However, you are to choose the best ompletely answers the question and mark that response on your"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -254,7 +257,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -399,7 +403,10 @@
       "D": "A decision in favor of developing the northern border of the town logically implies that it would be equally acceptable to develop the southern, eastern, or western borders. So, it is possible that at least one of these other borders will also be developed.",
       "E": "If everyone were an author, poet, or academic, then society would come crashing to a halt. But most people are not poets or authors. Nor are there many academics in our society. Therefore, our society will not come crashing to a halt."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT158",

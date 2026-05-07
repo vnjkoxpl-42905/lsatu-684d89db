@@ -105,7 +105,10 @@
       "D": "fails to consider the possibility that dinosaurs descended from birds",
       "E": "ignores the possibility that dinosaurs and birds descended from a common ancestor"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -403,7 +406,10 @@
       "D": "Some types of nuts make Roy's throat itch. These cookies contain a greater percentage of nuts than that pie contains. Therefore, these cookies are more likely to make Roy's throat itch.",
       "E": "Eating at a restaurant costs more than eating food prepared at home. Therefore, this home-cooked meal is less expensive than a restaurant meal of the same dishes would be."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT133",

@@ -105,7 +105,10 @@
       "D": "taking lack of evidence for a claim as evidence undermining that claim",
       "E": "presupposing what it sets out to establish"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -234,7 +237,10 @@
       "D": "taking evidence that a claim is believed to be true to constitute evidence that the claim is in fact true",
       "E": "describing survey results that were obtained in the past as if they are bound to obtain in the future as well"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT118",

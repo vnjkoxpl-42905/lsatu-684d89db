@@ -306,7 +306,10 @@
       "D": "The argument offers no indication that there is evidence for its claim that totalitarianism destroys the spirit and makes life miserable.",
       "E": "The argument sets out anarchy and totalitarianism as the only two political alternatives that are available."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -345,7 +348,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

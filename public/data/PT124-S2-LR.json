@@ -69,7 +69,10 @@
       "D": "fails to discuss the benefits of the factory to the surrounding community",
       "E": "equivocates between two different notions of the term \"health risk\""
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -197,7 +200,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {
@@ -234,7 +238,10 @@
       "D": "draws a conclusion from an unrepresentative sample of data",
       "E": "infers that watching TV is a consequence of a personality disorder"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -414,7 +421,10 @@
       "D": "The argument fails to consider that a short, sharp increase in the acquisition of weapons by a nation may be a response to the increased armament of neighboring nations.",
       "E": "The argument fails to consider that some of the minor wars that have occurred in the last 200 years may have been preceded by rapid increases in the acquisition of weapons by the nations that subsequently became participants in those wars."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT124",

@@ -15,7 +15,10 @@
       "D": "magnets attract substances other than iron",
       "E": "some magnets attract iron more strongly than others"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -181,7 +184,10 @@
       "D": "The argument’s conclusion is based on the testimony of people who have not been shown to have appropriate expertise.",
       "E": "The argument takes for granted that no third option is available that will satisfy all the interested parties."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT138",

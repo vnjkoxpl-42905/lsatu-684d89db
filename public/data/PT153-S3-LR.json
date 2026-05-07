@@ -123,7 +123,10 @@
       "D": "concludes that a food contributes to health simply because that food tends to be part of the diets of healthy people",
       "E": "contains a premise that presupposes the truth of the conclusion"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -339,7 +342,10 @@
       "D": "concludes that a view is false merely on the grounds of how people came to believe it",
       "E": "takes what is sufficient for diminishing the quality of a work to be necessary for doing so"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT153",

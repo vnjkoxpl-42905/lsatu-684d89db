@@ -253,7 +253,10 @@
       "D": "Evidence that is taken to be only probably true is used as the basis for a claim that something is definitely true.",
       "E": "Facts that are not directly relevant to the argument are treated as if they supported the overall conclusion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT107",

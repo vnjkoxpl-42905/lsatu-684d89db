@@ -15,7 +15,10 @@
       "D": "accepts the assertions of an ancient scholar without presenting contemporary verification of that scholar’s views",
       "E": "implies that Pliny the Elder’s writings are too outdated to be of any value"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -69,7 +72,10 @@
       "D": "overlooks the possibility that NoSmoke helps people to quit smoking in ways other than by reducing smokers’ cravings for cigarettes",
       "E": "illicitly presumes that a claim must be false because the people making the claim are biased"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -251,7 +257,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {
@@ -309,7 +316,10 @@
       "D": "takes what may be mere popular opinion to be an established fact",
       "E": "takes a sufficient condition to be a necessary condition"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT127",

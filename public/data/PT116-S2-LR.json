@@ -159,7 +159,10 @@
       "D": "attack employers' motives instead of addressing their arguments",
       "E": "make a generalization based on a sample that there is reason to believe is biased"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -213,7 +216,10 @@
       "D": "overlooks the fact that people's perception of their importance changed from century to century",
       "E": "neglects the fact that people's perception of their importance varies from culture to culture"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT116",

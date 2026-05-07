@@ -15,7 +15,10 @@
       "D": "confuses the cause of a phenomenon with an effect of that phenomenon",
       "E": "relies merely on anecdotal evidence to challenge a general claim"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -270,7 +273,10 @@
       "D": "improperly attacks the university president’s moral character",
       "E": "rejects a view on the grounds that someone has given inadequate reasons for accepting that view"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -345,7 +351,10 @@
       "D": "presumes that because something is true of each of a company’s products it is also true of the company as a whole",
       "E": "bases a conclusion on claims that are inconsistent with each other"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -383,7 +392,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

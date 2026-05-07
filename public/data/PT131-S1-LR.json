@@ -108,7 +108,10 @@
       "D": "It presumes, without providing justification, that happiness is, in fact, the goal of life.",
       "E": "It makes a generalization based on the testimony of a group whose views have not been shown to be representative."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -375,7 +378,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

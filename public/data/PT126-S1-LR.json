@@ -15,7 +15,10 @@
       "D": "Your coach cannot be trusted to judge our swimming practices: he accepted a lucrative promotional deal from a soft-drink company.",
       "E": "Your teen magazine should not run this feature on problems afflicting modern high schools: your revenue depends on not alienating the high school audience."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -363,7 +366,10 @@
       "D": "confuses a necessary condition for parthenogenesis with a sufficient condition for it",
       "E": "assumes that the methods used in a study of one mammalian species were flawed merely because the study's findings cannot be generalized to all other mammalian species"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT126",

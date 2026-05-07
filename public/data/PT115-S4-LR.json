@@ -195,7 +195,10 @@
       "D": "attacks the integrity of the writers without knowing anything about them",
       "E": "confuses two meanings of the term \"anonymous\""
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT115",

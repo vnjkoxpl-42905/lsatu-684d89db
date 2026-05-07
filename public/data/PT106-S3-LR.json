@@ -198,7 +198,10 @@
       "D": "Personnel of the republic’s armed services are strongly encouraged to finish their high school education.",
       "E": "The proportion of recruits who had completed at least two years of college education was greater in 1986 than in 1980."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -216,7 +219,10 @@
       "D": "The cockroach infestations that have been combated with vexone have not included all of the cockroach species that infest North America.",
       "E": "Roach Ender was tested against exactly 4,000 cockroach species that infest North America."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -360,7 +366,10 @@
       "D": "Too general a conclusion is made about investing on the basis of a single experiment involving short-term investing but not long-term investing.",
       "E": "No evidence is considered about the long-term performance of the chimpanzee’s portfolio versus that of the analysts’ portfolios."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -381,7 +390,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Famous Flaws"
     ]
   },
   {

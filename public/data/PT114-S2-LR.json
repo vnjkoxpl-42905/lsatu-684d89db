@@ -15,7 +15,10 @@
       "D": "implies that all scientists who depend on grants to support their research are unreliable",
       "E": "overgeneralizes from the example of one deceptive researcher"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -414,7 +417,10 @@
       "D": "Experts agree that red wines from France's Bordeaux region are the best in the world, and five are on this year's list of the world's top ten red wines. However, the best currently available Bordeaux wines are more than one year old, whereas other countries' best are not. Therefore, it is false that Bordeaux red wines are the best in the world this year.",
       "E": "Sociologists agree that the psychological development of children may be impaired by watching too much television, though researchers argued recently that the quality of the parent-child relationship is more developmentally significant than television viewing. These researchers did not consider the long-term impact of television on children, so it is quite likely that the psychological development of children is impaired by watching too much television."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",

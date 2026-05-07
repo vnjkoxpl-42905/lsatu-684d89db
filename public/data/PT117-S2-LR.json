@@ -450,6 +450,9 @@
       "D": "poses a question that has little relevance to the argument's conclusion",
       "E": "ignores, without giving justification, alternative possible explanations of the initial failure of bicycles"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   }
 ]

@@ -15,7 +15,10 @@
       "D": "it substitutes an attack on a person for the giving of reasons",
       "E": "a cause and its effect are mistaken for each other"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -69,7 +72,10 @@
       "D": "appealing to wholly irrelevant issues to deflect attention away from the real issue",
       "E": "insisting that an obligation exists without offering any evidence that it exists"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -270,7 +276,10 @@
       "D": "too readily accepts a claim by appeal to inappropriate authority",
       "E": "ignores the fact that some people are mature at age sixteen"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT103",

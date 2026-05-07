@@ -33,7 +33,10 @@
       "D": "draws a conclusion that merely restates a claim presented in support of that conclusion",
       "E": "assumes that if something serves a purpose it must have developed in order to serve that purpose"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -69,7 +72,10 @@
       "D": "The editorial overlooks the possibility that the nation is neither thriving nor in decline.",
       "E": "The editorial dismisses a particular view while offering evidence that actually supports that view."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT149",

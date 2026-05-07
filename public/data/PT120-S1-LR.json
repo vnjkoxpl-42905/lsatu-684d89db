@@ -15,7 +15,10 @@
       "D": "fails to consider the possibility that police presence in a particular area is often a response to the relatively high crime rate in that area",
       "E": "takes for granted that public resources devoted to police presence could be allocated in another manner that would be a stronger deterrent to crime"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -141,7 +144,10 @@
       "D": "takes for granted that there is no scientific way to determine whether some individuals possess ESP",
       "E": "takes for granted that the fact that a claim has not been demonstrated to be false establishes that it is true"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -375,7 +381,10 @@
       "D": "Domestic cats are closely related to tigers. Therefore, even though they are far smaller than tigers, their eating habits are almost the same as those of tigers.",
       "E": "If a suit of questionable merit is brought in the first district rather than the second district, its chances of being immediately thrown out are greater. Therefore, to have the best chance of winning the case, the lawyers will bring the suit in the second district."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -411,7 +420,10 @@
       "D": "ignores the possibility that an increase in theta waves may not always be accompanied by a state of profound creativity",
       "E": "provides insufficient reasons to believe that people who are not in states of profound creativity have low levels of theta brain waves"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",

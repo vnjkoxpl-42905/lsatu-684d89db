@@ -177,7 +177,10 @@
       "D": "fails to quantify precisely the length of time during which the mind holds a piece of information in short-term memory",
       "E": "takes for granted that learning deficits in adults have a cause unrelated to the cause of learning deficits in children"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -213,7 +216,10 @@
       "D": "presumes, without providing justification, that grammar books cannot have any use except as reference sources",
       "E": "ignores the possibility that there is a middle ground between being sure that a sentence is grammatical and thinking that it is ungrammatical"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -303,7 +309,10 @@
       "D": "By definition, a polygon is any closed plane figure bounded by straight lines. That object pictured on the chalkboard is certainly a closed plane figure bounded by a large number of straight lines, so that object pictured on the chalkboard must be a polygon.",
       "E": "People who have never lost something that they cannot afford to lose will be lax about keeping their property secure. Jon is lax about keeping property secure when it is something he can afford to lose, so Jon must never have lost anything."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -339,7 +348,10 @@
       "D": "The argument overlooks the possibility that two best-selling brands of bait may be equally effective.",
       "E": "The argument overlooks the possibility that baits that work well with a particular variety of fish may not work well with other varieties of that fish."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -375,7 +387,10 @@
       "D": "presumes, without providing justification, that some faculty members will leave their jobs rather than accept a reduced salary",
       "E": "ignores the possibility that the budget could be reduced by eliminating some faculty positions and reducing the remaining faculty members’ salaries"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",

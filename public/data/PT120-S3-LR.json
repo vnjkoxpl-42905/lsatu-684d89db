@@ -141,7 +141,10 @@
       "D": "presumes, without providing justification, that someone considering whether or not to steal a particular car considers only what model the car is",
       "E": "presumes, without providing justification, that the likelihood of a car’s being stolen should override other considerations in deciding which car one should drive"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -288,7 +291,10 @@
       "D": "ignores the possibility that the electorate’s voting behavior is not significantly affected by the content of coverage of candidates",
       "E": "ignores the possibility that reporters generally fear losing access to incumbents more than they fear losing access to challengers"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -345,7 +351,10 @@
       "D": "It fails to consider the possibility that poor diets cause some people to develop health problems other than heart disease.",
       "E": "It offers no explanation for why some people with high cholesterol levels never develop heart disease."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -453,7 +462,10 @@
       "D": "To put together this year’s two All-Star Teams, the best players in the league were selected. Half of them were put on Team One, and half were put on Team Two. Since each player on the two teams was one of the best players in the league this year, it follows that the two All-Star Teams are the two best teams this year.",
       "E": "Various schools chose teams of students to compete in a debate tournament. Each school’s team presented a position and rebutted the others’ positions. After the initial scores were in, the ten top teams competed against each other. Since one team eventually emerged with the highest average score, it was clearly the best team."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT120",

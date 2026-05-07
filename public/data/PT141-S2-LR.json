@@ -51,7 +51,10 @@
       "D": "takes for granted that products with similar content that are in different media will be of roughly equal popularity",
       "E": "treats a requirement for a product to be popular as something that ensures that a product will be popular"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -123,7 +126,10 @@
       "D": "The plaintiff accuses the defendant of violating campaign laws, but these accusations are ill founded. They are clearly an attempt to stir up controversy, because they were made just two weeks before the election.",
       "E": "The plaintiff accuses the defendant of voting only for campaign laws that would favor the defendant’s party. This accusation is ill founded, however, because it attacks the defendant’s motivations instead of addressing the arguments the defendant has put forth justifying these votes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -327,7 +333,10 @@
       "D": "bases its conclusion on two claims that contradict each other",
       "E": "rejects a position on the grounds that an inadequate argument has been made for it"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT141",

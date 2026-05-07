@@ -255,7 +255,10 @@
       "D": "Office workers who experienced frequent headaches were more likely than other workers to overestimate how much time they spent using VDTs.",
       "E": "Office workers who regularly used VDTs experienced the same amount of job-related stress as workers who did not use VDTS."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -363,7 +366,10 @@
       "D": "Shield's first novel has a more complicated plot than any other that she has written. Hence, that plot must be very complex.",
       "E": "Mathematics is more difficult than history. Therefore, my calculus test will be more difficult than my history test."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT119",

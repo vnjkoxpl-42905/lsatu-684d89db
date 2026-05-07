@@ -141,7 +141,10 @@
       "D": "its discussion of the opponent’s lifestyle is irrelevant to the merits of the opponent’s argument",
       "E": "it ignores the possibility that the opponent may have previously lived in an apartment building"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -146,7 +146,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {
@@ -352,7 +353,10 @@
       "D": "infers, from the claim that no individual member of a set has a certain effect, that the set as a whole does not have that effect",
       "E": "draws a conclusion that merely restates material present in one or more of its premises"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -429,7 +433,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Famous Flaws"
     ]
   },
   {

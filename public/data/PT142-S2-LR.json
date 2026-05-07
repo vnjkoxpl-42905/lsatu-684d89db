@@ -15,7 +15,10 @@
       "D": "overlooks the possibility that Jamal is referring to two different kinds of right",
       "E": "attacks Jamal’s character rather than his argument"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -141,7 +144,10 @@
       "D": "uses the word “diet” in a nontechnical sense whereas Marcia’s argument uses this term in a medical sense",
       "E": "takes for granted that people losing jobs in meat- based industries would become vegetarians"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT142",
