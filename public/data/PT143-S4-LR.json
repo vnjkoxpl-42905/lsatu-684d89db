@@ -33,7 +33,10 @@
       "D": "whether the Mytheco executive was at one time a technical writer employed by Mytheco",
       "E": "how the Mytheco executive’s salary compares with that of the programmers 4 4 4 4"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -284,7 +287,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Sampling"
     ]
   },
   {

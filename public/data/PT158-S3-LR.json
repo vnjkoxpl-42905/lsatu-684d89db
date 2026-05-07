@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Sampling"
     ]
   },
   {
@@ -93,7 +94,10 @@
       "D": "In some animal species, tame members are less fertile than wild members.",
       "E": "In some domesticated animal species, some members are much more tame than other members. 3 3 -21-3"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT158",

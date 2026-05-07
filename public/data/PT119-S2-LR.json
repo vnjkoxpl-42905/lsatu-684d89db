@@ -201,7 +201,10 @@
       "D": "Historians should aim to convey past events from the perspective of participants in those events.",
       "E": "Historians should use fictional episodes to supplement their accounts of past events if the documented record of those events is incomplete."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT119",

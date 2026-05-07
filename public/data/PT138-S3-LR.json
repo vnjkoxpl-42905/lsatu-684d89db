@@ -129,7 +129,10 @@
       "D": "Lichens can easily be grown in laboratories.",
       "E": "Lichens absorb all other significant air pollutants in a manner similar to their absorption of copper."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT138",

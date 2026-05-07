@@ -214,7 +214,10 @@
       "D": "assumed without proof that its thermometer was reliable",
       "E": "neglected to offer any explanation for the results it discovered"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT140",

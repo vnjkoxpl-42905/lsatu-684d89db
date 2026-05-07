@@ -297,7 +297,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Sampling"
     ]
   },
   {
@@ -358,7 +359,10 @@
       "D": "relies on a sample that it is reasonable to suppose is unrepresentative of the group about which it draws its conclusion",
       "E": "confuses the cost of an item with its value to the purchaser"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT140",

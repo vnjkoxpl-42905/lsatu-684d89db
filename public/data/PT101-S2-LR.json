@@ -309,7 +309,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Sampling"
     ]
   },
   {

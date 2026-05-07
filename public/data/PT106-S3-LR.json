@@ -35,7 +35,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Sampling"
     ]
   },
   {
@@ -390,7 +391,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Sampling"
     ]
   },
   {

@@ -111,7 +111,10 @@
       "D": "It supports the claim that donations of food from other countries will not end the chronic food shortages in the official's country.",
       "E": "It is supported by the claim that food producers and suppliers in the official's country may be forced out of business by donations of food from other countries."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT113",

@@ -318,7 +318,10 @@
       "D": "Nearly all professors who fail to distribute the paper evaluation forms do so because they believe the students will evaluate them unfavorably.",
       "E": "Dissatisfied students are in general not more likely than satisfied students to submit a computerized evaluation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT119",

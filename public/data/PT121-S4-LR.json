@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Sampling"
     ]
   },
   {
@@ -134,7 +135,10 @@
       "D": "Many traditional nonhybrid strains of plants produce crops that taste better and thus sell better than the hybrid strains of those crops.",
       "E": "Many governments subsidize farmers who plant only hybrid strains of staple crops."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT121",

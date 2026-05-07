@@ -471,7 +471,10 @@
       "D": "Life similar to Earth's could evolve under conditions very different from those on Earth.",
       "E": "Most other planetary systems in the universe have nine planets."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT114",

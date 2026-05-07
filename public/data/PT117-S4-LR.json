@@ -94,7 +94,10 @@
       "D": "The stores from which the Survey Group collected information about tea sales are all located in the same small region of the country.",
       "E": "Tea has been the subject of an expensive and efficient advertising campaign funded, in part, by the National Tea Association."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT117",

@@ -232,7 +232,10 @@
       "D": "When people have been under considerable stress, they should engage in competitive activities in order to relieve the stress.",
       "E": "People with a history of sports injuries should not engage in sports activities if they have recently been under stress."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT127",
