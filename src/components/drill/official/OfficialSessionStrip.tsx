@@ -35,7 +35,7 @@ export default function OfficialSessionStrip({
   onComplete,
 }: Props) {
   return (
-    <div className="mx-auto max-w-[1180px] mb-3 sm:mb-4 px-1 sm:px-2 flex items-center gap-3 text-[13px]">
+    <div className="mx-auto w-full max-w-[1280px] mb-3 sm:mb-4 px-1 sm:px-2 flex items-center gap-3 text-[13px]">
       {/* Left: breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate">
         {breadcrumbs.map((bc, i) => {
@@ -71,7 +71,7 @@ export default function OfficialSessionStrip({
           <button
             type="button"
             onClick={onTogglePause}
-            className="rounded border border-slate-400 bg-transparent px-3 py-1 text-[13px] text-slate-100 hover:bg-white/10 transition-colors"
+            className="rounded border border-slate-300 bg-white px-4 py-1.5 text-[13px] font-medium text-slate-900 hover:bg-slate-100 transition-colors"
           >
             {isPaused ? "Resume Section" : "Pause Section"}
           </button>
@@ -79,7 +79,7 @@ export default function OfficialSessionStrip({
         <button
           type="button"
           onClick={onComplete}
-          className="rounded border border-slate-400 bg-transparent px-3 py-1 text-[13px] text-slate-100 hover:bg-white/10 transition-colors"
+          className="rounded border border-slate-300 bg-white px-4 py-1.5 text-[13px] font-medium text-slate-900 hover:bg-slate-100 transition-colors"
         >
           Complete Section
         </button>
