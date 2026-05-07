@@ -234,6 +234,9 @@ const JSON_FILES = [
   '/data/PT158-S2-LR.json',
   '/data/PT158-S3-LR.json',
   '/data/PT158-S4-LR.json',
+  // PT159 (markdown ingest)
+  '/data/PT159-S1-LR.json',
+  '/data/PT159-S3-LR.json',
 ];
 
 // Simple hash for qid generation
