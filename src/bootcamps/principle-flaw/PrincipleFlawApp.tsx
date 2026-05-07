@@ -15,7 +15,7 @@
 
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Calendar, CheckSquare, FileText, LayoutDashboard, Printer, User, Target, Zap, Flame } from 'lucide-react';
+import { BookOpen, Calendar, CheckSquare, FileText, LayoutDashboard, User, Target, Zap, Flame } from 'lucide-react';
 import TodayView from './components/TodayView';
 import CommandPalette from './components/CommandPalette';
 import { StudyResource } from './data';
@@ -180,10 +180,6 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
             <button onClick={() => setTabAndScroll('profile')}
               className={`flex items-center gap-3 w-full px-3 py-2 text-xs rounded-lg transition-all duration-300 ${activeTab === 'profile' ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
               <User size={16} /><span>Profile</span>
-            </button>
-            <button onClick={() => window.print()}
-              className="flex items-center gap-3 w-full min-h-[44px] px-3 py-2.5 text-xs text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50 rounded-lg transition-all">
-              <Printer size={16} aria-hidden="true" /><span>Print / Save PDF</span>
             </button>
           </div>
         </aside>
