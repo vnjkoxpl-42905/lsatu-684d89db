@@ -38,7 +38,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -99,7 +100,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -141,7 +143,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -203,7 +206,10 @@
       "D": "The productivity of dairy farms should be increased only if the quality of the product is not compromised.",
       "E": "The key to maximizing profits on a dairy farm is having a concern for dairy cows' environment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -221,7 +227,10 @@
       "D": "real social bonds always lead to intimacy",
       "E": "the use of e-mail removes barriers to self-revelation"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -345,7 +354,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -389,7 +399,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Conditional Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -433,7 +445,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -473,7 +486,10 @@
       "D": "Some people believe humans will someday colonize other planets. Since anyone who believes that probably also believes overpopulation of Earth is not a problem, it follows that some people do not believe overpopulation of Earth is not a problem.",
       "E": "Some people believe there is life on planets other than Earth. Since anyone who believes that must also believe other planets have atmospheres that can support life, it follows that other planets do have atmospheres that can support life."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT129",

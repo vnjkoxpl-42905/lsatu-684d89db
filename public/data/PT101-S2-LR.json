@@ -37,7 +37,10 @@
       "D": "The sales of toys for infants reflect the preferences of infants in at least one respect.",
       "E": "Toy makers study infants to determine what colors the infants can distinguish easily."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -80,7 +83,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "EXCEPT"
     ]
   },
   {
@@ -141,7 +145,10 @@
       "D": "Most residents who have been exercising regularly for at least a year belong to private health clubs.",
       "E": "In other cities where recreation centers have been provided, the per capita medical costs have decreased."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -340,7 +347,10 @@
       "D": "arguing that since two alternative developments exhaust all the plausible possibilities, one of those developments occurred and the other did not",
       "E": "concluding that since the evidence concerning a supposed change is ambiguous, it is most likely that no change is actually taking place"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -378,7 +388,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -399,7 +410,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "EXCEPT"
     ]
   },
   {
@@ -443,7 +455,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -465,7 +478,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Dense Stimulus"
     ]
   },
   {

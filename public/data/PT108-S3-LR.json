@@ -17,7 +17,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender",
+      "EXCEPT"
     ]
   },
   {
@@ -54,7 +56,10 @@
       "D": "The judges for the contest were all professionals.",
       "E": "The categories were defined in such a way that amateur entries could not easily compete with the professional entries."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -204,7 +209,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -283,7 +289,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals"
     ]
   },
   {
@@ -320,7 +327,10 @@
       "D": "Some Zed speakers use the endings inconsistently even when speaking Zed.",
       "E": "In the Zed language, the verb endings affect only the form of the verb and not the meaning."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -338,7 +348,10 @@
       "D": "The region experienced fewer droughts in recent years than in previous years.",
       "E": "The cost of irrigation equipment has increased in recent years."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -443,7 +456,10 @@
       "D": "Refined sugars are often added to processed foods that also contain unhealthy fats.",
       "E": "The patients who replaced refined sugars with whole fruits also reduced their overall calorie intake."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT108",

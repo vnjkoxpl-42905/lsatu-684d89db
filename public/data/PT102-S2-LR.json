@@ -51,7 +51,10 @@
       "D": "will not decrease the size of his or her fat cells",
       "E": "will both decrease the level of cholesterol in his or her blood and gain weight"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -69,7 +72,10 @@
       "D": "Before photocopying technology existed, most counterfeits of paper currency were accomplished by master engravers.",
       "E": "Many criminals do not have access to the advanced photocopiers that are needed to produce counterfeits of microprinted paper currency that cashiers will accept as real."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -108,7 +114,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Alternatives"
+      "Alternatives",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -237,7 +245,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -292,7 +301,10 @@
       "D": "Air temperature surrounding rhododendrons, which can grow 12 feet tall, is likely to differ from air temperature surrounding crocuses, which are normally only a few inches high, by more than 2°C, even if the two plants are growing side by side.",
       "E": "Certain types of thermometers that are commonly used to measure outdoor temperatures can be extremely accurate in moderate temperature ranges but much less accurate in warmer or colder temperature ranges."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -314,7 +326,8 @@
     "questionFeatures": [
       "Alternatives",
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -333,7 +346,10 @@
       "D": "Chemicals other than nicotine present in chewing tobacco but not present in cigarette smoke can cause cancer.",
       "E": "Chemicals other than nicotine present in cigarette smoke but not present in chewing tobacco raise blood pressure."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -372,7 +388,10 @@
       "D": "Mammals that cannot engage in certain common forms of play when young are likely to show certain deficits that limit their subsequent success as adults.",
       "E": "Young mammals of predatory species tend to practice in their play inoffensive versions of motions and actions that are useful in finding and catching prey when these mammals become adults."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT102",

@@ -36,7 +36,10 @@
       "D": "Before they joined the study, some of the people in Group 3 had been in the habit of brushing their teeth only once a day.",
       "E": "The people in Group 2 and Group 3 brushed their teeth as vigorously as did the people in Group 1."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -117,7 +120,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -194,7 +198,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -215,7 +220,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -255,7 +261,10 @@
       "D": "People who have lost their jobs must continue to buy some basic goods such as food, even during bad economic times.",
       "E": "The prices of some consumer goods remain stable, even during a general price collapse."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -294,7 +303,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -376,7 +386,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -436,7 +447,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Causal Chains",
+      "Contrapositive Logic"
     ]
   },
   {

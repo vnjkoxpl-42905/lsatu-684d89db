@@ -192,7 +192,10 @@
       "D": "The quantity of agricultural runoff pouring out of the river has doubled in the past few decades.",
       "E": "The amount of oxygen in a body of water is in general inversely proportional to the level of phosphorus in that body of water."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -313,7 +316,11 @@
       "D": "At least some steel-manufacturing plants rely on electricity as their primary source of energy in the steel-manufacturing process.",
       "E": "There are at least some steel-manufacturing plants that could greatly reduce their electricity bills only if they used some method of converting wasted heat or other energy from the steel-manufacturing process into electricity. 2 2 2 2"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -374,7 +381,10 @@
       "D": "A basic principle of journalism holds that debate over controversial issues draws the attention of the public.",
       "E": "Journalists who challenge the veracity of claims are often criticized for failing their professional obligation to be objective."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -430,7 +440,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "EXCEPT"
     ]
   },
   {

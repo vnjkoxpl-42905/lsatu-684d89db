@@ -207,7 +207,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -268,7 +269,10 @@
       "D": "Children can learn to count without understanding the meaning of numbers.",
       "E": "Songs are useful in helping children remember the order in which familiar words occur."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -333,7 +337,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Dense Stimulus",
+      "EXCEPT"
     ]
   },
   {
@@ -441,7 +447,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {
@@ -478,7 +485,10 @@
       "D": "The scientific outlook in medicine should be replaced by an entirely different approach to medicine.",
       "E": "Doctors foster, by their actions, the perception that they do not really care about their patients."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -499,7 +509,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {

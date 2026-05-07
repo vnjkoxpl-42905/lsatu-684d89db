@@ -151,7 +151,11 @@
       "D": "Holders of life insurance policies do not have longer overall life expectancies than the general population.",
       "E": "People’s efforts to modify their weight to conform to a given range would not damage their health enough to decrease their overall life expectancies."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -265,7 +269,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {

@@ -163,7 +163,10 @@
       "D": "Sodium in groundwater increases the rate at which fluoride-bearing minerals dissolve.",
       "E": "Soil that contains high concentrations of sodium-bearing minerals also contains high concentrations of fluoride-bearing minerals."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -265,7 +268,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -286,7 +290,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Chains",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -326,7 +332,10 @@
       "D": "Engaging in exercise can directly lower one’s blood pressure.",
       "E": "For at least some people, engaging in exercise can cause their stress levels to be reduced."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -407,7 +416,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -428,7 +438,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Conditional Conclusion"
     ]
   },
   {

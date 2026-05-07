@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Causal Chains"
     ]
   },
   {
@@ -487,7 +488,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Analogies"
+      "Analogies",
+      "Contrapositive Logic"
     ]
   },
   {

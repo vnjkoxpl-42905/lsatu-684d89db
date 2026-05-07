@@ -112,7 +112,10 @@
       "D": "Publicly known people are usually not held sufficiently responsible for the problems they cause.",
       "E": "People are more inclined to blame a publicly known person if that person is someone over whom they feel they have power."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -132,7 +135,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -154,7 +159,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -259,7 +265,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -280,7 +287,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -299,7 +307,10 @@
       "D": "a source of increased purchasing power for workers in modern industrial economies also undermines their job security",
       "E": "the percentage of workers who can afford to purchase goods produced by modern industrial techniques is shrinking"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT157",

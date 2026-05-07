@@ -146,7 +146,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -165,7 +166,10 @@
       "D": "When landfills are converted to public parks, measures could be taken that would prevent people using the parks from being exposed to toxic vapors.",
       "E": "If vapors toxic to humans are produced by the degradation of household cleaning products by bacteria in any landfill, then the health of at least some humans will suffer."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -204,7 +208,10 @@
       "D": "It provides support for the initial premise in the argument.",
       "E": "It provides support for a counterargument to the initial premise."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -225,7 +232,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -269,7 +277,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "EXCEPT"
     ]
   },
   {
@@ -311,7 +320,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -419,7 +429,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -461,7 +472,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "EXCEPT"
     ]
   },
   {

@@ -122,7 +122,10 @@
       "D": "Teachers who teach university-level mathematics to pre-university students should be aware that students are likely to learn effectively only when the application of mathematics to concrete problems is shown.",
       "E": "The level of abstraction involved in a topic should not be considered in determining whether that topic is appropriate for pre-university students."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -198,7 +201,11 @@
       "D": "Some cooperation among manufacturers in the same industry is more beneficial than is pure competition.",
       "E": "Cooperation is beneficial only in industries whose products depend on other products of the same type."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -216,7 +223,10 @@
       "D": "The opinions reached by a social scientist in the study of a society can be considered as more reliable and objective if that social scientist is not a member of that society.",
       "E": "It is easier to correct the mistakes of an athlete if it is made clear to him that the criticism is part of an overarching effort to rectify the shortcomings of the entire team on which he plays."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -360,7 +370,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Important Pivot"
+      "Important Pivot",
+      "Dense Stimulus"
     ]
   },
   {
@@ -424,7 +435,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Conditional Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -511,7 +524,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "EXCEPT"
     ]
   }
 ]

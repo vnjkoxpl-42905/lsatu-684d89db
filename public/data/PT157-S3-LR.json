@@ -96,7 +96,10 @@
       "D": "An increase in workers’ standards of living will likely involve an accompanying decrease in how much they value their jobs overall.",
       "E": "Workers who have greater than average creativity and talent are sometimes less efficient than workers who have average creativity and talent."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -132,7 +135,10 @@
       "D": "Television sets that are just a few inches thick can now be made with screens that are both bright and very large.",
       "E": "Television sets with compound screens do not have any disadvantages relative to sets with noncompound screens."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -193,7 +199,11 @@
       "D": "The number of travelers per vehicle has increased over the past ten years.",
       "E": "Persons drive faster during the day than during the night."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -273,7 +283,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -394,7 +405,10 @@
       "D": "In the experiment, drinking more coffee than usual did not have beneficial effects on overall management ability that outweighed the reduction in ability to integrate past information.",
       "E": "The amount of coffee one drinks is the most important factor influencing the speed at which one processes new information. -26- 3 33"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -415,7 +429,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {

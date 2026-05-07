@@ -36,7 +36,10 @@
       "D": "Most drivers who exceed the speed limit do so unintentionally.",
       "E": "Even if the fines for speed-limit violations were increased, the number of such violations would still not be reduced."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -171,7 +174,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -257,7 +261,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -294,7 +299,10 @@
       "D": "The demand for rhinoceros horns will remain constant even if the supply decreases after the periodic trimming-off of the rhinoceros horns has begun.",
       "E": "Rhinoceroses whose horns have been trimmed off are unable to defend themselves against predators."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -353,7 +361,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Defender"
     ]
   },
   {
@@ -408,7 +417,10 @@
       "D": "Aristotle's Poetics has frequently been cited and commented on by modern Arab poets.",
       "E": "Aristotle's Poetics is largely concerned with drama, and dramatic works were written and performed by medieval Arabs."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -467,7 +479,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   }
 ]

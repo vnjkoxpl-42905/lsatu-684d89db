@@ -253,7 +253,10 @@
       "D": "Costs other than the costs of irrigation are different for halophytes grown by means of seawater irrigation than for conventional crops.",
       "E": "Pumping water for irrigation is proportionally one of the largest costs involved in growing, harvesting, and distributing any forage crop for animals."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -295,7 +298,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -360,7 +364,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -426,7 +431,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {

@@ -252,7 +252,10 @@
       "D": "Judges often instruct juries about those circumstances under which testimony of eyewitnesses is fallible.",
       "E": "Jurors are very likely to believe eyewitnesses who appear confident, and unreliable witnesses usually appear very confident."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -367,7 +370,10 @@
       "D": "People are generally not indifferent about how their estates are distributed.",
       "E": "One's beloved friends have a greater legal right to one's estate than one's distant relatives do."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -427,7 +433,10 @@
       "D": "The plot of the play is similar in some respects to plots of Warner's other works.",
       "E": "Audiences usually find drama critics' reviews unreliable."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT115",

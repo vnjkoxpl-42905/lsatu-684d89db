@@ -64,7 +64,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -370,7 +371,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -415,7 +417,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -478,7 +482,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "EXCEPT"
     ]
   },
   {

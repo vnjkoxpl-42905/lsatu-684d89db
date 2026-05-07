@@ -39,7 +39,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -97,7 +98,10 @@
       "D": "The newer displays will not be subject to deterioration because of low humidity.",
       "E": "The humidity in the museum is lower today than it was when the older displays were first put in place."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -320,7 +324,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {
@@ -360,7 +367,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Defender"
     ]
   },
   {

@@ -81,7 +81,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -160,7 +161,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -304,7 +306,10 @@
       "D": "A change in emphasis in the interpretation of history has lessened our ability to learn from history.",
       "E": "History should be interpreted in a way that gives equal emphasis to overarching historical trends and movements and to the details of historical events and motivations."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -456,7 +461,11 @@
       "D": "Use of similar tools is required if members of two distinct groups of tool-making hominids are to be considered members of the same species.",
       "E": "Through much of their coexistence, Cro- Magnons and Neanderthals were geographically isolated from one another."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Dense Stimulus",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -519,7 +528,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   }
 ]

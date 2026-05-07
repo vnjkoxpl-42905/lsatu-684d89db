@@ -120,7 +120,10 @@
       "D": "There has been a general decline in the resources devoted to workplace safety.",
       "E": "Inexperienced workers have lost their jobs at higher rates than experienced ones."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -203,7 +206,10 @@
       "D": "the source of the powerful forces that converge on the shoulder joint",
       "E": "the means by which a bird stabilizes its wings during flight"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -324,7 +330,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Defender"
     ]
   },
   {
@@ -428,7 +435,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -467,7 +476,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -508,7 +518,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Contrapositive Logic"
     ]
   }
 ]

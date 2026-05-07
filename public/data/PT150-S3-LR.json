@@ -135,7 +135,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sampling",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -351,7 +353,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {

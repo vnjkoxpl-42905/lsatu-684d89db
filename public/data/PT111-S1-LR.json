@@ -35,7 +35,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -143,7 +144,10 @@
       "D": "Because a child was forbidden to play until homework was completed, that child did much less daydreaming and focused on homework.",
       "E": "Because neither of the two leading word processing programs has all of the features consumers want, neither has been able to dominate the market."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -205,7 +209,10 @@
       "D": "Runners who train over 90 minutes per day grow bored with running and become less motivated.",
       "E": "Runners who train over 90 minutes per day deplete certain biochemical energy reserves, leaving them less energy for marathons."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -311,7 +318,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "EXCEPT"
     ]
   },
   {
@@ -376,7 +384,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Defender"
     ]
   },
   {
@@ -413,7 +422,10 @@
       "D": "Every expert has convinced some people of his or her qualifications in some area.",
       "E": "Some people manage to convince almost everyone of their qualifications in one or more areas."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT111",

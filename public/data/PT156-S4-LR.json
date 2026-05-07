@@ -80,7 +80,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "EXCEPT"
     ]
   },
   {
@@ -138,7 +139,10 @@
       "D": "Art forms that must be examined for an extended period of time in order to be understood are essentially temporal.",
       "E": "Anything capable of being performed is either musical or poetic, or both musical and poetic. -30- 4 44"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -156,7 +160,10 @@
       "D": "People who try to memorize information by imagining that they are conveying it to somebody else who needs the information show higher retention than those who try to memorize the material by rote.",
       "E": "People with no acting experience are able to memorize and deliver lines from a play more accurately after they have read and understood the entire play."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -197,7 +204,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -237,7 +245,10 @@
       "D": "In region T, winters marked by relatively high rainfall have usually not been marked by long periods of sustained rain.",
       "E": "The global warming caused by air pollution produces a number of effects, other than the increase in the frequency of El Niño, that could affect rodent populations."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -259,7 +270,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -338,7 +350,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -378,7 +391,11 @@
       "D": "One need not fulfill a promise in order to do the best that could be done to fulfill it.",
       "E": "Making a promise always obliges a person to keep it. 4 4 -33-4"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Clarification/Misunderstanding",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -398,7 +415,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -461,7 +479,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -483,7 +502,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Conditional Conclusion"
     ]
   },
   {

@@ -37,7 +37,10 @@
       "D": "The realization that other people share one’s plight is helpful in dealing with life’s problems.",
       "E": "The conversion of personal sorrow into an artistic work can have a cathartic effect on artists and their audiences."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -410,7 +413,10 @@
       "D": "Someone who acts without feelings of compassion toward those affected by the actions is worthy of praise if those actions enhance the welfare of the people affected.",
       "E": "If someone wants to have compassion toward others but does not, that person is worthy of praise."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT105",

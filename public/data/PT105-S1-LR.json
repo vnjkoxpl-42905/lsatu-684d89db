@@ -236,7 +236,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -312,7 +313,10 @@
       "D": "The local board of tourism reports that the average length of stay for tourists remained unchanged over the past year.",
       "E": "Each pass contains a photograph of the holder, and during the past year these photographs have usually been checked."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -369,7 +373,10 @@
       "D": "The 1.2-billion-year-old rocks were formed from soil containing very small amounts of carbon 14 that entered the soil directly from the atmosphere.",
       "E": "Uranium testing has been used to confirm that the age of the rocks is 1.2 billion years."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -387,7 +394,10 @@
       "D": "Simple and clear literature cannot be written in a language with a rich and diverse vocabulary.",
       "E": "English literature and French literature have had little influence on one another."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -407,7 +417,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -444,7 +455,10 @@
       "D": "The most expensive farming methods employ topsoil aeration techniques other than deep tillage.",
       "E": "On average, topsoil that is no-tilled is more aerated than topsoil that is tilled deeply."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT105",

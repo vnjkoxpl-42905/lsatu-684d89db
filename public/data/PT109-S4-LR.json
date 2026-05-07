@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -286,7 +287,10 @@
       "D": "Citizens who use publicly subsidized rescue services should be required to pay more toward the cost of these services than citizens who do not.",
       "E": "People who engage in physically risky behavior that is not essential to anyone’s welfare should be held responsible for the cost of treating any resulting injuries."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -306,7 +310,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -427,7 +432,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {

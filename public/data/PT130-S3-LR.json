@@ -15,7 +15,10 @@
       "D": "A larger percentage of those students interested in majoring in history had part-time jobs than had full-time jobs.",
       "E": "Although having a job tends to provide a release from stress, thus increasing academic performance, having a full-time job, like having an active social life, can distract a student from studying."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -56,7 +59,10 @@
       "D": "Understanding is advanced less often by better organization of available information than it is by the accumulation of new information.",
       "E": "Dramatic intellectual breakthroughs are more easily accomplished in fields in which the amount of information available is relatively small."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -177,7 +183,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -199,7 +206,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -285,7 +293,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -306,7 +315,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Dense Stimulus"
     ]
   },
   {
@@ -365,7 +375,10 @@
       "D": "It ignores the possibility that therapists practicing the new form of therapy systematically differ from therapists practicing traditional forms of therapy with regard to some personality attribute relevant to effective treatment.",
       "E": "It presumes, without providing justification, that the personal rapport between therapist and patient has no influence on the effectiveness of the treatment the patient receives."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -421,7 +434,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -509,7 +523,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   }
 ]

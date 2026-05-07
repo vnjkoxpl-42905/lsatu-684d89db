@@ -36,7 +36,10 @@
       "D": "The most effective way for children to address their fears is to acknowledge them.",
       "E": "Most problems associated with child-rearing can be solved with a little imagination."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -139,7 +142,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -161,7 +165,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -180,7 +185,10 @@
       "D": "Government-sponsored research frequently gives rise to inventions that are of great benefit to society.",
       "E": "Even today, all pencil leads contain Cumberland graphite."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -198,7 +206,10 @@
       "D": "Commercial passenger airplanes are not the only planes that can be equipped with a collisionavoidance system.",
       "E": "The greatest safety risk for passengers traveling on commercial passenger airplanes is that of a midair collision."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -216,7 +227,10 @@
       "D": "A study by ground-based air traffic controllers found that 63 percent of the warnings by the system were invalid.",
       "E": "The collision-avoidance radar system is run by a computerized device on the plane that scans the sky and calculates the distances between planes."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -255,7 +269,10 @@
       "D": "The local television station has an obligation to forewarn parents of the level of violence in television shows.",
       "E": "Television producers of programs rated as having high levels of violence would make an effort to reduce those levels."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -337,7 +354,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "First Sentence Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -374,7 +392,10 @@
       "D": "At a time when money is limited, scientific research projects that have immediate practical consequences should be given priority over projects that have few or no such consequences.",
       "E": "In allocating funds for scientific research, projects that seek to unravel fundamental mysteries should be given priority over projects that seek only immediate practical applications."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -431,7 +452,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender",
+      "EXCEPT"
     ]
   },
   {
@@ -470,7 +493,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -492,7 +516,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "2-Speaker"
+      "2-Speaker",
+      "Conditional Conclusion"
     ]
   },
   {

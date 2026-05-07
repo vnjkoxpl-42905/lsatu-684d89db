@@ -302,7 +302,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -366,7 +367,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -387,7 +389,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -449,7 +452,10 @@
       "D": "More-frequent thorough coverage of local politics would reduce at least one source of discouragement from resident participation in local politics.",
       "E": "If resident participation in local politics were not discouraged, this would cause local politicians to be less isolated from their electorate."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -470,7 +476,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Binaries"
+      "Binaries",
+      "Dense Stimulus"
     ]
   },
   {
@@ -489,7 +496,10 @@
       "D": "A car will have unappealing features if consumers are not consulted during its design stage.",
       "E": "Consumer input affects external rather than internal design components of cars."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT123",

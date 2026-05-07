@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -57,7 +58,10 @@
       "D": "Some advertisers prefer to have the opportunity to address a worldwide audience.",
       "E": "The audiences that some advertisers prefer to target watch 24-hour news stations."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -197,7 +201,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -237,7 +242,10 @@
       "D": "Enforcement of speed limits on the M25 was quite rigorous both before and after the rush- hour speed limit was lowered.",
       "E": "The number of people who drive on the M25 during rush hours did not increase after the rush- hour speed limit was lowered."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -400,7 +408,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {

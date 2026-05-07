@@ -303,7 +303,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -422,7 +423,10 @@
       "D": "Wholesale prices suggested by the independently published pharmaceutical price guidebook are calculated to allow every pharmaceutical wholesaler to make substantial profits.",
       "E": "The prices suggested by the independently published pharmaceutical price guidebook are for sales of relatively small quantities of pharmaceutical drugs to individual doctors."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -478,7 +482,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -520,7 +525,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   }
 ]

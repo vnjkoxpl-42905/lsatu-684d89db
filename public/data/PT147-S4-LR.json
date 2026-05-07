@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -121,7 +122,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -264,7 +266,10 @@
       "D": "Alexis and Juan rented a boat for the afternoon. Because of improper use by the previous renter, the boat’s engine malfunctioned during their excursion. The boat’s owner should be required to refund Alexis’s and Juan’s rental fees.",
       "E": "Susan and Leland disregarded posted warnings in order to skate on a frozen pond. When the ice broke, Susan’s ankle was injured. Susan cannot hold the pond’s owners responsible for her injuries."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -349,7 +354,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -459,7 +465,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -514,6 +521,9 @@
       "D": "If two different chess-playing programs are running on two different computers under the same time constraints per move, the program running on the faster computer will be able to examine more possible moves in the time allotted.",
       "E": "If a chess-playing program is run on two different computers and is allotted more time to examine possible moves when running on the slow computer than when running on the fast computer, it will have an equal chance of winning on either computer."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   }
 ]

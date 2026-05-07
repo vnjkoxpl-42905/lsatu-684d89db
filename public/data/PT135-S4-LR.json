@@ -37,7 +37,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -100,7 +101,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -119,7 +121,10 @@
       "D": "Algae will not proliferate in coastal estuaries that are not polluted by nutrient-rich sewage.",
       "E": "Overnutrifying estuary waters by sewage can result in the death of most of the fish in the estuary."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -253,7 +258,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -374,7 +380,10 @@
       "D": "The amount of harmful chemicals found in irradiated foods is less than the amount that occurs naturally in most kinds of foods.",
       "E": "A study showed that the cancer rate is no higher among people who eat irradiated food than among those who do not."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -395,7 +404,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -416,7 +426,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -459,7 +470,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals"
     ]
   },
   {

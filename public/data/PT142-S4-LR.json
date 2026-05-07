@@ -15,7 +15,10 @@
       "D": "a cookie containing any amount of trans fat is unhealthy",
       "E": "consumers should purchase cookies only if they do not contain trans fat"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Clarification/Misunderstanding"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -53,7 +56,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -72,7 +76,10 @@
       "D": "Diplodocus had no other way of accessing high- growing vegetation, such as by rising up on its hind legs.",
       "E": "Diplodocus was not able to browse for underwater vegetation by kneeling beside bodies of water or by walking into them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -111,7 +118,10 @@
       "D": "Large-scale climate change poses a greater danger to human beings than to other species.",
       "E": "It is easier to identify the human behaviors that cause climate change than it is to change those behaviors."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT142",

@@ -329,7 +329,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -350,7 +352,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -387,7 +390,10 @@
       "D": "If the plants in the tropics begin to grow more slowly, on average, the temperatures in the tropics will increase substantially as a result.",
       "E": "Any increase in temperatures in the tropics will be associated with a substantial increase in the amount of carbon dioxide released into the atmosphere."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -405,7 +411,10 @@
       "D": "Science is merely a myth.",
       "E": "Science, like stories about the gods of Homer, attempts to explain our place in the cosmos."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT159",

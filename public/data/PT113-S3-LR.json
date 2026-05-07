@@ -39,7 +39,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -159,7 +160,10 @@
       "D": "explaining that the definition of knowledge is a matter of personal choice",
       "E": "demonstrating that the case of clairvoyance is not a case of knowledge and does not fit the definition of knowledge"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -270,7 +274,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -289,7 +294,10 @@
       "D": "Whoever wants to advance a political agenda ought to take the time to convince legislators that their own political careers are at stake in the matter at hand; otherwise, the agenda will simply be ignored.",
       "E": "Activists who want to prevent excessive globalization of the economy should assign top priority to an appeal to the economic self-interest of those who would be adversely affected by it, for if they fail in such an appeal, extreme economic globalization is inevitable."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT113",

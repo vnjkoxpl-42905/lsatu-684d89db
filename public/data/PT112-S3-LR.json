@@ -35,7 +35,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -260,7 +261,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -281,7 +283,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -362,7 +365,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -441,7 +445,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Part vs. Whole",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -505,7 +510,8 @@
       "Sufficient vs. Necessary Flaw",
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -526,7 +532,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   }
 ]

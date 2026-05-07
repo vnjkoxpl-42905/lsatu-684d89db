@@ -164,7 +164,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -401,7 +402,10 @@
       "D": "At least some scientists believe that air pollution was responsible for the size and intensity of the forest fires that swept the tropics in 1997.",
       "E": "If air pollution enhanced the strength of the El Niño in 1997, then it also contributed to the widespread drought in that year."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT139",

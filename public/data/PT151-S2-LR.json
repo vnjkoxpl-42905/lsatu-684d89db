@@ -59,7 +59,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Causal Chains"
     ]
   },
   {
@@ -120,7 +121,10 @@
       "D": "a doctor’s explanation of a patient’s symptoms should be taken more seriously than the patient’s own view of his or her symptoms",
       "E": "patients who do not research their conditions on the Internet give their doctors’ opinions more consideration"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Clarification/Misunderstanding"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -260,7 +264,10 @@
       "D": "Several new scientific journals appeared at roughly the same time that full online access to scientific articles became commonplace.",
       "E": "Online searching made it easier for scientists to identify the articles that present the most highly regarded views on an issue, which they prefer to cite."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -338,7 +345,10 @@
       "D": "Air temperature has less effect on the temperature of a transmission line than wind speed does.",
       "E": "The maximum operating temperature of a transmission line is greater on windy days than on calm days."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -398,7 +408,10 @@
       "D": "Cranberries are typically found concentrated in limited areas that bumblebees are more likely than honeybees ever to visit.",
       "E": "The greater the likelihood of a given bee species visiting one or more plants in a given cranberry crop, the more efficient that bee species will be at pollinating that crop."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -521,7 +534,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Difference-Maker"
     ]
   }
 ]

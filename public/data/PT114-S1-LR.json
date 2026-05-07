@@ -276,7 +276,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Difference-Maker",
+      "Defender"
     ]
   },
   {
@@ -462,7 +464,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   }
 ]

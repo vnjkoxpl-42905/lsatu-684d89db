@@ -54,7 +54,10 @@
       "D": "In judging the paintings, some of the students were affected by what they had been told about the history of the paintings.",
       "E": "Had the instructor presented the paintings without telling the students anything about them, almost all of the students would have judged them to be roughly equal in artistic worth."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -111,7 +114,10 @@
       "D": "For infant monkeys, a milk bottle is an equally convincing substitute for their mother's teat as suede is for their mother's touch.",
       "E": "Infant monkeys' desire for food is stronger than their desire for warmth and comfort."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -256,7 +262,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {
@@ -298,7 +305,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -397,7 +405,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {

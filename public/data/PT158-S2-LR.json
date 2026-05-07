@@ -78,7 +78,10 @@
       "D": "the higher turnover rate of part-time workers is only partly caused by their greater job dissatisfaction",
       "E": "companies generally hire part-time workers only when they are unable to hire full-time ones"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -158,7 +161,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -177,7 +181,10 @@
       "D": "It is an intermediate conclusion.",
       "E": "It is the view that the argument as a whole is designed to discredit."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -390,7 +397,10 @@
       "D": "There are stars in distant galaxies that have characteristics, other than brightness, discernible from Earth.",
       "E": "If there are significant differences in how far away two stars are from Earth, then those stars will differ significantly in apparent brightness."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -408,7 +418,11 @@
       "D": "Some psychologists have hypothesized that the desire to maintain social and academic success and self-esteem strengthens repressors’ tendency to repress upsetting thoughts and feelings.",
       "E": "Sensitizers tend to focus more than repressors do on the difficulties of succeeding in their projects rather than on factors that are likely to contribute to success. -17- 22 2"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -472,7 +486,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -515,7 +530,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   }
 ]

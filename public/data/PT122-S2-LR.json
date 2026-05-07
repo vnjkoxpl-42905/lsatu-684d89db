@@ -74,7 +74,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -179,7 +180,10 @@
       "D": "Within any given species, the prospects for survival of any particular individual depend primarily on the amount of food that individual requires.",
       "E": "Whenever climatic conditions in a given environment are bad enough to threaten large-animal species with extinction, small-animal species are able to find enough food to survive."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -220,7 +224,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -320,7 +325,10 @@
       "D": "Some entrepreneurs who work at least 18 hours a day are happy.",
       "E": "Some successful entrepreneurs work less than 18 hours a day."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -340,7 +348,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals"
     ]
   },
   {
@@ -419,7 +428,11 @@
       "D": "Some situations that exacerbate the problems caused by muscle fatigue do not exacerbate those caused by dehydration.",
       "E": "The rate at which the body absorbs water depends primarily on the amount of water already present in the blood."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -439,7 +452,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {

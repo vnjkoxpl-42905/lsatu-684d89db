@@ -232,7 +232,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "EXCEPT"
     ]
   },
   {
@@ -253,7 +254,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -330,7 +332,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -415,7 +418,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {

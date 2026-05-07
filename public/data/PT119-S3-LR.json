@@ -116,7 +116,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -153,7 +154,11 @@
       "D": "Some species of higher animals containing both female and male members are not very adaptive.",
       "E": "Some offspring of species of higher animals containing both female and male members have genetic codes more similar to one parent than to the other parent."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -287,7 +292,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Dense Stimulus"
     ]
   },
   {
@@ -326,7 +333,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Defender"
     ]
   },
   {
@@ -387,7 +395,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -505,7 +514,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   }
 ]

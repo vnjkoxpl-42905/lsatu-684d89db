@@ -202,7 +202,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Chains",
+      "Dense Stimulus"
     ]
   },
   {
@@ -246,7 +248,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Part vs. Whole",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -301,7 +304,10 @@
       "D": "A crime is justified only if it is a means of compensating people who deserve compensation.",
       "E": "Stealing is never justified even if it benefits someone who has been a burglary victim."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -507,7 +513,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {

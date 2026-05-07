@@ -206,7 +206,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -229,7 +230,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {
@@ -450,7 +452,11 @@
       "D": "The government has an obligation to ensure that demand for fuel does not increase excessively.",
       "E": "If the government pursues policies that do not increase the demand for fuel, gasoline prices tend to remain stable."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT137",

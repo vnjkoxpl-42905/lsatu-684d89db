@@ -183,7 +183,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -246,7 +247,10 @@
       "D": "In ancient Greece, people did not read silently to themselves.",
       "E": "Only rarely in ancient Greece were prophecies written down on writing tablets."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -326,7 +330,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {
@@ -345,7 +350,10 @@
       "D": "People often change their minds about issues that do not make significant differences to their lives.",
       "E": "People’s evaluations of a situation sometimes depend less on the situation itself than on how it is presented to them."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -363,7 +371,10 @@
       "D": "Anyone who uses herbal medicines should give those medicines a chance to influence the body gently over several months at least.",
       "E": "One should occasionally skip one’s usual dose of an herbal medicine for a day or two only if doing so will reduce or eliminate toxic side effects from several months of use."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -438,7 +449,10 @@
       "D": "Those competitors—and only those—who meet all of the following criteria are eligible for the award: they must be under 19 years of age, be in secondary school, and have played the sport for at least the two years immediately preceding the competition. You meet all the criteria, so you are eligible.",
       "E": "A meal is nutritious only if it includes both carbohydrates and protein. Almost 80 percent of the calories in what I ate for lunch were from fat, so what I ate for lunch was not nutritious."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -459,7 +473,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -502,7 +517,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {

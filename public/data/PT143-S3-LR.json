@@ -73,7 +73,10 @@
       "D": "Sickly birds are more likely than healthy birds to be killed by predators.",
       "E": "Small spleen size is one of the main causes of sickness in birds."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -171,7 +174,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -353,7 +357,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -375,7 +380,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -436,7 +442,10 @@
       "D": "Younger wage earners usually earn less than older ones, and the average age of household wage earners fell during most years in the past several decades.",
       "E": "The biggest decreases in family income resulted from policies enacted before the ruling party came to power in 1996."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -495,7 +504,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   }
 ]

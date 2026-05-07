@@ -61,7 +61,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -83,7 +84,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -197,7 +199,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -357,7 +360,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus"
     ]
   },
   {

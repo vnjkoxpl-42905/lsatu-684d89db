@@ -339,7 +339,10 @@
       "D": "The multiple-use philosophy takes into account some nonfinancial needs of the public.",
       "E": "The multiple-use philosophy holds that the future needs of the public are more important than the present ones."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -456,7 +459,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Conditional Conclusion"
     ]
   },
   {

@@ -78,7 +78,10 @@
       "D": "The goal of early education reading programs should be to instill in children a love of reading.",
       "E": "Improving children’s facility with reading will get them to enjoy reading."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -96,7 +99,10 @@
       "D": "Limits on the number of salmon that can be taken from the wild have led to increases in the price of wild salmon.",
       "E": "Wild salmon are more likely than farmed salmon to have consumed pollutants that may be harmful to humans."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -302,7 +308,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -384,7 +391,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {

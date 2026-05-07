@@ -57,7 +57,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -396,7 +397,10 @@
       "D": "If there is no consistent causal link between major meteor impacts and mass extinctions, then not all mass extinctions could have followed major meteor impacts.",
       "E": "There could be a consistent causal link between major meteor impacts and mass extinctions even if not every major meteor impact has been followed by a mass extinction."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -432,7 +436,10 @@
       "D": "Only the immediate consequences of our actions are relevant in determining whether they are morally right.",
       "E": "An action may be morally right for one particular person without being morally right for all people."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT118",
