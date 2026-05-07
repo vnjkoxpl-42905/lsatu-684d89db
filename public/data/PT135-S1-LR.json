@@ -168,7 +168,10 @@
       "D": "If galloping would have broken the legs of Apatosaurus, then Apatosaurus was probably unable to gallop.",
       "E": "Modern bones are quite similar in structure and physical properties to the bones of Apatosaurus."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",

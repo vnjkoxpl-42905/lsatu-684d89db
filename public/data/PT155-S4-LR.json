@@ -119,7 +119,10 @@
       "D": "Many modern novelists are widely held to be good writers.",
       "E": "Linsey’s talent as a writer is no less than that of many modern novelists."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT155",

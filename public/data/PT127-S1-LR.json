@@ -189,7 +189,10 @@
       "D": "Phenomena in the social sciences should not be reduced to mathematical formulas.",
       "E": "Prediction is responsible for the success of the natural sciences."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT127",

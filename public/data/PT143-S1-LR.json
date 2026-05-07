@@ -241,7 +241,10 @@
       "D": "The recent observations, even if they had been made under good conditions, would not have been enough to suggest that the earlier ones are incorrect.",
       "E": "The poor conditions present during recent observations render them worthless. 1 1 1 1"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT143",

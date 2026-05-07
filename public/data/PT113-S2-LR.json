@@ -15,7 +15,10 @@
       "D": "Respondents tend to be supervisors who cannot give in to employees without losing authority.",
       "E": "The mediation process itself is likely to cost as much in time and money as the present grievance procedures."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT113",

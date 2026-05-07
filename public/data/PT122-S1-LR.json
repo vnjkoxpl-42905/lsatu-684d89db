@@ -92,7 +92,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Important Pivot"
     ]
   },
   {
@@ -204,7 +205,10 @@
       "D": "Offering effective strategies for dealing with a country's problems is more important in winning an election than having a long record of successful government service.",
       "E": "In every respect other than environmental policy, Burke would have served the country better than Adler will."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT122",

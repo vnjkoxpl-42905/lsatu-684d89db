@@ -180,7 +180,10 @@
       "D": "A single wavelength of sunlight can cause severe damage to the eyes of most species of animals.",
       "E": "Some wavelengths of sunlight that cause eye damage are more likely to reach the earth’s surface where there are holes in the ozone layer than where there are not."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT109",

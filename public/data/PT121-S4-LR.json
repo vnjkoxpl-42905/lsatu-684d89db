@@ -235,7 +235,10 @@
       "D": "The loss of a specific population is often the result of natural changes in an ecosystem and in such cases should not be resisted.",
       "E": "The loss of a specific population as a result of pollution is simply part of nature's status quo."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT121",

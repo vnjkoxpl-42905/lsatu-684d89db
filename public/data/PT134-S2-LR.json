@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Sampling"
+      "Sampling",
+      "Important Pivot"
     ]
   },
   {
@@ -251,7 +252,10 @@
       "D": "it is unclear whether what we learn about hadrosaurs from their fossilized remains tells us anything about other dinosaurs",
       "E": "the construction of nests for hatchlings and adolescents is not strong evidence for the paleontologists’ belief"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT134",

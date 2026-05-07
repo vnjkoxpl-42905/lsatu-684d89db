@@ -113,7 +113,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -231,7 +232,10 @@
       "D": "uncritically draws an inference from what has been true in the past to what will be true in the future",
       "E": "makes an irrelevant shift from discussing retail prices to discussing production costs"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -309,7 +313,10 @@
       "D": "A nation's population is the most significant contributor to the level and rate of growth of aggregate output.",
       "E": "A nation's population affects the level and rate of growth of aggregate output more than it affects unemployment and inflation rates."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT112",

@@ -59,7 +59,10 @@
       "D": "promote more natural superstar salespeople to management positions",
       "E": "reward superstar performance more than superstar talent"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -212,7 +215,10 @@
       "D": "As the world’s population grows, emissions of greenhouse gases will increase proportionately.",
       "E": "Economic growth always increases household income and consumption, which inevitably increases per capita emissions of carbon dioxide."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -348,7 +354,10 @@
       "D": "Using advertised price cuts to promote retail products reduces profit margins and undermines customer loyalty.",
       "E": "Making consumers feel lucky is usually not a good formula for retail success."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT146",

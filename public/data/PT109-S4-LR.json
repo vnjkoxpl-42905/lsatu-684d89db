@@ -220,7 +220,10 @@
       "D": "They tend to eat more varied kinds of food as they become older.",
       "E": "They tend to lose weight as they become older."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT109",

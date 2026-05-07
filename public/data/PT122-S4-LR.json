@@ -58,7 +58,10 @@
       "D": "Degrees and certificates do not guarantee that a person has acquired much worthwhile knowledge.",
       "E": "A person benefits from an education only to the extent that he or she invests effort in it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -134,7 +137,10 @@
       "D": "Parents should not allow children to put their mouths on playground equipment.",
       "E": "Treated lumber is more dangerous than was once believed."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT122",

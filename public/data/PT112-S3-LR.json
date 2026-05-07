@@ -165,7 +165,10 @@
       "D": "Hogan thought that Winters was the person who had been terrorizing west-side apartment buildings for the last few months.",
       "E": "The actions of Hogan that seriously injured Winters were reprehensible, other things being equal."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT112",

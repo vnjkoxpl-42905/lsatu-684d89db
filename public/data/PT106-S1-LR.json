@@ -356,7 +356,10 @@
       "D": "The imposition of restrictions on the conduct of science would be very costly.",
       "E": "We need to be aware of the impact of change in science before changes are made."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT106",

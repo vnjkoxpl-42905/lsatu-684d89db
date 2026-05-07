@@ -55,7 +55,10 @@
       "D": "The total number of professional bands has increased as a result of electrification.",
       "E": "Many professional musicians play in more than one band."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT117",

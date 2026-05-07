@@ -303,7 +303,10 @@
       "D": "The fuel-distribution infrastructure for hydrogen-powered cars is likely to appear and grow rapidly.",
       "E": "Hydrogen-powered vehicles will be similar to gasoline-powered vehicles with regard to the amount of consumer demand for their fuel-distribution infrastructure."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT137",

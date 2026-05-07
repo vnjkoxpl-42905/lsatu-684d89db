@@ -183,7 +183,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -220,7 +221,10 @@
       "D": "psychoanalysis provides one with a rational life plan",
       "E": "Freudianism reflects the predominantly rationalistic spirit of Western philosophical and psychological thought more than any other psychological theory"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT120",

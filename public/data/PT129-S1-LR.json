@@ -392,7 +392,10 @@
       "D": "Much of the carbon dioxide now released into the atmosphere ends up in the ocean where it does not cause environmental disturbances as destructive as global warming.",
       "E": "To reduce global warming, the strategy of pumping into the deep ocean at least some of the carbon dioxide now released into the atmosphere should be considered."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT129",

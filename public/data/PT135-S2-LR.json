@@ -36,7 +36,10 @@
       "D": "“Fake fat” in foods is probably not going to help consumers meet weight loss goals.",
       "E": "“Fake fat” in foods is indistinguishable from genuine fat by most consumers on the basis of taste alone."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -365,7 +368,10 @@
       "D": "Stuart’s work was not entirely free from West’s influence.",
       "E": "Because of Stuart’s influence on other people, West’s terminology is now commonplace."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -506,6 +512,9 @@
       "D": "We often extrapolate from ordinary sensory experience to things beyond such experience and form a rash judgment, such as the claim that the earth is the center of the universe because it appears that way to us.",
       "E": "One crucial clue to the extent of the ancient Egyptians’ mathematical knowledge came from studying the pyramids. The more we studied such structures, the more impressed we were by how much the Egyptians knew."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   }
 ]

@@ -193,7 +193,10 @@
       "D": "No fish without fingers would ever be able to move on land.",
       "E": "The evolutionary significance of Tiktaalik could not be determined just through comparison to fish species of its time."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT149",

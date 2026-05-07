@@ -75,7 +75,10 @@
       "D": "It uses Marie's criterion as a means of solving a moral problem Julia herself faces.",
       "E": "It proposes a radically different principle by which Marie's action might be judged, but reserves judgment as to whether Marie acted rightly."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT116",

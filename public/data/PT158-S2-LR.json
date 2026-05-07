@@ -114,7 +114,10 @@
       "D": "Certain strains of honey produced by bees harvesting primarily sage nectar are unusually low in antioxidants.",
       "E": "The strain of honey that has the highest antioxidant content is a light-colored honey."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT158",

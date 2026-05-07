@@ -87,7 +87,10 @@
       "D": "For people desiring connection to a global human community, learning about other cultures through the Internet probably will not provide emotional connection to those cultures.",
       "E": "When people long for connection to a global human community, they tend to engage in behavior that results in the acquisition of knowledge about other cultures but rarely produces genuine emotional connection to those cultures. -13- 22 2"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT157",

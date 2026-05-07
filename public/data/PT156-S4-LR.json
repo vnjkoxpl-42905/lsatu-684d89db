@@ -105,7 +105,10 @@
       "D": "It is the overall conclusion of the anthropologist’s argument.",
       "E": "It describes a claim that the anthropologist attempts to refute."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -159,7 +162,10 @@
       "D": "It describes a phenomenon that, according to the argument, is much less damaging to society than journalists often assume.",
       "E": "It gives an example of a phenomenon that the argument contends has very different effects from those it is generally assumed by everyone to have."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT156",

@@ -36,7 +36,10 @@
       "D": "Eliminating branch offices and customer-service employees would benefit the banking industry.",
       "E": "Enabling customers to transact all their financial business by means of computers or telephones from their own homes would allow banks to eliminate branch offices and customer-service employees."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT157",

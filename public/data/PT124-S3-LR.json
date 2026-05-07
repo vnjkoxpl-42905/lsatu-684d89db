@@ -15,7 +15,10 @@
       "D": "Some extended warranties on electronic goods cover the product for the period covered by the manufacturer's warranty as well as subsequent years.",
       "E": "Retail stores sell extended warranties in part because consumers who purchase them are likely to purchase other products from the same store."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -93,7 +96,10 @@
       "D": "Brain scans can provide information about the accuracy of the verbal reports of subjects whose brains are being scanned.",
       "E": "Information from brain scans can help researchers understand how the brain enables us to think only if the verbal reports of those whose brains are being scanned are accurate."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -135,7 +141,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {
@@ -234,7 +241,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Important Pivot"
     ]
   },
   {
@@ -417,7 +425,10 @@
       "D": "Whenever waste must be moved, one should limit the amount of time allotted to locating alternative waste storage sites.",
       "E": "Any site to which the waste could be moved will be safer than its present site."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT124",

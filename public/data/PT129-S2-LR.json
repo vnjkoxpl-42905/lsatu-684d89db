@@ -257,7 +257,10 @@
       "D": "It is a statement offered in support of the argument's main conclusion.",
       "E": "It is the argument's main conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -413,7 +416,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Important Pivot"
     ]
   },
   {

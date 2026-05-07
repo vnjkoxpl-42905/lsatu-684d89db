@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Important Pivot"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "It is not a requirement of house paints that they correct surface defects such as badly cracked paint.",
       "E": "Acrylic paints come in as wide a range of colors as do any other paints."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -217,7 +221,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Important Pivot"
     ]
   },
   {

@@ -55,7 +55,10 @@
       "D": "The mental aspects of exercise are as important as the physical ones.",
       "E": "Children should be taught the dangers of a sedentary lifestyle."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -116,7 +119,10 @@
       "D": "Judges are often arbitrary and irrational.",
       "E": "Mandatory minimum sentences are needed to help prevent judicial arbitrariness."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT107",

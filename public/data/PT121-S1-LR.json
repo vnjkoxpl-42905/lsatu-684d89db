@@ -114,7 +114,10 @@
       "D": "the popularity of a television program is a poor indicator of its artistic quality",
       "E": "broadcast media could be rightly accused of neglecting the public interest only if all channels carried mostly action shows"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -150,7 +153,10 @@
       "D": "Major media must target the broadest customer base possible in order to maximize profits.",
       "E": "It is often maintained that current journalism has a liberal bias."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT121",

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Important Pivot"
     ]
   },
   {
@@ -338,7 +339,10 @@
       "D": "If people were more considerate there would be no need for etiquette.",
       "E": "Kindness and social harmony are highly beneficial to society."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT152",

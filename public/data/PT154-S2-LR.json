@@ -208,7 +208,10 @@
       "D": "The amygdala is not the only part of the brain that can be affected by Urbach-Wiethe disease.",
       "E": "The amygdala is not the only part of the brain that can be involved in sensing fear."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -244,7 +247,10 @@
       "D": "Graphic design is made less effective by anonymity on the part of graphic designers.",
       "E": "Holding graphic designers accountable for their work is difficult when those designers are anonymous."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT154",

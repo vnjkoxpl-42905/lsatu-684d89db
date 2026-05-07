@@ -318,7 +318,10 @@
       "D": "In the short term, the wild cheetah population will be incapable of surviving a natural disaster in the African grasslands.",
       "E": "In regions where land is suitable for cheetah habitation, more natural disasters are expected to occur during the next decade than occurred during the past decade."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT107",

@@ -255,7 +255,10 @@
       "D": "Instabilities in wind flow will negate the effect of global warming on the formation of tropical storms.",
       "E": "Global warming probably will not produce more frequent and intense tropical storms."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -273,7 +276,10 @@
       "D": "there is no practical way to enforce copyrights",
       "E": "copyrights hold for many years after an author’s death"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -330,7 +336,10 @@
       "D": "Many social institutions have social consequences unintended by those who founded them.",
       "E": "Often an instrument created for one purpose will be found to serve another purpose just as effectively."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT135",

@@ -289,7 +289,10 @@
       "D": "If the characterization of someone’s work is precise, then it provides a sound basis for criticizing that work.",
       "E": "At least one of Dr. Q’s characterizations of Dr. Z’s work fails to provide an adequate basis for sound criticism of that work."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT101",

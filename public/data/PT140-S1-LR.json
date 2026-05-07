@@ -94,7 +94,10 @@
       "D": "The population of Earth’s surface will probably continue to grow geometrically even if temporary solutions to population growth, such as colonizing other planets, are adopted.",
       "E": "Learning how to colonize other planets would, at best, be a temporary solution to the overcrowding of Earth."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -133,7 +136,10 @@
       "D": "Gillette’s claim that a thorough knowledge of genetics would enable us to cure over 3,000 disorders is overstated.",
       "E": "Gillette’s argument is unconvincing because it ignores certain possible consequences of genetic research."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -293,7 +299,10 @@
       "D": "Most people who eat vitamin-fortified foods should not take any vitamin supplements.",
       "E": "Manufacturers are unaware that many people consume vitamin-fortified foods in amounts greater than the standard serving sizes."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT140",

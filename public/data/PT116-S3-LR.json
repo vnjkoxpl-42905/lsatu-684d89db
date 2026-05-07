@@ -266,7 +266,10 @@
       "D": "Opera is not an important factor shaping social attitudes in contemporary North America.",
       "E": "People cannot be influenced by things they are not directly exposed to."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT116",

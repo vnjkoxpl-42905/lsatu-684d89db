@@ -15,7 +15,10 @@
       "D": "Whether a trait is harmful to the organisms of a species can depend on which sex possesses it.",
       "E": "A trait that is helpful to procreation can also hinder it in certain environments."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -114,7 +117,10 @@
       "D": "At least some of Handel’s da capo arias contain unnecessary repetitions.",
       "E": "Most criticism of Handel’s da capo arias is unwarranted. 4 4 4 4"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT143",

@@ -36,7 +36,10 @@
       "D": "Animal companionship is essential for psychological well-being.",
       "E": "Allowing free access to pets in nursing homes would eliminate problems relating to depression."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT140",

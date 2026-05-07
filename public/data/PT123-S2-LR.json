@@ -153,7 +153,10 @@
       "D": "will increase the total level of emissions rather than reduce it",
       "E": "will not produce a net reduction in environmental degradation"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -343,7 +346,10 @@
       "D": "Scientists who are skeptical about global warming have not offered any alternative hypotheses to explain climatological data.",
       "E": "Research in global warming is primarily driven by a desire for recognition in the scientific community."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT123",

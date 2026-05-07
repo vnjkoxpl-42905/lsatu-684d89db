@@ -91,7 +91,10 @@
       "D": "Jeremy was upset by the actions that a writer attributed to a secret organization, although he considered it unlikely that the writer’s account was accurate.",
       "E": "Sandy was watching a film about World War II. Although the film’s details were accurate, it was nevertheless difficult for Sandy to maintain interest in the characters."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT120",

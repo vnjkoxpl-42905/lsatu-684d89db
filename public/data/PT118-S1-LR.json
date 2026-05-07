@@ -323,7 +323,10 @@
       "D": "Flints were often used by early humans for everyday chores other than hunting.",
       "E": "Any benefits that an aesthetic sense would have given to cave-dwelling humans are poorly understood."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT118",

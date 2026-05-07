@@ -93,7 +93,10 @@
       "D": "Characteristics associated with maturity are important factors in psychotherapy's success.",
       "E": "Elderly people are less inclined to try psychotherapy than are younger people."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -204,7 +207,10 @@
       "D": "Some of the grain crops that could have been planted instead of corn required less fertile soil in order to flourish than corn required.",
       "E": "The people discovered some years after adopting corn as their staple grain that a diet that supplemented corn with certain readily available nongrain foods significantly improved their health."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT119",

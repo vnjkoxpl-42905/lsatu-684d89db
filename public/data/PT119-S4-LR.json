@@ -51,7 +51,10 @@
       "D": "Robin's childhood could have provided more adequate moral training even in the circumstances.",
       "E": "Robin could now be brought to see the moral difference between right and wrong."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT119",

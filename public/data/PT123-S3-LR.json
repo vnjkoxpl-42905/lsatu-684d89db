@@ -306,7 +306,10 @@
       "D": "is not worth the sacrifices that its citizens make on its behalf",
       "E": "should always be thought of in metaphorical rather than literal terms"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Important Pivot"
+    ]
   },
   {
     "practiceTest": "PT123",
