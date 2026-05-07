@@ -291,7 +291,10 @@
       "D": "Voluntary environmental protection usually does not help a region's economy to the degree that governmentally mandated protection does.",
       "E": "A factor harmful to some older local industries in a region need not discourage other businesses from relocating to that region."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -363,7 +366,10 @@
       "D": "takes for granted that a behavior that sometimes leads to a certain phenomenon cannot also significantly reduce the overall occurrence of that phenomenon",
       "E": "presumes, without providing justification, that if many people have a negative psychological reaction to a phenomenon, then no one can have a positive reaction to that phenomenon"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -420,7 +426,10 @@
       "D": "It is presented as a finding that motivates the course of action advocated in the conclusion.",
       "E": "It is presented as evidence for the claim that similar research has never been done on humans."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT116",

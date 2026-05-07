@@ -107,7 +107,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {
@@ -240,7 +241,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Abstract Answers"
     ]
   },
   {

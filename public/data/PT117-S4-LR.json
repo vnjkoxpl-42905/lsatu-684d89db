@@ -443,7 +443,10 @@
       "D": "It is a contention about the consequences of an economic arrangement that the argument claims is incompatible with the needs of any society.",
       "E": "It is a generalization about societies that according to the argument is true for any society in which the majority of its citizens does not impede the introduction of new technologies."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT117",

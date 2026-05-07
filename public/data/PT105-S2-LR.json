@@ -144,7 +144,10 @@
       "D": "conclude that members of two groups are likely to share a certain ability because of other characteristics they share",
       "E": "demonstrate that a general rule applies in a particular case"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -384,7 +387,10 @@
       "D": "basing a generalization on a representative group of instances",
       "E": "showing that a measure claimed to be effective in achieving a certain effect would actually make achieving the effect more difficult"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT105",

@@ -312,7 +312,10 @@
       "D": "It is a premise offered in support of the conclusion that water itself is among the biggest water polluters.",
       "E": "It is stated to provide an example of a typical kind of city pollution."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT143",

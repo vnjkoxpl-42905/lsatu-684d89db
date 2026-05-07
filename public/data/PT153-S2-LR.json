@@ -306,7 +306,10 @@
       "D": "It provides a hypothesis that is rejected in the conclusion of the argument.",
       "E": "It is the conclusion of the argument."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT153",

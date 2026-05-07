@@ -180,7 +180,10 @@
       "D": "concludes that, because an influence is the paramount influence on a particular pattern or class of events, that influence is the only influence on that pattern or class of events",
       "E": "undermines its own premise that a particular attribute is present in all instances of a certain pattern or class of events"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -465,6 +468,9 @@
       "D": "draws a conclusion about a specific belief based on responses to queries about two different specific beliefs",
       "E": "contains premises that cannot all be true"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   }
 ]

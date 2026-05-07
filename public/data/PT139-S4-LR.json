@@ -53,7 +53,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {
@@ -72,7 +73,10 @@
       "D": "enumerating problems for which it proposes a general solution",
       "E": "showing how evidence that apparently contradicts its conclusion actually supports that conclusion"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT139",

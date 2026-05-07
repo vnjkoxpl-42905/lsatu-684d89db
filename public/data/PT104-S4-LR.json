@@ -185,7 +185,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {
@@ -222,7 +223,10 @@
       "D": "showing that P’s argument depends on the false assumption that compliance with any regulations that would have prevented last year’s fire would be useful",
       "E": "pointing out a crucial distinction, overlooked by P, between potential benefits and actual benefits"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -391,7 +395,10 @@
       "D": "narrows the scope of the generalization at issue in such a way that the putative counterexample is no longer relevant",
       "E": "shows how replacing the notion of being affected in the specified way by an action with that of having someone’s action directed at oneself reveals the counterexample to be spurious"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT104",

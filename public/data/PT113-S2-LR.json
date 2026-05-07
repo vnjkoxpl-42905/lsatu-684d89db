@@ -288,7 +288,10 @@
       "D": "mistakes something that enables an institution to arise for something necessary to the institution",
       "E": "confuses the value of an institution with the medium by which it operates"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -324,7 +327,10 @@
       "D": "Bureaucratic mistakes can lead to quality reduction and inefficiency.",
       "E": "Space exploration is too dangerous to be continued."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT113",

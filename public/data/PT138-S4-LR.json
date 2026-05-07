@@ -36,7 +36,10 @@
       "D": "A generalization is rejected by showing that it fails to hold in one particular instance.",
       "E": "The conclusion is supported by ruling out other possible explanations of an observed fact."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -76,7 +79,10 @@
       "D": "It is a claim on which the argument as a whole is designed to cast doubt.",
       "E": "It is an intermediate conclusion of the argument."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT138",

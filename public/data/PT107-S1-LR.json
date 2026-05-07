@@ -33,7 +33,10 @@
       "D": "questions the accuracy of the information cited by the politician in reaching a conclusion",
       "E": "illustrates how the politician’s proposal could aggravate the problem it is intended to solve"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -216,7 +219,10 @@
       "D": "A counterexample to a position being challenged is presented in order to show that this position is incorrect.",
       "E": "A detailed example is used to illustrate the advantage of one strategy over another."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -234,7 +240,10 @@
       "D": "The top priority of a library should be to maintain its collection of books. A knowledgeable staff and beautiful facilities are of no value if there is an inadequate supply of books to lend.",
       "E": "The top priority of a criminal defense lawyer should be to ensure that innocent clients are found not guilty. Such clients can justly be released from jail and resume their normal lives if they are found not guilty."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",

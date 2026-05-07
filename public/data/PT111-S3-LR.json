@@ -352,7 +352,10 @@
       "D": "The government should not create financial disincentives for people to race cars or climb mountains, even though these are dangerous activities.",
       "E": "The government would be justified in levying taxes to provide food and shelter for those who cannot afford to pay for them."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT111",

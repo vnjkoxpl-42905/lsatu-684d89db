@@ -54,7 +54,10 @@
       "D": "attempting to prove a claim on the basis of evidence that a number of people hold that claim to be true",
       "E": "treating one of several plausible explanations of a phenomenon as the only possible explanation"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -201,7 +204,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Abstract Answers"
     ]
   },
   {

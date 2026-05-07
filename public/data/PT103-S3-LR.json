@@ -141,7 +141,10 @@
       "D": "One possible solution to a problem is claimed to be the only possible solution to that problem.",
       "E": "An action that would eliminate one cause of a problem is treated as if it would solve the entire problem."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT103",

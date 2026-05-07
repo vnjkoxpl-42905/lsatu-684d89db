@@ -69,7 +69,10 @@
       "D": "argues that the analysts' conclusion is basically right, but suggests that it is somewhat too optimistic",
       "E": "argues in favor of the analysts' conclusion, but does so on the basis of a different body of evidence"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -125,7 +128,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Abstract Answers"
     ]
   },
   {

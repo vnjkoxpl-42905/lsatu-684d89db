@@ -450,7 +450,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Abstract Answers"
     ]
   },
   {

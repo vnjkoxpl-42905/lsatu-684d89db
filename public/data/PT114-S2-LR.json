@@ -366,7 +366,10 @@
       "D": "offering an alternative explanation of the facts used to arrive at a specific conclusion",
       "E": "agreeing with the conclusion of a particular argument while rejecting the evidence used to support the conclusion"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT114",

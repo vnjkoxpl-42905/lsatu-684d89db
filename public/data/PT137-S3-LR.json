@@ -90,7 +90,10 @@
       "D": "It is a statement that the argument claims is supported by the study.",
       "E": "It is an intermediate conclusion that is offered as direct support for the argument's main conclusion."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -126,7 +129,10 @@
       "D": "an example of a theory that affects our perception of the world, and thus should be taken seriously",
       "E": "an example of a theory that should be taken seriously, even though it does not affect our perception of the world"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT137",

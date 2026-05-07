@@ -33,7 +33,10 @@
       "D": "It expresses the conclusion to be argued for.",
       "E": "It suggests a possible solution to the problem of homelessness."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -275,7 +278,10 @@
       "D": "It is a view that other statements in the argument are intended to support.",
       "E": "It sets out a difficulty the argument is intended to solve."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -329,7 +335,10 @@
       "D": "The argument ignores the possibility that what is taken to be necessary for a certain interest to be a motivation actually suffices to show that that interest is a motivation.",
       "E": "The argument depends for its appeal only on the emotional content of the example cited."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT107",

@@ -216,7 +216,10 @@
       "D": "identifying all plausible explanations for why something is the case and arguing that all but one of them can be eliminated",
       "E": "testing a theory by determining the degree to which a specific situation conforms to the predictions of that theory"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -270,7 +273,10 @@
       "D": "attempts to compare two quantities that are not comparable in any way",
       "E": "presupposes that experiments always do harm to their subjects"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT109",

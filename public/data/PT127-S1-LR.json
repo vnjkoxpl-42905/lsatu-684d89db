@@ -51,7 +51,10 @@
       "D": "It is cited as an insufficient reason for eliminating funding for children’s athletic programs.",
       "E": "It is cited as an objection that has been raised to the position that the teacher is supporting."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -285,7 +288,10 @@
       "D": "It is used to identify the social benefit with which the argument is concerned.",
       "E": "It is the conclusion that the argument is intended to support."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -321,7 +327,10 @@
       "D": "It is an intermediate conclusion for which one claim is offered as support, and which is used in turn to support the argument’s main conclusion.",
       "E": "It is a premise offered in support of the claim that humans have evolved very little since the development of agriculture."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT127",

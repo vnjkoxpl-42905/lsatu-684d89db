@@ -306,7 +306,10 @@
       "D": "A claim that has a very general application is based entirely on evidence from a narrowly restricted range of cases.",
       "E": "An inconsistency that, as presented, has more than one possible resolution is treated as though only one resolution is possible."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT111",

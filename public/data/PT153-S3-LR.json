@@ -145,7 +145,10 @@
       "D": "It is the conclusion of the argument as a whole and is supported by another statement for which support is offered.",
       "E": "It is one of two conclusions in the argument, neither of which is offered as support for the other."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT153",

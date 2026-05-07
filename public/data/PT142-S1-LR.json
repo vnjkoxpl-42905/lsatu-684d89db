@@ -327,7 +327,10 @@
       "D": "takes for granted that there will be an observable correlation between two phenomena if either of those phenomena causally contributes to the other",
       "E": "fails to consider that even if a specific negative consequence is not associated with a given phenomenon, that phenomenon may have other negative consequences"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT142",

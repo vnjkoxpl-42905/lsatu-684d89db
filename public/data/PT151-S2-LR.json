@@ -55,7 +55,10 @@
       "D": "The argument presents a chain of possible consequences of a given event as if it were the only possible chain of consequences of that event.",
       "E": "The argument concludes that one event would cause a second event even though the second event would have to precede the first."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -461,7 +464,10 @@
       "D": "It is a general claim used in support of the argument’s overall conclusion.",
       "E": "It is the overall conclusion of the argument."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT151",

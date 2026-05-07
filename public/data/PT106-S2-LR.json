@@ -163,7 +163,10 @@
       "D": "It is a particular instance of the general position to be defended.",
       "E": "It is a reiteration of the main point that is made for the sake of emphasis."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -330,7 +333,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Abstract Answers"
     ]
   },
   {
@@ -403,7 +407,10 @@
       "D": "It disallows in principle any evidence that would disconfirm its conclusion.",
       "E": "It treats something that is merely unlikely as though it were impossible."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",

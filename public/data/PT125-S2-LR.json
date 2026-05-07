@@ -185,7 +185,10 @@
       "D": "drawing an analogy to an example presented by Helen",
       "E": "denying the relevance of an example presented by Helen"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT125",

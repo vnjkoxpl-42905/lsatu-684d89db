@@ -131,7 +131,10 @@
       "D": "arguing that, in assessing the severity of a violation, the reasoning motivating the violation needs to be considered",
       "E": "reinterpreting a key phrase in the hospital auditor’s argument so as to undermine an assumption underlying that argument"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT106",

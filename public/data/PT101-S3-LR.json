@@ -303,7 +303,10 @@
       "D": "drawing a causal conclusion by appealing to general principles about the behavior of economic systems",
       "E": "inferring that changes in an aggregate must be explained by an individual’s actions"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -357,7 +360,10 @@
       "D": "The anthropologists who have studied various cultures have been biased in favor of finding differences rather than similarities between distinct cultures.",
       "E": "What appear to be differences in values between distinct cultures are nothing more than differences in beliefs about how to live in accordance with shared values."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT101",

@@ -144,7 +144,10 @@
       "D": "attempting to undermine an argument by showing that it is incompatible with a fundamental principle of medicine",
       "E": "challenging an argument from analogy by focusing on a dissimilarity between the things being compared"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -442,7 +445,10 @@
       "D": "It is a claim for which some support is provided in the argument, and that itself is not used to support any other claim in the argument.",
       "E": "It is a claim for which some support is provided in the argument, and that itself is used to support two distinct conclusions, neither of which is intended to provide support for the other."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -481,6 +487,9 @@
       "D": "appealing to a historical fact to support a claim about people’s artistic preferences",
       "E": "considering historical context to defend the artistic preferences of people"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   }
 ]

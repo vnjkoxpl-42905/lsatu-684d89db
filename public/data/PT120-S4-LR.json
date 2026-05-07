@@ -240,7 +240,10 @@
       "D": "showing that because a certain policy is not universally adopted that policy cannot accomplish what it was designed to do",
       "E": "arguing that a certain policy is bound to fail because an event that is likely to defeat the aim of the policy falls outside the policy’s influence"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT120",

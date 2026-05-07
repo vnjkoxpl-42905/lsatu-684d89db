@@ -270,7 +270,10 @@
       "D": "The response fails to make a needed distinction between personal experience and relevant professional experience.",
       "E": "The response fails to provide evidence for its assumption that flexibility is unimportant in the practice of politics."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT115",

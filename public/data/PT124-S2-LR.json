@@ -162,7 +162,10 @@
       "D": "offers an explanation of the glowing lights different from Phoebe's",
       "E": "accuses Phoebe of introducing irrelevant information"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -220,7 +223,10 @@
       "D": "pointing out that the premises of Yang's argument more strongly support a contrary conclusion",
       "E": "calling into question the truth of the evidence presented in Yang's argument"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -259,7 +265,10 @@
       "D": "One should accept the authority of tradition only if one has nontraditional evidence for the traditional hypothesis.",
       "E": "One should defer to the authority of tradition if two or more hypotheses conflict with it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -367,7 +376,10 @@
       "D": "contains a premise that is implausible unless the conclusion is presumed to be true",
       "E": "infers a particular causal relation from a correlation that could be explained in a variety of other ways"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Abstract Answers"
+    ]
   },
   {
     "practiceTest": "PT124",
