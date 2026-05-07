@@ -252,7 +252,10 @@
       "D": "Only nations that alone have the capacity to economically resuscitate neighboring countries should exercise that capacity.",
       "E": "Only nations that can afford to give economic aid to just a few other nations ought to aid just those few."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -270,7 +273,10 @@
       "D": "The aesthetic merit of some literary works cannot be judged in complete independence of their moral effects.",
       "E": "Modern literature is generally not as conducive to societal good as was the literature of earlier eras."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",

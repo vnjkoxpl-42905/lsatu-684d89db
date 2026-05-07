@@ -69,7 +69,10 @@
       "D": "It is technologically feasible to perform mining operations on Mars.",
       "E": "The more complex an ecosystem is, the more valuable it is."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -127,7 +130,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -185,7 +189,10 @@
       "D": "The training in neuroscience, physiology, and pharmacology required for a medical degree is sufficient for a doctor to be allowed to prescribe psychiatric medications.",
       "E": "Clinical psychologists should receive years of training in neuroscience, physiology, and pharmacology."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -223,7 +230,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -318,7 +326,10 @@
       "D": "Hatchery-raised fish that are released into the wild need to eat many different types of food to survive.",
       "E": "Fish in the wild always live in visually stimulating environments."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",

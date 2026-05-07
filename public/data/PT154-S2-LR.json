@@ -15,7 +15,10 @@
       "D": "At any given company, people who perform the same work should receive equal pay.",
       "E": "People who are able to work hard have an obligation to do so."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -33,7 +36,10 @@
       "D": "Poetry cannot be regimented or standardized.",
       "E": "E. E. Cummings did not use literal language."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -387,7 +393,10 @@
       "D": "If something appreciably affects large-scale weather patterns, it is probably cyclical in nature.",
       "E": "If a weather pattern with a natural cause has a seven-day cycle, then that cause has a seven-day cycle."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",

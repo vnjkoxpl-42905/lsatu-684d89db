@@ -77,7 +77,10 @@
       "D": "A condition that is typically progressive should not be treated using methods that provide only temporary relief.",
       "E": "A condition that is potentially harmful should not be left untreated unless it can be kept under constant surveillance."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -233,7 +236,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -295,7 +299,10 @@
       "D": "The threshold is not as high in Springhill as it is in neighboring towns.",
       "E": "The threshold remains at the predetermined level specified by law until a change is approved by the Springhill town council."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -467,7 +474,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {

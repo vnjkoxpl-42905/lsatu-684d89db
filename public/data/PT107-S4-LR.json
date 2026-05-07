@@ -73,7 +73,10 @@
       "D": "there are television shows on which economic forces have an even greater impact than they do on television talk shows",
       "E": "the television talk shows of different stations resemble one another in most respects"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -91,7 +94,10 @@
       "D": "most television viewers are prepared to argue against allowing the expression of political opinions and analyses with which they disagree",
       "E": "the political opinions of television station executives are not often reflected in the television shows their stations produce"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -127,7 +133,10 @@
       "D": "It is better to destroy one of two competing types of organisms, even if both are irreplaceable, than to allow both of them to be lost.",
       "E": "It is better to protect an endangered type of organism, even if doing so has some negative effects on another type of organism, than to do nothing at all."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -145,7 +154,10 @@
       "D": "Wildflower-daisy hybrids will be able to reproduce.",
       "E": "The domesticated daisy will cross-pollinate with any daisylike plant."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -319,7 +331,10 @@
       "D": "Police officers are more interested in the confidence witnesses have when testifying than in the accuracy of that testimony.",
       "E": "The accuracy of an eyewitness account is doubtful if the eyewitness contradicts what other eyewitnesses claim to have seen."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",

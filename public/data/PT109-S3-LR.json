@@ -197,7 +197,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -294,7 +295,10 @@
       "D": "Serving as stewards of cultural heritage requires that contemporary societies help to maintain the fine arts.",
       "E": "Maintenance, advancement, and enrichment of the fine arts in any era require governmental subsidies."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -426,7 +430,10 @@
       "D": "If Sue trained hard, she would win the sailboat race.",
       "E": "Sue is usually a faster sailboat racer than Maria."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT109",

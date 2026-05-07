@@ -288,7 +288,10 @@
       "D": "A certain aesthetic pleasure is derived from seeing several movies that develop the same plot in slightly different ways.",
       "E": "Although most modern movie plots have been used before, most of those previous uses occurred during the 1940s and 1950s."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -326,7 +329,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

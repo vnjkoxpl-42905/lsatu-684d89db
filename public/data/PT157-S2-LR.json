@@ -184,7 +184,10 @@
       "D": "The intellectual skills that society values most highly are not computational ones.",
       "E": "Electronic data-processing technology has enabled people to perform some tasks that previously could not be performed at all."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -260,7 +263,10 @@
       "D": "The best way to increase usage of public libraries is to change the library hours for the convenience of most people.",
       "E": "A new tax supporting a public facility should be approved only when most taxpayers have ample opportunities to use that facility. -16- 22"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -296,7 +302,10 @@
       "D": "Most children are egocentric and selfish in their attitudes towards their pets and do not understand that their pets are independent creatures with their own feelings and needs.",
       "E": "The only children who should have pets are those who understand that their pets are independent creatures with their own feelings and needs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -335,7 +344,10 @@
       "D": "Any form of behavior that helps speakers quickly find the phrases they want also enables them to speak more quickly and repeat themselves less than they would if they were not engaged in that behavior.",
       "E": "Of the subjects who were allowed to gesture, those who spoke the most quickly and repeated themselves least were among those who gestured the most."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -371,7 +383,10 @@
       "D": "It takes for granted that, on average, the olecranon processes of extinct mammals were no shorter than those of living mammals are.",
       "E": "It fails to address the possibility that a longer olecranon process may confer some other advantage, such as greater strength."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -389,7 +404,10 @@
       "D": "If a commitment has outlasted its original justification, then it cannot be virtuous.",
       "E": "All commitments are morally neutral if there are any commitments that are undeserving of praise. -18- 22"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -407,7 +425,10 @@
       "D": "Few people who watch a great deal of television develop a lifelong interest in literature.",
       "E": "Few children who spend their free time reading stories watch television."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -443,7 +464,10 @@
       "D": "for people who are employees of highly profitable corporations where monitoring is reduced, expensive bonuses constitute strong incentives to keep working hard",
       "E": "a highly profitable corporation can save money by reducing its managers’ monitoring of employees only if its employees are given expensive bonuses S T DO NOT WORK ON ANY OT -19- 22 2"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT157",

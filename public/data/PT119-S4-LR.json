@@ -90,7 +90,10 @@
       "D": "Measuring the predictive success of a psychological theory involves considering other theories that attempt to explain the same phenomena.",
       "E": "Scientific theories become impractical if they posit causal mechanisms beyond a certain level of complexity."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -108,7 +111,10 @@
       "D": "Early humans had a shorter average life span than we do, and the most serious dental problems now tend to develop late in life.",
       "E": "Diet is by far the most significant factor contributing to dental health."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -296,7 +302,10 @@
       "D": "People tend not to understand the purpose of restrictions unless they participate in their formulation.",
       "E": "Civil disorder does not generally occur in countries that have either free elections or a free press."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -350,7 +359,10 @@
       "D": "Gratitude and pity are reasonable responses to some forms of hostile or insensitive behavior.",
       "E": "Pity is the only reasonable reaction to people with undesirable characteristics."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT119",

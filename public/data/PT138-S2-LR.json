@@ -87,7 +87,10 @@
       "D": "Snake populations are much less threatened than the populations of several other species for which capture is legal.",
       "E": "Snake charmers capture wild snakes only because they believe they would be unable to earn a living otherwise."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -255,7 +258,10 @@
       "D": "whether the number of pets owned, per capita, is greater for residents of Flynn Heights than for residents of any other neighborhood",
       "E": "whether residents of Flynn Heights are more likely to license their dogs than residents of other neighborhoods are"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -273,7 +279,10 @@
       "D": "If there is a behavior common to people of widely disparate cultures, then there is probably a genetic predisposition to that behavior.",
       "E": "The people whose faces were depicted in the photographs were not all from the same culture."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",

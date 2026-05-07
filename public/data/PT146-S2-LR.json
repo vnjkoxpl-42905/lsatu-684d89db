@@ -51,7 +51,10 @@
       "D": "Advice is of limited use unless it is offered from the perspective of the recipient.",
       "E": "Most managers prefer to read books that they think will be useful to them in their work."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -87,7 +90,10 @@
       "D": "Humans would not have mastered fire were it not for the need for heat in a cold climate.",
       "E": "There were humans inhabiting Europe prior to 400,000 years ago."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -105,7 +111,10 @@
       "D": "One should not commit additional funding to a project just because one has spent considerable money on it in the past.",
       "E": "In determining which scientific projects to fund, governments should give priority to the projects that are most likely to lead to important new discoveries."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -163,7 +172,10 @@
       "D": "The truth of the information provided by the informant can be verified only if the informant’s identity is publicly revealed.",
       "E": "The informant understood, at the time the journalist promised him confidentiality, that she would break this promise if ordered to do so by a judge."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT146",

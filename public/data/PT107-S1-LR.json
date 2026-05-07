@@ -90,7 +90,10 @@
       "D": "Barnes was not hired at a higher-than-average starting salary.",
       "E": "The salaries of the two newest employees are no higher than the salaries that other companies pay for workers with a similar level of experience."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -283,7 +286,10 @@
       "D": "Shortage of oxygen at extremely high altitudes is likely to affect thinking processes and cause errors of judgment.",
       "E": "Most people who suffer from ordinary mountain sickness recover without any special treatment."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -301,7 +307,10 @@
       "D": "Proto-Indo-European possesses words for “heat.”",
       "E": "The people who spoke Proto-Indo-European were nomadic."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -355,7 +364,10 @@
       "D": "A manager should be held responsible for mistakes made by those whom the manager directly supervises.",
       "E": "A manager, and only a manager, should be held responsible for a project’s failure."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT107",

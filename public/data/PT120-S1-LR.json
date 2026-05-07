@@ -201,7 +201,10 @@
       "D": "A cash-flow statement is the only way to track both monthly expenses and expenses that are not monthly.",
       "E": "When a business takes into account all expenses, not just monthly ones, it can make better decisions."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -219,7 +222,10 @@
       "D": "Many yet-to-be-discovered types of living things will also be carbon based.",
       "E": "Any two living things made of the same basic kinds of matter have the same origin."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -255,7 +261,10 @@
       "D": "When the unification of the world economy forces the adoption of a universal language for use in international trade, many regional dialects of other languages will be eradicated.",
       "E": "After the unification of the world economy, there will be variation among many different local populations in their communicative needs in international trade."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -363,7 +372,10 @@
       "D": "At least some children would benefit from highquality day care.",
       "E": "Government is a more efficient provider of certain services than is private enterprise."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -422,7 +434,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Missing Link / Idea"
     ]
   },
   {

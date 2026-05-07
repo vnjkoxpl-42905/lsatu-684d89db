@@ -255,7 +255,10 @@
       "D": "We are morally obligated not to destroy anything that will most likely enrich, either intellectually or emotionally, our posterity.",
       "E": "Being morally obligated not to destroy something requires that we be reasonably assured that that thing will lead to the betterment of someone we know."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -332,7 +335,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -464,7 +468,10 @@
       "D": "The dwarf masked owl will not make its winter home on the Baja peninsula only if that region contains no spiny cacti.",
       "E": "Suitable nesting sites must be present where the dwarf masked owl makes its winter home."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT102",

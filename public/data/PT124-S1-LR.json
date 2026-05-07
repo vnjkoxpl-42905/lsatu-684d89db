@@ -169,7 +169,10 @@
       "D": "Very few leatherback turtles exist in captivity.",
       "E": "The only way to ensure the continued survival of leatherback turtles in the wild is to breed them in captivity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -187,7 +190,10 @@
       "D": "People who dislike the taste of most vegetables would eat many more vegetables if they knew how to make them more appetizing.",
       "E": "The only way to make the campaign to get people to eat more vegetables more effective would be to ensure that anyone who at present dislikes the taste of certain vegetables learns to find those vegetables appetizing."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -244,7 +250,10 @@
       "D": "Changes in diet and smoking habits are not responsible for any change in the average duration of vertigo since the introduction of the drug.",
       "E": "There are various significant factors other than drugs that decrease the duration of vertigo for many people who suffer from it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -337,7 +346,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -374,7 +384,10 @@
       "D": "If any two animal species with virtually indistinguishable skeletal anatomy exhibit quite different hunting behaviors, then it is never reasonable to infer, based solely on the hunting behavior of those species, that the two species have the same skeletal anatomy.",
       "E": "If it is unreasonable to infer, solely on the basis of differences in skeletal anatomy, that extinct animals of two distinct species differed in their hunting behavior, then the skeletal remains of those two species are virtually indistinguishable."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -437,7 +450,10 @@
       "D": "Crops that are grown in good soil tend to be more robust than other crops.",
       "E": "Growing crops without the use of pesticides generally produces less robust plants than when pesticides are used."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",

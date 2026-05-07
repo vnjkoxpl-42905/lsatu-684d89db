@@ -15,7 +15,10 @@
       "D": "A museum piece that would be damaged by display should not be displayed.",
       "E": "The primary purpose of a museum is to educate the public."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -131,7 +134,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -150,7 +154,10 @@
       "D": "presumes, without providing justification, that any action that is efficient is also moral",
       "E": "inappropriately treats two possible courses of action as if they were the only options"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -170,7 +177,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -207,7 +215,10 @@
       "D": "We should not implement a problem-solving strategy if that strategy requires altering an important resource.",
       "E": "As long as there is a possibility that a strategy for solving a problem may instead exacerbate that problem, such a solution should not be adopted."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -287,7 +298,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

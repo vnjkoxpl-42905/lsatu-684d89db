@@ -375,7 +375,10 @@
       "D": "No person should be allowed to profit from something that was invented by another person.",
       "E": "A person or corporation who invents something should be entitled to patent it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT159",

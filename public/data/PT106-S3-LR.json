@@ -111,7 +111,10 @@
       "D": "Many adolescents who engage in violent behavior had already displayed such behavior before they were exposed to violence in movies.",
       "E": "Among the producers who make both movies and television programs, many voluntarily restrict the subject matter of films directed toward young audiences."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -341,7 +344,10 @@
       "D": "Judgments that depend on individual preference or taste cannot be evaluated as true or false.",
       "E": "Anything that enhances the proliferation of a species is to be valued highly."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -422,7 +428,10 @@
       "D": "voluntary action cannot have an evolutionary explanation",
       "E": "there is a psychological explanation for the continuing presence of pheromones in humans"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT106",

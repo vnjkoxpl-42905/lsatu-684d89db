@@ -349,7 +349,10 @@
       "D": "Freedom of speech does not entitle filmmakers to present inaccurate speculations as truth.",
       "E": "Views that people are entitled to express need not be views to which anyone is obliged to pay attention."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT122",

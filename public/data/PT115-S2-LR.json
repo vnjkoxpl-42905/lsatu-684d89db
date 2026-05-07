@@ -316,7 +316,10 @@
       "D": "Given a choice between similar Japanese and North American models, all with right-side steering wheels, most Japanese would choose the North American model.",
       "E": "The automotive trade imbalance can be lessened only if North American manufacturers produce automobiles that more effectively meet the needs of Japanese buyers."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT115",

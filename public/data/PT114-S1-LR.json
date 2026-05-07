@@ -69,7 +69,10 @@
       "D": "A fresh batch of powder for a repeat analysis was available at the time of the test.",
       "E": "The type of analysis used was insensitive to very small amounts of toxin T."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -219,7 +222,10 @@
       "D": "Large governmental job retraining programs do not meet the short-term needs of different individual companies.",
       "E": "Technological workers are more likely now than in the past to move in order to find work for which they are already trained."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",

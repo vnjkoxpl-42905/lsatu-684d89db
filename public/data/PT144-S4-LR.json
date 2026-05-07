@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -225,7 +226,10 @@
       "D": "In anyone for whom the scent of lavender reduces susceptibility to illness, it does so primarily by reducing stress.",
       "E": "Reduced stress diminishes susceptibility to illness only for people who are under enough stress to impair their immune systems to at least some degree."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -447,7 +451,10 @@
       "D": "None of the students in the very demanding introductory science courses who are least enthusiastic about science are among the students most committed to being science majors.",
       "E": "Introductory science courses should not continue to be designed to serve as proving grounds if doing so has not served its intended purpose. S T"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT144",

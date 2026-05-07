@@ -180,7 +180,10 @@
       "D": "The recent evidence regarding the cave painting in northern Spain is the first evidence to suggest that Neanderthals possessed the ability to think symbolically.",
       "E": "Any species of hominid that cannot create cave paintings must lack the ability to think symbolically."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -457,6 +460,9 @@
       "D": "Economic expansion cannot occur unless there is significant financial investment in the economy by people at the highest income levels.",
       "E": "The presence of divisive political factions can be an obstacle to economic expansion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   }
 ]

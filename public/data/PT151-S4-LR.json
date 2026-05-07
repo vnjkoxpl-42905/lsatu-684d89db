@@ -69,7 +69,10 @@
       "D": "museum visitors who take snapshots of works of art rarely look at the pictures afterward",
       "E": "the amount of time spent looking at a work of art is a reliable measure of engagement with that work"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -338,7 +341,10 @@
       "D": "Newspapers have regarded objective reporting as less likely to offend people than openly partisan reporting.",
       "E": "There can be no basis for taking objectivity to be an essential journalistic standard."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT151",

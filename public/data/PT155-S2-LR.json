@@ -126,7 +126,10 @@
       "D": "The entrapment of dire wolves in the tar pits most frequently occurred when those animals were scavenging or hunting.",
       "E": "For the dire wolves that lived nearby, the tar pits were a favorite location for scavenging and hunting."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -373,7 +376,10 @@
       "D": "No advertising agency that tailors its advertisements mainly to an audience that does not control much of this nation’s personal disposable income will maximize its clients’ profits.",
       "E": "Any advertising agency that gears its advertisements mainly to a population segment that controls 50 percent or more of this nation’s personal disposable income will maximize its clients’ profits."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",

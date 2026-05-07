@@ -366,7 +366,10 @@
       "D": "Wallakim Pond would have a thriving population of turtles if it were not acidic.",
       "E": "The conditions at a pond are beneficial to turtles only if the water in the pond is not acidic."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -459,7 +462,10 @@
       "D": "There are plants that are known to be toxic to some animals and whose toxicity is known to be affected by the alteration of a single gene.",
       "E": "Research has shown that those consumers who are most strongly opposed to genetically altered foods tend to be ill-informed on the issue. S T DO NOT WORK ON ANY OT 3 3 -27-3"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT158",

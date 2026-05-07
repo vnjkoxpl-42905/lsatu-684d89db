@@ -36,7 +36,10 @@
       "D": "None of the other ingredients in the dish need to be presoaked.",
       "E": "The plumper the bean, the better it tastes."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -74,7 +77,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -221,7 +225,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -318,7 +323,10 @@
       "D": "A person who repeatedly harvests from a wild fruit tree and studies it has some idea of what the fruit is even before knowing a name for the fruit.",
       "E": "One need not know what something is before one can name it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT126",

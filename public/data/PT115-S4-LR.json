@@ -453,7 +453,10 @@
       "D": "Candidates invariably buy as much media exposure as they can afford and campaign laws allow.",
       "E": "Any candidate whose visual image does not evoke many positive feelings in voters will not be elected."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT115",

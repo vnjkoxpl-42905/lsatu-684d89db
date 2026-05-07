@@ -36,7 +36,10 @@
       "D": "Many popular pets are not usually fed meat.",
       "E": "Feeding meat to pets contributes to cruelty to animals."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -248,7 +251,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -341,7 +345,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -500,7 +505,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   }
 ]

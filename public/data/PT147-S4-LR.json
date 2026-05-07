@@ -114,7 +114,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -133,7 +134,10 @@
       "D": "A country should not do anything that might hinder the growth of political freedom in any other country.",
       "E": "It is wrong for any country to adopt trade policies that might diminish the prosperity of its inhabitants."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -151,7 +155,10 @@
       "D": "Few artists are endowed with a high degree of creativity.",
       "E": "Anyone endowed with both a high level of artistic skill and a high degree of creativity will produce only a few great works of art."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -190,7 +197,10 @@
       "D": "Entertainment and news are not mutually exclusive categories.",
       "E": "The worst journalists have been more entertaining than informative."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -280,7 +290,10 @@
       "D": "History is always told by propagandists from the winning side.",
       "E": "Historical inaccuracies should be corrected only when they impugn the reputations of good people."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -396,7 +409,10 @@
       "D": "Physiology as a science is largely independent of physics and chemistry.",
       "E": "Biological processes are irreducible to mechanical or chemical processes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT147",

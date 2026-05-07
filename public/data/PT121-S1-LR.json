@@ -276,7 +276,10 @@
       "D": "Having a good rapport with the members of the legislature allows a leader to shape public opinion.",
       "E": "To be a great leader one must not be swayed by public opinion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -333,7 +336,10 @@
       "D": "One should not support an organization that does anything one believes to be wrong.",
       "E": "One should not purchase products from companies that make no environmentally sound products."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -371,7 +377,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {

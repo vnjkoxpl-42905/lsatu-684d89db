@@ -136,7 +136,10 @@
       "D": "Discussing one’s condition eliminates the stress of being in that condition.",
       "E": "Stress is a symptom of a weakened immune system."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -216,7 +219,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -253,7 +257,10 @@
       "D": "Many people enjoy the challenge of a difficult job, as long as they feel that their efforts are appreciated.",
       "E": "Some people are not aware that jobs with high salaries typically leave very little time for recreation."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -271,7 +278,10 @@
       "D": "Degree of student engagement in the learning process correlates well with students’ average grades.",
       "E": "Parental support for the proposed law rests solely on expectations of increased student engagement in the learning process."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -351,7 +361,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -427,7 +438,10 @@
       "D": "In countries with strong libel laws, people make negative statements about public figures only when such statements can be proved.",
       "E": "Public figures can have good reputations only if there are other public figures who have bad reputations."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT138",

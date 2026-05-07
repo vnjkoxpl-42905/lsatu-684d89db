@@ -365,7 +365,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -405,7 +406,10 @@
       "D": "Twenty years ago the system of peer review in biology was less effective in preventing scientific fraud than the system of peer review in physics is today.",
       "E": "Over the years, there have been relatively few, if any, major incidents of scientific fraud in physics."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -423,7 +427,10 @@
       "D": "If one breed of dog is more closely related to wolves than another breed of dog is, then the former breed of dog is more closely related to wolves than to the latter breed of dog.",
       "E": "Any two breeds of dog that are more closely related to each other than to wolves are both descended from wolves that were domesticated long ago."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT135",

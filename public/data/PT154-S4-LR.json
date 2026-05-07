@@ -69,7 +69,10 @@
       "D": "The private collector did not pay more for the Roman helmet than an English museum would have.",
       "E": "No English museum could have paid more for the Roman helmet than the private collector did."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -249,7 +252,10 @@
       "D": "Restaurants that do not keep late hours are rarely unpopular with neighbors.",
       "E": "New nightclubs invariably produce some benefits for the neighborhoods in which they open."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -414,7 +420,10 @@
       "D": "Helpful warnings given to a driver in a difficult driving situation are as likely to distract the driver as to help the driver in controlling the car.",
       "E": "Conversing on a cell phone while driving is no more dangerous than conversing with a passenger in the vehicle who continues to speak during difficult driving situations."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT154",

@@ -126,7 +126,10 @@
       "D": "If there is a similarity between two effects, then there is probably a similarity between their causes.",
       "E": "The frequency with which a hazardous activity is performed is proportional to the frequency of injuries resulting from that activity."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -182,7 +185,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -294,7 +298,10 @@
       "D": "Everything that fails to catch our attention is commonplace and ordinary.",
       "E": "Only extraordinary or unusual things catch our attention."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT116",

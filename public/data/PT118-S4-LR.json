@@ -57,7 +57,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -244,7 +245,10 @@
       "D": "Most museums provide the same amount of security for valuable and not-so-valuable art.",
       "E": "Wealthy private collectors sometimes sell their stolen art to other wealthy private collectors."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -319,7 +323,10 @@
       "D": "judgments about intrinsic value are always objective",
       "E": "an artwork's value is sometimes intrinsic to it"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT118",

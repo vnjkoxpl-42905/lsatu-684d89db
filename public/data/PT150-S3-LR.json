@@ -51,7 +51,10 @@
       "D": "A taxi driver should always act in a way that is most likely to ensure customer satisfaction.",
       "E": "A taxi driver’s turning off air-conditioning for a short period of time is acceptable only if passengers do not complain."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT150",

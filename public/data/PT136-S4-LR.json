@@ -36,7 +36,10 @@
       "D": "It is acceptable for people to have access to a vast array of misinformation only if accurate information is never overlooked as a result.",
       "E": "It is usually more desirable for people to have access to useless, unregulated misinformation than it is for them to have access only to accurate but regulated information."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -54,7 +57,10 @@
       "D": "The club president has more discretion in hiring an accountant than in hiring a speaker.",
       "E": "The club's previous president acted appropriately in hiring the tax accountant without first consulting other club members."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -134,7 +140,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -207,7 +214,10 @@
       "D": "The Woerner Journalism Award for criticism should not be given to writers who do not consider themselves to be critics.",
       "E": "All writing that reveals important truths about a culture should be considered to be criticism."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -302,7 +312,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -323,7 +334,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {

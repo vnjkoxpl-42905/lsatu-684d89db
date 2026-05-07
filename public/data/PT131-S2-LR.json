@@ -309,7 +309,10 @@
       "D": "Teachers are able to tell when students respect them.",
       "E": "Students lose respect for teachers whenever they sense that the teachers are trying to hide their ignorance."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT131",

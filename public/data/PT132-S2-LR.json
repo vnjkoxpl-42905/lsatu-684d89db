@@ -51,7 +51,10 @@
       "D": "Most medications with a low melting point are produced in soft-gel form.",
       "E": "Medications in capsule form taste less unpleasant than those in tablet or soft-gel form."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -165,7 +168,10 @@
       "D": "If a study of human subjects uses only accurate reports about the subjects' pasts, then that study can reliably determine the causes of those subjects' present characteristics.",
       "E": "Every scientific study in which researchers look for significant connections between the present characteristics of subjects and what happened to those subjects in the past must use the subjects' reports about their own pasts."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -278,7 +284,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -318,7 +325,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -430,7 +438,10 @@
       "D": "Society has a special obligation to protect small children from pesticides unless average doses received by the population are low and have not been shown to be harmful to children's health.",
       "E": "Measures taken to protect the population from a harm sometimes turn out to be the cause of a more serious harm to certain segments of the population."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT132",

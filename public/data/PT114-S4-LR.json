@@ -203,6 +203,29 @@
   {
     "practiceTest": "PT114",
     "sectionNumber": 4,
+    "questionNumber": 12,
+    "questionType": "Sufficient Assumption",
+    "reasoningType": "Conditional Logic",
+    "questionDifficulty": 2,
+    "stimulus": "Morris: Computers, despite some people's expectations, will have an inappreciable impact on education. To be sure, computers are useful for drills promoting memorization, though only a small part of education can be accomplished through drills. But machines cannot help students with any of the higher intellectual functions we call understanding; for that, human teachers are indispensable.",
+    "questionStem": "The conclusion of Morris's argument follows logically if which one of the following is assumed?",
+    "answerChoices": {
+      "A": "Whatever memorization is necessary can be accomplished as easily without computers as with them.",
+      "B": "Requiring memorization in appreciable amounts tends to thwart development of higher intellectual functions in students.",
+      "C": "Successful memorization of relevant facts is a necessary precondition for the development of higher intellectual functions in students.",
+      "D": "Many students become familiar with computers before encountering them at school.",
+      "E": "Having an appreciable impact on education involves affecting the higher intellectual functions of students."
+    },
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion",
+      "New Concept in Conclusion",
+      "Missing Link / Idea"
+    ]
+  },
+  {
+    "practiceTest": "PT114",
+    "sectionNumber": 4,
     "questionNumber": 13,
     "questionType": "Weaken",
     "reasoningType": "Conditional Logic",
@@ -345,7 +368,10 @@
       "D": "Some other strategy for overcoming adolescent loneliness is generally more successful than is developing an all-consuming hobby.",
       "E": "Shy adolescents devote themselves to hobbies mainly because they want to make friends."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -381,7 +407,10 @@
       "D": "Increasing the level of serotonin in the brain promotes relaxation and freedom from anxiety.",
       "E": "The consumption of protein-rich foods results in anxiety and a lowering of mood."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",

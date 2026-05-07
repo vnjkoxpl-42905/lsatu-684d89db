@@ -51,7 +51,10 @@
       "D": "Governments should consider all health services to be essential to the community.",
       "E": "At least some lottery revenue must be set aside in case of budget shortfalls in the future."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -126,7 +129,10 @@
       "D": "When advising customers about a purchase of a home appliance, a salesperson should direct the customer toward the product that yields the highest commission for the salesperson.",
       "E": "When a consumer is choosing a home appliance, that consumer should choose the least powerful product that meets his or her needs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT142",

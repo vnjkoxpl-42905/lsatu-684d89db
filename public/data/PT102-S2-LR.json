@@ -417,7 +417,10 @@
       "D": "If a measure is sufficient to solve a problem, then it should be adopted.",
       "E": "If a measure is sufficient to solve a problem, any steps necessitated by that measure should be adopted."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT102",

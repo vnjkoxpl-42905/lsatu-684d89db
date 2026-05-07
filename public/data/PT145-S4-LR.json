@@ -15,7 +15,10 @@
       "D": "Voters are likely to elect a politician who they believe understands their financial concerns.",
       "E": "Voters are likely to question the sincerity of a politician who does not hold the same beliefs they do."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -447,7 +450,10 @@
       "D": "A socially responsible company would not have employees working in unsanitary conditions.",
       "E": "Every company that is well managed is socially responsible."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT145",

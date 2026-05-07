@@ -90,7 +90,10 @@
       "D": "Expressing harmony with nature and being natural are the same thing.",
       "E": "Each component of a genuine Japanese garden is varied."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -186,7 +189,10 @@
       "D": "Ms. Sandstrom knew that her column could incite trespassing that could result in damage to the Mendels' farm.",
       "E": "The Mendels believe that Ms. Sandstrom is able to form reasonable expectations about the consequences of her actions."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -278,7 +284,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -333,7 +340,10 @@
       "D": "Some Healy's staff members believe that the auction house's catalog should not contain any descriptions that have not been certified to be true by independent experts.",
       "E": "Without consulting anyone with expertise in authenticating vases, Healy's described the vase as dating from the mid-eighteenth century merely in order to increase its auction price."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -411,7 +421,10 @@
       "D": "An act that harms another person is wrong if the person who did it understands the difference between right and wrong and did not think about whether the act would injure the other person.",
       "E": "A person who does not understand the difference between right and wrong does not bear any responsibility for harming another person."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT133",

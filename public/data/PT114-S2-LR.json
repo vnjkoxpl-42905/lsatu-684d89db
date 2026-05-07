@@ -198,7 +198,10 @@
       "D": "The greater the capacity to feel emotions, the more intelligence there is.",
       "E": "Being intelligent requires the capacity to have emotions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -237,7 +240,10 @@
       "D": "Widespread public passivity is usually needed for a regime to retain political power.",
       "E": "Most writings that totalitarian regimes label blasphemous or pornographic would, if widely influential, reduce public passivity."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT114",

@@ -36,7 +36,10 @@
       "D": "New subway cars are financially affordable.",
       "E": "New subway cars are required in order for the city to have a subway system that is efficient and attractive."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -260,7 +263,10 @@
       "D": "Every claim is open to both interesting and uninteresting interpretations.",
       "E": "Every interpretation is either trivial or uninteresting."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -368,7 +374,10 @@
       "D": "The literature department’s courses ought to enable students to analyze and understand any text that could have a harmful effect on society.",
       "E": "Any professor teaching an undergraduate course in the literature department ought to be free to choose the material to be covered in that course."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",

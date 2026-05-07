@@ -177,7 +177,10 @@
       "D": "The spirit is perfect.",
       "E": "The spirit is either indivisible or imperfect."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -231,7 +234,10 @@
       "D": "television viewers are only interested in the people on television programs who have the same eating and drinking habits as they do",
       "E": "the eating and drinking habits of people on television programs provide health officials with accurate predictions about the foods and beverages that will become popular among television viewers"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -342,7 +348,10 @@
       "D": "The number of hospital emergency facilities in Australia has doubled in the last five years.",
       "E": "In response to an increase in traffic fatalities, Australia instituted a program of mandatory driver education five years ago."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT101",

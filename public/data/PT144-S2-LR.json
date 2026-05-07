@@ -180,7 +180,10 @@
       "D": "It is unusual for a four-legged animal to keep three feet on the ground while walking.",
       "E": "All four-legged animals walk with at least two feet on the ground at all times."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -252,7 +255,10 @@
       "D": "Owners of self-service facilities should monitor those facilities in order to ensure that they are not used for illegal or unethical purposes.",
       "E": "A person or business providing a service that can be expected to be used to infringe on a copyright should be considered to knowingly aid any copyright infringer using the service."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -423,7 +429,10 @@
       "D": "The intentions of an action are irrelevant to whether or not that action is justified.",
       "E": "No actions based on good intentions are justified unless they also result in success."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -443,7 +452,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {

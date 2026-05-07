@@ -15,7 +15,10 @@
       "D": "The more severe the penalty for an offense is, the less likely it is that someone will come forward and admit responsibility for the offense.",
       "E": "The severity of the penalty for an offense should not be so great that one can never be sufficiently certain of guilt to justify punishment for that offense."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -108,7 +111,10 @@
       "D": "People who repeatedly commit embezzlement or bribery become more and more careless the longer they avoid detection.",
       "E": "No one who commits embezzlement or bribery is ever caught the first time."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -183,7 +189,10 @@
       "D": "people who tend to address problems quickly and directly will invariably seek dental care at the first sign of problems",
       "E": "the reason some people refuse to think about problems is that they find addressing problems to be stressful"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -366,7 +375,10 @@
       "D": "The original purpose of a food prohibition is often forgotten a few generations after the prohibition is introduced.",
       "E": "The people who originally adopted and enforced food prohibitions in ancient cultures generally had a nontechnical understanding of the medical functions of those prohibitions."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -468,7 +480,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Missing Link / Idea"
     ]
   },
   {

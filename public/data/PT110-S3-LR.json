@@ -51,7 +51,10 @@
       "D": "Sigatoka disease is the only disease that threatens bananas on a worldwide scale.",
       "E": "Most of the banana trees that have not been exposed to the Sigatoka fungus grow in small banana groves."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -90,7 +93,10 @@
       "D": "Relying on movies and electronic media for entertainment generally makes people less likely to participate in groups outside their families.",
       "E": "People who rely on movies and electronic media for entertainment are generally closer to their families than are those who do not."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -291,7 +297,10 @@
       "D": "It is morally wrong to ignore the terms of an agreement that was freely undertaken only if there is clear evidence that the agreement was legally permissible.",
       "E": "It is morally wrong to seek compensation for an action performed in the context of a promise to forgo such compensation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -309,7 +318,10 @@
       "D": "If a system of sounds or gestures contains no expressions referring to concrete objects or abstract ideas, then that system is not a language.",
       "E": "Some animals that possess a language can refer to both concrete objects and abstract ideas."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT110",

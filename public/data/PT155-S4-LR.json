@@ -136,7 +136,10 @@
       "D": "Security options that are significantly more expensive to employ than computer passwords will not become standard on most of the world’s computers anytime soon.",
       "E": "As soon as a security option is developed that is not significantly more expensive to employ than computer passwords, computer passwords will be replaced as a security measure."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -175,7 +178,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -212,7 +216,10 @@
       "D": "All professional tailors sew only for people whose measurements do not exactly match their chosen patterns.",
       "E": "A professional tailor can always estimate exactly how much a fabric will shrink or stretch."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -248,7 +255,10 @@
       "D": "Residents of a city have no right to complain about the requirement that homeowners connect to city water services if the requirement will benefit all the city’s residents.",
       "E": "A city can successfully increase revenue and make itself a healthier and safer place to live only if the city is able to require homeowners to connect to city water services."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -268,7 +278,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

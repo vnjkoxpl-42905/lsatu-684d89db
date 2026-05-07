@@ -225,7 +225,10 @@
       "D": "Profound spiritual experiences can be achieved without undergoing the serious danger involved in mountain climbing.",
       "E": "Mountain climbers and other athletes should carefully examine the underlying reasons they have for participating in their sports."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -343,7 +346,10 @@
       "D": "Anything that has moral value is worth preserving regardless of whether people consider it to be beautiful.",
       "E": "An argument for preserving nature will be less open to logical objections if it appeals to a characteristic that can be regarded as a basis for preserving nature and that philosophically indisputably belongs to nature."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -384,7 +390,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Missing Link / Idea"
     ]
   },
   {

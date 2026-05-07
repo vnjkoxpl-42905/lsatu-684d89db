@@ -35,7 +35,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -168,7 +169,10 @@
       "D": "In most cases, a victim of theft is harmed no more than a victim of bribery is harmed.",
       "E": "If lawmakers mandate penalties for crimes that are proportional to the harm resulting from those crimes, crime in those lawmakers’ jurisdictions will be effectively deterred."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -227,7 +231,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Missing Link / Idea"
     ]
   },
   {
@@ -402,7 +407,10 @@
       "D": "Any company that accepts its major competitor’s coupons helps its competitor by doing so, even if it also satisfies its own actual or potential customers.",
       "E": "If accepting coupons issued by a competitor would not enable a company to satisfy its actual or potential customers, then that company’s refusal to accept the coupons is motivated by the desire to satisfy customers."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT134",

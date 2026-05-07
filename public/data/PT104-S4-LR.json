@@ -33,7 +33,10 @@
       "D": "Some telephone companies own cable companies in areas other than those in which they provide telephone services.",
       "E": "The new fiber-optic services offered by telephone companies will be subject to more stringent governmental programming regulations than those to which cable companies are now subject."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -377,7 +380,10 @@
       "D": "Stuart’s art can be neither praised nor dismissed",
       "E": "if Robbins understands art well, she will praise it"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT104",

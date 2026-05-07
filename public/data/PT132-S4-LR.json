@@ -33,7 +33,10 @@
       "D": "Responses people give to poorly phrased questions are likely to be ambiguous.",
       "E": "Statements about psychic phenomena can always be given naturalistic interpretations."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -369,7 +372,10 @@
       "D": "Whether or not an action's consequences were preventable is irrelevant to whether a manufacturer should be held responsible for those consequences.",
       "E": "Manufacturers should be held responsible for the consequences of any of their actions that harm innocent people if those consequences were preventable."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT132",

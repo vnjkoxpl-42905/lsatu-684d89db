@@ -162,7 +162,10 @@
       "D": "An advanced scientific and technological society frequently benefits from new discoveries.",
       "E": "It is not as difficult to predict scientific and technological discoveries in a technologically more advanced society as it is in a technologically less advanced society."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -388,7 +391,10 @@
       "D": "If the initial cost of computer software is high, but the cost of training users is low, prime purchasers will still buy that software.",
       "E": "The more difficult it is to learn how to use a piece of software, the more expensive it is to teach a person to use that software. The following passage is used for Section 3, questions 22 through 23. Whenever she considers voting in an election to select one candidate for a position and there is at least one issue important to her, Kay uses the following principle in choosing which course of action to take: it is acceptable for me to vote for a candidate whose opinions differ from mine on at least one issue important to me whenever I disagree with each of the other candidates on even more such issues; it is otherwise unacceptable to vote for that candidate. In the upcoming mayoral election, the three candidates are Legrand, Medina, and Norton. There is only one issue important to Kay, and only Medina shares her opinion on that issue."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT103",

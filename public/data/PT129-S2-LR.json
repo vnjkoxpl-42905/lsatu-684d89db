@@ -15,7 +15,10 @@
       "D": "A doctor should withhold treatment from a patient if the doctor is uncertain whether the treatment will benefit the patient.",
       "E": "A doctor should never base the decision to prescribe a certain medication for a patient on the patient's claims about the effectiveness of that medication."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -93,7 +96,10 @@
       "D": "The studies that revealed that people choose the foods they eat primarily on the basis of flavor also revealed that people rated as most flavorful those foods that were least nutritious.",
       "E": "In a study, subjects who were told that a given food was very flavorful were more willing to try the food and more likely to enjoy it than were subjects who were told that the food was nutritious."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -132,7 +138,10 @@
       "D": "All art, even the imagists' poetry, depicts or represents some subject matter.",
       "E": "All art represents something either as simultaneous or as successive."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -225,7 +234,10 @@
       "D": "Any organization whose main purpose is to generate profits will try to become increasingly involved in any technological revolution that promises to generate enormous profits.",
       "E": "Most criminal organizations are willing to become involved in legal activities if those activities are sufficiently profitable."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -448,7 +460,10 @@
       "D": "successfully doing natural science demands careful consideration of observations not stated precisely in quantitative terms",
       "E": "useful scientific theories require the application of mathematics"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Missing Link / Idea"
+    ]
   },
   {
     "practiceTest": "PT129",
