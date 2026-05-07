@@ -11,6 +11,8 @@ interface Props {
   attemptedQids: Set<string>;
   /** When true, ovals can be clicked to jump to that index. */
   jumpEnabled: boolean;
+  /** Optional reason shown as a tooltip when jumpEnabled is false (e.g. "Paused"). */
+  jumpDisabledReason?: string;
   onJumpTo: (index: number) => void;
   onPrev: () => void;
   onNext: () => void;
@@ -28,6 +30,7 @@ export default function OfficialAnswerNavigator({
   currentIndex,
   attemptedQids,
   jumpEnabled,
+  jumpDisabledReason,
   onJumpTo,
   onPrev,
   onNext,
@@ -63,7 +66,12 @@ export default function OfficialAnswerNavigator({
                   onClick={() => isClickable && onJumpTo(i)}
                   disabled={!isClickable}
                   aria-current={isCurrent ? "true" : undefined}
-                  aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}`}
+                  aria-label={`Question ${i + 1}${isAnswered ? ", answered" : ""}${isCurrent ? ", current" : ""}${!isClickable && !isCurrent && jumpDisabledReason ? `, ${jumpDisabledReason}` : ""}`}
+                  title={
+                    !isClickable && !isCurrent && jumpDisabledReason
+                      ? jumpDisabledReason
+                      : undefined
+                  }
                   className={cn(
                     "min-w-[24px] h-6 px-1.5 rounded-full text-[11px] tabular-nums border transition-colors",
                     isCurrent

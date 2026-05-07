@@ -2077,6 +2077,7 @@ function DrillContent() {
               currentIndex={session.currentIndex}
               attemptedQids={attemptedQids}
               jumpEnabled={jumpEnabled}
+              jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
               onJumpTo={handleJumpTo}
               onPrev={officialPrev}
               onNext={officialNext}
