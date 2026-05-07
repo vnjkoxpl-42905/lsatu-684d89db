@@ -285,7 +285,10 @@
       "D": "It is the conclusion of the argument.",
       "E": "It is a premise whose truth is necessary to the success of the argument."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT159",

@@ -213,7 +213,10 @@
       "D": "Some hikers hike in areas that are not known by poachers to be frequented by hikers.",
       "E": "Cell phones are becoming one of the most effective tools in the effort to protect wildlife from poachers."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -321,7 +324,10 @@
       "D": "Putting a tap into an unhealthy maple tree that is less than 12 inches in diameter will harm it.",
       "E": "The maple trees most commonly used for making syrup are sugar maples."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -375,7 +381,10 @@
       "D": "no one who heard the lecture from the beginning and thought that it was fascinating was one of Professor O’Brien’s students",
       "E": "not everyone who arrived at the lecture on time was able to hear the entire lecture because of disruptions caused by those who were late in arriving"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -393,7 +402,10 @@
       "D": "Being generous tends to be to one’s own detriment but not to the detriment of others.",
       "E": "If a personal characteristic that one has tends to benefit others, then that personal characteristic is a moral virtue."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -447,6 +459,9 @@
       "D": "Student: The student government never takes my proposals seriously, even when these proposals have the support of most students. Others have also introduced widely supported proposals, but the student government has not seriously considered theirs either. So the student government takes only bad proposals seriously.",
       "E": "Travel agent: When I do my most creative and dedicated work, the airlines reduce my commissions. And when I do rushed work, they send me fruit baskets in gratitude. I conclude that airlines want to discourage good ideas and hard work."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sufficient vs. Necessary Flaw"
+    ]
   }
 ]
