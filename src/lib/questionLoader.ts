@@ -522,61 +522,64 @@ export class QuestionBank {
   }
 
   private async doLoad(): Promise<void> {
-    for (const filename of JSON_FILES) {
-      try {
-        const response = await fetch(filename);
-        if (!response.ok) continue;
-        
-        const raw = await response.json();
-        if (!Array.isArray(raw)) continue;
+    // Fetch all section files in parallel — sequential awaits used to take
+    // 30-60s with ~190 files; parallel completes in well under a second.
+    const results = await Promise.all(
+      JSON_FILES.map(async (filename) => {
+        try {
+          const response = await fetch(filename);
+          if (!response.ok) return null;
+          const raw = await response.json();
+          if (!Array.isArray(raw)) return null;
+          return { filename, raw };
+        } catch (err) {
+          console.error(`Failed to load ${filename}:`, err);
+          return null;
+        }
+      })
+    );
 
-        const pt = parseInt(filename.match(/PT(\d+)/)?.[1] || '0');
-        const section = parseInt(filename.match(/S(\d+)/)?.[1] || '0');
-        let count = 0;
+    for (const result of results) {
+      if (!result) continue;
+      const { filename, raw } = result;
+      const pt = parseInt(filename.match(/PT(\d+)/)?.[1] || '0');
+      const section = parseInt(filename.match(/S(\d+)/)?.[1] || '0');
+      let count = 0;
 
-        for (const item of raw) {
-          const qnum = item.questionNumber || 0;
-          const qid = hashQid(pt, section, qnum);
+      for (const item of raw) {
+        const qnum = item.questionNumber || 0;
+        const qid = hashQid(pt, section, qnum);
 
-          // Validate
-          if (!item.answerChoices || !item.correctAnswer || !item.questionStem) {
-            console.warn(`Invalid question: ${qid}`);
-            continue;
-          }
-
-          const difficulty = item.questionDifficulty || item.Question_Difficulty || 3;
-          const qtype = normalizeQType(item.questionType || '', item.questionStem);
-
-          this.questions.set(qid, {
-            qid,
-            pt,
-            section,
-            qnum,
-            qtype,
-            reasoningType: Array.isArray(item.reasoningType) ? item.reasoningType : (item.reasoningType ? [item.reasoningType] : []),
-            questionFeatures: Array.isArray(item.questionFeatures) ? item.questionFeatures : undefined,
-            difficulty,
-            stimulus: item.stimulus,
-            questionStem: item.questionStem,
-            answerChoices: item.answerChoices,
-            correctAnswer: item.correctAnswer,
-            breakdown: item.breakdown,
-            answerChoiceExplanations: item.answerChoiceExplanations,
-          });
-
-          count++;
+        if (!item.answerChoices || !item.correctAnswer || !item.questionStem) {
+          console.warn(`Invalid question: ${qid}`);
+          continue;
         }
 
-        if (count > 0) {
-          this.manifest.sections.push({
-            pt,
-            section,
-            count,
-            filename,
-          });
-        }
-      } catch (err) {
-        console.error(`Failed to load ${filename}:`, err);
+        const difficulty = item.questionDifficulty || item.Question_Difficulty || 3;
+        const qtype = normalizeQType(item.questionType || '', item.questionStem);
+
+        this.questions.set(qid, {
+          qid,
+          pt,
+          section,
+          qnum,
+          qtype,
+          reasoningType: Array.isArray(item.reasoningType) ? item.reasoningType : (item.reasoningType ? [item.reasoningType] : []),
+          questionFeatures: Array.isArray(item.questionFeatures) ? item.questionFeatures : undefined,
+          difficulty,
+          stimulus: item.stimulus,
+          questionStem: item.questionStem,
+          answerChoices: item.answerChoices,
+          correctAnswer: item.correctAnswer,
+          breakdown: item.breakdown,
+          answerChoiceExplanations: item.answerChoiceExplanations,
+        });
+
+        count++;
+      }
+
+      if (count > 0) {
+        this.manifest.sections.push({ pt, section, count, filename });
       }
     }
 
