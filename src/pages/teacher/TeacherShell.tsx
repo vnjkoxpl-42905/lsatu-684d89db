@@ -69,7 +69,10 @@ export default function TeacherShell() {
 
       <div className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto flex flex-col md:flex-row">
         <aside className="md:w-[220px] shrink-0 border-b md:border-b-0 md:border-r border-zinc-800">
-          <nav className="md:py-3 flex md:flex-col gap-0.5 overflow-x-auto md:overflow-visible">
+          <nav
+            className="md:py-3 flex md:flex-col gap-0.5 overflow-x-auto md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Teacher workspace navigation"
+          >
             {NAV.map(({ to, label, Icon }) => (
               <NavLink
                 key={to}
@@ -77,8 +80,10 @@ export default function TeacherShell() {
                 end={to === '/teacher'}
                 className={({ isActive }) =>
                   cn(
-                    'inline-flex items-center gap-2.5 px-4 py-2 text-[13px] whitespace-nowrap',
-                    'border-l-2 transition-colors',
+                    'inline-flex items-center gap-2.5 px-4 py-2 text-[13px] whitespace-nowrap shrink-0',
+                    // Mobile: bottom border accent (horizontal nav).
+                    // Desktop: left border accent (vertical nav).
+                    'border-b-2 md:border-b-0 md:border-l-2 transition-colors',
                     isActive
                       ? 'border-amber-400 bg-zinc-900/60 text-zinc-100'
                       : 'border-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/40',
