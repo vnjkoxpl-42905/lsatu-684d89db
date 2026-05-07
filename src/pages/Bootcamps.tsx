@@ -58,6 +58,16 @@ const BOOTCAMPS = [
     route: '/bootcamp/principle-flaw',
     accentClass: 'bg-emerald-500/10 border-emerald-500/20',
   },
+  {
+    id: 'fallacy-flaw',
+    title: 'Flaw & Famous Flaws',
+    emoji: '🎭',
+    description:
+      'A focused bootcamp on identifying and naming logical flaws. Six days of flashcards, flaw-stack drills, mindmaps, language protocols, and spaced-repetition review — covering 18 canonical flaw types with real LSAT question practice.',
+    stats: ['6 Days', '18 Flaw Types', 'Flashcards + SRS'],
+    route: '/bootcamp/fallacy-flaw',
+    accentClass: 'bg-teal-500/10 border-teal-500/20',
+  },
 ] as const;
 
 export default function BootcampsPage() {

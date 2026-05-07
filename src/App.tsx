@@ -29,6 +29,7 @@ import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
 import IntroToLrBootcamp from "./pages/IntroToLrBootcamp";
 const PrincipleFlawBootcamp = React.lazy(() => import("./pages/PrincipleFlawBootcamp"));
+const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp"));
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
@@ -343,6 +344,15 @@ const App = () => {
                       <BootcampGate routePath="/bootcamp/principle-flaw" title="Principle and Flaw">
                         <React.Suspense fallback={<div className="min-h-screen bg-[#030303]" />}>
                           <PrincipleFlawBootcamp />
+                        </React.Suspense>
+                      </BootcampGate>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/bootcamp/fallacy-flaw" element={
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <BootcampGate routePath="/bootcamp/fallacy-flaw" title="Flaw and Famous Flaws">
+                        <React.Suspense fallback={<div className="min-h-screen bg-[#FAF8F3]" />}>
+                          <FallacyFlawBootcamp />
                         </React.Suspense>
                       </BootcampGate>
                     </ProtectedRoute>

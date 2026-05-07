@@ -96,6 +96,33 @@ export default {
         "mc-warn": "rgb(var(--warn) / <alpha-value>)",
         "mc-error": "rgb(var(--error) / <alpha-value>)",
         "mc-info": "rgb(var(--info) / <alpha-value>)",
+
+        /* ── Flaw & Famous Flaws bootcamp tokens (scoped to .ff-bootcamp) ────
+         * These resolve only inside .ff-bootcamp ancestors, where the matching
+         * CSS vars are defined (src/bootcamps/fallacy-flaw/fallacy-flaw.css).
+         * Plain hex refs via var() — the source CSS sets hex values directly.
+         */
+        paper: "var(--paper)",
+        "paper-bright": "var(--paper-bright)",
+        "paper-deep": "var(--paper-deep)",
+        // ink, ink-soft already defined above for MC bootcamp
+        "ink-mute": "var(--ink-mute)",
+        rule: "var(--rule)",
+        "rule-soft": "var(--rule-soft)",
+        verdigris: "var(--verdigris)",
+        "verdigris-deep": "var(--verdigris-deep)",
+        "verdigris-tint": "var(--verdigris-tint)",
+        cake: "var(--cake)",
+        "cake-deep": "var(--cake-deep)",
+        "cake-tint": "var(--cake-tint)",
+        g1: "var(--g1)",
+        "g1-tint": "var(--g1-tint)",
+        g2: "var(--g2)",
+        "g2-tint": "var(--g2-tint)",
+        g3: "var(--g3)",
+        "g3-tint": "var(--g3-tint)",
+        strike: "var(--strike)",
+        "strike-tint": "var(--strike-tint)",
       },
       backdropBlur: {
         glass: "12px",
@@ -123,6 +150,8 @@ export default {
         "mc-sans": ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
         "mc-serif": ['Fraunces', 'ui-serif', 'Iowan Old Style', '"Apple Garamond"', 'Georgia', 'serif'],
         "mc-mono": ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        /* FF bootcamp font stacks */
+        display: ['Georgia', '"Times New Roman"', 'serif'],
       },
       fontSize: {
         /* MC bootcamp type scale (net-new names; no LSAT U conflict) */
