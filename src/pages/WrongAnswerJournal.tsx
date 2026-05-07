@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { ArrowLeft, Play, RotateCcw, CheckCircle2, XCircle } from 'lucide-react';
 import { getWAJEntries, type WAJEntry, type WAJHistoryItem } from '@/lib/wajService';
 import { questionBank } from '@/lib/questionLoader';
+import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -75,8 +76,10 @@ function QTypeBadge({ label }: { label: string }) {
 export default function WrongAnswerJournal() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isLoading: qbLoading, error: qbError } = useQuestionBank();
   const [entries, setEntries] = React.useState<WAJEntry[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
   const [selectedEntry, setSelectedEntry] = React.useState<WAJEntry | null>(null);
   const [classId, setClassId] = React.useState<string | null>(null);
   const [filters, setFilters] = React.useState<{
@@ -121,11 +124,14 @@ export default function WrongAnswerJournal() {
   const loadEntries = async () => {
     if (!classId) return;
     setLoading(true);
+    setLoadError(null);
     try {
       const data = await getWAJEntries(classId, filters);
       setEntries(data ?? []);
     } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to load entries';
       console.error('Failed to load WAJ entries:', err);
+      setLoadError(msg);
       setEntries([]);
     } finally {
       setLoading(false);
@@ -301,11 +307,30 @@ export default function WrongAnswerJournal() {
           </div>
         </div>
 
+        {/* ── Question bank load failure banner ─────────────────────────────── */}
+        {qbError && (
+          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            <span className="font-semibold">Question bank failed to load.</span>{' '}
+            <span className="text-red-300/80">
+              Question stems and metadata won't display. Try refreshing the page.
+            </span>
+          </div>
+        )}
+
         {/* ── Entry list ───────────────────────────────────────────────────── */}
-        {loading ? (
+        {loading || qbLoading ? (
           <div className="flex flex-col items-center gap-4 py-20">
             <div className="w-8 h-8 border border-border border-t-foreground/30 rounded-full animate-spin" />
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Loading</p>
+          </div>
+        ) : loadError ? (
+          <div className="rounded-xl bg-card border border-red-500/30 shadow-sm p-12 flex flex-col items-center gap-3 text-center">
+            <p className="text-foreground/80 text-[15px] font-medium">Couldn't load your journal</p>
+            <p className="text-muted-foreground text-[13px]">{loadError}</p>
+            <Button variant="outline" size="sm" onClick={loadEntries} className="mt-2">
+              <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+              Retry
+            </Button>
           </div>
         ) : entries.length === 0 ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-16 flex flex-col items-center gap-3 text-center">
