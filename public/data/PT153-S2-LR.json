@@ -151,7 +151,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -301,7 +302,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -475,7 +478,8 @@
       "Argue the Anti-Conclusion",
       "Binaries",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -557,7 +561,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Worst of the Worst"
     ]
   }
 ]

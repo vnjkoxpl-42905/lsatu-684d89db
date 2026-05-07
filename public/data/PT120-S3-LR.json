@@ -113,7 +113,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -135,7 +136,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -245,7 +247,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Logical Completion"
+      "Logical Completion",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -393,7 +397,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {

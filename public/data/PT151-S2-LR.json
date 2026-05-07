@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Belief / Knowledge / Intent",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -173,7 +174,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Ruling Out Options"
     ]
   },
   {
@@ -217,7 +219,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -404,7 +407,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Repetitive Answers"
     ]
   },
   {
@@ -446,7 +450,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Worst of the Worst"
     ]
   },
   {
@@ -467,7 +472,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Worst of the Worst"
     ]
   },
   {
@@ -513,7 +519,8 @@
       "Binaries",
       "Net Effect",
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Weighing Tradeoffs"
     ]
   },
   {

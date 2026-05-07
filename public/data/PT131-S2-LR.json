@@ -126,7 +126,10 @@
       "D": "It is what the columnist's argument purports to refute.",
       "E": "It is what the position that the columnist tries to undermine is purported to explain."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -269,7 +272,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Ruling Out Options"
     ]
   },
   {
@@ -348,7 +352,10 @@
       "D": "It is a general fact that the argument offers reason to believe will eventually change.",
       "E": "It is a hypothesis that, according to the argument, is accepted on the basis of inadequate evidence."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -487,7 +494,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Breadcrumbs",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Science",
+      "Timeframes"
     ]
   },
   {

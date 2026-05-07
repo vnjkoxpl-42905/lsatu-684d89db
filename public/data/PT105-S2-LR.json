@@ -55,7 +55,8 @@
     "questionFeatures": [
       "Defender",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -159,7 +160,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Alternatives"
+      "Alternatives",
+      "Ruling Out Options"
     ]
   },
   {
@@ -323,7 +325,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -404,7 +407,8 @@
       "Defender",
       "EXCEPT",
       "Focused on Evidence",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Untriggered Conditional"
     ]
   },
   {

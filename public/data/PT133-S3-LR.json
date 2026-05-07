@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -204,7 +205,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -307,7 +309,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -419,7 +422,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {

@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -79,7 +80,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -214,7 +216,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -236,7 +239,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Ruling Out Options"
     ]
   },
   {
@@ -381,7 +385,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -464,7 +469,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -529,7 +535,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Intermediate Conclusions",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {

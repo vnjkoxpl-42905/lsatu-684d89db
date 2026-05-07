@@ -101,7 +101,9 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Important Pivot",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -202,7 +204,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -310,7 +313,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Ruling Out Options"
     ]
   },
   {
@@ -483,7 +487,11 @@
       "D": "Happiness cannot be the state of mind in which pleasure both qualitatively and quantitatively predominates over pain. For we simply cannot compare pain and pleasure qualitatively.",
       "E": "Physics cannot be the science that investigates the ultimate principles of nature. For human beings are finite, and the ultimate principles cannot be understood by finite beings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -505,7 +513,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Links Between Premises",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {

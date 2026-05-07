@@ -20,7 +20,8 @@
       "Famous Flaws",
       "Sampling",
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -65,7 +66,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -149,7 +152,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -220,7 +224,8 @@
       "Important Pivot",
       "Conditional Conclusion",
       "Contrapositive Logic",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {
@@ -242,7 +247,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Ruling Out Options"
     ]
   },
   {
@@ -400,7 +406,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Timeframes"
     ]
   },
   {
@@ -422,7 +429,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -462,7 +470,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -481,7 +491,11 @@
       "D": "advocating an explanation for a phenomenon by attempting to demonstrate that other possible explanations are implausible",
       "E": "offering a reason for believing that a widely accepted generalization requires still more supporting evidence"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals",
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -502,7 +516,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -525,7 +540,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {

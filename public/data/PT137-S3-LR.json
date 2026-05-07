@@ -121,7 +121,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sampling",
-      "Predictions"
+      "Predictions",
+      "Repetitive Answers"
     ]
   },
   {
@@ -209,7 +210,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -233,7 +235,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -320,7 +323,8 @@
       "Important Pivot",
       "Analogies",
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {

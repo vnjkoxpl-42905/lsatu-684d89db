@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -153,7 +154,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Science"
     ]
   },
   {
@@ -177,7 +179,8 @@
       "Analogies",
       "Assumes Similarity",
       "Defender",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -201,7 +204,9 @@
       "Abstract Answers",
       "Missing Link / Idea",
       "Assumes Similarity",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -349,7 +354,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -374,7 +380,8 @@
       "Defender",
       "Math-y Stuff",
       "Medical",
-      "Percentages"
+      "Percentages",
+      "Timeframes"
     ]
   },
   {
@@ -393,7 +400,10 @@
       "D": "divide into exactly two pieces that are equal in neither size nor shape to the original piece of glass",
       "E": "be thinner in the portion of the glass that is under the pressure of the object than in those portions of the glass that are not under that pressure"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT102",

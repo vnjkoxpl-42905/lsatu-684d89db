@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -63,7 +64,8 @@
       "Abstract Answers",
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -84,7 +86,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -105,7 +108,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Science"
     ]
   },
   {
@@ -128,7 +132,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Causal Difference-Maker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -193,7 +198,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Medical",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -239,7 +246,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "EXCEPT",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -325,7 +333,10 @@
       "D": "The university awards new students a large number of scholarships that are renewed each year for the students who maintain high grade averages.",
       "E": "The university has turned many of its part-time office jobs, for which students had generally been hired, into full-time, nonstudent positions."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -408,7 +419,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {

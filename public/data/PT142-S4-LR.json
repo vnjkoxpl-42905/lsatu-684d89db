@@ -39,7 +39,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Implied Conclusion",
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -61,7 +62,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Ruling Out Options"
     ]
   },
   {
@@ -82,7 +84,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -124,7 +127,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -358,7 +363,9 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Medical"
+      "Medical",
+      "Volume Dial",
+      "Worst of the Worst"
     ]
   },
   {

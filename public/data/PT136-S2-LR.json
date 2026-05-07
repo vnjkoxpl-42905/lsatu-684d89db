@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Focused on Evidence",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -108,7 +109,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Science"
     ]
   },
   {
@@ -168,7 +170,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {

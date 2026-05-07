@@ -82,7 +82,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Rebuttals"
     ]
   },
   {
@@ -125,7 +126,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -149,7 +151,8 @@
       "Missing Link / Idea",
       "Explain Curious Fact",
       "Assumes Similarity",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Timeframes"
     ]
   },
   {
@@ -215,7 +218,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -236,7 +240,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -259,7 +264,9 @@
     "questionFeatures": [
       "Abstract Answers",
       "Dense Stimulus",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -278,7 +285,10 @@
       "D": "Evidence suggests that certain regions of ocean remained frozen until much more recently than 2 billion years ago.",
       "E": "When large portions of the globe are ice-covered, more of the sun's heat is reflected and not absorbed by the earth than when only the poles are ice-covered."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -300,7 +310,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Anti-Causal",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -365,7 +376,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -408,7 +420,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -495,7 +508,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {

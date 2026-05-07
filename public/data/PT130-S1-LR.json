@@ -20,7 +20,8 @@
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
       "Defender",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -42,7 +43,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Implicit Principles"
+      "Implicit Principles",
+      "Volume Dial"
     ]
   },
   {
@@ -64,7 +66,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -202,7 +206,8 @@
       "Argue the Anti-Conclusion",
       "Medical",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -223,7 +228,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Rebuttals"
     ]
   },
   {
@@ -245,7 +251,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -268,7 +275,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -312,7 +320,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -379,7 +388,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Timeframes"
     ]
   },
   {
@@ -426,7 +436,8 @@
       "Causal Difference-Maker",
       "Conditional Conclusion",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -448,7 +459,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Medical"
+      "Medical",
+      "Timeframes"
     ]
   },
   {
@@ -470,7 +482,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Rebuttals"
     ]
   },
   {
@@ -492,7 +505,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes",
+      "Volume Dial"
     ]
   },
   {
@@ -515,7 +530,8 @@
     "questionFeatures": [
       "Defender",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -563,7 +579,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -582,6 +599,9 @@
       "D": "establish a claim by showing that the denial of that claim entails a logical contradiction",
       "E": "provide evidence suggesting that the concept of morality is often applied too broadly"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   }
 ]

@@ -81,7 +81,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Complex Conditionals",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Repetitive Answers"
     ]
   },
   {
@@ -142,7 +143,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Repetitive Answers"
     ]
   },
   {
@@ -230,7 +233,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -249,7 +253,10 @@
       "D": "The chairperson would have been justified in releasing the report only if each of the commission’s members would have agreed to its being released had they been consulted.",
       "E": "Some members of the commission would have preferred that the report not be released to the public."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -291,7 +298,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -376,7 +384,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -399,7 +408,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Breadcrumbs",
-      "Plausibility"
+      "Plausibility",
+      "Worst of the Worst"
     ]
   },
   {
@@ -422,7 +432,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -446,7 +457,8 @@
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
       "Contrapositive Logic",
-      "Quantifiers"
+      "Quantifiers",
+      "Worst of the Worst"
     ]
   },
   {
@@ -468,7 +480,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Worst of the Worst"
     ]
   },
   {

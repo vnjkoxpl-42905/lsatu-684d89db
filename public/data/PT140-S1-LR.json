@@ -38,7 +38,10 @@
       "D": "challenging an explanation that has been given for a phenomenon in order to introduce a different explanation",
       "E": "calling into question a justification for a practice by showing how the same justification can be used to support a clearly undesirable practice"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -105,7 +108,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -150,7 +154,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -348,7 +353,8 @@
       "Missing Link / Idea",
       "Intermediate Conclusions",
       "Math-y Stuff",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -434,7 +440,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Worst of the Worst"
     ]
   },
   {
@@ -478,7 +485,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Worst of the Worst"
     ]
   },
   {

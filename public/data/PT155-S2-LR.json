@@ -20,7 +20,8 @@
       "First Sentence Conclusion",
       "Sampling",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -65,7 +66,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -89,7 +92,8 @@
       "Assumes Difference",
       "Net Effect",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -132,7 +136,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Ruling Out Options",
+      "Science"
     ]
   },
   {
@@ -154,7 +160,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -240,7 +247,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -259,7 +268,10 @@
       "D": "While some of the radioactive chemicals released by the accident depress fertility in local birds, others do not.",
       "E": "The threat of radiation poisoning drove people out of the area, which opened up new habitat for wildlife and eliminated the danger from hunters."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -303,7 +315,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Medical"
+      "Medical",
+      "Timeframes"
     ]
   },
   {
@@ -414,7 +427,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Timeframes"
     ]
   },
   {
@@ -461,7 +475,8 @@
     "questionFeatures": [
       "Intermediate Conclusions",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -482,7 +497,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Repetitive Answers"
     ]
   },
   {
@@ -504,7 +520,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -550,7 +567,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Volume Dial"
     ]
   },
   {
@@ -572,7 +590,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Worst of the Worst"
     ]
   }
 ]

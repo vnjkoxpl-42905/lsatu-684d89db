@@ -85,7 +85,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -106,7 +107,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Timeframes"
     ]
   },
   {
@@ -130,7 +134,8 @@
       "Missing Link / Idea",
       "Math-y Stuff",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -197,7 +202,8 @@
       "Missing Link / Idea",
       "Conditional Conclusion",
       "Intermediate Conclusions",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -241,7 +247,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -260,7 +267,10 @@
       "D": "Many experts, based on the style and the subject matter of the painting, have dated the painting to the 1700s.",
       "E": "New information that came to light in the 1990s suggested that cobalt blue was used only rarely in Italy in the years immediately following 1804."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -282,7 +292,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Medical",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -349,7 +360,8 @@
     "questionFeatures": [
       "Breadcrumbs",
       "Conditional Conclusion",
-      "Medical"
+      "Medical",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -372,7 +384,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Analogies",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Timeframes"
     ]
   },
   {
@@ -395,7 +408,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -417,7 +432,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Ruling Out Options"
     ]
   },
   {
@@ -439,7 +455,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Timeframes"
     ]
   },
   {
@@ -461,7 +478,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Implicit Principles",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -483,7 +501,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Worst of the Worst"
     ]
   },
   {
@@ -527,7 +546,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Battle of Opinions",
-      "Binaries"
+      "Binaries",
+      "Ruling Out Options"
     ]
   },
   {

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -64,7 +65,8 @@
       "Abstract Answers",
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -258,7 +260,8 @@
     "questionFeatures": [
       "Sampling",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   },
   {
@@ -298,7 +301,10 @@
       "D": "In concentrating their advertising on the issue of image quality, manufacturers are making a mistake about the interests of potential purchasers of cameras.",
       "E": "Differences among photographic films in the amount of detail they reproduce have a more significant effect on the quality of the developed image than do differences in the resolution of camera lenses."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -321,7 +327,8 @@
       "Anti-Causal",
       "Assumes Similarity",
       "Defender",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -343,7 +350,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Difference",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {
@@ -386,7 +394,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {

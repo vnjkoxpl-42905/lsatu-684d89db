@@ -60,7 +60,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional"
     ]
   },
   {
@@ -82,7 +83,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -128,7 +130,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -195,7 +198,8 @@
     "questionFeatures": [
       "Breadcrumbs",
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Science"
     ]
   },
   {
@@ -216,7 +220,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Timeframes"
     ]
   },
   {
@@ -282,7 +287,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -321,7 +327,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Rebuttals",
+      "Ruling Out Options",
+      "Worst of the Worst"
     ]
   },
   {
@@ -412,7 +421,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -501,7 +511,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Repetitive Answers"
     ]
   },
   {
@@ -524,7 +535,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Math-y Stuff",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {

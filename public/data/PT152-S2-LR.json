@@ -324,7 +324,10 @@
       "D": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is unlikely that Anastasia will take her car to Acme Automotive Electronics if it does not have electrical problems.",
       "E": "Most cars taken to Acme Automotive Electronics have electrical problems. Therefore, it is likely that Anastasia will take her car to Acme Automotive Electronics whenever she thinks it has electrical problems."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -365,7 +368,8 @@
       "Famous Flaws",
       "Abstract Answers",
       "Explain Curious Fact",
-      "Causal Chains"
+      "Causal Chains",
+      "Volume Dial"
     ]
   },
   {
@@ -384,7 +388,10 @@
       "D": "Some of the poems in this collection were written by Strawn. However, none of the poems in this collection has a regular meter. Therefore, only Strawn’s unpublished poetry has a regular meter.",
       "E": "No poems with a regular meter are found in this collection and none of the poetry in this collection was written by Strawn. Therefore, not all of the poetry written by Strawn has a regular meter."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -405,7 +412,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -507,7 +515,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Ruling Out Options"
     ]
   }
 ]

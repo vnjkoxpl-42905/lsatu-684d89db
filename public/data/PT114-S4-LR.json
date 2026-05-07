@@ -58,7 +58,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Science"
     ]
   },
   {
@@ -170,7 +171,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -233,7 +235,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -416,7 +419,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -460,7 +464,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Causal Chains",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -500,7 +505,11 @@
       "D": "All anatomical characteristics not useful for land movement but common to most land animals represent an advantage for survival underwater.",
       "E": "Certain anatomical characteristics common to some aquatic animals represent an advantage for survival on land."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals",
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT114",

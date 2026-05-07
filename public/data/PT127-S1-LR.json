@@ -15,7 +15,10 @@
       "D": "Bilirubin neutralizes certain potentially damaging substances to which newborns are exposed at birth.",
       "E": "Among doctors who recommend treating newborns to reduce high levels of bilirubin, there is general agreement about what levels should be considered excessively high."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -56,7 +59,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -137,7 +141,10 @@
       "D": "The species of cold-adapted arctic beetle that inhabited areas covered by ice masses died out toward the end of the last ice age.",
       "E": "Toward the end of the ice age, warmth-adapted open-ground beetles colonized the new terrain opened to them faster than soil changes and seed dispersion established new spruce forests."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -201,7 +208,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -220,7 +228,10 @@
       "D": "Structures with no high-stress points can nonetheless have a high probability of fracturing.",
       "E": "Improper bridge construction, e.g., low-quality welding or the use of inferior steel, often leads both to the development of high-stress points and to an increased probability of fracturing."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -265,7 +276,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Net Effect",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -308,7 +320,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science"
     ]
   },
   {
@@ -395,7 +408,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals"
     ]
   },
   {
@@ -414,7 +428,10 @@
       "D": "fails to address specifically the reduction in risk of stroke conferred by the level of consumption in the recent study",
       "E": "overlooks the difference between strokes that result in death and less severe strokes"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -432,7 +449,10 @@
       "D": "It is a claim that serves mainly to help establish the relevance of the preceding statements to the argument’s final conclusion.",
       "E": "It serves to cast doubt on an alleged similarity between Newton’s Principia and recent scientific research."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT127",

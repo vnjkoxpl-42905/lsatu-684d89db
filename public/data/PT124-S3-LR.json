@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -40,7 +41,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -62,7 +64,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Timeframes"
     ]
   },
   {
@@ -106,7 +109,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Medical"
+      "Medical",
+      "Science"
     ]
   },
   {
@@ -128,7 +132,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Rebuttals"
     ]
   },
   {
@@ -174,7 +179,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Defender",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -217,7 +223,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -264,7 +271,8 @@
       "Missing Link / Idea",
       "Important Pivot",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -287,7 +295,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -308,7 +317,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -331,7 +341,9 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -354,7 +366,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Breadcrumbs",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals"
     ]
   },
   {
@@ -399,7 +412,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -444,7 +458,8 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Defender",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -466,7 +481,10 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Ruling Out Options",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -488,7 +506,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "EXCEPT"
+      "EXCEPT",
+      "Timeframes"
     ]
   },
   {
@@ -531,7 +550,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -553,7 +573,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Untriggered Conditional"
     ]
   }
 ]

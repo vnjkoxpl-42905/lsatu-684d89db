@@ -143,7 +143,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -227,7 +228,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Difference",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -269,7 +271,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -291,7 +295,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Causal Chains"
+      "Causal Chains",
+      "Rebuttals"
     ]
   },
   {
@@ -316,7 +321,8 @@
       "Conditional Conclusion",
       "Defender",
       "Net Effect",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -462,7 +468,10 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Science",
+      "Worst of the Worst"
     ]
   },
   {
@@ -523,7 +532,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {

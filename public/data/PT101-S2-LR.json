@@ -61,7 +61,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Ruling Out Options",
+      "Science"
     ]
   },
   {
@@ -313,7 +315,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -335,7 +338,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Part vs. Whole",
-      "Sampling"
+      "Sampling",
+      "Rebuttals"
     ]
   },
   {
@@ -357,7 +361,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -470,7 +475,8 @@
       "First Sentence Conclusion",
       "Battle of Opinions",
       "Causal Difference-Maker",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -103,7 +104,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -169,7 +171,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Logical Completion"
+      "Logical Completion",
+      "Rebuttals"
     ]
   },
   {
@@ -191,7 +194,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -232,7 +236,10 @@
       "D": "evidence that the claim that the intellectual skills required and fostered by the literary media are being lost is unwarranted",
       "E": "possible evidence, mentioned and then dismissed, that might be cited by supporters of the hypothesis being criticized"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -250,7 +257,11 @@
       "D": "If creditors have legitimate claims against a business and the business has the resources to pay those debts, then the business is obliged to pay them. Also, if a business has obligations to pay debts, then a court will force it to pay them. But the courts did not force this business to pay its debts, so either the creditors did not have legitimate claims or the business did not have sufficient resources.",
       "E": "If we extend our business hours, we will either have to hire new employees or have existing employees work overtime. But both new employees and additional overtime would dramatically increase our labor costs. We cannot afford to increase labor costs, so we will have to keep our business hours as they stand."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Refute a Conditional",
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -293,7 +304,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Science"
     ]
   },
   {
@@ -427,7 +439,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Rebuttals"
     ]
   },
   {

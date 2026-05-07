@@ -19,7 +19,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -43,7 +44,8 @@
       "2-Speaker",
       "Analogies",
       "Causal Difference-Maker",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -126,7 +128,10 @@
       "D": "To stay informed about current events, one must read a major newspaper or watch national TV news every day. So Julie, who is informed about current events and reads a major newspaper every day, does not watch TV news.",
       "E": "If Wayne is to get a ride home from the library, either Yvette or Marty must be there. Yvette is not at the library, so Marty must be there."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -275,7 +280,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -297,7 +303,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -318,7 +325,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -408,7 +416,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {
@@ -431,7 +440,8 @@
     "questionFeatures": [
       "Analogies",
       "New Concept in Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -474,7 +484,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {

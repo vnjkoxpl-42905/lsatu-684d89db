@@ -15,7 +15,10 @@
       "D": "Most police officers believe that allowing officers to drink during undercover work in nightclubs does not cause significant problems.",
       "E": "For the most part, the public is aware that police officers are allowed to drink during undercover operations in nightclubs."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -168,7 +171,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Repetitive Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -210,7 +215,10 @@
       "D": "The atmosphere contained at least 1,125 parts per million of carbon dioxide during at least some part of the Eocene epoch.",
       "E": "No significant deposits of nahcolite have formed at any time since the Eocene epoch."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -248,7 +256,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Worst of the Worst"
     ]
   },
   {
@@ -371,7 +380,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Refute a Conditional"
     ]
   },
   {
@@ -394,7 +404,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -455,7 +466,10 @@
       "D": "Most of the people who apply for a sales representative position with the company do not have a degree in engineering.",
       "E": "Some of the people who the company has hired as sales representatives and who were subsequently not very good at the job did not have extensive previous sales experience."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT139",

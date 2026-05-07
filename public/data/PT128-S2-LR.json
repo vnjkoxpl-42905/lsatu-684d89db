@@ -62,7 +62,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -101,7 +102,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Logical Completion"
+      "Logical Completion",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -164,7 +166,10 @@
       "D": "It is used to indicate how the failings of the school system are partially responsible for society's problems.",
       "E": "It is a limited concession made to the candidate's opponent in the context of a broader challenge to the opponent's position."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -184,7 +189,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -275,7 +281,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Science"
     ]
   },
   {
@@ -360,7 +367,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Science"
     ]
   },
   {
@@ -381,7 +389,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -439,7 +448,10 @@
       "D": "Systems of behavior can be understood only by experiencing the environments to which they respond.",
       "E": "Disagreement among cultural anthropological theorists does not necessarily imply that their approaches are incompatible."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT128",

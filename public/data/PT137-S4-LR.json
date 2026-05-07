@@ -252,7 +252,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Ruling Out Options"
     ]
   },
   {
@@ -336,7 +337,8 @@
       "Missing Link / Idea",
       "Conditional Conclusion",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Ruling Out Options"
     ]
   },
   {
@@ -522,7 +524,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Repetitive Answers"
     ]
   }
 ]

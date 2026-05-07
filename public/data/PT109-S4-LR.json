@@ -216,7 +216,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -442,7 +443,10 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Defender",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {

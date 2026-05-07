@@ -103,7 +103,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Rebuttals"
     ]
   },
   {
@@ -163,7 +164,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Ruling Out Options"
     ]
   },
   {
@@ -416,7 +418,10 @@
       "D": "Job prospects for graduates with chemistry degrees are no better than prospects for graduates with certain other science degrees.",
       "E": "Over the years, first-year chemistry has come to be taught in a more routinely methodical fashion, which dampens its intellectual appeal."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -436,7 +441,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Worst of the Worst"
     ]
   },
   {
@@ -457,7 +463,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Ruling Out Options"
     ]
   },
   {
@@ -526,7 +533,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {

@@ -19,7 +19,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -84,7 +86,10 @@
       "D": "It is presented to counteract a possible objection to the argument's overall conclusion.",
       "E": "It is the overall conclusion of the argument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -148,7 +153,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -208,7 +215,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -227,7 +235,10 @@
       "D": "Bacterial species X will inevitably become more virulent in the course of time.",
       "E": "Bacterial species X is more resistant to at least some antibiotics that have been used against it than it was before those antibiotics were used against it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -247,7 +258,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -343,7 +355,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -369,7 +382,9 @@
       "Binaries",
       "Complex Conditionals",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Science",
+      "Worst of the Worst"
     ]
   },
   {
@@ -433,7 +448,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Predictions"
+      "Predictions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -452,7 +468,10 @@
       "D": "Children whose parents have allergies have an above-average likelihood of developing allergies themselves.",
       "E": "Children from small families who entered day care before age one were less likely to develop allergies than children from small families who entered day care later."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -516,7 +535,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Repetitive Answers"
     ]
   },
   {

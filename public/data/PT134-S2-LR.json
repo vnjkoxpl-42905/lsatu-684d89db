@@ -20,7 +20,8 @@
       "Relative vs. Absolute",
       "Sampling",
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -105,7 +106,10 @@
       "D": "On days when Barton Pool is open, at least some children swim there in the afternoon.",
       "E": "Any child swimming in Barton Pool before 5 P.M. must be breaking Barton Pool rules."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -125,7 +129,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals"
     ]
   },
   {
@@ -146,7 +151,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Science"
     ]
   },
   {
@@ -169,7 +175,9 @@
     "questionFeatures": [
       "Causal Difference-Maker",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -193,7 +201,8 @@
       "2-Speaker",
       "Anti-Causal",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -218,7 +227,9 @@
       "Conditional Conclusion",
       "New Concept in Conclusion",
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Timeframes",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -286,7 +297,10 @@
     "questionFeatures": [
       "Important Pivot",
       "Analogies",
-      "Logical Completion"
+      "Logical Completion",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -307,7 +321,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Volume Dial"
     ]
   },
   {
@@ -350,7 +365,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Rebuttals"
     ]
   },
   {
@@ -414,7 +430,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -435,7 +452,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Science",
+      "Volume Dial"
     ]
   },
   {
@@ -524,7 +543,10 @@
       "D": "The most effective method for eliminating bacteria from juice is also the method most likely to destroy flavor.",
       "E": "Apple juice that undergoes intensive pasteurization is less likely than McElligott’s apple juice is to contain bacteria."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT134",

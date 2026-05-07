@@ -60,7 +60,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Science"
     ]
   },
   {
@@ -140,7 +141,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Binaries",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -225,7 +227,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -368,7 +371,11 @@
       "D": "Bureaucratic mistakes can lead to quality reduction and inefficiency.",
       "E": "Space exploration is too dangerous to be continued."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science",
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -488,7 +495,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Timeframes"
     ]
   },
   {

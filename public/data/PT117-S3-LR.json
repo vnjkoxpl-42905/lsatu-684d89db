@@ -86,7 +86,10 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "2-Speaker",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Timeframes"
     ]
   },
   {
@@ -253,7 +256,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Science"
     ]
   },
   {
@@ -274,7 +278,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -313,7 +318,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Science"
     ]
   },
   {
@@ -332,7 +338,10 @@
       "D": "Apples that are neither especially firm nor especially flavorful are unsuitable for baking; yet while flavor is essential for both baking and eating, many flavorful apples that are soft are suitable for eating. Hence, the apples that are best for eating need not be both firm and flavorful.",
       "E": "Most plants that are neither ornamental nor edible are useless and are thus classified as weeds; yet many such plants are useful for purposes other than food or ornamentation, and are thus not classified as weeds. Hence, not all inedible and non-ornamental plants are weeds."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -439,7 +448,8 @@
       "Argue the Anti-Conclusion",
       "Conditional Conclusion",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -483,7 +493,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Binaries",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -502,7 +513,10 @@
       "D": "No celestial object with lithium in its atmosphere has less mass than the Sun.",
       "E": "No celestial object less massive than a brown dwarf has lithium in its atmosphere."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -525,7 +539,8 @@
       "Analogies",
       "Assumes Similarity",
       "Battle of Opinions",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   }
 ]

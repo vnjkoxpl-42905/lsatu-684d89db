@@ -19,7 +19,9 @@
     "questionFeatures": [
       "Assumes Similarity",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -65,7 +67,8 @@
       "Important Pivot",
       "Causal Chains",
       "Causal Difference-Maker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -137,7 +140,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -160,7 +164,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -183,7 +189,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -206,7 +214,8 @@
     "questionFeatures": [
       "Assumes Similarity",
       "Net Effect",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -275,7 +284,8 @@
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -435,7 +445,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "EXCEPT"
+      "EXCEPT",
+      "Timeframes"
     ]
   },
   {
@@ -461,7 +472,8 @@
       "Causal Difference-Maker",
       "Dense Stimulus",
       "EXCEPT",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -503,7 +515,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Quantifiers"
+      "Quantifiers",
+      "Refute a Conditional"
     ]
   },
   {
@@ -526,7 +539,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Breadcrumbs",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {

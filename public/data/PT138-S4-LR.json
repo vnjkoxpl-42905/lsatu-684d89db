@@ -280,7 +280,8 @@
       "Missing Link / Idea",
       "Sampling",
       "Argue the Anti-Conclusion",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Worst of the Worst"
     ]
   },
   {
@@ -303,7 +304,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Dense Stimulus",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -327,7 +329,8 @@
       "Relative vs. Absolute",
       "2-Speaker",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   },
   {
@@ -417,7 +420,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {
@@ -483,7 +487,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Worst of the Worst"
     ]
   },
   {
@@ -504,7 +509,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Science",
+      "Volume Dial"
     ]
   },
   {

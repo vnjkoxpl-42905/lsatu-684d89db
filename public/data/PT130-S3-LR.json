@@ -62,7 +62,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Timeframes"
     ]
   },
   {
@@ -83,7 +84,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -127,7 +130,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Assumes Difference",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -265,7 +269,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Focused on Evidence",
-      "Medical"
+      "Medical",
+      "Worst of the Worst"
     ]
   },
   {
@@ -375,7 +380,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -510,7 +517,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Rebuttals"
     ]
   },
   {

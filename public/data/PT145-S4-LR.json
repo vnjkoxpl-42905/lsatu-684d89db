@@ -144,7 +144,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -335,7 +337,10 @@
       "D": "It is the argument’s main conclusion.",
       "E": "It is an intermediate conclusion for which the claim that some dinosaur species lived in Australia and Alaska is offered as support."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -419,7 +424,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Ruling Out Options",
+      "Worst of the Worst"
     ]
   },
   {
@@ -480,7 +487,11 @@
       "D": "Every commonly used vaccine is either a dead- virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Vaccine X stimulates the production of killer T cells in the immune system, unlike any pure DNA vaccine. Therefore, if it is not a dead-virus vaccine, then it must be an attenuated-virus vaccine.",
       "E": "Every commonly used vaccine is either a dead- virus vaccine, an attenuated-virus vaccine, or a pure DNA vaccine. Because vaccine X is not an attenuated-virus vaccine, it must be a pure DNA vaccine if it is not a dead-virus vaccine."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Repetitive Answers",
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -523,7 +534,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Science"
     ]
   },
   {

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -146,7 +147,8 @@
     "questionFeatures": [
       "Sampling",
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -169,7 +171,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Analogies",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Rebuttals"
     ]
   },
   {
@@ -228,7 +231,9 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Important Pivot",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -251,7 +256,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Worst of the Worst"
     ]
   },
   {
@@ -270,7 +276,10 @@
       "D": "Native peoples in North America made an effort to limit their hunting of northern fur seals in order to prevent depletion of seal populations.",
       "E": "Hunting by Native peoples in North America did not significantly reduce the northern fur seal population over the 800-year period studied."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -460,7 +469,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Binaries",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Repetitive Answers",
+      "Ruling Out Options"
     ]
   },
   {
@@ -503,7 +514,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Repetitive Answers"
     ]
   },
   {

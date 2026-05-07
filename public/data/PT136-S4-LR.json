@@ -62,7 +62,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -85,7 +87,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Argue the Anti-Conclusion",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -109,7 +112,8 @@
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
       "Contrapositive Logic",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -171,7 +175,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Net Effect"
+      "Net Effect",
+      "Timeframes"
     ]
   },
   {
@@ -193,7 +198,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -355,7 +361,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals"
     ]
   },
   {
@@ -496,7 +503,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Repetitive Answers"
     ]
   },
   {
@@ -540,7 +548,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   }
 ]

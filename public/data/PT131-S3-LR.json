@@ -169,7 +169,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -308,7 +309,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -353,7 +355,8 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -374,7 +377,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Worst of the Worst"
     ]
   },
   {
@@ -411,7 +415,10 @@
       "D": "Most historians cannot become aware of the presuppositions that they bring to their narratives.",
       "E": "Which pattern a historian imposes upon events is affected by that historian's presuppositions."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -486,7 +493,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Untriggered Conditional"
     ]
   }
 ]

@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Famous Flaws",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Timeframes"
     ]
   },
   {
@@ -64,7 +65,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Timeframes"
     ]
   },
   {
@@ -105,7 +107,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Ruling Out Options"
     ]
   },
   {
@@ -130,7 +133,8 @@
       "Conditional Conclusion",
       "Defender",
       "Dense Stimulus",
-      "Predictions"
+      "Predictions",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -152,7 +156,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Logical Completion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -174,7 +179,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Important Pivot",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -222,7 +228,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -246,7 +253,8 @@
       "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
       "Contrapositive Logic",
-      "Predictions"
+      "Predictions",
+      "Rebuttals"
     ]
   },
   {
@@ -267,7 +275,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Science"
     ]
   },
   {
@@ -290,7 +299,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -313,7 +323,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Percentages"
+      "Percentages",
+      "Timeframes"
     ]
   },
   {
@@ -334,7 +345,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -421,7 +433,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {
@@ -463,7 +476,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Repetitive Answers",
+      "Timeframes"
     ]
   },
   {
@@ -485,7 +500,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -507,7 +523,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Repetitive Answers"
     ]
   },
   {
@@ -577,7 +594,8 @@
       "Conditional Diagramming",
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Untriggered Conditional"
     ]
   }
 ]

@@ -20,7 +20,8 @@
       "Explain Curious Fact",
       "Important Pivot",
       "Analogies",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -107,7 +108,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Repetitive Answers",
+      "Ruling Out Options"
     ]
   },
   {
@@ -214,7 +217,10 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Timeframes"
     ]
   },
   {
@@ -259,7 +265,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Dense Stimulus",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -284,7 +291,8 @@
       "Defender",
       "Intermediate Conclusions",
       "Plans / Recommendations",
-      "Predictions"
+      "Predictions",
+      "Rebuttals"
     ]
   },
   {
@@ -368,7 +376,8 @@
     "questionFeatures": [
       "Alternatives",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {

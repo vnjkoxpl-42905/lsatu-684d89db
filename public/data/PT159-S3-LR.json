@@ -84,7 +84,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -106,7 +107,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -163,7 +166,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -186,7 +190,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -208,7 +213,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Timeframes"
     ]
   },
   {
@@ -230,7 +236,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Timeframes"
     ]
   },
   {
@@ -253,7 +260,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Percentages",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -341,7 +349,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals"
     ]
   },
   {
@@ -385,7 +394,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {
@@ -406,7 +416,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Science"
     ]
   },
   {
@@ -427,7 +438,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Science"
     ]
   },
   {
@@ -515,7 +527,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -536,7 +549,10 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   }
 ]

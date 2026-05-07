@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -57,7 +58,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Timeframes"
     ]
   },
   {
@@ -78,7 +80,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -342,7 +345,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -493,7 +497,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Conditional Conclusion",
-      "Plausibility"
+      "Plausibility",
+      "Repetitive Answers"
     ]
   },
   {
@@ -516,7 +521,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Predictions"
+      "Predictions",
+      "Science",
+      "Timeframes"
     ]
   },
   {

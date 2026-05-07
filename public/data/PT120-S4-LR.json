@@ -40,7 +40,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "EXCEPT",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -103,7 +104,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -168,7 +170,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -211,7 +214,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -422,7 +426,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Similarity",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -467,7 +472,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -507,7 +513,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {

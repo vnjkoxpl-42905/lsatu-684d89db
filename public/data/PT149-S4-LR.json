@@ -85,7 +85,9 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -122,7 +124,11 @@
       "D": "GRBs cannot be classified according to the different types of cosmic events that create them.",
       "E": "Descriptive labels are easily replaced with nondescriptive labels such as “type I” and “type II.”"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science",
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -140,7 +146,10 @@
       "D": "takes for granted that the gains in immune system strength did not themselves influence the patients’ tendency to laugh",
       "E": "presumes, without providing justification, that the patients whose tendency to laugh was greatest to begin with recovered from their illnesses more rapidly than the other patients"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -179,7 +188,10 @@
       "D": "It is unlikely that an international agreement on nuclear disarmament will ever be achieved.",
       "E": "It is risky for the politician’s country to unilaterally reduce nuclear arms in hopes of achieving an international agreement on arms reduction."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -219,7 +231,10 @@
       "D": "illicitly infers that an attribute of a few users of the proposed trail will characterize a majority of users of the trail",
       "E": "attacks the citizens in the group rather than their objection to developing the trail"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -280,7 +295,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -301,7 +317,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -368,7 +385,9 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Argue the Anti-Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Ruling Out Options",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -431,7 +450,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Worst of the Worst"
     ]
   },
   {

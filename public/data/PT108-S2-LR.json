@@ -97,7 +97,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -173,7 +174,10 @@
       "D": "there were any volcanic eruptions near China around the time of Mount Etna’s eruption",
       "E": "subsequent eruptions of Mount Etna were as powerful as the one in 44 B.C."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -401,7 +405,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Science"
     ]
   },
   {
@@ -422,7 +427,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -441,7 +448,10 @@
       "D": "The claim points out an ambiguity in the phrase “at home.”",
       "E": "The claim inadvertently contradicts the conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -464,7 +474,8 @@
       "Argue the Anti-Conclusion",
       "Defender",
       "Math-y Stuff",
-      "Predictions"
+      "Predictions",
+      "Ruling Out Options"
     ]
   },
   {
@@ -485,7 +496,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   }
 ]

@@ -58,7 +58,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -381,7 +382,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -400,7 +402,10 @@
       "D": "Freedom of thought engenders creativity, which aids the discovery of truth.",
       "E": "Without intellectual discipline, thinkers can have no freedom of thought."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -460,7 +465,10 @@
       "D": "Compact discs are a kind of data storage device. Leotol Corporation does not produce data storage devices that use analog storage methods. Compact discs do not use analog storage methods, so it follows that Leotol Corporation produces compact discs.",
       "E": "Traffic laws are a type of government regulation. The association supports traffic laws that are in the public interest, even if they have not been shown to reduce the accident rate. Thus, the association should support all government regulations that are in the public interest."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -481,7 +489,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -545,7 +555,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   }
 ]

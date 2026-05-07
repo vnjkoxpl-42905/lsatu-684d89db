@@ -40,7 +40,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Difference",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals",
+      "Ruling Out Options"
     ]
   },
   {
@@ -61,7 +63,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -82,7 +85,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Rebuttals"
     ]
   },
   {
@@ -122,7 +126,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -143,7 +148,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Rebuttals"
     ]
   },
   {
@@ -162,7 +168,10 @@
       "D": "Reporters from the local newspaper neglected to follow leads that might have exposed the scandal much earlier.",
       "E": "The local newspaper’s treatment of Clemens is indicative of its treatment of public figures in general."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -372,7 +381,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -438,7 +448,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Volume Dial"
     ]
   },
   {
@@ -480,7 +491,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Timeframes"
     ]
   },
   {
@@ -523,7 +535,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   }
 ]

@@ -38,7 +38,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -59,7 +60,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Timeframes"
     ]
   },
   {
@@ -209,7 +211,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes",
+      "Worst of the Worst"
     ]
   },
   {
@@ -301,7 +305,8 @@
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Science"
     ]
   },
   {
@@ -342,7 +347,10 @@
       "D": "Significant intellectual advances sometimes, though not always, lead to stable political environments.",
       "E": "Many thinkers besides Plato and Aristotle contributed to the intellectual achievements of ancient Athens."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -390,7 +398,8 @@
       "Alternatives",
       "Anti-Causal",
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Worst of the Worst"
     ]
   },
   {
@@ -435,7 +444,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "EXCEPT"
+      "EXCEPT",
+      "Worst of the Worst"
     ]
   },
   {
@@ -456,7 +466,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Science"
     ]
   },
   {

@@ -60,7 +60,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Ruling Out Options",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -186,7 +188,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Science"
     ]
   },
   {
@@ -229,7 +232,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -251,7 +255,10 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -335,7 +342,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -424,7 +432,10 @@
       "D": "How bright celestial objects appear to be depends on how far away from the observer they are.",
       "E": "New telescopes allow astronomers to see a greater number of distant stars."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -487,7 +498,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science"
     ]
   },
   {
@@ -528,7 +540,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Defender",
-      "Plausibility"
+      "Plausibility",
+      "Worst of the Worst"
     ]
   },
   {

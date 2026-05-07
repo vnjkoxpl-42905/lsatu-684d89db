@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Refute a Conditional"
     ]
   },
   {
@@ -100,7 +101,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -207,7 +209,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Refute a Conditional"
     ]
   },
   {
@@ -229,7 +232,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -311,7 +315,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Volume Dial"
     ]
   },
   {
@@ -356,7 +361,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Complex Conditionals",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Refute a Conditional"
     ]
   },
   {
@@ -503,7 +509,10 @@
       "D": "To be attractive to tourists, it is best for a city to have both wide appeal and sufficient hotel space. Though a sufficient number of hotel rooms alone cannot attract tourists, it is much harder for city governments to affect the appeal of their city than for them to affect its amount of hotel space. Thus, governments of cities that want to increase their attractiveness to tourists should put their energies into increasing their hotel space.",
       "E": "Many young, talented artists, because they are unknown, decide to charge low prices for their work. As their reputations grow, the prices they can charge for their work increase. Thus, raising the price of an artist's work can improve that artist's reputation."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -523,7 +532,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
     ]
   },
   {

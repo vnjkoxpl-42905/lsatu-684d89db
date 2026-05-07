@@ -38,7 +38,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Science"
     ]
   },
   {
@@ -201,7 +202,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Science"
     ]
   },
   {
@@ -241,7 +243,10 @@
       "D": "Some species of sharks alive today grow and lose many sets of teeth during their lifetimes.",
       "E": "The physical and chemical processes involved in the fossilization of sharks’ teeth are as common as those involved in the fossilization of shark skeletons. 2 2 2 2 2"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -283,7 +288,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Science"
     ]
   },
   {
@@ -305,7 +311,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Logical Completion"
+      "Logical Completion",
+      "Science"
     ]
   },
   {
@@ -351,7 +358,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Science"
     ]
   },
   {
@@ -415,7 +423,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {
@@ -479,7 +488,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers"
     ]
   },
   {

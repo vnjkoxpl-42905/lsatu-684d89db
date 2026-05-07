@@ -41,7 +41,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -120,7 +121,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -211,7 +213,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -250,7 +253,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -321,7 +325,8 @@
       "EXCEPT",
       "Intermediate Conclusions",
       "Medical",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -343,7 +348,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Timeframes"
     ]
   },
   {
@@ -452,7 +458,10 @@
       "D": "Since many disease processes are biochemical in nature, unless one understands chemistry one will not be able to understand the explanations for many diseases. Therefore, if one has no training in chemistry, one will not be able to master medicine.",
       "E": "Since most disease processes are biochemical in nature, an understanding of chemistry will enable one to understand most diseases. Therefore, one needs little more than training in chemistry to be able to master medicine."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Volume Dial"
+    ]
   },
   {
     "practiceTest": "PT118",

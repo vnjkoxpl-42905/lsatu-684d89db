@@ -15,7 +15,10 @@
       "D": "Travel time on the highway for car trips under 30 kilometers (18.6 miles) did not decrease appreciably.",
       "E": "Some drivers did not switch to the electronic system but instead continued to use cash to pay their tolls at toll booths."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -80,7 +83,8 @@
       "Argue the Anti-Conclusion",
       "Contrapositive Logic",
       "Defender",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -99,7 +103,10 @@
       "D": "Traffic lights and street markings are intended to have benefits in addition to those related to safety.",
       "E": "Drivers were given advance notice that the traffic lights and street markings would be removed."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -185,7 +192,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Plausibility"
+      "Plausibility",
+      "Rebuttals"
     ]
   },
   {
@@ -227,7 +235,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Refute a Conditional"
     ]
   },
   {
@@ -249,7 +258,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Science"
     ]
   },
   {
@@ -270,7 +280,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -292,7 +303,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -379,7 +391,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Defender",
-      "Quantifiers"
+      "Quantifiers",
+      "Science"
     ]
   },
   {
@@ -420,7 +433,10 @@
       "D": "The mere presence of an orderly system of government in a society provides adequate protection against political demagogues.",
       "E": "The mere presence of electronic communications technology in a society provides adequate protection against the erosion of media freedoms."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -440,7 +456,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -461,7 +478,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Worst of the Worst"
     ]
   },
   {
@@ -480,7 +498,10 @@
       "D": "Bone samples from present-day bears fed meat-enriched diets exhibit the same levels of heavy nitrogen as do their blood samples.",
       "E": "The level of heavy nitrogen in the bones of any bear fed a meat-enriched diet is the same as that in the bones of any other meat-eating bear."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -501,7 +522,10 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Rebuttals",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {

@@ -224,7 +224,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Science"
     ]
   },
   {
@@ -394,7 +395,10 @@
       "D": "Legal restrictions on consumer purchases are either paternalistic or designed to protect civil liberties. All ordinances passed in 1993 are paternalistic. Since Ordinance 304 was passed in 1993, it must be a legal restriction on consumer purchases.",
       "E": "Ordinance 304 should be exercised only in order to protect civil liberties or to protect consumers from self-harm. The mayor's last exercise of Ordinance 304 does not protect civil liberties, so it must have been intended to protect consumers from self-harm."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -412,7 +416,10 @@
       "D": "It is a claim for which justification is provided and that, if true, establishes the truth of the argument's main conclusion.",
       "E": "It is a claim that provides some support for the argument's conclusion but that neither ensures the truth of that conclusion nor is required in order to establish that conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT137",

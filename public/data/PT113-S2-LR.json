@@ -201,7 +201,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -262,7 +263,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -368,7 +370,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "Proposition/Generalization"
+      "Proposition/Generalization",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -413,7 +416,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Science"
     ]
   },
   {
@@ -452,7 +456,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -514,7 +519,10 @@
       "D": "assumes, without providing justification, that the likelihood of an accident's occurring should weigh at least as heavily as the seriousness of any resulting injury in estimates of relative safety",
       "E": "takes for granted that all accidents would cause air bags to be deployed"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Weighing Tradeoffs"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -534,7 +542,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Repetitive Answers"
     ]
   }
 ]

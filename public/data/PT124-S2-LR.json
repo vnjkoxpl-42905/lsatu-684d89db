@@ -15,7 +15,11 @@
       "D": "North American manufacturers opposed banning toxaphene.",
       "E": "Toxic chemicals become more readily detectable once they enter organisms the size of fish."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Science",
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -78,7 +82,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Science"
     ]
   },
   {
@@ -99,7 +104,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Timeframes"
     ]
   },
   {
@@ -188,7 +194,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Science"
     ]
   },
   {
@@ -299,7 +306,8 @@
       "Abstract Answers",
       "Missing Link / Idea",
       "Battle of Opinions",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -366,7 +374,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -387,7 +396,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -450,7 +460,10 @@
       "D": "Workers typically plan to work in this industry only three years.",
       "E": "Wages in this industry have increased each year."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -470,7 +483,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Science"
     ]
   },
   {

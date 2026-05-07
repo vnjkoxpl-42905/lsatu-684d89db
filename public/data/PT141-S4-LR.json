@@ -39,7 +39,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -106,7 +107,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Refute a Conditional",
+      "Science"
     ]
   },
   {
@@ -193,7 +196,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -236,7 +240,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Rebuttals"
     ]
   },
   {
@@ -257,7 +262,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Timeframes"
     ]
   },
   {
@@ -279,7 +285,10 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Science",
+      "Timeframes",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -386,7 +395,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Repetitive Answers"
     ]
   },
   {
@@ -433,7 +443,9 @@
       "Explain Curious Fact",
       "Alternatives",
       "Defender",
-      "Medical"
+      "Medical",
+      "Science",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -455,7 +467,10 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Repetitive Answers",
+      "Ruling Out Options",
+      "Worst of the Worst"
     ]
   },
   {
@@ -494,7 +509,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Worst of the Worst"
     ]
   },
   {

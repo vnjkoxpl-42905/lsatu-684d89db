@@ -62,7 +62,8 @@
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
       "Dense Stimulus",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Science"
     ]
   },
   {
@@ -197,7 +198,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Science"
     ]
   },
   {
@@ -242,7 +244,9 @@
       "Defender",
       "Dense Stimulus",
       "Medical",
-      "Predictions"
+      "Predictions",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -412,7 +416,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Science"
     ]
   },
   {

@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Volume Dial"
     ]
   },
   {
@@ -61,7 +62,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Timeframes"
     ]
   },
   {
@@ -84,7 +86,8 @@
     "questionFeatures": [
       "Causal Difference-Maker",
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Rebuttals"
     ]
   },
   {
@@ -130,7 +133,8 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Logical Completion"
+      "Logical Completion",
+      "Timeframes"
     ]
   },
   {
@@ -151,7 +155,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Stimulus"
+      "Principles in Stimulus",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -221,7 +226,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Quantifiers"
+      "Quantifiers",
+      "Rebuttals"
     ]
   },
   {
@@ -242,7 +248,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Science"
     ]
   },
   {
@@ -281,7 +288,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -351,7 +359,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -459,7 +468,8 @@
       "Missing Link / Idea",
       "Explain Curious Fact",
       "Alternatives",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Worst of the Worst"
     ]
   },
   {

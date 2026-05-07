@@ -58,7 +58,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -162,7 +163,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Repetitive Answers",
+      "Ruling Out Options"
     ]
   },
   {
@@ -224,7 +227,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -389,7 +393,10 @@
       "D": "Hybrid vehicles using both electric and gasoline power moderate the increased demand for electricity produced by power plants.",
       "E": "Most power plants are currently operating well below capacity and could therefore accommodate the increased demand for electricity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -428,7 +435,10 @@
       "D": "Is what the finance minister considers to be a midsized business smaller than the hypothetical business used to produce the “Doing Business” report?",
       "E": "Was the finance minister in office when the last"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -448,7 +458,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Worst of the Worst"
     ]
   },
   {

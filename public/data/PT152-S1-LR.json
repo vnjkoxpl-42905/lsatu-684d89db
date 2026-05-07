@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -41,7 +42,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Alternatives",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -107,7 +109,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -238,7 +242,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Plans / Recommendations",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -302,7 +307,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -366,7 +372,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Worst of the Worst"
     ]
   },
   {
@@ -406,7 +413,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Worst of the Worst"
     ]
   },
   {
@@ -493,7 +501,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Ruling Out Options"
     ]
   },
   {
@@ -512,7 +522,11 @@
       "D": "questioning the assumptions underlying a particular theory",
       "E": "showing that something that would be impossible if a particular thesis were correct is actually true"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Refute a Conditional",
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -535,7 +549,9 @@
       "Explain Curious Fact",
       "Alternatives",
       "Battle of Opinions",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Ruling Out Options"
     ]
   }
 ]

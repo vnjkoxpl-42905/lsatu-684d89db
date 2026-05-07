@@ -15,7 +15,11 @@
       "D": "a variety of stage directions can be reflected in an opera’s music",
       "E": "the most frequent relation between an opera’s music and its stage directions is one of musical imitation of the sounds that occur when a direction is carried out"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -37,7 +41,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Dense Stimulus",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Science"
     ]
   },
   {
@@ -85,7 +90,8 @@
       "2-Speaker",
       "Argue the Anti-Conclusion",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -109,7 +115,8 @@
       "2-Speaker",
       "Alternatives",
       "Medical",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -133,7 +140,8 @@
       "2-Speaker",
       "Breadcrumbs",
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science"
     ]
   },
   {
@@ -155,7 +163,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Implicit Principles"
+      "Implicit Principles",
+      "Volume Dial"
     ]
   },
   {
@@ -179,7 +188,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Medical",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -201,7 +211,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -246,7 +257,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -267,7 +279,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Science",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -335,7 +349,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sampling",
-      "EXCEPT"
+      "EXCEPT",
+      "Rebuttals"
     ]
   },
   {
@@ -357,7 +372,10 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -380,7 +398,9 @@
     "questionFeatures": [
       "Abstract Answers",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -447,7 +467,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Dense Stimulus",
-      "Quantifiers"
+      "Quantifiers",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -515,7 +536,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Math-y Stuff",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {

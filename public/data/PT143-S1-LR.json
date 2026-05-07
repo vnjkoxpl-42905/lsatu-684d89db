@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals"
     ]
   },
   {
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -80,7 +82,10 @@
       "D": "It describes an explanation for some facts, counters assertions that the explanation is unlikely to be correct, and concludes that it is correct after all.",
       "E": "It presents two possible interpretations of a phenomenon and provides evidence in support of one interpretation and against the other."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Ruling Out Options"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -162,7 +167,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -183,7 +189,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Rebuttals"
     ]
   },
   {

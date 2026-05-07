@@ -148,7 +148,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -170,7 +172,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Rebuttals"
     ]
   },
   {
@@ -213,7 +216,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Rebuttals"
     ]
   },
   {
@@ -317,7 +321,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Rebuttals",
+      "Untriggered Conditional"
     ]
   },
   {
@@ -518,7 +524,10 @@
       "D": "At least some microbiologists lack complete knowledge of any microbe species that live together in dense, interdependent communities.",
       "E": "No microbe species that normally lives together with other microbe species in dense, interdependent communities can survive outside such a community."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT121",

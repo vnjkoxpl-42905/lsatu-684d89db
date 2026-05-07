@@ -103,7 +103,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Ruling Out Options"
     ]
   },
   {
@@ -189,7 +190,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Rebuttals"
     ]
   },
   {
@@ -236,7 +238,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -258,7 +261,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -391,7 +395,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -435,7 +440,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {

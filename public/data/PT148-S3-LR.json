@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Timeframes"
     ]
   },
   {
@@ -103,7 +105,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -149,7 +152,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Predictions"
+      "Predictions",
+      "Rebuttals"
     ]
   },
   {
@@ -325,7 +329,8 @@
       "Missing Link / Idea",
       "Explain Curious Fact",
       "New Concept in Conclusion",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -347,7 +352,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Net Effect"
+      "Net Effect",
+      "Rebuttals",
+      "Worst of the Worst"
     ]
   },
   {
@@ -393,7 +400,8 @@
       "Explain Curious Fact",
       "Assumes Difference",
       "Medical",
-      "Plausibility"
+      "Plausibility",
+      "Science"
     ]
   },
   {
@@ -436,7 +444,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Timeframes"
     ]
   },
   {
@@ -503,7 +512,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -571,7 +581,9 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Conditional Conclusion",
-      "Quantifiers"
+      "Quantifiers",
+      "Repetitive Answers",
+      "Volume Dial"
     ]
   }
 ]

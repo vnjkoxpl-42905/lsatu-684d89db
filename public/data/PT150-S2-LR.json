@@ -39,7 +39,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Timeframes"
     ]
   },
   {
@@ -277,7 +278,11 @@
       "D": "No works of art that call for intervention are concerned with beauty.",
       "E": "Only works that call for intervention are legitimate works of art."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals",
+      "Refute a Conditional"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -318,7 +323,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Principles in Answers"
+      "Principles in Answers",
+      "Weighing Tradeoffs"
     ]
   },
   {
@@ -439,7 +445,10 @@
       "D": "If ViqCo’s executives were responsible for the company’s losses, then ViqCo’s losses would have been greater than those of its competitors. But ViqCo’s losses were less than those of its competitors. So ViqCo’s executives were not responsible for the company’s losses.",
       "E": "Since ViqCo’s failure was due to a broader economic collapse, it is not fair to blame the company’s executives for the failure. But that means that when ViqCo was succeeding because the broader economy was growing, the executives did not deserve the credit."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Repetitive Answers"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -457,7 +466,10 @@
       "D": "It is offered as evidence in support of a hypothesis that the argument concludes to be false.",
       "E": "It is offered as evidence that is necessary for drawing the conclusion advanced by the argument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Worst of the Worst"
+    ]
   },
   {
     "practiceTest": "PT150",

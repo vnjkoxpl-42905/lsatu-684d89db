@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Rebuttals"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "The ozone layer regenerates at a slow rate, barring counteractive processes.",
       "E": "Scientists have discovered that genetic changes occurred in our ancestors during the period in which the supernova affected Earth."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -59,7 +63,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Ruling Out Options"
     ]
   },
   {
@@ -142,7 +147,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Abstract Answers",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -202,7 +208,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Timeframes"
     ]
   },
   {
@@ -246,7 +253,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Science"
     ]
   },
   {
@@ -286,7 +294,10 @@
       "D": "contains the tacit assumption that residents of neighborhoods should have the right to restrict traffic through their communities",
       "E": "presumes, without providing justification, that speed bumps do prevent drivers from using the roads on which the bumps are found"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -348,7 +359,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Rebuttals"
     ]
   },
   {
@@ -388,7 +400,10 @@
       "D": "takes for granted that some historical work that embodies prejudices is written by historians who purport to be objective",
       "E": "fails to recognize that not all historical explanations embodying ideologies are false"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -408,7 +423,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Rebuttals"
     ]
   },
   {
@@ -429,7 +445,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Quantifiers"
+      "Quantifiers",
+      "Science"
     ]
   },
   {
@@ -489,7 +506,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {

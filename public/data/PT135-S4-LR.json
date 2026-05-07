@@ -169,7 +169,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Net Effect",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Rebuttals"
     ]
   },
   {
@@ -206,7 +207,10 @@
       "D": "People who reduce their consumption of red meat tend to replace it with cheese and baked goods, which are richer in fat than red meat.",
       "E": "Studies have shown that red meat contains slightly less fat than previously thought."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Timeframes"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -226,7 +230,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Rebuttals"
     ]
   },
   {
@@ -294,7 +299,9 @@
     "questionFeatures": [
       "Important Pivot",
       "Net Effect",
-      "Predictions"
+      "Predictions",
+      "Rebuttals",
+      "Science"
     ]
   },
   {
@@ -336,7 +343,10 @@
       "D": "offering a particular counterexample to a general claim asserted by the critic",
       "E": "offering evidence against one of the critic’s factual premises"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -356,7 +366,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Rebuttals"
     ]
   },
   {
@@ -471,7 +482,10 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Assumes Similarity",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Rebuttals",
+      "Science",
+      "Timeframes"
     ]
   },
   {
@@ -495,7 +509,8 @@
       "Missing Link / Idea",
       "Complex Conditionals",
       "New Concept in Conclusion",
-      "Principles in Answers"
+      "Principles in Answers",
+      "Timeframes"
     ]
   },
   {
@@ -517,7 +532,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Repetitive Answers"
     ]
   },
   {

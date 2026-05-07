@@ -81,7 +81,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Ruling Out Options"
     ]
   },
   {
@@ -149,7 +150,9 @@
       "Famous Flaws",
       "Belief / Knowledge / Intent",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Rebuttals",
+      "Refute a Conditional"
     ]
   },
   {
@@ -410,7 +413,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Plans / Recommendations"
+      "Plans / Recommendations",
+      "Ruling Out Options"
     ]
   },
   {
@@ -431,7 +435,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Science"
     ]
   },
   {
@@ -454,7 +459,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Difference",
-      "Plausibility"
+      "Plausibility",
+      "Worst of the Worst"
     ]
   },
   {
@@ -475,7 +481,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Worst of the Worst"
     ]
   },
   {
@@ -536,7 +543,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Ruling Out Options"
     ]
   }
 ]

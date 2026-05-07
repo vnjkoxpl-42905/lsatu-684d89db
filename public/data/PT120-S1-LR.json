@@ -166,7 +166,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -206,7 +207,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Rebuttals"
     ]
   },
   {
@@ -295,7 +297,8 @@
       "Missing Link / Idea",
       "Assumes Similarity",
       "New Concept in Conclusion",
-      "Predictions"
+      "Predictions",
+      "Timeframes"
     ]
   },
   {

@@ -51,7 +51,10 @@
       "D": "Though Venus lacks active volcanoes and heat-diffusing fissures, it has surface movement somewhat like that of Earth.",
       "E": "The atmosphere of Venus is significantly hotter than that of Earth."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -132,7 +135,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Rebuttals"
     ]
   },
   {
@@ -190,7 +194,10 @@
       "D": "The allergic reactions of some people who are allergic to cats are more intense than the allergic reactions of other allergy sufferers.",
       "E": "There is no way to predict whether a given cat will produce an allergic reaction in a particular allergy sufferer."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Science"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -461,7 +468,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Refute a Conditional"
     ]
   },
   {
@@ -505,7 +513,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Repetitive Answers"
     ]
   },
   {

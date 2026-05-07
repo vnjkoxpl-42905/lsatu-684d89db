@@ -98,7 +98,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Rebuttals"
     ]
   },
   {
@@ -230,7 +231,8 @@
     "questionFeatures": [
       "Analogies",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Rebuttals"
     ]
   },
   {
@@ -316,7 +318,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Science"
     ]
   },
   {
@@ -335,7 +338,10 @@
       "D": "appealing to a relevant authority",
       "E": "responding to a different issue from the one posed"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Rebuttals"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -396,7 +402,9 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Math-y Stuff",
-      "Percentages"
+      "Percentages",
+      "Rebuttals",
+      "Timeframes"
     ]
   },
   {
@@ -504,7 +512,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Math-y Stuff",
-      "New Concept in Conclusion"
+      "New Concept in Conclusion",
+      "Worst of the Worst"
     ]
   },
   {
