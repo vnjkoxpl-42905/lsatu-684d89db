@@ -9,7 +9,7 @@ const Excalidraw = lazy(() =>
   import('@excalidraw/excalidraw').then((m) => ({ default: m.Excalidraw })),
 );
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/foyer'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/reset-password', '/foyer', '/drill'];
 
 export function FloatingWhiteboard() {
   const { is_admin } = useUserPermissions();
