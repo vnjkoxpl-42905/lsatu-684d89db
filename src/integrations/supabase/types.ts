@@ -667,6 +667,137 @@ export type Database = {
         }
         Relationships: []
       }
+      guided_drill_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string
+          attempt_session_id: string | null
+          class_id: string
+          completed_at: string | null
+          created_at: string
+          guided_drill_id: string
+          id: string
+          read_card_at: string | null
+          scheduled_for: string | null
+          started_at: string | null
+          status: string
+          student_id: string
+          unlock_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by: string
+          attempt_session_id?: string | null
+          class_id: string
+          completed_at?: string | null
+          created_at?: string
+          guided_drill_id: string
+          id?: string
+          read_card_at?: string | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string
+          student_id: string
+          unlock_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string
+          attempt_session_id?: string | null
+          class_id?: string
+          completed_at?: string | null
+          created_at?: string
+          guided_drill_id?: string
+          id?: string
+          read_card_at?: string | null
+          scheduled_for?: string | null
+          started_at?: string | null
+          status?: string
+          student_id?: string
+          unlock_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guided_drill_assignments_guided_drill_id_fkey"
+            columns: ["guided_drill_id"]
+            isOneToOne: false
+            referencedRelation: "guided_drills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guided_drills: {
+        Row: {
+          bank_filter: Json
+          category: string | null
+          created_at: string
+          difficulty_max: number | null
+          difficulty_min: number | null
+          estimated_minutes: number | null
+          id: string
+          instruction_card: Json
+          is_published: boolean
+          order_in_week: number
+          question_count: number | null
+          question_features: string[]
+          question_types: string[]
+          reasoning_types: string[]
+          slug: string
+          source_file: string | null
+          start_button_label: string | null
+          title: string
+          updated_at: string
+          week: number
+        }
+        Insert: {
+          bank_filter?: Json
+          category?: string | null
+          created_at?: string
+          difficulty_max?: number | null
+          difficulty_min?: number | null
+          estimated_minutes?: number | null
+          id?: string
+          instruction_card?: Json
+          is_published?: boolean
+          order_in_week?: number
+          question_count?: number | null
+          question_features?: string[]
+          question_types?: string[]
+          reasoning_types?: string[]
+          slug: string
+          source_file?: string | null
+          start_button_label?: string | null
+          title: string
+          updated_at?: string
+          week: number
+        }
+        Update: {
+          bank_filter?: Json
+          category?: string | null
+          created_at?: string
+          difficulty_max?: number | null
+          difficulty_min?: number | null
+          estimated_minutes?: number | null
+          id?: string
+          instruction_card?: Json
+          is_published?: boolean
+          order_in_week?: number
+          question_count?: number | null
+          question_features?: string[]
+          question_types?: string[]
+          reasoning_types?: string[]
+          slug?: string
+          source_file?: string | null
+          start_button_label?: string | null
+          title?: string
+          updated_at?: string
+          week?: number
+        }
+        Relationships: []
+      }
       homework_assignments: {
         Row: {
           assigned_by: string

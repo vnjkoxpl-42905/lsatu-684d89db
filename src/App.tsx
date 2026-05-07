@@ -41,6 +41,8 @@ const HomeworkNew = React.lazy(() => import("./pages/admin/HomeworkNew"));
 const HomeworkDetail = React.lazy(() => import("./pages/admin/HomeworkDetail"));
 const TeachingLibrary = React.lazy(() => import("./pages/admin/TeachingLibrary"));
 const TAPage = React.lazy(() => import("./pages/admin/StudentHub"));
+const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"));
+const GuidedDrillStart = React.lazy(() => import("./pages/GuidedDrillStart"));
 import AdminErrorBoundary from "./components/AdminErrorBoundary";
 const ClassroomAssignmentDetail = React.lazy(() => import("./pages/ClassroomAssignmentDetail"));
 const ClassroomTAAssignmentDetail = React.lazy(() => import("./pages/ClassroomTAAssignmentDetail"));
@@ -167,6 +169,22 @@ const App = () => {
                   </React.Suspense>
                 </AdminErrorBoundary>
               </ProtectedRoute>
+            } />
+            <Route path="/admin/guided-drills" element={
+              <AdminErrorBoundary routeLabel="/admin/guided-drills">
+                <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                  <QuestionBankProvider>
+                    <AdminGuidedDrills />
+                  </QuestionBankProvider>
+                </React.Suspense>
+              </AdminErrorBoundary>
+            } />
+            <Route path="/guided/:assignmentId" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                <QuestionBankProvider>
+                  <GuidedDrillStart />
+                </QuestionBankProvider>
+              </React.Suspense>
             } />
 
             {/* Inbox — messaging, no question bank needed */}
