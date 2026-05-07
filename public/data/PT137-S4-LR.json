@@ -119,7 +119,10 @@
       "D": "There is no more concern now about extinction of species than there was in 1970.",
       "E": "Scientists are now better able to identify species facing serious risk of extinction than they were in 1970."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -139,7 +142,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -158,7 +162,10 @@
       "D": "People with low incomes are more likely to purchase older vehicles than are people with higher incomes.",
       "E": "Among drivers, those with low incomes are less likely than those with higher incomes to use roads that have been treated with de-icing agents."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -492,7 +499,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {

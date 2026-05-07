@@ -97,7 +97,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -163,7 +165,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -223,7 +226,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -310,7 +314,9 @@
     "questionFeatures": [
       "Assumes Similarity",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -392,7 +398,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Abstract Answers",
-      "EXCEPT"
+      "EXCEPT",
+      "Principles in Answers"
     ]
   },
   {
@@ -431,7 +438,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Predictions",
+      "Quantifiers"
     ]
   },
   {
@@ -492,7 +501,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {

@@ -36,7 +36,10 @@
       "D": "It is possible to accomplish one’s agenda even if one is not trusted.",
       "E": "Voters can best be trusted to make good decisions when they are fully informed."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -56,7 +59,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -114,7 +118,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -136,7 +142,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Predictions"
     ]
   },
   {
@@ -202,7 +209,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -247,7 +255,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plausibility"
     ]
   },
   {
@@ -290,7 +299,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -312,7 +322,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -482,7 +493,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -521,7 +533,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {

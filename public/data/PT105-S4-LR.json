@@ -81,7 +81,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -121,7 +122,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -140,7 +142,10 @@
       "D": "Job candidates should refuse to accept positions in corporations whose personnel policies they cannot adhere to.",
       "E": "Job candidates have no obligation to reveal to a prospective employer personal information such as marital status, regardless of the employer’s policies."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -244,7 +249,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Principles in Answers"
     ]
   },
   {
@@ -287,7 +293,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -480,7 +488,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -501,7 +510,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Net Effect"
     ]
   }
 ]

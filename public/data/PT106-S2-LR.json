@@ -141,7 +141,10 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Math-y Stuff",
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "Percentages",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -164,7 +167,8 @@
     "questionFeatures": [
       "Alternatives",
       "Defender",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -209,7 +213,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -250,7 +255,10 @@
       "D": "Physical discipline should not be used on immature animals.",
       "E": "Physical discipline should not be used by an animal trainer except to correct persistent behavior problems."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -328,7 +336,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -392,7 +402,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -494,7 +505,10 @@
       "D": "Types of behavior that are not considered voluntary in everyday circumstances should be considered voluntary if they occur in the context of a professional chess match.",
       "E": "Chess players should be disqualified from professional chess matches if they regularly attempt to distract their opponents."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -514,7 +528,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {

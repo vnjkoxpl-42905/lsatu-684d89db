@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Net Effect"
     ]
   },
   {
@@ -121,7 +122,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -272,7 +274,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -293,7 +296,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -382,7 +386,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Net Effect"
     ]
   },
   {
@@ -469,7 +474,10 @@
       "D": "Kessler was fined by the library several times in the past for overdue books, but none of the overdue books for which Kessler was fined were children’s books.",
       "E": "Kessler has never before been fined for overdue books, but the three overdue books that Kessler currently has out on loan from the library are months overdue."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT140",

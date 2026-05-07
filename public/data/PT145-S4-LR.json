@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -142,7 +143,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -269,7 +271,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -350,7 +353,10 @@
       "D": "Unless there is strong evidence of a link between use of a product and disease, the suggestion that use of the product causes disease is usually harmful to people.",
       "E": "Most people would reduce their use of cell phones if they were convinced that they were using them enough to increase their risk of developing cancer."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -539,7 +545,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   }
 ]

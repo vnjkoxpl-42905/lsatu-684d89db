@@ -37,7 +37,10 @@
       "D": "Only if the company expands its operations into pharmaceuticals are increased profits possible.",
       "E": "The company has a greater chance of losing money in food services than in pharmaceuticals."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -58,7 +61,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Important Pivot"
+      "Important Pivot",
+      "Principles in Answers"
     ]
   },
   {
@@ -101,7 +105,10 @@
       "D": "We should be cautious about the practice of allowing certain kinds of weeds to grow among garden vegetables.",
       "E": "We should be skeptical about the extent to which certain kinds of weeds can reduce the presence of caterpillars in gardens."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -122,7 +129,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -141,7 +149,10 @@
       "D": "The wild cat population on the island was once significantly larger than it is currently.",
       "E": "The coyotes preyed mainly on wild cats, and wild cats prey on plover."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -162,7 +173,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -183,7 +196,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -244,7 +259,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Principles in Answers"
     ]
   },
   {
@@ -265,7 +281,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -331,7 +348,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -375,7 +393,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -422,7 +442,9 @@
       "Part vs. Whole",
       "First Sentence Conclusion",
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -486,7 +508,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -508,7 +531,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -531,7 +555,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   }
 ]

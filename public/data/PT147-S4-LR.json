@@ -146,7 +146,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -167,7 +168,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -210,7 +212,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -317,7 +320,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -492,7 +496,10 @@
       "D": "A food source containing linolenic acid would be poisonous to H. subflexa caterpillars.",
       "E": "No caterpillars other than H. subflexa eat fruit from plants of the genus Physalis."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT147",

@@ -78,7 +78,10 @@
       "D": "James returned the camera after he discovered that the same model was on sale at another store at a considerably lower price.",
       "E": "James used the camera in the manner for which he bought it, and, though he generally enjoyed it, he thought a different one might work better with his new computer. 3 3 -21-3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -98,7 +101,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -117,7 +121,12 @@
       "D": "It would cost Winchester a significant amount of money to build a larger library.",
       "E": "Each of Winchester’s branch libraries attempts to cater to the tastes of the residents of the entire township. -22- 3 33"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -242,7 +251,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -263,7 +273,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -326,7 +337,10 @@
       "D": "The more detailed and complete the evidence, the more confidence we can have in predictions based on that evidence.",
       "E": "Predictions based only on general trends are unlikely to be accurate."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -346,7 +360,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -408,7 +423,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {

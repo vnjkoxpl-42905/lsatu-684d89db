@@ -176,7 +176,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Quantifiers"
     ]
   },
   {
@@ -197,7 +198,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -236,7 +239,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -258,7 +263,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -319,7 +325,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "EXCEPT",
-      "Games-y LR"
+      "Games-y LR",
+      "Principles in Answers"
     ]
   },
   {
@@ -362,7 +369,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -423,7 +431,10 @@
       "D": "Attacking the character of one’s opponent does nothing to preserve one’s moral right to enter into further political debates.",
       "E": "Questions of character should be raised in political debate if they are relevant to the opponent’s argument."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -486,7 +497,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -507,7 +519,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   }
 ]

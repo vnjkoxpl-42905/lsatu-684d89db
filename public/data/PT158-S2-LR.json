@@ -142,7 +142,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -207,7 +208,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -251,7 +253,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -272,7 +276,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -317,7 +322,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Predictions"
     ]
   },
   {
@@ -357,7 +363,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -381,7 +389,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Anti-Causal",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -403,7 +412,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -491,7 +501,8 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -512,7 +523,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {

@@ -40,7 +40,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Quantifiers"
     ]
   },
   {
@@ -145,7 +146,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -166,7 +168,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -187,7 +190,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -208,7 +212,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -229,7 +234,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -291,7 +297,11 @@
       "D": "fails to specify whether legislators usually consider economic consequences when a bill is before the legislature",
       "E": "takes for granted that if a bill is popular, it will not be sound economically"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -311,7 +321,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -351,7 +362,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -394,7 +407,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -431,7 +445,10 @@
       "D": "All people who are good at abstract reasoning are very creative.",
       "E": "Most skilled artists are famous."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT115",

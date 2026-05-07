@@ -17,7 +17,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -62,7 +64,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Causal Chains",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -86,7 +89,9 @@
       "Missing Link / Idea",
       "Causal Chains",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -110,7 +115,8 @@
       "Missing Link / Idea",
       "Explain Curious Fact",
       "Causal Chains",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -152,7 +158,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -174,7 +182,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -195,7 +204,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -238,7 +249,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plausibility"
     ]
   },
   {
@@ -262,7 +274,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -307,7 +320,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Relative vs. Absolute",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -372,7 +386,11 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Implicit Principles"
+      "Implicit Principles",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Plausibility",
+      "Principles in Answers"
     ]
   },
   {
@@ -442,7 +460,8 @@
       "Alternatives",
       "Causal Difference-Maker",
       "Dense Stimulus",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -461,7 +480,10 @@
       "D": "If an act is virtuous, then it is autonomous, for acts are not virtuous unless they are free, and acts are not free unless they are autonomous.",
       "E": "A majority of the voting population favors a total ban, but no one who favors a total ban is opposed to stiffer tariffs, so at least one voter is not opposed to stiffer tariffs."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -479,7 +501,10 @@
       "D": "Most of Bach’s chorale preludes were written for instruments other than the organ.",
       "E": "Most of the great chorale preludes were written for instruments other than the organ."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -545,7 +570,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   }
 ]

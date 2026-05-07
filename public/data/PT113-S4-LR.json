@@ -78,7 +78,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Quantifiers"
     ]
   },
   {
@@ -268,7 +269,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "EXCEPT",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -289,7 +291,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -332,7 +335,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -389,7 +393,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -411,7 +416,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -430,7 +436,10 @@
       "D": "The short-term consequences of a law's repeal should be considered more carefully than the short-term consequences of its passage.",
       "E": "The long-term consequences of the enactment of a law should be more beneficial than its short-term consequences."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -472,7 +481,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -495,7 +505,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {

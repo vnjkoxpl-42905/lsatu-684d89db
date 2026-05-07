@@ -117,7 +117,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Percentages"
     ]
   },
   {
@@ -240,7 +241,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -261,7 +263,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -282,7 +286,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Predictions"
     ]
   },
   {
@@ -301,7 +306,10 @@
       "D": "A theory should not be rejected until it has been subjected to serious attempts to disprove it.",
       "E": "A theory should be accepted only if its predictions have not been disproved by experiment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -340,7 +348,10 @@
       "D": "Hopper’s Nighthawks is both a twentieth-century work and a work on loan to the museum from a private collector.",
       "E": "Hopper’s Nighthawks is not displayed in the museum."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -439,7 +450,10 @@
       "D": "Some parents show no interest in the curricula used in the schools that their children attend. Thus, some of the decisions regarding school curricula should be made without regard for the wishes of the children’s parents.",
       "E": "Only a small percentage of the profits that companies make are directly attributable to good management decisions. Thus, even companies that are managed badly will usually turn a profit."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -499,7 +513,10 @@
       "D": "It is not possible to raise cacti in the country.",
       "E": "Most parts of the country are humid."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT127",

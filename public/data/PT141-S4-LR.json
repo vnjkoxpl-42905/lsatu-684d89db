@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "The right to build on one’s own property is constrained by the artistic and historical interests of the community at large.",
       "E": "In historic communities, the building and zoning regulations should prohibit construction that obstructs access to historic sites."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -123,7 +127,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -144,7 +149,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -401,7 +408,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -484,7 +492,10 @@
       "D": "Daniel’s feelings would be hurt if he knew that congratulations from Shayna were insincere, so Shayna should not congratulate him.",
       "E": "Shayna has no opinion about whether Daniel would prefer kindness to honesty, so she should not congratulate him."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -505,7 +516,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -549,7 +561,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   }
 ]

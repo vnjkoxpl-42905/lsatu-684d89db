@@ -40,7 +40,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -133,7 +134,9 @@
     "questionFeatures": [
       "Assumes Difference",
       "Conditional Conclusion",
-      "Medical"
+      "Medical",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -175,7 +178,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -219,7 +223,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -261,7 +266,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -304,7 +311,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -348,7 +356,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -369,7 +379,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -390,7 +401,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -411,7 +424,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Games-y LR"
+      "Games-y LR",
+      "Quantifiers"
     ]
   },
   {
@@ -432,7 +446,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -536,7 +552,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   }
 ]

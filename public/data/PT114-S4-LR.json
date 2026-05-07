@@ -77,7 +77,10 @@
       "D": "There is nothing wrong with a government- owned company selling products so long as owners of private companies do not complain.",
       "E": "There is nothing wrong with private companies competing against each other."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -99,7 +102,9 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Sampling",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility",
+      "Predictions"
     ]
   },
   {
@@ -226,7 +231,10 @@
       "D": "Preservation of the remaining North American bison would be a sensible policy.",
       "E": "The devastation of the North American prairie ecosystem could be largely reversed without significantly decreasing meat production."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -290,7 +298,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect"
     ]
   },
   {
@@ -405,7 +414,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -448,7 +459,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -467,7 +479,10 @@
       "D": "Maria’s deliberate violation of a law requiring prepublication government approval of all printed materials was an act of justified civil disobedience: though her interest as an owner of a publishing company would be served by repeal of the law, she violated the law because her conscience required doing so on behalf of all publishers.",
       "E": "In organizing a parade of motorcyclists riding without helmets through the capital city, Louise’s act was not one of justified civil disobedience: she was willfully challenging a specific law requiring motorcyclists to wear helmets, but her conscience did not require her to organize the parade."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT114",

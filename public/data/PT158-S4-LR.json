@@ -43,7 +43,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -64,7 +65,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -127,7 +129,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Difference",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -213,7 +216,10 @@
       "D": "Operating costs for railroads have been reduced as a result of increased reliance on automation.",
       "E": "The chief competitor of railway shipping is shipping by truck."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -253,7 +259,10 @@
       "D": "Grass and brush fires that are not caused by human negligence or arson tend to be started by lightning.",
       "E": "When vegetation is destroyed in a grass or brush fire, it tends to be replaced naturally by vegetation that is equally if not more flammable."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -273,7 +282,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -294,7 +305,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -316,7 +328,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -358,7 +371,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -443,7 +458,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -464,7 +480,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -487,7 +505,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -508,7 +527,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -530,7 +550,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Logical Completion"
+      "Logical Completion",
+      "Quantifiers"
     ]
   },
   {

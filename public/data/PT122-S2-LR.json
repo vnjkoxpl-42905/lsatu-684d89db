@@ -54,7 +54,10 @@
       "D": "meeting daily with other staff members to discuss workloads and schedules",
       "E": "spending time each morning scheduling tasks according to the most immediate deadlines"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -75,7 +78,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -306,7 +310,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -327,7 +332,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Quantifiers"
     ]
   },
   {
@@ -349,7 +355,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -455,7 +462,8 @@
       "Argue the Anti-Conclusion",
       "Defender",
       "Dense Stimulus",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plans / Recommendations"
     ]
   },
   {

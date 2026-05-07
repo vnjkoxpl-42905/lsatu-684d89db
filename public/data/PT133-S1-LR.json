@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -100,7 +101,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -145,7 +147,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "EXCEPT",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -169,7 +172,8 @@
       "First Sentence Conclusion",
       "Alternatives",
       "Anti-Causal",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Net Effect"
     ]
   },
   {
@@ -230,7 +234,10 @@
       "D": "Anyone who holds a PhD from the University of Williamstown and is found to have committed scientific fraud will have the PhD revoked.",
       "E": "The University of Williamstown will not hire anyone who is under investigation for scientific fraud."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -271,7 +278,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Net Effect"
     ]
   },
   {
@@ -314,7 +322,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -335,7 +344,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -377,7 +387,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -464,7 +475,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {

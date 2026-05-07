@@ -15,7 +15,10 @@
       "D": "Most people are unlikely to follow their doctor’s advice unless they can vividly imagine the consequences of not following the advice.",
       "E": "In getting good results, the clarity with which a doctor instructs a patient is of equal importance to the accuracy of the doctor’s diagnosis on which that instruction is based."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -58,7 +61,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -104,7 +108,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -125,7 +130,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -167,7 +173,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -234,7 +241,8 @@
     "questionFeatures": [
       "Defender",
       "Dense Stimulus",
-      "Medical"
+      "Medical",
+      "Predictions"
     ]
   },
   {
@@ -271,7 +279,10 @@
       "D": "Those bees that reproduce do not always die soon after reproducing for the first time.",
       "E": "Most insects are hatched self-sufficient and do not need to be cared for by adult insects."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -334,7 +345,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -355,7 +368,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -417,7 +431,10 @@
       "D": "Authoritarian leaders are always searching for new metaphors for society in their effort to maintain their power.",
       "E": "The metaphor of society as a human body governed by a head is rarely used in liberal democracies."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "New Concept in Conclusion"
+    ]
   },
   {
     "practiceTest": "PT110",

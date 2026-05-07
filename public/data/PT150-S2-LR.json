@@ -82,7 +82,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Analogies",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -101,7 +102,10 @@
       "D": "Deliberately bringing about the cessation of a person’s life functions is manslaughter if and only if the cessation is permanent.",
       "E": "Intentionally stopping a patient’s life functions is manslaughter unless the patient agrees to the procedure and might die without treatment."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -312,7 +316,10 @@
       "D": "When deciding whether to sign an agreement, a country should consider the agreement’s effects on other countries’ economies as well as on its own economy.",
       "E": "If a policy is likely to protect the environment and is unlikely to reduce economic growth, then governments should implement that policy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT150",

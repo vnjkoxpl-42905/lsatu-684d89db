@@ -59,7 +59,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plausibility"
     ]
   },
   {
@@ -100,7 +101,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -251,7 +253,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -291,7 +294,10 @@
       "D": "If the characterization of someone’s work is precise, then it provides a sound basis for criticizing that work.",
       "E": "At least one of Dr. Q’s characterizations of Dr. Z’s work fails to provide an adequate basis for sound criticism of that work."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -358,7 +364,8 @@
       "Explain Curious Fact",
       "Alternatives",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Net Effect"
     ]
   },
   {
@@ -379,7 +386,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Quantifiers"
     ]
   },
   {
@@ -400,7 +409,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Principles in Answers"
     ]
   },
   {
@@ -488,7 +498,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Binaries"
+      "Binaries",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -529,6 +540,9 @@
       "D": "Those who resent taxation to subsidize offensive art should vote against their incumbent government representatives.",
       "E": "Since taxpayers are free to leave their country if they disapprove of their representatives’ decisions, they have no right to complain about arts funding."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

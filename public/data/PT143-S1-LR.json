@@ -36,7 +36,10 @@
       "D": "In reporting scientific developments, it is better to reach a wide audience than to be accurate.",
       "E": "Even the most rigorous explanations of some scientific concepts must still contain metaphors."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -95,7 +98,11 @@
       "D": "Many climate researchers believe that global warming is such an urgent problem that carbon dioxide emissions should be substantially reduced in less than ten years.",
       "E": "Gases other than carbon dioxide contribute to global warming, and trees do not absorb any of these other gases. 1 1 1 1"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -153,7 +160,10 @@
       "D": "The catering company’s mission is to provide low-cost gourmet catering.",
       "E": "The catering company’s mission will be jeopardized if its rates are increased."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -192,7 +202,10 @@
       "D": "A statute should not limit rights unless it can be shown that it thereby enhances other rights.",
       "E": "If a statute is to be justified by its benefit to society, it should be designed so that its societal benefit always exceeds its societal cost."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -408,7 +421,10 @@
       "D": "The device has been shown to be as effective as fences at keeping cattle in their pastures.",
       "E": "The device’s maker offers significant discounts to purchasers who buy in bulk. 1 1 1 1"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -493,7 +509,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Plausibility"
     ]
   }
 ]

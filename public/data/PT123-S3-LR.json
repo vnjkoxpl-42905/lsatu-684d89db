@@ -15,7 +15,10 @@
       "D": "A person sets her thermostat at a low temperature during the winter because she is concerned about the environmental damage caused by using fossil fuels to heat her home.",
       "E": "An acrobat convinces the circus that employs him to purchase an expensive outfit for him so that he can wear it during his act to impress the audience."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -119,7 +122,10 @@
       "D": "It is usually in one's best interest to perform actions that benefit others.",
       "E": "An action must have broad community support if it is to be successful."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -205,7 +211,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -293,7 +300,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -315,7 +323,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Percentages"
     ]
   },
   {
@@ -360,7 +369,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -424,7 +434,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -445,7 +456,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -511,7 +524,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Principles in Answers"
     ]
   },
   {

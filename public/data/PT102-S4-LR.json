@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -96,7 +97,10 @@
       "D": "Prohibitions affecting several countries should be enforced by a supranational agency.",
       "E": "Effective conservation cannot be achieved without eliminating poaching."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -116,7 +120,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -174,7 +179,10 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -273,7 +281,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -355,7 +364,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -376,7 +386,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -481,7 +492,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -503,7 +515,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Predictions"
     ]
   },
   {

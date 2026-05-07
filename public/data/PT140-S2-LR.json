@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -123,7 +124,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Quantifiers"
     ]
   },
   {
@@ -250,7 +253,8 @@
     "questionFeatures": [
       "Part vs. Whole",
       "Argue the Anti-Conclusion",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -347,7 +351,10 @@
       "D": "We can be positive that at least some minnows are healthy, because many different species of minnow can be found in lakes nearby, and every lake nearby is teeming with healthy fish.",
       "E": "We can be confident that the cornmeal used at Matteo’s Trattoria is healthful and organic, since cornmeal is among the ingredients used in preparing meals there; whenever a meal is prepared at Matteo’s Trattoria, only healthful, organic ingredients are used."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -407,7 +414,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -428,7 +436,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Quantifiers"
     ]
   },
   {
@@ -471,7 +480,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Quantifiers"
     ]
   },
   {

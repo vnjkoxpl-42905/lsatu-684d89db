@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -60,7 +61,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -105,7 +107,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -189,7 +192,10 @@
       "D": "Workers in a work setting should regard themselves as jointly responsible for the work to be performed.",
       "E": "An employee’s contributions in the workplace are not always a function of the amount of time spent on the job."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -253,7 +259,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -355,7 +362,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -416,7 +424,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -439,7 +449,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -460,7 +471,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -481,7 +493,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -528,7 +541,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   }
 ]

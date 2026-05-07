@@ -41,7 +41,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -62,7 +64,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -83,7 +86,10 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Net Effect",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -147,7 +153,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -210,7 +217,10 @@
       "D": "There is little evidence that toning shoes cause injuries to their wearers.",
       "E": "Shoes that strengthen the major leg muscles are more marketable than ordinary shoes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -427,7 +437,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -448,7 +459,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -490,7 +503,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -513,7 +527,9 @@
     "questionFeatures": [
       "Assumes Difference",
       "Causal Chains",
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -532,7 +548,10 @@
       "D": "The art installation would be more aesthetically pleasing if the wooden panels in it were arranged more symmetrically, for then it would seem more like the artist had gotten the panels arranged the way she wanted.",
       "E": "The artist could make the arrangement of wooden panels in the art installation more aesthetically pleasing by making it less symmetrical, for then it would give less of an impression that every aspect of the arrangement was fully planned."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT155",

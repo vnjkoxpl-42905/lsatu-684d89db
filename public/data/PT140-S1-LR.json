@@ -60,7 +60,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Medical"
+      "Medical",
+      "Net Effect"
     ]
   },
   {
@@ -82,7 +83,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Similarity",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -125,7 +127,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -146,7 +149,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Net Effect"
     ]
   },
   {
@@ -232,7 +236,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -254,7 +259,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "Predictions"
     ]
   },
   {
@@ -341,7 +347,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Intermediate Conclusions",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -404,7 +411,10 @@
       "D": "Harvey told Josephine that he thought Josephine would someday be famous. Harvey did not really think that Josephine would ever be famous, but he said she would because he thought she would like him as a result.",
       "E": "Wanda told people that George thought Egypt is in Asia. Wanda herself knew that Egypt is in Africa, but she told people that George thought it was in Asia because she wanted people to know that George knew little about geography."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -466,7 +476,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -528,6 +540,9 @@
       "D": "A Finance Department official, one of the few people who knew of a plan to tax luxury cars, bought a luxury car just before the plan was announced to the public in order to avoid paying the tax.",
       "E": "An official with a government agency that regulates securities sold her stock in Acme just after she announced to the public that her agency was investigating Acme for improper accounting."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   }
 ]

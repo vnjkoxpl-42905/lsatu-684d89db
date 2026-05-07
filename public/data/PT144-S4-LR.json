@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -41,7 +42,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Analogies",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -80,7 +82,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -102,7 +105,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility",
+      "Predictions"
     ]
   },
   {
@@ -162,7 +167,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -183,7 +189,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -223,7 +230,10 @@
       "D": "When Dr. Fitzpatrick gave his patient the wrong medicine, he did not know that it would cause the patient to experience greatly increased blood pressure. So, if no one else knowingly did anything that contributed to the patient’s increase in blood pressure, no one other than Dr. Fitzpatrick is to blame for it.",
       "E": "Any reasonable person could have foreseen that dropping a lit cigarette in dry leaves would start a fire. Thus, even if Kapp did not realize this, she is to blame for starting a fire on Rodriguez’s farm since she dropped a lit cigarette in dry leaves there."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -243,7 +253,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -285,7 +296,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -328,7 +340,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -372,7 +386,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -414,7 +429,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -456,7 +473,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {

@@ -184,7 +184,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plausibility"
     ]
   },
   {
@@ -203,7 +204,10 @@
       "D": "The atmosphere derives most of its heat from the passage of sunlight through it.",
       "E": "Lighter-colored soil reflects more sunlight back into space than does darker-colored soil."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -287,7 +291,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -348,7 +353,11 @@
       "D": "Do any other cities plan to replace their street signs with signs designed for improved readability?",
       "E": "Were experts consulted when the new street signs were designed?"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -369,7 +378,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Defender"
+      "Defender",
+      "Quantifiers"
     ]
   },
   {
@@ -390,7 +400,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -511,7 +522,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Net Effect"
     ]
   },
   {
@@ -532,7 +544,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   }
 ]

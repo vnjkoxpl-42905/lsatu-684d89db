@@ -242,7 +242,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Principles in Answers"
     ]
   },
   {
@@ -345,7 +346,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -408,7 +410,10 @@
       "D": "Some people who are not members of the Frequent Viewers club can receive the special discount coupon.",
       "E": "If Pat rents a movie from the Main Street location, then she will not receive the special discount coupon."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -471,7 +476,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -492,7 +498,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Principles in Answers"
     ]
   },
   {

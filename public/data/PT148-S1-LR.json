@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Medical"
+      "Medical",
+      "Percentages"
     ]
   },
   {
@@ -84,7 +85,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -106,7 +109,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Predictions"
     ]
   },
   {
@@ -127,7 +131,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -190,7 +195,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -230,7 +237,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -249,7 +258,10 @@
       "D": "Healthy moose generally consume more vegetation than do those that are diseased or injured.",
       "E": "Moose that are too old to breed are just as likely to die of natural causes as of attack by wolves."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -360,7 +372,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -381,7 +394,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -443,7 +457,10 @@
       "D": "Because hair stylists regularly use substances that can pose a threat to human health if handled improperly, hair stylists should be subject to a licensing requirement.",
       "E": "Because tattoo artists who do not maintain strict sanitation pose a serious threat to human health, tattoo artists should be subject to a licensing requirement."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -463,7 +480,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -484,7 +502,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -503,7 +523,10 @@
       "D": "A major shopping mall was built in our city ten years ago, and our city has experienced tremendous economic growth since then. Therefore, most cities in which major shopping malls are built will experience tremendous economic growth shortly afterward.",
       "E": "Most cities that are regional economic hubs contain major shopping malls. A major shopping mall is now being constructed in our city. Therefore, our city will probably become a regional economic hub."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -525,7 +548,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   }
 ]

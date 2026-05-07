@@ -40,7 +40,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -61,7 +62,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -105,7 +108,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -282,7 +286,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -331,7 +336,8 @@
       "Assumes Difference",
       "Defender",
       "Dense Stimulus",
-      "Medical"
+      "Medical",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -376,7 +382,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -395,7 +402,10 @@
       "D": "Some planning committee members who represent the construction industry do not work in the suburbs.",
       "E": "Some persons with significant financial interests in the planning committee’s decisions do not live in the suburbs."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -419,7 +429,9 @@
       "Important Pivot",
       "Implicit Principles",
       "Intermediate Conclusions",
-      "Links Between Premises"
+      "Links Between Premises",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -443,7 +455,8 @@
       "Relative vs. Absolute",
       "Assumes Similarity",
       "Dense Stimulus",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -490,7 +503,9 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -511,7 +526,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -533,7 +549,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Plans / Recommendations"
     ]
   },
   {

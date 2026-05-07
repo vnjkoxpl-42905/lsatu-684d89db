@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -79,7 +80,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -118,7 +120,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -160,7 +163,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -224,7 +228,10 @@
       "D": "The city’s competitive-bidding procedure prevents favoritism in the dispensing of city contracts.",
       "E": "The lighting company’s desire to display its products to visiting mayors is the real motivation behind the suggested gift of streetlights."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -391,7 +398,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Plausibility"
     ]
   },
   {
@@ -413,7 +421,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -436,7 +445,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Important Pivot",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {

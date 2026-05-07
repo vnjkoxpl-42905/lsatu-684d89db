@@ -41,7 +41,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Percentages"
     ]
   },
   {
@@ -83,7 +84,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -102,7 +104,10 @@
       "D": "Few veterinarians at university research centers chose their profession primarily because they love animals.",
       "E": "Most veterinarians who are not prominent regard an understanding of the biological sciences as the most important quality for success in their profession."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -123,7 +128,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -144,7 +150,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -163,7 +170,10 @@
       "D": "Data are scarce as to the geographical distribution of the pollens of many ancient plants.",
       "E": "Pollen analysis is a painstaking process that is also expensive to conduct."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -181,7 +191,10 @@
       "D": "It would not be profitable to promote and distribute a new line of products if these products have adverse medical effects.",
       "E": "The promotion and distribution of a new line of products will not prove profitable if a number of reliable authorities declare them to be ineffective."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -259,7 +272,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -317,7 +332,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Analogies"
+      "Analogies",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -394,7 +410,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Causal Chains"
+      "Causal Chains",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -413,7 +430,10 @@
       "D": "The extent to which the process of acquiring self-discipline is arduous for a person is affected by that person's set of desires and aversions.",
       "E": "The apportionment of praise and blame should be commensurate with the arduousness or ease of the lives of those who receive praise or blame."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -472,7 +492,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Quantifiers"
     ]
   },
   {

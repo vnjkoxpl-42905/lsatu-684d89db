@@ -93,7 +93,10 @@
       "D": "Insects build up resistance more readily to B.t. toxins than to chemical insecticides.",
       "E": "Birds and rodents often do greater damage to farm crops than do insects."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -113,7 +116,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -218,7 +222,10 @@
       "D": "A scientific theory should sometimes posit entities on grounds other than theoretical ones.",
       "E": "Only objects posited by explanatorily powerful theories should be designated as real."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -318,7 +325,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Difference"
+      "Assumes Difference",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -386,7 +395,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -521,6 +531,9 @@
       "D": "None of the painters of Michelangelo’s era who made additions to the Sistine Chapel paintings was an important artist in his or her own right.",
       "E": "Michelangelo was rarely satisfied with the appearance of his finished works."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   }
 ]

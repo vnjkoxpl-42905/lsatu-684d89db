@@ -39,7 +39,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -61,7 +62,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -126,7 +129,8 @@
       "Complex Conditionals",
       "Conditional Conclusion",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Predictions"
     ]
   },
   {
@@ -147,7 +151,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -168,7 +173,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -191,7 +197,9 @@
     "questionFeatures": [
       "Defender",
       "Focused on Evidence",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -237,7 +245,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "First Sentence Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Predictions"
     ]
   },
   {
@@ -280,7 +289,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -302,7 +312,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Percentages"
     ]
   },
   {
@@ -342,7 +353,10 @@
       "D": "Some cats that have a high muscle-to-fat ratio are domestic.",
       "E": "All cats that have a high muscle-to-fat ratio can kill prey that weigh up to half their body weight."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -384,7 +398,8 @@
       "Missing Link / Idea",
       "Complex Conditionals",
       "Conditional Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Principles in Answers"
     ]
   },
   {
@@ -405,7 +420,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -513,7 +529,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Breadcrumbs",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {

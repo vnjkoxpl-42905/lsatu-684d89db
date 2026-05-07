@@ -38,7 +38,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -318,7 +320,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -405,7 +408,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -426,7 +430,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -502,6 +508,9 @@
       "D": "Open fireplaces also produce a large amount of creosote residue.",
       "E": "Homeowners in warm climates rarely use fireplaces or wood-burning stoves."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   }
 ]

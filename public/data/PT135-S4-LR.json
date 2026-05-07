@@ -59,7 +59,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -102,7 +104,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Principles in Answers"
     ]
   },
   {
@@ -163,7 +166,11 @@
       "D": "takes for granted that the most important factor in the labor union’s bargaining position is the union’s financial strength",
       "E": "fails to establish that there will be a better opportunity to strike at a later time"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -262,7 +269,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -283,7 +292,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -305,7 +316,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -365,7 +377,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -387,7 +400,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "EXCEPT",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -410,7 +424,9 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -454,7 +470,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -476,7 +493,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -541,7 +560,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   }
 ]

@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Plausibility"
     ]
   },
   {
@@ -149,7 +150,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -168,7 +170,10 @@
       "D": "A government should not spend taxpayers’ money performing product safety tests if the risk posed by the products does not justify the expense of the tests.",
       "E": "It is fair for a country’s government to require foreign companies to test the products they export to that country as long as it requires domestic companies to perform the same tests."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -186,7 +191,10 @@
       "D": "It fails to consider that for office workers the total amount of vacation time taken over the course of a year may have a much greater effect on the amount of psychological exhaustion experienced on the job than does the number of vacations taken during the year.",
       "E": "It fails to consider that a long vacation may reduce the psychological exhaustion an office worker experiences on the job much more than a short vacation does."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -250,7 +258,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plausibility"
     ]
   },
   {
@@ -273,7 +282,9 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -356,7 +367,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -442,7 +454,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {

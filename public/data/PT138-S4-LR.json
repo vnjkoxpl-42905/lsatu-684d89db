@@ -127,7 +127,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Focused on Evidence",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -253,7 +254,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -276,7 +279,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -298,7 +302,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -341,7 +346,12 @@
       "D": "Automobiles made after 1980 account for over 30 percent of local air pollution.",
       "E": "Since the company launched its car-buying campaign, the number of citizen groups filing complaints about pollution from the company’s plants has decreased."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -383,7 +393,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -405,7 +416,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -426,7 +438,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -469,7 +482,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {

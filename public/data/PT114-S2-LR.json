@@ -75,7 +75,10 @@
       "D": "An author of a biography should be blamed for misleading readers only if facts are omitted to which the author alone had access when the biography was written.",
       "E": "An author of a biography should be blamed for readers' misperceptions caused by omitting facts that were widely available when the biography was written."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -172,7 +175,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -191,7 +195,10 @@
       "D": "If the city is to avoid wasting resources, huge amounts of trash cannot be burned in any city incinerator.",
       "E": "If the city does not burn trash, it will not waste resources."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -211,7 +218,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -256,7 +264,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -420,7 +429,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -519,6 +530,9 @@
       "D": "Employees are more likely to generate good ideas for improved efficiency when they do not feel resentment about the process that attempts to formulate such ideas.",
       "E": "Employees are more likely to resent employers who attempt to implement the employers' rather than the employees' ideas for improved efficiency."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

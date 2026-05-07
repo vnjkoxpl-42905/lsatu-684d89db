@@ -59,7 +59,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -257,7 +258,10 @@
       "D": "not acting this way would be a small benefit to the person in the short term but a substantial detriment to the person in the long run",
       "E": "this person, by acting this way, would provide general benefits with a value exceeding the cost to the person of acting this way"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -275,7 +279,10 @@
       "D": "The provider of a subsidy should judge as most deserving of subsidies those whose projects are most likely to turn into financial successes.",
       "E": "An artist requesting a subsidy for a potentially profitable project should be required to make a reasonable effort to obtain a bank loan first."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -335,7 +342,10 @@
       "D": "It is more important to be moral than to have good manners.",
       "E": "What is social in nature could not be a matter of morality."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -439,7 +449,10 @@
       "D": "The recommendation that this company replace the radio communication system in our fleet of trucks with an entirely new system is unwise. Most of our trucks are scheduled to be replaced by the end of next year, so updating the communication system then would be more cost effective.",
       "E": "The mayor’s directive that all city employees be tested for Lyme disease is inefficient. Not one case of the disease has been reported among office workers. The directive should apply only to those employees who work outside and may have been exposed to the ticks that carry the disease."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -459,7 +472,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -480,7 +494,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {

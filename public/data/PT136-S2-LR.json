@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -62,7 +63,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -84,7 +86,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Similarity",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Predictions"
     ]
   },
   {
@@ -124,7 +127,10 @@
       "D": "Most of the apartments with scenic views are on the upper floors of the building.",
       "E": "Most of the apartments on the upper floors of the building are studio apartments."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -285,7 +291,10 @@
       "D": "This year, not every film that won a prize at the Lac Nichoutec Film Festival was also shown at an international film festival.",
       "E": "This year, at least one film that won a prize at an international film festival was not shown at the Lac Nichoutec Film Festival."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -359,7 +368,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Predictions"
     ]
   },
   {

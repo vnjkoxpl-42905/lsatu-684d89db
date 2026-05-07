@@ -36,7 +36,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Plausibility"
     ]
   },
   {
@@ -55,7 +56,10 @@
       "D": "Scientists commit fraud whenever they report as valid any test result they know to be invalid.",
       "E": "Scientists who neglect to report any experiment that could be interpreted as disconfirming their hypotheses have thereby committed fraud."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -136,7 +140,10 @@
       "D": "People should always have their writing proofread by someone else. Someone who does not know in advance what is meant to be said is in a better position to spot typographical errors.",
       "E": "Two people going out for dinner will have a more enjoyable meal if they order for each other. By allowing someone else to choose, one opens oneself up to new and exciting dining experiences."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -237,7 +244,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -278,7 +286,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Causal Difference-Maker",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -315,7 +324,10 @@
       "D": "Because taking this drug does not cure the disease for which it is prescribed, but only reduces the disease's most harmful effects, doctors should not continue to prescribe this drug.",
       "E": "We will never fully understand what causes people to engage in criminal activity. Therefore, we should investigate other ways to improve society's ability to combat crime."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -351,7 +363,10 @@
       "D": "an assertion phrased to preclude an anticipated objection",
       "E": "a clarification of a key term in the argument"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -423,7 +438,12 @@
       "D": "Doctors can prescribe antibiotics for many minor illnesses, but antibiotics are expensive, and these illnesses can often be cured by rest alone. Therefore, it is better to rest at home than to see a doctor for these illnesses.",
       "E": "A certain chemical will kill garden pests that damage tomatoes, but that chemical will damage certain other plants more severely than the pests damage the tomatoes, so the only gardens that will benefit from the use of the chemical are those in which only tomatoes are grown."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT114",

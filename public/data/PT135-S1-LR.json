@@ -17,7 +17,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "White carnations are fairly inexpensive and can easily be dyed green.",
       "E": "It is very difficult to breed green carnations."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -54,7 +58,11 @@
       "D": "the opinion of current users of low-wattage bulbs as to their effectiveness",
       "E": "the average life of a low-wattage bulb compared with that of a normal bulb"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -181,7 +189,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plausibility"
     ]
   },
   {
@@ -200,7 +209,10 @@
       "D": "It qualifies the conclusion of the argument.",
       "E": "It illustrates a principle that underlies the argument."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -260,7 +272,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -281,7 +295,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -304,7 +319,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -326,7 +342,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -393,7 +410,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Breadcrumbs",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plausibility"
     ]
   },
   {
@@ -438,7 +456,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -501,7 +520,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -522,7 +542,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   }
 ]

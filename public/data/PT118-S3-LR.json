@@ -38,7 +38,11 @@
       "D": "If the quantity of nylon manufactured annually decreased substantially, the volume of several pollutants that are released into the environment during its manufacture would be reduced.",
       "E": "If thread and rope continue to be made from nylon, the production of cotton fiber will not increase as rapidly as it would if all thread and rope were to be made from cotton fiber."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -56,7 +60,10 @@
       "D": "Colleen was responsible for her cat’s being frightened, because, even though it was her brother who allowed the door to slam shut, she knew that cats are often frightened by loud noises.",
       "E": "Colleen was not responsible for losing her job, because, knowing that her position was in danger of being eliminated, she did everything possible to preserve it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -135,7 +142,10 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -158,7 +168,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "2-Speaker",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Principles in Answers"
     ]
   },
   {
@@ -309,7 +320,8 @@
       "Argue the Anti-Conclusion",
       "EXCEPT",
       "Intermediate Conclusions",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -330,7 +342,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -349,7 +362,10 @@
       "D": "When misused by taking larger-than-prescribed doses, the drug can be fatal.",
       "E": "Use of the drug contributes to the development of deadlier forms of chicken pox that are resistant to the drug."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -394,7 +410,9 @@
       "Assumes Similarity",
       "Conditional Conclusion",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -470,7 +488,10 @@
       "D": "Physics papers authored by researchers from multiple laboratories usually report results from experiments using subsystems developed at each laboratory.",
       "E": "Most technical articles are authored solely by the researchers who conducted the experiments these articles report."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT118",

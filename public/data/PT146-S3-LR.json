@@ -102,7 +102,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -123,7 +124,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -227,7 +229,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -250,7 +253,8 @@
     "questionFeatures": [
       "Analogies",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -374,7 +378,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -393,7 +398,10 @@
       "D": "It is a premise presented as support for the claim that the most important goal of criminal punishment is to ensure that criminal wrongdoing remains profitless.",
       "E": "It is presented as refuting an argument that criminal punishment has goals other than guaranteeing that lawbreaking remains profitless."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -477,7 +485,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Difference",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -521,7 +530,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -540,6 +550,10 @@
       "D": "In the past, many innovative special-effects technologies were abandoned after the films for which they were developed proved to be unpopular.",
       "E": "The use of the new special-effects technology would lower the production costs of other films that use it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Predictions"
+    ]
   }
 ]

@@ -145,7 +145,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -273,7 +274,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Quantifiers"
     ]
   },
   {
@@ -355,7 +357,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -398,7 +401,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -441,7 +445,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -483,7 +488,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {

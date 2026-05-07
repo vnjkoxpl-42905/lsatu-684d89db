@@ -38,7 +38,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -102,7 +103,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -143,7 +145,9 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -208,7 +212,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -229,7 +235,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -271,7 +278,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -454,7 +463,8 @@
       "Missing Link / Idea",
       "Assumes Difference",
       "Defender",
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -473,7 +483,10 @@
       "D": "The diet of elephant seals consists primarily of seabird eggs.",
       "E": "Elephant seals do not themselves ingest pesticides."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -494,7 +507,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {

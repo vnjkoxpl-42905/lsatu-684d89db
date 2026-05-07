@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -128,7 +129,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -319,7 +321,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -379,7 +382,10 @@
       "D": "It is better not to worry about having failed to finish a project on time than to allow such worry to interfere with finishing a competing project on time.",
       "E": "It is better to attempt to finish a project on time than to attempt to finish a late project that does not have higher priority."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -400,7 +406,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -442,7 +450,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -507,7 +516,10 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {

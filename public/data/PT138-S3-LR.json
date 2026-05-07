@@ -15,7 +15,10 @@
       "D": "It is right to spend large amounts of money on the restoration of an old artwork if this restoration makes the artwork accessible to large numbers of people.",
       "E": "A picture that has become encrusted with grime over a long period can no longer be regarded as the same work of art as that painted by the artist."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -142,7 +145,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -246,7 +250,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -283,7 +288,11 @@
       "D": "More recycling would give industries in the mayor’s city a greater incentive to use recycled materials in their manufacturing processes.",
       "E": "People who recycle feel less justified in consuming more than they need than do people who do not recycle."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -367,7 +376,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Predictions"
     ]
   },
   {
@@ -449,7 +459,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Plans / Recommendations"
     ]
   },
   {

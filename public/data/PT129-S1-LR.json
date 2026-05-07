@@ -15,7 +15,10 @@
       "D": "a missing light fixture that was present when the tenant moved in but was later removed by the tenant",
       "E": "paint splatters on the carpet that should have been recorded on the preexisting damage list but were not"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -144,7 +147,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -165,7 +169,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Net Effect"
     ]
   },
   {
@@ -231,7 +236,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -253,7 +259,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Principles in Answers"
     ]
   },
   {
@@ -338,7 +345,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -402,7 +410,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -423,7 +432,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -464,7 +474,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Predictions"
     ]
   },
   {
@@ -485,7 +496,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Principles in Answers"
     ]
   },
   {
@@ -507,7 +519,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Difference",
-      "EXCEPT"
+      "EXCEPT",
+      "Predictions"
     ]
   },
   {
@@ -528,7 +541,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   }
 ]

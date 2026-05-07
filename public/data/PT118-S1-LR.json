@@ -141,7 +141,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -178,7 +179,10 @@
       "D": "inferior art from past eras is generally forgotten",
       "E": "one can correctly assess the quality of art only if it was produced in past eras"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -220,7 +224,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Predictions"
     ]
   },
   {
@@ -320,7 +325,10 @@
       "D": "The police always agree with government officials and the courts about what an individual's rights are.",
       "E": "One should always try to uphold one's individual rights against the government's view of what those rights are."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -419,7 +427,10 @@
       "D": "A country's dependence on agriculture can lead to major economic crises.",
       "E": "The consequences of a drought are not restricted to the drought's impact on farm productivity."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -497,7 +508,10 @@
       "D": "A low unemployment rate is one of the main reasons that new residents move to a city.",
       "E": "New residents of most small cities do not start paying city taxes for at least a year."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT118",

@@ -15,7 +15,10 @@
       "D": "The babies who had a less stimulating routine gained weight at an average rate.",
       "E": "The stimulation that babies receive helps them to develop intellectually."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -79,7 +82,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -276,7 +281,10 @@
       "D": "If they evolve exactly like real-world phenomena, computer models are neither purely stable nor purely chaotic, which is what complexity predicts.",
       "E": "If computers verify that there are mathematical errors in the calculations of scientists, then the theories of those scientists are probably incorrect."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -354,7 +362,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "2-Speaker"
+      "2-Speaker",
+      "Plausibility"
     ]
   },
   {
@@ -375,7 +384,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -438,7 +448,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Predictions"
     ]
   },
   {
@@ -477,7 +488,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -498,7 +511,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {

@@ -18,7 +18,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Similarity",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility",
+      "Predictions"
     ]
   },
   {
@@ -43,7 +45,9 @@
       "Sufficient vs. Necessary Flaw",
       "Conditional Conclusion",
       "Contrapositive Logic",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -88,7 +92,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Medical"
+      "Medical",
+      "Principles in Answers"
     ]
   },
   {
@@ -110,7 +115,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -222,7 +228,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Principles in Answers",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -339,7 +347,9 @@
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -515,7 +525,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -541,7 +552,8 @@
       "Missing Link / Idea",
       "Contrapositive Logic",
       "Intermediate Conclusions",
-      "Links Between Premises"
+      "Links Between Premises",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -581,7 +593,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plausibility"
     ]
   }
 ]

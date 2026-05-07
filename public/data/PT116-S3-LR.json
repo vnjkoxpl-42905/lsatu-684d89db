@@ -37,7 +37,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -59,7 +60,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -99,7 +101,10 @@
       "D": "This painting is aesthetically valuable because it was painted by a highly controversial artist.",
       "E": "This poem is aesthetically deficient because it has little impact on its audience."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -143,7 +148,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Explain Curious Fact",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Principles in Answers"
     ]
   },
   {
@@ -164,7 +170,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -183,7 +190,10 @@
       "D": "Most lecturers who are good communicators are eccentric.",
       "E": "Some noneccentric lecturers are effective teachers but are not good communicators."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -224,7 +234,10 @@
       "D": "Experiments that have modest but practical goals are more worthwhile than those that have impressive goals but few practical consequences.",
       "E": "Experiments that get little media attention and are not widely supported by the public are more valuable than are those that get much media coverage and have wide public support."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -245,7 +258,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Abstract Answers",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Net Effect"
     ]
   },
   {
@@ -329,7 +343,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Quantifiers"
     ]
   },
   {
@@ -392,7 +407,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -433,7 +449,10 @@
       "D": "No person who received a community recognition certificate has not participated in the spring cleanup.",
       "E": "Persons who are active in the town's artistic circles are not concerned with the town's environment."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -495,7 +514,10 @@
       "D": "All people who consider vacation policy an important factor in choosing a job also consider salary an important factor.",
       "E": "No one for whom salary is an important factor in choosing a job also considers stress level an important factor."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -537,7 +559,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   }
 ]

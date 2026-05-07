@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -42,7 +43,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -106,7 +108,10 @@
       "D": "repeatedly refusing to advance an employee, claiming that he has sometimes skipped work and that his work has been sloppy, even though no such instances have occurred for over two years",
       "E": "promoting a family member over another employee in the company"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -174,7 +179,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -237,7 +243,10 @@
       "D": "No piece of gardening equipment is returnable for a refund.",
       "E": "None of the things that are returnable for a refund are construction tools."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -320,7 +329,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -363,7 +373,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -409,7 +420,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plausibility"
     ]
   },
   {
@@ -476,7 +488,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -542,7 +555,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Medical"
+      "Medical",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -564,7 +578,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "New Concept in Conclusion"
     ]
   }
 ]

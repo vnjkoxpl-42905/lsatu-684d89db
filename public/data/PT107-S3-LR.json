@@ -19,7 +19,9 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -78,7 +80,10 @@
       "D": "Flat-footed children who do not wear the special shoes are as likely to develop natural arches as are flat-footed children who wear the special shoes.",
       "E": "Some children who are not flat-footed have hip and lower leg bones that are rotated excessively either inward or outward."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -120,7 +125,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Predictions"
     ]
   },
   {
@@ -219,7 +225,10 @@
       "D": "making a distinction between terms",
       "E": "offering a counterexample to a general claim"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -279,7 +288,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Net Effect"
     ]
   },
   {
@@ -319,7 +329,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Predictions"
     ]
   },
   {
@@ -362,7 +373,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {

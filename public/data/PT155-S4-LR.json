@@ -107,7 +107,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -151,7 +152,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -198,7 +201,9 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Anti-Causal",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -220,7 +225,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Analogies"
+      "Analogies",
+      "Plausibility"
     ]
   },
   {
@@ -241,7 +247,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -283,7 +290,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -305,7 +313,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -328,7 +337,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Explain Curious Fact",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -349,7 +359,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -370,7 +381,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -392,7 +404,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -414,7 +427,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -460,7 +474,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Binaries",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -506,7 +521,8 @@
       "First Sentence Conclusion",
       "Explain Curious Fact",
       "Breadcrumbs",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -527,7 +543,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Principles in Stimulus"
     ]
   },
   {

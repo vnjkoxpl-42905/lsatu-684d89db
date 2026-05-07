@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Sampling",
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -84,7 +85,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -165,7 +167,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -187,7 +191,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -209,7 +215,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -231,7 +240,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "EXCEPT",
-      "Medical"
+      "Medical",
+      "Percentages"
     ]
   },
   {
@@ -250,7 +260,11 @@
       "D": "Worker-owned businesses have traditionally obtained loans from cooperative lending institutions established by coalitions of worker- owned businesses.",
       "E": "In most worker-owned businesses, workers compensate for inefficiencies by working longer hours than do workers in investor-owned businesses."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -314,7 +328,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Percentages"
     ]
   },
   {
@@ -357,7 +372,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -396,7 +412,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -439,7 +457,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -460,7 +479,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -484,7 +504,8 @@
       "Sufficient vs. Necessary Flaw",
       "Relative vs. Absolute",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -526,7 +547,9 @@
       "Conditional Diagramming",
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   }
 ]

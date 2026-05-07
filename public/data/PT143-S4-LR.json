@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -40,7 +41,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sampling",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -334,7 +336,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -395,7 +398,10 @@
       "D": "Several candidates currently work for Arvue, but Krall and Delacruz do not.",
       "E": "None of the candidates already works for Arvue, and Delacruz is the candidate who would be most productive in the new position. 4 4 4 4"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -417,7 +423,8 @@
     "questionFeatures": [
       "Assumes Difference",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Predictions"
     ]
   },
   {
@@ -475,7 +482,10 @@
       "D": "We should not allow a change to occur unless we are assured that that change will not jeopardize anything that is important to us.",
       "E": "We should always undertake the course of action that is likely to have the best consequences in the immediate future. 4 4 4 4"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT143",

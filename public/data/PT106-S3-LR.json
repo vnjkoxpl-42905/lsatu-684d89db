@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Quantifiers"
     ]
   },
   {
@@ -39,7 +40,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Sampling"
+      "Sampling",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -100,7 +102,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -122,7 +125,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -167,7 +172,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Quantifiers"
     ]
   },
   {
@@ -209,7 +215,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -233,7 +240,8 @@
       "Famous Flaws",
       "Explain Curious Fact",
       "Alternatives",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -257,7 +265,8 @@
       "Famous Flaws",
       "Part vs. Whole",
       "Important Pivot",
-      "EXCEPT"
+      "EXCEPT",
+      "Quantifiers"
     ]
   },
   {
@@ -388,7 +397,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -487,7 +498,8 @@
       "Anti-Causal",
       "Assumes Difference",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -506,7 +518,10 @@
       "D": "A young boy asked his mother if she loved his older sister more than she loved him. The mother said she loved them both to the same degree, even though it was not true.",
       "E": "A friend invited Jamal to a party, but Jamal was afraid that he might see his ex-wife and her new husband there. To spare himself emotional pain, as well as the embarrassment of telling his friend why he did not want to go, Jamal falsely claimed he had to work."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -527,7 +542,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plausibility"
     ]
   },
   {
@@ -549,7 +565,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plausibility"
     ]
   },
   {

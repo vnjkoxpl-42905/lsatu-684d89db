@@ -167,7 +167,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Predictions"
     ]
   },
   {
@@ -209,7 +210,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -294,7 +296,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -335,7 +338,9 @@
     "questionFeatures": [
       "Abstract Answers",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -354,7 +359,10 @@
       "D": "Some small countries are in favor of a greater role for the United Nations in moderating regional disputes.",
       "E": "Some countries that are in favor of a greater role for the United Nations in moderating regional disputes are not located in the southern hemisphere."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -417,7 +425,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Net Effect"
     ]
   },
   {
@@ -438,7 +447,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Principles in Answers"
     ]
   },
   {
@@ -457,7 +467,10 @@
       "D": "Australia is the only place where one can find birds that can both learn to speak and be relied on for a sweet temper.",
       "E": "All species of pet birds that are native to Australia can be counted on for a sweet temper."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -498,7 +511,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {

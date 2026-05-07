@@ -38,7 +38,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -59,7 +61,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -81,7 +84,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -103,7 +107,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plausibility"
     ]
   },
   {
@@ -124,7 +129,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -146,7 +153,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Net Effect"
     ]
   },
   {
@@ -183,7 +191,11 @@
       "D": "There is considerable variation in the length of time between the changes in the electric current and the subsequent earthquakes.",
       "E": "There is presently only one station in the region that is capable of detecting the electric current in the earth's crust."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -226,7 +238,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -268,7 +281,10 @@
       "D": "Those who make decisions about television advertising believe that people older than 25 almost never change their buying habits.",
       "E": "When companies advertise consumer products in print media, they focus primarily on people aged 26 and over."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -288,7 +304,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -307,7 +325,10 @@
       "D": "Zack's offers half-priced coffee all day on most if not all Wednesdays.",
       "E": "On some Wednesdays Zack's does not offer half-priced coffee all day."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -373,7 +394,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Important Pivot",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -394,7 +416,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -441,7 +464,10 @@
       "Sufficient vs. Necessary Flaw",
       "Conditional Conclusion",
       "Contrapositive Logic",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -509,7 +535,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -532,7 +559,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "EXCEPT"
+      "EXCEPT",
+      "Quantifiers"
     ]
   }
 ]

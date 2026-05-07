@@ -15,7 +15,11 @@
       "D": "Removing lead paint from walls disperses a great deal of lead dust, which is more easily ingested by children than is paint on walls.",
       "E": "Many other environmental hazards pose greater threats to the health of children than does lead paint."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -36,7 +40,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -76,7 +81,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Predictions"
     ]
   },
   {
@@ -119,7 +125,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -140,7 +147,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -201,7 +210,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -220,7 +230,10 @@
       "D": "Farmers are not always able to control the amount of water that their crops receive when, for instance, there are rainstorms in the areas where their crops are growing.",
       "E": "Mexican bean beetles are more likely to feed on the leaves of slightly drought-stressed soybeans than oak lace bugs are to feed on the leaves of abundantly watered soybeans."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -240,7 +253,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -285,7 +299,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -307,7 +323,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -328,7 +345,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -406,7 +424,10 @@
       "D": "If the exercise of a basic freedom leads to some harm, then the exercise of that freedom should be restricted.",
       "E": "In some circumstances, we should tolerate regulations that impinge on a basic freedom."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -427,7 +448,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -450,7 +472,8 @@
     "questionFeatures": [
       "Part vs. Whole",
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -471,7 +494,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -540,7 +564,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   }
 ]

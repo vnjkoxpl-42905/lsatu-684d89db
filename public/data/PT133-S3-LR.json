@@ -18,7 +18,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Plausibility"
     ]
   },
   {
@@ -59,7 +60,10 @@
       "D": "The emotional cost associated with change is a factor that sometimes outweighs financial considerations.",
       "E": "The fact that a standard is already in wide use can be a crucial factor in making it a more practical choice than an alternative."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -222,7 +226,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -346,7 +351,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -367,7 +373,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -409,7 +418,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -451,7 +461,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -472,7 +483,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -532,7 +544,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   }
 ]

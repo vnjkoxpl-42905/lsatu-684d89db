@@ -53,7 +53,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -215,7 +217,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Part vs. Whole",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -499,7 +503,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   }
 ]

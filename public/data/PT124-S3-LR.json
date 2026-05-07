@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -171,7 +173,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -259,7 +262,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -325,7 +330,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -347,7 +353,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Net Effect"
     ]
   },
   {
@@ -390,7 +397,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -434,7 +443,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -455,7 +465,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -541,7 +552,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   }
 ]

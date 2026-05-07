@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -54,7 +55,10 @@
       "D": "The geographic regions in which iceberg lilies are most prevalent are those regions populated by grizzly bears.",
       "E": "Iceberg lilies contain plentiful amounts of some nutrients that are necessary for grizzly bears' survival."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -74,7 +78,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Percentages",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -138,7 +144,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -182,7 +190,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -337,7 +346,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -359,7 +369,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -492,7 +503,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Percentages"
     ]
   },
   {
@@ -536,7 +548,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
