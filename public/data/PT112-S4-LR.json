@@ -373,7 +373,10 @@
       "D": "The new antihistamine is chemically similar to some of the new drugs being tested.",
       "E": "The new antihistamine should be on the market only if most new drugs being tested should be on the market also."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT112",

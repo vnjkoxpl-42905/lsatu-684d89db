@@ -129,7 +129,10 @@
       "D": "The people who refuse to participate in opinion polls comprise a group with approximately the same demographic characteristics as the group of people who do not currently participate in the national census.",
       "E": "The percentage of the nation’s population that does not participate in the mandatory national census does not change significantly from one census to another."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT150",

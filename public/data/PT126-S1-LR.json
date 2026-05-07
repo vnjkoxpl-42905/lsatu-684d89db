@@ -453,7 +453,10 @@
       "D": "Scanning technology is very poor, causing books delivered via computer to be full of errors unless editors carefully read the scanned versions.",
       "E": "Books on cassette tape have only a small fraction of the sales of printed versions of the same books, though sales of videos of books that have been turned into movies remain strong."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT126",

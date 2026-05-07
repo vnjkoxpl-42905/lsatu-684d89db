@@ -249,7 +249,10 @@
       "D": "The fast-food restaurants included in the study did not increase the average wage paid to employees.",
       "E": "The national unemployment rate did not increase following the increase in the minimum wage."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT110",

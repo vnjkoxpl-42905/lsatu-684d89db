@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Sampling"
     ]
   },
   {
@@ -425,7 +426,10 @@
       "D": "Most people who have read the new horror novel found the plot disturbing. But the plot cannot disturb anyone who lacks a vivid imagination. Therefore, most people must have vivid imaginations.",
       "E": "Most people who have read the new horror novel found the plot disturbing. But the plot cannot disturb people who lack vivid imaginations. Therefore, most people with vivid imaginations must find the plot disturbing."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT155",

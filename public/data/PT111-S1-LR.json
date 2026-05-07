@@ -287,7 +287,10 @@
       "D": "There is reason to be skeptical about the results of surveys that are biased and unrepresentative.",
       "E": "Other surveys suggest that North Americans are concerned not only with politics and finances, but also with social issues."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT111",

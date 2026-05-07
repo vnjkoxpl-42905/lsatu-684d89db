@@ -57,7 +57,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Famous Flaws",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Sampling"
     ]
   },
   {
@@ -135,7 +136,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Sampling"
     ]
   },
   {

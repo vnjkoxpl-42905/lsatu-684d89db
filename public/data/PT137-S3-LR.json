@@ -118,7 +118,10 @@
       "D": "Many reviewers have read Kip Landau's new novel, but none of them enjoyed it. So it is unlikely that the reviewer for the local newspaper will enjoy the book when she reads it.",
       "E": "None of the reviewers who have read Gray Ornsby's new novel were offended by it. So it is unlikely that the book will offend anyone in the general public who reads it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT137",

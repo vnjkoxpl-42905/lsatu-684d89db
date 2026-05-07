@@ -382,7 +382,10 @@
       "D": "criticizing a view on the grounds that the view is based on evidence that is in principle impossible to disconfirm",
       "E": "attempting to cast doubt on a conclusion by claiming that the statistical sample on which the conclusion is based is too small to be dependable"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Sampling"
+    ]
   },
   {
     "practiceTest": "PT123",
