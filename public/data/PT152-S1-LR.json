@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -39,7 +40,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -82,7 +84,10 @@
       "D": "The university museum is in possession of several artifacts whose ownership is in dispute.",
       "E": "There is an overriding principle that any important ancient artifact belongs by rights to the nation on whose territory it was discovered."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -188,7 +193,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -229,7 +235,11 @@
       "D": "Unless a subway station can be built within budget that is both convenient to commuters and in keeping with the new design, the transit authority should abandon plans to build a station.",
       "E": "The new subway station should enhance the downtown area more than any other potential project that is similar in cost."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -291,7 +301,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -416,7 +427,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -440,7 +452,8 @@
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
       "Conditional Conclusion",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Predictions"
     ]
   },
   {

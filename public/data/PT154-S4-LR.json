@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Anti-Causal",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -79,7 +80,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -120,7 +122,8 @@
     "questionFeatures": [
       "Assumes Similarity",
       "Conditional Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -214,7 +217,10 @@
       "D": "No place that sells only exercise machines designed for home use is a good place to buy used exercise machines.",
       "E": "No good source of used exercise machines sells any poorly maintained exercise machines at high prices."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -275,7 +281,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -333,7 +341,10 @@
       "D": "Parents should do everything they can to ensure that their children have significant achievements.",
       "E": "How much one achieves relative to one’s own potential is just as important as how much one achieves relative to others."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -450,7 +461,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {

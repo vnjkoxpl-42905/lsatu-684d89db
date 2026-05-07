@@ -58,7 +58,10 @@
       "D": "The more we come to learn, the more we realize how little we know.",
       "E": "The advance of technology is of questionable value."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -94,7 +97,10 @@
       "D": "Artists tend to become more critical of contemporary social and political arrangements after they are freed of their dependency on private patrons.",
       "E": "Art patrons tend to oppose all social change except that initiated by artists."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -259,7 +265,11 @@
       "D": "denying that the drivers' view of the road is relevant to the number of road accidents",
       "E": "providing additional evidence to undermine the claim that safer driving does not necessarily reduce the number of road accidents"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -298,7 +308,10 @@
       "D": "The true intentions of the writer of a work of literature can never be known to a critic of that work.",
       "E": "The deepest understanding of a literary work requires that one know the writer's history."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -316,7 +329,10 @@
       "D": "mistakes something that enables an institution to arise for something necessary to the institution",
       "E": "confuses the value of an institution with the medium by which it operates"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -409,7 +425,10 @@
       "D": "Research has shown that kitchen cutting boards retain significant numbers of microbes even after careful washing, but that after washing fewer microbes are found on wooden boards than on plastic boards. There is, therefore, no greater risk of contracting microbial illnesses associated with using wooden cutting boards than with using plastic cutting boards.",
       "E": "Research shows that there is no greater long-term health benefit associated with taking vitamin supplements than with a moderate increase in the intake of fruits and vegetables. Clearly, then, there is no long-term health risk associated with the failure to take vitamin supplements, so long as enough fruits and vegetables are consumed."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -429,7 +448,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -491,7 +511,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect"
     ]
   }
 ]

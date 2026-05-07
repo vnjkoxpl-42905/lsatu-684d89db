@@ -257,7 +257,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -278,7 +279,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -321,7 +323,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -340,7 +343,10 @@
       "D": "Preventing harm to others is not by itself a sufficient justification for laws that limit personal freedom.",
       "E": "People’s obligation to avoid harming others outweighs their obligation to avoid harming themselves."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -381,7 +387,10 @@
       "D": "Judge Watanabe must decide a case that depends on an issue for which no legal precedent exists. There is no widespread public opinion on the issue, so Judge Watanabe rules against the defendant because that conforms to her own legal view about the issue.",
       "E": "Judge Balila rules against the defendant because doing so conforms to her own views about the legal issues involved. However, this ruling is contrary to relevant precedents, all of which conform to the basic moral values of society."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -420,7 +429,10 @@
       "D": "If a novel allows a reader to understand injustice from the point of view of its victims, it will be socially significant.",
       "E": "Novels have social significance only to the extent that they allow readers to enter the internal world of the novelist’s mind."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -479,7 +491,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Quantifiers"
     ]
   },
   {

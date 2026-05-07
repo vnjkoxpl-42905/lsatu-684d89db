@@ -36,7 +36,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Principles in Answers"
     ]
   },
   {
@@ -82,7 +83,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -105,7 +108,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -127,7 +131,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -172,7 +178,8 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -215,7 +222,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -257,7 +265,10 @@
       "D": "Most new varieties of farm animals produced by gene splicing will develop cancer.",
       "E": "Gene splicing will advance to the point where unforeseen consequences are no longer a problem."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -301,7 +312,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -391,7 +403,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -433,7 +446,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Quantifiers"
     ]
   },
   {
@@ -454,7 +468,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -475,7 +490,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Quantifiers"
     ]
   },
   {
@@ -497,7 +514,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -518,7 +536,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -557,7 +576,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Predictions"
     ]
   }
 ]

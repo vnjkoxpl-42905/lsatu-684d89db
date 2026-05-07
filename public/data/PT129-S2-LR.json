@@ -18,7 +18,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -41,7 +43,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Contrapositive Logic",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -106,7 +109,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -127,7 +132,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -214,7 +220,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -256,7 +263,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -319,7 +328,11 @@
       "D": "takes for granted that providing the opportunity for research is the only function of paid leaves of absence",
       "E": "presumes, without providing justification, that professors do not need vacations"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -339,7 +352,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -362,7 +377,8 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -476,7 +492,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -520,7 +537,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "New Concept in Conclusion"
     ]
   },
   {

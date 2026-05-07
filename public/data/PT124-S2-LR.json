@@ -35,7 +35,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Quantifiers"
     ]
   },
   {
@@ -140,7 +141,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plausibility",
+      "Predictions"
     ]
   },
   {
@@ -295,7 +298,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Missing Link / Idea",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Principles in Answers"
     ]
   },
   {
@@ -337,7 +341,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -424,7 +430,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Abstract Answers",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -524,7 +531,10 @@
       "D": "Some unhappy students go to graduate school.",
       "E": "All serious students are overworked."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -544,7 +554,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   }
 ]

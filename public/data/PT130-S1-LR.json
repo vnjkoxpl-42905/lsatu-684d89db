@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Predictions"
     ]
   },
   {
@@ -84,7 +85,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -106,7 +108,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -196,7 +200,9 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -261,7 +267,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -280,7 +287,10 @@
       "D": "To inspire the perpetual curiosity of others, one must constantly broaden one's abilities and extend one's intellectual reach.",
       "E": "If one constantly broadens one's abilities and extends one's intellectual reach, one will always have curiosity."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -301,7 +311,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -323,7 +334,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Binaries",
-      "Medical"
+      "Medical",
+      "Quantifiers"
     ]
   },
   {
@@ -345,7 +357,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -411,7 +424,9 @@
       "Missing Link / Idea",
       "Causal Chains",
       "Causal Difference-Maker",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -452,7 +467,11 @@
       "D": "The public has the freedom to purchase whatever recordings are produced, but that does not mean that the government may not limit the production of recordings deemed to be depraved.",
       "E": "One who advocates complete freedom of speech should not criticize others for saying things that he or she believes to exhibit depraved tastes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -472,7 +491,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -493,7 +513,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -515,7 +537,10 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Plausibility",
+      "Predictions"
     ]
   },
   {

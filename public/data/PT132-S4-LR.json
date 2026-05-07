@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Important Pivot"
+      "Important Pivot",
+      "Plausibility"
     ]
   },
   {
@@ -40,7 +41,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Sampling"
+      "Sampling",
+      "Principles in Answers"
     ]
   },
   {
@@ -300,7 +302,10 @@
       "D": "The value of a jewel should derive solely from the aesthetic pleasure it provides.",
       "E": "Jewel collectors should not buy counterfeit jewels unless they are unable to distinguish counterfeit jewels from real ones."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -406,7 +411,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -425,7 +431,10 @@
       "D": "predicting a future event on the basis of an established pattern of past events",
       "E": "inferring a claim about the probability of a particular event from a general statistical statement"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -463,7 +472,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {

@@ -101,7 +101,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -123,7 +124,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -165,7 +167,10 @@
       "D": "Ideas that have malicious content or stem from questionable sources can be valuable.",
       "E": "Governments have near monopolies on the dissemination of many kinds of information."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -183,7 +188,10 @@
       "D": "All students who live on campus are music majors.",
       "E": "All students who are members of the choir are music majors."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -219,7 +227,10 @@
       "D": "Some of the oldest tribes of people living in eastern South America speak languages linguistically similar to various languages spoken by certain western African peoples.",
       "E": "Several species of plants found in western Africa closely resemble plants growing in South America."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -363,7 +374,10 @@
       "D": "Consumers should not make purchases from any bookstore that deliberately forces competing bookstores out of business.",
       "E": "If consumers have no access to any independent bookstore, they should buy books from the chain bookstore with the greatest diversity of books."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -441,7 +455,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {

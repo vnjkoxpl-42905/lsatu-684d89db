@@ -20,7 +20,8 @@
       "Missing Link / Idea",
       "Defender",
       "EXCEPT",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -96,7 +97,10 @@
       "D": "Therefore, the most broadly acceptable candidate will be the one who is most likely to be ranked first by a majority of voters.",
       "E": "Therefore, ranked-choice voting should be adopted only in those cases where there are more than two candidates."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -211,7 +215,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -230,7 +235,10 @@
       "D": "The city hired additional fire inspectors during the 1800s.",
       "E": "The city’s population decreased during the period in which the ordinance was in effect."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -269,7 +277,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Quantifiers"
     ]
   },
   {
@@ -310,7 +321,10 @@
       "D": "A responsible citizen must be guided by a true understanding of the facts bearing on public decisions.",
       "E": "The newspaper should only cover issues that concern public decision-making."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -330,7 +344,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -420,7 +435,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -441,7 +457,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {

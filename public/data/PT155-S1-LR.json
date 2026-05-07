@@ -15,7 +15,10 @@
       "D": "Omnicide is more profitable for the manufacturer than most other insecticides made by the same company.",
       "E": "Omnicide does not kill weeds or mammalian pests such as gophers, moles, and groundhogs."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -38,7 +41,8 @@
       "Explain Curious Fact",
       "Assumes Similarity",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plausibility"
     ]
   },
   {
@@ -77,7 +81,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -141,7 +146,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -251,7 +257,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -337,7 +344,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -398,7 +407,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -438,7 +448,10 @@
       "D": "The newest Bonjour hotel should have neither a radiant floor heating system nor a radiant floor cooling system installed, for it will be a luxury hotel in a region that frequently has high humidity in the summer.",
       "E": "The newest Bonjour hotel should have both a radiant floor cooling system and a radiant floor heating system installed, for it will be a luxury hotel in a region with very low humidity throughout the year."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -503,7 +516,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {

@@ -98,7 +98,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {
@@ -326,7 +327,10 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -430,7 +434,10 @@
       "D": "Long-standing laws that are widely violated are probably not good laws.",
       "E": "Any measure that reduces the rate of traffic accidents should be implemented."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -470,7 +477,10 @@
       "D": "By that line of reasoning, we could conclude that most legislators have never run for office, since most public servants have never run for office and all legislators are public servants.",
       "E": "By that line of reasoning, we could conclude that most legislators are not public servants, since most public servants have not run for office and most legislators have run for office. 2 2 2 2"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT142",

@@ -17,7 +17,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -64,7 +65,8 @@
       "First Sentence Conclusion",
       "Sampling",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -191,7 +193,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -212,7 +215,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -314,7 +319,10 @@
       "D": "It is offered as an example of further measures the city will take to ensure bicyclists' safety.",
       "E": "It is presented as an illustration of the city's overriding interest in its public image."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -332,7 +340,11 @@
       "D": "It overlooks the possibility that colonies on the Moon might themselves quickly become overcrowded.",
       "E": "It takes for granted that none of the human population would prefer to live on the Moon unless Earth were seriously overcrowded."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -352,7 +364,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -376,7 +389,8 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -459,7 +473,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -502,7 +517,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {

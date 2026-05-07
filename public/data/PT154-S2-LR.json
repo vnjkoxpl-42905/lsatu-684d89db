@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -80,7 +82,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -101,7 +105,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -143,7 +149,10 @@
       "D": "Paper Flowers was written by a local author.",
       "E": "Paper Flowers was not written by a local author, but is considered to be of significance to local history."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -163,7 +172,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Percentages",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -186,7 +197,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Percentages"
     ]
   },
   {
@@ -208,7 +220,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Sampling"
+      "Sampling",
+      "Quantifiers"
     ]
   },
   {
@@ -315,7 +328,8 @@
       "Assumes Similarity",
       "Defender",
       "Intermediate Conclusions",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Predictions"
     ]
   },
   {
@@ -358,7 +372,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -501,7 +516,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {

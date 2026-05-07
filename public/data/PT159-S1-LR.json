@@ -40,7 +40,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -59,7 +60,10 @@
       "D": "The public should disregard what celebrities say about controversial issues.",
       "E": "Celebrities are responsible for the fact that people give their opinions more credence than they should. should not make assumptions that are by commonsense standards implausible, superfluous, or incompatible with the passage. For some questions, more than one of the choices could conceivably answer the question. However, you are to choose the best answer; that is, choose the response that most accurately and completely answers the question and mark that response on your answer sheet."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -97,7 +101,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -119,7 +125,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -162,7 +169,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Logical Completion"
+      "Logical Completion",
+      "Plausibility"
     ]
   },
   {
@@ -203,7 +211,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Important Pivot",
-      "Logical Completion"
+      "Logical Completion",
+      "Quantifiers"
     ]
   },
   {
@@ -222,7 +231,10 @@
       "D": "Most theatrical productions neither criticize government nor support it.",
       "E": "The public generally dislikes plays written or performed by government employees."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -243,7 +255,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {
@@ -322,7 +335,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plausibility"
     ]
   },
   {

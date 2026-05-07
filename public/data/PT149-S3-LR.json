@@ -15,7 +15,10 @@
       "D": "Most people who do not care for the taste of fish eat less fish than is recommended by most nutritionists.",
       "E": "People who rarely or never eat fish usually dislike any food with a strong fishy taste."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -56,7 +59,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -102,7 +106,8 @@
       "First Sentence Conclusion",
       "Explain Curious Fact",
       "Breadcrumbs",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -121,7 +126,10 @@
       "D": "It is an example used to illustrate the claim that most people believe the Forestry Department should quickly extinguish all forest fires.",
       "E": "It is a conclusion based on the premise in the argument that it is best to let small forest fires burn."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -163,7 +171,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -272,7 +281,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -333,7 +343,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -354,7 +365,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -376,7 +388,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Defender",
-      "Medical"
+      "Medical",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -395,7 +409,11 @@
       "D": "the proposed ban would prohibit smoking in public places",
       "E": "there are cases in which government should attempt to regulate private behavior"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -415,7 +433,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -457,7 +476,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Net Effect"
     ]
   },
   {
@@ -503,7 +523,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plausibility"
     ]
   },
   {
@@ -526,7 +547,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {

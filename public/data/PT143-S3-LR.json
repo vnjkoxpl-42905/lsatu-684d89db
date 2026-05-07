@@ -39,7 +39,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -58,7 +59,10 @@
       "D": "A government agency should not make its procedures so complex that even the agency’s employees cannot understand the procedures.",
       "E": "It is unfair for a business to be subject to a formal complaint unless the complaint is made in a way that provides the business with an opportunity to defend itself. 3 3 3 3"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT143",
@@ -117,7 +121,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -239,7 +244,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -342,7 +348,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -364,7 +371,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Plans / Recommendations"
     ]
   },
   {

@@ -61,7 +61,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -101,7 +102,10 @@
       "D": "The engines of some individual cars that have had their oil changed every 3,000 miles, using only a certain brand of oil, have lasted an extraordinarily long time.",
       "E": "Ability to retard engine wear is not the only property of motor oil important to the running of an engine."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -122,7 +126,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -143,7 +148,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -187,7 +194,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Assumes Difference",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -233,7 +241,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Percentages"
     ]
   },
   {
@@ -277,7 +286,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -386,7 +396,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -427,7 +438,12 @@
       "D": "Distracting customers is not good for business.",
       "E": "Manipulation of people can have unwelcome consequences."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers",
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -448,7 +464,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {

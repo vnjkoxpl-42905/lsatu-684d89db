@@ -200,7 +200,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -260,7 +261,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -303,7 +305,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -324,7 +327,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Predictions"
     ]
   },
   {
@@ -363,7 +367,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -385,7 +390,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -444,7 +450,10 @@
       "D": "No law that cannot be enforced should be enacted.",
       "E": "A legal system that, if adopted, would have disastrous consequences ought not be adopted."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -485,7 +494,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Answers"
     ]
   },
   {

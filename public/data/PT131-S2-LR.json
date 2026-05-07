@@ -185,7 +185,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -243,7 +244,10 @@
       "D": "Identifying nightmare-prone children is generally more difficult than teaching adults the technique for replacing nightmares with pleasant dreams.",
       "E": "Psychologists should not teach the technique for replacing nightmares with pleasant dreams to children who are unlikely to suffer from nightmares as adults."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -364,7 +368,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Games-y LR"
+      "Games-y LR",
+      "Quantifiers"
     ]
   },
   {
@@ -437,7 +442,10 @@
       "D": "Once a disaster has struck them, people are more likely to aid others in need than they were before the disaster.",
       "E": "People are more likely to aid those who have experienced a hardship similar to one they themselves have experienced than to aid those who have experienced a dissimilar hardship."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT131",

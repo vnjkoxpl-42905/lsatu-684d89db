@@ -113,7 +113,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -239,7 +240,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plausibility"
     ]
   },
   {
@@ -304,7 +306,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -387,7 +390,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -408,7 +412,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -450,7 +455,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -471,7 +477,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -490,7 +497,11 @@
       "D": "Answering machines enable the customer to hear who is calling before the customer decides whether to answer the telephone, a service voice mail does not provide.",
       "E": "The number of messages a telephone answering machine can record is limited by the length of the magnetic tape on which calls are recorded."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT112",

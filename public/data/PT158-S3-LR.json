@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -41,7 +42,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -106,7 +108,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -190,7 +194,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -236,7 +241,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -257,7 +263,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Predictions"
     ]
   },
   {
@@ -280,7 +287,8 @@
     "questionFeatures": [
       "Conditional Conclusion",
       "Defender",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -302,7 +310,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {
@@ -323,7 +332,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -342,7 +352,10 @@
       "D": "If a belief is not grounded in observable evidence, then it is not self-evident either.",
       "E": "Among reasonable beliefs that are not self- evident, there are some beliefs that are not grounded in observable evidence."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -362,7 +375,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -531,7 +546,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Principles in Stimulus"
     ]
   }
 ]

@@ -259,7 +259,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -280,7 +281,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -335,7 +337,10 @@
       "D": "An object cannot take on a derivative use unless it ceases to have its original use.",
       "E": "The more an object is used to represent value in general, the more likely it is to be valued for particular uses."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -419,7 +424,10 @@
       "D": "A business will improve its products only when it is necessary to do so in order to attract customers.",
       "E": "There is no relationship between the quality of a restaurant’s food and the popularity of that restaurant."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT154",

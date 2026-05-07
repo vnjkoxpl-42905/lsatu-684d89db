@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -38,7 +39,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -60,7 +62,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Implied Conclusion"
+      "Implied Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -82,7 +85,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -104,7 +108,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Causal Chains",
-      "Medical"
+      "Medical",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -220,7 +225,10 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -241,7 +249,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -308,7 +317,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Dense Stimulus",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -329,7 +339,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -351,7 +363,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -373,7 +386,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -417,7 +431,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -510,7 +525,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {

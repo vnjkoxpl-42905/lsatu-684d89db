@@ -76,7 +76,11 @@
       "D": "Current funding for intervention research is now higher than it has ever been before.",
       "E": "Once a mental disorder disappears, there is a fair chance that it will recur, given that complete cures are rare."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -116,7 +120,10 @@
       "D": "Art historians are the best judges of the value of an artwork.",
       "E": "Interpretations of an artwork are appropriate if they originated during the period when the work was created."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -156,7 +163,10 @@
       "D": "Most people who invest in the stock market without doing any research of their own make a profit.",
       "E": "Most people who rely solely on their broker rather than on hunches make a profit in the stock market."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -221,7 +231,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Contrapositive Logic",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -328,7 +339,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -474,7 +486,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -495,7 +508,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -518,7 +532,9 @@
     "questionFeatures": [
       "Assumes Difference",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   }
 ]

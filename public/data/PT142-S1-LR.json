@@ -39,7 +39,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -60,7 +61,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -81,7 +83,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -121,7 +124,10 @@
       "D": "The chemical in grapefruit juice works by inhibiting an enzyme in the body that affects how certain medicines are metabolized.",
       "E": "Long before the chemical in grapefruit juice was identified, doctors were advising patients who took certain medicines to avoid grapefruit juice. 1 1 1 1"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -141,7 +147,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -204,7 +211,10 @@
       "D": "The asking price for the vase is significantly less than the amount Matilde thinks it is worth, and the vase is of a style that Matilde particularly likes.",
       "E": "While Matilde likes the color and features of the vase, its particular style has frequently been reproduced for the mass market, and the vase cannot be examined closely or authenticated over the Internet. 1 1 1"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -262,7 +272,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Analogies",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -344,7 +355,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {

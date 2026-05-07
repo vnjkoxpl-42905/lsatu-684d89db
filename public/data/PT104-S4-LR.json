@@ -15,7 +15,11 @@
       "D": "The tax on domestically produced alcoholic beverages is not raised, since recent studies show that the tax would have a negative impact on the tourist industry.",
       "E": "The tax on products that emit fluorocarbons, substances that have proven to be harmful to the earth’s ozone layer, is lowered to stimulate the development of new, less environmentally harmful ways of using these substances."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -37,7 +41,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -56,7 +62,10 @@
       "D": "A just government would not censor writings of Shakespeare, but it could censor magazines and movies that criticize the government.",
       "E": "An unjust government would incarcerate one of its citizens even though it had been several years since that citizen harmed someone."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -78,7 +87,9 @@
     "questionFeatures": [
       "Anti-Causal",
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -185,7 +196,9 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -251,7 +264,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -296,7 +310,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Dense Stimulus",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages"
     ]
   },
   {
@@ -341,7 +356,10 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "EXCEPT"
+      "EXCEPT",
+      "New Concept in Conclusion",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -430,7 +448,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -452,7 +471,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Abstract Answers",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Principles in Stimulus"
     ]
   },
   {

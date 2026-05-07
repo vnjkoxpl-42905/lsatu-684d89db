@@ -59,7 +59,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -122,7 +123,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -283,7 +285,10 @@
       "D": "It is morally permissible for Debra to lie to keep Thomas from being unhappy as long as the lie helps Thomas and does no harm.",
       "E": "It is morally permissible to lie to innocent people if the lie will cause those people to make a choice that will benefit them but may harm others."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -326,7 +331,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -345,7 +351,10 @@
       "D": "It is the responsibility of the buyer, not the seller, to ascertain that the quality of a piece of merchandise satisfies the buyer's standards.",
       "E": "The obligations that follow from any social relationship between two people who are well acquainted override any obligations that follow from an economic relationship between the two."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -388,7 +397,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -428,7 +439,10 @@
       "D": "No graphic designers who learn their trade on the job will ignore clients' wishes.",
       "E": "The most successful graphic designers learn their trade on the job."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -490,7 +504,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Difference",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Plans / Recommendations"
     ]
   },
   {

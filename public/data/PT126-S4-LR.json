@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Percentages"
     ]
   },
   {
@@ -180,7 +181,10 @@
       "D": "While some of the value of competition comes from the pleasure of winning, the primary reward of competition is competition itself.",
       "E": "Even people who dread public speaking should accept invitations to speak before large groups. People will admire their courage and they will experience the fulfillment of having attempted something that is difficult for them."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -198,7 +202,10 @@
       "D": "Problems associated with migration to cities from rural areas are primarily due to trade imbalances between countries.",
       "E": "Free trade policies can exacerbate the problems caused by increasing urbanization."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -285,7 +292,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -329,7 +338,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Quantifiers"
     ]
   },
   {
@@ -429,7 +439,10 @@
       "D": "Sejal learned in a psychology class that the best way to help someone overcome an addiction is to confront that person. So she confronted her friend Bob, who was struggling with a chemical dependency.",
       "E": "Zachary hoped that psychotherapy could help his parents overcome their marital difficulties. He persuaded his parents to call a psychotherapist, and eventually their problems were resolved."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT126",

@@ -54,7 +54,11 @@
       "D": "The publication of poll results in the last weeks before an election draws attention to candidates’ late gains in popularity.",
       "E": "Countries in which such a ban is in effect do not generally have better informed citizens than do countries in which such a ban is not in effect."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -92,7 +96,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -147,7 +152,10 @@
       "D": "We are unable to foresee the magnitude of the changes that the information revolution may have in defining our lives.",
       "E": "People are choosing to live in different regions of the nation than previously because of the impact of electronic communications technology."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT108",
@@ -286,7 +294,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -454,7 +463,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -473,6 +483,9 @@
       "D": "Preserving biodiversity is no more important than increasing agricultural production.",
       "E": "Agricultural techniques should be radically modified only if doing so would further the extent to which we can increase agricultural production."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

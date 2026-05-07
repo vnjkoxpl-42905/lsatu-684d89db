@@ -17,7 +17,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -99,7 +100,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -204,7 +207,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Predictions"
     ]
   },
   {
@@ -268,7 +272,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -352,7 +358,9 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -374,7 +382,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "2-Speaker",
-      "EXCEPT"
+      "EXCEPT",
+      "Principles in Answers"
     ]
   },
   {
@@ -395,7 +404,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -432,7 +442,10 @@
       "D": "Wally's Plants is probably not a large, well-run nursery if it sells its raspberry plants primarily to commercial raspberry growers.",
       "E": "If Wally's Plants is a large nursery, then the raspberry plants that Johnson received in the shipment were probably not entirely as they were guaranteed to be."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -450,7 +463,10 @@
       "D": "Undertaking a new marketing campaign would endanger the drug company's overall position by necessitating cutbacks in existing marketing campaigns.",
       "E": "Consumer demand for the drug company's other products has been strong in the time since the company's newest product was introduced."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -470,7 +486,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -510,7 +527,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -529,6 +547,9 @@
       "D": "The mere fact that something actually promotes human health is not sufficient to show that its purpose is to promote health.",
       "E": "If something is necessary for human health, then it should be provided by an organization whose primary purpose is the promotion of health."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

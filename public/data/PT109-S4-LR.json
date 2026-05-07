@@ -115,7 +115,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -152,7 +153,10 @@
       "D": "The current revenue and profitability of an established product line can be maintained even if the company’s best managers are assigned elsewhere.",
       "E": "Early short-term revenue prospects of a new product line are usually a good predictor of how successful a product line will ultimately be."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -211,7 +215,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -412,7 +417,8 @@
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Quantifiers"
     ]
   },
   {
@@ -509,6 +515,9 @@
       "D": "Increasing some people’s happiness might not increase the sum total of human happiness if others are made unhappy.",
       "E": "Good social reforms usually have widespread support."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   }
 ]

@@ -120,7 +120,10 @@
       "D": "Technology eliminates many jobs but also creates just as many jobs.",
       "E": "Whereas technological innovations were once concentrated in heavy industry, they now affect all industries."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -204,7 +207,9 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -287,7 +292,10 @@
       "D": "It can provide a motivation for companies to act in a manner contrary to the purpose of the law while taking advantage of the tax incentives.",
       "E": "It will provide lumber companies with a tax incentive that will ultimately be responsible for a massive decrease in the number of mature forests in the region."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -329,7 +337,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {

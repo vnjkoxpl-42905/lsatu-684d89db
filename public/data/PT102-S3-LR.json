@@ -38,7 +38,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -175,7 +176,8 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -198,7 +200,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "Missing Link / Idea",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Principles in Answers"
     ]
   },
   {
@@ -262,7 +265,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -301,7 +306,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -367,7 +373,8 @@
       "Relative vs. Absolute",
       "Defender",
       "Math-y Stuff",
-      "Medical"
+      "Medical",
+      "Percentages"
     ]
   },
   {
@@ -424,7 +431,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {

@@ -62,7 +62,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -126,7 +127,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Assumes Difference",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -145,7 +147,11 @@
       "D": "Most manufacturers of gasoline lawn mowers are trying to redesign their mowers to reduce the emission of air pollutants.",
       "E": "Lawn mowers are used for fewer hours per year than are automobiles."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -186,7 +192,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -231,7 +238,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -274,7 +282,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -333,7 +343,10 @@
       "D": "A majority of people in modern society do not appreciate having the jobs that they do have.",
       "E": "Fewer than a majority of people in modern society can find happiness outside the sphere of private interpersonal relationships."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -432,7 +445,10 @@
       "D": "The journalists at a news conference should not ask a politician potentially embarrassing questions about a controversial policy issue.",
       "E": "The moderator of a panel discussion of a divisive moral issue should not allow participants to engage in name-calling."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -450,7 +466,10 @@
       "D": "Most record companies are less interested in preserving classic jazz recordings than in making a profit.",
       "E": "No recording that is not played on the radio is one that record companies believe would be profitable if transferred to compact disc."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT118",

@@ -38,7 +38,10 @@
       "D": "A law intended to improve people’s health should be repealed if it is clear that most people are evading the law.",
       "E": "A tax on unhealthy foods should be applied only to those foods that are widely believed to be the most unhealthy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -61,7 +64,9 @@
       "Abstract Answers",
       "Argue the Anti-Conclusion",
       "Causal Chains",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -82,7 +87,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -143,7 +149,10 @@
       "D": "Most bird lovers are very active in efforts to preserve the habitats of threatened species of wild birds and other animals.",
       "E": "Human settlement is so pervasive in the habitat of most wild birds that they must depend in part on human sources of food for survival."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -501,7 +510,10 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {

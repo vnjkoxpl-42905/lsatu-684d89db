@@ -18,7 +18,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -40,7 +42,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -61,7 +64,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -127,7 +131,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -172,7 +178,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -195,7 +202,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -217,7 +225,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "2-Speaker",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect"
     ]
   },
   {
@@ -238,7 +247,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -259,7 +270,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -283,7 +295,9 @@
       "First Sentence Conclusion",
       "Assumes Difference",
       "Defender",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -326,7 +340,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -351,7 +366,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
-      "Medical"
+      "Medical",
+      "Predictions"
     ]
   },
   {
@@ -414,7 +430,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -433,7 +450,10 @@
       "D": "Radical reconstruction projects are, in general, too costly to be paid for from current revenue.",
       "E": "For long periods, the task of regular maintenance lacks urgency, since the consequences of neglecting it are very slow to manifest themselves."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -456,7 +476,8 @@
       "Famous Flaws",
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plans / Recommendations"
     ]
   },
   {

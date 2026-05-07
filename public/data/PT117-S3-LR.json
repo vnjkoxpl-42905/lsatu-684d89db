@@ -17,7 +17,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -36,7 +38,10 @@
       "D": "Few zoologists have sufficient knowledge to establish an artificial environment that is conducive to the well-being of captive leatherbacks.",
       "E": "The size of a leatherback is an untrustworthy indicator of its age."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -56,7 +61,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -182,7 +189,10 @@
       "D": "If there are any limitations on full democracy that result from denying the vote to children, such limitations must be accepted.",
       "E": "If parents do not adequately represent their children's interests in the political sphere, those interests will be adequately represented by someone else."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -428,7 +438,8 @@
       "Anti-Causal",
       "Argue the Anti-Conclusion",
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -447,7 +458,10 @@
       "D": "It is clear that most people in Highland County drive sedans, since most people who commute to work drive sedans and most people in Highland County commute to work.",
       "E": "It is clear that most of Janine's friends are good drivers, since she accepts rides only from good drivers and she accepts rides from most of her friends."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -468,7 +482,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Binaries"
+      "Binaries",
+      "New Concept in Conclusion"
     ]
   },
   {

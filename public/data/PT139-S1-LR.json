@@ -122,7 +122,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -189,7 +190,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -367,7 +369,10 @@
       "D": "Highway speed limits are a justified restriction of freedom. For drivers who speed do not risk only their own lives; such drivers often injure or kill other people. Moreover, speed limits have been shown to significantly reduce highway accident and fatality rates.",
       "E": "It is not enough that consumable products containing harmful substances have warning labels. Many adults simply ignore such warnings and continue to consume these substances in spite of the harm it may cause them. This is why consuming such substances should be illegal."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -408,7 +413,10 @@
       "D": "It fails to address the possibility that taking an aspirin a day is not the single most effective measure for preventing heart disease.",
       "E": "It fails to address the possibility that the studies on the beneficial effects of aspirin were conducted only in industrialized nations."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -426,7 +434,10 @@
       "D": "Professional scientists have made a greater overall contribution to science than have amateur scientists.",
       "E": "A professional scientist is more likely to make a significant contribution to science if he or she is motivated by the love of discovery."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT139",

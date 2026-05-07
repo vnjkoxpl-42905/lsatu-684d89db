@@ -39,7 +39,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -165,7 +166,10 @@
       "D": "In a repertory theater, plays can be rescheduled to meet audience demand.",
       "E": "In a repertory theater, some actors who change roles from night to night find it difficult to master all of the roles they play."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -185,7 +189,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -272,7 +277,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -415,7 +421,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plausibility"
     ]
   },
   {
@@ -499,7 +506,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -518,7 +526,10 @@
       "D": "If we are to produce the safest vehicles possible, we must conduct objective structural tests. However, the performance of such objective tests will inevitably result in huge cost overruns. It is therefore unavoidable that the level of vehicle safety will not be optimal.",
       "E": "If honesty is the best policy, we should report our company’s poor performance in the last year. But if we do so, we will put our jobs at risk and our stockholders will complain. Therefore, we must not report our poor performance."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT120",

@@ -56,7 +56,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -96,7 +97,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "2-Speaker",
-      "Clarification/Misunderstanding"
+      "Clarification/Misunderstanding",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -118,7 +120,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Focused on Evidence",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Net Effect",
+      "Predictions"
     ]
   },
   {
@@ -137,7 +141,10 @@
       "D": "The greater a consumer's discretionary income, the more likely advertising is to encourage that consumer to buy.",
       "E": "The number of consumers over the age of 65 is increasing more rapidly than is the number of young adults."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -225,7 +232,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Medical"
+      "Medical",
+      "Predictions"
     ]
   },
   {
@@ -292,7 +300,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Complex Conditionals"
+      "Complex Conditionals",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -335,7 +344,10 @@
       "D": "Lack of funds for research reduces the quality of education a university provides.",
       "E": "New means of funding faculty research at universities are needed."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -400,7 +412,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -421,7 +434,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Quantifiers"
     ]
   },
   {
@@ -507,7 +521,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Part vs. Whole",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -528,7 +543,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Plans / Recommendations"
     ]
   }
 ]

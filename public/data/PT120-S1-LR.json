@@ -61,7 +61,10 @@
       "D": "Since academic institutions accept public funds but do not pay taxes, a representative of an academic institution should not publicly pass judgment on the actions of government officials.",
       "E": "Academic institutions have the same responsibility as military institutions have to spend public money wisely."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -102,7 +105,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -139,7 +143,10 @@
       "D": "In judging the morality of a corporation’s behavior, as opposed to that of an individual, mitigating circumstances are irrelevant.",
       "E": "Corporations ought to make available to a customer any information the customer requests that is relevant to the customer’s interests."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -220,7 +227,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -284,7 +293,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -344,7 +355,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -404,7 +416,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -486,7 +500,10 @@
       "D": "Usually a consumer who is trying to assemble a product using the manufacturer’s instructions has no difficulty understanding the instructions.",
       "E": "Some consumers refer to the manufacturer’s instructions for assembling a product only if they have difficulty assembling the product."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT120",

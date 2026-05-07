@@ -122,7 +122,10 @@
       "D": "A criminal should not be required to pay for services provided to victims of crimes that are more serious than the type of crime the criminal has been convicted of.",
       "E": "Convicted thieves should be fined an amount at least as great as the value of the property stolen."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -202,7 +205,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -260,7 +264,10 @@
       "D": "Not all politicians who strongly supported free trade among Canada, the United States, and Mexico now publicly support extending free trade to other Latin American countries.",
       "E": "Some of the politicians who strongly supported free trade among Canada, the United States, and Mexico now publicly oppose extending free trade to other Latin American countries."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -280,7 +287,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -470,7 +478,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -494,7 +503,8 @@
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
       "Analogies",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -515,7 +525,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {

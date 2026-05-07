@@ -78,7 +78,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -158,7 +160,8 @@
     "questionFeatures": [
       "Conditional Conclusion",
       "Defender",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -274,7 +277,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -295,7 +300,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -411,7 +417,10 @@
       "D": "Not all public buildings are well designed, but some poorly designed public buildings were originally intended for private use. Therefore, the poorly designed public buildings were all originally designed for private use.",
       "E": "Although some cathedrals are not built of stone, every cathedral is impressive. Therefore, buildings can be impressive even though they are not built of stone."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT103",

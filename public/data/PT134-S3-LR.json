@@ -18,7 +18,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -40,7 +41,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -309,7 +311,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -372,7 +375,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Answers"
     ]
   },
   {
@@ -395,7 +399,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Net Effect"
     ]
   },
   {
@@ -416,7 +421,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Answers"
     ]
   },
   {
@@ -478,7 +484,10 @@
       "D": "Most nature photographers find portrait photography boring. Moreover, most portrait photographers especially enjoy photographing dignitaries. Thus, most nature photographers find photographing dignitaries especially boring.",
       "E": "Most snow-removal companies run lawn- care services during the summer. Also, most companies that run lawn-care services during the summer hire additional workers in the summer. Thus, most snow-removal companies hire additional workers in the summer."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -496,7 +505,10 @@
       "D": "Many people who behave in a self-confident manner are genuinely confident about their abilities.",
       "E": "Self-doubt can hamper as well as aid the development of the skills necessary for success."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -516,7 +528,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Predictions"
     ]
   },
   {

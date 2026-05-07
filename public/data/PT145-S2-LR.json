@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Net Effect"
     ]
   },
   {
@@ -39,7 +40,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Net Effect",
+      "Plausibility"
     ]
   },
   {
@@ -127,7 +130,9 @@
     "questionFeatures": [
       "Binaries",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions",
+      "Quantifiers"
     ]
   },
   {
@@ -167,7 +172,11 @@
       "D": "People feel morally constrained from doing an action only if that action causes harm to others.",
       "E": "People who harm others through impersonal means are no less culpable for their actions than are people who harm others in person."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -228,7 +237,10 @@
       "D": "A study could come out at any time that would greatly undermine public confidence in genetically engineered foods.",
       "E": "Consumers have very little confidence in genetically engineered foods."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -248,7 +260,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -294,7 +307,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Part vs. Whole",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -335,7 +349,11 @@
       "D": "A person is responsible for harm he or she does to someone even if the harm was done unintentionally.",
       "E": "A person who convinces someone to take a course of action is in part responsible for the consequences of that action."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Net Effect",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -437,7 +455,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -458,7 +477,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Quantifiers"
     ]
   },
   {
@@ -480,7 +500,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "Quantifiers"
     ]
   },
   {
@@ -502,7 +523,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Conclusion",
-      "Defender"
+      "Defender",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {

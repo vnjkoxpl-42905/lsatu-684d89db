@@ -58,7 +58,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Logical Completion"
+      "Logical Completion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -80,7 +81,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -123,7 +127,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Causal Chains",
-      "EXCEPT"
+      "EXCEPT",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -169,7 +174,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Binaries",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -213,7 +219,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -365,7 +373,8 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -388,7 +397,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Analogies",
-      "Anti-Causal"
+      "Anti-Causal",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -412,7 +423,8 @@
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
       "Defender",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Predictions"
     ]
   },
   {
@@ -436,7 +448,8 @@
       "Sufficient vs. Necessary Flaw",
       "Explain Curious Fact",
       "Contrapositive Logic",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Plausibility"
     ]
   },
   {
@@ -459,7 +472,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -481,7 +495,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "New Concept in Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -526,7 +543,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {

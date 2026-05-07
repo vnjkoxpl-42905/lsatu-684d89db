@@ -105,7 +105,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -124,7 +125,10 @@
       "D": "In playing chess, an expert player relies crucially on his or her memory.",
       "E": "Any chess player who played other games that require pattern-recognition skills would thereby improve his or her chess skills."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -142,7 +146,10 @@
       "D": "When popcorn does not dry sufficiently, it will still pop, but it will take several minutes to do so, even under optimal popping conditions.",
       "E": "If popcorn is allowed to dry too much, it will not pop."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -205,7 +212,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Alternatives",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -288,7 +296,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Percentages",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -325,7 +335,11 @@
       "D": "Industrial solutions for problems in farming should never be sought.",
       "E": "The approach to problem solving typical of industrialists is fundamentally flawed."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -369,7 +383,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Quantifiers"
     ]
   },
   {
@@ -435,7 +450,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -481,7 +497,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Anti-Causal",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plausibility"
     ]
   },
   {
@@ -503,7 +520,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -525,7 +543,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Principles in Answers"
     ]
   }
 ]

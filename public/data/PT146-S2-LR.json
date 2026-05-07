@@ -40,7 +40,8 @@
     "questionFeatures": [
       "Analogies",
       "Causal Difference-Maker",
-      "Logical Completion"
+      "Logical Completion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -61,7 +62,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -126,7 +128,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -212,7 +216,10 @@
       "D": "Yesenia borrowed Mike’s computer, and he has just requested that she return it to him by tomorrow. Although Yesenia has not promised to return it by tomorrow, she should return it by then since it would not be difficult for her to do so.",
       "E": "Oliver borrowed Madeline’s guitar from her yesterday and promised to bring it back today. So, since it would be easy for Oliver to return the guitar today, and Madeline has not given him permission to return it late, he should return it today."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -274,7 +281,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -295,7 +303,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -451,7 +460,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Implicit Principles"
+      "Implicit Principles",
+      "Plans / Recommendations"
     ]
   },
   {

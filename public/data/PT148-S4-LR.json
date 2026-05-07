@@ -19,7 +19,8 @@
     "questionFeatures": [
       "Sampling",
       "Assumes Similarity",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -79,7 +80,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -123,7 +125,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Analogies",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -164,7 +167,10 @@
       "D": "Legislation that is not to anyone’s benefit should not be commended.",
       "E": "Laws that give advantage to the well-to-do can also benefit society as a whole."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -281,7 +287,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -408,7 +415,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Quantifiers"
     ]
   },
   {
@@ -492,7 +500,10 @@
       "D": "The makers of Activite charge a handling fee that is considerably more than what it costs them to pack and ship their product.",
       "E": "The mere fact that a dietary supplement contains only natural ingredients does not insure that it has no harmful side effects."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT148",

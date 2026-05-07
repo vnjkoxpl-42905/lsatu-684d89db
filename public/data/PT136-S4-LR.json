@@ -149,7 +149,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -168,7 +169,10 @@
       "D": "Most subscribers to scholarly journals are individuals, not libraries, and the subscription rates for individuals have generally remained unchanged for the past several years.",
       "E": "The majority of scholarly journals are published no more than four times a year."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -288,7 +292,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {

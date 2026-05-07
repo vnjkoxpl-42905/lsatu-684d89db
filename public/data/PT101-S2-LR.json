@@ -85,7 +85,8 @@
       "Explain Curious Fact",
       "Breadcrumbs",
       "EXCEPT",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plausibility"
     ]
   },
   {
@@ -191,7 +192,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -231,7 +233,10 @@
       "D": "Some professors are neither legal voters nor brilliant people.",
       "E": "Some brilliant people are neither professors nor legal voters."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -351,7 +356,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -463,7 +469,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Battle of Opinions",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -527,6 +534,9 @@
       "D": "Knowingly making a false claim is ethical only if those making it have good intentions.",
       "E": "Knowingly making a false claim is always unethical."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

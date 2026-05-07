@@ -60,7 +60,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -83,7 +84,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Assumes Difference",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -125,7 +128,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -168,7 +172,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -340,7 +345,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -382,7 +388,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -467,7 +474,8 @@
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
       "Binaries",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -548,7 +556,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   }
 ]

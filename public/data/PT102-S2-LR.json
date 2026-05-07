@@ -17,7 +17,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Predictions"
     ]
   },
   {
@@ -79,7 +80,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -98,7 +101,10 @@
       "D": "The largest quantities of counterfeit currency now entering circulation are produced by ordinary criminals who engage in counterfeiting only briefly.",
       "E": "It is very difficult to make accurate estimates of what the costs to society would be if large amounts of counterfeit currency circulated widely."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -166,7 +172,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -211,7 +218,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -230,7 +238,11 @@
       "D": "Laws should be fashioned in such a way as to reconcile the interests of developers and environmentalists.",
       "E": "The most effective means of preserving endangered species is to refrain from alienating property owners."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -340,7 +352,8 @@
       "Alternatives",
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -382,7 +395,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -481,7 +495,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -500,7 +516,11 @@
       "D": "In most cases, punishing a protectionist country should have priority over the interests of our people.",
       "E": "We should balance the justice of an action with the consequences for our interests of undertaking that action."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT102",
@@ -518,6 +538,9 @@
       "D": "When faced with alternatives it is obligatory to choose whichever one will benefit the greatest number of people.",
       "E": "A promise becomes nonbinding when the person to whom the promise was made is no longer living."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

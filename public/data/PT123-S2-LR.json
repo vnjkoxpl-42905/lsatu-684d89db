@@ -15,7 +15,10 @@
       "D": "There is no business that does not make efforts to increase its productivity.",
       "E": "Decreasing the number of employees in a business undermines the sense of security of retained employees."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -99,7 +102,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -120,7 +124,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -141,7 +146,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -184,7 +190,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -205,7 +212,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -308,7 +316,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Difference",
-      "Defender"
+      "Defender",
+      "Predictions"
     ]
   },
   {
@@ -351,7 +360,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -395,7 +405,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "EXCEPT"
+      "EXCEPT",
+      "Plausibility"
     ]
   },
   {
@@ -503,7 +514,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {

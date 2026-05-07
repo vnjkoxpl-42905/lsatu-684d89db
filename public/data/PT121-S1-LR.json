@@ -18,7 +18,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -61,7 +62,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Plausibility"
     ]
   },
   {
@@ -80,7 +82,10 @@
       "D": "Investigative journalists who employ illegal means of obtaining information should not be subjected to moral disapproval, if the revelation of that information does more good for society than does its suppression.",
       "E": "A poem need not adhere too strictly to the truth. Art is exempt from such requirements—it matters only that the poem provoke a response in the reader."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -141,7 +146,10 @@
       "D": "Habits that are acquired by laborious and sometimes tedious practice are not as valuable as those that are painlessly mastered.",
       "E": "Teachers' enthusiasm for new educational aids is often not proportional to the pedagogical effectiveness of those devices."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -181,7 +189,10 @@
       "D": "Individuals who perform an activity should not be held responsible for any unforeseen undesirable consequences that arise from the use to which others put the results of that activity.",
       "E": "Individuals should be held responsible for the foreseeable undesirable consequences of the activities that they perform and receive credit for the foreseeable desirable consequences of those activities."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -223,7 +234,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -365,7 +377,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {

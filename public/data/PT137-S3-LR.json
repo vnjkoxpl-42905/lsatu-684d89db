@@ -120,7 +120,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sampling"
+      "Sampling",
+      "Predictions"
     ]
   },
   {
@@ -184,7 +185,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -250,7 +252,10 @@
       "D": "Some nectarine trees that are not labeled \"miniature\" are labeled incorrectly.",
       "E": "Unless the Stark Sweet Melody variety of nectarine tree is suitable for growing in a tub or a pot, some nurseries mislabel this variety of tree."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -313,7 +318,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Important Pivot",
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -373,7 +380,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -415,7 +423,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Principles in Stimulus"
     ]
   },
   {
@@ -499,7 +508,10 @@
       "D": "An underground rock group is successful as an underground group if the group is competent but its recordings nonetheless do not sell well.",
       "E": "For an underground rock group, competence and the creation of authentically underground music are not in themselves marks of success."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT137",

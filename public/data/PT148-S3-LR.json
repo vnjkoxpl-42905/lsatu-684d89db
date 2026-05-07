@@ -15,7 +15,10 @@
       "D": "A dog should be trained to respond to a stimulus that its owner can supply in all situations.",
       "E": "A dog should not be trained by a method that has not proven to be effective for any other dogs."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -56,7 +59,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -77,7 +81,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Predictions"
     ]
   },
   {
@@ -120,7 +125,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -141,7 +148,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -162,7 +170,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -181,7 +190,11 @@
       "D": "Prolonged cold temperatures kill soil-borne fungus and other sources of disease that would kill or seriously damage pumpkins.",
       "E": "Most of the pumpkin seed used by growers in North America is produced in areas where the growing season is long, and plants used for seed production are protected in greenhouses."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -202,7 +215,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -241,7 +255,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -308,7 +323,9 @@
     "questionFeatures": [
       "Belief / Knowledge / Intent",
       "Missing Link / Idea",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "New Concept in Conclusion",
+      "Plausibility"
     ]
   },
   {
@@ -329,7 +346,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -374,7 +392,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Assumes Difference",
-      "Medical"
+      "Medical",
+      "Plausibility"
     ]
   },
   {
@@ -439,7 +458,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -461,7 +481,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -504,7 +525,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Quantifiers"
     ]
   },
   {
@@ -525,7 +547,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Net Effect"
     ]
   },
   {
@@ -547,7 +570,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Quantifiers"
     ]
   }
 ]

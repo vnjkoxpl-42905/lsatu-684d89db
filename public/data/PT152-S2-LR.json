@@ -75,7 +75,10 @@
       "D": "If corruption is rampant among a certain group, then the person in charge cannot be expected to take corrective action if that person has not been in charge for very long.",
       "E": "If a person has been in a position of authority for a long time, then there is no excuse that can absolve the person of responsibility for widespread corruption among subordinates."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -140,7 +143,8 @@
       "Relative vs. Absolute",
       "Conditional Conclusion",
       "Defender",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -243,7 +247,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Missing Link / Idea",
-      "Links Between Premises"
+      "Links Between Premises",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -280,7 +285,10 @@
       "D": "Attempting to keep pace with recent educational developments can result in neglecting basic skills in favor of other skills.",
       "E": "Giving students a knowledge of new technologies should be the primary goal of education."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Proposition/Generalization"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -396,7 +404,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -415,7 +424,10 @@
       "D": "Phil was arrested for bank robbery and under interrogation was asked to fulfill a legal obligation to reveal the identity of his accomplice. Despite the possibility that he was endangering himself by testifying, Phil revealed his accomplice’s identity, and his accomplice was arrested without incident. Phil’s action was morally right.",
       "E": "After writing a story about a possible political scandal, a journalist invoked her legal rights and refused to reveal the names of her sources who had spoken on condition of anonymity. The journalist’s refusal to divulge her secret was morally right."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -455,7 +467,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "New Concept in Conclusion"
     ]
   },
   {

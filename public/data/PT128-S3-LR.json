@@ -15,7 +15,10 @@
       "D": "It is relatively common for workers in the transportation industry to suffer from the syndrome.",
       "E": "Job-related stress has been the most frequently cited cause for dissatisfaction among workers at the company."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plausibility"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -133,7 +136,10 @@
       "D": "The greater a consumer's discretionary income, the more likely advertising is to encourage that consumer to buy.",
       "E": "The number of consumers over the age of 65 is increasing more rapidly than is the number of young adults."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -319,7 +325,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -356,7 +363,10 @@
       "D": "Since any psychiatrist's divulging to the public information about a patient could undermine the trust of other patients in their psychiatrists, no patient can release a psychiatrist from the obligation to keep patient information confidential.",
       "E": "If a patient has expressed an intention to make public information about himself or herself that is in a psychiatrist's possession, the psychiatrist is released from the obligation to keep that information confidential."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -418,7 +428,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {

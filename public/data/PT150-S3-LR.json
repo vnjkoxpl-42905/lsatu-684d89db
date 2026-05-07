@@ -57,7 +57,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -201,7 +202,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -220,7 +222,10 @@
       "D": "The move to replace book reviews with other features was meant to increase readership, but it actually decreases it.",
       "E": "The move to replace book reviews with other features alienates loyal readers and caters to casual readers."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -240,7 +245,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Net Effect",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -280,7 +287,10 @@
       "D": "Dramatic presentations of historical events should never sacrifice accuracy in order to tell a more entertaining story.",
       "E": "One should never regard a historical account to be accurate unless one has considered the evidence on which it is based."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -359,7 +369,8 @@
     "questionFeatures": [
       "Argue the Anti-Conclusion",
       "Assumes Similarity",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -495,6 +506,9 @@
       "D": "A medium cannot be understood without observing the evolution of its content.",
       "E": "One medium can replace another only if it can represent richer and more varied content."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   }
 ]

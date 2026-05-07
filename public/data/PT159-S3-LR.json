@@ -39,7 +39,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -61,7 +62,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "2-Speaker",
-      "Focused on Evidence"
+      "Focused on Evidence",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -103,7 +105,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -181,7 +184,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -246,7 +251,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Percentages",
+      "Plausibility"
     ]
   },
   {
@@ -288,7 +295,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Principles in Answers",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -354,7 +363,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -373,7 +383,10 @@
       "D": "At least some serious joggers can benefit from good running shoes. But there are serious joggers who prefer to run in ordinary sneakers. So some people who prefer to run in ordinary sneakers can benefit from good running shoes.",
       "E": "Any serious jogger can benefit from good running shoes. But some serious joggers occasionally prefer to run in ordinary sneakers. So anyone who can benefit from good running shoes occasionally prefers to run in ordinary sneakers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -433,7 +446,11 @@
       "D": "The argument does not provide sufficient justification for preferring the solution it recommends over more moderate alternatives.",
       "E": "The argument does not distinguish adequately between medical and economic justifications for a policy."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Net Effect",
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT159",
@@ -453,7 +470,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -474,7 +492,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -493,7 +512,11 @@
       "D": "Both McFinton’s essay on self-deception and Wallace’s most recent article were published in Speculator’s Digest.",
       "E": "Wallace’s most recent article appeared in Speculator’s Digest and was unfair in its harsh criticism of McFinton’s essay on self-deception."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations",
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT159",

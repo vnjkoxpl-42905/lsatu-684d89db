@@ -41,7 +41,10 @@
       "D": "Whether a threat made in self-defense is immoral depends on the circumstances.",
       "E": "It is immoral to carry out a threat if making the threat is itself immoral."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -84,7 +87,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -145,7 +150,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -268,7 +274,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -390,7 +397,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Quantifiers"
     ]
   },
   {
@@ -535,7 +543,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Causal Chains"
+      "Causal Chains",
+      "Quantifiers"
     ]
   }
 ]

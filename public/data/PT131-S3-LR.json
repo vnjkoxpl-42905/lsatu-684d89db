@@ -168,7 +168,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -226,7 +227,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   },
   {
@@ -281,7 +283,10 @@
       "D": "Persons who do not have the genetic mutation that lowers levels of cathepsin C do not get gum disease.",
       "E": "A person whose cathepsin C level has been restored to normal will not suffer from periodontitis."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -346,7 +351,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {

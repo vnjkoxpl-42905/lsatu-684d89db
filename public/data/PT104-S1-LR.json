@@ -42,7 +42,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Math-y Stuff",
-      "Medical"
+      "Medical",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -108,7 +109,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -131,7 +133,8 @@
     "questionFeatures": [
       "Abstract Answers",
       "2-Speaker",
-      "Analogies"
+      "Analogies",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -174,7 +177,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Plans / Recommendations",
+      "Predictions"
     ]
   },
   {
@@ -285,7 +290,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Predictions"
     ]
   },
   {
@@ -353,7 +359,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -396,7 +403,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -441,7 +449,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "Quantifiers"
     ]
   },
   {
@@ -463,7 +472,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -484,7 +494,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Quantifiers"
     ]
   },
   {
@@ -505,7 +516,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Percentages",
+      "Quantifiers"
     ]
   },
   {
@@ -528,7 +541,10 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Net Effect",
+      "New Concept in Conclusion",
+      "Principles in Answers"
     ]
   },
   {
@@ -550,7 +566,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Battle of Opinions",
-      "EXCEPT"
+      "EXCEPT",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {

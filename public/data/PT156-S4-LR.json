@@ -17,7 +17,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -60,7 +62,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Predictions"
     ]
   },
   {
@@ -83,7 +86,8 @@
     "questionFeatures": [
       "Analogies",
       "EXCEPT",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "Predictions"
     ]
   },
   {
@@ -104,7 +108,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Quantifiers"
     ]
   },
   {
@@ -167,7 +172,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "EXCEPT"
+      "EXCEPT",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -232,7 +238,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -253,7 +260,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Chains"
+      "Causal Chains",
+      "Predictions"
     ]
   },
   {
@@ -278,7 +286,8 @@
       "First Sentence Conclusion",
       "Missing Link / Idea",
       "Conditional Conclusion",
-      "Intermediate Conclusions"
+      "Intermediate Conclusions",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -337,7 +346,10 @@
       "D": "overlooks the possibility that people who prefer not to work in tightly knit groups may have difficulty committing to a common purpose",
       "E": "confuses the goals that the manager is seeking to achieve with the goals that must be held in common by the members of the marketing team"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -379,7 +391,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -442,7 +456,10 @@
       "D": "Dudley has worked part-time for the company for the past seven years. He applied for parental leave over three months before the birth of his child, so it should be granted to him.",
       "E": "Maria has worked full-time for the company for the past two years and applied for parental leave six months prior to her adoption of a child, so she should be granted parental leave. GO ON TO THE NEXT PAGE -34- 4 44"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Principles in Stimulus"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -555,7 +572,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   }
 ]

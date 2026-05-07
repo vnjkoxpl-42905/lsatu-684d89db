@@ -103,7 +103,10 @@
       "D": "The Stoke Farm was the main cause of the estate's debts.",
       "E": "Loux's grandson had repeatedly expressed his desire to own a farm."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Predictions"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -201,7 +204,10 @@
       "D": "It supports one of Peter's premises although it undermines Peter's conclusion.",
       "E": "It supports the conclusion of Peter's argument by offering independent grounds for that conclusion."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Quantifiers"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -321,7 +327,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Assumes Difference",
-      "Medical"
+      "Medical",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -440,7 +447,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -459,7 +468,10 @@
       "D": "The reason for unions' existence is to work for goals such as profitable and humane working conditions by organizing strikes.",
       "E": "With strong unions it is possible for a modern industrial society to achieve profitable and humane working conditions, but without them it would be impossible."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -479,7 +491,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Net Effect",
+      "Principles in Answers"
     ]
   },
   {

@@ -53,7 +53,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plausibility"
     ]
   },
   {
@@ -118,7 +119,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Conditional Conclusion",
-      "Math-y Stuff"
+      "Math-y Stuff",
+      "Predictions"
     ]
   },
   {
@@ -158,7 +160,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Causal Chains",
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   },
   {
@@ -276,7 +279,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Principles in Answers"
     ]
   },
   {
@@ -299,7 +303,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Causal Chains",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -339,7 +344,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sampling",
-      "Defender"
+      "Defender",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -422,7 +428,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Net Effect"
     ]
   },
   {
@@ -526,7 +533,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Defender"
+      "Defender",
+      "Plausibility"
     ]
   }
 ]

@@ -134,7 +134,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -265,7 +266,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -348,7 +350,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Missing Link / Idea",
-      "Dense Stimulus"
+      "Dense Stimulus",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -445,7 +448,10 @@
       "D": "When one wants to buy a reliable car, one should not choose which car to buy just on the inadequate basis of one’s personal experience with cars. Rather, one should study various models’ reliability histories that summarize many owners’ experiences.",
       "E": "When there is not enough information available to determine the meaning of a line of poetry, one should not form an opinion based on the insufficient information. Instead, one should simply acknowledge that it is impossible to determine what the line means."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -528,7 +534,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Principles in Answers"
     ]
   }
 ]

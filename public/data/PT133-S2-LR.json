@@ -17,7 +17,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Medical"
+      "Medical",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -38,7 +40,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -57,7 +60,10 @@
       "D": "Nuclear power plants cost less to build today than they cost to build when their technology was newly developed.",
       "E": "As conventional fuels become scarcer their cost will increase dramatically, which will increase the cost of running a conventional power plant."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Net Effect"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -99,7 +105,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Proposition/Generalization"
     ]
   },
   {
@@ -142,7 +149,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Causal Difference-Maker"
+      "Causal Difference-Maker",
+      "Plans / Recommendations",
+      "Principles in Answers"
     ]
   },
   {
@@ -184,7 +193,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Plans / Recommendations",
+      "Plausibility"
     ]
   },
   {
@@ -260,7 +271,10 @@
       "D": "Democratic governments are not truly equitable unless they are designed to prevent interest groups from exerting undue influence on the political process.",
       "E": "It is better to choose a form of government on the basis of sound philosophical reasons than on the basis of popular preference."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Principles in Answers"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -328,7 +342,10 @@
       "D": "It is imperative that the company ship fitness and exercise books on time.",
       "E": "The company should do whatever is required in order to adopt its competitors' shipping practices."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Plans / Recommendations"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -348,7 +365,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Conclusion"
+      "Conditional Conclusion",
+      "Net Effect",
+      "Plans / Recommendations"
     ]
   },
   {
@@ -372,7 +391,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Missing Link / Idea",
-      "Contrapositive Logic"
+      "Contrapositive Logic",
+      "New Concept in Conclusion"
     ]
   },
   {
@@ -462,7 +482,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Net Effect"
     ]
   },
   {
@@ -507,7 +528,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Binaries"
+      "Binaries",
+      "Predictions"
     ]
   },
   {
