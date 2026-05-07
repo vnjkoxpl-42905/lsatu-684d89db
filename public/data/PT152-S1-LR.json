@@ -267,7 +267,10 @@
       "D": "ignores the possibility that a state of affairs is desirable even if it cannot be attained",
       "E": "uses the difficulty of attaining a state of affairs as a reason for not attempting to attain it"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT152",

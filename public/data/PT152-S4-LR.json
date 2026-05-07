@@ -69,7 +69,10 @@
       "D": "maintaining that the evidence presented in support of Warner’s conclusion presupposes the truth of that conclusion",
       "E": "offering an alternative to Warner’s explanation of a certain phenomenon"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -285,7 +288,10 @@
       "D": "takes a sufficient condition for the coal companies’ having made significant investments in other industries in the region to be a necessary condition for their having done so",
       "E": "concludes that a person’s statement is false merely on the grounds that an inadequate argument has been given for it"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT152",

@@ -321,7 +321,10 @@
       "D": "It confuses one phenomenon’s causing a second with the second phenomenon’s causing the first.",
       "E": "It takes for granted that if one phenomenon often causes a second phenomenon and that second phenomenon often causes a third phenomenon, then the first phenomenon cannot ever be the immediate cause of the third."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Famous Flaws"
+    ]
   },
   {
     "practiceTest": "PT152",
