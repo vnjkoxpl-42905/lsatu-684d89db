@@ -285,6 +285,7 @@ Deno.serve(async (req) => {
       asgRes,
       historyRes,
       libraryRes,
+      guidedSetsRes,
       contextRes,
       sessionsRes,
     ] = await Promise.all([
@@ -317,6 +318,7 @@ Deno.serve(async (req) => {
         .order("created_at", { ascending: false })
         .limit(20),
       admin.rpc("search_teaching_assets", { q: message, max_rows: 5 }),
+      admin.rpc("search_guided_drill_sets", { q: message, max_rows: 5 }),
       admin
         .from("student_context")
         .select("id, context_type, title, content_text, source, metadata, created_at")
@@ -357,6 +359,44 @@ Deno.serve(async (req) => {
           .join("\n")
       : "No relevant library assets matched this query.";
 
+    type GuidedSetMatch = {
+      id: string;
+      title: string;
+      description: string | null;
+      question_type: string | null;
+      reasoning_type: string | null;
+      question_feature: string | null;
+      guided_set_type: string | null;
+      estimated_minutes: number | null;
+      difficulty_min: number | null;
+      difficulty_max: number | null;
+      question_count: number | null;
+      instructions_excerpt: string | null;
+    };
+    const guidedSets = (guidedSetsRes.data as GuidedSetMatch[] | null) ?? [];
+    const guidedSetsBlock = guidedSets.length
+      ? guidedSets
+          .map((g) => {
+            const meta = [
+              g.guided_set_type,
+              g.question_type,
+              g.reasoning_type,
+              g.question_feature,
+              g.question_count != null ? `${g.question_count} qs` : null,
+              g.estimated_minutes != null ? `~${g.estimated_minutes} min` : null,
+              g.difficulty_min != null && g.difficulty_max != null
+                ? `L${g.difficulty_min}–${g.difficulty_max}`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" · ");
+            const head = `- [${g.id}] ${g.title}${meta ? ` (${meta})` : ""}`;
+            const desc = g.description ? `\n  ${clamp(g.description, 240)}` : "";
+            return head + desc;
+          })
+          .join("\n")
+      : "No guided drill sets matched this query.";
+
     const studentContextRows =
       (contextRes.data as StudentContextRow[] | null) ?? [];
     const sessionRows =
@@ -376,7 +416,10 @@ STUDENT CONTEXT (per-student external artifacts — files, transcripts, notes, s
 ${clamp(studentContextBlock, 24000)}
 
 RELEVANT LIBRARY ASSETS:
-${clamp(libraryBlock, 8000)}`;
+${clamp(libraryBlock, 8000)}
+
+GUIDED DRILL SETS (assignable; cite a set's id in asset_ids when proposing it):
+${clamp(guidedSetsBlock, 4000)}`;
 
     const messagesForModel: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
       { role: "system", content: SYSTEM_PROMPT },

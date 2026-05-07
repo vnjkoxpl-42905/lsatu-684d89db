@@ -3,13 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Play, RotateCcw, Eye, Clock } from "lucide-react";
+import { ArrowLeft, Play, Eye, Clock } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogoutButton } from "@/components/LogoutButton";
 import {
   useStudentAssignment,
   type AssignmentStatus,
 } from "@/hooks/useStudentAssignments";
+import { useHomeworkSet } from "@/hooks/useHomeworkSets";
+import { GuidedDrillIntroCard } from "@/components/drill/GuidedDrillIntroCard";
 
 function StatusBadge({ status }: { status: AssignmentStatus }) {
   const map: Record<AssignmentStatus, { label: string; cls: string }> = {
@@ -41,22 +43,75 @@ export default function ClassroomAssignmentDetail() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const { user } = useAuth();
   const { assignment, loading } = useStudentAssignment(assignmentId);
+  const { set: parentSet, loading: parentLoading } = useHomeworkSet(
+    assignment?.set_id ?? undefined,
+  );
+  const [showCard, setShowCard] = React.useState(false);
 
   React.useEffect(() => {
     if (!user) navigate("/auth");
   }, [user, navigate]);
 
-  const handleStart = () => {
+  const isGuided = parentSet?.is_guided_set === true;
+
+  const navigateToDrill = React.useCallback(() => {
     if (!assignment) return;
     const qidsParam = assignment.question_qids.join(",");
-    navigate(
-      `/drill?mode=type-drill&qids=${encodeURIComponent(qidsParam)}&assignmentId=${encodeURIComponent(assignment.id)}`,
-    );
+    const params = new URLSearchParams({
+      mode: "type-drill",
+      qids: qidsParam,
+      assignmentId: assignment.id,
+    });
+    if (parentSet?.id && isGuided) {
+      params.set("guidedSetId", parentSet.id);
+    }
+    navigate(`/drill?${params.toString()}`);
+  }, [assignment, parentSet, isGuided, navigate]);
+
+  const handleStart = () => {
+    if (!assignment) return;
+    if (isGuided) {
+      setShowCard(true);
+      return;
+    }
+    navigateToDrill();
   };
 
   const estMinutes = assignment
-    ? Math.max(1, Math.ceil(assignment.question_qids.length * 2))
+    ? parentSet?.estimated_minutes ??
+      Math.max(1, Math.ceil(assignment.question_qids.length * 2))
     : 0;
+
+  // Render the full-page intro card before transitioning to the drill.
+  if (showCard && assignment && parentSet && isGuided) {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
+          <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-5xl mx-auto">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowCard(false)}
+              className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Back
+            </Button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <LogoutButton />
+            </div>
+          </div>
+        </header>
+        <GuidedDrillIntroCard
+          set={parentSet}
+          questionCount={assignment.question_qids.length}
+          onStart={navigateToDrill}
+          onCancel={() => setShowCard(false)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -132,12 +187,22 @@ export default function ClassroomAssignmentDetail() {
 
             <div>
               {assignment.status === "assigned" && (
-                <Button size="lg" onClick={handleStart} className="gap-2">
-                  <Play className="h-4 w-4" /> Start
+                <Button
+                  size="lg"
+                  onClick={handleStart}
+                  disabled={parentLoading}
+                  className="gap-2"
+                >
+                  <Play className="h-4 w-4" /> {parentSet?.start_button_label || "Start"}
                 </Button>
               )}
               {assignment.status === "in_progress" && (
-                <Button size="lg" onClick={handleStart} className="gap-2">
+                <Button
+                  size="lg"
+                  onClick={handleStart}
+                  disabled={parentLoading}
+                  className="gap-2"
+                >
                   <Play className="h-4 w-4" /> Continue
                 </Button>
               )}

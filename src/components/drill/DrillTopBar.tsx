@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import {
   Underline, Eraser, Flag, Undo2, Search,
   MoreVertical, Play, Pause, MessageCircle,
-  ChevronLeft
+  ChevronLeft, HelpCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -47,6 +47,8 @@ interface DrillTopBarProps {
   onTutorModeChange?: (v: boolean) => void;
   showTutorToggle?: boolean;
   onOpenTutor?: () => void;
+  // Guided drill instruction card
+  onOpenInfo?: () => void;
   // Find text
   onFindText?: (query: string) => void;
 }
@@ -70,6 +72,7 @@ export function DrillTopBar({
   onTutorModeChange,
   showTutorToggle = false,
   onOpenTutor,
+  onOpenInfo,
   onFindText,
 }: DrillTopBarProps) {
   const isMobile = useIsMobile();
@@ -286,6 +289,24 @@ export function DrillTopBar({
               {mobileOverflowItems}
             </DropdownMenuContent>
           </DropdownMenu>
+        )}
+
+        {/* Guided drill Info button — re-opens the pre-start instruction card */}
+        {onOpenInfo && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onOpenInfo}
+                className="h-7 w-7 min-h-0 min-w-0 shrink-0"
+                aria-label="Open drill instructions"
+              >
+                <HelpCircle className="w-4 h-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Drill instructions</TooltipContent>
+          </Tooltip>
         )}
 
         {/* Tutor AI button */}

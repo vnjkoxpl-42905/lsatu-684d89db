@@ -18,6 +18,8 @@ import { ReviewModal } from '@/components/drill/ReviewModal';
 import { VoiceCoachChip } from '@/components/drill/VoiceCoachChip';
 import { VoiceCoachModal } from '@/components/drill/VoiceCoachModal';
 import { DrillTopBar } from '@/components/drill/DrillTopBar';
+import { GuidedDrillIntroModal } from '@/components/drill/GuidedDrillIntroModal';
+import { useHomeworkSet } from '@/hooks/useHomeworkSets';
 import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
 import { BlindReviewFlow, type BlindReviewResult } from '@/components/drill/BlindReviewFlow';
@@ -74,6 +76,9 @@ function DrillContent() {
   // context survives page refresh. Existing callers use location.state. URL
   // params take priority; fall back to state when absent.
   const assignmentId = searchParams.get('assignmentId');
+  const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
+  const { set: guidedSet } = useHomeworkSet(guidedSetId);
+  const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
   const state = React.useMemo<{
     mode: DrillMode;
     config?: FullSectionConfig | TypeDrillConfig;
@@ -2160,6 +2165,12 @@ function DrillContent() {
           tutorMode={tutorMode}
           onTutorModeChange={setTutorMode}
           onOpenTutor={() => setTutorChatOpen(true)}
+          onOpenInfo={guidedSet?.is_guided_set ? () => setGuidedInfoOpen(true) : undefined}
+        />
+        <GuidedDrillIntroModal
+          set={guidedSet?.is_guided_set ? guidedSet : null}
+          open={guidedInfoOpen}
+          onOpenChange={setGuidedInfoOpen}
         />
 
       {/* Main Content */}

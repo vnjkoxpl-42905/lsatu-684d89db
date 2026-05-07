@@ -6,10 +6,36 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { useHomeworkSets } from "@/hooks/useHomeworkSets";
+import {
+  useHomeworkSets,
+  type InstructionLayout,
+} from "@/hooks/useHomeworkSets";
 import QuestionMultiPicker from "@/components/homework/QuestionMultiPicker";
 import { BUILD_SHA } from "@/lib/buildInfo";
+
+function parseIntOrNull(v: string): number | null {
+  const trimmed = v.trim();
+  if (!trimmed) return null;
+  const n = Number(trimmed);
+  return Number.isFinite(n) ? Math.round(n) : null;
+}
+
+function parseSourcePts(v: string): string[] | null {
+  const arr = v
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return arr.length > 0 ? arr : null;
+}
 
 export default function HomeworkNew() {
   const navigate = useNavigate();
@@ -20,6 +46,21 @@ export default function HomeworkNew() {
   const [description, setDescription] = React.useState("");
   const [qids, setQids] = React.useState<string[]>([]);
   const [submitting, setSubmitting] = React.useState(false);
+
+  // Guided-set fields
+  const [isGuided, setIsGuided] = React.useState(false);
+  const [instructionsMd, setInstructionsMd] = React.useState("");
+  const [instructionLayout, setInstructionLayout] =
+    React.useState<InstructionLayout>("two_column");
+  const [questionType, setQuestionType] = React.useState("");
+  const [reasoningType, setReasoningType] = React.useState("");
+  const [questionFeature, setQuestionFeature] = React.useState("");
+  const [guidedSetType, setGuidedSetType] = React.useState("");
+  const [estimatedMinutes, setEstimatedMinutes] = React.useState("");
+  const [sourcePts, setSourcePts] = React.useState("");
+  const [difficultyMin, setDifficultyMin] = React.useState("");
+  const [difficultyMax, setDifficultyMax] = React.useState("");
+  const [startButtonLabel, setStartButtonLabel] = React.useState("");
 
   React.useEffect(() => {
     if (!permLoading && !is_admin) {
@@ -38,6 +79,22 @@ export default function HomeworkNew() {
       title: resolvedTitle,
       description: description.trim() || null,
       question_qids: qids,
+      ...(isGuided
+        ? {
+            is_guided_set: true,
+            instructions_markdown: instructionsMd.trim() || null,
+            instruction_layout: instructionLayout,
+            question_type: questionType.trim() || null,
+            reasoning_type: reasoningType.trim() || null,
+            question_feature: questionFeature.trim() || null,
+            guided_set_type: guidedSetType.trim() || null,
+            estimated_minutes: parseIntOrNull(estimatedMinutes),
+            source_pts: parseSourcePts(sourcePts),
+            difficulty_min: parseIntOrNull(difficultyMin),
+            difficulty_max: parseIntOrNull(difficultyMax),
+            start_button_label: startButtonLabel.trim() || null,
+          }
+        : { is_guided_set: false }),
     });
     setSubmitting(false);
     if (!row) {
@@ -105,6 +162,164 @@ export default function HomeworkNew() {
             </p>
           </div>
           <QuestionMultiPicker value={qids} onChange={setQids} />
+        </section>
+
+        <section className="border border-zinc-800 rounded-lg p-5 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-sm font-medium text-zinc-300">Guided set</h2>
+              <p className="text-xs text-zinc-500 mt-1 max-w-md">
+                Show a 2-column instruction card before the student starts the drill. Adds
+                pedagogical metadata used by the AI Teaching Assistant when recommending sets.
+              </p>
+            </div>
+            <Switch checked={isGuided} onCheckedChange={setIsGuided} aria-label="Guided set" />
+          </div>
+
+          {isGuided && (
+            <div className="space-y-4 pt-2 border-t border-zinc-800">
+              <div className="space-y-1.5">
+                <Label htmlFor="hw-instructions">Instructions (Markdown)</Label>
+                <p className="text-xs text-zinc-500">
+                  Use <code className="text-zinc-300">### Left Column</code> and{" "}
+                  <code className="text-zinc-300">### Right Column</code> markers to split into two columns.
+                </p>
+                <Textarea
+                  id="hw-instructions"
+                  value={instructionsMd}
+                  onChange={(e) => setInstructionsMd(e.target.value)}
+                  placeholder={"### Left Column\n\nKey concepts...\n\n### Right Column\n\nWhat to practice..."}
+                  rows={10}
+                  className="bg-zinc-900 border-zinc-800 text-zinc-100 font-mono text-sm"
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-layout">Instruction layout</Label>
+                  <Select
+                    value={instructionLayout}
+                    onValueChange={(v) => setInstructionLayout(v as InstructionLayout)}
+                  >
+                    <SelectTrigger id="hw-layout" className="bg-zinc-900 border-zinc-800 text-zinc-100">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="two_column">Two column</SelectItem>
+                      <SelectItem value="single_column">Single column</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-start-label">Start button label</Label>
+                  <Input
+                    id="hw-start-label"
+                    value={startButtonLabel}
+                    onChange={(e) => setStartButtonLabel(e.target.value)}
+                    placeholder="Start"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-qtype">Question type</Label>
+                  <Input
+                    id="hw-qtype"
+                    value={questionType}
+                    onChange={(e) => setQuestionType(e.target.value)}
+                    placeholder="e.g. Main Conclusion / Role"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-rtype">Reasoning type</Label>
+                  <Input
+                    id="hw-rtype"
+                    value={reasoningType}
+                    onChange={(e) => setReasoningType(e.target.value)}
+                    placeholder="e.g. Causation"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-qfeat">Question feature</Label>
+                  <Input
+                    id="hw-qfeat"
+                    value={questionFeature}
+                    onChange={(e) => setQuestionFeature(e.target.value)}
+                    placeholder="e.g. First Sentence Conclusion"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-gtype">Guided set type</Label>
+                  <Input
+                    id="hw-gtype"
+                    value={guidedSetType}
+                    onChange={(e) => setGuidedSetType(e.target.value)}
+                    placeholder="Patterns / Process / ..."
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-est-min">Estimated minutes</Label>
+                  <Input
+                    id="hw-est-min"
+                    type="number"
+                    min={0}
+                    value={estimatedMinutes}
+                    onChange={(e) => setEstimatedMinutes(e.target.value)}
+                    placeholder="30"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-source-pts">Source PTs (comma-separated)</Label>
+                  <Input
+                    id="hw-source-pts"
+                    value={sourcePts}
+                    onChange={(e) => setSourcePts(e.target.value)}
+                    placeholder="140, 141"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-diff-min">Difficulty min (1–5)</Label>
+                  <Input
+                    id="hw-diff-min"
+                    type="number"
+                    min={1}
+                    max={5}
+                    value={difficultyMin}
+                    onChange={(e) => setDifficultyMin(e.target.value)}
+                    placeholder="1"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hw-diff-max">Difficulty max (1–5)</Label>
+                  <Input
+                    id="hw-diff-max"
+                    type="number"
+                    min={1}
+                    max={5}
+                    value={difficultyMax}
+                    onChange={(e) => setDifficultyMax(e.target.value)}
+                    placeholder="3"
+                    className="bg-zinc-900 border-zinc-800 text-zinc-100"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
         <div className="flex items-center justify-between">

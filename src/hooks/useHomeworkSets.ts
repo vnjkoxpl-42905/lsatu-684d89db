@@ -8,6 +8,8 @@ import { useClassId } from "@/hooks/useClassId";
  * RLS enforces created_by = auth.uid() and has_role(..., 'admin').
  */
 
+export type InstructionLayout = 'two_column' | 'single_column';
+
 export interface HomeworkSet {
   id: string;
   title: string;
@@ -17,15 +19,43 @@ export interface HomeworkSet {
   class_id: string;
   created_at: string;
   updated_at: string;
+  /** Guided-set extension fields (nullable on legacy rows). */
+  is_guided_set?: boolean;
+  instructions_markdown?: string | null;
+  instruction_layout?: InstructionLayout | null;
+  guided_set_type?: string | null;
+  question_type?: string | null;
+  reasoning_type?: string | null;
+  question_feature?: string | null;
+  estimated_minutes?: number | null;
+  source_pts?: string[] | null;
+  difficulty_min?: number | null;
+  difficulty_max?: number | null;
+  start_button_label?: string | null;
 }
 
-export interface CreateHomeworkSetInput {
+export interface GuidedSetFields {
+  is_guided_set?: boolean;
+  instructions_markdown?: string | null;
+  instruction_layout?: InstructionLayout | null;
+  guided_set_type?: string | null;
+  question_type?: string | null;
+  reasoning_type?: string | null;
+  question_feature?: string | null;
+  estimated_minutes?: number | null;
+  source_pts?: string[] | null;
+  difficulty_min?: number | null;
+  difficulty_max?: number | null;
+  start_button_label?: string | null;
+}
+
+export interface CreateHomeworkSetInput extends GuidedSetFields {
   title: string;
   description?: string | null;
   question_qids: string[];
 }
 
-export interface UpdateHomeworkSetInput {
+export interface UpdateHomeworkSetInput extends GuidedSetFields {
   title?: string;
   description?: string | null;
   question_qids?: string[];
@@ -84,6 +114,17 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
       if (!user) return { data: null, error: "Not signed in." };
       if (classIdLoading) return { data: null, error: "Still loading your class. Try again in a moment." };
       const effectiveClassId = classId || user.id;
+      const guidedFields: Record<string, unknown> = {};
+      const guidedKeys: (keyof GuidedSetFields)[] = [
+        'is_guided_set', 'instructions_markdown', 'instruction_layout',
+        'guided_set_type', 'question_type', 'reasoning_type', 'question_feature',
+        'estimated_minutes', 'source_pts', 'difficulty_min', 'difficulty_max',
+        'start_button_label',
+      ];
+      for (const k of guidedKeys) {
+        const v = input[k];
+        if (v !== undefined) guidedFields[k] = v;
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data, error: err } = await (supabase as any)
         .from("homework_sets")
@@ -93,6 +134,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
           question_qids: input.question_qids,
           created_by: user.id,
           class_id: effectiveClassId,
+          ...guidedFields,
         })
         .select()
         .single();
