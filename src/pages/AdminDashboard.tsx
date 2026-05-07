@@ -284,17 +284,23 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       {/* Header */}
       <div className="border-b border-zinc-800">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
-          <button onClick={() => navigate("/foyer")} className="text-zinc-400 hover:text-white transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
+          <button
+            onClick={() => navigate("/foyer")}
+            className="text-zinc-400 hover:text-white transition-colors shrink-0"
+            aria-label="Back to foyer"
+          >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <Shield className="w-5 h-5 text-amber-500/70" />
-          <h1 className="text-lg font-semibold tracking-tight">Admin Dashboard</h1>
-          <span className="text-xs text-zinc-500 ml-auto">{users.length} users</span>
+          <Shield className="w-5 h-5 text-amber-500/70 shrink-0" />
+          <h1 className="text-base sm:text-lg font-semibold tracking-tight truncate">
+            Admin Dashboard
+          </h1>
+          <span className="text-xs text-zinc-500 ml-auto shrink-0">{users.length} users</span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* ── Analytics Cards ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total Users" value={computedAnalytics.total_users} />
@@ -332,8 +338,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* ── Search & Filter ── */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 max-w-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="relative flex-1 sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
             <Input
               placeholder="Search by email or name..."
@@ -342,12 +348,12 @@ export default function AdminDashboard() {
               className="pl-9 bg-zinc-900 border-zinc-800 text-zinc-200 placeholder:text-zinc-600 focus:border-zinc-600"
             />
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1 self-stretch sm:self-auto">
             {(["all", "admin", "user"] as const).map(r => (
               <button
                 key={r}
                 onClick={() => setRoleFilter(r)}
-                className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
+                className={`flex-1 sm:flex-none px-3 py-1.5 text-xs rounded-md transition-colors ${
                   roleFilter === r
                     ? "bg-zinc-800 text-zinc-200"
                     : "text-zinc-500 hover:text-zinc-300"
@@ -361,7 +367,8 @@ export default function AdminDashboard() {
 
         {/* ── User Table ── */}
         <div className="border border-zinc-800 rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[640px]">
             <thead>
               <tr className="bg-zinc-900/50 border-b border-zinc-800">
                 <th className="text-left py-3 px-4 text-zinc-400 font-medium w-8"></th>
@@ -521,6 +528,7 @@ export default function AdminDashboard() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>
