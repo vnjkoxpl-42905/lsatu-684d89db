@@ -192,7 +192,7 @@ export default function TeacherBootcamps() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] h-full">
-      <aside className="border-r border-zinc-800 overflow-y-auto">
+      <aside className="border-b lg:border-b-0 lg:border-r border-zinc-800 overflow-y-auto max-h-[40vh] lg:max-h-none">
         <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2 text-zinc-400">
           <Flame className="w-4 h-4" />
           <span className="text-[11px] uppercase tracking-wider font-semibold">
@@ -202,7 +202,7 @@ export default function TeacherBootcamps() {
         <HubStudentList selectedId={studentId} onSelect={setStudentId} />
       </aside>
 
-      <section className="p-6 space-y-5">
+      <section className="p-4 sm:p-6 space-y-5">
         <div className="space-y-1.5">
           <h2 className="text-xl font-semibold tracking-tight">Bootcamps</h2>
           <p className="text-sm text-zinc-400">
