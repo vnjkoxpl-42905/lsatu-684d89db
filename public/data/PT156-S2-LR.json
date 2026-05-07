@@ -15,7 +15,10 @@
       "D": "Snow monkeys eat apples only if there is no other fruit to eat.",
       "E": "Feeding soybeans to snow monkeys has proved to be an environmentally unsound policy."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -74,7 +77,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -96,7 +100,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -117,7 +122,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Dense Stimulus"
     ]
   },
   {
@@ -282,7 +288,11 @@
       "D": "The polar ice caps grew for about 20,000 years after the period began, then began to shrink.",
       "E": "An ice age was drawing to an end during the first 20,000 years of the period."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -303,7 +313,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -324,7 +335,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -385,7 +397,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Dense Stimulus"
     ]
   },
   {
@@ -404,7 +417,10 @@
       "D": "People pool their money to buy certain foods in bulk in order to get a volume discount and reduce their bills. But after doing this, they eat more than they used to and so spend the same amount of money on food as they did before they pooled it.",
       "E": "Several communities band together to build a large conference center. But the project nearly collapses as each community, because of the revenue the center will bring, fights to be the one in which it is built. -18- 22"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -467,7 +483,9 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -488,7 +506,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "EXCEPT"
     ]
   },
   {

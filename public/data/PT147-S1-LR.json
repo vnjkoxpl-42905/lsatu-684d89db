@@ -77,7 +77,9 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Contrapositive Logic",
+      "Defender"
     ]
   },
   {
@@ -157,7 +159,10 @@
       "D": "Baby macaques under a week old mistake the scientists interacting with them for adult macaques.",
       "E": "Baby macaques under a week old only imitate human gestures also used by adult macaques."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -236,7 +241,10 @@
       "D": "treatment of diseases with the powerful new antibiotics is much more expensive than treatment with the older ones",
       "E": "most bacteria that are resistant to penicillin are not resistant to ampicillin and other modern antibiotics"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -355,7 +363,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Defender"
     ]
   },
   {
@@ -472,7 +481,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -491,7 +501,10 @@
       "D": "The advertisers would not be able to offer the computers absolutely free of charge if advertisements that accurately reflected the interests of the computers’ users did not play continuously across the computers’ screens whenever they were in use.",
       "E": "Consumers who use a computer offered free of charge by the advertisers can sometimes choose to abstain from having information about their browsing patterns sent to the advertisers."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT147",

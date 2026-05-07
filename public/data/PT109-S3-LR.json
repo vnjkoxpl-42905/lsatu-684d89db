@@ -35,7 +35,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Clarification/Misunderstanding"
     ]
   },
   {
@@ -54,7 +55,10 @@
       "D": "Many marsh birds are most active during daylight hours, but the marsh hen is usually most active at night.",
       "E": "Although many small marsh birds fly in groups to several feeding areas each day, the marsh hen tends to be solitary and flies only when it is in danger."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -170,7 +174,10 @@
       "D": "Two states founded on and adhering to similar principles of justice had different requirements that had to be met in order to be eligible for government-subsidized day care.",
       "E": "Two societies based on different principles of justice, each adhering to its own principles, had the same unemployment benefits."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -212,7 +219,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -254,7 +263,10 @@
       "D": "Most businesses are not modified to accommodate wheelchair users.",
       "E": "Some business areas are not frequented by wheelchair users because the areas lack proper accommodations."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -314,7 +326,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -396,7 +409,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -436,7 +450,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Conditional Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -499,7 +515,9 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender",
+      "Dense Stimulus"
     ]
   }
 ]

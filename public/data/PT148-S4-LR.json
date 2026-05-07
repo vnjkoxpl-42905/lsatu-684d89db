@@ -120,7 +120,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -298,7 +299,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -338,7 +340,10 @@
       "D": "Jury members should generally be selected on the basis of their technical expertise.",
       "E": "Expert witnesses who testify on opposite sides in legal cases are likely to agree in their evaluations of technical claims."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -421,7 +426,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Causal Chains"
     ]
   },
   {

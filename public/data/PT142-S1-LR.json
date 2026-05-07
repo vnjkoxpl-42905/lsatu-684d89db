@@ -162,7 +162,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -384,7 +385,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -481,7 +483,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Complex Conditionals",
+      "Contrapositive Logic"
     ]
   },
   {

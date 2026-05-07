@@ -174,7 +174,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "EXCEPT"
     ]
   },
   {
@@ -235,7 +236,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -376,7 +378,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {

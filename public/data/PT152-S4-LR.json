@@ -143,7 +143,11 @@
       "D": "Arctic peoples, who consume large amounts of calcium, exhibit one of the highest rates of osteoporosis in the world.",
       "E": "The incidence of osteoporosis is unusually low among strict vegetarians with low-protein diets."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -241,7 +245,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Dense Stimulus"
     ]
   },
   {
@@ -262,7 +267,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -341,7 +347,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -403,7 +410,10 @@
       "D": "Passwords that are random configurations of letters and numbers are the least likely to result in security breaches.",
       "E": "The easier a password is to remember, the more secure the computer account."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT152",

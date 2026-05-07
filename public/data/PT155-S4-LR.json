@@ -61,7 +61,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -83,7 +84,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Famous Flaws",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -255,7 +257,10 @@
       "D": "Designs whose initial conceptualization was inadequate rarely turn out well.",
       "E": "A designer will never see advantages and flaws in a design idea without the aid of a sketch."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -399,7 +404,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "EXCEPT"
     ]
   },
   {
@@ -508,7 +514,10 @@
       "D": "There are conceivable observations that would refute quantum theory, so quantum theory is an empirical theory.",
       "E": "The theory of relativity must be true since, although scientists have conceived of observations that would refute it, it has not yet been refuted."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Complex Conditionals"
+    ]
   },
   {
     "practiceTest": "PT155",

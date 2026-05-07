@@ -94,7 +94,10 @@
       "D": "Children often imitate the behavior of others rather than listening to reason.",
       "E": "Children ordinarily act contrary to their parents’ expectations in order to get more attention."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -238,7 +241,10 @@
       "D": "Most people who drive cars equipped with antilock brakes do not know how to use those brakes properly.",
       "E": "Antilock brakes were designed for safety in congested urban driving, but accidents of the most serious nature take place on highways."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -279,7 +285,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Causal Chains"
     ]
   },
   {
@@ -300,7 +307,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -378,7 +387,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "EXCEPT"
     ]
   },
   {
@@ -436,7 +446,11 @@
       "D": "The brittleness of a rattlesnake’s rattle is not correlated with the length of the rattlesnake’s life.",
       "E": "Rattlesnakes molt as often when food is scarce as they do when food is plentiful."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT111",

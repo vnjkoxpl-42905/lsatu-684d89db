@@ -257,7 +257,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -464,7 +465,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Dense Stimulus"
     ]
   },
   {

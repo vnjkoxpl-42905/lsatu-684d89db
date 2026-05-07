@@ -95,7 +95,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Clarification/Misunderstanding"
     ]
   },
   {
@@ -150,7 +151,11 @@
       "D": "reach a conclusion based on evidence that is similar to evidence commonly thought to support an analogous case",
       "E": "reach a conclusion about what democratically governed societies actually do based on premises about what democratically governed societies should do"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -171,7 +176,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -233,7 +239,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -252,7 +259,10 @@
       "D": "The role of the male gamete in sexual reproduction is less important than the role of the female gamete.",
       "E": "It is likely that other types of genetic material that are contributed exclusively by the male gamete will be identified."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -270,7 +280,10 @@
       "D": "The argument takes for granted that a certain behavior is more prevalent among members of one population than it is among members of another.",
       "E": "The argument infers the existence of a causal connection merely on the basis of an association."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Complex Conditionals"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -458,7 +471,10 @@
       "D": "Ed dislikes any food that is extremely sweet, but Bill likes most extremely sweet food. It follows that Ed will dislike these extremely sweet brownies but Bill will probably like them.",
       "E": "In the past, the citizens of Lake County have voted down every proposal to increase property taxes. It follows that citizens of Lake County will probably vote down the new proposed increase in property taxes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT129",

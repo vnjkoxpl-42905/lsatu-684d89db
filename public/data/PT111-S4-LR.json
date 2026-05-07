@@ -15,7 +15,10 @@
       "D": "Acquiring the ability to manipulate symbols is part of the process of learning geometry.",
       "E": "There are strategies that can be effectively employed in the teaching both of algebra and of geometry."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -248,7 +251,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
-      "Binaries"
+      "Binaries",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -328,7 +332,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion",
+      "EXCEPT"
     ]
   },
   {

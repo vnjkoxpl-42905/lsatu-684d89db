@@ -222,7 +222,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {
@@ -298,7 +299,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -317,7 +319,10 @@
       "D": "takes a condition that suffices to prove its conclusion to be a condition necessary for the truth of that conclusion",
       "E": "concludes that a hypothesis is false simply because it contradicts other beliefs held by the advocates of that hypothesis"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -470,7 +475,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   }
 ]

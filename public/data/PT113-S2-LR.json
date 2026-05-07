@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Important Pivot",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -152,7 +153,10 @@
       "D": "People who are inclined to shirk their workplace responsibilities are more likely to exaggerate their credentials, leading prospective employers to believe them to be highly qualified.",
       "E": "Finding a job is less urgent for the conscientious, because they tend to have larger savings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT113",
@@ -396,7 +400,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {

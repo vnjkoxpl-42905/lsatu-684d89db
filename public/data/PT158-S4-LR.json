@@ -232,7 +232,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -269,7 +270,10 @@
       "D": "A polyp detected by the new screening test should be surgically removed if it is malignant.",
       "E": "The screening test is medically useful only when it detects a polyp that requires treatment. -32- 4 44"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -310,7 +314,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -415,7 +420,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Dense Stimulus"
     ]
   },
   {
@@ -455,7 +461,10 @@
       "D": "Some medieval epistemologists had epistemological beliefs that contradicted the epistemological beliefs of other medieval epistemologists.",
       "E": "There is much debate as to which medieval thinkers, if any, were epistemologists."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -476,7 +485,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Conditional Conclusion"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "accept that most endemic species will become extinct",
       "E": "expand the definition of “hot spot” to include vulnerable habitats that are not currently home to many endangered species"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -55,7 +58,10 @@
       "D": "killer whales are most likely to prefer areas where boat traffic is present, but light",
       "E": "killer whales would probably be more successful in finding food if boats did not travel through their habitats"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -239,7 +245,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -383,7 +390,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -445,7 +453,10 @@
       "D": "Most of the problems scientists are called upon to solve are problems that politicians and business leaders want solved, but whose formulation the scientists have helped to guide.",
       "E": "The only reason for the astounding success rate of science is that the problems scientists are called upon to solve are usually selected by the scientists themselves."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT134",

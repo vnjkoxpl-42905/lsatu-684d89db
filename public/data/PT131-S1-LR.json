@@ -69,7 +69,10 @@
       "D": "relies on an inappropriate appeal to the opinions of consumers with no special knowledge of skin care",
       "E": "overlooks the possibility that for a few people, using no skin cream is preferable to using even the best skin cream"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -89,7 +92,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -346,7 +350,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Complex Conditionals"
     ]
   },
   {
@@ -389,7 +394,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -494,7 +500,10 @@
       "D": "Several important features of the 1987 supernova are correctly predicted by the current theory.",
       "E": "Some neutron stars are known to have come into existence by a cause other than a supernova explosion."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT131",

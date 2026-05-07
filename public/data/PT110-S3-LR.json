@@ -33,7 +33,10 @@
       "D": "Proper understanding of human personality is thought to provide a model for better understanding the personality of animals.",
       "E": "Field observations of the behavior of young animals often inspire insightful hypotheses about human personality development."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -54,7 +57,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -77,7 +81,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Sampling",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -98,7 +103,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -182,7 +188,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -222,7 +230,11 @@
       "D": "Degenerative brain disorders account for a very small proportion of deaths in the population at large.",
       "E": "More is being spent on research into degenerative brain disorders than on research into transplantation."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender",
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -382,7 +394,10 @@
       "D": "Rhodopsin molecules are more sensitive to photons in animals whose retinas have large surface areas than in animals whose retinas have small surface areas.",
       "E": "Molecules of rhodopsin are the only pigment molecules that occur naturally in the retina."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -436,7 +451,10 @@
       "D": "Some viruses that fail to kill other viruses that are deadly to humans are nevertheless beneficial to humans.",
       "E": "No virus that is deadly to organisms of greater complexity than itself is beneficial to humans."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -478,7 +496,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {

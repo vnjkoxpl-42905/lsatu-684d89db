@@ -141,7 +141,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -202,7 +203,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -332,7 +334,10 @@
       "D": "An independent report released before the crime took place concluded that XYZ Corporation was vulnerable to embezzlement.",
       "E": "Certain security measures at XYZ Corporation made it more difficult for the actuaries to have access to internal financial records than for the accountants."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -390,7 +395,10 @@
       "D": "Weather conditions are the most important factor in determining where plants will grow.",
       "E": "Weather patterns have changed in the past 60 years."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -412,7 +420,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -493,7 +503,8 @@
     "questionFeatures": [
       "Analogies",
       "Assumes Similarity",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Defender"
     ]
   }
 ]

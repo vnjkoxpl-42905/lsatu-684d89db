@@ -20,7 +20,8 @@
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
       "Argue the Anti-Conclusion",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -59,7 +60,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Chains"
     ]
   },
   {
@@ -258,7 +260,10 @@
       "D": "People who create things whose success can be easily ascertained worry less about others’ opinions of their work than do people who create things whose value cannot be easily ascertained.",
       "E": "Someone who creates a work that cannot be easily evaluated tends to be less confident about its value than are those who evaluate it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -315,7 +320,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -334,7 +340,10 @@
       "D": "Large bits of cosmic rock periodically enter Earth’s atmosphere, raising large amounts of dust from Earth’s surface.",
       "E": "Rare trace elements known to be prevalent in cosmic debris have been discovered in layers of sediment whose ages correspond very closely to the occurrence of ice ages."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -352,7 +361,10 @@
       "D": "Most people want more than their own personal happiness.",
       "E": "All actions have long-term consequences."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -431,7 +443,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
-      "Binaries"
+      "Binaries",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -509,7 +522,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Causal Chains"
     ]
   }
 ]

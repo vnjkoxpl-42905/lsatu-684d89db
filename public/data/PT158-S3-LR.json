@@ -40,7 +40,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -207,7 +208,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Conditional Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -268,7 +271,11 @@
       "D": "No psychotherapist can help a patient heal solely by addressing the internal causes of the patient’s troubles.",
       "E": "If a psychotherapist helps patients focus on troubles that are purely internal, then that psychotherapist thereby provides them the relief they seek."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -288,7 +295,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -346,7 +354,10 @@
       "D": "A hardware retail company wants to construct a new, larger warehouse and wants its employees to help plan how the old warehouse will be expanded to meet any need for more space.",
       "E": "A concert series director wants to present a more varied repertoire and wants to attract new patrons."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -367,7 +378,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -427,7 +439,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {

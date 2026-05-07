@@ -36,7 +36,10 @@
       "D": "The Internet's search capabilities make it possible to locate most out-of-print books.",
       "E": "Only people who have access to the Internet can locate out-of-print books."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -192,7 +195,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {

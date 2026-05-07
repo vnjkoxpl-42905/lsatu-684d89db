@@ -121,7 +121,13 @@
       "D": "Beyond a certain limit, increasing the amount of filler added to paper pulp does not increase the whiteness of the paper made from the pulp.",
       "E": "The total amount of writing paper manufactured worldwide will increase significantly in the future."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Complex Conditionals",
+      "Conditional Conclusion",
+      "Defender",
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -178,7 +184,10 @@
       "D": "The annual number of visitors to the museum has increased steadily.",
       "E": "Not all visitors to the museum are required to pay an admission fee."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -222,7 +231,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -363,7 +373,10 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals",
+      "Conditional Conclusion",
+      "Dense Stimulus"
     ]
   },
   {
@@ -403,7 +416,10 @@
       "D": "Because they are among the easiest food containers to make from recycled Styrofoam, most egg cartons are made from recycled Styrofoam.",
       "E": "Not every type of food container made of recycled Styrofoam is effectively prevented from coming into contact with the food it contains."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -444,7 +460,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -465,7 +482,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -486,7 +504,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -507,7 +526,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -529,7 +549,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   }
 ]

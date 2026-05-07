@@ -15,7 +15,10 @@
       "D": "Signals transmitted through fiber-optic cable travel at the same speed as signals transmitted through copper cable.",
       "E": "The cost associated with frequent amplification of signals traveling through copper cable exceeds the extra manufacturing cost of fiber-optic cable."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -194,7 +197,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -213,7 +217,10 @@
       "D": "Carrot consumption has increased only among those demographic groups that have historically had low vitamin A deficiency rates.",
       "E": "Weather conditions have caused a decrease in the availability of carrots."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -291,7 +298,10 @@
       "D": "Children learn from violent programs on television to disrespect society’s prohibitions of violence and, as a result, are more likely than other children to disrespect the school disciplinary codes.",
       "E": "Parents who do not allow their children to watch programs with a high level of violence are more likely than other parents to be careful about other aspects of their children’s behavior."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -333,7 +343,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -505,6 +516,9 @@
       "D": "The number of North American employers willing to hire individuals without a Ph.D. for jobs in art history has increased in each of the last four years.",
       "E": "The percentage of applications for admission received from outside North America by North American Ph.D. programs in art history has declined substantially in the last four years."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   }
 ]

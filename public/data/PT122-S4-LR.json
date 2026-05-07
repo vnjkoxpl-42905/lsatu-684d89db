@@ -80,7 +80,10 @@
       "D": "In recent elections, the best local politicians have refused to run for national office because of the intrusiveness of press coverage.",
       "E": "Politicians' personality flaws often ultimately affect their performance on the job."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT122",
@@ -254,7 +257,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -388,7 +392,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -485,6 +490,9 @@
       "D": "Admission tickets to the special exhibitions at the museum are issued for a specific 1-hour period on a specific day.",
       "E": "Many people who go to special exhibitions are on organized tours and do not have the opportunity to browse."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   }
 ]

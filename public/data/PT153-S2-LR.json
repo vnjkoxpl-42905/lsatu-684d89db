@@ -36,7 +36,10 @@
       "D": "Most predators prey upon a variety of species, not all of which play dead when caught.",
       "E": "Many small animal species that do not play dead are capable of fighting off predators."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -78,7 +81,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -97,7 +101,10 @@
       "D": "Some doctors believe that use of vitamin C is the most effective treatment for certain common illnesses.",
       "E": "Some doctors believe that any illness that can be ameliorated with vitamin C causes deterioration of connective tissue and bones."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -200,7 +207,10 @@
       "D": "the greater the quantity of CYP2A6 that one’s body makes, the faster nicotine will be eliminated",
       "E": "helping to eliminate nicotine is not the only function that CYP2A6 serves"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -218,7 +228,10 @@
       "D": "The mechanisms that the earliest clocks used to predict astronomical phenomena were more complicated than the mechanisms used for timekeeping functions in some more recent clocks.",
       "E": "Interest in predicting astronomical phenomena has declined steadily since the invention of the first mechanical clocks."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -300,7 +313,10 @@
       "D": "to save endangered species it is more important to acquire the right kind of knowledge than to take action",
       "E": "the impact of human study of endangered species is sometimes more harmful than beneficial"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -387,7 +403,8 @@
       "Famous Flaws",
       "Explain Curious Fact",
       "Sampling",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {
@@ -446,7 +463,8 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
-      "Binaries"
+      "Binaries",
+      "Dense Stimulus"
     ]
   },
   {

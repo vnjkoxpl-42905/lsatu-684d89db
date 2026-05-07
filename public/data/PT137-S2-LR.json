@@ -90,7 +90,10 @@
       "D": "only people with Alzheimer's disease are at risk for injury to brain cells",
       "E": "a decline in testosterone level puts one at increased risk for Alzheimer's disease"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -216,7 +219,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -479,7 +483,10 @@
       "D": "the special qualities of Stradivarius violins are due in part to the wood used to make them",
       "E": "Stradivarius did not employ any secret techniques in making his violins"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT137",

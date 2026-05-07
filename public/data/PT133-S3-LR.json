@@ -120,7 +120,8 @@
     "questionFeatures": [
       "Relative vs. Absolute",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -220,7 +221,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals"
     ]
   },
   {
@@ -299,7 +301,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -362,7 +365,10 @@
       "D": "The argument fails to show that the evidence appealed to is relevant to the conclusion asserted.",
       "E": "The argument fails to consider that what is probable will not necessarily occur."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT133",

@@ -218,7 +218,10 @@
       "D": "People will notice the appearance or behavior of others only if it is specifically highlighted in some way.",
       "E": "People tend to believe their appearance and behavior are noticed by others more often than is actually the case."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -395,7 +398,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic",
+      "Defender"
     ]
   },
   {

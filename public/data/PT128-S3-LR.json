@@ -315,7 +315,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -391,7 +392,10 @@
       "D": "Beethoven's music became gradually more introspective as he grew older.",
       "E": "Had he not lost his hearing, Beethoven's later music would probably have been different than it is."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT128",

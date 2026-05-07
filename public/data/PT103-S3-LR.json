@@ -179,7 +179,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -242,7 +243,10 @@
       "D": "Carbon dating of organic remains from the southern Levant reliably demonstrates that there were no forests present in that area prior to 6,000 years ago.",
       "E": "Since there are few traces of either quarried stone or of mud brick in buildings excavated in the southern Levant, it is likely that the buildings built there prior to 6,000 years ago were made almost entirely of timber."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -263,7 +267,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -339,7 +344,10 @@
       "D": "formal instruction might not always be a part of a good musical education",
       "E": "some children might become good musicians even if they have not had good musical educations"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT103",
@@ -396,7 +404,10 @@
       "D": "The beauty of poetry is not immediately accessible to people who do not understand the language in which the poetry was written.",
       "E": "Perfect translation from one language to another is sometimes impossible."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT103",

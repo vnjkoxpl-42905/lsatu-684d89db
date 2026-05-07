@@ -36,7 +36,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -116,7 +117,10 @@
       "D": "Liming can be effective even if it is used after some life in a lake has been killed by acid rain.",
       "E": "If a lake’s water is replaced frequently, it may not be economical to attack the effects of acid rain there by liming."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -474,7 +478,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {

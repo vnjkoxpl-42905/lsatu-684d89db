@@ -90,7 +90,10 @@
       "D": "Of the poll respondents supporting Yeung, 70 percent described the election as \"important\" or \"very important,\" while 30 percent of respondents supporting Panitch did the same.",
       "E": "The poll, conducted on a Monday, surveyed persons in the downtown area, and the percentage of Yeung's supporters who work downtown is lower than that of Panitch's supporters."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -129,7 +132,10 @@
       "D": "Two readers from the same era arrive at different interpretations of the same poem.",
       "E": "A reader's enjoyment of a poem is enhanced by knowing the poet's interpretation of it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -186,7 +192,10 @@
       "D": "The presence of the Apo-A-IV-1 gene seems to indicate that a person has a lower risk of heart disease.",
       "E": "The presence of the Apo-A-IV-2 gene may inhibit the elevation of blood cholesterol."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT112",
@@ -373,7 +382,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {

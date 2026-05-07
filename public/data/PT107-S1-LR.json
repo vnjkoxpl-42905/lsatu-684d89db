@@ -58,7 +58,10 @@
       "D": "Gasohol is cheaper to produce and hence costs less at the pump than gasoline.",
       "E": "Burning gasoline adds more carbon dioxide to the atmosphere than plants can remove."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -162,7 +165,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Causal Chains",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -225,7 +230,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Dense Stimulus"
     ]
   },
   {
@@ -246,7 +252,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Dense Stimulus"
     ]
   },
   {
@@ -313,7 +320,9 @@
     "questionFeatures": [
       "Missing Link / Idea",
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {
@@ -419,7 +428,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Relative vs. Absolute",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Dense Stimulus"
     ]
   },
   {
@@ -441,7 +451,9 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Important Pivot",
-      "Breadcrumbs"
+      "Breadcrumbs",
+      "Causal Difference-Maker",
+      "Dense Stimulus"
     ]
   },
   {
@@ -462,7 +474,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -524,6 +538,9 @@
       "D": "Indigenous people of Australia developed hunting implements like the boomerang and the spearthrower after the disappearance of the land bridge.",
       "E": "Although the technological and cultural innovations were developed in Australia more than 10,000 years ago, they were developed by groups in northern Australia with whom the indigenous Tasmanians had no contact prior to the disappearance of the land bridge."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   }
 ]

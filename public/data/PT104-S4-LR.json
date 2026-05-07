@@ -36,7 +36,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Missing Link / Idea",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -76,7 +77,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -182,7 +184,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -291,7 +294,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Dense Stimulus"
     ]
   },
   {
@@ -335,7 +339,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "EXCEPT"
     ]
   },
   {
@@ -356,7 +361,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -401,7 +407,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Binaries"
+      "Binaries",
+      "Defender"
     ]
   },
   {
@@ -443,7 +450,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Dense Stimulus"
     ]
   },
   {
@@ -464,7 +472,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Dense Stimulus"
     ]
   },
   {
@@ -506,7 +515,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Dense Stimulus"
     ]
   },
   {

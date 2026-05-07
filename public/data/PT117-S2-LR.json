@@ -98,7 +98,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -162,7 +163,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "EXCEPT"
     ]
   },
   {
@@ -183,7 +185,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -241,7 +244,10 @@
       "D": "overlooks the fact that people's perception of their importance changed from century to century",
       "E": "neglects the fact that people's perception of their importance varies from culture to culture"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -362,7 +368,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {

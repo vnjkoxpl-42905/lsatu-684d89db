@@ -120,7 +120,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Complex Conditionals"
     ]
   },
   {
@@ -141,7 +142,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -240,7 +242,10 @@
       "D": "Kickboxing aerobics is more risky than forms of aerobic exercise that do not involve high kicks.",
       "E": "Most beginners at kickboxing aerobics experience injuries from trying to match the high kicks of more skilled practitioners."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -386,7 +391,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Defender"
     ]
   },
   {

@@ -40,7 +40,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "Defender"
     ]
   },
   {
@@ -227,7 +228,10 @@
       "D": "Aside from exercise, there is no way of improving one’s cardiovascular health.",
       "E": "To obtain a dramatic improvement in one’s cardiovascular health, one must exercise strenuously at least occasionally."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -268,7 +272,10 @@
       "D": "Ordinary fish tend not to have elaborate tails or strangely shaped fins.",
       "E": "Strangely shaped fins and elaborate tails interfere with a fish’s ability to reproduce."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -288,7 +295,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Defender"
     ]
   },
   {
@@ -307,7 +315,10 @@
       "D": "The appearance of a manufactured good is the only thing that determines whether it is fashionable.",
       "E": "Cultural trends tend to be an important determinant of the prices of materials used in manufacturing."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -327,7 +338,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -490,7 +502,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {

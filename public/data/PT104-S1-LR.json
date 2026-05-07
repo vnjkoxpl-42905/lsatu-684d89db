@@ -63,7 +63,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Important Pivot",
-      "Alternatives"
+      "Alternatives",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -258,7 +259,10 @@
       "D": "If natural fibers that have been straightened and used for cloth are curled up again by high temperatures, they cannot be straightened again.",
       "E": "Artificial fibers are straight in their original state."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -408,7 +412,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Important Pivot",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Causal Chains"
     ]
   },
   {
@@ -427,7 +432,10 @@
       "D": "Limericks constitute a nonartistic type of poetry.",
       "E": "If a symphony does not exploit the musical characteristics of sound, then it is not a work of art."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -447,7 +455,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -529,7 +538,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Battle of Opinions"
+      "Battle of Opinions",
+      "EXCEPT"
     ]
   },
   {

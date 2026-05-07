@@ -15,7 +15,10 @@
       "D": "Electric fields interfere with the normal functioning of dolphins’ vibrissal crypts.",
       "E": "Under normal circumstances, dolphins are unable to sense electric fields."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -141,7 +144,8 @@
       "Sufficient vs. Necessary Flaw",
       "Famous Flaws",
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -160,7 +164,10 @@
       "D": "There are more planets that have winds stronger than Earth’s than there are planets that have winds weaker than Earth’s.",
       "E": "Planets even farther from the Sun than Jupiter are known to have atmospheric winds."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -289,7 +296,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -326,7 +334,10 @@
       "D": "An artifact will be more difficult for archaeologists to find if it has been preserved through waterlogging or desiccation than if it has been preserved under more normal conditions.",
       "E": "Of the early wheeled vehicles not preserved, more were made of wood than were made of materials no more susceptible to disintegration than are ceramic items."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -388,7 +399,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {

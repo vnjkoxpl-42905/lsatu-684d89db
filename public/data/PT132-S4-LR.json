@@ -62,7 +62,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -123,7 +124,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -331,7 +333,10 @@
       "D": "In the 12-year study, half of the subjects were given beta-carotene supplements and half were given a placebo.",
       "E": "In the 24-year study, the percentage of the subjects who had a high intake of beta-carotene-rich foods who smoked cigarettes was much smaller than the percentage of the subjects with a low intake of beta-carotene-rich foods who smoked."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -353,7 +358,10 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Argue the Anti-Conclusion",
-      "Binaries"
+      "Binaries",
+      "Complex Conditionals",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -450,7 +458,10 @@
       "D": "Some films from the earliest years of Hollywood currently exist solely in their original material.",
       "E": "The least popular films from the earliest years of Hollywood are the ones most likely to be lost."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -507,6 +518,9 @@
       "D": "People 65 or younger are no more likely to fall below government poverty standards than are people over 65.",
       "E": "People 65 or younger are less likely to have medical conditions that interfere with their digestion than are people over 65."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   }
 ]

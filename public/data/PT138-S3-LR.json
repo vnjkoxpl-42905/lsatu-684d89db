@@ -33,7 +33,10 @@
       "D": "Efforts to stop the fragmentation of forests can have a beneficial effect on human health.",
       "E": "Deer ticks reach their highest population densities in small forest patches."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -73,7 +76,10 @@
       "D": "The most polluted cities today are not the cities that were the most polluted 30 years ago.",
       "E": "Public criticism led to an improvement in the air quality of the cities that had the most polluted air 30 years ago."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -356,7 +362,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -458,7 +465,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Complex Conditionals"
     ]
   },
   {

@@ -15,7 +15,10 @@
       "D": "Young children who learn a word by observing how the object denoted by that word is used sometimes apply that word to a different object that is similarly used.",
       "E": "Young children best learn the names of objects when the objects are present at the time the children learn the words and when no other objects are simultaneously present."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -95,7 +98,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -114,7 +118,10 @@
       "D": "People who wish to eliminate, rather than simply limit, their caffeine intake would benefit if exact caffeine content were listed on soft-drink labels.",
       "E": "The health of at least some people would worsen if everyone knew exactly how much caffeine was in their soft drinks."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -363,7 +370,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "EXCEPT"
     ]
   },
   {
@@ -498,7 +506,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {

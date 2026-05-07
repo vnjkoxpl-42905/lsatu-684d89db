@@ -133,7 +133,10 @@
       "D": "Only freelance writers have every item they produce evaluated for quality.",
       "E": "Some workers produce high-quality work in spite of the fact that not every item they produce is judged for quality."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -169,7 +172,10 @@
       "D": "Mathematical problem solvers who rely on visual techniques become aware of their surroundings only during periods of rest.",
       "E": "Mathematical problem solving requires frequent periods of rest in the form of increased awareness of the problem solver’s surroundings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -305,7 +311,10 @@
       "D": "Although Ms. Jackson telephoned The Daily Gazette at the beginning of June requesting that her subscription be canceled on June 30, delivery was continued until July 3 when she called to complain; she requests that she not be charged for the papers delivered in July.",
       "E": "Ms. Silverman was out of town on Sunday and Monday and when she returned on Tuesday she found that her Sunday edition had not been delivered; she called The Daily Gazette on Tuesday afternoon requesting credit for the undelivered copy."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT109",
@@ -365,7 +374,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Dense Stimulus"
     ]
   },
   {
@@ -420,7 +431,10 @@
       "D": "It ignores the possibility that the witness failed to infer from known facts what should have been inferred and therefore was not lying.",
       "E": "It ignores the possibility that Congleton failed to allot enough time or resources to the project team."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT109",

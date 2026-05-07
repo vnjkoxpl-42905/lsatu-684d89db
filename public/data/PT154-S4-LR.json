@@ -117,7 +117,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -226,7 +227,10 @@
       "D": "The photosynthetic organism and the fungus that make up a lichen can also thrive independently of each other.",
       "E": "Serious air pollution in a region can cause problems for lichens."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT154",
@@ -264,7 +268,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -301,7 +306,10 @@
       "D": "People fail to recognize the physical similarities among a group of people unless they are given information in addition to visual clues.",
       "E": "People are less likely to think they see something that is not actually present the less they expect to see it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT154",

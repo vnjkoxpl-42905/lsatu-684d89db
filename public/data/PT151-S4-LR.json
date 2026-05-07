@@ -99,7 +99,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -231,7 +232,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -274,7 +276,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -314,7 +317,10 @@
       "D": "Some tenant dwellings can only support individual electricity meters if the dwellings are rewired, which would be prohibitively expensive.",
       "E": "Some people conserve energy for reasons that are not related to cost savings."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -352,7 +358,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Defender"
     ]
   },
   {
@@ -371,7 +378,10 @@
       "D": "Government officials who conceal information without a compelling reason are thereby guilty of an abuse of power.",
       "E": "Government officials should keep information secret only if doing so does not make it easier for those officials to abuse their power."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Complex Conditionals"
+    ]
   },
   {
     "practiceTest": "PT151",

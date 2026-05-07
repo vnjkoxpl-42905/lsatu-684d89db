@@ -15,7 +15,11 @@
       "D": "People who value an ideal especially highly do not always succeed in living up to this ideal.",
       "E": "People today fail to live up to their own ideals more frequently than was the case in the past."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Defender",
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -94,7 +98,10 @@
       "D": "The new bulb is to be marketed in several different quantities, ranging from packages containing one bulb to packages containing four bulbs.",
       "E": "A competing manufacturer is about to introduce a light bulb that lasts 10 times as long as a conventional bulb but costs less than a conventional bulb."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -153,7 +160,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -218,7 +226,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -312,7 +321,11 @@
       "D": "The government does not provide its research scientists with unusually good working conditions or fringe benefits that more than compensate for the lower salaries they receive.",
       "E": "Research scientists employed in the private sector generally work longer hours than do researchers employed by the government."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -454,7 +467,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "EXCEPT"
     ]
   },
   {
@@ -509,6 +523,9 @@
       "D": "An increasing number of people have been killed in home fires that started in the kitchen.",
       "E": "Population densities have increased, with the result that one home fire can cause more deaths than in previous decades. --- ## SECTION III SECTION III Time—35 minutes 26 Questions Directions: Each question in this section is based on the reasoning presented in a brief passage. In answering the questions, you should not make assumptions that are by commonsense standards implausible, superfluous, or incompatible with the passage. For some questions, more than one of the choices could conceivably answer the question. However, you are to choose the best answer; that is, choose the response that most accurately and completely answers the question and mark that response on your answer sheet."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   }
 ]

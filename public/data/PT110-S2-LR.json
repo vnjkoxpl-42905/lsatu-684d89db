@@ -214,7 +214,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Belief / Knowledge / Intent",
-      "Abstract Answers"
+      "Abstract Answers",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -254,7 +255,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sampling",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -315,7 +317,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Anti-Causal",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -376,7 +379,10 @@
       "D": "Half a gram of calcium carbonate can causally contribute to both the secretion and the neutralization of stomach acids.",
       "E": "Impaired kidney function may increase the level of calcium in the blood."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT110",
@@ -416,7 +422,10 @@
       "D": "Forms of advertising that convey their message entirely through visual images do not have a detrimental effect on society.",
       "E": "The literature department’s responsibility is not limited to teaching students how to analyze true literary works."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT110",

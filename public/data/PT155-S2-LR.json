@@ -19,7 +19,8 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Sampling",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -101,7 +102,10 @@
       "D": "People who take medicines that minimize seasonal allergy symptoms tend to stay indoors on dry, windy days during allergy season.",
       "E": "People who experience seasonal allergy symptoms typically use air filters that remove pollen from the air in their homes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -284,7 +288,10 @@
       "D": "On the second occasion, exactly one of the students tested for the medical condition that actually caused the patient’s symptoms.",
       "E": "At least some of the medical students were unaware that the patients’ symptoms could be the result of medical conditions other than the one suggested by the original attending physician."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -324,7 +331,10 @@
       "D": "It is cited as an instance of a general conclusion drawn in the argument.",
       "E": "It is the main conclusion drawn in the argument."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -362,7 +372,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -404,7 +415,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -485,7 +497,9 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Causal Chains",
+      "EXCEPT"
     ]
   },
   {

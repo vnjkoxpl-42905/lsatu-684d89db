@@ -180,7 +180,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -288,7 +289,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {
@@ -368,7 +370,10 @@
       "D": "The maturing of the prefrontal cortex is more important than upbringing in causing the development of adaptive behavior.",
       "E": "Skill at adapting to new situations is roughly proportional to the level of development of the prefrontal cortex."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -488,7 +493,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "EXCEPT"
     ]
   },
   {
@@ -507,6 +513,9 @@
       "D": "People are sometimes held morally blameworthy as a result of circumstances some of which were outside their intentional control.",
       "E": "The intentions of the person performing an action are rarely a decisive factor in making moral judgments about that action."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   }
 ]

@@ -93,7 +93,10 @@
       "D": "The store’s budget did not allow for the installation of bright lights around the perimeter.",
       "E": "The store owner brought in a watchdog to protect the store from vandals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -111,7 +114,10 @@
       "D": "It is impossible for an athlete to concentrate on more than one thing at a time during an athletic competition.",
       "E": "During athletic competitions, an athlete whose attention is focused on the sport itself will perform better than any athlete whose attention is focused elsewhere."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT152",
@@ -131,7 +137,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -343,7 +351,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Abstract Answers",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Chains"
     ]
   },
   {
@@ -440,7 +449,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {

@@ -119,7 +119,10 @@
       "D": "It is preferable to have a pluralistic rather than a monolithic national culture.",
       "E": "A culture with a solidified national identity tends to have more social problems than one without such an identity."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -139,7 +142,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -280,7 +284,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {
@@ -462,7 +467,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Dense Stimulus"
     ]
   },
   {

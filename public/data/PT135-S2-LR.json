@@ -278,7 +278,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -490,7 +491,11 @@
       "D": "The bacteria can continue to thrive indefinitely only in an environment in which the hydrogen sulfide they produce has removed all oxygen and killed other organisms in the area.",
       "E": "If any colony of bacteria produces hydrogen sulfide as a waste product, it thereby ensures that it is both provided with a source of food and protected from harm by oxygen."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Chains",
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT135",

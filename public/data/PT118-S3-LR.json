@@ -132,7 +132,10 @@
       "D": "Figorian regulation of development has in the past protected and preserved wildlife.",
       "E": "The species that inhabit Figorian wetlands are among the most severely threatened of the designated endangered species."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -153,7 +156,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "2-Speaker"
+      "2-Speaker",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -279,7 +283,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -300,7 +305,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "EXCEPT"
     ]
   },
   {
@@ -379,7 +385,9 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -475,7 +483,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Clarification/Misunderstanding"
     ]
   }
 ]

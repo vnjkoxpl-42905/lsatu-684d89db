@@ -142,7 +142,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -244,7 +245,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -444,7 +447,10 @@
       "D": "Of all the members of Riverdale’s Modern Party, Maples would be the worst mayor.",
       "E": "Tannett is better qualified to be mayor than is Riverdale’s Modern Party Chairperson."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -464,7 +470,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -486,7 +493,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {

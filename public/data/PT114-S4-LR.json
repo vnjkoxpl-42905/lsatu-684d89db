@@ -95,7 +95,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Sampling"
+      "Sampling",
+      "EXCEPT"
     ]
   },
   {
@@ -116,7 +117,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Causal Difference-Maker",
+      "Defender"
     ]
   },
   {
@@ -135,7 +138,10 @@
       "D": "People who have just donated blood and have become faint are not good judges of whether they are ready to walk out of the facility.",
       "E": "People who are being treated for schizophrenia are not good judges of whether they should continue their medical treatments."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -174,7 +180,10 @@
       "D": "Unlike glass, which can be heated to thousands of degrees during the recycling process to burn off contaminants, recycled plastic cannot be heated enough to sterilize it.",
       "E": "Plastic polymers tend to break down during the recycling process and weaken the resulting product, whereas glass does not break down."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT114",
@@ -431,7 +440,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -486,7 +496,10 @@
       "D": "Music that is unintelligible when it is presented independently of its original function tends to be the most sophisticated music.",
       "E": "Some works of art lose their appeal when they are presented to serve a function other than their original one."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT114",

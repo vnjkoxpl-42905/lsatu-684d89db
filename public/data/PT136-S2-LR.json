@@ -39,7 +39,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -58,7 +59,10 @@
       "D": "The details of the role of the jurors cannot be specified with complete precision in simple, easily comprehensible language.",
       "E": "Jurors do not need to know the precise details of their role in order to have an adequate understanding of that role."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -175,7 +179,10 @@
       "D": "Interpreting another person's dream requires that one understand the dream as a coherent narrative.",
       "E": "People often invent clever and coherent stories to explain their behavior to other people."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -392,7 +399,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "2-Speaker"
+      "2-Speaker",
+      "Complex Conditionals"
     ]
   },
   {

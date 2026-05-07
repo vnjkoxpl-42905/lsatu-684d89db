@@ -137,7 +137,10 @@
       "D": "The amount of money one spends on clothing should be roughly the same whether one is purchasing men's or women's attire.",
       "E": "It is more appropriate to spend money on office attire than on casual attire."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -271,7 +274,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic",
+      "Dense Stimulus"
     ]
   },
   {
@@ -294,7 +299,9 @@
     "questionFeatures": [
       "First Sentence Conclusion",
       "Missing Link / Idea",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Causal Difference-Maker",
+      "Dense Stimulus"
     ]
   },
   {
@@ -331,7 +338,10 @@
       "D": "be able to perform fewer often-needed functions than some other multiple-function tool",
       "E": "not be able to perform individual functions as well as single-function tools"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -353,7 +363,8 @@
     "questionFeatures": [
       "Conditional Diagramming",
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -374,7 +385,9 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Complex Conditionals",
+      "Dense Stimulus"
     ]
   },
   {
@@ -395,7 +408,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Dense Stimulus"
     ]
   },
   {
@@ -416,7 +430,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Anti-Causal"
+      "Anti-Causal",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -460,7 +475,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Abstract Answers",
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Dense Stimulus"
     ]
   },
   {

@@ -36,7 +36,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {
@@ -57,7 +58,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -198,7 +200,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -237,7 +240,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "Dense Stimulus"
     ]
   },
   {
@@ -296,7 +300,10 @@
       "D": "The province's total revenue from all taxes increased during both 1975 and 1976.",
       "E": "A large number of people from other provinces moved to the province during 1975 and 1976."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -335,7 +342,10 @@
       "D": "A genetic mutation that carries along several negative traits is favored in natural selection.",
       "E": "A genetic mutation whose effects are all neutral to a species is favored in natural selection."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT116",
@@ -498,7 +508,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -517,6 +528,9 @@
       "D": "Economic matters are considered unimportant during periods of actual or threatened war.",
       "E": "A common enemy contributes to a strengthened bond between nations, enabling them to ignore economic tensions that would otherwise be problematic."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   }
 ]

@@ -76,7 +76,10 @@
       "D": "The president of Troskco Corporation is probably overpaid, since the Troskco board of directors determined his compensation by following the advice of an external consultant who has many other contracts with Troskco.",
       "E": "The president of Troskco Corporation is definitely not overpaid, since the external consultant the board of directors retained to advise on executive salaries has no other contracts with Troskco."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Complex Conditionals"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -408,7 +411,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -430,7 +434,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Important Pivot"
+      "Important Pivot",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -473,7 +478,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Causal Difference-Maker"
     ]
   },
   {

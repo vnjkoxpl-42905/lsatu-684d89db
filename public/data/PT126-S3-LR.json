@@ -97,7 +97,10 @@
       "D": "Only animals that hunt have noses with tentacles that detect electric fields.",
       "E": "The star-nosed mole does not produce an electric field."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -115,7 +118,11 @@
       "D": "A child can unintentionally influence a parent's behavior in ways contrary to the child's intended goals.",
       "E": "A child can get what it wants by doing what its parent doesn't want it to do."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains",
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -157,7 +164,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Binaries"
+      "Binaries",
+      "Defender"
     ]
   },
   {
@@ -325,7 +333,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -347,7 +356,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Belief / Knowledge / Intent",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -392,7 +402,9 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {
@@ -414,7 +426,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -436,7 +449,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -501,7 +515,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {

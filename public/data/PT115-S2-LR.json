@@ -17,7 +17,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -36,7 +37,10 @@
       "D": "fails to consider the possibility that some students in certain majors may be required to take a philosophy course",
       "E": "draws a conclusion about all cases of a certain kind on the basis of evidence that justifies such a conclusion only about some cases of that kind"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -116,7 +120,10 @@
       "D": "a writing style should not be more complex than the ideas expressed",
       "E": "alert readers are the only readers who are sensitive to writing style"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -134,7 +141,10 @@
       "D": "Thoughts of sheep would induce sleep in the person whenever those thoughts arose.",
       "E": "Thoughts of sheep rarely, if ever, arise in the person's dreams."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -238,7 +248,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Complex Conditionals"
     ]
   },
   {
@@ -334,7 +345,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {

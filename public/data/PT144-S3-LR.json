@@ -18,7 +18,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -159,7 +160,10 @@
       "D": "The use of a special whipping-cream attachment in a blender can reduce the total amount of air required to whip cream effectively in that blender.",
       "E": "The use of a blender, with or without any special attachments, is not the most common way to attempt to produce whipped cream."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -219,7 +223,10 @@
       "D": "whether the burning of oil from sewage sludge would, in contrast to nuclear power production, produce gases that would have a harmful warming effect on climate worldwide",
       "E": "whether waste products that would be produced in deriving oil from sewage sludge and burning it would be as dangerous as those produced by the mining and use of nuclear fuel"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -337,7 +344,10 @@
       "D": "It is used to support the only conclusion in the argument.",
       "E": "It provides a causal explanation of the phenomenon described by the conclusion of the argument as a whole, but it is not intended to provide support for that conclusion."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -422,7 +432,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -461,7 +472,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Complex Conditionals"
     ]
   },
   {

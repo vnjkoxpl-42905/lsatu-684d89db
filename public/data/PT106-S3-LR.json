@@ -73,7 +73,10 @@
       "D": "Increased humidity can be beneficial to the skin.",
       "E": "The human immune system can benefit from humidity."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -139,7 +142,8 @@
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
       "Abstract Answers",
-      "2-Speaker"
+      "2-Speaker",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -248,7 +252,8 @@
     "questionFeatures": [
       "Famous Flaws",
       "Part vs. Whole",
-      "Important Pivot"
+      "Important Pivot",
+      "EXCEPT"
     ]
   },
   {
@@ -267,7 +272,10 @@
       "D": "Dense blood vessels are not found in all warmblooded species.",
       "E": "In some cold-blooded species the gene that is responsible for growth rings is also responsible for dense blood vessels."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -285,7 +293,10 @@
       "D": "A single person’s vote or wrongful act can in fact make a great deal of difference.",
       "E": "Large-scale dishonesty and neglect of public duty will be destructive of democratic and other societies."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Dense Stimulus"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -325,7 +336,10 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Conditional Conclusion",
+      "Defender",
+      "Dense Stimulus"
     ]
   },
   {
@@ -390,7 +404,8 @@
     "questionFeatures": [
       "Important Pivot",
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -414,7 +429,8 @@
       "Famous Flaws",
       "First Sentence Conclusion",
       "Sampling",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "EXCEPT"
     ]
   },
   {
@@ -461,7 +477,8 @@
       "Missing Link / Idea",
       "Explain Curious Fact",
       "Anti-Causal",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -521,7 +538,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Causal Difference-Maker"
     ]
   },
   {

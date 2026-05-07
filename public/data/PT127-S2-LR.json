@@ -85,7 +85,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -108,7 +109,8 @@
     "questionFeatures": [
       "2-Speaker",
       "Analogies",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Causal Chains"
     ]
   },
   {
@@ -129,7 +131,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -193,7 +196,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "2-Speaker"
+      "2-Speaker",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -485,7 +489,8 @@
     "correctAnswer": "E",
     "questionFeatures": [
       "Conditional Diagramming",
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {

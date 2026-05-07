@@ -59,7 +59,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains"
     ]
   },
   {
@@ -123,7 +124,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Binaries"
+      "Binaries",
+      "Defender"
     ]
   },
   {
@@ -261,7 +263,9 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Causal Chains",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -385,7 +389,10 @@
       "D": "The lemur population in the rain forest is twice the size of the population in the deciduous forest.",
       "E": "The lemur population in the rain forest eats both plants and insects whereas the population in the deciduous forest eats only plants."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -465,7 +472,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -484,7 +492,11 @@
       "D": "Politicians should never support measures that favor only a small percentage of the population.",
       "E": "People who would be hurt by tariffs generally know that they would be hurt by them. S T"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Conclusion",
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT145",
@@ -502,6 +514,9 @@
       "D": "Northern fur seals can stay submerged longer than elephant seals can, but Weddell seals can dive to greater depths than dolphins can.",
       "E": "Northern fur seals can stay submerged longer than Weddell seals can, but elephant seals can dive to greater depths than northern fur seals can."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   }
 ]

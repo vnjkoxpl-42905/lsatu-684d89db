@@ -35,7 +35,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -138,7 +139,10 @@
       "D": "Only a relatively small portion of any residential electric bill is determined by the electric company’s expenses for fuel.",
       "E": "Personnel costs for the distribution of power to consumers are unrelated to the type of raw materials an electric company uses."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT120",
@@ -383,7 +387,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "EXCEPT"
     ]
   },
   {
@@ -449,7 +454,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -527,7 +533,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   }
 ]

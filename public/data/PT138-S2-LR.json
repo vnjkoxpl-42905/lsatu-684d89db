@@ -150,7 +150,10 @@
       "D": "The microbes do not remove any element other than oxygen from the atmosphere.",
       "E": "A significant portion of the carbon dioxide in Earth's atmosphere was produced by the microbes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -263,7 +266,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -365,7 +369,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -482,7 +487,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Conditional Conclusion"
     ]
   },
   {

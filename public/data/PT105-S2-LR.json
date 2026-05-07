@@ -51,7 +51,10 @@
       "D": "Once the network has been installed, most of the company’s employees will be able to use it immediately to increase their productivity.",
       "E": "Most of the company’s employees would be able to work productively while a daytime installation is in progress."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -109,7 +112,10 @@
       "D": "The nesting boxes would be more effective in helping wood ducks breed if they were less visible to other wood ducks than they currently are.",
       "E": "Nesting boxes are needed to supplement the natural nesting sites of wood ducks because of the destruction of much of the ducks’ habitat."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -127,7 +133,10 @@
       "D": "All great scientific discoverers have been able to manufacture a variation on a theme.",
       "E": "Some new scientific discoveries do not represent, on a deep level, a variation on previous themes."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -205,7 +214,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "Defender"
     ]
   },
   {
@@ -304,7 +314,9 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Conditional Conclusion",
+      "Defender"
     ]
   },
   {
@@ -380,7 +392,10 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Anti-Causal"
+      "Anti-Causal",
+      "Contrapositive Logic",
+      "Defender",
+      "EXCEPT"
     ]
   },
   {

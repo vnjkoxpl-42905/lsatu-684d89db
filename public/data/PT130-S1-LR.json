@@ -18,7 +18,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -37,7 +38,10 @@
       "D": "The best way to fall asleep quickly is to engage in some mental diversion like counting sheep, because frequently the more one concentrates on falling asleep the lower the chance of falling asleep quickly.",
       "E": "The best way to cope with sorrow or grief is to turn one's attention to those who are experiencing even greater hardship, for in many circumstances this will make our own troubles seem bearable by comparison."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -76,7 +80,10 @@
       "D": "Real trials are better suited for experimentation than are mock trials.",
       "E": "The way in which a judge instructs a jury can influence the jury's verdict."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -118,7 +125,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Analogies"
+      "Analogies",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -160,7 +168,10 @@
       "D": "Buses in Springfield run more frequently and on longer routes than in Rorchester.",
       "E": "Springfield has a larger population than Rorchester does."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -200,7 +211,10 @@
       "D": "The music of the generation immediately following early bebop is of lower overall quality than early bebop.",
       "E": "Musicians will not record extremely short solos unless difficult recording conditions force them to do so."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -388,7 +402,10 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Chains",
+      "Causal Difference-Maker",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -467,7 +484,10 @@
       "D": "A country should put the interests of its own citizens ahead of those of citizens of other countries.",
       "E": "Government intervention sometimes creates more economic efficiency than free markets."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -487,7 +507,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Conditional Conclusion"
     ]
   },
   {

@@ -33,7 +33,10 @@
       "D": "One of Samantha's friends likes neither oolong nor green tea.",
       "E": "One of Samantha's friends likes all the kinds of teas that Samantha likes."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -93,7 +96,10 @@
       "D": "Improvements in Scottish roads between 1750 and 1758 facilitated trade between Glasgow and the rest of Scotland.",
       "E": "The initial government regulation of Scottish banks stimulated Glasgow's economy."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -132,7 +138,10 @@
       "D": "Energy bills in the West will be $200 billion lower in the next 50 to 100 years.",
       "E": "Energy-efficient technologies based on new scientific principles will be introduced in the next 50 to 100 years."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -150,7 +159,10 @@
       "D": "The average adolescent who works full-time in a certain country makes about 76 cents for every dollar that an adult who works full-time there makes. Therefore, since in this country the average adolescent who works part-time makes less than the average adolescent who works full-time, the average adolescent who works part-time makes less than 76 cents for every dollar made by an employed adult.",
       "E": "Though until recently this chess grandmaster had responded to opening move X with move Y half of the time, in the current tournament he has responded to move X with move Y 90 percent of the time. Thus, in the next game of the current tournament, he is 90 percent likely to respond to move X with move Y."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -190,7 +202,10 @@
       "D": "Some people with little ability to concentrate are of below-average intelligence, but can speed-read.",
       "E": "All people who can speed-read are able to concentrate to some extent."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -297,7 +312,10 @@
       "D": "Departmental workloads at most large corporations increase and decrease significantly and unpredictably.",
       "E": "Many large corporations allow managers to offer early retirement as a means of reducing staff."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -315,7 +333,10 @@
       "D": "Higher gasoline prices will encourage people to carpool, which will reduce individual transportation costs.",
       "E": "The government would use the increase in tax revenue to create many more jobs than would be lost in the energy production sector."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -336,7 +357,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Argue the Anti-Conclusion",
-      "Assumes Difference"
+      "Assumes Difference",
+      "Defender"
     ]
   },
   {
@@ -376,7 +398,10 @@
       "D": "Many local residents know of local car dealerships that offer low-priced rentals.",
       "E": "For local residents, taxi rides to car dealerships from their homes or workplaces are usually no less expensive than taxi rides to national rental firms."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT124",

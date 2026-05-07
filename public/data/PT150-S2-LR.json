@@ -37,7 +37,10 @@
       "D": "the engraving technique employed on the fossil was unique to eastern North America",
       "E": "there is no scientific way of dating when the engraving of the mammoth was made"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -78,7 +81,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Analogies"
+      "Analogies",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -245,7 +249,10 @@
       "D": "Early flying dinosaurs had feathers on their toes that would have interfered with their ability to run.",
       "E": "Early flying dinosaurs lived at a time when their most dangerous predators could not climb trees."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT150",
@@ -399,7 +406,8 @@
     "questionFeatures": [
       "Analogies",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {

@@ -299,7 +299,10 @@
       "D": "The vividness of Colette's language was not itself the result of poetic condensation.",
       "E": "Colette's purpose in poetically condensing emotional crises in the lives of characters in her novels was to explore some of the important moral questions of her time."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Defender"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -359,7 +362,10 @@
       "D": "Traffic flow across the Krakkenbak Bridge during rush hour would not have increased had the city's mayor not made investing in computer modeling technology the highest budgetary priority last year.",
       "E": "The city's mayor was a proponent of investing in computer modeling technology because of the city's need to increase traffic flow across the Krakkenbak Bridge during rush hour."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Causal Chains"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -380,7 +386,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Contrapositive Logic"
     ]
   },
   {

@@ -58,7 +58,10 @@
       "D": "Much of the ivory imported as mammoth ivory just after the ban on ivory from African elephants went into effect was actually elephant ivory.",
       "E": "Shortly after the importation of ivory from African elephants was outlawed, there was a sharp increase in the total amount of all ivory presented for importation into the U.S. and Canada."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -241,7 +244,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Important Pivot"
+      "Important Pivot",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -476,7 +480,10 @@
       "D": "Cooperative breeding in species other than the Seychelles warbler often results when the environment cannot sustain a rise in the population.",
       "E": "The Seychelles warblers had fewer competitors for nesting territory on the island to which they were transplanted than on their native island."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT121",

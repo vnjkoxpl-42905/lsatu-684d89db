@@ -179,7 +179,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "First Sentence Conclusion"
+      "First Sentence Conclusion",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -221,7 +222,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Relative vs. Absolute"
+      "Relative vs. Absolute",
+      "Conditional Conclusion"
     ]
   },
   {
@@ -264,7 +266,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "EXCEPT"
     ]
   },
   {
@@ -306,7 +309,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Explain Curious Fact"
+      "Explain Curious Fact",
+      "Defender"
     ]
   },
   {
@@ -325,7 +329,10 @@
       "D": "No people who have doubts about the value of their own desires are incapable of empathizing with people who have goals that are completely different from their own.",
       "E": "Most writers who have doubts about the value of what they desire are popular novelists."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT153",
@@ -427,7 +434,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Causal Difference-Maker"
     ]
   },
   {

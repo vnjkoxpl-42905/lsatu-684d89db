@@ -38,7 +38,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -132,7 +133,8 @@
     "correctAnswer": "B",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Binaries"
+      "Binaries",
+      "Contrapositive Logic"
     ]
   },
   {
@@ -194,7 +196,8 @@
     "questionFeatures": [
       "Analogies",
       "Argue the Anti-Conclusion",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -235,7 +238,10 @@
       "D": "Any society with good cultural values will have a good cuisine.",
       "E": "When food is bad, it is because of poor soil and, ultimately, bad farming practices."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT119",

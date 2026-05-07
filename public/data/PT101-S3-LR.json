@@ -99,7 +99,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "Anti-Causal",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -269,7 +270,10 @@
       "D": "A strike at Foamy Soda’s main plant forced production cutbacks that resulted in many stores not receiving their normal shipments during the summer months.",
       "E": "The weather during the summer months was unseasonably cool, decreasing the demand for soft drinks."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -351,7 +355,8 @@
     "correctAnswer": "A",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "Defender"
     ]
   },
   {
@@ -436,7 +441,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {

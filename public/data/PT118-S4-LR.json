@@ -122,7 +122,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Assumes Difference"
+      "Assumes Difference",
+      "Causal Difference-Maker"
     ]
   },
   {
@@ -223,7 +224,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Explain Curious Fact",
-      "Alternatives"
+      "Alternatives",
+      "EXCEPT"
     ]
   },
   {
@@ -287,7 +289,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "Causal Chains"
     ]
   },
   {
@@ -344,7 +347,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Missing Link / Idea"
+      "Missing Link / Idea",
+      "Dense Stimulus"
     ]
   },
   {

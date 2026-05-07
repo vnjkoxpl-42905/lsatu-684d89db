@@ -33,7 +33,10 @@
       "D": "Jimmy's utility company raised the rates for gas consumption following installation of the new water heater.",
       "E": "Unusually cold weather following installation of the new water heater resulted in heavy gas usage."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "EXCEPT"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -179,7 +182,8 @@
     "correctAnswer": "D",
     "questionFeatures": [
       "First Sentence Conclusion",
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -198,7 +202,10 @@
       "D": "highlight the desirable features of the advertised product by contrasting them pictorially with undesirable features of a competing product",
       "E": "create advertisements containing pictures of things most members of the target audience like"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Causal Difference-Maker"
+    ]
   },
   {
     "practiceTest": "PT123",
@@ -220,7 +227,8 @@
     "questionFeatures": [
       "Explain Curious Fact",
       "Alternatives",
-      "Assumes Similarity"
+      "Assumes Similarity",
+      "Defender"
     ]
   },
   {
@@ -391,7 +399,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Argue the Anti-Conclusion"
+      "Argue the Anti-Conclusion",
+      "Defender"
     ]
   },
   {
@@ -454,7 +463,8 @@
     },
     "correctAnswer": "C",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "Causal Chains"
     ]
   },
   {
