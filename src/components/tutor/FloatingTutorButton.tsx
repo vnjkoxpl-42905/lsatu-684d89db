@@ -6,7 +6,7 @@ import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { useInbox } from "@/hooks/useInbox";
 import { cn } from "@/lib/utils";
 
-const HIDDEN_ROUTES = ["/auth", "/onboarding", "/reset-password"];
+const HIDDEN_ROUTES = ["/auth", "/onboarding", "/reset-password", "/drill"];
 const DISMISS_KEY = "student-tutor-tip-dismissed";
 
 /**
