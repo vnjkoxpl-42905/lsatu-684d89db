@@ -54,10 +54,10 @@ export default function OfficialQuestionPane({
   const answerEntries = Object.entries(question.answerChoices);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[420px]">
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] flex-1 min-h-0">
       {/* Stimulus column */}
       <div
-        className="px-6 sm:px-8 py-6 lg:border-r border-slate-200 text-[15px] leading-[1.55] text-black whitespace-pre-wrap"
+        className="px-6 sm:px-8 py-6 lg:border-r border-slate-200 text-[16px] leading-[1.6] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-6 sm:px-8 py-6 text-[15px] leading-[1.5] text-black">
+      <div className="px-6 sm:px-8 py-6 text-[16px] leading-[1.6] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -123,7 +123,8 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 w-6 h-6 mt-0.5 rounded-full border flex items-center justify-center text-[12px] font-medium transition-colors",
+                    "shrink-0 mt-0.5 rounded-full border flex items-center justify-center text-[12px] font-medium transition-colors",
+                    "w-7 h-[18px]",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
                       : "border-slate-400 bg-white text-slate-700 hover:border-slate-700",

@@ -281,7 +281,7 @@ function LineSpacingIcon() {
 }
 
 function PipeSeparator() {
-  return <span aria-hidden className="w-px h-5 bg-slate-300 mx-0.5" />;
+  return <span aria-hidden className="w-px h-6 bg-slate-200 mx-1" />;
 }
 
 // Re-export to avoid an unused-import warning from the shared type.
