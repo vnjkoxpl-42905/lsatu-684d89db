@@ -111,7 +111,20 @@ class SplineBoundary extends React.Component<{ children: React.ReactNode }, { ha
     console.warn('[Practice] Spline scene failed', error);
   }
   render() {
-    if (this.state.hasError) return null;
+    if (this.state.hasError) {
+      // Static fallback so the hero card doesn't render as a blank panel
+      // when Spline's CDN is blocked / offline.
+      return (
+        <div
+          aria-hidden
+          className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-900 via-neutral-950 to-black"
+        >
+          <div className="w-32 h-32 rounded-full bg-gradient-to-br from-white/10 to-white/0 border border-white/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/0" />
+          </div>
+        </div>
+      );
+    }
     return this.props.children;
   }
 }
