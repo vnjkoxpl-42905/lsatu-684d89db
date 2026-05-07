@@ -72,7 +72,10 @@
       "D": "The therapy should not be used to treat the illness unless it is either effective or inexpensive.",
       "E": "The therapy's possible effectiveness in treating the illness is not sufficient justification for using it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT113",

@@ -470,6 +470,9 @@
       "D": "It is primarily the wealthy who benefit from increases in the budget deficit, which drive up interest rates.",
       "E": "Across-the-board personal income tax rate cuts generally benefit the wealthy more than they benefit others."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   }
 ]

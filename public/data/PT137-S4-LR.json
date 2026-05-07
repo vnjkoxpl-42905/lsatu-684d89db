@@ -15,7 +15,10 @@
       "D": "Countries that experienced deep economic recessions also experienced steep drops in carbon dioxide emissions.",
       "E": "When people spend money on energy-consuming devices, more carbon dioxide is produced as a result."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -69,7 +72,10 @@
       "D": "Even if a corporation is not permitted to obtain a monopoly, it typically invests some money in expensive research or industrial infrastructure.",
       "E": "If obtaining a monopoly enables a corporation to raise its prices and invest less money in advertising, that corporation will almost inevitably do so."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT137",

@@ -382,7 +382,10 @@
       "D": "Using a regular wood stove to heat one’s home causes trees to be felled.",
       "E": "People who use wood stoves to heat their homes should use wood-pellet stoves instead of regular wood stoves."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT152",

@@ -252,7 +252,10 @@
       "D": "Novelists cannot be great without an intuitive grasp of the emotions of everyday life.",
       "E": "Knowledge of the emotions of everyday life cannot be acquired by merely observing and analyzing life."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",
@@ -327,7 +330,10 @@
       "D": "Consumption of nonrenewable resources will not continue to increase in the near future.",
       "E": "Ultimately we cannot do without nonrenewable resources."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",

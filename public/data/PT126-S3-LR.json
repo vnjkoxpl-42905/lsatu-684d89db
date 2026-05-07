@@ -141,7 +141,10 @@
       "D": "It would be expensive to inform customers about the free gift wrapping service.",
       "E": "Either few customers would want free gift wrapping or most customers would want it."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT126",

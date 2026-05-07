@@ -342,7 +342,10 @@
       "D": "It is a generalization used to predict the response of microorganisms to the medicines humans use to kill them.",
       "E": "It is a conclusion that is claimed to follow from the premise that most microorganisms are immune to medicines designed to kill them."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",

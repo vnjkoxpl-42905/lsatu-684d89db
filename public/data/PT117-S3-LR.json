@@ -277,7 +277,10 @@
       "D": "It is offered as one reason that global warming must be curtailed.",
       "E": "It is offered in support of the idea that global warming poses a threat to all organisms."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -349,7 +352,10 @@
       "D": "presumes, without providing justification, that if one does not hold oneself in sufficient self-esteem one cannot be useful or needed",
       "E": "takes for granted that any behavior that can be interpreted as self-interested is in fact self-interested"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT117",

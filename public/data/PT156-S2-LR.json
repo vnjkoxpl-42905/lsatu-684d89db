@@ -69,7 +69,10 @@
       "D": "an opinion offered in support of one of the argument's premises",
       "E": "the conclusion toward which the argument is directed"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -89,7 +92,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -164,7 +168,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -448,7 +453,10 @@
       "D": "Consumption of soybean products might lower blood cholesterol in animals, but a study of people whose major source of protein is soybeans rather than animal products showed blood cholesterol levels no lower than normal.",
       "E": "Preliminary studies have not shown isoflavones to have a significant effect on estrogen levels in humans. S T DO NOT WORK ON ANY OT -19- 22 2"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT156",

@@ -15,7 +15,10 @@
       "D": "modern products are designed for early obsolescence",
       "E": "satisfaction can provide an adequate quantitative measure of economic well-being"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT118",

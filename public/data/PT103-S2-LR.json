@@ -149,7 +149,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -320,7 +321,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Belief / Knowledge / Intent"
+      "Belief / Knowledge / Intent",
+      "First Sentence Conclusion"
     ]
   },
   {

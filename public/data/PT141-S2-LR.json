@@ -108,7 +108,10 @@
       "D": "Films are successful if they succeed within their genre.",
       "E": "Films should try to stay entirely within a single genre."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -185,7 +188,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {

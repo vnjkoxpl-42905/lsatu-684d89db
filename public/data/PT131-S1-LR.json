@@ -147,7 +147,10 @@
       "D": "The study included some observations of each group in contexts that generally tend to make children excited and active.",
       "E": "Some children believe that they can tell the difference between the taste of sugar and that of sugar substitutes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -243,7 +246,10 @@
       "D": "Because an individual's environment can vary tremendously, no individual can be perfectly adapted to its environment.",
       "E": "Ecologists once believed that natural selection would eventually result in individuals that will be perfectly adapted to their environments."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -261,7 +267,10 @@
       "D": "It is offered as evidence against the claim that trade routes between China and Africa preceded those eventually established between China and the Middle East.",
       "E": "It is the main conclusion that the argument attempts to establish about intercourse between China and the West."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -299,7 +308,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {

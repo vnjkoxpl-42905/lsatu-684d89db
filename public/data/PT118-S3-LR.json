@@ -220,7 +220,10 @@
       "D": "Great art can confer beauty even upon very vulgar external objects.",
       "E": "True works of art rarely represent objects from outside the psyche."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT118",

@@ -57,7 +57,10 @@
       "D": "Faithfulness and resentment are obviously different, despite some similarities.",
       "E": "Resentment should not be considered a virtuous emotion."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -463,6 +466,9 @@
       "D": "It is the density of the water in the ocean depths that plays the main role in the trapping of the carbon dioxide.",
       "E": "Carbon dioxide should be pumped into ocean depths to reduce the amount of carbon dioxide in the atmosphere only if the carbon dioxide pumped into ocean depths would be trapped there for hundreds of years."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   }
 ]

@@ -33,7 +33,10 @@
       "D": "Keeping one’s hands warm by putting on an extra layer of clothing is less effective than turning up the heat.",
       "E": "The physical effort required to put on an extra layer of clothing does not stimulate circulation enough to warm your hands."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -51,7 +54,10 @@
       "D": "People seek sensations of warmth and security throughout life because birth takes away the warmth and security of the womb.",
       "E": "The comforting sound of the mother’s regular heartbeat is a simple recurring rhythmic sound."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -466,7 +472,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {

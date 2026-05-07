@@ -73,7 +73,10 @@
       "D": "A significant increase in total government spending will slow the economy in the long run.",
       "E": "If the economy is not stimulated and businesses do not retain more of their earnings, then unemployment will not decrease."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -318,7 +321,10 @@
       "D": "The law of noncontradiction is a principle that the participants in a productive debate must hold in common.",
       "E": "Any principles that could be used to defend the law of noncontradiction are less certain than it is."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT147",

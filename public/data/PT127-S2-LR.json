@@ -54,7 +54,10 @@
       "D": "Ms. Garon worked at Acme for more than 20 years before she was promoted to president.",
       "E": "Acme pays entry-level employees slightly higher wages than most other businesses in the same industry."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -465,6 +468,9 @@
       "D": "It is a claim that is used as direct support for an intermediary conclusion, which in turn is used as direct support for the argument’s main conclusion.",
       "E": "It identifies a phenomenon for which the argument’s main conclusion offers a causal explanation."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   }
 ]

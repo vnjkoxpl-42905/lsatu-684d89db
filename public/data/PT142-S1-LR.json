@@ -234,7 +234,10 @@
       "D": "Convincing the public that higher education programs will benefit society as a whole makes the public more receptive to those programs.",
       "E": "Higher education is similar to road building in that both are beneficial to society as a whole."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -252,7 +255,10 @@
       "D": "It is a claim that serves as the argument’s conclusion.",
       "E": "It is a claim that provides nonessential background information for the argument’s conclusion. 1 1 1 1"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT142",

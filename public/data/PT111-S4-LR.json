@@ -162,7 +162,10 @@
       "D": "Not all altruistic acts are moral behavior.",
       "E": "Altruism develops through the use of reason."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",

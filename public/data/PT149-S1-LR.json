@@ -224,7 +224,10 @@
       "D": "takes for granted that the bill is unpopular just because the legislator wishes it to be unpopular",
       "E": "bases its conclusion on the views of voters without establishing their relevant expertise on the issues involved"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -432,7 +435,10 @@
       "D": "The little documentation that survives from Caligula’s reign indicates that the Roman people believed Caligula to be crueler than other emperors who were widely thought to be tyrants.",
       "E": "There is ample documentation of modern tyrants being responsible for outrageous acts worse than those attributed to Caligula."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT149",

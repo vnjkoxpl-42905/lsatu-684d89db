@@ -90,7 +90,10 @@
       "D": "CDs represent a considerable technological advance over vinyl records.",
       "E": "CDs can have louder passages, as well as both higher- and lower-pitched passages, than can vinyl records."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT121",

@@ -51,7 +51,10 @@
       "D": "relies on evidence regarding the probability of people in different groups developing cancer that, in principle, would be impossible to challenge",
       "E": "overlooks the possibility that people who consistently use sunscreen lotions spend more time in the sun, on average, than people who do not"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -87,7 +90,10 @@
       "D": "There are many ecological niches that can be filled by more than one species.",
       "E": "The species most indispensable for biodiversity fill more than one ecological niche."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -159,7 +165,10 @@
       "D": "It is intended to cast doubt on Fraenger’s hypothesis by questioning the sufficiency of Fraenger’s evidence.",
       "E": "It is intended to help show that Bosch’s choice of subject matter remains unexplained."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -434,7 +443,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -475,6 +485,9 @@
       "D": "Use of crops that have been genetically engineered to resist insect pests is no more costly to farmers than the use of insecticides on crops that are not genetically engineered.",
       "E": "If a wider use of certain crops that have been genetically engineered to resist insect pests is likely to help at least some wildlife populations to recover, it is likely to have that effect only because its use will prevent excessive and ineffective spraying of insecticides on croplands."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   }
 ]

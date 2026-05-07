@@ -15,7 +15,10 @@
       "D": "The criticism that McKinney's policies benefit only the wealthy is unjustified.",
       "E": "McKinney's efforts helped end the housing shortage and stabilize the rents in the city."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT118",
@@ -53,7 +56,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {

@@ -35,7 +35,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -280,7 +281,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -337,7 +339,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {

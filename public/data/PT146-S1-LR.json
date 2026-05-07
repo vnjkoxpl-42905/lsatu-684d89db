@@ -249,7 +249,10 @@
       "D": "The obligation created by a promise is not relieved by the fact that the promise cannot be kept.",
       "E": "If an event like an unforeseen traffic jam interferes with someone’s keeping a promise, then that person should not have made the promise to begin with."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -285,7 +288,10 @@
       "D": "the expected outbreak of tussock moths will almost certainly occur if no attempt is made to counter it",
       "E": "there are no completely effective countermeasures against the moth"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT146",

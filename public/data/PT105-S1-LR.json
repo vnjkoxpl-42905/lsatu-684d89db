@@ -15,7 +15,10 @@
       "D": "Darwin’s theory of evolution was not the dominant biological theory in the early nineteenth century.",
       "E": "Tennyson’s line of poetry was not a reference to Darwin’s theory of evolution."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -33,7 +36,10 @@
       "D": "It suggests that Tennyson’s line provided Darwin with the inspiration for developing his theory.",
       "E": "It implies that Tennyson knew little about the dominant biological theories of the nineteenth century."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT105",
@@ -195,7 +201,10 @@
       "D": "It is used to disprove the claim that we should not hold criminals morally responsible for damages.",
       "E": "It is used in support of the conclusion of the argument."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT105",

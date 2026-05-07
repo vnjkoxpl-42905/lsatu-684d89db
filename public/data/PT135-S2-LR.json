@@ -168,7 +168,10 @@
       "D": "The psychological effects of music are not changed by anesthesia or painkillers.",
       "E": "Both anesthesia and painkillers tend to reduce stress."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -240,7 +243,10 @@
       "D": "there would be a net increase in employment in country X if more persons survived serious injury",
       "E": "most people seriously injured in automobile accidents in country X do not now receive treatment in specialized trauma centers"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -395,7 +401,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "First Sentence Conclusion"
     ]
   },
   {

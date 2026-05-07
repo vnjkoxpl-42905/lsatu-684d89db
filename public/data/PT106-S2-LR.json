@@ -165,7 +165,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {

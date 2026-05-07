@@ -159,7 +159,10 @@
       "D": "National leaders who immediately respond to problems upon taking office should be given enough time to succeed at solving them.",
       "E": "National leaders should be removed from office every few years by the voting in of new leaders."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT148",

@@ -72,7 +72,10 @@
       "D": "For any two Delta vacuum cleaners with equally efficient dust filtration systems, the one with the more powerful motor cleans more effectively.",
       "E": "One cannot accurately assess how effectively any Delta vacuum cleaner cleans without knowing how powerful that vacuum cleaner's motor is."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -255,7 +258,10 @@
       "D": "mistakes a cause of acquisition of expensive tastes for an effect of acquisition of such tastes",
       "E": "rejects trying to achieve a goal because of the cost of achieving it, without considering the benefits of achieving it"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT126",

@@ -72,7 +72,10 @@
       "D": "it is more difficult to become logical in one’s discussions of logic than it is to modify an unhealthy lifestyle",
       "E": "although it is not necessary for logicians to be logical in order to be competent to discuss logic, it is highly desirable"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -147,7 +150,8 @@
     "correctAnswer": "C",
     "questionFeatures": [
       "Sufficient vs. Necessary Flaw",
-      "Famous Flaws"
+      "Famous Flaws",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -283,7 +287,10 @@
       "D": "The audience of a popular program will usually prefer first-run episodes to reruns.",
       "E": "Most programs are never sold into syndication."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -339,7 +346,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Sufficient vs. Necessary Flaw"
+      "Sufficient vs. Necessary Flaw",
+      "First Sentence Conclusion"
     ]
   },
   {

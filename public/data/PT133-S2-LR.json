@@ -276,7 +276,10 @@
       "D": "A company's ability to respond swiftly to changing conditions always benefits its workers.",
       "E": "Even relatively well-paid workers may become dissatisfied with their jobs if their wages never change."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -433,7 +436,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {

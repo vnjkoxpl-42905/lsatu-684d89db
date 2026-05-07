@@ -231,7 +231,10 @@
       "D": "If unusually rich growth of vegetation caused the ice ages, it undoubtedly did so by depleting the carbon dioxide in the atmosphere.",
       "E": "Unusually rich growth of vegetation worldwide was almost certainly the cause of the ice ages."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT128",
@@ -321,7 +324,10 @@
       "D": "This politician has not made any proposals for dealing with the problem of unemployment and thus must not think the problem is important.",
       "E": "In international commerce, the corporations that are best suited for success are large and multinational. Thus small corporations cannot compete at the international level."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT128",

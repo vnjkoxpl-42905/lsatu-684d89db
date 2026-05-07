@@ -298,7 +298,8 @@
     },
     "correctAnswer": "A",
     "questionFeatures": [
-      "Conditional Diagramming"
+      "Conditional Diagramming",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -357,7 +358,10 @@
       "D": "Erich can be convinced that his quest for the treasure is irrational.",
       "E": "Erich is engaging in irrational behavior by pursuing his quest for the treasure."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -377,7 +381,8 @@
     },
     "correctAnswer": "D",
     "questionFeatures": [
-      "Part vs. Whole"
+      "Part vs. Whole",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -453,7 +458,10 @@
       "D": "Recently stock prices have always been lower on Mondays. Therefore they will be lower this coming Monday too.",
       "E": "Only trained swimmers are lifeguards, so it follows that the next lifeguard at the local pool will be a trained swimmer."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT127",

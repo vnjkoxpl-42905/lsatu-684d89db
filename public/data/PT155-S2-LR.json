@@ -15,7 +15,10 @@
       "D": "The CEO’s company started a new advertising campaign at the beginning of this year that has proved unusually effective so far.",
       "E": "Several other companies who sell products similar to those sold by the CEO’s company have also reported that this year’s monthly sales averages so far have been higher than previous years’ averages."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -349,7 +352,10 @@
       "D": "Although cookies made with butter have a better texture than do cookies made with margarine, it is pointless to spend the extra money needed to buy butter, when cookies made with margarine are almost as good.",
       "E": "Unless the size and shape of a dress exactly matches the size and shape of its lining, the dress will hang unevenly when it is worn. However, because most people would not notice this unevenness, it is not worthwhile when making a dress to spend much time attempting to match a dress and its lining perfectly."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",

@@ -15,7 +15,10 @@
       "D": "Political messages need to be developed differently in essays than in short stories.",
       "E": "A short story’s political message is irrelevant to its artistic merit."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT159",

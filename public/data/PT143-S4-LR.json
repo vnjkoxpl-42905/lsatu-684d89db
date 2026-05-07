@@ -294,7 +294,10 @@
       "D": "Having a pet can reduce one’s stress and thereby make one a healthier person.",
       "E": "The benefits older people derive from having pets need to be recognized, especially as the average life span increases."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT143",

@@ -33,7 +33,10 @@
       "D": "an example of a type of organism whose status, like Earth's, is unclear",
       "E": "an illustration of a type of organism out of which Earth is composed"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT116",

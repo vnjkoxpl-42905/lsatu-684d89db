@@ -77,7 +77,8 @@
     },
     "correctAnswer": "E",
     "questionFeatures": [
-      "Famous Flaws"
+      "Famous Flaws",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -173,7 +174,8 @@
     },
     "correctAnswer": "B",
     "questionFeatures": [
-      "Abstract Answers"
+      "Abstract Answers",
+      "First Sentence Conclusion"
     ]
   },
   {
@@ -264,7 +266,10 @@
       "D": "A complete understanding of the world is not attainable through art.",
       "E": "Images cannot be properly explained."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -339,7 +344,10 @@
       "D": "Most of the machinery firms in the economist’s country will go out of business unless they are protected from foreign competition.",
       "E": "Protection from foreign competition will not enable machinery firms in the economist’s country to grow big enough to take on foreign rivals."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -439,7 +447,10 @@
       "D": "Singapore residents, on a per capita basis, eat curries more often than do residents of most other countries.",
       "E": "Indian curries generally contain much more turmeric than other curries contain."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -475,6 +486,9 @@
       "D": "The concert will not sell out of tickets unless it is held at a small venue in the downtown area. But the concert will either be held at Jensen Arena, which is a large venue, or at Pembroke Hall, which is located outside the downtown area. So the concert will not sell out.",
       "E": "The new park near the river will not be popular unless it is well lit and its natural scenery remains undisturbed. The park will be well lit if lamps are installed near the riverbank. But installing lamps there would disturb the park’s natural scenery. So the new park will not be popular."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   }
 ]

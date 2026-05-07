@@ -51,7 +51,10 @@
       "D": "It is unwise to say that one composer is better than another.",
       "E": "Our understanding of music can improve over the course of time."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -262,7 +265,10 @@
       "D": "Everyone accused of a crime has the right to a trial.",
       "E": "Countries that promptly punish suspected lawbreakers have lower crime rates than countries that allow long trials."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -298,7 +304,10 @@
       "D": "Preschoolers ask as many creative questions as do older children.",
       "E": "Preschool teachers generally report lower levels of stress than do other teachers."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -373,7 +382,10 @@
       "D": "The development of intelligence in mammals is not independent of the chemical reactions in their brains taking place at the proper temperatures.",
       "E": "Organisms incapable of controlling their internal body temperatures are subject to unpredictable chemical processes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT124",

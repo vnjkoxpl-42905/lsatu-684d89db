@@ -15,7 +15,10 @@
       "D": "Popular music has purposes other than mere entertainment.",
       "E": "Popular music has a profound emotional impact on its listeners."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -219,7 +222,10 @@
       "D": "The rarer a species of plant or animal is, the more that should be done to protect that species.",
       "E": "If an animal’s original habitat is in danger of being lost, it is permissible to try to find a new habitat for the animal."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",
@@ -237,7 +243,10 @@
       "D": "In the future, biographers’ access to the most interesting, revealing material will be determined by their knowledge of the necessary passwords.",
       "E": "Public figures’ private correspondence and diaries are the most interesting and revealing sources for the writing of biographical history. -15- 22 2"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT158",

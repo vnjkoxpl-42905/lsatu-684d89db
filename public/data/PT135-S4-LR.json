@@ -363,7 +363,10 @@
       "D": "Observing the impacts of colors across varying contexts helps students to learn about the use of color.",
       "E": "It is important that art students understand how the effects of using colored paper in various compositions differ from those of using paint in those compositions."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -381,7 +384,10 @@
       "D": "It is a dilemma that, it is argued, is faced by every social scientist because of the difficulty of determining whether a given cultural phenomenon is the cause or the effect of a given factor.",
       "E": "It is a claim that the philosopher attempts to justify by appeal to the requirements for establishing the existence of one kind of causal relationship."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT135",

@@ -51,7 +51,10 @@
       "D": "It is offered as evidence for the stated claim that protection of life and property is more important than retribution for past illegal acts.",
       "E": "It is offered as evidence for the stated claim that lawbreaking proceeds from either ignorance of the law, or ignorance of the effects of one's actions, or free choice."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT112",

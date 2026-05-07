@@ -259,7 +259,10 @@
       "D": "It is incorrect to say that inferior motor oil cannot cause a car to get poorer gasoline mileage, since inferior motor oil can cause engine valve deterioration, and engine valve deterioration can lead to poorer gasoline mileage.",
       "E": "It is inaccurate to say that Alexander the Great was a student of Plato; Alexander was a student of Aristotle and Aristotle was a student of Plato."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT111",

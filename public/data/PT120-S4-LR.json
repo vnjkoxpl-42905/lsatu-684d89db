@@ -105,7 +105,10 @@
       "D": "It is information that the argument takes for granted.",
       "E": "It is the main conclusion of the argument."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT120",

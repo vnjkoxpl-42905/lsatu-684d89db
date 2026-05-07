@@ -15,7 +15,10 @@
       "D": "Scientists generally believe that deep-sea creatures cannot detect red light.",
       "E": "Scientists need to reconsider the belief that deep-sea creatures cannot detect red light."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -462,7 +465,10 @@
       "D": "Children's self-esteem will suffer if their parents uniformly praise their attempts to accomplish things regardless of their success or failure.",
       "E": "Children will develop low self-esteem if their parents do not praise them when they succeed."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT139",

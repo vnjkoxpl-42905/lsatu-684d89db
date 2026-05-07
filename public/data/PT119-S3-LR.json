@@ -381,7 +381,10 @@
       "D": "John believes that 4 is a prime number and that 4 is divisible by 2. Hence John believes that there is a prime number divisible by 2.",
       "E": "Pat wants to become a social worker. It is well known that social workers are poorly paid. Pat apparently wants to be poorly paid."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT119",

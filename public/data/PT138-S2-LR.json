@@ -309,7 +309,10 @@
       "D": "A tree purchased last summer would have established roots.",
       "E": "Trees with established roots can better withstand droughts."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -348,7 +351,10 @@
       "D": "The capacity to express noncognitive responses such as emotion is at least as important for true intelligence as is computational sophistication.",
       "E": "If a machine is not capable of producing humanlike noncognitive responses, then it cannot be regarded as truly intelligent."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT138",

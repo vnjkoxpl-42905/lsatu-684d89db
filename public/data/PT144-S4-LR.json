@@ -15,7 +15,10 @@
       "D": "Every other programmer at the firm has done better work than Vadim.",
       "E": "It is bad policy that the firm always lays off the most recently hired programmer."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -126,7 +129,10 @@
       "D": "It provides background information on the purpose of the study.",
       "E": "It introduces an alternative explanation of the phenomenon described in the main conclusion."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -144,7 +150,10 @@
       "D": "Drivers who own satnavs usually prefer to drive to their accustomed destinations by using their customary routes rather than by following the directions given by the satnavs.",
       "E": "Drivers who are given directions as needed are less likely to change course suddenly or make other risky maneuvers."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT144",

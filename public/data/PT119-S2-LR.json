@@ -441,7 +441,10 @@
       "D": "It ignores the possibility that the first known instance of a kind is not the first instance of that kind.",
       "E": "It provides no evidence for the claim that the Babylonians produced wine as early as 1500 B.C."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "First Sentence Conclusion"
+    ]
   },
   {
     "practiceTest": "PT119",
