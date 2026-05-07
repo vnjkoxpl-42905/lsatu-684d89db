@@ -303,7 +303,10 @@
       "D": "Those nations that lose influence in the world community do not necessarily suffer from a threat to their value system or way of life.",
       "E": "Allowing one’s country to lose its technological edge, especially as concerns weaponry, would be foolish rather than merely a historical accident."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT111",

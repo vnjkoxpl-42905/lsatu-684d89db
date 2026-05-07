@@ -411,7 +411,10 @@
       "D": "There are actions that would be reasonably expected to leave unchanged the aggregate well-being of the people affected by them.",
       "E": "Only right actions have good consequences."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT123",

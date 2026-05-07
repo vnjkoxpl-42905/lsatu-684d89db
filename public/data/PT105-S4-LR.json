@@ -303,7 +303,10 @@
       "D": "If someone is levelheaded, then that person is neither bold nor excessively generous.",
       "E": "If someone is not levelheaded, then that person is either bold or excessively generous."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT105",

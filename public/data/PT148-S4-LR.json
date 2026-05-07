@@ -375,7 +375,10 @@
       "D": "People who think they observe supernatural phenomena should not publicize that fact unless they can present corroborating evidence.",
       "E": "A newspaper should not publish a report unless it is confirmed by an independent source."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT148",

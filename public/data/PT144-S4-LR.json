@@ -393,7 +393,10 @@
       "D": "Most teachers at the Culinary Institute are allowed to use the institute’s main kitchen. Dinners at Cafe Delice are only prepared in that kitchen. So dinners at Cafe Delice must sometimes be prepared by Culinary Institute teachers.",
       "E": "Only teachers at the Culinary Institute are allowed to use the main kitchen of the institute. Dinners at Cafe Delice are usually prepared by Culinary Institute teachers. So dinners at Cafe Delice must sometimes be prepared in the main kitchen of the Culinary Institute."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",

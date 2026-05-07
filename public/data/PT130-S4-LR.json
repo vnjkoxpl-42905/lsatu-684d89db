@@ -141,7 +141,10 @@
       "D": "recommends a solution to a problem without first considering any possible causes of that problem",
       "E": "fails to make a definite recommendation and instead merely suggests that some possible course of action might be effective"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -303,7 +306,10 @@
       "D": "Those whose endeavors are not regarded as governed by fate will not be seen as possessing nobility.",
       "E": "If an ignoble character in a work of literature endures through a series of misfortunes, that work of literature is not a tragedy."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -339,7 +345,10 @@
       "D": "Anyone who does not have a high regard for the wisdom of the masses is an elitist who believes that if an artwork is popular it is unlikely to be good.",
       "E": "Unless Griley believes in democracy, Griley does not have a high regard for the wisdom of the masses."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -393,7 +402,10 @@
       "D": "A house will suffer from dry rot and poor drainage only if it is built near a high water table. This house suffers from dry rot and has poor drainage. Thus, it must have been built near a high water table.",
       "E": "If one wears a suit that has double vents and narrow lapels, one will be fashionably dressed. The suit that Joseph wore to dinner last night had double vents and narrow lapels, so Joseph must have been fashionably dressed."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -429,7 +441,10 @@
       "D": "People who anger the majority enjoy demonstrating the falsehood of popular viewpoints.",
       "E": "People who anger the majority are dissatisfied with merely habitual assent to widely held beliefs."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",

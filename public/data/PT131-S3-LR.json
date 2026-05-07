@@ -339,7 +339,10 @@
       "D": "No political system that fails to prevent conflict is legitimate.",
       "E": "Some political systems that are not totalitarian are illegitimate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",

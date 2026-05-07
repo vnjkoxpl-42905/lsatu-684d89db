@@ -213,7 +213,10 @@
       "D": "If Paula works with Elise, then Jane will work with Arthur only. However, if Paula does not work, Elise will also work with Jane. So if Paula does not work, Arthur will work with both Jane and Elise.",
       "E": "Therese will work in the yard tomorrow only if Maria helps her and it is not raining. Although Maria does not like working in the yard, she will help Therese. So unless it rains tomorrow, Therese will certainly work in the yard."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT105",

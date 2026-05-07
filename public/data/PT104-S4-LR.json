@@ -123,7 +123,10 @@
       "D": "there are other easy ways to impress intellectuals that do not involve knowing history",
       "E": "people who are not intellectuals can be impressed more easily than people who are intellectuals"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT104",
@@ -447,6 +450,9 @@
       "D": "The press agent may not know any more about the accident than the most knowledgeable reporter.",
       "E": "No reporter knows any more about the accident than any other reporter."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

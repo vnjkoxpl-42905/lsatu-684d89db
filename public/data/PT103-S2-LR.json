@@ -285,7 +285,10 @@
       "D": "Chefs who become celebrities either open their own restaurants or write books about their craft, but not both. John Endicott is a celebrated chef who opened his own restaurant. Therefore, Endicott does not write books about his craft.",
       "E": "Every catering service in Woodside Township will accept both residential and business catering assignments. Peggy's Fine Foods is a catering service that will not accept business catering assignments. Hence, Peggy's Fine Foods is not in Woodside Township."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT103",

@@ -33,7 +33,10 @@
       "D": "presumes, without providing justification, that only objects that are beautiful are instructive",
       "E": "fails to consider the possibility that there are many things that are both beautiful and instructive but are not part of the natural world"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -177,7 +180,10 @@
       "D": "People who are sure of the correctness of their positions are not people who should undergo mediation to resolve their conflicts.",
       "E": "People whose conflicts are based on ideology are not people who should undergo mediation to resolve their conflicts."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -249,7 +255,10 @@
       "D": "If Clarissa missed the bus today, it is quite unlikely that she would have gotten to work on time. So, it is quite unlikely that Clarissa missed the bus, since she actually was at work on time today.",
       "E": "This year's election will probably be fair. But Popov probably will not win unless the election is unfair. So, Popov will not win the election."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",

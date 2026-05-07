@@ -213,7 +213,10 @@
       "D": "There can be good actions that are not performed by a good person.",
       "E": "One cannot know whether someone acted morally in a particular situation unless one knows what consequences that person's actions had."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -249,7 +252,10 @@
       "D": "Legislators considering a proposed law for which they have repugnance or enthusiasm do not consider the consequences that it will actually have.",
       "E": "The inability of legislators to consider the actual consequences of enacting a proposed law is due to their strong feelings about that law."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -393,7 +399,10 @@
       "D": "Productivity will not increase if businesses do not make a substantial investment in new technology.",
       "E": "The new technology in which businesses are currently investing is not contributing to an increase in productivity."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",

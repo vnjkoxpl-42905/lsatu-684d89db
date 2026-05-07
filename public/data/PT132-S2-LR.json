@@ -267,7 +267,10 @@
       "D": "Smith's theory about the relation of social circumstances to the understanding of meaning lacks insight.",
       "E": "The intended meaning of an author's work is not always good evidence of its true meaning."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -303,7 +306,10 @@
       "D": "Being wealthy is, under certain conditions, conducive to unhappiness.",
       "E": "Health is more conducive to happiness than wealth is."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -339,7 +345,10 @@
       "D": "No independently owned pet store in West Calverton sells tropical fish but not exotic birds.",
       "E": "Any independently owned pet store in West Calverton that does not sell tropical fish sells exotic birds."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT132",

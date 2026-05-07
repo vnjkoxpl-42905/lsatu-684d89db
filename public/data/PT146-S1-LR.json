@@ -375,7 +375,10 @@
       "D": "Virtually every pharmacy sells shampoo also sells toothpaste. Most pharmacies sell cosmetics. Therefore, there must be some pharmacies that sell both cosmetics and toothpaste and some that sell both cosmetics and shampoo.",
       "E": "Nearly all pharmacies sell either shampoo or toothpaste, or both. Therefore, since most pharmacies sell cosmetics, there must be some pharmacies that sell both cosmetics and toothpaste and some that sell both cosmetics and shampoo."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT146",

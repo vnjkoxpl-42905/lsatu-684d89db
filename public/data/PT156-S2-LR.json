@@ -411,7 +411,10 @@
       "D": "If a resource is soundly managed, then its externalities are precisely assessed.",
       "E": "The price of a given resource is only one of several factors relevant to a decision about whether to use it."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT156",

@@ -285,7 +285,10 @@
       "D": "The tax on coal burdens all of the people targeted by it, and this tax does not burden anyone who is not targeted by it. Thus, the tax is effective.",
       "E": "The tax on steel does not cost a significant amount of money to enforce, but it does not raise revenue either. Thus, the tax is ineffective."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT121",
@@ -393,7 +396,10 @@
       "D": "If you use a computer, its messages are either easily readable or not. If the messages are easily readable, they are merely password protected. If they are not easily readable, they are electronically encrypted. So any message on the computer you use is either password protected or electronically encrypted.",
       "E": "When manufacturers use a natural resource, they are either efficient or inefficient. If they are inefficient, the resource will be depleted quickly. If they are efficient, the resource will last much longer. So either manufacturers are efficient or they should be fined."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT121",

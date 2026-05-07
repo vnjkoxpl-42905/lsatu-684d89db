@@ -195,7 +195,10 @@
       "D": "a rise in a nation's standard of living need not be the result of major investments in its infrastructure",
       "E": "nations often experience short-term crises that require that resources be diverted to purposes other than the maintenance and improvement of infrastructure"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -429,7 +432,10 @@
       "D": "In order to discover the meaning of certain seldom-used words, one must use a good dictionary. Paul has used a good dictionary, so Paul must have discovered the meaning of those words.",
       "E": "One must at least have warm clothing if one is to survive in a very cold climate. Jerome has obtained warm clothing; therefore, he might be able to survive in a very cold climate."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",

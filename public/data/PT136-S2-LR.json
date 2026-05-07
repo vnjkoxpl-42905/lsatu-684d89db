@@ -429,7 +429,10 @@
       "D": "City residents were expected to show a great deal of support for the rebels if the battle was won and the jailed rebel leaders freed. Residents have shown a great deal of support for the rebels for the last three days. Therefore, the rebels must have won the battle.",
       "E": "If the television station's new weather forecasting equipment had been worth the investment, the accuracy of its forecasts would have risen, along with its ratings. But the station's ratings actually decreased. Thus, the new equipment is no improvement on the old."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",

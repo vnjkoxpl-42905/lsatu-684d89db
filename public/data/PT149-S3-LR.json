@@ -411,7 +411,10 @@
       "D": "Bacteria colonies that produce phenazines are better able to fend off other bacteria than are bacteria colonies that do not produce phenazines.",
       "E": "Within bacteria colonies that produce phenazines, interior bacteria are more likely to die than are bacteria along the edges."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -465,6 +468,9 @@
       "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a novel is quite unpopular, it will probably not be made into a movie.",
       "E": "Most novels are not made into movies. Moreover, the more complex a novel’s plot, the less likely the novel is to be made into a movie. Thus, if a novel has a particularly simple plot, it will probably be made into a movie."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

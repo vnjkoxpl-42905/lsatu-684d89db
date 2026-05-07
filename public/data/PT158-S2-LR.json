@@ -447,6 +447,9 @@
       "D": "Books at Falling Embers Bookshop are on sale only if they are either used books or paperbacks. The book I am looking for at Falling Embers is on sale. Therefore, if the book I am looking for is not a paperback, it is a used book.",
       "E": "If Doria owes more money than she can pay back, then she must either get a higher paying job or declare bankruptcy. Doria does in fact owe more than she can pay back, yet she does not want to declare bankruptcy. So, Doria must get a higher paying job. O P HER SECTION IN THE TEST."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

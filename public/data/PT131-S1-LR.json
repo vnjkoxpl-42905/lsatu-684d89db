@@ -87,7 +87,10 @@
       "D": "Any path along this embankment must be either concrete or stone. But a concrete path cannot be built in this location. So if there is to be a path on the embankment, it will be a stone path.",
       "E": "A space the size of this meadow would be suitable for a playground or a picnic area. However, a playground would be noisy and a picnic area would create litter. So it will be best for the area to remain a meadow."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -159,7 +162,10 @@
       "D": "Louisa tried to get Henry into serious trouble by making it appear that he stole some expensive clothes from a store. But the store's detective realized what Louisa did, and so Louisa was punished rather than Henry. Since she intended to harm Henry, Louisa's action was not morally good.",
       "E": "Yolanda took her children to visit their grandfather because she wanted her children to enjoy their vacation and she knew they adored their grandfather. The grandfather and the children all enjoyed the visit. Though Yolanda greatly enjoyed the visit, her action was morally good."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -285,7 +291,10 @@
       "D": "If an emotion is under a person's control, then that person cannot hold others responsible for it.",
       "E": "The emotions for which a person is most commonly blamed are those that are under that person's control."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -303,7 +312,10 @@
       "D": "Two new processes are being considered for the manufacture of ball bearings. The processes are similar, except that the chemicals used in process A will pollute a nearby river slightly more than will the chemicals for process B. Process A is also slightly cheaper than process B. The company should use process A.",
       "E": "A company is considering changing its process for manufacturing shoelaces. The new process is cheaper and less environmentally damaging than the old. Both are legal. Changing processes would be costly, but the cost would be almost entirely recovered in long-term savings. The company should switch processes."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -339,7 +351,10 @@
       "D": "To ignore the fact that self-replication is not limited to genes is to misunderstand genetic behavior.",
       "E": "Biologists have insufficient evidence about genetic behavior to determine whether it is best described as selfish."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -357,7 +372,10 @@
       "D": "As this tree before us is a giant redwood, it follows that we must be in a northern latitude, since it is only in northern latitudes that one finds giant redwoods.",
       "E": "Only accomplished mountain climbers can scale El Capitan. Thus, Michelle must be able to scale El Capitan, since she is an accomplished mountain climber."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -375,7 +393,10 @@
       "D": "A garden can visually merge with an adjoining living room into a single space even if the garden does not contribute strong visual interest of its own.",
       "E": "Except in summer, opening the sliding glass doors that separate a garden from an adjoining living room does not intensify the effect of the garden and room visually merging into a single space."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",

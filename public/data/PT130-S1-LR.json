@@ -213,7 +213,10 @@
       "D": "Any object that fulfills the purpose of art qualifies as art.",
       "E": "The city art commission should purchase the edifice if it qualifies as art."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -249,7 +252,10 @@
       "D": "Theater managers generally believe that a film that is attractive to younger audiences is more likely to be profitable than other films.",
       "E": "Films that have an appeal to older audiences almost never generate a profit for theaters that show them."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -285,7 +291,10 @@
       "D": "If a business keeps its core corporate philosophy intact, it will continue to exist.",
       "E": "A business cannot change its core corporate philosophy without becoming a different corporation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",
@@ -447,7 +456,10 @@
       "D": "If a wig's foundation is handmade, then its price is at least in the medium range.",
       "E": "Any wig that should be dry-cleaned has a foundation that is handmade."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT130",

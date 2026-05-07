@@ -465,6 +465,9 @@
       "D": "Poets who create poetry of high quality are those who have studied traditional poetry, because poets who have not studied traditional poetry are the poets most likely to create something shockingly inventive, and poetry that is shockingly inventive is rarely fine poetry.",
       "E": "People who dislike exercise are unlikely to lose weight without sharply curtailing their food intake; but since those who dislike activity generally tend to avoid it, people who like to eat but dislike exercise will probably fail to lose weight."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

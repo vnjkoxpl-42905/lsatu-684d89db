@@ -87,7 +87,10 @@
       "D": "If a fabric is appropriate for use in a skirt or jacket, then that fabric is not a heavy tapestry fabric.",
       "E": "Heavy tapestry fabrics are sometimes appropriate for use in types of clothing other than skirts and jackets."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -249,7 +252,10 @@
       "D": "the new computer system will be worthwhile if it automates many processes that are currently performed manually",
       "E": "it will be easy for employees of the Ministry of Transportation to learn to use the new computer system"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT151",

@@ -339,7 +339,10 @@
       "D": "If the textbook contains an essay by Lind, then it will also contain an essay by Jones.",
       "E": "The textbook will contain an essay by Lind."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -447,6 +450,9 @@
       "D": "If Terry attends the meeting a different set of issues will be relevant to a majority of those attending than if Terry does not attend.",
       "E": "The majority of the issues to be addressed at the meeting are not relevant to Terry."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

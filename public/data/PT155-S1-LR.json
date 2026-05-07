@@ -141,7 +141,10 @@
       "D": "No one can be an effective mayor of a major industrial seaport without a thorough knowledge of both national and international affairs. The fact that Mayor Leroux is an effective mayor proves that she is thoroughly knowledgeable in both national and international affairs.",
       "E": "The only way to make a delicious vegetable soup is to use fresh vegetables. Since this vegetable soup is delicious, it must have been made with fresh vegetables."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT155",
@@ -267,7 +270,10 @@
       "D": "If at least one member of Jamil’s family is outside, then Jamil’s cat is outside also.",
       "E": "If the sun is not shining and it is not hot outside, Jamil’s cat is not outside."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT155",

@@ -339,7 +339,10 @@
       "D": "You can repair your own bicycle only if you are enthusiastic. And if you are enthusiastic, you will also have mechanical aptitude. So if you are not able to repair your own bicycle, you lack mechanical aptitude.",
       "E": "Getting a ticket requires waiting in line. Waiting in line requires patience. So if you do not wait in line, you lack patience."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -447,7 +450,10 @@
       "D": "fails to take into account the possibility that the local fishing guide mistakenly believes that some fish species other than the bullhead catfish is the most populous fish species in Stillwater Pond",
       "E": "takes for granted that Stillwater Pond has only one species of catfish living in it"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",

@@ -465,6 +465,9 @@
       "D": "If it would be morally wrong for a person to perform a given action, then that action is genuinely open to that person.",
       "E": "An action is not free unless there is an alternative action that is not morally wrong."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

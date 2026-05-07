@@ -303,7 +303,10 @@
       "D": "The government health service should pay for patients to take Antinfia.",
       "E": "Antinfia is not cost-effective."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -429,7 +432,10 @@
       "D": "The medieval manuscripts most susceptible to deterioration are those most frequently consulted by researchers.",
       "E": "None of the medieval manuscripts that are rarely consulted by researchers is widely acknowledged to be of cultural significance."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT148",
@@ -465,6 +471,9 @@
       "D": "Most novels are not made into movies. However, the more popular a novel is, the more likely it is to be made into a movie. Thus, if a movie is quite unpopular, it will probably not be made into a movie.",
       "E": "Most novels are not made into movies. Moreover, the more complex a novel’s plot, the less likely the novel is to be made into a movie. Thus, if a novel has a particularly simple plot, it will probably be made into a movie."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

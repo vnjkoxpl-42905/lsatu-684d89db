@@ -393,7 +393,10 @@
       "D": "The price it pays for coffee beans cannot decrease without the Coffee Shoppe's overall profitability also decreasing.",
       "E": "Either the price it pays for coffee beans will continue to increase or the Coffee Shoppe's coffee sales will increase."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT123",

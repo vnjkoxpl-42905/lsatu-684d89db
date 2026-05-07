@@ -123,7 +123,10 @@
       "D": "It is not safe to eat any fruit that is infected.",
       "E": "It is safe to eat any fruit that is uninfected."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT122",

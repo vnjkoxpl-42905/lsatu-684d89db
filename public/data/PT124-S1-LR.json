@@ -123,7 +123,10 @@
       "D": "Alloys of niobium and germanium do not superconduct at temperatures below minus 160 degrees Celsius.",
       "E": "No use of alloys of niobium and germanium will ever be economically feasible."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -321,7 +324,10 @@
       "D": "it takes longer than three years for a salesperson to develop a strong client base",
       "E": "few salespeople can afford to spend three years building a client base"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",
@@ -375,7 +381,10 @@
       "D": "The mower will operate only if the engine is not flooded. The engine is flooded if the foot pedal is depressed. The foot pedal is not depressed, so the mower will operate.",
       "E": "If the kiln is too hot, then the plates will crack. If the plates crack, then the artisan must redo the order. The artisan need not redo the order. Thus, the kiln was not too hot."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT124",

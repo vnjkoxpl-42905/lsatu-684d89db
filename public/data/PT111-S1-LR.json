@@ -429,7 +429,10 @@
       "D": "Every loss of a single hair is insignificant, so no one who has a full head of hair at twenty ever becomes bald.",
       "E": "Every moment in Vladimir’s life is followed by a later moment in Vladimir’s life, so Vladimir’s life will never end."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT111",

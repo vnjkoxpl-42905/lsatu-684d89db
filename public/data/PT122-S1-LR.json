@@ -267,7 +267,10 @@
       "D": "If all sciences rely heavily on mathematics, and clinical psychology is a science, then it follows that clinical psychology relies heavily on mathematics. But clinical psychology does not rely heavily on mathematics. So clinical psychology is not a science.",
       "E": "If all classes are canceled today, then it follows that today is a holiday and the library is closed. But today is not a holiday. So some classes are not canceled, or the library is open."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT122",

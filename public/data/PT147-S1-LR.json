@@ -465,6 +465,9 @@
       "D": "Most farmers like living in rural areas. Since Carla is not a farmer, she probably would not enjoy living in the country.",
       "E": "Sculptors sometimes produce significant works of art. But musicians are not sculptors. Hence, musicians never produce significant works of art."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

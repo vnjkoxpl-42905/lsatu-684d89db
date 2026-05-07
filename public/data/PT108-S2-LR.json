@@ -357,7 +357,10 @@
       "D": "The post-collision analysis of Jupiter showed that the formations all had exactly the same composition.",
       "E": "The deeper the explosion occurred in Jupiter’s atmosphere, the more difficult it would be to detect from Earth."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT108",

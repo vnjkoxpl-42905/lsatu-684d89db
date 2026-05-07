@@ -231,7 +231,10 @@
       "D": "The museum will exceed this year’s budget if it renovates this year.",
       "E": "The museum will stay within this year’s budget if it does not renovate this year. 4 4 -31-4"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -393,7 +396,10 @@
       "D": "An effective dramatic performance in a play will enhance the audience’s appreciation of the play.",
       "E": "A dramatic performance that makes it more difficult for the audience to empathize with the actor’s character detracts from the audience’s appreciation of the play."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -411,7 +417,10 @@
       "D": "confuses a necessary condition for a company to grow rapidly with a sufficient condition for a company to grow rapidly",
       "E": "overlooks the possibility that a software company could have both creative employees and a management that is open to new ideas"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT156",
@@ -429,7 +438,10 @@
       "D": "The police are allowed to ticket any parked car that does not have a parking permit. They are also allowed to ticket any parked car whose parking permit has expired. Thus, the police are going to ticket Ruta’s car, for her parking permit has expired.",
       "E": "Most dogs that have attended obedience classes respond correctly to basic commands, but only some are able to perform advanced tricks. Thus, any dog that has attended obedience classes and performs advanced tricks will be able to respond correctly to basic commands."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT156",

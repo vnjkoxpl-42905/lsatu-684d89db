@@ -123,7 +123,10 @@
       "D": "If the health of their animals declines, most farmers will not be able to stay in business.",
       "E": "If antibiotic use in animal feed is phased out, some farmers will go out of business unless they use other means of increasing meat yields."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -159,7 +162,10 @@
       "D": "concludes that a person has a certain attribute simply because that person belongs to a group most of whose members have that attribute",
       "E": "draws a conclusion that merely restates a claim presented in support of that conclusion"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -249,7 +255,10 @@
       "D": "If a play does not skillfully explore human nature, it will not receive critical acclaim.",
       "E": "Any play that skillfully examines human nature will be performed regularly over the centuries."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -267,7 +276,10 @@
       "D": "Medical researchers should always attempt to develop effective medical treatments as rapidly as they can while fulfilling their other moral obligations.",
       "E": "It is wrong for any company to ask its medical researchers to keep their research confidential, if failure to share the research might delay development of effective medical treatments."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -321,7 +333,10 @@
       "D": "It is permissible to ban a novel that would cause society more harm than good if the novel has two or more objectionable characteristics.",
       "E": "It is permissible to ban a novel that depicts wholesale violence only if that novel has at least one other objectionable characteristic."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -447,6 +462,9 @@
       "D": "Walters does not believe that Professor Serfin should make an official determination that he plagiarized.",
       "E": "Professor Serfin has no intention of making an official determination that Walters plagiarized in the class."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

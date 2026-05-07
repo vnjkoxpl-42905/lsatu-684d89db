@@ -159,7 +159,10 @@
       "D": "Both yeast and baking powder can cause sweet rolls to rise. It therefore follows that yeast can always be substituted for baking powder in a recipe for sweet rolls.",
       "E": "In recipe contests, there are always more contestants in the pie category than there are in the cake category. It therefore follows that contestants generally have a better chance of winning in the cake category than in the pie category."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -375,7 +378,10 @@
       "D": "New students in this program must choose either a physics class or an art class. Miyoko has no desire to take a class in either of those fields, so Miyoko will probably not enter this program.",
       "E": "To avoid predators, rabbits will either double back on their pursuers or flee for nearby cover. The rabbit being pursued by a fox in this wildlife film is in a field that offers no opportunity for nearby cover, so it will try to double back on the fox."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -411,7 +417,10 @@
       "D": "Promises should not be interpreted in such a way that they make no sense.",
       "E": "Promises that cannot be kept do not make any sense."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",

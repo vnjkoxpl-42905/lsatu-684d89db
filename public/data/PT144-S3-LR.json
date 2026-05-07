@@ -105,7 +105,10 @@
       "D": "Because it cannot identify all of the customers who were adversely affected by the incorrect expiration date, the Thimble Corporation should deny the rebate to all of the customers who applied for it.",
       "E": "If a customer did not rely on an incorrect expiration date when applying for the rebate but was denied the rebate for any other reason, the Thimble Corporation is not obligated to offer that customer the rebate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -123,7 +126,10 @@
       "D": "A biography should always focus on what makes its subject distinctive.",
       "E": "What is most interesting about Shakespeare is what made him different from his contemporaries."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -339,7 +345,10 @@
       "D": "A leading science journal states that the data provided by the manufacturer of a controversial new medication are probably accurate and that if they are accurate, the medication is safe. Thus, the manufacturer’s data are probably accurate, for the science journal is fairly reliable on such matters.",
       "E": "The data from the manufacturer of a controversial new medication are probably accurate, because a leading science journal has published the data and has concluded that the data are probably accurate. Moreover, the journal is fairly reliable on such matters."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -411,7 +420,10 @@
       "D": "Any bill passed into law in a well-functioning democracy will be favored by most people and be consistent with individuals’ basic human rights.",
       "E": "A bill that most people favor will be passed promptly into law in a well-functioning democracy if the bill does not violate anyone’s basic human rights."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",
@@ -429,7 +441,10 @@
       "D": "For soil to remain healthy in the long term, it requires the regular addition of both commercial fertilizers and a source of micronutrients such as grass clippings that are allowed to decay and return to the soil.",
       "E": "Homeowners who rake up their grass clippings are unable to maintain the long-term health of the soil in their lawns and gardens. S T"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT144",

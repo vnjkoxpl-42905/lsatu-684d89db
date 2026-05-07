@@ -267,7 +267,10 @@
       "D": "fails to consider the possibility that Immanuel will want to move to a bigger lab once his proposal is approved",
       "E": "presumes, without providing justification, that no lab other than the fourth-floor lab would be adequate for Agnes’s research"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -411,7 +414,10 @@
       "D": "If conservationists intervene to help squirrel monkeys survive, then the squirrel monkeys will not become extinct.",
       "E": "Without the intervention of conservationists, large tracts of second-growth forest habitat will not be preserved for squirrel monkeys."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT127",

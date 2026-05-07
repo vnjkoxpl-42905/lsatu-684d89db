@@ -195,7 +195,10 @@
       "D": "Olga gives her daughter a computer as a graduation gift. Since this is the gift that all children in Olga's family receive for graduation, it is not generous.",
       "E": "Michael gave his nephew $50 as a birthday gift, more than he had ever given before. Michael's nephew, however, lost the money. Therefore, Michael's gift was not generous because it did not benefit the recipient."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -321,7 +324,10 @@
       "D": "No one without a deep desire to communicate can be a blues musician. So short-story writers, all of whom have that same desire to communicate, could also have become blues musicians.",
       "E": "People living in open and democratic countries have customs that are determined at least in part by an inherited past. But no country's past is a product of free choice. Thus people living in open and democratic countries can never be entirely free."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT115",
@@ -429,6 +435,9 @@
       "D": "Some people who are not good students derive pleasure from losing track of their own identities.",
       "E": "Most people who are capable of becoming so absorbed in a topic that they lose track of their own identities are not good students."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

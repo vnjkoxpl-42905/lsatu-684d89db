@@ -303,7 +303,10 @@
       "D": "Paintings that fail to move a viewer to political action cannot be politically significant.",
       "E": "The interplay of color, texture, and form is not a measure of the worth of representational paintings."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT120",

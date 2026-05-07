@@ -267,7 +267,10 @@
       "D": "Lisa will attend the family reunion next week only if one of her brothers, Jared or Karl, also attends. Karl will not attend the reunion, but Jared will. So Lisa will attend the reunion.",
       "E": "George will not go to the museum tomorrow unless Mark agrees to go. Mark will go to the museum only if he can postpone most of his appointments. Mark has postponed some of his appointments, so he will go to the museum."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",

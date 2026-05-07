@@ -339,7 +339,10 @@
       "D": "The Park Street Cafe closed this year. There was no reason for it to remain open if it was facing strong competition and had an unsatisfied customer base. So one cannot rule out the possibility that it was both facing strong competition and had an unsatisfied customer base.",
       "E": "The Park Street Cafe closed this year. In order to stay open, it needed a lack of competition and it needed a satisfied customer base. Because it had neither, the unavoidable conclusion is that the Park Street Cafe could not have stayed open this year."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT151",
@@ -393,7 +396,10 @@
       "D": "Some people who want each other to prosper dislike each other.",
       "E": "Some people who are kind to each other do not treat each other with respect."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT151",

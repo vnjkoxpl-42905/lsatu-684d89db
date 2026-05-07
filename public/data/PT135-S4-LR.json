@@ -429,7 +429,10 @@
       "D": "All employees of Global Airlines can participate in its retirement plan after they have been with the company a year or more. Gavin has been with Global Airlines for three years. We can therefore be sure that he participates in Global’s retirement plan.",
       "E": "Whenever a competitor of Global Airlines reduces its fares, Global must follow suit or lose passengers. Global carried more passengers last year than it did the year before. Therefore, Global must have reduced its fares last year to match reductions in its competitors’ fares."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT135",

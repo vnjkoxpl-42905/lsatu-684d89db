@@ -105,7 +105,10 @@
       "D": "since all city dwellers prefer waterfalls to traffic jams, anyone who prefers waterfalls to traffic jams is a city dweller",
       "E": "since one’s need for medical care decreases as one’s health improves, a person who is in an excellent state of health has no need of medical care"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT149",
@@ -447,6 +450,9 @@
       "D": "Mr. Schwartz is polite to anyone who is polite to him. So, since all of his colleagues are polite to him, it must be that he is polite to all his colleagues.",
       "E": "If a book is worth reading, it is worth buying. So, since not all books are worth reading, not all books are worth buying."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

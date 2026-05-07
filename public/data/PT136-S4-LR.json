@@ -123,7 +123,10 @@
       "D": "it is impossible to have desires without also being a moral agent",
       "E": "it is impossible to perform morally worthy actions without at some time conforming to a principle"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -249,7 +252,10 @@
       "D": "A foundation decides not to fund a research proposal in applied mathematics that sought to model certain poorly understood aspects of economic behavior.",
       "E": "A research institute funds an investigation into the mathematical properties of folded structures that is likely to aid in understanding the structure of proteins that cause disease."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -285,7 +291,10 @@
       "D": "Some people that an employee of a telemarketing agency calls to ask them to buy the product of a client of the agency will refuse to do so even though they are not predisposed to dislike the client.",
       "E": "People who are already predisposed to dislike the client of a telemarketing agency are more likely to refuse to buy the product of that client than are people who are predisposed to like the client."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -303,7 +312,10 @@
       "D": "The size of a celestial body in orbit around the sun is not relevant to determining whether or not it is a true planet.",
       "E": "For a celestial body to be a true planet it must have formed in orbit around the sun exclusively."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -357,7 +369,10 @@
       "D": "The university will not maintain the quality of the education it provides if it reduces spending next year.",
       "E": "The university will not need to reduce spending next year if it markets its programs more aggressively."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -375,7 +390,10 @@
       "D": "The amount of recyclables going to the city's landfill will increase if the sanitation department stays within its budget.",
       "E": "If the city implements the sorting requirement, the sanitation department will stay within its budget."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",
@@ -429,7 +447,10 @@
       "D": "My next-door neighbors do not own their house. Since no one who lives in a house both owns it and pays rent on it, it must be that my next-door neighbors pay rent on their house.",
       "E": "Anyone who lives in a house but does not own it pays rent on it. My next-door neighbors do not own their house. Therefore, it must be that they pay rent on it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT136",

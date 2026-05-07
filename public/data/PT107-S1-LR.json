@@ -411,7 +411,10 @@
       "D": "Xi says that, as an experienced photographer, she knows that no color film produces images as sharp as the best black-and-white film. And, since most instant film is color film, at least some instant film produces images less sharp than the best black-andwhite film.",
       "E": "Betty says that, as a corporate executive, she knows that no corporate executives like to pay taxes. And, since most corporate executives are honest people, at least some people who like to pay taxes are honest people."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT107",

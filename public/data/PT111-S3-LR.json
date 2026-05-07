@@ -321,7 +321,10 @@
       "D": "The audience will be treated to a good show unless there are people in the audience who do not understand their musical roots.",
       "E": "If there are sophisticated listeners in the audience, then there will be inspired musical performances in the concert."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT111",

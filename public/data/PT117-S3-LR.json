@@ -123,7 +123,10 @@
       "D": "If there is a similarity between two effects, then there is probably a similarity between their causes.",
       "E": "The frequency with which a hazardous activity is performed is proportional to the frequency of injuries resulting from that activity."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT117",

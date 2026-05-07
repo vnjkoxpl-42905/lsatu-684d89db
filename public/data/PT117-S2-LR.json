@@ -231,7 +231,10 @@
       "D": "Some victims are owed increased compensation because of the greater amount of time they are deprived of the use of their property.",
       "E": "The compensation owed to victims should be determined on a case-by-case basis rather than by some general rule."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT117",

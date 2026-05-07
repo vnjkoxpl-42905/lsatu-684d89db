@@ -141,7 +141,10 @@
       "D": "Usually, six to ten years of medical training beyond a university degree is sufficient to render someone competent to practice in his or her medical specialty.",
       "E": "Usually, six to ten years of medical training beyond a university degree is necessary to render someone competent to practice in his or her medical specialty."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -231,7 +234,10 @@
       "D": "Most researchers oppose the proposed change to the patent system.",
       "E": "The current rules for patent applications facilitate progress in scientific research by rewarding the communication of discoveries."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -303,7 +309,10 @@
       "D": "If a theory is adjusted specifically to account for some particular phenomenon, a match between that theory and that phenomenon should not count as evidence in favor of the theory.",
       "E": "If a theory is adjusted to generate the correct predictions for some phenomenon that is already known to the scientist developing the theory, the theory should not be counted as predicting that phenomenon."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -375,7 +384,10 @@
       "D": "Skiff's book will not be published unless it is as important and as well written as he claims it is.",
       "E": "Skiff will not be promoted unless Professor Nguyen urges the dean to do so."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -393,7 +405,10 @@
       "D": "takes a single fact that is incompatible with a general claim as enough to show that claim to be false",
       "E": "treats an occurrence that will ensure a certain outcome as something that is required for that outcome"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",

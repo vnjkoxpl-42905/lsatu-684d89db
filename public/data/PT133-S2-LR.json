@@ -321,7 +321,10 @@
       "D": "No evolutionary ancestor of bacteria had only a few of the parts of the flagellum.",
       "E": "Any of bacteria's evolutionary ancestors that lacked a flagellum also lacked the capacity to swim."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -339,7 +342,10 @@
       "D": "An editor may modernize punctuation directly quoted from an older work if that punctuation occurs frequently and interferes with reader comprehension.",
       "E": "If an editor modernizes only one of several similar instances of quoted archaic punctuation, an explanation should appear in the preface of the work."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -429,7 +435,10 @@
       "D": "If global warming continues or if the rate of ozone depletion is not reduced, there will be an increase in the incidence of skin cancer. But reduced use of aerosols ensures both that global warming will not continue and that ozone depletion will be reduced. Thus, the incidence of skin cancer will not increase.",
       "E": "If deforestation continues at the current rate and the use of chemicals is not curtailed, wildlife species will continue to become extinct. But because of increasing population worldwide, it is inevitable that the current rate of deforestation will continue and that the use of chemicals will not be curtailed. Thus, wildlife species will continue to become extinct."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
