@@ -285,7 +285,10 @@
       "D": "At least some people who do not feel isolated are happy.",
       "E": "Anyone who is able to trust other people has a meaningful emotional connection to at least one other human being."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT127",
@@ -411,7 +414,10 @@
       "D": "On Wednesday, a refreshing breeze in the early morning became intermittent by late morning, and the day’s humidity levels were constantly high. It was an oppressive day, even though the temperature did not rise above 84°F (29°C) all day.",
       "E": "On Thursday morning, the air was very still, and it remained windless for the whole day. Humidity levels for the day were high, and even though the temperature fell below 84°F (29°C) between early and late afternoon, it was an oppressive day."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT127",

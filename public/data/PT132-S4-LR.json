@@ -159,7 +159,10 @@
       "D": "If a business is likely to fail, people will not invest in it. Pallid Starr is likely to fail, therefore no one is likely to invest in it.",
       "E": "Tai will go sailing only if the weather is nice. The weather will be nice, thus Tai will probably go sailing."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT132",
@@ -447,7 +450,10 @@
       "D": "Many antique collectors know that antique dealers can authenticate the age of the antiques they sell. Since antiques that have had their ages authenticated are always the most valuable, most antique collectors who want antiques that are valuable tend to purchase their antiques from antique dealers.",
       "E": "Many antiques increase in value once they have had their ages authenticated by antique dealers. Since antique dealers tend to have plenty of valuable antiques, antique collectors who prefer to purchase the most valuable antiques should purchase antiques from antique dealers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT132",

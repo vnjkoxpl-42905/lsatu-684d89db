@@ -213,7 +213,10 @@
       "D": "a shoddily constructed appliance can be made of high-quality parts",
       "E": "Archway's other product lines exhibit careful and safe assembly and use high-quality components"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -267,7 +270,10 @@
       "D": "Much of the increase in the population of wolves is due to wolves born in captivity and released into the wild.",
       "E": "The greater the number of deer, the more likely they are to be afflicted with problems such as famine and disease."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",
@@ -357,7 +363,10 @@
       "D": "No political system that fails to prevent conflict is legitimate.",
       "E": "Some political systems that are not totalitarian are illegitimate."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT129",

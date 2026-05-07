@@ -321,7 +321,10 @@
       "D": "It is impossible to be a manager without evaluating people. The process of evaluation is necessarily subjective. Thus, people resent managers because they resent being evaluated subjectively.",
       "E": "Some farming on the plains requires irrigation. This irrigation now uses water pumped from aquifers. But aquifers have limited capacity and continued pumping will eventually exhaust them. Thus, a new source of water will have to be found in order for such farming to continue indefinitely."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT114",

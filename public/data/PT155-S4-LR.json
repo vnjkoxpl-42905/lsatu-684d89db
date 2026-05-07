@@ -357,7 +357,10 @@
       "D": "generalizes too hastily from one type of case to another",
       "E": "takes for granted that a condition under which something occurs is a condition under which all its prerequisites occur"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT155",

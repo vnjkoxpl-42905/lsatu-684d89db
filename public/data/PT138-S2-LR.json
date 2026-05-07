@@ -321,7 +321,10 @@
       "D": "All speakers at the convention are government officials.",
       "E": "Every government official at the convention is a party member."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -411,7 +414,10 @@
       "D": "The responsibility a person bears for an action is not a matter of degree; however, our inclination to blame or praise whoever performed the action varies with the amount of information available.",
       "E": "If we do not know much about the events leading up to any given action, we will regard that action as freely performed."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -447,7 +453,10 @@
       "D": "If a tire's pressure is too low, the tire will wear out prematurely. But tire pressure will become too low if the car owner neglects to check the pressure regularly. Therefore, if the car owner neglects to check the pressure regularly, a tire will wear out prematurely.",
       "E": "If a tire's pressure is too low, the tire will wear out prematurely. But it will also wear out prematurely if it is often driven on gravel roads. Therefore, if a tire is often driven on gravel roads, keeping its pressure from becoming too low will not help it to last longer."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",

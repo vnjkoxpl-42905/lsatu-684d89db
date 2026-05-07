@@ -51,7 +51,10 @@
       "D": "The application for a building permit was rejected the first time it was submitted, and it had to be resubmitted with a revised building plan.",
       "E": "It is not possible to convince authorities to allow construction of the library to begin before the building permit is obtained."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -141,7 +144,10 @@
       "D": "uses as evidence a source that there is reason to believe is unreliable",
       "E": "provides no evidence that a playwright's being critically acclaimed is the result rather than the cause of his or her plays being selected for production"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -177,7 +183,10 @@
       "D": "X-rays emitted by rings of gas orbiting black holes cause those black holes to spin.",
       "E": "A black hole is stationary only if it is orbited by a ring of gas with a radius of more than 49 kilometers."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -321,7 +330,10 @@
       "D": "Motor vehicles are allowed to emit certain low levels of pollution; the resulting health risks are acceptable because all users of motor vehicles share the resulting benefit of inexpensive, convenient travel.",
       "E": "A nation requires all citizens to spend two years in national service; since such service involves no risk to life, the policy is acceptable."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -357,7 +369,10 @@
       "D": "Jarrett hoped to gain prestige by criticizing Ostertag.",
       "E": "Jarrett did not expect the criticism to be to Ostertag's benefit."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",
@@ -411,7 +426,10 @@
       "D": "An herb garden is productive only if the soil that it is planted in is well drained. Since soil that is well drained is good soil, an herb garden is not productive unless it is planted in good soil.",
       "E": "A diet that is healthful is well balanced. Since a well-balanced diet includes fruits and vegetables, one will not be healthy unless one eats fruits and vegetables."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",

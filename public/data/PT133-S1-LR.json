@@ -105,7 +105,10 @@
       "D": "Semiconductors will always be preferable to vacuum tubes for use in many applications other than digital circuits.",
       "E": "Resistance to heat is the only advantage that vacuum tubes have over semiconductors."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -267,7 +270,10 @@
       "D": "If one is capable of sincerely apologizing to someone for lying to them, then one owes that person such an apology.",
       "E": "A person should not apologize to someone for telling a lie unless he or she can sincerely apologize to all others to whom the lie was told"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -357,7 +363,10 @@
       "D": "If downtown traffic congestion decreases, the cost of living in the downtown area will decrease.",
       "E": "If the profits of downtown businesses increase, the number of consumers living in the downtown area will increase"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -375,7 +384,10 @@
       "D": "If a university class involves extensive lab work, the class will be conducted in a laboratory; otherwise, it will be conducted in a normal classroom. Thus, if a university class involves extensive lab work, it will not be conducted in a normal classroom.",
       "E": "If a university class involves extensive lab work, the class will be conducted in a laboratory; otherwise, it will be conducted in a normal classroom. Thus, if a university class is not conducted in a normal classroom, it will be conducted in a laboratory."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",

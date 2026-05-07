@@ -213,7 +213,10 @@
       "D": "The safety inspector will not approve any new process that has not been used extensively elsewhere.",
       "E": "The proposed new welding process has been used in only one other factory."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT143",

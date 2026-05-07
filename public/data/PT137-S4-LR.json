@@ -339,7 +339,10 @@
       "D": "If Kay's television was not working last night, she would have gone to a movie. Her television has not been working for the past week, so she must have gone to a movie last night.",
       "E": "If Ralph had told Manuela about the problem, Manuela would have solved it. But Ralph did not tell Manuela about the problem, so someone else must have solved it."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT137",

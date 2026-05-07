@@ -213,7 +213,10 @@
       "D": "Most readers regard a novel's narrative point of view as representing the perspective of the novel's author.",
       "E": "Shifts in narrative point of view serve no literary purpose."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -285,7 +288,10 @@
       "D": "Yasuko continued to breathe regularly throughout the time that she was asleep. This was a human action, but it was not performed on the basis of a specific motivation. Therefore, her breathing was a random event.",
       "E": "Henry lost his hold on the wrench and dropped it because the handle was slippery. This was a human action and is explainable by normal physical processes, so it was an intentional event."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT126",

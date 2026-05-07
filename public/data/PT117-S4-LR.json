@@ -15,7 +15,10 @@
       "D": "Jones often worked with the chemical.",
       "E": "Deficiency in minerals other than the mineral in question can cause inflammation of the skin."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT117",
@@ -465,6 +468,9 @@
       "D": "European Union member countries that fail to perceive the economic relevance of problems are generally weak in foreign policy.",
       "E": "Alliances that are economically beneficial for a given country are not necessarily beneficial with regard to foreign policy."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

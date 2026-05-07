@@ -303,7 +303,10 @@
       "D": "Education is not effective unless it leads to the development of insight.",
       "E": "The teacher does not act from outside the group in a nontraditional classroom."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",
@@ -393,7 +396,10 @@
       "D": "At least once this year, Franklin has saved a person's life in such a way as to exceed what could be reasonably expected of a police officer. Penn has not saved anyone's life this year.",
       "E": "Both Franklin and Penn have exemplary records. On several occasions this year Franklin has saved people's lives, and on many occasions this year Franklin has exceeded what could be reasonably expected of a police officer. On no occasions this year has Penn saved a person's life or exceeded what could be reasonably expected of an officer."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT133",

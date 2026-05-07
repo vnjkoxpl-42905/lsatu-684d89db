@@ -249,7 +249,10 @@
       "D": "Urban societies with farms near rivers or lakes do not have to rely upon irrigation to meet their farming needs.",
       "E": "Early rural societies relied more on foraging than on agriculture for food."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -267,7 +270,10 @@
       "D": "People in countries that put collective goals before individuals’ goals lack confidence in the economic policies of their countries.",
       "E": "A country’s economic policies are the most significant factor determining whether that country’s economy will experience a recession."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT135",

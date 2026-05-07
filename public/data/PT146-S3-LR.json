@@ -231,7 +231,10 @@
       "D": "Every dessert with chocolate is high in calories, and every dessert that is high in calories is fattening. So every fattening dessert has chocolate in it.",
       "E": "Any dessert with chocolate is high in calories, and many desserts that are high in calories are fattening. So many desserts with chocolate are fattening."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -267,7 +270,10 @@
       "D": "overlooks the possibility that different managers defuse tense situations in different ways",
       "E": "takes for granted that because all good managers have a certain quality, Ishiko must have that quality"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT146",
@@ -429,7 +435,10 @@
       "D": "A work of world literature is always influenced by works outside of the writer’s national tradition.",
       "E": "A work is not part of world literature if it affects the development of only one national tradition."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT146",

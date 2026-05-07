@@ -51,7 +51,10 @@
       "D": "Linda is grumpy only if she does not have her coffee in the morning, and Linda does not have her coffee in the morning only if she runs out of coffee. Therefore, Linda runs out of coffee only on days that she is grumpy.",
       "E": "Jeff had to choose either a grapefruit or cereal for breakfast this morning. Given that Jeff is allergic to grapefruit, Jeff must have had cereal for breakfast this morning."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -303,7 +306,10 @@
       "D": "People who are intuitive know instantly when they like someone.",
       "E": "It is imprudent to cause people to resent you."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -393,7 +399,10 @@
       "D": "Walter’s claim to a potential employer that he had done volunteer work was a lie. Even though Walter had worked without pay in his father’s factory, he used the phrase “volunteer work” in an attempt to deceive the interviewer into thinking he had worked for a socially beneficial cause.",
       "E": "The tour guide intended to deceive the tourists when he told them that the cabin they were looking at was centuries old. Still, his statement about the cabin’s age was not a lie, for if he thought that this statement had been misinterpreted, he would have tried to clarify it."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -447,6 +456,9 @@
       "D": "in most cases, behavior that is harmful to the person who engages in it is harmful to no one else",
       "E": "a legislator proposing a law prohibiting an act that can harm only the person performing the act will seem to be assuming that individuals are incapable of looking after their own welfare"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

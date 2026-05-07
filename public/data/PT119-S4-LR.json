@@ -393,7 +393,10 @@
       "D": "All salespersons who are not well organized regret their career choices.",
       "E": "All salespersons who do not regret their career choices are highly successful."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT119",
@@ -429,7 +432,10 @@
       "D": "It has fuzzy seeds and thorny seedpods.",
       "E": "It lacks both white flowers and fuzzy seeds."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT119",

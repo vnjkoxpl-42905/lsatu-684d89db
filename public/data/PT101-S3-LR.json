@@ -375,7 +375,10 @@
       "D": "Most citizens must agree with a law for the law to be effective.",
       "E": "Most citizens must agree with a law for the law to be enforceable."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT101",
@@ -429,7 +432,10 @@
       "D": "Knowing a proposition to be true is impossible only if it cannot be proven true by observation.",
       "E": "Knowing a proposition to be true requires proving it true by observation."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT101",

@@ -213,7 +213,10 @@
       "D": "Driver re-education should not be recommended for those who have committed no serious driving-related offenses.",
       "E": "Drivers with a large number of demerit points but no conviction for a serious driving-related offense should receive driver re-education rather than jail."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -411,7 +414,10 @@
       "D": "Nothing that is as far from Earth as quasars are can continue to exist for more than about 100 million years.",
       "E": "No quasar that has ever been seen from Earth exists any longer."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT107",

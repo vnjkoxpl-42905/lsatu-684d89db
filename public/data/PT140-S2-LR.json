@@ -393,7 +393,10 @@
       "D": "Most of the district’s drinking water is likely to become polluted if most of the large dairies in the central valley do not meet federal standards for the disposal of natural wastes.",
       "E": "If none of the large dairies in the central valley meets federal standards for the disposal of natural wastes, most of the district’s drinking water is likely to become polluted."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -411,7 +414,10 @@
       "D": "Robinson will probably be appointed as president of Sifton University, since almost every one of Sifton’s previous presidents had a Ph.D., and Robinson has a Ph.D.",
       "E": "the novel Safekeeping will probably earn a profit for its publisher, Peninsula Press, since almost every novel published by Peninsula over the last ten years has been profitable"
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT140",

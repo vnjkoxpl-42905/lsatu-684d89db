@@ -375,7 +375,10 @@
       "D": "Every pet the Gupta family has ever owned has been a fish or a parrot. Most parrots are very noisy. So if the next pet the Gupta family owns is not a parrot, it will probably not be very noisy.",
       "E": "The Gupta family has never owned any pets other than fish and parrots. Most parrots are very noisy. So the next pet the Gupta family owns will probably be very noisy if it is not a fish."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -429,7 +432,10 @@
       "D": "A democracy cannot thrive if the electorate is exposed to biased information about the government.",
       "E": "Without effective news media, an electorate will not have access to unbiased information about the government."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT141",

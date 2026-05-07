@@ -51,7 +51,10 @@
       "D": "Emissions from coal-burning power plants are one of the main sources of air pollution.",
       "E": "Government regulations will never reduce the level of sulfur dioxide in the atmosphere."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -303,7 +306,10 @@
       "D": "The natural resources used by human beings will be depleted if they are not replaced by alternative materials. But since such replacement generally requires more power, the resources used to create that power will become depleted.",
       "E": "Public buildings do not harmonize with their surroundings if they are not well designed. But any well-designed building is expensive to construct. Thus, either public buildings are expensive to construct or else they do not harmonize with their surroundings."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -321,7 +327,10 @@
       "D": "A company that employs bus drivers should reprimand those drivers only when they become involved in collisions that they reasonably could have been expected to avoid.",
       "E": "When a bus is involved in a collision, the bus driver should not be reprimanded by the bus company if the collision did not result from the bus driver’s violating a traffic regulation."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -357,7 +366,10 @@
       "D": "Each of the avant-garde films at this year’s film festival is less than an hour long. Most films less than an hour long do not become commercially successful. So, since no movie less than an hour long has an intermission, it follows that most of the movies at this year’s film festival do not have an intermission.",
       "E": "All of the bicycle helmets sold in this store have some plastic in them. Most of the bicycle helmets sold in this store have some rubber in them. So, since no helmets that have rubber in them do not also have plastic in them, it follows that most of the helmets in this store that have plastic in them have rubber in them."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",

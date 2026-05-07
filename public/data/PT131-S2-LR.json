@@ -159,7 +159,10 @@
       "D": "No corporate attorney represents both the Dumone Company and the Tedenco Company. Since Ms. Tseung is a corporate attorney who represents the Dumone Company, it follows that she does not also represent the Tedenco Company.",
       "E": "No member of the board of directors of the Dumone Company is also a member of the board of directors of the Tedenco Company. Since neither company has fewer than five board members, it follows that both boards together include at least ten members."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -285,7 +288,10 @@
       "D": "All of this store's winter garments are on sale, except for the designer clothes. None of the shirts in this store are designer clothes. This shirt, therefore, since it is on sale, is a winter garment.",
       "E": "All residential buildings are subject to the original fire code, except for those built last year. All townhouses are residential buildings. Bloom House was not built last year, and it is a townhouse, so it is subject to the original fire code."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT131",
@@ -465,6 +471,9 @@
       "D": "Many auto repair shops charge more for auto repairs than these repairs are worth.",
       "E": "Because it is not regulated, the auto repair industry does not have standardized prices."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

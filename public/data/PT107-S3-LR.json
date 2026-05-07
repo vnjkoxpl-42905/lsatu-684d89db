@@ -87,7 +87,10 @@
       "D": "The ferocity of tropical storms does not depend on the amount of carbon dioxide in the Earth’s atmosphere.",
       "E": "Any increase in the temperatures of the Earth’s oceans would cause the amount of carbon dioxide in the atmosphere to increase as well."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT107",
@@ -321,7 +324,10 @@
       "D": "The piece of art in the lobby is clearly not classified as truly great, so it follows that it fails to be original.",
       "E": "Since Bach’s music is truly great, it not only has both originality and a major influence on musicians, it has broad popular appeal as well."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT107",

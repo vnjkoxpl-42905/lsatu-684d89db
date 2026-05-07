@@ -303,7 +303,10 @@
       "D": "It is essential to any nation’s economy that most of the young people in that nation who are excited about science become professional scientists.",
       "E": "An essential component of success in any scientific endeavor is good communication between the scientists involved in that endeavor and the public."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT140",
@@ -429,7 +432,10 @@
       "D": "If the camera is working properly, the film will be properly exposed. If either the film is properly exposed or corrections are made during the developing process, the photograph will not be dark. So if the camera is working properly, the photograph will not be dark.",
       "E": "The camera will work properly only if the film is properly exposed. But the film cannot be properly exposed if there is either not enough or too much light. So the camera will not work properly if there is either too much or not enough light."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT140",

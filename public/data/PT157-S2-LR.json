@@ -141,7 +141,10 @@
       "D": "A poetic translation is accurate only if it adequately expresses the meaning of the original poem and gives an idea of the meter. This translation adequately expresses the meaning of the original and gives an idea of the meter. Therefore, this translation is accurate.",
       "E": "An assembly may call a meeting of the executive board only if the assembly meets quorum requirements and the motion passes by two-thirds. This assembly meets quorum requirements, so unless the motion does not pass by two-thirds, this assembly may call a meeting of the executive board."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT157",

@@ -33,7 +33,10 @@
       "D": "Civilian scientific research cannot be conducted efficiently with more than one source of funding.",
       "E": "Funding for civilian scientific research is currently at the highest possible level."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -249,7 +252,10 @@
       "D": "Gravitational influences other than moons have little or no effect on the magnitude of the tilt angle of either Earth’s or Mars’s axis.",
       "E": "No planet that has more than one moon can support life."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -357,7 +363,10 @@
       "D": "Either the economy is weak or prices are remaining constant.",
       "E": "Either unemployment is rising or the economy is not weak."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",
@@ -429,7 +438,10 @@
       "D": "It is possible in theory for an artwork to symbolize nothing.",
       "E": "An intrinsic property of an artwork is one that relates the work to itself."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",

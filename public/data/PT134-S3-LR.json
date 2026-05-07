@@ -33,7 +33,10 @@
       "D": "Harris might not have believed Wilton’s statement about the bicycle’s condition",
       "E": "asserting something without justification is not the same as asserting something one knows to be false"
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -213,7 +216,10 @@
       "D": "everyone who understands the difference between hot and cold composting understands at least the basics of composting",
       "E": "no gardening book that includes an explanation of at least the basics of composting is flawed"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -321,7 +327,10 @@
       "D": "Customs officials examined all of the files stored on a laptop computer confiscated from an importer whom they suspected of smuggling. Because there were reasonable grounds for believing that the computer had typically been used in the operation of the importer’s legitimate business, the customs officials’ action was justified.",
       "E": "Against the company owner’s wishes, a police officer accessed some of the files on one of the company’s computers. Although the computer was typically used in the operation of the company’s business, the particular files accessed by the police officer were personal letters written by one of the company’s employees. Thus, the police officer’s unauthorized use of the computer was not justified."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -357,7 +366,10 @@
       "D": "It would have been wrong for me to play the practical joke that I had intended to play on you. Even though I did not have reason to think that it would significantly harm anyone, I did think that it would show contempt for someone.",
       "E": "Someone was harmed as a result of my practical joke. Thus, even though it did not show contempt for the person I played the joke on, I should not have played it."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",
@@ -447,7 +459,10 @@
       "D": "Lopez will run in tomorrow’s marathon. Lopez will win the marathon only if his sponsors do a good job of keeping him hydrated. But his sponsors are known to be poor at keeping their athletes hydrated. So it is probable that Lopez will not win the marathon.",
       "E": "The new course in microeconomics is offered either in the fall or in the spring. The new course will be offered in the spring if there is a qualified instructor available. Since the economics department currently lacks a qualified instructor for such courses, however, the course will not be offered in the spring."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT134",

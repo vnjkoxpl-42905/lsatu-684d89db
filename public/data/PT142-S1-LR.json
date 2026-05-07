@@ -339,7 +339,10 @@
       "D": "If the introduction of a new species would adversely affect some species already existing in an environment, that species should not be introduced into it. Therefore, since the introduction of species into new environments will result in some species in those environments being adversely affected, species should probably not be introduced into new environments.",
       "E": "If a new species would damage an environment, that species should not be introduced into it. If a new species is introduced, the risk can be reduced by controlling its population. Therefore, because the introduction of species into new environments is likely to happen, their populations should be controlled. 1 1 1 1"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT142",
@@ -429,7 +432,10 @@
       "D": "If Ted is incapable of reporting the accident to the department of motor vehicles, then he was injured in the accident.",
       "E": "Either no one was injured in the accident or the accident did not lead to property damage exceeding $500."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT142",

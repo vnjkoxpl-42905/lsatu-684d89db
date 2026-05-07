@@ -267,7 +267,10 @@
       "D": "Ellsworth is in fact innocent of all wrongdoing.",
       "E": "Everyone expects self-righteous people to be easily offended."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",
@@ -429,7 +432,10 @@
       "D": "every cat is a fish since no cat is a dog and no dog is a fish",
       "E": "no fish is a dog since every dog is a mammal and no fish is a mammal"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT138",

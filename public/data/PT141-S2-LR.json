@@ -177,7 +177,10 @@
       "D": "If the personalities of a play’s characters are not readily discernible by the actors playing the roles, then those personalities are not readily discernible by the play’s audience.",
       "E": "All plays that, unlike Brecht’s plays, have characters with whom audiences empathize succeed as dramas."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -303,7 +306,10 @@
       "D": "If Holihan did not submit the lowest bid on the maintenance contract, then neither did Easton. So if the contract goes to the lowest bidder and it does not go to Easton, then it will not go to Holihan either.",
       "E": "If Perez is not the lowest bidder on the catering contract, then Sullivan is. So if Sullivan does not get the contract and Perez does not get it either, then it will not be awarded to the lowest bidder."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT141",
@@ -447,6 +453,9 @@
       "D": "if I do not find the book, I will include the quotation without an accurate citation",
       "E": "if I do not find the book, I will be unable to complete my research paper"
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

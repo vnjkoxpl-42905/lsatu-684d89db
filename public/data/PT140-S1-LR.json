@@ -303,7 +303,10 @@
       "D": "If a motor is quiet enough to use in home appliances, then it is sound-insulated.",
       "E": "None of the motors manufactured by EM Industries can be used in institutional settings."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT140",

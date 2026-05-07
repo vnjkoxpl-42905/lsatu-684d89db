@@ -123,7 +123,10 @@
       "D": "If the customer handled the film incorrectly, that is what caused the photographs that the store developed to be unsatisfactory.",
       "E": "If the customer's claim was not correct, then the store does not owe her a refund."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -213,7 +216,10 @@
       "D": "An apology that cannot be sincerely accepted cannot be sincerely offered.",
       "E": "An apology cannot be both sincerely offered and sincerely accepted unless each person acknowledges that a wrongful act has occurred."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT139",
@@ -447,6 +453,9 @@
       "D": "Any tale with deep meaning provides great insight into the wisdom of the culture by which it has been passed on.",
       "E": "A story that is told primarily for entertainment does not necessarily lack deeper meaning."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

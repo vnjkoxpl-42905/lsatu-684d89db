@@ -249,7 +249,10 @@
       "D": "McGuinness is not an architect and has not been on the planning commission for fifteen years or more.",
       "E": "If the polls are a good indication of how the election will turn out, someone less qualified than Yerxes will be appointed head of the planning commission."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT112",

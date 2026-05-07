@@ -33,7 +33,10 @@
       "D": "Acme’s earnings for the current year will fall below $1 million",
       "E": "Acme would be able to avoid bankruptcy if it did not have to repay the bank loan"
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT147",
@@ -285,7 +288,10 @@
       "D": "Thompson must be negotiating a personal loan. Thompson was at the bank yesterday, and people who are negotiating a personal loan go to the bank to meet with a loan agent.",
       "E": "McKinsey must have committed a crime at some point. After all, despite extensive background checks no one has been able to show that McKinsey has never committed a crime."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT147",

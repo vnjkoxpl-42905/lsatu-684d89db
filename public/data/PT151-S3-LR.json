@@ -213,7 +213,10 @@
       "D": "If the entire fossil is from a single animal, then it is a well-preserved specimen.",
       "E": "The fossil was stolen from the discovery site and sold by someone who cared much more about personal profit than about the accuracy of the fossil record."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT151",

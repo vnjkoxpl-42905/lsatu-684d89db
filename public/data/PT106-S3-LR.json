@@ -375,7 +375,10 @@
       "D": "In the event that my flight had been late, I would have missed the committee meeting. Fortunately, my flight is on time. Therefore, I will make it to the meeting.",
       "E": "When the law is enforced, some people are jailed. But no one is in jail, so clearly the law is not enforced."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT106",

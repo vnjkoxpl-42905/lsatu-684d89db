@@ -7,6 +7,7 @@ export interface LRQuestion {
   qnum: number;
   qtype: string;
   reasoningType?: string; // e.g., "Conditional", "Causal", "Comparison", or "Conditional + Causal"
+  questionFeatures?: string[]; // e.g., ["Conditional Diagramming"] — orthogonal to qtype/reasoningType
   difficulty: number;
   stimulus?: string;
   questionStem: string;
@@ -40,6 +41,7 @@ export interface QuestionManifest {
   totalQuestions: number;
   byPT: Record<string, number>;
   byQType: Record<string, number>;
+  byFeature: Record<string, number>;
   byDifficulty: Record<number, number>;
   sections: Array<{
     pt: number;
@@ -491,6 +493,7 @@ export class QuestionBank {
     totalQuestions: 0,
     byPT: {},
     byQType: {},
+    byFeature: {},
     byDifficulty: {},
     sections: [],
   };
@@ -542,6 +545,7 @@ export class QuestionBank {
             qnum,
             qtype,
             reasoningType: item.reasoningType,
+            questionFeatures: Array.isArray(item.questionFeatures) ? item.questionFeatures : undefined,
             difficulty,
             stimulus: item.stimulus,
             questionStem: item.questionStem,
@@ -574,6 +578,9 @@ export class QuestionBank {
       this.manifest.byPT[`PT${q.pt}`] = (this.manifest.byPT[`PT${q.pt}`] || 0) + 1;
       this.manifest.byQType[q.qtype] = (this.manifest.byQType[q.qtype] || 0) + 1;
       this.manifest.byDifficulty[q.difficulty] = (this.manifest.byDifficulty[q.difficulty] || 0) + 1;
+      for (const f of q.questionFeatures || []) {
+        this.manifest.byFeature[f] = (this.manifest.byFeature[f] || 0) + 1;
+      }
     }
 
     // Log summary with unknown types

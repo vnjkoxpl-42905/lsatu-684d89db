@@ -339,7 +339,10 @@
       "D": "If a film is a box office success, then one of its stars is nominated for an award. If a star receives an award, the film is assured of doing well on video. This star was not nominated for an award, so the film will not do well on video.",
       "E": "If a film has a big budget, it will be heavily promoted. A heavily promoted film will be released all over the country at once. This film has a big budget, so it will be released all over the country at once. 3 3 -25-3"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT157",
@@ -375,7 +378,10 @@
       "D": "Someone who is not morally virtuous is incapable of achieving moral excellence.",
       "E": "Every morally virtuous person has been inclined to do something that is wrong."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT157",

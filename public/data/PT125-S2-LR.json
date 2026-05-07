@@ -87,7 +87,10 @@
       "D": "fails to specify at what point someone arriving at a club meeting is officially deemed late",
       "E": "does not specify how long Thibodeaux has been an officer"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -231,7 +234,10 @@
       "D": "Some consumers will not continue to patronize a company purely out of brand loyalty.",
       "E": "No company is driven from the market for reasons other than failing to meet consumer demands."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -321,7 +327,10 @@
       "D": "One should try to understand an issue fully if doing so will help one to avoid misinterpreting or ignoring evidence regarding that issue.",
       "E": "It is reasonable to take a strong position on an issue only if there is important evidence conflicting with that position."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -411,7 +420,10 @@
       "D": "The only food in Diane's apartment is in her refrigerator. Diane purchased all the food in her refrigerator within the past week. Therefore, all the food she purchased within the past week is in her apartment.",
       "E": "The only food that Diane has purchased within the past week is in her refrigerator. All the food that she has purchased within the past week is in her apartment. Therefore, all the food in her apartment is in her refrigerator."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -465,6 +477,9 @@
       "D": "Replacement parts for the old sirens will be difficult to obtain if the government cannot obtain them from the company it purchased them from last year.",
       "E": "Because the local company from which replacement parts had been purchased went out of business, the only available parts are of such inferior quality that use of them would make the sirens less reliable."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

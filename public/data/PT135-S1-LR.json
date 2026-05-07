@@ -285,7 +285,10 @@
       "D": "If not every member of the city council abstains in the vote on the proposal, the matter will not be decided by the city’s voters.",
       "E": "If one member of the city council ought to vote against the proposal, the other members should abstain in the vote on the proposal."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT135",
@@ -447,6 +450,9 @@
       "D": "Any well-designed coffeehouse or restaurant has a spacious interior.",
       "E": "Any coffeehouse that has a spacious interior is a well-designed public place."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

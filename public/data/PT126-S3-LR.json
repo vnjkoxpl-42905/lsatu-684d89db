@@ -267,7 +267,10 @@
       "D": "If Teresa is not seated in first class on her airline flight, she will be seated in business class. Therefore, since she cannot be seated in first class on that flight, she will necessarily be seated in business class.",
       "E": "Susannah will have a relaxing vacation only if her children behave especially well and she does not start to suspect that they are planning some mischief. Since she will certainly start to suspect that they are planning some mischief if they behave especially well, Susannah's vacation cannot possibly be relaxing."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -375,7 +378,10 @@
       "D": "If highly motivated students are required to hand in written homework on their reading assignments, then they will complete all of their reading assignments.",
       "E": "Some highly motivated students will earn high grades in a course if they are required to hand in written homework on their reading assignments."
     },
-    "correctAnswer": "A"
+    "correctAnswer": "A",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT126",
@@ -429,7 +435,10 @@
       "D": "A given poem can be objectively evaluated only if the poem's aesthetic value can be discussed.",
       "E": "Aesthetic evaluation of literature is best accomplished through discussion by more than two readers."
     },
-    "correctAnswer": "D"
+    "correctAnswer": "D",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT126",

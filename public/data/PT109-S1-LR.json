@@ -411,7 +411,10 @@
       "D": "It is impossible to be fluent in a language without knowing its grammatical rules. A person who knows the grammatical rules of a language has learned them by means of exhaustive and difficult study or else by growing up in an environment in which the language is spoken. There are two major ways, therefore, for a person to become fluent in a language.",
       "E": "In the City Ballet Company any dancer who has danced in Giselle has also danced in Sleeping Beauty, and some dancers who have danced in Sleeping Beauty have also danced in Swan Lake. Therefore, some dancers in the City Ballet Company who have danced in Giselle have also danced in Swan Lake."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT109",

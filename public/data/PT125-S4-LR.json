@@ -303,7 +303,10 @@
       "D": "Dahlia always has a cup of coffee before getting dressed in the morning. Dahlia's action is right because it does not violate any rule of the society in which she lives.",
       "E": "Edward's society requires children to take care of their aged parents. Edward's taking care of his aged parents is the right thing for him to do because the rule requiring this action promotes the general welfare of people in the society."
     },
-    "correctAnswer": "E"
+    "correctAnswer": "E",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -411,7 +414,10 @@
       "D": "Only if we succeed in remaining competitive in the global economy will students spend a significant amount of time outside of class studying mathematics.",
       "E": "Students' spending a significant amount of time outside of class studying mathematics would help us to remain competitive in the global economy."
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   },
   {
     "practiceTest": "PT125",
@@ -447,6 +453,9 @@
       "D": "To drive to Weller, one must take the highway or take Old Mill Road. Anyone who drives to Weller on the highway will miss the beautiful scenery. Thus, one cannot see the beautiful scenery without taking Old Mill Road to Weller.",
       "E": "To get a discount on ice cream, one must buy frozen raspberries and ice cream together. Anyone who buys ice cream or raspberries will get a coupon for a later purchase. So, anyone who does not get the discount on ice cream will not get a coupon for a later purchase."
     },
-    "correctAnswer": "C"
+    "correctAnswer": "C",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]

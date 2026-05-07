@@ -465,6 +465,9 @@
       "D": "All of the good cooks in my country use butter, not margarine, in their cooking. Thus, if you want to be a good cook, you must use butter, not margarine, in your cooking.",
       "E": "All of the students in my algebra class received an A, even though none of them can solve word problems. No student who is unable to solve word problems has an adequate understanding of algebra. It follows that the students in my class received A’s not because they did any good work. O P"
     },
-    "correctAnswer": "B"
+    "correctAnswer": "B",
+    "questionFeatures": [
+      "Conditional Diagramming"
+    ]
   }
 ]
