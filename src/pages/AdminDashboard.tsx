@@ -128,6 +128,7 @@ export default function AdminDashboard() {
   const { is_admin, loading: permLoading } = useUserPermissions();
   const [users, setUsers] = useState<ManagedUser[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [analyticsError, setAnalyticsError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
@@ -156,10 +157,17 @@ export default function AdminDashboard() {
       if (usersRes.error) throw usersRes.error;
       setUsers(usersRes.data || []);
 
-      // Analytics via query param — invoke with GET doesn't support query params easily,
-      // so we'll compute analytics client-side from user data
-      if (!analyticsRes.error && analyticsRes.data) {
+      // Analytics is computed server-side and includes attempts counts that
+      // can't be reconstructed client-side. Surface the failure rather than
+      // silently zeroing out the attempt totals.
+      if (analyticsRes.error) {
+        const msg = (analyticsRes.error as { message?: string }).message || "analytics fetch failed";
+        setAnalyticsError(msg);
+        toast.error(`Couldn't load attempt analytics: ${msg}`);
+        console.error("admin analytics error", analyticsRes.error);
+      } else if (analyticsRes.data) {
         setAnalytics(analyticsRes.data);
+        setAnalyticsError(null);
       }
     } catch (e: any) {
       toast.error("Failed to load data");
@@ -174,7 +182,9 @@ export default function AdminDashboard() {
     fetchData();
   }, [is_admin, fetchData]);
 
-  // Compute analytics from users data if server analytics failed
+  // Compute analytics from users data if server analytics failed. Attempts
+  // counts can't be reconstructed client-side; we surface them as `null` so
+  // the UI shows an em-dash instead of a misleading "0".
   const computedAnalytics: Analytics = analytics || {
     total_users: users.length,
     active_today: users.filter(u => {
@@ -190,8 +200,8 @@ export default function AdminDashboard() {
       acc[key] = users.filter(u => u[key as keyof ManagedUser] === true).length;
       return acc;
     }, {} as Record<string, number>),
-    total_attempts: 0,
-    week_attempts: 0,
+    total_attempts: null as unknown as number,
+    week_attempts: null as unknown as number,
   };
 
   const toggleAccess = async (classId: string, field: string, value: boolean) => {
@@ -295,12 +305,23 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+        {analyticsError && (
+          <div className="rounded-lg border border-red-900/40 bg-red-950/30 px-4 py-3 text-sm text-red-200">
+            <span className="font-semibold">Attempt analytics unavailable.</span>{' '}
+            <span className="text-red-300/80">
+              {analyticsError}. User counts below are computed locally.
+            </span>
+          </div>
+        )}
+
         {/* ── Analytics Cards ── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total Users" value={computedAnalytics.total_users} />
           <StatCard icon={<Activity className="w-4 h-4" />} label="Active Today" value={computedAnalytics.active_today} />
           <StatCard icon={<Activity className="w-4 h-4" />} label="Active This Week" value={computedAnalytics.active_week} />
           <StatCard icon={<Crown className="w-4 h-4 text-amber-500" />} label="Admins" value={computedAnalytics.admin_count} />
+          <StatCard icon={<BarChart3 className="w-4 h-4" />} label="Total Attempts" value={computedAnalytics.total_attempts} />
+          <StatCard icon={<BarChart3 className="w-4 h-4" />} label="Attempts This Week" value={computedAnalytics.week_attempts} />
         </div>
 
         {/* ── Feature Adoption ── */}
@@ -527,14 +548,24 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) {
+function StatCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number | null;
+}) {
   return (
     <div className="border border-zinc-800 rounded-lg p-4">
       <div className="flex items-center gap-2 text-zinc-500 mb-2">
         {icon}
         <span className="text-[11px] uppercase tracking-wide">{label}</span>
       </div>
-      <div className="text-2xl font-semibold text-zinc-200 font-mono">{value}</div>
+      <div className="text-2xl font-semibold text-zinc-200 font-mono">
+        {value === null || value === undefined ? '—' : value}
+      </div>
     </div>
   );
 }
