@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, GraduationCap, BookOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GraduationCap, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
@@ -118,17 +117,10 @@ export default function Classroom() {
 
         <BootcampsSection items={items} />
 
-        <Card
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
           onClick={() => navigate('/waj')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              navigate('/waj');
-            }
-          }}
-          className="p-5 flex items-center gap-4 cursor-pointer hover:bg-accent/40 transition-colors"
+          className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-border/60 bg-card/40 hover:bg-card/70 hover:border-border transition-colors text-left"
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
             <BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden />
@@ -136,13 +128,11 @@ export default function Classroom() {
           <div className="min-w-0 flex-1">
             <div className="text-sm font-medium text-foreground">Wrong Answer Journal</div>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Review every question you've missed, organized by type and difficulty.
+              Every question you've missed, organized by type and difficulty.
             </p>
           </div>
-          <Button variant="ghost" size="sm" className="shrink-0">
-            Open
-          </Button>
-        </Card>
+          <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
+        </button>
 
         <ThisWeekSection />
 
@@ -154,9 +144,7 @@ export default function Classroom() {
 
         <AnnouncementsSection items={items} />
 
-        <div className="pt-4 pb-8 text-center text-[11px] text-muted-foreground/70">
-          Inbox stays in the messenger; this is your workspace.
-        </div>
+        <div className="pb-8" />
       </main>
     </div>
   );

@@ -32,7 +32,7 @@ export function DoThisNextCard({ item }: Props) {
 
   if (!item) {
     return (
-      <div className="rounded-2xl border border-border bg-gradient-to-br from-card to-card/40 px-5 py-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 shadow-sm">
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
           Do this next
@@ -51,7 +51,7 @@ export function DoThisNextCard({ item }: Props) {
   const verb = VERB_BY_STATUS[item.status] ?? 'Open';
 
   return (
-    <div className="rounded-2xl border border-border bg-gradient-to-br from-card to-card/60 px-5 py-5 shadow-sm">
+    <div className="rounded-2xl border border-border bg-card/50 px-5 py-5 shadow-sm">
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1 space-y-1.5">
           <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">

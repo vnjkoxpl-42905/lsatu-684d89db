@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { format, differenceInCalendarDays, startOfDay, differenceInHours } from 'date-fns';
-import { Flame, ArrowRight, CalendarDays, Sparkles } from 'lucide-react';
+import { Layers, ArrowRight, CalendarDays } from 'lucide-react';
 import { ClassroomSection } from './ClassroomSection';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
@@ -76,13 +76,13 @@ export function BootcampsSection({ items }: Props) {
               key={it.id}
               className={
                 isNew
-                  ? 'rounded-xl border-2 border-amber-500/60 bg-amber-50/40 dark:bg-amber-500/5 px-4 py-4 space-y-3 shadow-[0_0_0_4px_hsl(var(--background))_inset,0_8px_24px_-12px_hsl(var(--primary)/0.25)]'
+                  ? 'rounded-xl border-2 border-primary/20 bg-card/60 px-4 py-4 space-y-3 shadow-sm'
                   : 'rounded-xl border border-border/70 bg-card/40 px-4 py-3.5 space-y-3'
               }
             >
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0">
-                  <Flame className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0">
+                  <Layers className="w-4 h-4" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -90,8 +90,8 @@ export function BootcampsSection({ items }: Props) {
                       {it.title}
                     </h3>
                     {isNew && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500 text-white">
-                        <Sparkles className="w-3 h-3" /> New
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-primary text-primary-foreground">
+                        New
                       </span>
                     )}
                     {!isNew && (
@@ -100,7 +100,7 @@ export function BootcampsSection({ items }: Props) {
                       </span>
                     )}
                     {notStartedYet && startsAt && (
-                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-md border border-amber-500/40 text-amber-700 dark:text-amber-400">
+                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-md border border-border/60 text-muted-foreground">
                         Starts {format(startsAt, 'MMM d')}
                       </span>
                     )}
@@ -124,14 +124,10 @@ export function BootcampsSection({ items }: Props) {
                 <button
                   type="button"
                   onClick={() => navigate(route)}
-                  className={
-                    isNew
-                      ? 'shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors shadow-sm'
-                      : 'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity'
-                  }
+                  className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity"
                 >
-                  {isNew ? 'Start bootcamp' : 'Open'}
-                  <ArrowRight className={isNew ? 'w-4 h-4' : 'w-3.5 h-3.5'} />
+                  {isNew ? 'Start' : 'Open'}
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
@@ -145,7 +141,7 @@ export function BootcampsSection({ items }: Props) {
                   </div>
                   <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-full bg-amber-500 transition-all"
+                      className="h-full bg-foreground transition-all"
                       style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}
                     />
                   </div>
