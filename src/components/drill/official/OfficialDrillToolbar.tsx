@@ -103,98 +103,98 @@ export default function OfficialDrillToolbar({
             </button>
           )}
 
-          <PipeSeparator />
-
-          <div className="flex items-center gap-0.5">
-            {tools.map((t) => {
-              const isActive = highlightMode === t.mode;
-              return (
-                <button
-                  key={t.mode}
-                  type="button"
-                  onClick={() => toggle(t.mode)}
-                  aria-pressed={isActive}
-                  aria-label={t.label}
-                  title={t.label}
-                  className={cn(
-                    "p-1.5 rounded-sm transition-colors flex items-center justify-center",
-                    isActive
-                      ? "bg-white border border-slate-600 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
-                      : "border border-transparent hover:bg-slate-200",
-                    t.mode === "erase" && "ml-1",
-                  )}
-                >
-                  {t.icon}
-                </button>
-              );
-            })}
-          </div>
-
-          <PipeSeparator />
-
-          {/* Aa popover */}
-          <Popover open={aaOpen} onOpenChange={setAaOpen}>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                aria-label="Text size"
-                title="Text size"
-                className={cn(
-                  "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
-                  aaOpen
-                    ? "bg-white border border-slate-600 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
-                    : "border border-transparent hover:bg-slate-200",
-                )}
-              >
-                <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
-                <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-44 p-1">
-              {FONT_SCALES.map((opt) => {
-                const selected = Math.abs(fontScale - opt.value) < 0.001;
+          {/* Right cluster: tools | Aa + line-spacing | timer */}
+          <div className="ml-auto flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {tools.map((t) => {
+                const isActive = highlightMode === t.mode;
                 return (
                   <button
-                    key={opt.key}
+                    key={t.mode}
                     type="button"
-                    onClick={() => {
-                      setFontScale(opt.value);
-                      setAaOpen(false);
-                    }}
+                    onClick={() => toggle(t.mode)}
+                    aria-pressed={isActive}
+                    aria-label={t.label}
+                    title={t.label}
                     className={cn(
-                      "w-full flex items-center justify-between px-2 py-1.5 text-[14px] rounded-sm hover:bg-slate-100 text-slate-800",
-                      selected && "font-semibold",
+                      "p-1 rounded-sm transition-colors flex items-center justify-center",
+                      isActive
+                        ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
+                        : "border border-transparent hover:bg-slate-200",
                     )}
                   >
-                    <span>{opt.label}</span>
-                    {selected && <Check className="w-4 h-4 text-slate-700" />}
+                    {t.icon}
                   </button>
                 );
               })}
-            </PopoverContent>
-          </Popover>
-
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            title="Line spacing — coming soon"
-            className="ml-1 p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
-          >
-            <LineSpacingIcon />
-            <span className="sr-only">Line spacing</span>
-          </button>
-
-          {timerLabelPrefix && (
-            <div className="ml-auto">
-              <div
-                role="timer"
-                className="rounded-[2px] border-2 border-[#7f1d1d] text-black px-5 py-1.5 text-[14px] font-semibold tabular-nums whitespace-nowrap min-w-[260px] text-center"
-              >
-                {timerLabelPrefix}: {paddedTimer}
-              </div>
             </div>
-          )}
+
+            <PipeSeparator />
+
+            <Popover open={aaOpen} onOpenChange={setAaOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Text size"
+                  title="Text size"
+                  className={cn(
+                    "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
+                    aaOpen
+                      ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
+                      : "border border-transparent hover:bg-slate-200",
+                  )}
+                >
+                  <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
+                  <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-44 p-1">
+                {FONT_SCALES.map((opt) => {
+                  const selected = Math.abs(fontScale - opt.value) < 0.001;
+                  return (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      onClick={() => {
+                        setFontScale(opt.value);
+                        setAaOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center justify-between px-2 py-1.5 text-[14px] rounded-sm hover:bg-slate-100 text-slate-800",
+                        selected && "font-semibold",
+                      )}
+                    >
+                      <span>{opt.label}</span>
+                      {selected && <Check className="w-4 h-4 text-slate-700" />}
+                    </button>
+                  );
+                })}
+              </PopoverContent>
+            </Popover>
+
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              title="Line spacing — coming soon"
+              className="p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
+            >
+              <LineSpacingIcon />
+              <span className="sr-only">Line spacing</span>
+            </button>
+
+            {timerLabelPrefix && (
+              <>
+                <PipeSeparator />
+                <div
+                  role="timer"
+                  className="text-[14px] font-semibold text-slate-900 tabular-nums whitespace-nowrap pl-1"
+                >
+                  {timerLabelPrefix}: {paddedTimer}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -238,51 +238,55 @@ function UnderlineIcon() {
 }
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
+  // LawHub-style: chunky angled marker with colored body, dark gray cap,
+  // small nib at bottom-left, and a colored stroke drawn beneath it.
   return (
     <svg
-      width="28"
-      height="28"
+      width="26"
+      height="26"
       viewBox="0 0 32 32"
       fill="none"
       stroke="#0f172a"
-      strokeWidth="1.5"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Body */}
-      <path d="M22 4 L28 10 L14 24 L8 18 Z" fill="#ffffff" />
-      {/* Cap shoulder */}
-      <path d="M22 4 L28 10 L25 13 L19 7 Z" fill="#94a3b8" />
-      {/* Inner divider */}
-      <line x1="11" y1="15" x2="17" y2="21" />
-      {/* Trapezoid nib */}
+      {/* Colored body */}
+      <path d="M22 3 L29 10 L14 25 L7 18 Z" fill={tipColor} />
+      {/* Cap (top-right) */}
+      <path d="M22 3 L29 10 L26 13 L19 6 Z" fill="#475569" />
+      {/* Inner divider near nib */}
+      <line x1="10" y1="15" x2="17" y2="22" />
+      {/* Nib */}
+      <path d="M7 18 L14 25 L9 30 L3 27 Z" fill="#fde68a" />
+      {/* Marker stroke beneath */}
       <path
-        d="M8 18 L14 24 L9 29 L4 26 Z"
-        fill={tipColor}
-        stroke="#0f172a"
-        strokeWidth="1.5"
+        d="M2 30 Q 7 28 12 30"
+        stroke={tipColor}
+        strokeWidth="2.2"
+        fill="none"
+        strokeLinecap="round"
       />
     </svg>
   );
 }
 
 function EraserIcon() {
-  // Squared block, slight tilt, pink top half / white bottom half.
+  // Pink rounded-rectangle block, slight tilt, dark outline.
   return (
     <svg
-      width="30"
+      width="28"
       height="22"
       viewBox="0 0 32 22"
       fill="none"
       stroke="#0f172a"
-      strokeWidth="1.8"
-      strokeLinecap="square"
-      strokeLinejoin="miter"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
     >
-      <g transform="rotate(-4 16 11)">
-        <rect x="2" y="2" width="28" height="18" fill="#ffffff" />
-        <rect x="2" y="2" width="28" height="9" fill="#F9A8D4" />
-        <line x1="2" y1="11" x2="30" y2="11" />
+      <g transform="rotate(-6 16 11)">
+        <rect x="3" y="4" width="26" height="14" rx="2" fill="#EC9BAB" />
+        {/* Subtle wear shading on bottom edge */}
+        <path d="M3 14 L29 14" stroke="#0f172a" strokeWidth="0.8" opacity="0.35" />
       </g>
     </svg>
   );

@@ -100,14 +100,15 @@ export default function OfficialQuestionPane({
             aria-pressed={isFlagged}
             aria-label={isFlagged ? "Remove flag" : "Flag question"}
             title={isFlagged ? "Remove flag" : "Flag question"}
-            className="shrink-0 p-1 rounded hover:bg-slate-100 transition-colors"
+            className={cn(
+              "shrink-0 p-1.5 rounded transition-colors",
+              isFlagged ? "bg-blue-100" : "hover:bg-slate-100",
+            )}
           >
             <Flag
               className={cn(
-                "w-[24px] h-[24px] transition-colors",
-                isFlagged
-                  ? "text-[#1d4ed8] fill-[#1d4ed8]"
-                  : "text-[#1d4ed8]",
+                "w-[24px] h-[24px] transition-colors text-[#1d4ed8]",
+                isFlagged && "fill-[#1d4ed8]",
               )}
               strokeWidth={2}
             />
