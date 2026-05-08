@@ -31,7 +31,7 @@ export default function OfficialSessionStrip({
           const isClickable = !isLast && !!bc.onClick;
           return (
             <React.Fragment key={`${bc.label}-${i}`}>
-              {i > 0 && <span aria-hidden className="text-slate-400">/</span>}
+          {i > 0 && <span aria-hidden className="text-slate-300">/</span>}
               {isClickable ? (
                 <button
                   type="button"
