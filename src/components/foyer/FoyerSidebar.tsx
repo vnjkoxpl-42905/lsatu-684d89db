@@ -89,7 +89,7 @@ export default function FoyerSidebar(_props: FoyerSidebarProps) {
             to={to}
             className={({ isActive }) =>
               [
-                "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors",
+                "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors active:opacity-75",
                 isActive
                   ? "border-primary bg-accent/60 text-foreground"
                   : "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",

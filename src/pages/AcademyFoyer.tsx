@@ -211,7 +211,7 @@ export default function AcademyFoyer() {
   if (!authReady || !user) return null;
 
   return (
-    <div className="relative flex h-screen w-full overflow-hidden bg-background text-foreground">
+    <div className="relative flex h-[100dvh] w-full overflow-hidden bg-background text-foreground">
       <aside
         data-tour="foyer-sidebar"
         className="hidden shrink-0 border-r border-border md:flex"
@@ -223,7 +223,7 @@ export default function AcademyFoyer() {
       <Sheet>
         <SheetTrigger
           aria-label="Open menu"
-          className="absolute left-4 top-4 z-20 rounded-md p-2 text-muted-foreground hover:text-foreground md:hidden"
+          className="absolute left-4 top-4 z-20 rounded-md p-2 text-muted-foreground transition hover:text-foreground active:opacity-70 md:hidden"
         >
           <Menu className="h-5 w-5" />
         </SheetTrigger>

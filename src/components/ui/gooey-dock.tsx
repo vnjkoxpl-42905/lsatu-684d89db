@@ -24,6 +24,7 @@ interface GooeyDockProps {
 
 export default function GooeyDock({ items, className }: GooeyDockProps) {
   const [hovered, setHovered] = React.useState<number | null>(null);
+  const anyOpen = hovered !== null;
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
@@ -46,7 +47,7 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
         </defs>
       </svg>
 
-      <TooltipProvider delayDuration={100}>
+      <TooltipProvider delayDuration={anyOpen ? 0 : 100}>
         <div className="relative flex gap-6 px-6 py-4">
           {items.map((item, i) => {
             const isHovered = hovered === i;
@@ -72,7 +73,7 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="relative rounded-full bg-background/80 backdrop-blur-xl"
+                      className="relative rounded-full bg-background/80 backdrop-blur-xl transition active:scale-[0.95]"
                       onClick={item.onClick}
                     >
                       <item.icon className="h-6 w-6" />
