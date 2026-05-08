@@ -138,14 +138,17 @@ export default function Practice() {
   const { manifest, isLoading, error } = useQuestionBank();
   const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
+  // Official testing format is the DEFAULT for every account. Users can opt
+  // back into the classic layout, which is persisted as 'classic'. Anything
+  // else (including missing/legacy values) is treated as official.
   const [useOfficial, setUseOfficial] = React.useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('drillLayout') === 'official';
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem('drillLayout') !== 'classic';
   });
   React.useEffect(() => {
-    localStorage.setItem('drillLayout', useOfficial ? 'official' : 'default');
+    localStorage.setItem('drillLayout', useOfficial ? 'official' : 'classic');
   }, [useOfficial]);
-  const drillPath = useOfficial ? '/drill?layout=official' : '/drill';
+  const drillPath = useOfficial ? '/drill' : '/drill?layout=classic';
   const [stats, setStats] = React.useState({
     totalAttempted: 0,
     avgAccuracy: 0,
