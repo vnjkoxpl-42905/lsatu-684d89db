@@ -36,13 +36,13 @@ export default function OfficialSessionStrip({
                 <button
                   type="button"
                   onClick={bc.onClick}
-                  className="text-blue-700 hover:text-blue-800 transition-colors"
+                  className="text-blue-700 hover:text-blue-800 font-semibold transition-colors"
                 >
                   {bc.label}
                 </button>
               ) : (
                 <span
-                  className={isLast ? "text-[#7f1d1d] font-medium" : "text-blue-700"}
+                  className={isLast ? "text-[#7f1d1d] font-semibold" : "text-blue-700 font-semibold"}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {bc.label}
