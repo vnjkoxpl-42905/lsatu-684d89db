@@ -25,7 +25,7 @@ export default function OfficialSessionStrip({
   return (
     <div className="flex items-center justify-between gap-4 w-full text-[14px]">
       {/* Left: breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate text-[15px]">
         {breadcrumbs.map((bc, i) => {
           const isLast = i === breadcrumbs.length - 1;
           const isClickable = !isLast && !!bc.onClick;
