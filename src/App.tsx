@@ -383,7 +383,7 @@ const App = () => {
           </Routes>
           <FloatingMessenger />
           <FloatingWhiteboard />
-          <AdminChatHub />
+          
           <FloatingTutorButton />
           <GuidedTour />
         </BrowserRouter>
