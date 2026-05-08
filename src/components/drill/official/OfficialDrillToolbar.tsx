@@ -102,7 +102,7 @@ export default function OfficialDrillToolbar({
           <button
             type="button"
             onClick={() => setDirectionsOpen(true)}
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-800 hover:bg-slate-100 transition-colors text-[14px] font-medium"
+            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
           >
             Directions
           </button>
@@ -114,7 +114,7 @@ export default function OfficialDrillToolbar({
             aria-disabled="true"
             placeholder="Find Text, Type Here"
             title="Find text — coming soon"
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[260px] cursor-not-allowed"
+            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[170px] cursor-not-allowed"
           />
 
           <PipeSeparator />
@@ -130,7 +130,7 @@ export default function OfficialDrillToolbar({
                 aria-label={t.label}
                 title={t.label}
                 className={cn(
-                  "p-2 rounded transition-colors",
+                  "p-1.5 rounded transition-colors",
                   highlightMode === t.mode ? t.activeBg : "hover:bg-slate-200",
                 )}
               >
@@ -149,8 +149,8 @@ export default function OfficialDrillToolbar({
             title="Font size — coming soon"
             className="p-2 rounded text-slate-700 cursor-not-allowed"
           >
-            <span aria-hidden className="text-[18px] font-semibold">A</span>
-            <span aria-hidden className="text-[12px] font-semibold">A</span>
+            <span aria-hidden className="text-[20px] font-semibold">A</span>
+            <span aria-hidden className="text-[14px] font-semibold">A</span>
             <span className="sr-only">Font size</span>
           </button>
           <button
@@ -168,7 +168,7 @@ export default function OfficialDrillToolbar({
           <div className="ml-auto">
             <div
               role="timer"
-              className="rounded-sm border-2 border-[#7f1d1d] text-black px-3 py-1.5 text-[14px] font-medium tabular-nums whitespace-nowrap"
+              className="rounded-sm border-2 border-[#7f1d1d] text-black px-5 py-2 text-[15px] font-medium tabular-nums whitespace-nowrap"
             >
               {timerLabelPrefix}: {timerLabel || "00:00"}
             </div>
