@@ -9,7 +9,10 @@ interface Props {
   breadcrumbs: BreadcrumbItem[];
   isPaused?: boolean;
   onTogglePause?: () => void;
-  onComplete: () => void;
+  onComplete?: () => void;
+  /** When true, show a "Show Answer" pill button (typically when an answer is selected and not yet revealed). */
+  showAnswerVisible?: boolean;
+  onShowAnswer?: () => void;
 }
 
 /**
@@ -21,6 +24,8 @@ export default function OfficialSessionStrip({
   isPaused,
   onTogglePause,
   onComplete,
+  showAnswerVisible,
+  onShowAnswer,
 }: Props) {
   return (
     <div className="flex items-center justify-between gap-4 w-full text-[14px]">
@@ -55,6 +60,15 @@ export default function OfficialSessionStrip({
 
       {/* Right: gray pill buttons */}
       <div className="flex items-center gap-2 shrink-0">
+        {showAnswerVisible && onShowAnswer && (
+          <button
+            type="button"
+            onClick={onShowAnswer}
+            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
+          >
+            Show Answer
+          </button>
+        )}
         {onTogglePause && (
           <button
             type="button"
@@ -64,13 +78,15 @@ export default function OfficialSessionStrip({
             {isPaused ? "Resume Section" : "Pause Section"}
           </button>
         )}
-        <button
-          type="button"
-          onClick={onComplete}
-          className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
-        >
-          Complete Section
-        </button>
+        {onComplete && (
+          <button
+            type="button"
+            onClick={onComplete}
+            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
+          >
+            Complete Section
+          </button>
+        )}
       </div>
     </div>
   );

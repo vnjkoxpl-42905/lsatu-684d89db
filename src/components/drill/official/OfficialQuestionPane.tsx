@@ -18,6 +18,10 @@ interface Props {
   selectedAnswer: string;
   eliminatedAnswers: Set<string>;
   isFlagged: boolean;
+  /** When true, reveal correct/incorrect styling on answer choices. */
+  answerRevealed?: boolean;
+  /** Correct answer key (e.g. "B"). Required when answerRevealed=true. */
+  correctAnswer?: string;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
   /** Find Text term — overlaid as a search highlight (does not mutate user highlights). */
@@ -37,6 +41,8 @@ export default function OfficialQuestionPane({
   selectedAnswer,
   eliminatedAnswers,
   isFlagged,
+  answerRevealed = false,
+  correctAnswer,
   highlights,
   highlightMode,
   searchTerm,
@@ -119,38 +125,45 @@ export default function OfficialQuestionPane({
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
+            const isCorrect = answerRevealed && correctAnswer === key;
+            const isWrongSelected = answerRevealed && isSelected && correctAnswer !== key;
             return (
               <li
                 key={key}
                 className={cn(
-                  "flex items-start gap-3 group",
-                  isEliminated && "opacity-50",
+                  "flex items-start gap-3 group rounded-md transition-colors",
+                  isEliminated && !answerRevealed && "opacity-50",
+                  isCorrect && "bg-green-50 ring-2 ring-green-500 px-2 py-1.5",
+                  isWrongSelected && "ring-2 ring-red-500 px-2 py-1.5",
                 )}
               >
                 <button
                   type="button"
-                  onClick={() => !isEliminated && onAnswerSelect(key)}
-                  disabled={isEliminated}
+                  onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
+                  disabled={isEliminated || answerRevealed}
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
                     "shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
                     "w-9 h-9",
-                    isSelected
+                    isCorrect
+                      ? "border-green-700 bg-green-600 text-white"
+                      : isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
                       : "border-slate-800 bg-white text-slate-900 hover:border-slate-900",
-                    isEliminated && "cursor-not-allowed",
+                    isEliminated && !answerRevealed && "cursor-not-allowed",
                   )}
                 >
                   {key}
                 </button>
                 <button
                   type="button"
-                  onClick={() => !isEliminated && onAnswerSelect(key)}
-                  disabled={isEliminated}
+                  onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
+                  disabled={isEliminated || answerRevealed}
                   className={cn(
                     "flex-1 text-left pt-1",
-                    isEliminated && "line-through cursor-not-allowed",
+                    isEliminated && !answerRevealed && "line-through cursor-not-allowed",
+                    isCorrect && "font-semibold text-green-900",
                   )}
                   style={answerTextStyle}
                 >
@@ -158,11 +171,12 @@ export default function OfficialQuestionPane({
                 </button>
                 <button
                   type="button"
-                  onClick={() => onEliminate(key)}
+                  onClick={() => !answerRevealed && onEliminate(key)}
+                  disabled={answerRevealed}
                   aria-pressed={isEliminated}
                   aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  className="shrink-0 p-1 mt-0.5 text-neutral-500 hover:text-neutral-700 rounded transition-colors"
+                  className="shrink-0 p-1 mt-0.5 text-neutral-500 hover:text-neutral-700 rounded transition-colors disabled:opacity-50"
                 >
                   <Eye className="w-[20px] h-[20px]" strokeWidth={2.25} />
                 </button>
