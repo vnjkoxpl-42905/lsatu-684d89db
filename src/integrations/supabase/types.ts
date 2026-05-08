@@ -1518,6 +1518,51 @@ export type Database = {
         }
         Relationships: []
       }
+      smartboard_sessions: {
+        Row: {
+          created_at: string
+          created_by: string
+          excalidraw_scene_json: Json
+          export_pdf_path: string | null
+          id: string
+          linked_recap_item_id: string | null
+          posted_to_classroom: boolean
+          preview_image_path: string | null
+          session_date: string
+          student_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          excalidraw_scene_json?: Json
+          export_pdf_path?: string | null
+          id?: string
+          linked_recap_item_id?: string | null
+          posted_to_classroom?: boolean
+          preview_image_path?: string | null
+          session_date?: string
+          student_id: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          excalidraw_scene_json?: Json
+          export_pdf_path?: string | null
+          id?: string
+          linked_recap_item_id?: string | null
+          posted_to_classroom?: boolean
+          preview_image_path?: string | null
+          session_date?: string
+          student_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       student_analytics_sources: {
         Row: {
           created_at: string
@@ -2002,6 +2047,107 @@ export type Database = {
         }
         Relationships: []
       }
+      weekly_plan_items: {
+        Row: {
+          classroom_item_id: string | null
+          day_date: string
+          due_at: string | null
+          estimated_minutes: number | null
+          id: string
+          instructions: string | null
+          metadata_json: Json
+          sort_order: number
+          status: string
+          student_id: string
+          title: string
+          unlock_at: string | null
+          weekly_plan_id: string
+        }
+        Insert: {
+          classroom_item_id?: string | null
+          day_date: string
+          due_at?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          instructions?: string | null
+          metadata_json?: Json
+          sort_order?: number
+          status?: string
+          student_id: string
+          title: string
+          unlock_at?: string | null
+          weekly_plan_id: string
+        }
+        Update: {
+          classroom_item_id?: string | null
+          day_date?: string
+          due_at?: string | null
+          estimated_minutes?: number | null
+          id?: string
+          instructions?: string | null
+          metadata_json?: Json
+          sort_order?: number
+          status?: string
+          student_id?: string
+          title?: string
+          unlock_at?: string | null
+          weekly_plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_plan_items_weekly_plan_id_fkey"
+            columns: ["weekly_plan_id"]
+            isOneToOne: false
+            referencedRelation: "weekly_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_plans: {
+        Row: {
+          ai_generated: boolean
+          created_at: string
+          created_by: string
+          id: string
+          published_at: string | null
+          rationale: string | null
+          status: string
+          student_id: string
+          title: string
+          updated_at: string
+          week_end: string
+          week_start: string
+        }
+        Insert: {
+          ai_generated?: boolean
+          created_at?: string
+          created_by: string
+          id?: string
+          published_at?: string | null
+          rationale?: string | null
+          status?: string
+          student_id: string
+          title: string
+          updated_at?: string
+          week_end: string
+          week_start: string
+        }
+        Update: {
+          ai_generated?: boolean
+          created_at?: string
+          created_by?: string
+          id?: string
+          published_at?: string | null
+          rationale?: string | null
+          status?: string
+          student_id?: string
+          title?: string
+          updated_at?: string
+          week_end?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
       wrong_answer_journal: {
         Row: {
           class_id: string
@@ -2098,6 +2244,16 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_assignment_counts_per_student: {
+        Args: never
+        Returns: {
+          assigned: number
+          completed: number
+          student_id: string
+          total: number
+          viewed: number
+        }[]
+      }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
         Returns: {
@@ -2106,6 +2262,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_student_email: { Args: { _student_id: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
