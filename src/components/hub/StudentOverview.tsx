@@ -126,10 +126,10 @@ export default function StudentOverview({ studentId }: Props) {
 
   const activeFlags = FLAG_KEYS.filter((k) => Boolean(student[k]));
 
-  const resolvedEmail =
+  const resolvedEmail: string | null =
     student.email && student.email !== "unknown"
       ? student.email
-      : emailFallback.data ?? null;
+      : ((emailFallback.data as string | null | undefined) ?? null);
 
   return (
     <div className="flex flex-col divide-y divide-border/30">
