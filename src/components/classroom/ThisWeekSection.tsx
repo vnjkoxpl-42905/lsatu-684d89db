@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { format, isSameDay, parseISO } from 'date-fns';
+import { format, isSameDay, parseISO, isBefore, startOfDay } from 'date-fns';
 import { CheckCircle2, Circle, ArrowRight, Lock } from 'lucide-react';
 import { ClassroomSection, EmptyHint } from './ClassroomSection';
 import { useCurrentWeeklyPlan, type WeeklyPlanItem } from '@/hooks/useWeeklyPlan';
@@ -44,10 +44,12 @@ export function ThisWeekSection() {
         </EmptyHint>
       ) : (
         <div className="space-y-2">
-          {grouped!.map(({ date, items }) => (
+          {grouped!.map(({ date, items }) => {
+            const isPast = isBefore(date, startOfDay(new Date())) && !isSameDay(date, new Date());
+            return (
             <div
               key={date.toISOString()}
-              className="rounded-lg border border-border/60 bg-card/30 px-4 py-3"
+              className={`rounded-lg border border-border/60 bg-card/30 px-4 py-3 transition-opacity ${isPast ? 'opacity-40' : ''}`}
             >
               <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="text-xs font-semibold text-foreground/90">
@@ -101,7 +103,8 @@ export function ThisWeekSection() {
                 </ul>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </ClassroomSection>

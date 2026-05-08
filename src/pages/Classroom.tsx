@@ -82,7 +82,7 @@ export default function Classroom() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-10">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-2xl font-bold tracking-tight">
           Your classroom
         </h1>
 

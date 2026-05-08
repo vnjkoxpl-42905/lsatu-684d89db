@@ -32,15 +32,15 @@ export function DoThisNextCard({ item }: Props) {
 
   if (!item) {
     return (
-      <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 shadow-sm">
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
+      <div className="rounded-2xl border border-border/50 bg-card/30 px-5 py-6">
+        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-semibold">
+          <Sparkles className="w-3.5 h-3.5" aria-hidden />
           Do this next
         </div>
-        <h3 className="mt-2 text-lg font-semibold leading-snug text-foreground/90">
+        <h3 className="mt-2 text-base font-medium leading-snug text-foreground/60">
           Nothing assigned yet
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+        <p className="mt-1 text-sm text-muted-foreground/70 leading-relaxed">
           When Joshua assigns work or publishes a weekly plan, your next step shows up here.
         </p>
       </div>
@@ -51,13 +51,13 @@ export function DoThisNextCard({ item }: Props) {
   const verb = VERB_BY_STATUS[item.status] ?? 'Open';
 
   return (
-    <div className="rounded-2xl border border-border bg-card/50 px-5 py-5 shadow-sm">
+    <div className="rounded-2xl border border-border bg-card px-5 py-5 shadow-sm">
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1 space-y-1.5">
           <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
             Do this next
           </div>
-          <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
+          <h3 className="text-lg font-bold leading-snug text-foreground text-balance">{item.title}</h3>
           {item.description && (
             <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
           )}
