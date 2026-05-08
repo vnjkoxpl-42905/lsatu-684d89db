@@ -625,6 +625,51 @@ export type Database = {
         }
         Relationships: []
       }
+      external_work_uploads: {
+        Row: {
+          applied_to_analytics: boolean
+          created_at: string
+          file_name: string
+          file_type: string | null
+          id: string
+          processing_status: string
+          reviewed_at: string | null
+          source_platform: string | null
+          storage_path: string
+          student_id: string
+          upload_type: string
+          uploaded_by: string
+        }
+        Insert: {
+          applied_to_analytics?: boolean
+          created_at?: string
+          file_name: string
+          file_type?: string | null
+          id?: string
+          processing_status?: string
+          reviewed_at?: string | null
+          source_platform?: string | null
+          storage_path: string
+          student_id: string
+          upload_type?: string
+          uploaded_by: string
+        }
+        Update: {
+          applied_to_analytics?: boolean
+          created_at?: string
+          file_name?: string
+          file_type?: string | null
+          id?: string
+          processing_status?: string
+          reviewed_at?: string | null
+          source_platform?: string | null
+          storage_path?: string
+          student_id?: string
+          upload_type?: string
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
       flagged_questions: {
         Row: {
           class_id: string
@@ -860,7 +905,10 @@ export type Database = {
           created_at: string
           created_by: string
           description: string | null
+          estimated_minutes: number | null
+          guided_set_type: string | null
           id: string
+          is_guided_set: boolean
           question_qids: string[]
           title: string
           updated_at: string
@@ -870,7 +918,10 @@ export type Database = {
           created_at?: string
           created_by: string
           description?: string | null
+          estimated_minutes?: number | null
+          guided_set_type?: string | null
           id?: string
+          is_guided_set?: boolean
           question_qids?: string[]
           title: string
           updated_at?: string
@@ -880,7 +931,10 @@ export type Database = {
           created_at?: string
           created_by?: string
           description?: string | null
+          estimated_minutes?: number | null
+          guided_set_type?: string | null
           id?: string
+          is_guided_set?: boolean
           question_qids?: string[]
           title?: string
           updated_at?: string
@@ -1461,6 +1515,42 @@ export type Database = {
           pace_vs_challenge?: number | null
           time_pref?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      student_analytics_sources: {
+        Row: {
+          created_at: string
+          embed_status: string
+          id: string
+          last_imported_at: string | null
+          notes: string | null
+          source_name: string
+          source_url: string | null
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          embed_status?: string
+          id?: string
+          last_imported_at?: string | null
+          notes?: string | null
+          source_name: string
+          source_url?: string | null
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          embed_status?: string
+          id?: string
+          last_imported_at?: string | null
+          notes?: string | null
+          source_name?: string
+          source_url?: string | null
+          student_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
