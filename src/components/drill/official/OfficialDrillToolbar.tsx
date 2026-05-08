@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Underline as UnderlineIcon } from "lucide-react";
 import type { HighlightColor } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
 import {
@@ -17,13 +16,7 @@ interface Props {
   setHighlightMode: (mode: HighlightMode) => void;
   /** Pre-formatted timer label, e.g. "20:41". Empty string when no timer. */
   timerLabel: string;
-  /**
-   * Total duration in ms for full-section countdown. Currently unused — kept
-   * for future timer-modal work. Toolbar now shows just the time, no progress
-   * bar (matches the LawHub layout).
-   */
   totalMs?: number;
-  /** Remaining ms for countdown; ignored if totalMs is undefined. */
   remainingMs?: number;
   isFullSection: boolean;
   /** When true (Build-a-Set), use the "Section Time Remaining" timer label. */
@@ -31,15 +24,9 @@ interface Props {
 }
 
 /**
- * LawHub-style toolbar. Layout (left → right):
- *
- *   [Directions] [Find Text] | [U + 3 markers + eraser] | [line-spacing + Aa] | [Section Time Remaining: 00:00]
- *
- * Pause / Finish / section-title used to live here; they are now in
- * <OfficialSessionStrip> on the navy outer frame so this row stays
- * faithful to the official testing UI.
- *
- * Find Text / Aa / line-spacing are inert in v1 — we don't fake behavior.
+ * LawHub-style toolbar.
+ * Layout (left → right):
+ *   [Directions] [Find Text] | [U + 3 markers + eraser] | [Aa + line-spacing] | [Section Time Remaining: 00:00]
  */
 export default function OfficialDrillToolbar({
   highlightMode,
@@ -54,38 +41,12 @@ export default function OfficialDrillToolbar({
     mode: HighlightMode;
     label: string;
     icon: React.ReactNode;
-    activeBg: string;
   }[] = [
-    {
-      mode: "underline",
-      label: "Underline",
-      icon: <UnderlineIcon className="w-[24px] h-[24px] text-slate-700" strokeWidth={2.5} />,
-      activeBg: "bg-slate-200",
-    },
-    {
-      mode: "yellow",
-      label: "Yellow highlighter",
-      icon: <MarkerIcon tipColor="#FACC15" />,
-      activeBg: "bg-yellow-100",
-    },
-    {
-      mode: "pink",
-      label: "Pink highlighter",
-      icon: <MarkerIcon tipColor="#EC4899" />,
-      activeBg: "bg-pink-100",
-    },
-    {
-      mode: "orange",
-      label: "Orange highlighter",
-      icon: <MarkerIcon tipColor="#F97316" />,
-      activeBg: "bg-orange-100",
-    },
-    {
-      mode: "erase",
-      label: "Eraser",
-      icon: <EraserIcon />,
-      activeBg: "bg-rose-100",
-    },
+    { mode: "underline", label: "Underline", icon: <UnderlineIcon /> },
+    { mode: "yellow", label: "Yellow highlighter", icon: <MarkerIcon tipColor="#FACC15" /> },
+    { mode: "pink", label: "Pink highlighter", icon: <MarkerIcon tipColor="#EC4899" /> },
+    { mode: "orange", label: "Orange highlighter", icon: <MarkerIcon tipColor="#F97316" /> },
+    { mode: "erase", label: "Eraser", icon: <EraserIcon /> },
   ];
 
   const toggle = (mode: HighlightMode) => {
@@ -93,12 +54,13 @@ export default function OfficialDrillToolbar({
   };
 
   const timerLabelPrefix = isFullSection || isPracticeSet ? "Section Time Remaining" : "Elapsed";
+  const paddedTimer = (timerLabel || "00:00").replace(/^(\d):/, "0$1:");
 
   return (
     <>
-      <div className="border-b border-slate-200 bg-slate-50">
-        <div className="px-3 sm:px-4 py-3 flex flex-wrap items-center gap-2 text-[14px] text-slate-800">
-          {/* Directions pill (leftmost) */}
+      <div className="border-b border-slate-300 bg-slate-50">
+        <div className="px-3 sm:px-4 py-2.5 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-800">
+          {/* Directions pill */}
           <button
             type="button"
             onClick={() => setDirectionsOpen(true)}
@@ -107,36 +69,42 @@ export default function OfficialDrillToolbar({
             Directions
           </button>
 
-          {/* Find Text input — inert per v1 */}
+          {/* Find Text input — inert in v1 */}
           <input
             type="text"
             disabled
             aria-disabled="true"
             placeholder="Find Text, Type Here"
             title="Find text — coming soon"
-            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[170px] cursor-not-allowed"
+            className="ml-1 rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[200px] cursor-not-allowed"
           />
 
           <PipeSeparator />
 
           {/* Annotation tools */}
-          <div className="flex items-center gap-0.5">
-            {tools.map((t) => (
-              <button
-                key={t.mode}
-                type="button"
-                onClick={() => toggle(t.mode)}
-                aria-pressed={highlightMode === t.mode}
-                aria-label={t.label}
-                title={t.label}
-                className={cn(
-                  "p-1.5 rounded transition-colors",
-                  highlightMode === t.mode ? t.activeBg : "hover:bg-slate-200",
-                )}
-              >
-                {t.icon}
-              </button>
-            ))}
+          <div className="flex items-center gap-1">
+            {tools.map((t, i) => {
+              const isActive = highlightMode === t.mode;
+              return (
+                <button
+                  key={t.mode}
+                  type="button"
+                  onClick={() => toggle(t.mode)}
+                  aria-pressed={isActive}
+                  aria-label={t.label}
+                  title={t.label}
+                  className={cn(
+                    "p-1.5 rounded-sm transition-colors flex items-center justify-center",
+                    isActive
+                      ? "bg-white border border-slate-500 shadow-[inset_0_2px_3px_rgba(0,0,0,0.15)]"
+                      : "border border-transparent hover:bg-slate-200",
+                    t.mode === "erase" && "ml-1",
+                  )}
+                >
+                  {t.icon}
+                </button>
+              );
+            })}
           </div>
 
           <PipeSeparator />
@@ -147,10 +115,10 @@ export default function OfficialDrillToolbar({
             disabled
             aria-disabled="true"
             title="Font size — coming soon"
-            className="p-2 rounded text-slate-700 cursor-not-allowed"
+            className="px-2 py-1 rounded-sm text-slate-800 cursor-not-allowed flex items-baseline"
           >
-            <span aria-hidden className="text-[20px] font-semibold">A</span>
-            <span aria-hidden className="text-[14px] font-semibold">A</span>
+            <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
+            <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
             <span className="sr-only">Font size</span>
           </button>
           <button
@@ -158,7 +126,7 @@ export default function OfficialDrillToolbar({
             disabled
             aria-disabled="true"
             title="Line spacing — coming soon"
-            className="p-2 rounded text-slate-700 cursor-not-allowed"
+            className="ml-1 p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
           >
             <LineSpacingIcon />
             <span className="sr-only">Line spacing</span>
@@ -168,9 +136,9 @@ export default function OfficialDrillToolbar({
           <div className="ml-auto">
             <div
               role="timer"
-              className="rounded-sm border-2 border-[#7f1d1d] text-black px-6 py-2 text-[15px] font-semibold tabular-nums whitespace-nowrap min-w-[260px] text-center"
+              className="rounded-[2px] border-2 border-[#7f1d1d] text-black px-5 py-1.5 text-[14px] font-semibold tabular-nums whitespace-nowrap min-w-[240px] text-center"
             >
-              {timerLabelPrefix}: {(timerLabel || "00:00").replace(/^(\d):/, "0$1:")}
+              {timerLabelPrefix}: {paddedTimer}
             </div>
           </div>
         </div>
@@ -204,74 +172,85 @@ export default function OfficialDrillToolbar({
   );
 }
 
-// ─── Inline marker / eraser SVGs ───────────────────────────────────────────
-// Slanted pen with a clearly colored tip; chunky two-tone eraser.
+// ─── Inline LawHub-style icons ─────────────────────────────────────────────
+
+function UnderlineIcon() {
+  // Bold capital U with thick underline bar
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f2937" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 4 V13 a6 6 0 0 0 12 0 V4" strokeWidth="2.6" />
+      <line x1="4.5" y1="20.5" x2="19.5" y2="20.5" strokeWidth="2.8" />
+    </svg>
+  );
+}
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
+  // LawHub-style felt-tip: angled barrel, gray cap shoulder, blunt colored nib (trapezoid).
   return (
     <svg
-      width="34"
-      height="34"
-      viewBox="0 0 24 24"
+      width="28"
+      height="28"
+      viewBox="0 0 32 32"
       fill="none"
-      stroke="#1f2937"
-      strokeWidth="1.4"
+      stroke="#0f172a"
+      strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M17 3 L21 7 L19 9 L15 5 Z" fill="#cbd5e1" />
-      <path d="M15 5 L19 9 L9 19 L5 15 Z" fill="#fff" />
-      <line x1="7" y1="13" x2="11" y2="17" />
+      {/* Barrel (angled 45°) */}
+      <path d="M22 4 L28 10 L14 24 L8 18 Z" fill="#ffffff" />
+      {/* Cap shoulder */}
+      <path d="M22 4 L28 10 L25 13 L19 7 Z" fill="#94a3b8" />
+      {/* Inner barrel divider */}
+      <line x1="11" y1="15" x2="17" y2="21" />
+      {/* Blunt colored nib (trapezoid) */}
       <path
-        d="M5 15 L9 19 L4 22 L3 21 Z"
+        d="M8 18 L14 24 L9 29 L5 28 L4 24 Z"
         fill={tipColor}
-        stroke={tipColor}
-        strokeWidth="0.5"
+        stroke="#0f172a"
+        strokeWidth="1.6"
       />
     </svg>
   );
 }
 
 function EraserIcon() {
+  // Squared block: pink top half, white bottom half.
   return (
     <svg
-      width="40"
-      height="26"
-      viewBox="0 0 28 18"
+      width="32"
+      height="22"
+      viewBox="0 0 32 22"
       fill="none"
-      stroke="#1f2937"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke="#0f172a"
+      strokeWidth="1.8"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
     >
-      <rect x="1.5" y="1.5" width="25" height="15" rx="2" fill="#fff" />
-      <path d="M1.5 8.5 L1.5 3.5 Q1.5 1.5 3.5 1.5 L24.5 1.5 Q26.5 1.5 26.5 3.5 L26.5 8.5 Z" fill="#FBCFE8" />
-      <line x1="1.5" y1="8.5" x2="26.5" y2="8.5" />
+      <rect x="2" y="2" width="28" height="18" fill="#ffffff" />
+      <rect x="2" y="2" width="28" height="9" fill="#F9A8D4" />
+      <line x1="2" y1="11" x2="30" y2="11" />
     </svg>
   );
 }
 
 function LineSpacingIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 6h18" />
-      <path d="M3 12h18" />
-      <path d="M3 18h18" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f2937" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      {/* Up/down arrow on left */}
+      <path d="M4 6 L4 18" />
+      <path d="M2 8 L4 6 L6 8" />
+      <path d="M2 16 L4 18 L6 16" />
+      {/* Three lines */}
+      <line x1="10" y1="6" x2="21" y2="6" />
+      <line x1="10" y1="12" x2="21" y2="12" />
+      <line x1="10" y1="18" x2="21" y2="18" />
     </svg>
   );
 }
 
 function PipeSeparator() {
-  return <span aria-hidden className="w-px h-7 bg-slate-400 mx-2" />;
+  return <span aria-hidden className="w-px h-6 bg-slate-500 mx-3" />;
 }
 
 export type { HighlightColor };
