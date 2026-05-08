@@ -143,7 +143,10 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
   };
 
   return (
-    <div className="pf-bootcamp relative bg-[#030303] text-zinc-300 font-sans selection:bg-emerald-900 selection:text-white overflow-hidden">
+    <div
+      className="pf-bootcamp relative font-sans selection:bg-emerald-900 selection:text-white overflow-hidden"
+      style={{ background: 'var(--pf-bg)', color: 'var(--pf-text)' }}
+    >
       {/* Scoped background decoration (absolute, not fixed — stays inside the bootcamp) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.03] via-transparent to-rose-500/[0.03] blur-3xl" />
@@ -153,13 +156,16 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
 
       <div className="flex relative z-10 min-h-[calc(100vh-4rem)]">
         {/* Sidebar */}
-        <aside className="w-64 border-r border-zinc-900 bg-[#030303]/95 flex-shrink-0 lg:flex flex-col hidden">
-          <div className="h-20 flex flex-col justify-center px-6 border-b border-zinc-900/50">
+        <aside
+          className="w-64 border-r flex-shrink-0 lg:flex flex-col hidden"
+          style={{ background: 'var(--pf-nav-bg)', borderColor: 'var(--pf-nav-border)' }}
+        >
+          <div className="h-20 flex flex-col justify-center px-6 border-b" style={{ borderColor: 'var(--pf-nav-border)' }}>
             <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold mb-1">Principle & Flaw</span>
             <h1 className="text-sm font-serif italic text-zinc-200 tracking-tight">{userName}</h1>
           </div>
           {streak > 0 && (
-            <div className="px-6 py-3 border-b border-zinc-900/50 flex items-center gap-2">
+            <div className="px-6 py-3 border-b flex items-center gap-2" style={{ borderColor: 'var(--pf-nav-border)' }}>
               <Flame size={14} className="text-emerald-500" />
               <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">{streak} day streak</span>
             </div>
@@ -177,9 +183,15 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
             <NavItem icon={<BookOpen size={16} />} label="Review Log" active={activeTab === 'review'} onClick={() => setTabAndScroll('review')} />
           </nav>
 
-          <div className="p-4 border-t border-zinc-900/50 space-y-1">
-            <button onClick={() => setTabAndScroll('profile')}
-              className={`flex items-center gap-3 w-full px-3 py-2 text-xs rounded-lg transition-colors duration-150 active:scale-[0.97] transition-transform ${activeTab === 'profile' ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
+          <div className="p-4 border-t space-y-1" style={{ borderColor: 'var(--pf-nav-border)' }}>
+            <button
+              onClick={() => setTabAndScroll('profile')}
+              className={`flex items-center gap-3 w-full px-3 py-2 text-xs rounded-lg transition-colors duration-150 active:scale-[0.97] transition-transform ${activeTab === 'profile' ? 'font-semibold' : ''}`}
+              style={activeTab === 'profile'
+                ? { background: 'var(--pf-nav-active-bg)', color: 'var(--pf-nav-active-text)' }
+                : { color: 'var(--pf-text-faint)' }
+              }
+            >
               <User size={16} /><span>Profile</span>
             </button>
           </div>
@@ -188,7 +200,10 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
         {/* Main */}
         <main id="pf-main" className="flex-1 bg-transparent print:bg-white print:text-black">
           {/* Mobile sub-header (lives inside the bootcamp) */}
-          <div className="lg:hidden h-14 border-b border-zinc-900 bg-[#030303]/85 backdrop-blur-lg flex items-center justify-between px-4 sticky top-0 z-30 print:hidden">
+          <div
+            className="lg:hidden h-14 border-b backdrop-blur-lg flex items-center justify-between px-4 sticky top-0 z-30 print:hidden"
+            style={{ background: 'color-mix(in srgb, var(--pf-nav-bg) 85%, transparent)', borderColor: 'var(--pf-nav-border)' }}
+          >
             <div className="flex flex-col">
               <span className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Principle & Flaw</span>
               <h1 className="text-xs font-serif italic text-zinc-100 tracking-tight">{userName}</h1>
@@ -216,7 +231,10 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
       </div>
 
       {/* Mobile sub-nav for the bootcamp (in-flow, not fixed, so it doesn't fight the host) */}
-      <nav className="lg:hidden border-t border-zinc-800 bg-[#030303]/95 backdrop-blur-md print:hidden relative z-10">
+      <nav
+        className="lg:hidden border-t backdrop-blur-md print:hidden relative z-10"
+        style={{ background: 'color-mix(in srgb, var(--pf-nav-bg) 95%, transparent)', borderColor: 'var(--pf-nav-border)' }}
+      >
         <ul className="flex items-stretch">
           {[
             { tab: 'today' as Tab, label: 'Today', icon: <CheckSquare size={18} /> },
@@ -256,23 +274,30 @@ function NavItem({ icon, label, active, onClick }: { icon: React.ReactNode; labe
       onClick={onClick}
       aria-current={active ? 'page' : undefined}
       className={`relative flex items-center gap-3 w-full min-h-[40px] px-3 py-2 text-sm rounded-lg active:scale-[0.97] transition-transform duration-100 overflow-hidden ${
-        active ? 'text-zinc-950 font-semibold' : 'text-zinc-500 hover:text-zinc-200'
+        active ? 'font-semibold' : 'text-zinc-500 hover:text-zinc-200'
       }`}
+      style={active ? { color: 'var(--pf-nav-active-text)' } : undefined}
     >
       {active && (
         <motion.div
           layoutId="pfSidebarIndicator"
-          className="absolute inset-0 bg-zinc-100 rounded-lg shadow-lg shadow-white/5"
+          className="absolute inset-0 rounded-lg shadow-lg"
+          style={{ background: 'var(--pf-nav-active-bg)' }}
           transition={{ type: 'spring', bounce: 0.12, duration: 0.4 }}
         />
       )}
       {!active && (
         <span
-          className="absolute inset-0 rounded-lg opacity-0 hover:opacity-100 bg-zinc-900/50 transition-opacity duration-150"
+          className="absolute inset-0 rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-150"
+          style={{ background: 'var(--pf-nav-hover-bg)' }}
           aria-hidden="true"
         />
       )}
-      <span className={`relative z-10 ${active ? 'text-zinc-950' : 'text-zinc-600'}`} aria-hidden="true">
+      <span
+        className="relative z-10"
+        style={{ color: active ? 'var(--pf-nav-active-text)' : 'var(--pf-text-dim)' }}
+        aria-hidden="true"
+      >
         {icon}
       </span>
       <span className="relative z-10 truncate">{label}</span>
