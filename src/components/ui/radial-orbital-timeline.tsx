@@ -44,6 +44,12 @@ export default function RadialOrbitalTimeline({
   const [autoRotate, setAutoRotate] = useState(true);
   const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
+  // True only during the ~700ms centering animation after clicking a node.
+  // Enables the transform transition for that window; disabled at all other
+  // times so nodes snap to their orbit positions on mount without the
+  // "fly in from center" scramble.
+  const [isCentering, setIsCentering] = useState(false);
+  const centeringTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
@@ -79,8 +85,14 @@ export default function RadialOrbitalTimeline({
     const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
     const totalNodes = timelineData.length;
     const targetAngle = (nodeIndex / totalNodes) * 360;
+    if (centeringTimer.current) clearTimeout(centeringTimer.current);
+    setIsCentering(true);
     setRotationAngle(270 - targetAngle);
+    centeringTimer.current = setTimeout(() => setIsCentering(false), 750);
   };
+
+  // Cleanup centering timer on unmount
+  useEffect(() => () => { if (centeringTimer.current) clearTimeout(centeringTimer.current); }, []);
 
   const toggleItem = (id: number) => {
     setExpandedItems((prev) => {
@@ -192,7 +204,7 @@ export default function RadialOrbitalTimeline({
             <div
               key={item.id}
               ref={(el) => (nodeRefs.current[item.id] = el)}
-              className="absolute transition-all duration-700 cursor-pointer"
+              className={`absolute cursor-pointer ${isCentering ? 'transition-[opacity,transform] duration-700' : 'transition-[opacity] duration-300'}`}
               style={nodeStyle}
               onClick={(e) => {
                 e.stopPropagation();
