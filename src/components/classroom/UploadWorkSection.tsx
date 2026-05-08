@@ -43,8 +43,9 @@ export function UploadWorkSection() {
     >
       <div className="rounded-lg border border-border/60 bg-card/30 p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <label className="text-xs text-muted-foreground">What kind of work?</label>
+          <label htmlFor="upload-work-type" className="text-xs text-muted-foreground">What kind of work?</label>
           <select
+            id="upload-work-type"
             value={uploadType}
             onChange={(e) => setUploadType(e.target.value as UploadType)}
             className="text-xs rounded-md border border-border bg-background px-2 py-1"

@@ -17,6 +17,16 @@ const VERB_BY_STATUS: Record<string, string> = {
   archived: 'Open',
 };
 
+const TYPE_LABEL: Record<string, string> = {
+  bootcamp_module: 'Bootcamp',
+  session_recap: 'Recap',
+  announcement: 'From Joshua',
+  note: 'From Joshua',
+  homework: 'Homework',
+  ta_assignment: 'TA assignment',
+  drill: 'Drill',
+};
+
 export function DoThisNextCard({ item }: Props) {
   const navigate = useNavigate();
 
@@ -53,7 +63,7 @@ export function DoThisNextCard({ item }: Props) {
           )}
           <div className="flex items-center flex-wrap gap-3 text-[11px] text-muted-foreground pt-1">
             <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted/60 text-foreground/70">
-              {item.type.replace('_', ' ')}
+              {TYPE_LABEL[item.type] ?? item.type.replace(/_/g, ' ')}
             </span>
             {item.due_at && (
               <span>Due {format(new Date(item.due_at), 'MMM d')}</span>

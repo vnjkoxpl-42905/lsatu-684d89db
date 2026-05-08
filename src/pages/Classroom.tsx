@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LogoutButton } from '@/components/LogoutButton';
-import { useAuth } from '@/contexts/AuthContext';
 import { useClassroomItems } from '@/hooks/useClassroomItems';
 import { useStudentAssignments, useStudentTAAssignments } from '@/hooks/useStudentAssignments';
 import { nextActionFor } from '@/lib/classroomItems';
@@ -35,7 +34,6 @@ import { AnnouncementsSection } from '@/components/classroom/AnnouncementsSectio
  */
 export default function Classroom() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { data: items = [] } = useClassroomItems();
   const { assignments: hw } = useStudentAssignments();
   const { assignments: ta } = useStudentTAAssignments();
@@ -85,14 +83,9 @@ export default function Classroom() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-10">
-        <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">
-            {user?.email ? 'Welcome back.' : 'Welcome.'}
-          </p>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Your classroom
-          </h1>
-        </div>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Your classroom
+        </h1>
 
         {nextItem ? (
           <DoThisNextCard item={nextItem} />

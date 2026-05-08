@@ -15,6 +15,13 @@ const ACTION_BY_STATUS: Record<AssignmentStatus | TAAssignmentStatus, string> = 
   completed: 'Review',
 };
 
+const STATUS_LABEL: Record<AssignmentStatus | TAAssignmentStatus, string> = {
+  assigned: 'Not started',
+  in_progress: 'In progress',
+  viewed: 'In progress',
+  completed: 'Done',
+};
+
 export function AssignedWorkSection() {
   const navigate = useNavigate();
   const { assignments: hw, loading: hwLoading } = useStudentAssignments();
@@ -47,7 +54,7 @@ export function AssignedWorkSection() {
                 </div>
               </div>
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
-                {a.status.replace('_', ' ')}
+                {STATUS_LABEL[a.status] ?? 'Open'}
               </span>
               <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
@@ -67,7 +74,7 @@ export function AssignedWorkSection() {
                 </div>
               </div>
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
-                {a.status}
+                {STATUS_LABEL[a.status] ?? 'Open'}
               </span>
               <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
