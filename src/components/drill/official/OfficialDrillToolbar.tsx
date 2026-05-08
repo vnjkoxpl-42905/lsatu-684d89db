@@ -238,51 +238,55 @@ function UnderlineIcon() {
 }
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
+  // LawHub-style: chunky angled marker with colored body, dark gray cap,
+  // small nib at bottom-left, and a colored stroke drawn beneath it.
   return (
     <svg
-      width="28"
-      height="28"
+      width="26"
+      height="26"
       viewBox="0 0 32 32"
       fill="none"
       stroke="#0f172a"
-      strokeWidth="1.5"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Body */}
-      <path d="M22 4 L28 10 L14 24 L8 18 Z" fill="#ffffff" />
-      {/* Cap shoulder */}
-      <path d="M22 4 L28 10 L25 13 L19 7 Z" fill="#94a3b8" />
-      {/* Inner divider */}
-      <line x1="11" y1="15" x2="17" y2="21" />
-      {/* Trapezoid nib */}
+      {/* Colored body */}
+      <path d="M22 3 L29 10 L14 25 L7 18 Z" fill={tipColor} />
+      {/* Cap (top-right) */}
+      <path d="M22 3 L29 10 L26 13 L19 6 Z" fill="#475569" />
+      {/* Inner divider near nib */}
+      <line x1="10" y1="15" x2="17" y2="22" />
+      {/* Nib */}
+      <path d="M7 18 L14 25 L9 30 L3 27 Z" fill="#fde68a" />
+      {/* Marker stroke beneath */}
       <path
-        d="M8 18 L14 24 L9 29 L4 26 Z"
-        fill={tipColor}
-        stroke="#0f172a"
-        strokeWidth="1.5"
+        d="M2 30 Q 7 28 12 30"
+        stroke={tipColor}
+        strokeWidth="2.2"
+        fill="none"
+        strokeLinecap="round"
       />
     </svg>
   );
 }
 
 function EraserIcon() {
-  // Squared block, slight tilt, pink top half / white bottom half.
+  // Pink rounded-rectangle block, slight tilt, dark outline.
   return (
     <svg
-      width="30"
+      width="28"
       height="22"
       viewBox="0 0 32 22"
       fill="none"
       stroke="#0f172a"
-      strokeWidth="1.8"
-      strokeLinecap="square"
-      strokeLinejoin="miter"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
     >
-      <g transform="rotate(-4 16 11)">
-        <rect x="2" y="2" width="28" height="18" fill="#ffffff" />
-        <rect x="2" y="2" width="28" height="9" fill="#F9A8D4" />
-        <line x1="2" y1="11" x2="30" y2="11" />
+      <g transform="rotate(-6 16 11)">
+        <rect x="3" y="4" width="26" height="14" rx="2" fill="#EC9BAB" />
+        {/* Subtle wear shading on bottom edge */}
+        <path d="M3 14 L29 14" stroke="#0f172a" strokeWidth="0.8" opacity="0.35" />
       </g>
     </svg>
   );
