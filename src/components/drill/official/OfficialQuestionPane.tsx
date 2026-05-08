@@ -54,10 +54,10 @@ export default function OfficialQuestionPane({
   const answerEntries = Object.entries(question.answerChoices);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] flex-1">
       {/* Stimulus column */}
       <div
-        className="px-8 pt-6 pb-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
+        className="px-10 pt-8 pb-10 lg:border-r border-slate-200 text-[18px] leading-[1.7] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-8 pt-6 pb-8 text-[17px] leading-[1.65] text-black">
+      <div className="px-10 pt-8 pb-10 text-[18px] leading-[1.7] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -97,7 +97,7 @@ export default function OfficialQuestionPane({
           >
             <Flag
               className={cn(
-                "w-[22px] h-[22px] transition-colors text-[#2563eb]",
+                "w-[24px] h-[24px] transition-colors text-[#2563eb]",
                 isFlagged && "fill-[#2563eb]",
               )}
             />
@@ -123,11 +123,11 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 mt-0.5 rounded-full border-[1.75px] flex items-center justify-center text-[13px] font-semibold transition-colors",
-                    "w-8 h-8",
+                    "shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
+                    "w-9 h-9",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-700 bg-white text-slate-800 hover:border-slate-900",
+                      : "border-slate-800 bg-white text-slate-900 hover:border-slate-900",
                     isEliminated && "cursor-not-allowed",
                   )}
                 >
@@ -138,7 +138,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[16px] leading-[1.55] pt-1",
+                    "flex-1 text-left text-[17px] leading-[1.6] pt-1",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
                 >
@@ -152,7 +152,7 @@ export default function OfficialQuestionPane({
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   className="shrink-0 p-1 mt-0.5 text-neutral-500 hover:text-neutral-700 rounded transition-colors"
                 >
-                  <Eye className="w-[18px] h-[18px]" strokeWidth={2.25} />
+                  <Eye className="w-[20px] h-[20px]" strokeWidth={2.25} />
                 </button>
               </li>
             );

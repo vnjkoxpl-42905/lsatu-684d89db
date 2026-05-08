@@ -47,8 +47,8 @@ export default function OfficialDrillFrame({ header, children }: Props) {
           </div>
         )}
       </header>
-      <main className="flex-1 px-4 sm:px-10 pt-12 sm:pt-16 pb-12 sm:pb-16">
-        <div className="mx-auto w-full max-w-[1080px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col">
+      <main className="flex-1 px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-8 flex">
+        <div className="mx-auto w-full max-w-[1320px] flex-1 min-h-[760px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col">
           {children}
         </div>
       </main>
