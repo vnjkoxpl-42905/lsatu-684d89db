@@ -1,41 +1,27 @@
 import { useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  Users,
   Sparkles,
+  Users,
+  MessageSquare,
   CalendarDays,
-  PencilRuler,
-  ClipboardList,
-  Flame,
-  UploadCloud,
-  BookOpen,
-  LineChart,
+  Library,
   ArrowLeft,
-  Command,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 
-const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
-  { to: '/teacher', label: 'Today', Icon: LayoutDashboard },
+const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: string }>; end?: boolean }[] = [
+  { to: '/teacher', label: 'Assistant', Icon: Sparkles, end: true },
   { to: '/teacher/students', label: 'Students', Icon: Users },
-  { to: '/teacher/ai-ta', label: 'AI Teaching Assistant', Icon: Sparkles },
-  { to: '/teacher/weekly-plans', label: 'Weekly Plans', Icon: CalendarDays },
+  { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
-  { to: '/teacher/smartboard', label: 'Smartboard', Icon: PencilRuler },
-  { to: '/teacher/assignments', label: 'Assignments', Icon: ClipboardList },
-  { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
-  { to: '/teacher/uploads', label: 'Uploads', Icon: UploadCloud },
-  { to: '/teacher/recaps', label: 'Recaps', Icon: BookOpen },
-  { to: '/teacher/analytics-bridge', label: 'Analytics Bridge', Icon: LineChart },
+  { to: '/teacher/library', label: 'Library', Icon: Library },
 ];
 
 /**
- * Teacher Workspace shell. Admin-only; the route guard in App.tsx
- * redirects non-admins. The shell is desktop-first by design — on
- * narrow screens the sidebar collapses to a horizontal tab strip so
- * tools remain reachable without pretending to be a full mobile app.
+ * Teacher Workspace shell. Premium operator hub for admins.
+ * Five ranked tabs — Assistant is the default surface.
  */
 export default function TeacherShell() {
   const navigate = useNavigate();
@@ -50,43 +36,40 @@ export default function TeacherShell() {
   }
 
   return (
-    <div className="min-h-screen h-screen bg-zinc-950 text-zinc-100 flex flex-col">
-      <header className="border-b border-zinc-800 shrink-0">
+    <div className="min-h-screen h-screen bg-zinc-950 text-zinc-100 flex flex-col overflow-hidden">
+      <header className="border-b border-zinc-800/60 shrink-0 backdrop-blur">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
           <button
             type="button"
             onClick={() => navigate('/foyer')}
-            className="text-zinc-400 hover:text-zinc-100 inline-flex items-center text-sm"
+            className="text-zinc-400 hover:text-zinc-100 inline-flex items-center text-sm transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1.5" />
             Foyer
           </button>
           <div className="h-5 w-px bg-zinc-800" />
-          <Command className="h-5 w-5 text-zinc-400" />
-          <h1 className="text-base font-semibold tracking-tight">Teacher Workspace</h1>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.6)]" />
+            <h1 className="text-base font-semibold tracking-tight">Teacher Workspace</h1>
+          </div>
         </div>
       </header>
 
       <div className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto flex flex-col md:flex-row">
-        <aside className="md:w-[220px] shrink-0 border-b md:border-b-0 md:border-r border-zinc-800">
-          <nav
-            className="md:py-3 flex md:flex-col gap-0.5 overflow-x-auto md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Teacher workspace navigation"
-          >
-            {NAV.map(({ to, label, Icon }) => (
+        {/* Desktop sidebar / mobile bottom-tab — five ranked items */}
+        <aside className="hidden md:flex md:w-[200px] shrink-0 border-r border-zinc-800/60 flex-col">
+          <nav className="py-4 flex flex-col gap-0.5" aria-label="Teacher workspace">
+            {NAV.map(({ to, label, Icon, end }) => (
               <NavLink
                 key={to}
                 to={to}
-                end={to === '/teacher'}
+                end={end}
                 className={({ isActive }) =>
                   cn(
-                    'inline-flex items-center gap-2.5 px-4 py-2 text-[13px] whitespace-nowrap shrink-0',
-                    // Mobile: bottom border accent (horizontal nav).
-                    // Desktop: left border accent (vertical nav).
-                    'border-b-2 md:border-b-0 md:border-l-2 transition-colors',
+                    'mx-2 inline-flex items-center gap-2.5 px-3 py-2 text-[13px] rounded-lg transition-all',
                     isActive
-                      ? 'border-amber-400 bg-zinc-900/60 text-zinc-100'
-                      : 'border-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/40',
+                      ? 'bg-gradient-to-r from-amber-500/15 to-transparent text-amber-100 border border-amber-500/20'
+                      : 'border border-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60',
                   )
                 }
               >
@@ -97,9 +80,32 @@ export default function TeacherShell() {
           </nav>
         </aside>
 
-        <main className="flex-1 min-w-0 min-h-0 overflow-y-auto">
+        <main className="flex-1 min-w-0 min-h-0 overflow-hidden flex flex-col">
           <Outlet />
         </main>
+
+        {/* Mobile bottom tab bar */}
+        <nav
+          className="md:hidden shrink-0 border-t border-zinc-800/60 bg-zinc-950/95 backdrop-blur flex items-stretch pb-[max(0.25rem,env(safe-area-inset-bottom))]"
+          aria-label="Teacher workspace"
+        >
+          {NAV.map(({ to, label, Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                cn(
+                  'flex-1 flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium transition-colors',
+                  isActive ? 'text-amber-300' : 'text-zinc-500 hover:text-zinc-200',
+                )
+              }
+            >
+              <Icon className="h-5 w-5" />
+              <span className="truncate max-w-full px-1">{label}</span>
+            </NavLink>
+          ))}
+        </nav>
       </div>
     </div>
   );
