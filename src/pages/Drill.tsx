@@ -2072,7 +2072,16 @@ function DrillContent() {
               ]}
               isPaused={!!timer?.isPaused}
               onTogglePause={handleTogglePauseClick}
-              onComplete={handleFinishSection}
+              onComplete={session.mode === 'adaptive' ? undefined : handleFinishSection}
+              showAnswerVisible={
+                session.mode === 'adaptive' &&
+                !!selectedAnswer &&
+                !showAnswerRevealed.get(currentQuestion.qid)
+              }
+              onShowAnswer={() => {
+                if (!currentQuestion) return;
+                setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+              }}
             />
           }
         >
