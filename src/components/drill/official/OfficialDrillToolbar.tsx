@@ -238,8 +238,8 @@ function UnderlineIcon() {
 }
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
-  // LawHub-style: chunky angled marker with colored body, dark gray cap,
-  // small nib at bottom-left, and a colored stroke drawn beneath it.
+  // LawHub-style angled marker: colored body, BLACK cap on the upper-right,
+  // small colored nib at lower-left, and a thin colored stroke beneath.
   return (
     <svg
       width="26"
@@ -247,23 +247,23 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
       viewBox="0 0 32 32"
       fill="none"
       stroke="#0f172a"
-      strokeWidth="1.4"
+      strokeWidth="1.3"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
       {/* Colored body */}
-      <path d="M22 3 L29 10 L14 25 L7 18 Z" fill={tipColor} />
-      {/* Cap (top-right) */}
-      <path d="M22 3 L29 10 L26 13 L19 6 Z" fill="#475569" />
+      <path d="M21 3 L29 11 L13 27 L5 19 Z" fill={tipColor} />
+      {/* Black cap (top-right) */}
+      <path d="M21 3 L29 11 L25.5 14.5 L17.5 6.5 Z" fill="#0f172a" />
       {/* Inner divider near nib */}
-      <line x1="10" y1="15" x2="17" y2="22" />
-      {/* Nib */}
-      <path d="M7 18 L14 25 L9 30 L3 27 Z" fill="#fde68a" />
+      <line x1="9" y1="15" x2="17" y2="23" />
+      {/* Nib (same color as body, slightly extended) */}
+      <path d="M5 19 L13 27 L9 31 L1.5 27.5 Z" fill={tipColor} />
       {/* Marker stroke beneath */}
       <path
-        d="M2 30 Q 7 28 12 30"
+        d="M0 31 Q 5 29 11 31"
         stroke={tipColor}
-        strokeWidth="2.2"
+        strokeWidth="2"
         fill="none"
         strokeLinecap="round"
       />
