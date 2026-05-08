@@ -124,7 +124,7 @@ export default function OfficialQuestionPane({
                   aria-label={`Choice ${key}`}
                   className={cn(
                     "shrink-0 mt-0.5 rounded-full border flex items-center justify-center text-[12px] font-medium transition-colors",
-                    "w-7 h-[18px]",
+                    "w-6 h-6",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
                       : "border-slate-400 bg-white text-slate-700 hover:border-slate-700",
