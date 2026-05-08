@@ -14,13 +14,16 @@ interface Question {
 
 interface Props {
   question: Question;
-  /** 1-based display index when qnum is missing (falls back to currentIndex+1). */
   displayNumber: number;
   selectedAnswer: string;
   eliminatedAnswers: Set<string>;
   isFlagged: boolean;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
+  /** Find Text term — overlaid as a search highlight (does not mutate user highlights). */
+  searchTerm?: string;
+  /** Font scale multiplier (1.0 = default). Applies to stimulus, stem, and answer text only. */
+  fontScale?: number;
   onAnswerSelect: (key: string) => void;
   onEliminate: (key: string) => void;
   onToggleFlag: () => void;
@@ -28,13 +31,6 @@ interface Props {
   onHighlightClick: (highlightId: string) => void;
 }
 
-/**
- * Two-column body inside the official testing frame.
- * Left: stimulus. Right: question number + flag + stem + answer choices.
- *
- * Uses the existing <HighlightedText> so highlight rendering, text selection,
- * and click-to-erase all stay byte-identical to the default layout.
- */
 export default function OfficialQuestionPane({
   question,
   displayNumber,
@@ -43,6 +39,8 @@ export default function OfficialQuestionPane({
   isFlagged,
   highlights,
   highlightMode,
+  searchTerm,
+  fontScale = 1,
   onAnswerSelect,
   onEliminate,
   onToggleFlag,
@@ -53,11 +51,18 @@ export default function OfficialQuestionPane({
   const stemHighlights = highlights.filter((h) => h.section === "stem");
   const answerEntries = Object.entries(question.answerChoices);
 
+  const baseSize = 17 * fontScale;
+  const answerSize = 16 * fontScale;
+  const stimStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
+  const stemStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
+  const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] flex-1">
       {/* Stimulus column */}
       <div
-        className="px-9 pt-7 pb-9 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
+        className="px-9 pt-6 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap"
+        style={stimStyle}
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -65,11 +70,12 @@ export default function OfficialQuestionPane({
           highlights={stimulusHighlights}
           onHighlightClick={onHighlightClick}
           eraserMode={highlightMode === "erase"}
+          searchTerm={searchTerm}
         />
       </div>
 
       {/* Question column */}
-      <div className="px-9 pt-7 pb-9 text-[17px] leading-[1.65] text-black">
+      <div className="px-9 pt-6 pb-8 text-black" style={stemStyle}>
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -84,6 +90,7 @@ export default function OfficialQuestionPane({
                 highlights={stemHighlights}
                 onHighlightClick={onHighlightClick}
                 eraserMode={highlightMode === "erase"}
+                searchTerm={searchTerm}
               />
             </div>
           </div>
@@ -97,9 +104,12 @@ export default function OfficialQuestionPane({
           >
             <Flag
               className={cn(
-                "w-[24px] h-[24px] transition-colors text-[#2563eb]",
-                isFlagged && "fill-[#2563eb]",
+                "w-[24px] h-[24px] transition-colors",
+                isFlagged
+                  ? "text-[#1d4ed8] fill-[#1d4ed8]"
+                  : "text-[#1d4ed8]",
               )}
+              strokeWidth={2}
             />
           </button>
         </div>
@@ -138,9 +148,10 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[16px] leading-[1.55] pt-1",
+                    "flex-1 text-left pt-1",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
+                  style={answerTextStyle}
                 >
                   {text}
                 </button>
