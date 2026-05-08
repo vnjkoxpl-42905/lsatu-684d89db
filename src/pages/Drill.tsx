@@ -2107,6 +2107,8 @@ function DrillContent() {
             selectedAnswer={selectedAnswer}
             eliminatedAnswers={eliminatedAnswers}
             isFlagged={isFlagged}
+            answerRevealed={!!showAnswerRevealed.get(currentQuestion.qid)}
+            correctAnswer={currentQuestion.correctAnswer}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
             searchTerm={officialSearchTerm}
