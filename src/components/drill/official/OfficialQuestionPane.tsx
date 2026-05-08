@@ -18,6 +18,10 @@ interface Props {
   selectedAnswer: string;
   eliminatedAnswers: Set<string>;
   isFlagged: boolean;
+  /** When true, reveal correct/incorrect styling on answer choices. */
+  answerRevealed?: boolean;
+  /** Correct answer key (e.g. "B"). Required when answerRevealed=true. */
+  correctAnswer?: string;
   highlights: Highlight[];
   highlightMode: "none" | "yellow" | "pink" | "orange" | "underline" | "erase";
   /** Find Text term — overlaid as a search highlight (does not mutate user highlights). */
