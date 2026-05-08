@@ -54,10 +54,10 @@ export default function OfficialQuestionPane({
   const answerEntries = Object.entries(question.answerChoices);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
       {/* Stimulus column */}
       <div
-        className="px-8 py-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
+        className="px-8 pt-6 pb-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-8 py-8 text-[17px] leading-[1.65] text-black">
+      <div className="px-8 pt-6 pb-8 text-[17px] leading-[1.65] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -123,11 +123,11 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 mt-0.5 rounded-full border-[1.5px] flex items-center justify-center text-[13px] font-semibold transition-colors",
-                    "w-7 h-7",
+                    "shrink-0 mt-0.5 rounded-full border-[1.75px] flex items-center justify-center text-[13px] font-semibold transition-colors",
+                    "w-8 h-8",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-500 bg-white text-slate-700 hover:border-slate-800",
+                      : "border-slate-700 bg-white text-slate-800 hover:border-slate-900",
                     isEliminated && "cursor-not-allowed",
                   )}
                 >
@@ -138,7 +138,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[16px] leading-[1.55] pt-0.5",
+                    "flex-1 text-left text-[16px] leading-[1.55] pt-1",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
                 >
@@ -150,9 +150,9 @@ export default function OfficialQuestionPane({
                   aria-pressed={isEliminated}
                   aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  className="shrink-0 p-1 mt-0.5 text-slate-500 hover:text-slate-800 rounded transition-colors"
+                  className="shrink-0 p-1 mt-0.5 text-neutral-500 hover:text-neutral-700 rounded transition-colors"
                 >
-                  <Eye className="w-[18px] h-[18px]" strokeWidth={2} />
+                  <Eye className="w-[18px] h-[18px]" strokeWidth={2.25} />
                 </button>
               </li>
             );

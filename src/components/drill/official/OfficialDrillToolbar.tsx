@@ -26,6 +26,8 @@ interface Props {
   /** Remaining ms for countdown; ignored if totalMs is undefined. */
   remainingMs?: number;
   isFullSection: boolean;
+  /** When true (Build-a-Set), use the "Section Time Remaining" timer label. */
+  isPracticeSet?: boolean;
 }
 
 /**
@@ -44,6 +46,7 @@ export default function OfficialDrillToolbar({
   setHighlightMode,
   timerLabel,
   isFullSection,
+  isPracticeSet,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
 
@@ -56,7 +59,7 @@ export default function OfficialDrillToolbar({
     {
       mode: "underline",
       label: "Underline",
-      icon: <UnderlineIcon className="w-[18px] h-[18px]" />,
+      icon: <UnderlineIcon className="w-[22px] h-[22px] text-slate-600" strokeWidth={2.25} />,
       activeBg: "bg-slate-200",
     },
     {
@@ -89,7 +92,7 @@ export default function OfficialDrillToolbar({
     setHighlightMode(highlightMode === mode ? "none" : mode);
   };
 
-  const timerLabelPrefix = isFullSection ? "Section Time Remaining" : "Elapsed";
+  const timerLabelPrefix = isFullSection || isPracticeSet ? "Section Time Remaining" : "Elapsed";
 
   return (
     <>
@@ -99,7 +102,7 @@ export default function OfficialDrillToolbar({
           <button
             type="button"
             onClick={() => setDirectionsOpen(true)}
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-800 hover:bg-slate-100 transition-colors text-[14px] font-medium"
+            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-slate-900 hover:bg-slate-100 transition-colors text-[14px] font-semibold"
           >
             Directions
           </button>
@@ -111,7 +114,7 @@ export default function OfficialDrillToolbar({
             aria-disabled="true"
             placeholder="Find Text, Type Here"
             title="Find text — coming soon"
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[260px] cursor-not-allowed"
+            className="rounded-sm border border-slate-500 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[170px] cursor-not-allowed"
           />
 
           <PipeSeparator />
@@ -127,7 +130,7 @@ export default function OfficialDrillToolbar({
                 aria-label={t.label}
                 title={t.label}
                 className={cn(
-                  "p-2 rounded transition-colors",
+                  "p-1.5 rounded transition-colors",
                   highlightMode === t.mode ? t.activeBg : "hover:bg-slate-200",
                 )}
               >
@@ -146,8 +149,8 @@ export default function OfficialDrillToolbar({
             title="Font size — coming soon"
             className="p-2 rounded text-slate-700 cursor-not-allowed"
           >
-            <span aria-hidden className="text-[18px] font-semibold">A</span>
-            <span aria-hidden className="text-[12px] font-semibold">A</span>
+            <span aria-hidden className="text-[20px] font-semibold">A</span>
+            <span aria-hidden className="text-[14px] font-semibold">A</span>
             <span className="sr-only">Font size</span>
           </button>
           <button
@@ -165,7 +168,7 @@ export default function OfficialDrillToolbar({
           <div className="ml-auto">
             <div
               role="timer"
-              className="rounded-sm border-2 border-[#7f1d1d] text-black px-3 py-1.5 text-[14px] font-medium tabular-nums whitespace-nowrap"
+              className="rounded-sm border-2 border-[#7f1d1d] text-black px-5 py-2 text-[15px] font-medium tabular-nums whitespace-nowrap"
             >
               {timerLabelPrefix}: {timerLabel || "00:00"}
             </div>
@@ -207,12 +210,12 @@ export default function OfficialDrillToolbar({
 function MarkerIcon({ tipColor }: { tipColor: string }) {
   return (
     <svg
-      width="26"
-      height="26"
+      width="30"
+      height="30"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#334155"
-      strokeWidth="1.25"
+      stroke="#1f2937"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -232,12 +235,12 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
 function EraserIcon() {
   return (
     <svg
-      width="30"
-      height="20"
+      width="36"
+      height="24"
       viewBox="0 0 28 18"
       fill="none"
-      stroke="#334155"
-      strokeWidth="1.25"
+      stroke="#1f2937"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -251,12 +254,12 @@ function EraserIcon() {
 function LineSpacingIcon() {
   return (
     <svg
-      width="22"
-      height="22"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -268,7 +271,7 @@ function LineSpacingIcon() {
 }
 
 function PipeSeparator() {
-  return <span aria-hidden className="w-px h-7 bg-slate-300 mx-2" />;
+  return <span aria-hidden className="w-px h-7 bg-slate-400 mx-2" />;
 }
 
 export type { HighlightColor };

@@ -2078,6 +2078,7 @@ function DrillContent() {
             totalMs={totalMs}
             remainingMs={timer?.ms}
             isFullSection={isFullSection}
+            isPracticeSet={isPracticeSetMode}
           />
           <OfficialQuestionPane
             question={{
