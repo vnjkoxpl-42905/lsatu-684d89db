@@ -2047,6 +2047,8 @@ function DrillContent() {
         </AlertDialog>
 
         <OfficialDrillFrame
+          isPaused={!!timer?.isPaused}
+          onResume={timer?.resume}
           header={
             <OfficialSessionStrip
               breadcrumbs={[
@@ -2075,10 +2077,11 @@ function DrillContent() {
             highlightMode={highlightMode}
             setHighlightMode={setHighlightMode}
             timerLabel={timer?.label ?? ""}
-            totalMs={totalMs}
-            remainingMs={timer?.ms}
-            isFullSection={isFullSection}
-            isPracticeSet={isPracticeSetMode}
+            timerMode={timer?.mode}
+            searchTerm={officialSearchTerm}
+            setSearchTerm={setOfficialSearchTerm}
+            fontScale={officialFontScale}
+            setFontScale={setOfficialFontScale}
           />
           <OfficialQuestionPane
             question={{
@@ -2094,6 +2097,8 @@ function DrillContent() {
             isFlagged={isFlagged}
             highlights={highlights.get(currentQuestion.qid) || []}
             highlightMode={highlightMode}
+            searchTerm={officialSearchTerm}
+            fontScale={officialFontScale}
             onAnswerSelect={handleAnswerSelect}
             onEliminate={handleEliminateAnswer}
             onToggleFlag={handleToggleFlag}
