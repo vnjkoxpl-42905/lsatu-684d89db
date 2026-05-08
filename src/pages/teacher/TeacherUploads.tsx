@@ -21,7 +21,7 @@ export default function TeacherUploads() {
         processing_status: status,
         reviewed_at: new Date().toISOString(),
       };
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('external_work_uploads')
         .update(patch)
         .eq('id', id);

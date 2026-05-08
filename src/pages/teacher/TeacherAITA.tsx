@@ -34,7 +34,7 @@ function DraftsView() {
     queryFn: async () => {
       const ids = Array.from(new Set(drafts.map((d) => d.student_id)));
       if (ids.length === 0) return {};
-      const { data } = await (supabase as any).rpc('get_conversation_participant_names', {
+      const { data } = await supabase.rpc('get_conversation_participant_names', {
         _user_ids: ids,
       });
       const out: Record<string, string> = {};

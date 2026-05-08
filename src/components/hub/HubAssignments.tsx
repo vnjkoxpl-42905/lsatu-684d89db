@@ -115,7 +115,7 @@ export default function HubAssignments({ studentId }: Props) {
         if (!error) await qc.invalidateQueries({ queryKey: ['hub-homework', studentId] });
       } else if (pending.kind === 'ta') {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const r = await (supabase as any)
+        const r = await supabase
           .from('ta_assignments')
           .delete()
           .eq('id', pending.id);
@@ -123,7 +123,7 @@ export default function HubAssignments({ studentId }: Props) {
         if (!error) await refreshTA();
       } else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const r = await (supabase as any)
+        const r = await supabase
           .from('classroom_items')
           .delete()
           .eq('id', pending.id);

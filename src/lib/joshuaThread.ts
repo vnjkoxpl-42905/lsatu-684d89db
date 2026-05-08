@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
  * INSERT policy that would otherwise block non-admin callers.
  */
 export async function startJoshuaConversation(): Promise<string> {
-  const { data, error } = await (supabase as any).rpc('get_or_create_joshua_conversation');
+  const { data, error } = await supabase.rpc('get_or_create_joshua_conversation');
   if (error) throw error;
   if (!data || typeof data !== 'string') throw new Error('No conversation id returned');
   return data;

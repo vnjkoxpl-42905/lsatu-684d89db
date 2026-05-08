@@ -18,7 +18,7 @@ export function useAnalyticsSources(studentId: string | null) {
     queryKey: ['analytics-sources', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('student_analytics_sources')
         .select('*')
         .eq('student_id', studentId)
@@ -33,7 +33,7 @@ export function useUpsertAnalyticsSource() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (row: Partial<AnalyticsSource> & { student_id: string; source_name: string }) => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('student_analytics_sources')
         .upsert(row, { onConflict: 'student_id,source_name' })
         .select()

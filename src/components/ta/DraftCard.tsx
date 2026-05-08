@@ -38,7 +38,7 @@ export default function DraftCard({
     if (!user) return;
     setBusy("approve");
     try {
-      const { data: inserted, error: insertErr } = await (supabase as any)
+      const { data: inserted, error: insertErr } = await supabase
         .from("ta_assignments")
         .insert({
           student_id: studentId,
@@ -52,7 +52,7 @@ export default function DraftCard({
         .single();
       if (insertErr) throw insertErr;
 
-      const { error: updErr } = await (supabase as any)
+      const { error: updErr } = await supabase
         .from("ta_interactions")
         .update({ draft_status: "approved" })
         .eq("id", interactionId);
@@ -70,7 +70,7 @@ export default function DraftCard({
       // Bell notification. Non-blocking: if this fails the inbox message
       // already landed, so the student still gets a signal.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: notifErr } = await (supabase as any)
+      const { error: notifErr } = await supabase
         .from("notifications")
         .insert({
           user_id: studentId,
@@ -108,7 +108,7 @@ export default function DraftCard({
   const reject = async () => {
     setBusy("reject");
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("ta_interactions")
         .update({ draft_status: "rejected" })
         .eq("id", interactionId);

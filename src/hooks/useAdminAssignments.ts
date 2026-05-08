@@ -53,9 +53,7 @@ export function useAdminAssignments(
   const refresh = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    // TODO: drop `as any` after next supabase type regen (homework_assignments)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let query: any = (supabase as any)
+    let query = supabase
       .from("homework_assignments")
       .select("*")
       .order("created_at", { ascending: false });
@@ -100,7 +98,7 @@ export function useAdminAssignments(
       // Try bulk insert first; if the partial-unique index rejects any rows,
       // fall back to per-row insert so we can count duplicates cleanly.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: bulkErr } = await (supabase as any)
+      const { error: bulkErr } = await supabase
         .from("homework_assignments")
         .insert(rows);
 
@@ -115,7 +113,7 @@ export function useAdminAssignments(
       let firstOtherError: string | null = null;
       for (const row of rows) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error: rowErr } = await (supabase as any)
+        const { error: rowErr } = await supabase
           .from("homework_assignments")
           .insert(row);
         if (!rowErr) {

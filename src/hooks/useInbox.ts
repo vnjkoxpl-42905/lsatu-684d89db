@@ -87,7 +87,7 @@ export function useInbox() {
     // The RPC returns display_name only for users who share a conversation with
     // the caller.
     const userIds = Array.from(new Set((allParts ?? []).map((p) => p.user_id)));
-    const { data: nameRows } = await (supabase as any)
+    const { data: nameRows } = await supabase
       .rpc('get_conversation_participant_names', { _user_ids: userIds });
     const rows = (nameRows ?? []) as Array<{ user_id: string; display_name: string | null; is_admin: boolean }>;
     const nameMap = new Map(rows.map((r) => [r.user_id, r.display_name]));

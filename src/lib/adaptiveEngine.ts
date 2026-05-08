@@ -60,7 +60,7 @@ export class AdaptiveEngine {
   async hydrateFromDB(classId: string): Promise<void> {
     if (this.hydrated) return;
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('attempts')
         .select('qid, correct, time_ms, qtype, level, timestamp_iso')
         .eq('class_id', classId)
@@ -277,7 +277,7 @@ export class AdaptiveEngine {
 
   async analyzeWeakAreas(classId: string): Promise<WeakAreaAnalysis | null> {
     try {
-      const { data: attempts, error } = await (supabase as any)
+      const { data: attempts, error } = await supabase
         .from('attempts')
         .select('qtype, level, correct, timestamp_iso, time_ms')
         .eq('class_id', classId)
@@ -529,7 +529,7 @@ export class AdaptiveEngine {
     count: number
   ): Promise<SmartDrillResult> {
     // ── 1. Pull recent attempt history ──────────────────────────────────────
-    const { data: rawAttempts, error } = await (supabase as any)
+    const { data: rawAttempts, error } = await supabase
       .from('attempts')
       .select('qid, qtype, level, correct, timestamp_iso')
       .eq('class_id', classId)

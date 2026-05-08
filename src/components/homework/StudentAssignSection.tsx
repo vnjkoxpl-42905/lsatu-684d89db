@@ -29,9 +29,7 @@ export default function StudentAssignSection({ set }: StudentAssignSectionProps)
   React.useEffect(() => {
     const loadStudents = async () => {
       setLoadingStudents(true);
-      // TODO: drop `as any` after next supabase type regen
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from("profiles")
         .select("class_id, display_name")
         .order("display_name", { ascending: true });

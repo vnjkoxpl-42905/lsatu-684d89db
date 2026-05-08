@@ -165,7 +165,7 @@ export function useStudentTAAssignments(): {
     if (!user) return;
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("ta_assignments")
       .select("*")
       .eq("student_id", user.id)
@@ -218,7 +218,7 @@ export function useAdminTAAssignmentsForStudent(studentId: string | null | undef
     }
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("ta_assignments")
       .select("*")
       .eq("student_id", studentId)
@@ -247,7 +247,7 @@ export async function markTAAssignmentViewed(
   try {
     // Only transition assigned -> viewed; leave completed rows alone.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("ta_assignments")
       .update({ status: "viewed", viewed_at: new Date().toISOString() })
       .eq("id", assignmentId)
@@ -265,7 +265,7 @@ export async function markTAAssignmentCompleted(
 ): Promise<{ ok: boolean; error?: string }> {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from("ta_assignments")
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", assignmentId);
@@ -292,7 +292,7 @@ export function useStudentTAAssignment(assignmentId: string | undefined): {
     if (!user || !assignmentId) return;
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("ta_assignments")
       .select("*")
       .eq("id", assignmentId)

@@ -110,8 +110,7 @@ export function useHubStudents() {
     queryKey: ["hub-assignment-counts"],
     staleTime: HUB_STALE_MS,
     queryFn: async () => {
-      // Cast until Lovable regenerates src/integrations/supabase/types.ts.
-      const { data, error } = await (supabase as any).rpc(
+      const { data, error } = await supabase.rpc(
         "get_assignment_counts_per_student"
       );
       if (error) {
@@ -206,13 +205,12 @@ export function useStudentEmail(studentId: string | null) {
     staleTime: HUB_STALE_MS,
     queryFn: async () => {
       if (!studentId) return null;
-      // Cast until Lovable regenerates src/integrations/supabase/types.ts.
-      const { data, error } = await (supabase as any).rpc(
+      const { data, error } = await supabase.rpc(
         "get_student_email",
         { _student_id: studentId }
       );
       if (error) throw error;
-      return (data as string | null) ?? null;
+      return data ?? null;
     },
   });
 }

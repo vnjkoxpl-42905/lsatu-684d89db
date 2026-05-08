@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface SmartboardSession {
@@ -22,7 +23,7 @@ export function useSmartboardSessions(studentId: string | null) {
     queryKey: ['smartboard-sessions', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('smartboard_sessions')
         .select('*')
         .eq('student_id', studentId)
@@ -45,11 +46,11 @@ export function useSaveSmartboardSession() {
     }) => {
       if (!user) throw new Error('Not signed in');
       if (input.id) {
-        const { data, error } = await (supabase as any)
+        const { data, error } = await supabase
           .from('smartboard_sessions')
           .update({
             title: input.title,
-            excalidraw_scene_json: input.sceneJson,
+            excalidraw_scene_json: input.sceneJson as Json,
           })
           .eq('id', input.id)
           .select()
@@ -58,13 +59,13 @@ export function useSaveSmartboardSession() {
         qc.invalidateQueries({ queryKey: ['smartboard-sessions'] });
         return data as SmartboardSession;
       }
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('smartboard_sessions')
         .insert({
           student_id: input.studentId,
           created_by: user.id,
           title: input.title ?? 'Smartboard session',
-          excalidraw_scene_json: input.sceneJson,
+          excalidraw_scene_json: input.sceneJson as Json,
         })
         .select()
         .single();

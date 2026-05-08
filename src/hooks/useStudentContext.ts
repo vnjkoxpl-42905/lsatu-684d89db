@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractPdfText } from "@/lib/pdfExtract";
 
@@ -28,8 +29,7 @@ const BUCKET = "student-context";
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
 const MAX_TEXT_CHARS = 200_000;
 
-// Cast until Lovable regenerates src/integrations/supabase/types.ts.
-const contextTable = () => (supabase as any).from("student_context");
+const contextTable = () => supabase.from("student_context");
 
 export function useStudentContext(studentId: string) {
   const qc = useQueryClient();
@@ -126,7 +126,7 @@ export function useUploadStudentContextFile() {
           content_text: contentText || null,
           file_path: null,
           source: input.source ?? "upload",
-          metadata: { size: file.size, mime: file.type || null },
+          metadata: { size: file.size, mime: file.type || null } as Json,
           created_by: user.id,
         })
         .select("id")
@@ -187,7 +187,7 @@ export function useAddStudentContextNote() {
           content_text: body.slice(0, MAX_TEXT_CHARS),
           file_path: null,
           source: input.source ?? "manual",
-          metadata: input.metadata ?? {},
+          metadata: (input.metadata ?? {}) as Json,
           created_by: user.id,
         })
         .select("id")

@@ -48,7 +48,7 @@ export interface GuidedDrillAssignment {
 }
 
 export async function listGuidedDrills(): Promise<GuidedDrill[]> {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drills')
     .select('*')
     .order('week', { ascending: true })
@@ -58,7 +58,7 @@ export async function listGuidedDrills(): Promise<GuidedDrill[]> {
 }
 
 export async function getGuidedDrill(id: string): Promise<GuidedDrill | null> {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drills')
     .select('*')
     .eq('id', id)
@@ -68,7 +68,7 @@ export async function getGuidedDrill(id: string): Promise<GuidedDrill | null> {
 }
 
 export async function getGuidedDrillBySlug(slug: string): Promise<GuidedDrill | null> {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drills')
     .select('*')
     .eq('slug', slug)
@@ -105,7 +105,7 @@ export function resolveGuidedDrillPool(filter: GuidedDrillBankFilter) {
 }
 
 export async function listAssignmentsForStudent(studentId: string) {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drill_assignments')
     .select('*, guided_drill:guided_drills(*)')
     .eq('student_id', studentId)
@@ -116,7 +116,7 @@ export async function listAssignmentsForStudent(studentId: string) {
 }
 
 export async function getAssignment(id: string) {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drill_assignments')
     .select('*, guided_drill:guided_drills(*)')
     .eq('id', id)
@@ -143,7 +143,7 @@ export async function createAssignments(params: {
       status: 'assigned',
     }))
   );
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('guided_drill_assignments')
     .insert(rows)
     .select('*');
@@ -152,7 +152,7 @@ export async function createAssignments(params: {
 }
 
 export async function markCardRead(assignmentId: string) {
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('guided_drill_assignments')
     .update({ read_card_at: new Date().toISOString(), status: 'read' })
     .eq('id', assignmentId);
@@ -160,7 +160,7 @@ export async function markCardRead(assignmentId: string) {
 }
 
 export async function markStarted(assignmentId: string) {
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('guided_drill_assignments')
     .update({ started_at: new Date().toISOString(), status: 'started' })
     .eq('id', assignmentId);
@@ -168,7 +168,7 @@ export async function markStarted(assignmentId: string) {
 }
 
 export async function markCompleted(assignmentId: string) {
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('guided_drill_assignments')
     .update({ completed_at: new Date().toISOString(), status: 'completed' })
     .eq('id', assignmentId);

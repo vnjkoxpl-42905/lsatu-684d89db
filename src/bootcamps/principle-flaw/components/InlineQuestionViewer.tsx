@@ -69,7 +69,7 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
     const resolvedClassId = classId || user?.id;
     if (!resolvedClassId) return;
     try {
-      await (supabase as any).from("attempts").insert({
+      await supabase.from("attempts").insert({
         user_id: user?.id,
         class_id: resolvedClassId,
         qid: question.qid,

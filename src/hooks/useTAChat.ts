@@ -44,14 +44,14 @@ export function useTAChat(studentId: string | null) {
     enabled: !!studentId,
     queryFn: async () => {
       if (!studentId) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from("ta_interactions")
         .select("*")
         .eq("student_id", studentId)
         .order("created_at", { ascending: true })
         .limit(200);
       if (error) throw error;
-      return (data ?? []) as TAInteraction[];
+      return (data ?? []) as unknown as TAInteraction[];
     },
   });
 

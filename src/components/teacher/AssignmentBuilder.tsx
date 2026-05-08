@@ -94,9 +94,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     if (type !== 'homework') return;
     let cancelled = false;
     (async () => {
-      // Guided-set columns aren't in the auto-generated Supabase types yet.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data } = await (supabase as any)
+      const { data } = await supabase
         .from('homework_sets')
         .select('id,title,question_qids,is_guided_set,guided_set_type,estimated_minutes')
         .order('is_guided_set', { ascending: false })

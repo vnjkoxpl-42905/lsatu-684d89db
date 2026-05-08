@@ -20,11 +20,11 @@ function useDashboardStats(): DashboardStats {
     queryKey: ['teacher-today-stats'],
     queryFn: async () => {
       const [{ count: pendingDrafts }, { count: uploadsToReview }] = await Promise.all([
-        (supabase as any)
+        supabase
           .from('ai_ta_drafts')
           .select('*', { count: 'exact', head: true })
           .eq('status', 'draft'),
-        (supabase as any)
+        supabase
           .from('external_work_uploads')
           .select('*', { count: 'exact', head: true })
           .in('processing_status', ['uploaded', 'needs_review']),

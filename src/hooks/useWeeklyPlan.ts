@@ -43,7 +43,7 @@ export function useCurrentWeeklyPlan() {
     queryKey: ['current-weekly-plan', user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: plans, error: pErr } = await (supabase as any)
+      const { data: plans, error: pErr } = await supabase
         .from('weekly_plans')
         .select('*')
         .eq('status', 'published')
@@ -52,7 +52,7 @@ export function useCurrentWeeklyPlan() {
       if (pErr) throw pErr;
       const plan = (plans?.[0] ?? null) as WeeklyPlan | null;
       if (!plan) return { plan: null, items: [] };
-      const { data: items, error: iErr } = await (supabase as any)
+      const { data: items, error: iErr } = await supabase
         .from('weekly_plan_items')
         .select('*')
         .eq('weekly_plan_id', plan.id)
@@ -72,7 +72,7 @@ export function useStudentWeeklyPlans(studentId: string | null) {
     queryKey: ['weekly-plans-admin', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('weekly_plans')
         .select('*')
         .eq('student_id', studentId)

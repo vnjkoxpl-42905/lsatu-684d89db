@@ -29,7 +29,7 @@ export function useBootcampProgress(opts: {
     queryKey: ['bootcamp-item', user?.id, bootcampId],
     enabled: !!user && !!bootcampId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('classroom_items')
         .select('id, metadata_json, status')
         .eq('student_id', user!.id)

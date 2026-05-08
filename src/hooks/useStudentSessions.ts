@@ -24,7 +24,7 @@ export interface StudentSession {
 }
 
 // Cast until Lovable regenerates src/integrations/supabase/types.ts.
-const sessionsTable = () => (supabase as any).from("student_sessions");
+const sessionsTable = () => supabase.from("student_sessions");
 
 export function useStudentSessions(studentId: string) {
   const qc = useQueryClient();

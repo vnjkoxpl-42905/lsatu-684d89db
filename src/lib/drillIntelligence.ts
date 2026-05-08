@@ -36,7 +36,7 @@ export class DrillIntelligence {
    * Detect patterns in user performance
    */
   async detectPatterns(userId: string): Promise<LearningPattern[]> {
-    const { data: attempts, error } = await (supabase as any)
+    const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
       .eq('user_id', userId)
@@ -72,7 +72,7 @@ export class DrillIntelligence {
    * Generate personalized drill recommendations
    */
   async generateRecommendations(userId: string): Promise<DrillRecommendation[]> {
-    const { data: attempts, error } = await (supabase as any)
+    const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
       .eq('user_id', userId)
@@ -137,7 +137,7 @@ export class DrillIntelligence {
    * Track learning velocity per question type
    */
   async trackLearningVelocity(userId: string): Promise<LearningVelocity[]> {
-    const { data: attempts, error } = await (supabase as any)
+    const { data: attempts, error } = await supabase
       .from('attempts')
       .select('*')
       .eq('user_id', userId)

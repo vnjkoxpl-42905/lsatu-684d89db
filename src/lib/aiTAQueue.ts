@@ -66,7 +66,7 @@ export async function postDraftAsClassroomItem(draft: AITADraft, currentUserId: 
       throw new Error(`Unsupported draft type: ${draft.draft_type}`);
   }
 
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('ai_ta_drafts')
     .update({ status: 'posted', posted_at: new Date().toISOString() })
     .eq('id', draft.id);

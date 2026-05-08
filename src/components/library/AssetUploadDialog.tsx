@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { extractPdfText } from "@/lib/pdfExtract";
 import type { AssetType } from "@/hooks/useTeachingAssets";
@@ -94,7 +95,7 @@ export default function AssetUploadDialog({ open, onOpenChange }: Props) {
         }
       }
 
-      const metadata: Record<string, unknown> = {};
+      const metadata: Record<string, Json> = {};
       const tags = tagsRaw
         .split(",")
         .map((t) => t.trim())
@@ -102,7 +103,7 @@ export default function AssetUploadDialog({ open, onOpenChange }: Props) {
       if (tags.length) metadata.tags = tags;
 
       // 2. Insert row first to get the asset_id.
-      const { data: inserted, error: insertError } = await (supabase as any)
+      const { data: inserted, error: insertError } = await supabase
         .from("teaching_assets")
         .insert({
           title: title.trim(),
@@ -127,10 +128,10 @@ export default function AssetUploadDialog({ open, onOpenChange }: Props) {
           .upload(path, file, { upsert: false });
         if (uploadError) {
           // Roll back the row so we never have a dangling asset.
-          await (supabase as any).from("teaching_assets").delete().eq("id", assetId);
+          await supabase.from("teaching_assets").delete().eq("id", assetId);
           throw uploadError;
         }
-        const { error: updateError } = await (supabase as any)
+        const { error: updateError } = await supabase
           .from("teaching_assets")
           .update({ file_path: path })
           .eq("id", assetId);

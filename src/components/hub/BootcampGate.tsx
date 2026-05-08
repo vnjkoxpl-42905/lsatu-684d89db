@@ -39,7 +39,7 @@ export default function BootcampGate({ routePath, title, children }: Props) {
     queryKey: ['bootcamp-gate', user?.id, routePath],
     enabled: !!user && !is_admin && !permsLoading,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('classroom_items')
         .select('id, status, source_id, metadata_json')
         .eq('type', 'bootcamp_module')

@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import type { ClassroomItem } from '@/hooks/useClassroomItems';
 
 interface CreateClassroomItemInput {
@@ -20,7 +21,7 @@ interface CreateClassroomItemInput {
 }
 
 export async function createClassroomItem(input: CreateClassroomItemInput) {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('classroom_items')
     .insert({
       student_id: input.studentId,
@@ -37,7 +38,7 @@ export async function createClassroomItem(input: CreateClassroomItemInput) {
       priority: input.priority ?? 0,
       status: input.status ?? 'assigned',
       visible_to_student: input.visibleToStudent ?? true,
-      metadata_json: input.metadata ?? {},
+      metadata_json: (input.metadata ?? {}) as Json,
     })
     .select()
     .single();
@@ -59,9 +60,14 @@ export async function updateClassroomItem(
     metadata_json: Record<string, unknown>;
   }>,
 ) {
-  const { data, error } = await (supabase as any)
+  const { metadata_json, ...rest } = patch;
+  const dbPatch =
+    metadata_json !== undefined
+      ? { ...rest, metadata_json: metadata_json as Json }
+      : rest;
+  const { data, error } = await supabase
     .from('classroom_items')
-    .update(patch)
+    .update(dbPatch)
     .eq('id', id)
     .select()
     .single();

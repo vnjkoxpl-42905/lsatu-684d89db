@@ -63,7 +63,7 @@ export class QuestionPoolService {
    */
   static async trackQuestionView(qid: string, classId: string, mode: DrillMode): Promise<string | null> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('question_views')
         .insert({
           class_id: classId,
@@ -90,7 +90,7 @@ export class QuestionPoolService {
    */
   static async markViewAnswered(viewId: string): Promise<void> {
     try {
-      await (supabase as any)
+      await supabase
         .from('question_views')
         .update({ answered: true })
         .eq('id', viewId);

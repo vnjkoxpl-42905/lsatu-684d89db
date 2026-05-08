@@ -42,6 +42,7 @@ import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   AlertDialog,
@@ -372,7 +373,7 @@ function DrillContent() {
     (async () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase as any)
+        const { error } = await supabase
           .from('homework_assignments')
           .update({ status: 'in_progress', started_at: new Date().toISOString() })
           .eq('id', assignmentId)
@@ -594,14 +595,12 @@ function DrillContent() {
       return;
     }
     const resolvedClassId = classId || user.id;
-    // TODO: drop `as any` after next supabase type regen (session_replays table)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase as any).from('session_replays').insert({
+    const { error } = await supabase.from('session_replays').insert({
       class_id: resolvedClassId,
       user_id: user.id,
       qid,
       mode,
-      events_jsonb: events,
+      events_jsonb: events as unknown as Json,
     });
     if (error) console.error('Failed to save session replay:', error);
   };
@@ -634,7 +633,7 @@ function DrillContent() {
         });
         return false;
       }
-      const { error } = await (supabase as any).from('attempts').insert({
+      const { error } = await supabase.from('attempts').insert({
         user_id: user?.id,
         class_id: resolvedClassId,
         qid: attemptData.qid,
@@ -1172,7 +1171,7 @@ function DrillContent() {
       const score = total > 0 ? Math.round((correct / total) * 10000) / 100 : 0;
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase as any)
+        const { error } = await supabase
           .from('homework_assignments')
           .update({
             status: 'completed',

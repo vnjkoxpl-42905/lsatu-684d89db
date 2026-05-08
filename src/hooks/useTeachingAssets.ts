@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export type AssetType =
   | "pdf"
@@ -22,8 +23,7 @@ export interface TeachingAsset {
   updated_at: string;
 }
 
-// Cast until Lovable regenerates src/integrations/supabase/types.ts.
-const assetsTable = () => (supabase as any).from("teaching_assets");
+const assetsTable = () => supabase.from("teaching_assets");
 
 export function useTeachingAssets(search: string, typeFilter: AssetType | null) {
   return useQuery<TeachingAsset[]>({
@@ -74,8 +74,10 @@ export function useUpdateTeachingAsset() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: AssetUpdateInput) => {
-      const { id, ...rest } = input;
-      const { error } = await assetsTable().update(rest).eq("id", id);
+      const { id, metadata, ...rest } = input;
+      const { error } = await assetsTable()
+        .update({ ...rest, metadata: metadata as Json })
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["teaching-assets"] }),

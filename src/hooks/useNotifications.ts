@@ -44,7 +44,7 @@ export function useNotifications(): {
     }
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("notifications")
       .select("*")
       .eq("user_id", user.id)
@@ -103,7 +103,7 @@ export function useNotifications(): {
         prev.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: err } = await (supabase as any)
+      const { error: err } = await supabase
         .from("notifications")
         .update({ read: true })
         .eq("id", id)
@@ -124,7 +124,7 @@ export function useNotifications(): {
     if (unreadIds.length === 0) return;
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error: err } = await (supabase as any)
+    const { error: err } = await supabase
       .from("notifications")
       .update({ read: true })
       .eq("user_id", user.id)

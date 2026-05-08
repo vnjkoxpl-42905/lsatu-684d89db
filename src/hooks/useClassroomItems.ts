@@ -55,7 +55,7 @@ export function useClassroomItems() {
     staleTime: 60_000,
     refetchOnWindowFocus: false,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('classroom_items')
         .select('*')
         .order('priority', { ascending: false })
@@ -76,7 +76,7 @@ export function useStudentClassroomItems(studentId: string | null) {
     queryKey: ['classroom-items-admin', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('classroom_items')
         .select('*')
         .eq('student_id', studentId)

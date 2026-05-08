@@ -66,7 +66,7 @@ export default function TeacherAnalyticsBridge() {
         .from('external-work-uploads')
         .upload(path, blob, { contentType: 'text/plain', upsert: false });
       if (upErr) throw upErr;
-      const { error } = await (supabase as any).from('external_work_uploads').insert({
+      const { error } = await supabase.from('external_work_uploads').insert({
         student_id: studentId,
         uploaded_by: user.id,
         file_name: '7sage analytics paste',

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface OperatorToolResult {
@@ -35,7 +36,7 @@ export function useOperatorChat() {
     if (!user) return;
     let cancelled = false;
     (async () => {
-      const { data: conv } = await (supabase as any)
+      const { data: conv } = await supabase
         .from('operator_conversations')
         .select('id')
         .eq('admin_id', user.id)
@@ -46,7 +47,7 @@ export function useOperatorChat() {
       if (conv?.id) {
         setConversationId(conv.id);
         conversationIdRef.current = conv.id;
-        const { data: msgs } = await (supabase as any)
+        const { data: msgs } = await supabase
           .from('operator_messages')
           .select('*')
           .eq('conversation_id', conv.id)
@@ -72,7 +73,7 @@ export function useOperatorChat() {
   const ensureConversation = useCallback(async (): Promise<string> => {
     if (conversationIdRef.current) return conversationIdRef.current;
     if (!user) throw new Error('Not signed in');
-    const { data, error: e } = await (supabase as any)
+    const { data, error: e } = await supabase
       .from('operator_conversations')
       .insert({ admin_id: user.id, title: 'New conversation' })
       .select('id')
@@ -111,7 +112,7 @@ export function useOperatorChat() {
       try {
         const convId = await ensureConversation();
         // Persist the user message before the round-trip so it survives a refresh.
-        await (supabase as any).from('operator_messages').insert({
+        await supabase.from('operator_messages').insert({
           conversation_id: convId,
           role: 'user',
           content: text,
@@ -122,7 +123,7 @@ export function useOperatorChat() {
           .filter((m) => !m.pending)
           .map((m) => ({ role: m.role, content: m.content }));
 
-        const { data, error: invokeErr } = await (supabase as any).functions.invoke(
+        const { data, error: invokeErr } = await supabase.functions.invoke(
           'teacher-operator-chat',
           { body: { messages: history } },
         );
@@ -133,11 +134,11 @@ export function useOperatorChat() {
         const toolResults: OperatorToolResult[] = data?.tool_results ?? [];
 
         // Persist assistant turn.
-        await (supabase as any).from('operator_messages').insert({
+        await supabase.from('operator_messages').insert({
           conversation_id: convId,
           role: 'assistant',
           content: finalContent,
-          tool_results: toolResults.length ? toolResults : null,
+          tool_results: toolResults.length ? (toolResults as unknown as Json) : null,
         });
 
         setMessages((prev) =>
@@ -171,7 +172,7 @@ export function useOperatorChat() {
 
   const newConversation = useCallback(async () => {
     if (!user) return;
-    const { data, error: e } = await (supabase as any)
+    const { data, error: e } = await supabase
       .from('operator_conversations')
       .insert({ admin_id: user.id, title: 'New conversation' })
       .select('id')

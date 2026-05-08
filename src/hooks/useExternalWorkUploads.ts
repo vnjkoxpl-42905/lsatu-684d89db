@@ -53,7 +53,7 @@ export function useStudentExternalUploads() {
     queryKey: ['external-uploads-mine', user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('external_work_uploads')
         .select('*')
         .order('created_at', { ascending: false });
@@ -77,7 +77,7 @@ export function useStudentExternalUploads() {
           .from('external-work-uploads')
           .upload(path, file, { contentType: file.type, upsert: false });
         if (upErr) throw upErr;
-        const { data, error } = await (supabase as any)
+        const { data, error } = await supabase
           .from('external_work_uploads')
           .insert({
             student_id: user.id,
@@ -113,7 +113,7 @@ export function useAdminUploadsQueue(opts: { all?: boolean } = {}) {
   return useQuery<ExternalWorkUpload[]>({
     queryKey: ['external-uploads-queue', all],
     queryFn: async () => {
-      let q = (supabase as any).from('external_work_uploads').select('*');
+      let q = supabase.from('external_work_uploads').select('*');
       if (!all) {
         q = q.in('processing_status', ['uploaded', 'needs_review']);
       }
@@ -129,7 +129,7 @@ export function useStudentExternalUploadsForStudent(studentId: string | null) {
     queryKey: ['external-uploads-by-student', studentId],
     enabled: !!studentId,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('external_work_uploads')
         .select('*')
         .eq('student_id', studentId)

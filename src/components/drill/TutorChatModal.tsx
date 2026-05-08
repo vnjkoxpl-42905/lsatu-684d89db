@@ -104,7 +104,7 @@ export function TutorChatModal({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      await (supabase as any).from('tutor_conversations').insert({
+      await supabase.from('tutor_conversations').insert({
         user_id: user.id,
         qid: q.qid,
         session_id: sessionId ?? null,

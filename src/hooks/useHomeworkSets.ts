@@ -87,9 +87,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
   const refresh = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    // TODO: drop `as any` after next supabase type regen (homework_sets)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("homework_sets")
       .select("*")
       .eq("created_by", user.id)
@@ -126,7 +124,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
         if (v !== undefined) guidedFields[k] = v;
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error: err } = await (supabase as any)
+      const { data, error: err } = await supabase
         .from("homework_sets")
         .insert({
           title: input.title,
@@ -161,7 +159,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
     async (id: string, input: UpdateHomeworkSetInput): Promise<MutationResult<HomeworkSet>> => {
       if (!user) return { data: null, error: "Not signed in." };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error: err } = await (supabase as any)
+      const { data, error: err } = await supabase
         .from("homework_sets")
         .update(input)
         .eq("id", id)
@@ -190,7 +188,7 @@ export function useHomeworkSets(): UseHomeworkSetsResult {
     async (id: string): Promise<{ ok: boolean; error: string | null }> => {
       if (!user) return { ok: false, error: "Not signed in." };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: err } = await (supabase as any)
+      const { error: err } = await supabase
         .from("homework_sets")
         .delete()
         .eq("id", id);
@@ -240,7 +238,7 @@ export function useHomeworkSet(setId: string | undefined): {
     if (!user || !setId) return;
     setLoading(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error: err } = await (supabase as any)
+    const { data, error: err } = await supabase
       .from("homework_sets")
       .select("*")
       .eq("id", setId)
