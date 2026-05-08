@@ -46,6 +46,7 @@ export default function OfficialDrillToolbar({
   setHighlightMode,
   timerLabel,
   isFullSection,
+  isPracticeSet,
 }: Props) {
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
 
