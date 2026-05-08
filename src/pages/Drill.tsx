@@ -194,6 +194,9 @@ function DrillContent() {
   const questionTimer = React.useRef(new QuestionTimer());
   const [hideTimer, setHideTimer] = React.useState(false);
   const [showAnswerRevealed, setShowAnswerRevealed] = React.useState<Map<string, boolean>>(new Map());
+  // Official-layout-only local UI state (Find Text + Aa font scale).
+  const [officialSearchTerm, setOfficialSearchTerm] = React.useState('');
+  const [officialFontScale, setOfficialFontScale] = React.useState(1);
   
   const timer = useTimerContextSafe();
 
