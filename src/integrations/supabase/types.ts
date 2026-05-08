@@ -1006,6 +1006,68 @@ export type Database = {
         }
         Relationships: []
       }
+      operator_conversations: {
+        Row: {
+          admin_id: string
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      operator_messages: {
+        Row: {
+          content: string | null
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+          tool_calls: Json | null
+          tool_results: Json | null
+        }
+        Insert: {
+          content?: string | null
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+          tool_calls?: Json | null
+          tool_results?: Json | null
+        }
+        Update: {
+          content?: string | null
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          tool_calls?: Json | null
+          tool_results?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "operator_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "operator_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           by_level_json: Json | null

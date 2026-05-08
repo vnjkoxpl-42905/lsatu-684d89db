@@ -62,12 +62,13 @@ const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcam
 const TeacherUploads = React.lazy(() => import("./pages/teacher/TeacherUploads"));
 const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
 const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
+const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherConversations"));
+const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
-import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import FloatingTutorButton from "./components/tutor/FloatingTutorButton";
 import GuidedTour from "./components/foyer/GuidedTour";
 
@@ -250,6 +251,12 @@ const App = () => {
                   }>
                     <Route index element={
                       <React.Suspense fallback={<div />}>
+                        <TeacherAITA />
+                      </React.Suspense>
+                    } />
+                    <Route path="ai-ta" element={<Navigate to="/teacher" replace />} />
+                    <Route path="today" element={
+                      <React.Suspense fallback={<div />}>
                         <TeacherToday />
                       </React.Suspense>
                     } />
@@ -263,14 +270,9 @@ const App = () => {
                         <TeacherStudentDetail />
                       </React.Suspense>
                     } />
-                    <Route path="ai-ta" element={
+                    <Route path="conversations" element={
                       <React.Suspense fallback={<div />}>
-                        <TeacherAITA />
-                      </React.Suspense>
-                    } />
-                    <Route path="weekly-plans" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherWeeklyPlans />
+                        <TeacherConversations />
                       </React.Suspense>
                     } />
                     <Route path="schedule" element={
@@ -278,36 +280,38 @@ const App = () => {
                         <TeacherSchedule />
                       </React.Suspense>
                     } />
-                    <Route path="smartboard" element={
+                    <Route path="weekly-plans" element={<Navigate to="/teacher/schedule" replace />} />
+                    <Route path="library" element={
                       <React.Suspense fallback={<div />}>
-                        <TeacherSmartboard />
+                        <TeacherLibrary />
                       </React.Suspense>
-                    } />
-                    <Route path="assignments" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherAssignments />
-                      </React.Suspense>
-                    } />
-                    <Route path="bootcamps" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherBootcamps />
-                      </React.Suspense>
-                    } />
-                    <Route path="uploads" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherUploads />
-                      </React.Suspense>
-                    } />
-                    <Route path="recaps" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherRecaps />
-                      </React.Suspense>
-                    } />
-                    <Route path="analytics-bridge" element={
-                      <React.Suspense fallback={<div />}>
-                        <TeacherAnalyticsBridge />
-                      </React.Suspense>
-                    } />
+                    }>
+                      <Route path="assignments" element={
+                        <React.Suspense fallback={<div />}><TeacherAssignments /></React.Suspense>
+                      } />
+                      <Route path="recaps" element={
+                        <React.Suspense fallback={<div />}><TeacherRecaps /></React.Suspense>
+                      } />
+                      <Route path="uploads" element={
+                        <React.Suspense fallback={<div />}><TeacherUploads /></React.Suspense>
+                      } />
+                      <Route path="bootcamps" element={
+                        <React.Suspense fallback={<div />}><TeacherBootcamps /></React.Suspense>
+                      } />
+                      <Route path="smartboard" element={
+                        <React.Suspense fallback={<div />}><TeacherSmartboard /></React.Suspense>
+                      } />
+                      <Route path="analytics" element={
+                        <React.Suspense fallback={<div />}><TeacherAnalyticsBridge /></React.Suspense>
+                      } />
+                    </Route>
+                    {/* legacy redirects */}
+                    <Route path="assignments" element={<Navigate to="/teacher/library/assignments" replace />} />
+                    <Route path="recaps" element={<Navigate to="/teacher/library/recaps" replace />} />
+                    <Route path="uploads" element={<Navigate to="/teacher/library/uploads" replace />} />
+                    <Route path="bootcamps" element={<Navigate to="/teacher/library/bootcamps" replace />} />
+                    <Route path="smartboard" element={<Navigate to="/teacher/library/smartboard" replace />} />
+                    <Route path="analytics-bridge" element={<Navigate to="/teacher/library/analytics" replace />} />
                   </Route>
                   <Route path="/classroom/ta/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access">
@@ -382,7 +386,7 @@ const App = () => {
           </Routes>
           <FloatingMessenger />
           <FloatingWhiteboard />
-          <AdminChatHub />
+          
           <FloatingTutorButton />
           <GuidedTour />
         </BrowserRouter>
