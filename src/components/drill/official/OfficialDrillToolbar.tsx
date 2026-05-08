@@ -19,7 +19,7 @@ type HighlightMode = "none" | "yellow" | "pink" | "orange" | "underline" | "eras
 
 export const FONT_SCALES = [
   { key: "sm", label: "Small", value: 0.9 },
-  { key: "md", label: "Medium", value: 1.0 },
+  { key: "md", label: "Default", value: 1.0 },
   { key: "lg", label: "Large", value: 1.15 },
   { key: "xl", label: "Extra Large", value: 1.3 },
 ] as const;
