@@ -33,7 +33,18 @@ export function AssignedWorkSection() {
   return (
     <ClassroomSection title="Assigned work">
       {loading ? (
-        <EmptyHint>Loading assigned work…</EmptyHint>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30">
+              <div className="w-4 h-4 mt-0.5 shrink-0 rounded bg-muted animate-pulse" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="h-3.5 rounded bg-muted animate-pulse w-3/4" />
+                <div className="h-2.5 rounded bg-muted/60 animate-pulse w-1/2" />
+              </div>
+              <div className="h-2.5 rounded bg-muted/60 animate-pulse w-14 mt-1 shrink-0" />
+            </div>
+          ))}
+        </div>
       ) : hasNone ? (
         <EmptyHint>No assigned drills or homework right now.</EmptyHint>
       ) : (

@@ -60,7 +60,7 @@ export default function Classroom() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <Button
             variant="ghost"
             size="sm"
@@ -81,68 +81,84 @@ export default function Classroom() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-10">
-        <h1 className="text-2xl font-bold tracking-tight">
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-10">
+        <h1 className="text-3xl font-bold tracking-tight animate-section" style={{ animationDelay: '0ms' }}>
           Your classroom
         </h1>
 
-        {nextItem ? (
-          <DoThisNextCard item={nextItem} />
-        ) : fallbackNext ? (
-          <div className="rounded-2xl border border-border bg-card/50 px-5 py-5 shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="min-w-0 flex-1 space-y-1.5">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
-                  Do this next
+        <div className="animate-section" style={{ animationDelay: '50ms' }}>
+          {nextItem ? (
+            <DoThisNextCard item={nextItem} />
+          ) : fallbackNext ? (
+            <div className="rounded-2xl border border-border bg-card/50 px-5 py-5 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
+                    Do this next
+                  </div>
+                  <h3 className="text-lg font-semibold leading-snug">
+                    {fallbackNext.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {fallbackNext.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold leading-snug">
-                  {fallbackNext.title}
-                </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {fallbackNext.description}
-                </p>
+                <Button
+                  onClick={() => navigate(fallbackNext.route)}
+                  size="sm"
+                  className="shrink-0"
+                >
+                  Open
+                </Button>
               </div>
-              <Button
-                onClick={() => navigate(fallbackNext.route)}
-                size="sm"
-                className="shrink-0"
-              >
-                Open
-              </Button>
             </div>
-          </div>
-        ) : (
-          <DoThisNextCard item={null} />
-        )}
+          ) : (
+            <DoThisNextCard item={null} />
+          )}
+        </div>
 
-        <BootcampsSection items={items} />
+        <div className="animate-section" style={{ animationDelay: '100ms' }}>
+          <BootcampsSection items={items} />
+        </div>
 
-        <button
-          type="button"
-          onClick={() => navigate('/waj')}
-          className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-border/60 bg-card/40 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
-            <BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-sm font-medium text-foreground">Wrong Answer Journal</div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Every question you've missed, organized by type and difficulty.
-            </p>
-          </div>
-          <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-100" aria-hidden />
-        </button>
+        <div className="animate-section" style={{ animationDelay: '150ms' }}>
+          <button
+            type="button"
+            onClick={() => navigate('/waj')}
+            className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-border/60 bg-card/40 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
+              <BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-medium text-foreground">Wrong Answer Journal</div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Every question you've missed, organized by type and difficulty.
+              </p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-100" aria-hidden />
+          </button>
+        </div>
 
-        <ThisWeekSection />
+        <div className="animate-section" style={{ animationDelay: '200ms' }}>
+          <ThisWeekSection />
+        </div>
 
-        <AssignedWorkSection />
+        <div className="animate-section" style={{ animationDelay: '250ms' }}>
+          <AssignedWorkSection />
+        </div>
 
-        <UploadWorkSection />
+        <div className="animate-section" style={{ animationDelay: '300ms' }}>
+          <UploadWorkSection />
+        </div>
 
-        <RecapsSection items={items} />
+        <div className="animate-section" style={{ animationDelay: '350ms' }}>
+          <RecapsSection items={items} />
+        </div>
 
-        <AnnouncementsSection items={items} />
+        <div className="animate-section" style={{ animationDelay: '400ms' }}>
+          <AnnouncementsSection items={items} />
+        </div>
 
         <div className="pb-8" />
       </main>
