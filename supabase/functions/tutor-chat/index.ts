@@ -226,7 +226,8 @@ serve(async (req) => {
 
     // Parse and validate input
     const body = await req.json();
-    const { question, messages, stream: wantsStream } = body;
+    const { question, messages, stream: wantsStream, mode: rawMode } = body;
+    const tutorMode: 'post-answer' | 'socratic' = rawMode === 'post-answer' ? 'post-answer' : 'socratic';
 
     if (!validateQuestion(question)) {
       return new Response(
