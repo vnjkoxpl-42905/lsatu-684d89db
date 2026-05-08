@@ -105,7 +105,7 @@ export default function PrincipleHub() {
       <HubSection title="Principle is not one type" icon={Zap} step="Classification" id="principle-varieties">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {principleHubData.varieties.map((form, i) => (
-            <div key={i} className="group p-5 rounded-2xl bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 hover:border-blue-500/20 transition-all duration-300 space-y-3 flex flex-col justify-between shadow-lg">
+            <div key={i} className="group p-5 rounded-2xl bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 hover:border-blue-500/20 transition-colors duration-200 space-y-3 flex flex-col justify-between shadow-lg">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-1 h-3 bg-blue-500 rounded-full" />
@@ -125,7 +125,7 @@ export default function PrincipleHub() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {principleHubData.framework.map((item, i) => (
-              <div key={i} className="group p-6 rounded-[24px] bg-zinc-900/40 border border-white/[0.03] hover:bg-zinc-950 hover:border-blue-500/20 transition-all duration-500 shadow-xl">
+              <div key={i} className="group p-6 rounded-[24px] bg-zinc-900/40 border border-white/[0.03] hover:bg-zinc-950 hover:border-blue-500/20 transition-colors duration-200 shadow-xl">
                 <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-3 block">Pillar {i+1}</span>
                 <h4 className="text-xl font-serif italic text-white mb-2">{item.t}</h4>
                 <p className="text-xs text-zinc-400 font-light mb-4 leading-relaxed">{item.d}</p>
@@ -151,7 +151,7 @@ export default function PrincipleHub() {
       <HubSection title="Major Types Deep-Dive" icon={Target} step="Strategic Breakdown" id="principle-types">
         <div className="space-y-6">
           {principleHubData.majorTypes.map((type, i) => (
-            <div key={i} className="group bg-zinc-900/40 rounded-[32px] border border-white/[0.05] overflow-hidden shadow-2xl shadow-black/40 hover:border-blue-500/20 transition-all duration-500">
+            <div key={i} className="group bg-zinc-900/40 rounded-[32px] border border-white/[0.05] overflow-hidden shadow-2xl shadow-black/40 hover:border-blue-500/20 transition-colors duration-200">
                <div className="p-8 pb-0 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                      <div className="w-1.5 h-6 bg-blue-500 rounded-full" />

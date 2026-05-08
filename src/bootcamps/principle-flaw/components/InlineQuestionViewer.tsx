@@ -104,14 +104,14 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.18 }}
+        transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
         className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-stretch justify-center"
       >
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 20, opacity: 0 }}
-          transition={{ duration: 0.22, ease: [0.25, 1, 0.5, 1] }}
+          initial={{ y: 16, opacity: 0, scale: 0.99 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: 12, opacity: 0, scale: 0.99 }}
+          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
           className="w-full h-full sm:h-auto sm:my-6 sm:max-h-[94vh] sm:max-w-6xl sm:mx-auto bg-white text-black sm:rounded-2xl overflow-hidden shadow-2xl flex flex-col"
         >
           {/* Header */}
@@ -133,7 +133,7 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
               <button
                 onClick={goPrev}
                 disabled={idx === 0}
-                className="p-1.5 rounded hover:bg-slate-200 disabled:opacity-30"
+                className="p-1.5 rounded hover:bg-slate-200 active:scale-[0.92] transition-transform duration-100 disabled:opacity-30"
                 aria-label="Previous question"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -141,14 +141,14 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
               <button
                 onClick={goNext}
                 disabled={idx >= queue.length - 1}
-                className="p-1.5 rounded hover:bg-slate-200 disabled:opacity-30"
+                className="p-1.5 rounded hover:bg-slate-200 active:scale-[0.92] transition-transform duration-100 disabled:opacity-30"
                 aria-label="Next question"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
               <button
                 onClick={onClose}
-                className="ml-1 p-1.5 rounded hover:bg-slate-200"
+                className="ml-1 p-1.5 rounded hover:bg-slate-200 active:scale-[0.92] transition-transform duration-100"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
@@ -247,7 +247,7 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
                 <button
                   onClick={handleSubmit}
                   disabled={!selected || !question}
-                  className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold disabled:opacity-40 hover:bg-slate-700 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold disabled:opacity-40 hover:bg-slate-700 transition-colors active:scale-[0.97] transition-transform duration-100"
                 >
                   Submit answer
                 </button>
@@ -255,7 +255,7 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
                 <button
                   onClick={goNext}
                   disabled={idx >= queue.length - 1}
-                  className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold disabled:opacity-40 hover:bg-emerald-500 transition-colors inline-flex items-center gap-1"
+                  className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold disabled:opacity-40 hover:bg-emerald-500 transition-colors active:scale-[0.97] transition-transform duration-100 inline-flex items-center gap-1"
                 >
                   Next <ChevronRight className="w-4 h-4" />
                 </button>

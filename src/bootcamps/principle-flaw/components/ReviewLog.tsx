@@ -290,7 +290,7 @@ export default function ReviewLog() {
                 <button
                   key={t}
                   onClick={() => setFilterType(t)}
-                  className={`text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-xl transition-all ${filterType === t ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-500 hover:text-zinc-300'}`}
+                  className={`text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-xl transition-colors duration-150 active:scale-[0.96] transition-transform ${filterType === t ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   {t}
                 </button>

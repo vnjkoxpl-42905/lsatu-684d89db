@@ -28,13 +28,13 @@ export default function Schedule({ currentDay, setDay }: { currentDay: number, s
     const isCurrent = currentDay === data.day;
 
     return (
-      <div className={`group border-b border-zinc-900 last:border-0 transition-all duration-500 ${isExpanded ? 'bg-zinc-900/10' : ''}`}>
+      <div className={`group border-b border-zinc-900 last:border-0 transition-colors duration-200 ${isExpanded ? 'bg-zinc-900/10' : ''}`}>
         <button 
           onClick={() => setExpandedDay(isExpanded ? null : data.day)}
           className="w-full flex items-center justify-between p-6 hover:bg-zinc-900/20 transition-colors"
         >
           <div className="flex items-center gap-6">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-lg transition-all duration-500 ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-lg transition-colors duration-200 ${
               isComplete ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 
               isCurrent ? 'bg-zinc-100 border-zinc-100 text-zinc-950 shadow-xl shadow-white/5' : 
               'bg-zinc-950 border-white/[0.03] text-zinc-600'

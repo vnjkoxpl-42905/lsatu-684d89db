@@ -270,7 +270,7 @@ export default function FlashcardsView() {
             variant="ghost" 
             size="icon" 
             onClick={prevCard} 
-            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-all shadow-xl"
+            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
           >
             <ChevronLeft size={32} />
           </Button>
@@ -292,7 +292,7 @@ export default function FlashcardsView() {
             variant="ghost" 
             size="icon" 
             onClick={nextCard} 
-            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-all shadow-xl"
+            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
           >
             <ChevronRight size={32} />
           </Button>

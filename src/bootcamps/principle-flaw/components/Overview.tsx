@@ -7,7 +7,7 @@ import { downloadModuleOverview, downloadSchedule, downloadQuestionList } from '
 
 export default function Overview({ userName, onStart }: { userName: string, onStart: () => void }) {
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-[350ms] pb-20">
       <HeroGeometric 
         badge="STUDENT PLAN"
         title1={`${userName}'s`}
@@ -21,7 +21,7 @@ export default function Overview({ userName, onStart }: { userName: string, onSt
             Master LR's most common question types in 14 days. Tap below to begin today's plan — everything else is reference.
           </p>
           <div className="pt-2 flex justify-center">
-            <Button size="lg" onClick={onStart} className="w-full max-w-sm h-14 text-xs font-bold uppercase tracking-[0.2em] rounded-2xl bg-zinc-100 text-zinc-950 hover:bg-white transition-all shadow-[0_20px_50px_rgba(255,255,255,0.05)] group">
+            <Button size="lg" onClick={onStart} className="w-full max-w-sm h-14 text-xs font-bold uppercase tracking-[0.2em] rounded-2xl bg-zinc-100 text-zinc-950 hover:bg-white transition-colors active:scale-[0.97] transition-transform duration-100 shadow-[0_20px_50px_rgba(255,255,255,0.05)] group">
               Start Today
               <ArrowRight size={18} className="ml-3 group-hover:translate-x-1 transition-transform" />
             </Button>

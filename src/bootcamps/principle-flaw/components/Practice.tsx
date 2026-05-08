@@ -73,9 +73,9 @@ function CopyRefButton({ q }: { q: QuestionRef }) {
         {copied ? (
           <motion.span
             key="check"
-            initial={{ scale: 0.6, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.6, opacity: 0 }}
+            exit={{ scale: 0.85, opacity: 0 }}
             transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
             className="inline-flex"
           >
@@ -84,9 +84,9 @@ function CopyRefButton({ q }: { q: QuestionRef }) {
         ) : (
           <motion.span
             key="copy"
-            initial={{ scale: 0.6, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.6, opacity: 0 }}
+            exit={{ scale: 0.85, opacity: 0 }}
             transition={{ duration: 0.18, ease: [0.25, 1, 0.5, 1] }}
             className="inline-flex"
           >
@@ -110,7 +110,7 @@ interface QuestionRowProps {
 
 function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, available }: QuestionRowProps) {
   return (
-    <div className={`p-4 rounded-2xl border transition-all duration-300 ${!available ? 'opacity-70' : ''} ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
+    <div className={`p-4 rounded-2xl border transition-colors duration-200 ${!available ? 'opacity-70' : ''} ${status === 'correct' ? 'bg-emerald-500/[0.03] border-emerald-500/20' : status === 'missed' ? 'bg-rose-500/[0.03] border-rose-500/20' : 'bg-zinc-900/10 border-white/[0.03] hover:border-white/10'}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-zinc-950 border border-white/5 shadow-inner">
@@ -164,9 +164,9 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
       </div>
       {status === 'missed' && (
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
           className="mt-4 pt-4 border-t border-rose-500/10 origin-top"
         >
           <div className="flex items-start gap-3 bg-rose-500/[0.02] p-3 rounded-xl border border-rose-500/5">

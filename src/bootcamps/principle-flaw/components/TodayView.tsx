@@ -146,14 +146,14 @@ export default function TodayView({
     return (
       <motion.div 
         layout
-        className={`relative flex gap-6 p-6 rounded-3xl border transition-all duration-500 ${
-          isDone 
-            ? 'bg-zinc-900/10 border-zinc-900 opacity-60' 
+        className={`relative flex gap-6 p-6 rounded-3xl border transition-colors duration-200 ${
+          isDone
+            ? 'bg-zinc-900/10 border-zinc-900 opacity-60'
             : 'bg-zinc-900/30 border-white/[0.03] shadow-xl shadow-black/20'
         }`}
       >
         <div className="flex flex-col items-center gap-4">
-          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-all duration-500 ${
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-colors duration-200 ${
             isDone ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : `${color} border-current bg-current/10`
           }`}>
             {num}
@@ -188,7 +188,7 @@ export default function TodayView({
               {items.map((item, i) => {
                 const res = resolveResource(item);
                 return (
-                  <div key={i} className="group/item flex items-center justify-between p-4 rounded-2xl bg-zinc-950/50 border border-white/[0.02] hover:border-white/10 transition-all">
+                  <div key={i} className="group/item flex items-center justify-between p-4 rounded-2xl bg-zinc-950/50 border border-white/[0.02] hover:border-white/10 transition-colors duration-150">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center flex-shrink-0">
                         <Icon size={16} className={isDone ? 'text-zinc-600' : 'text-zinc-400'} />
@@ -349,14 +349,14 @@ export default function TodayView({
 
         <motion.div 
           layout
-          className={`relative flex gap-6 p-6 rounded-3xl border transition-all duration-500 ${
-            !!dayTasks['log'] 
-              ? 'bg-zinc-900/10 border-zinc-900 opacity-60' 
+          className={`relative flex gap-6 p-6 rounded-3xl border transition-colors duration-200 ${
+            !!dayTasks['log']
+              ? 'bg-zinc-900/10 border-zinc-900 opacity-60'
               : 'bg-zinc-900/30 border-white/[0.03] shadow-xl shadow-black/20'
           }`}
         >
           <div className="flex flex-col items-center gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-all duration-500 ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-colors duration-200 ${
               !!dayTasks['log'] ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : 'text-rose-500 border-current bg-current/10'
             }`}>
               5
@@ -370,9 +370,9 @@ export default function TodayView({
               </div>
               <button 
                 onClick={() => toggleChecklistItem('log')}
-                className={`p-2 rounded-xl border transition-all ${
-                  !!dayTasks['log'] 
-                    ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500' 
+                className={`p-2 rounded-xl border transition-colors duration-150 active:scale-[0.92] transition-transform ${
+                  !!dayTasks['log']
+                    ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
                     : 'bg-zinc-950/50 border-white/[0.05] text-zinc-700 hover:border-emerald-500/50 hover:text-emerald-500'
                 }`}
               >
@@ -490,7 +490,7 @@ function ChecklistItem({ label, checked, onChange }: { label: string, checked: b
       <div className={`transition-colors ${checked ? 'text-emerald-500' : 'text-zinc-700 group-hover:text-zinc-500'}`}>
         {checked ? <CheckCircle2 size={16} /> : <Circle size={16} />}
       </div>
-      <span className={`text-[11px] font-medium tracking-tight transition-all ${checked ? 'text-zinc-500 line-through' : 'text-zinc-300'}`}>
+      <span className={`text-[11px] font-medium tracking-tight transition-colors duration-150 ${checked ? 'text-zinc-500 line-through' : 'text-zinc-300'}`}>
         {label}
       </span>
       <input type="checkbox" className="hidden" checked={checked} onChange={onChange} />

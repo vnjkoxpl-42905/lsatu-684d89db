@@ -47,7 +47,7 @@ const Section = ({ title, icon: Icon, children, step, id }: SectionProps) => (
   );
 
 const TeachingCard = ({ title, data }: { title: string; data: FlawStyle }) => (
-  <div className="bg-zinc-900/40 rounded-[32px] border border-white/[0.05] overflow-hidden shadow-2xl shadow-black/40 group hover:border-white/10 transition-all duration-500">
+  <div className="bg-zinc-900/40 rounded-[32px] border border-white/[0.05] overflow-hidden shadow-2xl shadow-black/40 group hover:border-white/10 transition-colors duration-200">
     <div className="p-8 border-b border-white/[0.03] bg-gradient-to-br from-zinc-900 to-zinc-950 flex items-center justify-between">
       <h4 className="text-2xl font-serif italic text-white tracking-tight">{title}</h4>
       <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
@@ -148,7 +148,7 @@ const MiniDrill = () => {
             }}
             variant="outline"
             disabled={revealed}
-            className={`h-12 text-[10px] uppercase font-bold tracking-widest rounded-xl transition-all ${
+            className={`h-12 text-[10px] uppercase font-bold tracking-widest rounded-xl transition-colors duration-150 active:scale-[0.97] transition-transform ${
               revealed && s.style === current.style ? 'bg-emerald-500/20 border-emerald-500 text-emerald-500' : 
               revealed && answers[currentIndex] === s.style ? 'bg-rose-500/10 border-rose-500 text-rose-500' : 
               'border-white/[0.05] text-zinc-400'
@@ -330,7 +330,7 @@ export default function FlawHub() {
       <Section title="Common Traps" icon={AlertCircle} step="Avoid This" id="flaw-traps">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {flawHubData.traps.map((trap, i) => (
-            <div key={i} className="group p-8 rounded-[32px] bg-rose-500/[0.02] border border-rose-500/10 hover:bg-rose-500/5 hover:border-rose-500/30 transition-all duration-500 flex flex-col justify-between shadow-2xl shadow-black/20">
+            <div key={i} className="group p-8 rounded-[32px] bg-rose-500/[0.02] border border-rose-500/10 hover:bg-rose-500/5 hover:border-rose-500/30 transition-colors duration-200 flex flex-col justify-between shadow-2xl shadow-black/20">
               <div className="space-y-6">
                 <div className="flex items-center justify-between pb-4 border-b border-rose-500/10">
                    <div className="flex items-center gap-3">
@@ -367,7 +367,7 @@ export default function FlawHub() {
       <Section title="Famous Flaw Map" icon={Map} step="Encyclopedia" id="flaw-map">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {flawHubData.famousFlaws.map((flaw, i) => (
-            <div key={i} className="p-8 rounded-[28px] bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 transition-all duration-300 space-y-6 flex flex-col justify-between shadow-xl">
+            <div key={i} className="p-8 rounded-[28px] bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 transition-colors duration-200 space-y-6 flex flex-col justify-between shadow-xl">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xl font-serif italic text-white leading-tight">{flaw.flaw}</h4>

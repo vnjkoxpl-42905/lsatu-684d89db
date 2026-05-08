@@ -179,7 +179,7 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
 
           <div className="p-4 border-t border-zinc-900/50 space-y-1">
             <button onClick={() => setTabAndScroll('profile')}
-              className={`flex items-center gap-3 w-full px-3 py-2 text-xs rounded-lg transition-all duration-300 ${activeTab === 'profile' ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
+              className={`flex items-center gap-3 w-full px-3 py-2 text-xs rounded-lg transition-colors duration-150 active:scale-[0.97] transition-transform ${activeTab === 'profile' ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
               <User size={16} /><span>Profile</span>
             </button>
           </div>
@@ -229,7 +229,7 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
             return (
               <li key={item.tab} className="flex-1">
                 <button onClick={() => setTabAndScroll(item.tab)}
-                  className={`relative w-full h-16 flex flex-col items-center justify-center gap-1 transition-colors ${isActive ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-200'}`}
+                  className={`relative w-full h-16 flex flex-col items-center justify-center gap-1 transition-colors duration-150 active:scale-[0.94] transition-transform ${isActive ? 'text-emerald-400' : 'text-zinc-500 hover:text-zinc-200'}`}
                   aria-label={item.label} aria-current={isActive ? 'page' : undefined}>
                   {item.icon}
                   <span className="text-[9px] font-bold uppercase tracking-widest">{item.label}</span>
@@ -253,7 +253,7 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
 function NavItem({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick} aria-current={active ? 'page' : undefined}
-      className={`relative flex items-center gap-3 w-full min-h-[40px] px-3 py-2 text-sm rounded-lg transition-colors ${active ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
+      className={`relative flex items-center gap-3 w-full min-h-[40px] px-3 py-2 text-sm rounded-lg transition-colors duration-150 active:scale-[0.97] transition-transform ${active ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
       <span className={active ? 'text-zinc-950' : 'text-zinc-600'} aria-hidden="true">{icon}</span>
       <span className="truncate">{label}</span>
     </button>

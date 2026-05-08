@@ -130,7 +130,7 @@ describe('AdaptiveEngine.getAdaptiveDrillSequence', () => {
       makeQuestion({ qid: 'q10',qtype: 'Role',       difficulty: 3 }),
     ];
     ability = { overall: 3, byQType: {} };
-    weakAreas = { weakQTypes: ['Weaken', 'Flaw'], weakDifficulties: [4, 5], recommendedSize: 10, explanation: '' };
+    weakAreas = { weakQTypes: ['Weaken', 'Flaw'], weakDifficulties: [4, 5], recommendedSize: 10, explanation: '', sampleSize: 50 };
   });
 
   it('returns exactly the requested count (when pool is large enough)', () => {
