@@ -428,7 +428,7 @@ export default function GuidedTour() {
                 width: spot.width,
                 height: spot.height,
                 boxShadow: "0 0 0 9999px rgba(8, 11, 22, 0.62)",
-                outline: "2px solid rgba(245, 158, 11, 0.85)",
+                outline: "2px solid rgba(232, 208, 139, 0.85)",
                 outlineOffset: "0px",
                 transition: "all 220ms cubic-bezier(0.22, 1, 0.36, 1)",
               }}
@@ -458,19 +458,19 @@ export default function GuidedTour() {
               : { paddingBottom: "env(safe-area-inset-bottom)" }
           }
         >
-          <div className="pointer-events-auto relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-neutral-900/95 to-neutral-950/95 backdrop-blur-xl shadow-[0_24px_60px_-16px_rgba(0,0,0,0.75)]">
+          <div className="pointer-events-auto relative overflow-hidden rounded-2xl border border-white/10 bg-[#12151E]/95 backdrop-blur-xl shadow-[0_24px_60px_-16px_rgba(0,0,0,0.75)]">
             {/* Arrow toward anchor */}
             {usingAnchor && placement && (
               <Arrow side={placement.side} />
             )}
 
             {/* Bronze glow */}
-            <div className="pointer-events-none absolute -top-16 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="pointer-events-none absolute -top-16 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full bg-[#E8D08B]/14 blur-3xl" />
 
             {/* Progress bar */}
             <div className="relative h-0.5 w-full bg-white/5">
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-amber-500/80 to-amber-500"
+                className="absolute inset-y-0 left-0 bg-[#E8D08B]"
                 initial={false}
                 animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -482,32 +482,32 @@ export default function GuidedTour() {
               <div className="mb-2.5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
-                    <Icon className="h-3.5 w-3.5 text-amber-400" />
+                    <Icon className="h-3.5 w-3.5 text-[#E8D08B]" />
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-neutral-400">
-                    <span className="text-amber-400">{step + 1}/{STEPS.length}</span>
-                    <span className="text-neutral-600">·</span>
-                    <span className="normal-case tracking-normal text-neutral-300">{current.eyebrow}</span>
+                  <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#94A3B8]">
+                    <span className="text-[#E8D08B]">{step + 1}/{STEPS.length}</span>
+                    <span className="text-[#94A3B8]/40">·</span>
+                    <span className="normal-case tracking-normal text-[#CBD5E1]">{current.eyebrow}</span>
                   </div>
                 </div>
                 <button
                   onClick={close}
                   aria-label="Close tour"
-                  className="rounded-md p-1 text-neutral-500 hover:bg-white/5 hover:text-white transition"
+                  className="rounded-md p-1 text-[#94A3B8] hover:bg-white/5 hover:text-[#F1F5F9] transition"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
               </div>
 
               {/* Title + body */}
-              <h3 className="text-[15px] font-semibold text-white leading-snug">{current.title}</h3>
-              <p className="mt-1 text-[13px] leading-relaxed text-neutral-400">{current.body}</p>
+              <h3 className="text-[15px] font-semibold text-[#F1F5F9] leading-snug">{current.title}</h3>
+              <p className="mt-1 text-[13px] leading-relaxed text-[#94A3B8]">{current.body}</p>
 
               {/* Footer */}
               <div className="mt-3.5 flex items-center justify-between">
                 <button
                   onClick={close}
-                  className="text-[11px] text-neutral-500 hover:text-white transition"
+                  className="text-[11px] text-[#94A3B8] hover:text-[#F1F5F9] transition"
                 >
                   Skip tour
                 </button>
@@ -518,7 +518,7 @@ export default function GuidedTour() {
                       variant="outline"
                       size="sm"
                       onClick={goBack}
-                      className="h-7 border-white/10 bg-white/[0.03] px-2 text-[11px] text-neutral-200 hover:bg-white/[0.06]"
+                      className="h-7 border-white/10 bg-white/[0.03] px-2 text-[11px] text-[#CBD5E1] hover:bg-white/[0.06]"
                     >
                       <ChevronLeft className="h-3 w-3" />
                       Back
@@ -528,7 +528,7 @@ export default function GuidedTour() {
                     <Button
                       size="sm"
                       onClick={handleFinish}
-                      className="h-7 bg-amber-500 px-2.5 text-[11px] text-black hover:bg-amber-500/90"
+                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A]"
                     >
                       Start practicing
                       <Rocket className="h-3 w-3" />
@@ -537,7 +537,7 @@ export default function GuidedTour() {
                     <Button
                       size="sm"
                       onClick={goNext}
-                      className="h-7 bg-amber-500 px-2.5 text-[11px] text-black hover:bg-amber-500/90"
+                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A]"
                     >
                       Next
                       <ChevronRight className="h-3 w-3" />
@@ -555,7 +555,7 @@ export default function GuidedTour() {
 
 function Arrow({ side }: { side: Side }) {
   // Small triangular nub pointing toward the anchor.
-  const base = "absolute h-3 w-3 rotate-45 border border-white/10 bg-neutral-900";
+  const base = "absolute h-3 w-3 rotate-45 border border-white/10 bg-[#12151E]";
   if (side === "right") {
     // Tooltip is to the right of anchor → arrow on the left edge of tooltip
     return <span aria-hidden className={cn(base, "-left-[6px] top-1/2 -translate-y-1/2 border-r-0 border-t-0")} />;
