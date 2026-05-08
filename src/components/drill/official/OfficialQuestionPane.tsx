@@ -54,10 +54,10 @@ export default function OfficialQuestionPane({
   const answerEntries = Object.entries(question.answerChoices);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr]">
       {/* Stimulus column */}
       <div
-        className="px-8 py-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
+        className="px-8 pt-6 pb-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-8 py-8 text-[17px] leading-[1.65] text-black">
+      <div className="px-8 pt-6 pb-8 text-[17px] leading-[1.65] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
