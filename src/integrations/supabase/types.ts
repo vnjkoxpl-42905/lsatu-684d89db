@@ -1443,6 +1443,36 @@ export type Database = {
         }
         Relationships: []
       }
+      session_replays: {
+        Row: {
+          class_id: string
+          created_at: string
+          events_jsonb: Json
+          id: string
+          mode: string
+          qid: string
+          user_id: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          events_jsonb?: Json
+          id?: string
+          mode: string
+          qid: string
+          user_id: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          events_jsonb?: Json
+          id?: string
+          mode?: string
+          qid?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           class_id: string
@@ -2262,6 +2292,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_or_create_joshua_conversation: { Args: never; Returns: string }
       get_student_email: { Args: { _student_id: string }; Returns: string }
       has_role: {
         Args: {
