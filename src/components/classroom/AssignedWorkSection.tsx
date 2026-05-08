@@ -43,7 +43,7 @@ export function AssignedWorkSection() {
               key={`hw-${a.id}`}
               type="button"
               onClick={() => navigate(`/classroom/${encodeURIComponent(a.id)}`)}
-              className="group flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition-colors text-left"
+              className="group flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
             >
               <ClipboardList className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -56,7 +56,7 @@ export function AssignedWorkSection() {
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
                 {STATUS_LABEL[a.status] ?? 'Open'}
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
             </button>
           ))}
           {ta.map((a) => (
@@ -64,7 +64,7 @@ export function AssignedWorkSection() {
               key={`ta-${a.id}`}
               type="button"
               onClick={() => navigate(`/classroom/ta/${encodeURIComponent(a.id)}`)}
-              className="group flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition-colors text-left"
+              className="group flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
             >
               <Sparkles className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -76,7 +76,7 @@ export function AssignedWorkSection() {
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground shrink-0 mt-1">
                 {STATUS_LABEL[a.status] ?? 'Open'}
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
             </button>
           ))}
         </div>

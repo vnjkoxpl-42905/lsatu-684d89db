@@ -74,7 +74,7 @@ export function ThisWeekSection() {
                             it.classroom_item_id &&
                             navigate(`/classroom/item/${encodeURIComponent(it.classroom_item_id)}`)
                           }
-                          className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-md text-left text-sm hover:bg-accent/40 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                          className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-md text-left text-sm hover:bg-accent/40 disabled:opacity-60 disabled:cursor-not-allowed transition ease-out active:scale-[0.99]"
                         >
                           <Icon
                             className={

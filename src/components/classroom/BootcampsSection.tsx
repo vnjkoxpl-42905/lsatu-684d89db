@@ -114,7 +114,7 @@ export function BootcampsSection({ items }: Props) {
                     <button
                       type="button"
                       onClick={() => navigate('/schedule')}
-                      className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                      className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors active:opacity-70"
                     >
                       <CalendarDays className="w-3 h-3" />
                       {range} · in your calendar
@@ -124,7 +124,7 @@ export function BootcampsSection({ items }: Props) {
                 <button
                   type="button"
                   onClick={() => navigate(route)}
-                  className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition-opacity"
+                  className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-90 transition ease-out active:scale-[0.95]"
                 >
                   {isNew ? 'Start' : 'Open'}
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -141,7 +141,7 @@ export function BootcampsSection({ items }: Props) {
                   </div>
                   <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-full bg-foreground transition-all"
+                      className="h-full bg-foreground transition-[width] duration-300 ease-out"
                       style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}
                     />
                   </div>

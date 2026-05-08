@@ -25,7 +25,7 @@ export function RecapsSection({ items }: Props) {
               <button
                 type="button"
                 onClick={() => navigate(`/classroom/item/${encodeURIComponent(r.id)}`)}
-                className="group w-full flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition-colors text-left"
+                className="group w-full flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
               >
                 <BookOpen className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                 <div className="min-w-0 flex-1">
@@ -34,7 +34,7 @@ export function RecapsSection({ items }: Props) {
                     {format(new Date(r.created_at), 'MMM d, yyyy')}
                   </div>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-100" />
               </button>
             </li>
           ))}

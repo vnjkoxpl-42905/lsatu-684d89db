@@ -120,7 +120,7 @@ export default function Classroom() {
         <button
           type="button"
           onClick={() => navigate('/waj')}
-          className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-border/60 bg-card/40 hover:bg-card/70 hover:border-border transition-colors text-left"
+          className="group w-full flex items-center gap-4 px-5 py-4 rounded-xl border border-border/60 bg-card/40 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted">
             <BookOpen className="h-5 w-5 text-muted-foreground" aria-hidden />
@@ -131,7 +131,7 @@ export default function Classroom() {
               Every question you've missed, organized by type and difficulty.
             </p>
           </div>
-          <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden />
+          <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-100" aria-hidden />
         </button>
 
         <ThisWeekSection />

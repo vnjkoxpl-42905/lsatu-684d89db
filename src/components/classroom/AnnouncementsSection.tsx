@@ -25,7 +25,7 @@ export function AnnouncementsSection({ items }: Props) {
               key={a.id}
               type="button"
               onClick={() => navigate(`/classroom/item/${encodeURIComponent(a.id)}`)}
-              className="w-full flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition-colors text-left"
+              className="w-full flex items-start gap-3 px-4 py-3 rounded-lg border border-border/60 bg-card/30 hover:bg-card/70 hover:border-border transition ease-out active:scale-[0.98] text-left"
             >
               <Megaphone className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
               <div className="min-w-0 flex-1">
