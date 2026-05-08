@@ -153,9 +153,9 @@ async function runTool(
         const limit = Math.min(Number(args.limit ?? 10) || 10, 25);
         if (!q) return { ok: true, data: { students: [] } };
         const { data, error } = await admin
-          .from("students_safe" as any)
-          .select("class_id, display_name, email")
-          .or(`display_name.ilike.%${q}%,email.ilike.%${q}%`)
+          .from("profiles" as any)
+          .select("class_id, display_name")
+          .ilike("display_name", `%${q}%`)
           .limit(limit);
         if (error) throw error;
         return {
@@ -164,7 +164,6 @@ async function runTool(
             students: (data ?? []).map((r: any) => ({
               id: r.class_id,
               name: r.display_name,
-              email: r.email,
             })),
           },
         };
@@ -172,9 +171,9 @@ async function runTool(
       case "list_recent_students": {
         const limit = Math.min(Number(args.limit ?? 10) || 10, 25);
         const { data, error } = await admin
-          .from("students_safe" as any)
-          .select("class_id, display_name, email, updated_at")
-          .order("updated_at", { ascending: false })
+          .from("profiles" as any)
+          .select("class_id, display_name, last_seen_at")
+          .order("last_seen_at", { ascending: false, nullsFirst: false })
           .limit(limit);
         if (error) throw error;
         return {
@@ -183,7 +182,6 @@ async function runTool(
             students: (data ?? []).map((r: any) => ({
               id: r.class_id,
               name: r.display_name,
-              email: r.email,
             })),
           },
         };
@@ -250,8 +248,8 @@ async function runTool(
       case "summarize_student": {
         const sid = String(args.student_id);
         const { data: student } = await admin
-          .from("students_safe" as any)
-          .select("class_id, display_name, email")
+          .from("profiles" as any)
+          .select("class_id, display_name")
           .eq("class_id", sid)
           .maybeSingle();
         const { data: sessions } = await admin
