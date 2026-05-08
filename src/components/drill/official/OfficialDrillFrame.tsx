@@ -42,13 +42,13 @@ export default function OfficialDrillFrame({ header, children }: Props) {
         </div>
         {/* Bottom row: breadcrumb + pill buttons */}
         {header && (
-          <div className="px-4 sm:px-6 pb-3 pt-1">
+          <div className="px-4 sm:px-6 pb-2 pt-0.5">
             {header}
           </div>
         )}
       </header>
-      <main className="flex-1 px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-8 flex">
-        <div className="mx-auto w-full max-w-[1320px] flex-1 min-h-[760px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col">
+      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex">
+        <div className="mx-auto w-full max-w-[1400px] flex-1 min-h-[680px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col">
           {children}
         </div>
       </main>

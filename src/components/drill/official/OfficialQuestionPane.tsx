@@ -57,7 +57,7 @@ export default function OfficialQuestionPane({
     <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] flex-1">
       {/* Stimulus column */}
       <div
-        className="px-10 pt-8 pb-10 lg:border-r border-slate-200 text-[18px] leading-[1.7] text-black whitespace-pre-wrap"
+        className="px-9 pt-7 pb-9 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-10 pt-8 pb-10 text-[18px] leading-[1.7] text-black">
+      <div className="px-9 pt-7 pb-9 text-[17px] leading-[1.65] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -138,7 +138,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[17px] leading-[1.6] pt-1",
+                    "flex-1 text-left text-[16px] leading-[1.55] pt-1",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
                 >
