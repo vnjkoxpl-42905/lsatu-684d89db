@@ -311,13 +311,16 @@ function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
   return (
     <>
       {items.length > 0 && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center">
+        <div
+          data-tour="foyer-quickdock"
+          className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center"
+        >
           <div className="pointer-events-auto">
             <GooeyDock items={items} />
           </div>
         </div>
       )}
-      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} onReplayTour={onReplayTour} />
     </>
   );
 }
