@@ -226,6 +226,12 @@ export default {
           from: { opacity: "0", transform: "translateY(-4px) scale(0.96)" },
           to: { opacity: "1", transform: "translateY(0) scale(1)" },
         },
+        "foyer-orbit-spin": {
+          to: { transform: "rotate(360deg)" },
+        },
+        "foyer-orbit-counter": {
+          to: { transform: "rotate(-360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -238,6 +244,8 @@ export default {
         "mc-shimmer-sweep": "mc-shimmer-sweep 1.6s ease-in-out infinite",
         "mc-zoom-fade-in": "mc-zoom-fade-in 180ms cubic-bezier(0.4, 0, 0.2, 1)",
         "mc-tooltip-in": "mc-tooltip-in 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "foyer-orbit-spin": "foyer-orbit-spin 22s linear infinite",
+        "foyer-orbit-counter": "foyer-orbit-counter 22s linear infinite",
       },
     },
   },

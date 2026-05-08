@@ -1,14 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import { ArrowRight, Link as LinkIcon, Zap } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
-// Single source of truth for the orbit path. Both the visible ring and the
-// node positions derive from this so they can never drift apart.
 const ORBIT_RADIUS = 200;
 const ORBIT_DIAMETER = ORBIT_RADIUS * 2;
 
@@ -39,298 +33,125 @@ export default function RadialOrbitalTimeline({
   onActivate,
   renderExpandedContent,
 }: RadialOrbitalTimelineProps) {
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
-  const [rotationAngle, setRotationAngle] = useState(0);
-  const [autoRotate, setAutoRotate] = useState(true);
-  const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
-  const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
-  // True only during the ~700ms centering animation after clicking a node.
-  // Enables the transform transition for that window; disabled at all other
-  // times so nodes snap to their orbit positions on mount without the
-  // "fly in from center" scramble.
-  const [isCentering, setIsCentering] = useState(false);
-  const centeringTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const orbitRef = useRef<HTMLDivElement>(null);
-  const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const handleContainerClick = (e: React.MouseEvent) => {
-    if (e.target === containerRef.current || e.target === orbitRef.current) {
-      setExpandedItems({});
-      setActiveNodeId(null);
-      setPulseEffect({});
-      setAutoRotate(true);
-    }
-  };
-
-  const closeExpanded = () => {
-    setExpandedItems({});
-    setActiveNodeId(null);
-    setPulseEffect({});
-    setAutoRotate(true);
-  };
-
-  const getRelatedItems = (itemId: number): number[] => {
-    const currentItem = timelineData.find((item) => item.id === itemId);
-    return currentItem ? currentItem.relatedIds : [];
-  };
-
-  const isRelatedToActive = (itemId: number): boolean => {
-    if (!activeNodeId) return false;
-    const relatedItems = getRelatedItems(activeNodeId);
-    return relatedItems.includes(itemId);
-  };
-
-  const centerViewOnNode = (nodeId: number) => {
-    const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
-    const totalNodes = timelineData.length;
-    const targetAngle = (nodeIndex / totalNodes) * 360;
-    if (centeringTimer.current) clearTimeout(centeringTimer.current);
-    setIsCentering(true);
-    setRotationAngle(270 - targetAngle);
-    centeringTimer.current = setTimeout(() => setIsCentering(false), 750);
-  };
-
-  // Cleanup centering timer on unmount
-  useEffect(() => () => { if (centeringTimer.current) clearTimeout(centeringTimer.current); }, []);
-
-  const toggleItem = (id: number) => {
-    setExpandedItems((prev) => {
-      const newState: Record<number, boolean> = {};
-      Object.keys(prev).forEach((key) => {
-        newState[parseInt(key)] = false;
-      });
-      newState[id] = !prev[id];
-
-      if (!prev[id]) {
-        setActiveNodeId(id);
-        setAutoRotate(false);
-        const relatedItems = getRelatedItems(id);
-        const newPulse: Record<number, boolean> = {};
-        relatedItems.forEach((relId) => {
-          newPulse[relId] = true;
-        });
-        setPulseEffect(newPulse);
-        centerViewOnNode(id);
-      } else {
-        setActiveNodeId(null);
-        setAutoRotate(true);
-        setPulseEffect({});
-      }
-
-      return newState;
-    });
-  };
-
-  useEffect(() => {
-    let rotationTimer: ReturnType<typeof setInterval> | undefined;
-    if (autoRotate) {
-      rotationTimer = setInterval(() => {
-        setRotationAngle((prev) => Number(((prev + 0.3) % 360).toFixed(3)));
-      }, 50);
-    }
-    return () => {
-      if (rotationTimer) clearInterval(rotationTimer);
-    };
-  }, [autoRotate]);
+  const isPaused = expandedId !== null;
 
   const nodePositions = useMemo(() => {
     const total = timelineData.length;
-    const radius = ORBIT_RADIUS;
     return timelineData.map((_, index) => {
-      const angle = ((index / total) * 360 + rotationAngle) % 360;
+      const angle = (index / total) * 360;
       const radian = (angle * Math.PI) / 180;
-      const x = radius * Math.cos(radian);
-      const y = radius * Math.sin(radian);
-      const zIndex = Math.round(100 + 50 * Math.cos(radian));
-      const opacity = Math.max(
-        0.4,
-        Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)),
-      );
-      return { x, y, angle, zIndex, opacity };
+      const x = ORBIT_RADIUS * Math.cos(radian);
+      const y = ORBIT_RADIUS * Math.sin(radian);
+      return { x, y };
     });
-  }, [timelineData, rotationAngle]);
+  }, [timelineData]);
 
-  const getStatusStyles = (status: TimelineItem["status"]): string => {
-    switch (status) {
-      case "completed":
-        return "text-primary-foreground bg-primary border-primary";
-      case "in-progress":
-        return "text-foreground bg-background border-foreground";
-      case "pending":
-        return "text-foreground bg-muted border-border";
-      default:
-        return "text-foreground bg-muted border-border";
-    }
-  };
+  const close = () => setExpandedId(null);
 
   return (
-    <div
-      ref={containerRef}
-      onClick={handleContainerClick}
-      className="relative w-full h-[520px] flex items-center justify-center overflow-visible select-none"
-    >
+    <div className="relative w-full h-[520px] flex items-center justify-center overflow-visible select-none">
+      {/* Orbit wrapper — spins via CSS animation */}
       <div
-        ref={orbitRef}
-        className="relative w-[480px] h-[480px] flex items-center justify-center"
-        style={{ perspective: "1000px" }}
+        className="relative flex items-center justify-center"
+        style={{
+          width: ORBIT_DIAMETER,
+          height: ORBIT_DIAMETER,
+          animationName: "foyer-orbit-spin",
+          animationDuration: "22s",
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationPlayState: isPaused ? "paused" : "running",
+        }}
       >
-        {/* Center sphere — cool glass */}
-        <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-foreground/20 via-foreground/10 to-transparent border border-foreground/30 flex items-center justify-center z-10 backdrop-blur-sm">
-          <div className="absolute inset-2 rounded-full bg-foreground/5 animate-pulse" />
-          <div className="w-3 h-3 rounded-full bg-foreground/40" />
+        {/* Center sphere */}
+        <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/15 flex items-center justify-center z-10 backdrop-blur-sm">
+          <div className="absolute inset-2 rounded-full bg-white/5 animate-pulse" />
+          <div className="w-3 h-3 rounded-full bg-white/25" />
         </div>
 
-        {/* Single orbit ring — the one true path. Nodes are centered on it. */}
+        {/* Orbit ring */}
         <div
-          className="absolute rounded-full border border-foreground/40 shadow-[0_0_60px_rgba(255,255,255,0.08)]"
+          className="absolute rounded-full border border-white/15 shadow-[0_0_60px_rgba(232,208,139,0.07)]"
           style={{ width: ORBIT_DIAMETER, height: ORBIT_DIAMETER }}
         />
 
         {timelineData.map((item, index) => {
-          const position = nodePositions[index];
-          const isExpanded = !!expandedItems[item.id];
-          const isRelated = isRelatedToActive(item.id);
-          const isPulsing = !!pulseEffect[item.id];
+          const { x, y } = nodePositions[index];
+          const isExpanded = expandedId === item.id;
+          const isFinderNode = item.variant === "finder";
           const Icon = item.icon;
 
-          const nodeStyle: React.CSSProperties = {
-            transform: `translate(${position.x}px, ${position.y}px)`,
-            zIndex: isExpanded ? 200 : position.zIndex,
-            opacity: isExpanded ? 1 : position.opacity,
+          const handleClick = () => {
+            if (isFinderNode) {
+              setExpandedId(isExpanded ? null : item.id);
+            } else {
+              onActivate?.(item.id);
+            }
           };
 
           return (
             <div
               key={item.id}
-              ref={(el) => (nodeRefs.current[item.id] = el)}
-              className={`absolute cursor-pointer ${isCentering ? 'transition-[opacity,transform] duration-700' : 'transition-[opacity] duration-300'}`}
-              style={nodeStyle}
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleItem(item.id);
-              }}
-              onDoubleClick={(e) => {
-                e.stopPropagation();
-                onActivate?.(item.id);
-              }}
+              className="absolute"
+              style={{ transform: `translate(${x}px, ${y}px)`, zIndex: isExpanded ? 200 : 10 }}
             >
-              {/* Pulse halo */}
-              {isPulsing && (
-                <div className="absolute -inset-2 rounded-full bg-primary/20 animate-ping" />
-              )}
-
+              {/* Counter-rotation wrapper keeps content upright while the orbit spins */}
               <div
-                className={cn(
-                  "relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all",
-                  isExpanded
-                    ? "bg-primary text-primary-foreground border-primary scale-110 shadow-[0_0_24px_hsl(var(--primary)/0.5)]"
-                    : isRelated
-                    ? "bg-primary/30 text-foreground border-primary/60"
-                    : "bg-foreground text-background border-border hover:scale-105"
-                )}
+                style={{
+                  animationName: "foyer-orbit-counter",
+                  animationDuration: "22s",
+                  animationTimingFunction: "linear",
+                  animationIterationCount: "infinite",
+                  animationPlayState: isPaused ? "paused" : "running",
+                }}
               >
-                <Icon className="w-5 h-5" />
-              </div>
-
-              <div
-                className={cn(
-                  "absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-[0.18em] uppercase transition-colors",
-                  isExpanded ? "text-foreground" : "text-foreground/70"
-                )}
-              >
-                {item.title}
-              </div>
-
-              {isExpanded && (() => {
-                const custom = renderExpandedContent?.(item, closeExpanded);
-                return (
-                <Card
-                  className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-background/90 backdrop-blur-md border-border shadow-2xl"
-                  onClick={(e) => e.stopPropagation()}
+                <button
+                  type="button"
+                  aria-label={item.title}
+                  aria-expanded={isFinderNode ? isExpanded : undefined}
+                  onClick={handleClick}
+                  className={cn(
+                    "relative flex flex-col items-center gap-2 group",
+                    "focus-visible:outline-none",
+                  )}
                 >
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-border" />
-                  {custom ? custom : (<>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between mb-1">
-                      <Badge
-                        className={cn("text-[10px] px-2 py-0.5", getStatusStyles(item.status))}
-                      >
-                        {item.status === "completed"
-                          ? "COMPLETE"
-                          : item.status === "in-progress"
-                          ? "IN PROGRESS"
-                          : "PENDING"}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">{item.date}</span>
-                    </div>
-                    <CardTitle className="text-base">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">{item.content}</p>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="flex items-center gap-1 text-muted-foreground">
-                          <Zap className="w-3 h-3" /> Energy
-                        </span>
-                        <span className="font-mono text-foreground">{item.energy}%</span>
-                      </div>
-                      <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full bg-primary transition-all"
-                          style={{ width: `${item.energy}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    {item.relatedIds.length > 0 && (
-                      <div className="space-y-1.5 pt-1 border-t border-border">
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground pt-2">
-                          <LinkIcon className="w-3 h-3" />
-                          <span>Connected</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1">
-                          {item.relatedIds.map((relatedId) => {
-                            const relatedItem = timelineData.find((i) => i.id === relatedId);
-                            return (
-                              <Button
-                                key={relatedId}
-                                variant="outline"
-                                size="sm"
-                                className="h-6 text-[10px] px-2 gap-1"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleItem(relatedId);
-                                }}
-                              >
-                                {relatedItem?.title}
-                                <ArrowRight className="w-3 h-3" />
-                              </Button>
-                            );
-                          })}
-                        </div>
-                      </div>
+                  <div
+                    className={cn(
+                      "w-12 h-12 rounded-full flex items-center justify-center border-2 transition-colors duration-200",
+                      isExpanded
+                        ? "bg-[#E8D08B] text-[#05070A] border-[#E8D08B] shadow-[0_0_32px_-2px_rgba(232,208,139,0.36)]"
+                        : "bg-[#1A1E2B] text-[#CBD5E1] border-white/10 hover:border-[#E8D08B]/40 hover:text-[#E8D08B]",
+                      "focus-visible:ring-2 focus-visible:ring-[#E8D08B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#05070A]",
                     )}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </div>
 
-                    {onActivate && (
-                      <Button
-                        size="sm"
-                        className="w-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onActivate(item.id);
-                        }}
-                      >
-                        Open
-                        <ArrowRight className="w-3 h-3 ml-1" />
-                      </Button>
+                  <span
+                    className={cn(
+                      "whitespace-nowrap text-xs font-semibold tracking-[0.18em] uppercase transition-colors duration-200",
+                      isExpanded ? "text-[#E8D08B]" : "text-[#94A3B8] group-hover:text-[#CBD5E1]",
                     )}
-                  </CardContent>
-                  </>)}
-                </Card>
-                );
-              })()}
+                  >
+                    {item.title}
+                  </span>
+
+                  {isExpanded && (() => {
+                    const custom = renderExpandedContent?.(item, close);
+                    if (!custom) return null;
+                    return (
+                      <div
+                        className="absolute top-20 left-1/2 -translate-x-1/2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {custom}
+                      </div>
+                    );
+                  })()}
+                </button>
+              </div>
             </div>
           );
         })}
