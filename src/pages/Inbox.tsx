@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox, type Conversation } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
-import { ThreadList } from '@/components/inbox/ThreadList';
+import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
 import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
@@ -235,7 +235,7 @@ export default function Inbox() {
             )}
             <div className="flex-1 md:overflow-y-auto">
               {loading ? (
-                <div className="p-8 text-center text-sm text-muted-foreground">Loading…</div>
+                <ThreadListSkeleton count={6} />
               ) : (
                 <ThreadList
                   conversations={visibleConversations}
@@ -257,7 +257,7 @@ export default function Inbox() {
               />
             ) : (
               <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground">
-                {is_admin ? 'Select a conversation to start' : 'Loading conversation…'}
+                {is_admin ? 'Pick a thread to open' : 'Loading conversation…'}
               </div>
             )}
           </main>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
@@ -71,10 +72,32 @@ function groupMessages(messages: Message[], ownId: string): DaySection[] {
   return sections;
 }
 
+function ConversationSkeleton() {
+  return (
+    <div className="px-4 py-5 space-y-5">
+      <div className="flex flex-col items-start gap-1.5">
+        <div className="h-2 rounded bg-muted/60 animate-pulse w-12 ml-1" />
+        <div className="h-9 w-48 rounded-2xl rounded-bl-md bg-muted/60 animate-pulse" />
+        <div className="h-9 w-36 rounded-2xl bg-muted/60 animate-pulse" />
+      </div>
+      <div className="flex flex-col items-end gap-1.5">
+        <div className="h-9 w-56 rounded-2xl rounded-br-md bg-muted/40 animate-pulse" />
+      </div>
+      <div className="flex flex-col items-start gap-1.5">
+        <div className="h-9 w-64 rounded-2xl rounded-bl-md bg-muted/60 animate-pulse" />
+      </div>
+      <div className="flex flex-col items-end gap-1.5">
+        <div className="h-9 w-44 rounded-2xl rounded-br-md bg-muted/40 animate-pulse" />
+        <div className="h-9 w-60 rounded-2xl bg-muted/40 animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
 export function ConversationView({ conversation, onBack, onMessageSent, hideHeader = false }: Props) {
   const { user } = useAuth();
   const { is_admin } = useUserPermissions();
-  const { messages, refresh } = useConversationMessages(conversation.id);
+  const { messages, loading, refresh } = useConversationMessages(conversation.id);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -115,7 +138,12 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             </Button>
           )}
           <div
-            className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-xs font-semibold text-foreground/70 shrink-0"
+            className={cn(
+              'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
+              !is_admin
+                ? 'bg-emerald-500/15 text-emerald-500 ring-1 ring-emerald-500/30'
+                : 'bg-muted text-foreground/70',
+            )}
             aria-hidden="true"
           >
             {headerInitial}
@@ -129,8 +157,10 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         </div>
       )}
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-5 bg-muted/10">
-        {messages.length === 0 ? (
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-5 bg-background">
+        {loading ? (
+          <ConversationSkeleton />
+        ) : messages.length === 0 ? (
           <div className="text-center text-sm text-muted-foreground py-12">
             No messages yet. Start the conversation below.
           </div>

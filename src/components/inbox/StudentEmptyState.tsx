@@ -17,8 +17,8 @@ export function StudentEmptyState({ onStart, isStarting = false, compact = false
       }
     >
       <div className="max-w-sm text-center space-y-4">
-        <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-          <MessagesSquare className="w-5 h-5 text-muted-foreground" strokeWidth={1.75} />
+        <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center">
+          <MessagesSquare className="w-5 h-5 text-emerald-500/70" strokeWidth={1.75} />
         </div>
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">Message Joshua</h2>

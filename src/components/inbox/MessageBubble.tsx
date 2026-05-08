@@ -37,7 +37,7 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
               'rounded-2xl px-3.5 py-2 text-sm whitespace-pre-wrap break-words leading-relaxed',
               isOwn
                 ? 'bg-primary text-primary-foreground rounded-br-md'
-                : 'bg-card text-foreground border border-border/60 rounded-bl-md',
+                : 'bg-muted/50 text-foreground rounded-bl-md',
             )}
           >
             {message.body}

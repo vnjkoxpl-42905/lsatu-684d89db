@@ -20,6 +20,16 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const [polishing, setPolishing] = useState(false);
   const [polished, setPolished] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustHeight = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = '44px';
+    const next = Math.min(el.scrollHeight, 128);
+    el.style.height = `${next}px`;
+    el.style.overflowY = el.scrollHeight > 128 ? 'auto' : 'hidden';
+  };
 
   const isAdmin = !permissions.loading && permissions.is_admin;
   const showPolish = isAdmin;
@@ -123,6 +133,10 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
       setDriveAttachments([]);
       setPolished(null);
       if (fileRef.current) fileRef.current.value = '';
+      if (textareaRef.current) {
+        textareaRef.current.style.height = '44px';
+        textareaRef.current.style.overflowY = 'hidden';
+      }
       onSent?.();
     } catch (e: any) {
       toast.error(e.message ?? 'Failed to send message');
@@ -207,17 +221,32 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           </div>
         </div>
       )}
-      <div className="flex items-end gap-2">
-        <input
-          ref={fileRef}
-          type="file"
-          accept="application/pdf"
-          className="hidden"
-          onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
-        />
+      <input
+        ref={fileRef}
+        type="file"
+        accept="application/pdf"
+        className="hidden"
+        onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+      />
+      <Textarea
+        ref={textareaRef}
+        value={body}
+        onChange={(e) => { setBody(e.target.value); adjustHeight(); }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            e.preventDefault();
+            send();
+          }
+        }}
+        placeholder="Write a message…"
+        className="w-full resize-none"
+        style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}
+      />
+      <div className="flex items-center gap-0.5">
         <Button
           variant="ghost"
           size="icon"
+          className="h-8 w-8"
           onClick={() => fileRef.current?.click()}
           disabled={sending}
           aria-label="Attach PDF"
@@ -231,6 +260,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <Button
             variant="ghost"
             size="icon"
+            className="h-8 w-8"
             onClick={polish}
             disabled={sending || polishing || body.trim().length < 3}
             aria-label="Polish with AI"
@@ -239,30 +269,19 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
             <Sparkles className={`w-4 h-4 ${polishing ? 'animate-pulse' : ''}`} />
           </Button>
         )}
-        <Textarea
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-              e.preventDefault();
-              send();
-            }
-          }}
-          placeholder="Write a message…"
-          rows={1}
-          className="min-h-[44px] max-h-32 resize-none flex-1"
-        />
+        <div className="flex-1" />
+        <span className="text-[10px] text-muted-foreground/60 mr-1.5 select-none">⌘↵</span>
         <Button
           onClick={send}
           disabled={sending || !canSend}
           size="icon"
+          className="h-8 w-8"
           variant={canSend ? 'default' : 'ghost'}
           aria-label="Send"
         >
           <Send className="w-4 h-4" />
         </Button>
       </div>
-      <div className="text-[10px] text-muted-foreground/80 text-right pr-1">⌘ Enter to send</div>
     </div>
   );
 }

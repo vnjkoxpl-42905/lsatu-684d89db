@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
-import { ThreadList } from './ThreadList';
+import { ThreadList, ThreadListSkeleton } from './ThreadList';
 import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
@@ -114,10 +114,11 @@ export function FloatingMessenger() {
         className={cn(
           'fixed bottom-6 right-6 z-40',
           'h-12 w-12 rounded-full',
-          'bg-background/90 backdrop-blur border border-border shadow-lg',
+          'bg-background/90 backdrop-blur shadow-lg border',
+          studentPrimaryId ? 'border-emerald-500/30' : 'border-border',
           'flex items-center justify-center',
           'text-foreground/80 hover:text-foreground',
-          'hover:bg-background transition-colors',
+          'hover:bg-background transition-colors active:scale-[0.95]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         )}
         aria-label={unreadCount > 0 ? `Open messenger, ${unreadCount} unread` : 'Open messenger'}
@@ -130,6 +131,12 @@ export function FloatingMessenger() {
           >
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
+        )}
+        {studentPrimaryId && unreadCount === 0 && (
+          <span
+            className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-background"
+            aria-hidden="true"
+          />
         )}
       </button>
 
@@ -151,41 +158,18 @@ export function FloatingMessenger() {
             <SheetPrimitive.Title className="sr-only">Messenger</SheetPrimitive.Title>
 
             <div className="flex items-center gap-2 px-4 h-14 border-b border-border shrink-0">
-              {active && is_admin ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setActiveId(null)}
-                  aria-label="Back to conversations"
-                  className="shrink-0"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              ) : (
-                <div
-                  className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0"
-                  aria-hidden="true"
-                >
-                  <MessageSquare className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
-                </div>
-              )}
+              <div
+                className="w-9 h-9 rounded-full bg-emerald-500/15 text-emerald-500 ring-1 ring-emerald-500/30 flex items-center justify-center text-xs font-semibold shrink-0 relative"
+                aria-hidden="true"
+              >
+                J
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
+              </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-semibold truncate">
-                  {active ? activeHeaderName : is_admin ? 'Messages' : 'Joshua'}
+                <div className="text-sm font-semibold truncate">Joshua</div>
+                <div className="text-[11px] text-muted-foreground truncate">
+                  {active ? 'Messages and PDF attachments' : 'Your coach'}
                 </div>
-                {active ? (
-                  <div className="text-[11px] text-muted-foreground truncate">
-                    {is_admin && active.subject ? active.subject : 'Messages and PDF attachments'}
-                  </div>
-                ) : (
-                  <div className="text-[11px] text-muted-foreground">
-                    {is_admin
-                      ? unreadCount > 0
-                        ? `${unreadCount} unread`
-                        : 'All caught up'
-                      : 'Direct message'}
-                  </div>
-                )}
               </div>
               <button
                 type="button"
@@ -256,7 +240,7 @@ export function FloatingMessenger() {
                     )}
                     <div className="flex-1 overflow-y-auto">
                       {loading ? (
-                        <div className="p-8 text-center text-sm text-muted-foreground">Loading…</div>
+                        <ThreadListSkeleton />
                       ) : (
                         <ThreadList
                           conversations={conversations}
