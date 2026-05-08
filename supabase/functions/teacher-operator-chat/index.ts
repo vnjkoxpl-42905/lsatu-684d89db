@@ -248,8 +248,8 @@ async function runTool(
       case "summarize_student": {
         const sid = String(args.student_id);
         const { data: student } = await admin
-          .from("students_safe" as any)
-          .select("class_id, display_name, email")
+          .from("profiles" as any)
+          .select("class_id, display_name")
           .eq("class_id", sid)
           .maybeSingle();
         const { data: sessions } = await admin
