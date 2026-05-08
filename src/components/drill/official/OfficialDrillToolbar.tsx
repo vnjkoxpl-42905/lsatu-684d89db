@@ -59,7 +59,7 @@ export default function OfficialDrillToolbar({
     {
       mode: "underline",
       label: "Underline",
-      icon: <UnderlineIcon className="w-[18px] h-[18px]" />,
+      icon: <UnderlineIcon className="w-[22px] h-[22px] text-slate-600" strokeWidth={2.25} />,
       activeBg: "bg-slate-200",
     },
     {
