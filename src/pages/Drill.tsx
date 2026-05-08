@@ -2081,6 +2081,12 @@ function DrillContent() {
               onShowAnswer={() => {
                 if (!currentQuestion) return;
                 setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+                // If wrong, auto-open the AI tutor in post-answer mode
+                if (selectedAnswer && selectedAnswer !== currentQuestion.correctAnswer) {
+                  setTutorQuestionSnapshot(currentQuestion);
+                  setTutorUserAnswerSnapshot(selectedAnswer);
+                  setTutorChatOpen(true);
+                }
               }}
             />
           }
