@@ -103,98 +103,98 @@ export default function OfficialDrillToolbar({
             </button>
           )}
 
-          <PipeSeparator />
-
-          <div className="flex items-center gap-0.5">
-            {tools.map((t) => {
-              const isActive = highlightMode === t.mode;
-              return (
-                <button
-                  key={t.mode}
-                  type="button"
-                  onClick={() => toggle(t.mode)}
-                  aria-pressed={isActive}
-                  aria-label={t.label}
-                  title={t.label}
-                  className={cn(
-                    "p-1.5 rounded-sm transition-colors flex items-center justify-center",
-                    isActive
-                      ? "bg-white border border-slate-600 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
-                      : "border border-transparent hover:bg-slate-200",
-                    t.mode === "erase" && "ml-1",
-                  )}
-                >
-                  {t.icon}
-                </button>
-              );
-            })}
-          </div>
-
-          <PipeSeparator />
-
-          {/* Aa popover */}
-          <Popover open={aaOpen} onOpenChange={setAaOpen}>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                aria-label="Text size"
-                title="Text size"
-                className={cn(
-                  "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
-                  aaOpen
-                    ? "bg-white border border-slate-600 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
-                    : "border border-transparent hover:bg-slate-200",
-                )}
-              >
-                <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
-                <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-44 p-1">
-              {FONT_SCALES.map((opt) => {
-                const selected = Math.abs(fontScale - opt.value) < 0.001;
+          {/* Right cluster: tools | Aa + line-spacing | timer */}
+          <div className="ml-auto flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
+              {tools.map((t) => {
+                const isActive = highlightMode === t.mode;
                 return (
                   <button
-                    key={opt.key}
+                    key={t.mode}
                     type="button"
-                    onClick={() => {
-                      setFontScale(opt.value);
-                      setAaOpen(false);
-                    }}
+                    onClick={() => toggle(t.mode)}
+                    aria-pressed={isActive}
+                    aria-label={t.label}
+                    title={t.label}
                     className={cn(
-                      "w-full flex items-center justify-between px-2 py-1.5 text-[14px] rounded-sm hover:bg-slate-100 text-slate-800",
-                      selected && "font-semibold",
+                      "p-1 rounded-sm transition-colors flex items-center justify-center",
+                      isActive
+                        ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
+                        : "border border-transparent hover:bg-slate-200",
                     )}
                   >
-                    <span>{opt.label}</span>
-                    {selected && <Check className="w-4 h-4 text-slate-700" />}
+                    {t.icon}
                   </button>
                 );
               })}
-            </PopoverContent>
-          </Popover>
-
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            title="Line spacing — coming soon"
-            className="ml-1 p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
-          >
-            <LineSpacingIcon />
-            <span className="sr-only">Line spacing</span>
-          </button>
-
-          {timerLabelPrefix && (
-            <div className="ml-auto">
-              <div
-                role="timer"
-                className="rounded-[2px] border-2 border-[#7f1d1d] text-black px-5 py-1.5 text-[14px] font-semibold tabular-nums whitespace-nowrap min-w-[260px] text-center"
-              >
-                {timerLabelPrefix}: {paddedTimer}
-              </div>
             </div>
-          )}
+
+            <PipeSeparator />
+
+            <Popover open={aaOpen} onOpenChange={setAaOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Text size"
+                  title="Text size"
+                  className={cn(
+                    "px-2 py-1 rounded-sm text-slate-900 flex items-baseline transition-colors",
+                    aaOpen
+                      ? "bg-white border border-slate-700 shadow-[inset_0_2px_3px_rgba(0,0,0,0.18)]"
+                      : "border border-transparent hover:bg-slate-200",
+                  )}
+                >
+                  <span aria-hidden className="text-[20px] font-bold leading-none">A</span>
+                  <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-44 p-1">
+                {FONT_SCALES.map((opt) => {
+                  const selected = Math.abs(fontScale - opt.value) < 0.001;
+                  return (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      onClick={() => {
+                        setFontScale(opt.value);
+                        setAaOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center justify-between px-2 py-1.5 text-[14px] rounded-sm hover:bg-slate-100 text-slate-800",
+                        selected && "font-semibold",
+                      )}
+                    >
+                      <span>{opt.label}</span>
+                      {selected && <Check className="w-4 h-4 text-slate-700" />}
+                    </button>
+                  );
+                })}
+              </PopoverContent>
+            </Popover>
+
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              title="Line spacing — coming soon"
+              className="p-1.5 rounded-sm text-slate-800 cursor-not-allowed"
+            >
+              <LineSpacingIcon />
+              <span className="sr-only">Line spacing</span>
+            </button>
+
+            {timerLabelPrefix && (
+              <>
+                <PipeSeparator />
+                <div
+                  role="timer"
+                  className="text-[14px] font-semibold text-slate-900 tabular-nums whitespace-nowrap pl-1"
+                >
+                  {timerLabelPrefix}: {paddedTimer}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
