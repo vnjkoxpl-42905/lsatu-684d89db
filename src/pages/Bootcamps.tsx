@@ -84,7 +84,7 @@ export default function BootcampsPage() {
     const set = new Set<string>();
     for (const it of items) {
       if (it.type !== 'bootcamp_module' || it.status === 'archived') continue;
-      const id = (it.metadata_json as any)?.bootcamp_id;
+      const id = (it.metadata_json as { bootcamp_id?: string } | null)?.bootcamp_id;
       if (typeof id === 'string') set.add(id);
       // Fallback: source_id may be the route, e.g. /bootcamp/principle-flaw
       if (typeof it.source_id === 'string') {

@@ -65,7 +65,7 @@ class AchievementEngine {
     
     // Check each milestone
     for (const achievement of achievements) {
-      const req = achievement.requirement as any;
+      const req = achievement.requirement as unknown as { type: string; value: number | string };
       
       if (req.type === 'questions_total') {
         if (totalQuestions === req.value) {
@@ -128,7 +128,7 @@ class AchievementEngine {
     if (!achievements) return earned;
     
     for (const achievement of achievements) {
-      const req = achievement.requirement as any;
+      const req = achievement.requirement as unknown as { type: string; value: number | string };
       
       if (req.type === 'streak' && currentStreak === req.value) {
         const { data: existing } = await supabase

@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 export interface WAJHistoryItem {
   attempt_at_iso: string;
@@ -74,7 +75,7 @@ export async function logWrongAnswer(params: {
     const { error } = await supabase
       .from('wrong_answer_journal')
       .update({
-        history_json: newHistory as unknown as any,
+        history_json: newHistory as unknown as Json,
         last_status: 'wrong',
         revisit_count: newHistory.length - 1,
         updated_at: new Date().toISOString(),
@@ -98,7 +99,7 @@ export async function logWrongAnswer(params: {
         first_wrong_at_iso: new Date().toISOString(),
         last_status: 'wrong',
         revisit_count: 0,
-        history_json: [historyItem] as unknown as any,
+        history_json: [historyItem] as unknown as Json,
       });
 
     if (error) throw error;
@@ -141,7 +142,7 @@ export async function logCorrectAnswer(params: {
     const { error } = await supabase
       .from('wrong_answer_journal')
       .update({
-        history_json: newHistory as unknown as any,
+        history_json: newHistory as unknown as Json,
         last_status: 'right',
         revisit_count: newHistory.length - 1,
         updated_at: new Date().toISOString(),

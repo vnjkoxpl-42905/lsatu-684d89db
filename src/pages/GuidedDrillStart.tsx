@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAssignment, markCardRead, markStarted, resolveGuidedDrillPool } from '@/lib/guidedDrills';
+import { getAssignment, markCardRead, markStarted, resolveGuidedDrillPool, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,11 +8,13 @@ import ReactMarkdown from 'react-markdown';
 import { toast } from 'sonner';
 import type { TypeDrillConfig } from '@/types/drill';
 
+type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
+
 export default function GuidedDrillStart() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const navigate = useNavigate();
   const { isLoading: qbLoading } = useQuestionBank();
-  const [assignment, setAssignment] = React.useState<any>(null);
+  const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [scrolledToEnd, setScrolledToEnd] = React.useState(false);
   const cardRef = React.useRef<HTMLDivElement>(null);
@@ -20,9 +22,12 @@ export default function GuidedDrillStart() {
   React.useEffect(() => {
     if (!assignmentId) return;
     getAssignment(assignmentId).then((a) => {
-      setAssignment(a);
+      setAssignment(a as AssignmentWithDrill | null);
       setLoading(false);
-    }).catch((e) => { toast.error(e.message); setLoading(false); });
+    }).catch((e: unknown) => {
+      toast.error(e instanceof Error ? e.message : 'Failed to load assignment');
+      setLoading(false);
+    });
   }, [assignmentId]);
 
   React.useEffect(() => {

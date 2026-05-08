@@ -180,17 +180,19 @@ export function EnhancedBlindReview({ session, reviewQids, onComplete, onBack }:
           return next;
         });
       } else {
-        await (supabase
-          .from('flagged_questions') as any)
+        await supabase
+          .from('flagged_questions')
           .insert({
             qid: currentQid,
             user_id: user.id,
             pt: currentQuestion.pt,
             section: currentQuestion.section,
             qnum: currentQuestion.qnum,
-            class_id: user.user_metadata?.class_id || '',
+            qtype: currentQuestion.qtype,
+            level: currentQuestion.difficulty,
+            class_id: user.user_metadata?.class_id || user.id,
           });
-        
+
         setFlaggedQuestions(prev => new Set([...prev, currentQid]));
       }
     } catch (err) {

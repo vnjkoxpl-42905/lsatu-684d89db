@@ -342,7 +342,6 @@ const App = () => {
                   } />
                   {/* Retired bootcamp slugs — bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
-                  <Route path="/bootcamp/main-conclusion-role" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />

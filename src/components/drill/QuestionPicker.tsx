@@ -227,7 +227,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     value: FilterState[K] extends (infer U)[] ? U : never
   ) => {
     setFilters(prev => {
-      const current = prev[key] as any[];
+      const current = prev[key] as unknown[];
       const newValue = current.includes(value)
         ? current.filter(v => v !== value)
         : [...current, value];
@@ -243,7 +243,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   ) => {
     setFilters(prev => ({
       ...prev,
-      [key]: (prev[key] as any[]).filter(v => v !== value)
+      [key]: (prev[key] as unknown[]).filter(v => v !== value)
     }));
     setCurrentPage(1);
   };

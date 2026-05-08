@@ -36,13 +36,13 @@ export default function Overview({ userName, onStart }: { userName: string, onSt
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: "Read", desc: "Study the notes", color: "text-emerald-500" },
-              { label: "Do", desc: "Homework drills", color: "text-blue-500" },
-              { label: "Review", desc: "Log mistakes", color: "text-indigo-400" },
-              { label: "Bring", desc: "Prep for tutoring", color: "text-rose-500" }
+              { label: "Read", desc: "Study the notes", color: "var(--pf-role-read)" },
+              { label: "Do", desc: "Homework drills", color: "var(--pf-role-do)" },
+              { label: "Review", desc: "Log mistakes", color: "var(--pf-role-review)" },
+              { label: "Bring", desc: "Prep for tutoring", color: "var(--pf-role-bring)" }
             ].map((item, i) => (
               <div key={i} className="space-y-2 text-center">
-                <div className={`text-3xl font-serif italic ${item.color}`}>{item.label}</div>
+                <div className="text-3xl font-serif italic" style={{ color: item.color }}>{item.label}</div>
                 <div className="text-[10px] text-zinc-600 uppercase font-bold tracking-widest">{item.desc}</div>
               </div>
             ))}

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, CheckCircle2, XCircle, BookOpen } from "lucide-react";
+import { toast } from "sonner";
 import OfficialQuestionPane from "@/components/drill/official/OfficialQuestionPane";
 import { questionBank, type LRQuestion } from "@/lib/questionLoader";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
@@ -68,25 +69,27 @@ export default function InlineQuestionViewer({ initialQid, queue, onClose }: Pro
     const timeMs = Date.now() - startTsRef.current;
     const resolvedClassId = classId || user?.id;
     if (!resolvedClassId) return;
-    try {
-      await supabase.from("attempts").insert({
-        user_id: user?.id,
-        class_id: resolvedClassId,
-        qid: question.qid,
-        pt: question.pt,
-        section: question.section,
-        qnum: question.qnum,
-        qtype: question.qtype,
-        level: question.difficulty,
-        correct,
-        time_ms: timeMs,
-        confidence: null,
-        mode: "bootcamp-pf",
-        selected_answer: selected,
-        timestamp_iso: new Date().toISOString(),
+    const { error } = await supabase.from("attempts").insert({
+      user_id: user?.id,
+      class_id: resolvedClassId,
+      qid: question.qid,
+      pt: question.pt,
+      section: question.section,
+      qnum: question.qnum,
+      qtype: question.qtype,
+      level: question.difficulty,
+      correct,
+      time_ms: timeMs,
+      confidence: null,
+      mode: "bootcamp-pf",
+      selected_answer: selected,
+      timestamp_iso: new Date().toISOString(),
+    });
+    if (error) {
+      console.error("[pf:inline-viewer] attempt insert failed", error);
+      toast.error("Couldn't save your answer", {
+        description: "Your attempt wasn't recorded. Check your connection and try again.",
       });
-    } catch (err) {
-      console.error("[pf:inline-viewer] attempt insert failed", err);
     }
   };
 

@@ -36,6 +36,19 @@ const HubSection = ({ title, icon: Icon, children, step, id }: HubSectionProps) 
 export default function PrincipleHub() {
   const downloadPacket = downloadPrincipleNotes;
 
+  if (!principleHubData?.varieties?.length) {
+    return (
+      <div className="min-h-[40vh] flex items-center justify-center px-6">
+        <div className="max-w-sm text-center space-y-3 py-12">
+          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600">No principle library yet</div>
+          <p className="text-sm text-zinc-400 font-light leading-relaxed">
+            The Principle reference is still loading. Refresh the page or check back in a moment.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Daily Audit Section */}

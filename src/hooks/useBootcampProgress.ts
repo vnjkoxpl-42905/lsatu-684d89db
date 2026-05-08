@@ -38,7 +38,7 @@ export function useBootcampProgress(opts: {
         .order('created_at', { ascending: false });
       if (error) throw error;
       const match = (data ?? []).find(
-        (r: any) => (r.metadata_json ?? {})?.bootcamp_id === bootcampId,
+        (r) => (r.metadata_json as { bootcamp_id?: string } | null)?.bootcamp_id === bootcampId,
       );
       return match?.id ?? null;
     },
@@ -55,7 +55,7 @@ export function useBootcampProgress(opts: {
 
     const t = setTimeout(async () => {
       try {
-        const patch: Record<string, unknown> = {
+        const patch: Parameters<typeof updateClassroomItem>[1] = {
           metadata_json: {
             bootcamp_id: bootcampId,
             progress: {
@@ -72,7 +72,7 @@ export function useBootcampProgress(opts: {
         } else if (sorted.length > 0) {
           patch.status = 'in_progress';
         }
-        await updateClassroomItem(itemId, patch as any);
+        await updateClassroomItem(itemId, patch);
         lastWriteRef.current = signature;
       } catch (e) {
         console.warn('[useBootcampProgress] save failed', e);

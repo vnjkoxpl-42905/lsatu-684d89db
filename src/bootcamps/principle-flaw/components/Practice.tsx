@@ -44,12 +44,20 @@ function OpenInlineButton({ q, onOpen, available }: { q: QuestionRef; onOpen: ()
 
 function CopyRefButton({ q }: { q: QuestionRef }) {
   const [copied, setCopied] = useState(false);
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  React.useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    },
+    [],
+  );
   const onCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
     const text = `PT ${q.pt}, S ${q.section}, Q ${q.question}`;
     navigator.clipboard?.writeText(text).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 1500);
     });
   };
   return (

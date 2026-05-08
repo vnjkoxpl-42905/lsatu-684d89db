@@ -52,7 +52,7 @@ export default function BootcampGate({ routePath, title, children }: Props) {
       }>;
       return rows.some((r) => {
         if (r.source_id === routePath) return true;
-        const mid = (r.metadata_json as any)?.bootcamp_id;
+        const mid = r.metadata_json?.bootcamp_id;
         return mid === bootcampId;
       });
     },

@@ -1493,9 +1493,11 @@ function DrillContent() {
             pt: currentQuestion.pt,
             section: currentQuestion.section,
             qnum: currentQuestion.qnum,
+            qtype: currentQuestion.qtype,
+            level: currentQuestion.difficulty,
             user_id: user.id,
             class_id: classId,
-          } as any);
+          });
         
         if (error && error.code !== '23505') { // Ignore unique constraint violation
           throw error;

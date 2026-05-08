@@ -53,9 +53,11 @@ export function useStudentExternalUploads() {
     queryKey: ['external-uploads-mine', user?.id],
     enabled: !!user,
     queryFn: async () => {
+      if (!user) return [];
       const { data, error } = await supabase
         .from('external_work_uploads')
         .select('*')
+        .eq('student_id', user.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
       return (data ?? []) as ExternalWorkUpload[];
@@ -91,7 +93,11 @@ export function useStudentExternalUploads() {
           })
           .select()
           .single();
-        if (error) throw error;
+        if (error) {
+          // Roll back the storage object so we never have an orphan file.
+          await supabase.storage.from('external-work-uploads').remove([path]);
+          throw error;
+        }
         await queryClient.invalidateQueries({ queryKey: ['external-uploads-mine'] });
         return data as ExternalWorkUpload;
       } finally {

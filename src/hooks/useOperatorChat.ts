@@ -54,11 +54,11 @@ export function useOperatorChat() {
           .order('created_at', { ascending: true });
         if (!cancelled && msgs) {
           setMessages(
-            (msgs as any[]).map((m) => ({
+            msgs.map((m) => ({
               id: m.id,
               role: m.role === 'assistant' ? 'assistant' : 'user',
               content: m.content ?? '',
-              tool_results: (m.tool_results as OperatorToolResult[]) ?? undefined,
+              tool_results: (m.tool_results as unknown as OperatorToolResult[]) ?? undefined,
               created_at: m.created_at,
             })),
           );

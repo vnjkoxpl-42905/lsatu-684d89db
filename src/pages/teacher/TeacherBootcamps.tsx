@@ -93,7 +93,7 @@ export default function TeacherBootcamps() {
     items.find(
       (i) =>
         i.type === 'bootcamp_module' &&
-        (i.metadata_json as any)?.bootcamp_id === bootcampId &&
+        (i.metadata_json as { bootcamp_id?: string } | null)?.bootcamp_id === bootcampId &&
         i.status !== 'archived',
     );
 

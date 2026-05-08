@@ -25,9 +25,16 @@ export default function TeacherSmartboard() {
   const { data: sessions = [] } = useSmartboardSessions(studentId);
   const save = useSaveSmartboardSession();
 
+  type ExcalidrawScene = { elements?: unknown[]; appState?: unknown; files?: unknown } | null;
+  type ExcalidrawApi = {
+    getSceneElements: () => unknown[];
+    getAppState: () => unknown;
+    getFiles?: () => unknown;
+  } | null;
+
   const [title, setTitle] = useState('Smartboard session');
-  const [scene, setScene] = useState<any>(null);
-  const [api, setApi] = useState<any>(null);
+  const [scene, setScene] = useState<ExcalidrawScene>(null);
+  const [api, setApi] = useState<ExcalidrawApi>(null);
 
   // When loading a previous session, prefill scene + title.
   useEffect(() => {
@@ -35,7 +42,7 @@ export default function TeacherSmartboard() {
     const found = sessions.find((s) => s.id === sessionParam);
     if (found) {
       setTitle(found.title);
-      setScene(found.excalidraw_scene_json ?? null);
+      setScene((found.excalidraw_scene_json ?? null) as ExcalidrawScene);
     }
   }, [sessionParam, sessions]);
 
@@ -64,16 +71,17 @@ export default function TeacherSmartboard() {
         return c;
       });
       toast.success('Saved');
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Save failed');
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Save failed');
     }
   };
 
   const initialData = useMemo(() => {
     if (!scene) return undefined;
+    // Excalidraw types are not exported from the lazy import; cast at the boundary.
     return {
-      elements: (scene as any)?.elements ?? [],
-      appState: (scene as any)?.appState ?? {},
+      elements: (scene.elements ?? []) as never,
+      appState: (scene.appState ?? {}) as never,
     };
   }, [scene]);
 
@@ -153,7 +161,7 @@ export default function TeacherSmartboard() {
           {studentId ? (
             <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-500">Loading board…</div>}>
               <Excalidraw
-                excalidrawAPI={(a: any) => setApi(a)}
+                excalidrawAPI={(a: unknown) => setApi(a as ExcalidrawApi)}
                 initialData={initialData}
               />
             </Suspense>

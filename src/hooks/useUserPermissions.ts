@@ -130,7 +130,7 @@ export function useUserPermissions(): UserPermissions {
         // Touch last_seen_at (fire-and-forget)
         supabase
           .from("profiles")
-          .update({ last_seen_at: new Date().toISOString() } as any)
+          .update({ last_seen_at: new Date().toISOString() })
           .eq("class_id", user.id)
           .then();
       } catch (e) {

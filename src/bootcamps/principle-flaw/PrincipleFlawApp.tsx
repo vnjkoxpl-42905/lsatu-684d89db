@@ -16,6 +16,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, CheckSquare, FileText, LayoutDashboard, User, Target, Zap, Flame } from 'lucide-react';
+import './principle-flaw.css';
 import TodayView from './components/TodayView';
 import CommandPalette from './components/CommandPalette';
 import { StudyResource } from './data';
