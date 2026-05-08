@@ -4,6 +4,7 @@ import { useTimer } from '@/hooks/useTimer';
 interface TimerContextValue {
   label: string;
   ms: number;
+  mode: 'countdown' | 'stopwatch';
   start: () => void;
   pause: () => void;
   resume: () => void;
@@ -22,9 +23,10 @@ interface TimerProviderProps {
 
 export function TimerProvider({ children, mode, durationMs }: TimerProviderProps) {
   const timer = useTimer(mode, durationMs);
+  const value = React.useMemo(() => ({ ...timer, mode }), [timer, mode]);
 
   return (
-    <TimerContext.Provider value={timer}>
+    <TimerContext.Provider value={value}>
       {children}
     </TimerContext.Provider>
   );
