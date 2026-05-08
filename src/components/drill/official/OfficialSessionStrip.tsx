@@ -59,7 +59,7 @@ export default function OfficialSessionStrip({
           <button
             type="button"
             onClick={onTogglePause}
-            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-blue-900 px-6 py-2 text-[14px] font-medium transition-colors"
+            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
           >
             {isPaused ? "Resume Section" : "Pause Section"}
           </button>
@@ -67,7 +67,7 @@ export default function OfficialSessionStrip({
         <button
           type="button"
           onClick={onComplete}
-          className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-blue-900 px-6 py-2 text-[14px] font-medium transition-colors"
+          className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
         >
           Complete Section
         </button>
