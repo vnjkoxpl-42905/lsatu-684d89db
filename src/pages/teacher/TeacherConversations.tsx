@@ -10,7 +10,6 @@ export default function TeacherConversations() {
   const { user } = useAuth();
   const { conversations, loading, refresh } = useInbox();
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
 
   const active = useMemo(
     () => conversations.find((c) => c.id === activeId) ?? null,
@@ -31,9 +30,12 @@ export default function TeacherConversations() {
             </div>
           </div>
         </div>
-        <Button size="sm" onClick={() => setCreating(true)} className="gap-1.5">
-          <Plus className="w-3.5 h-3.5" /> New
-        </Button>
+        <NewConversationDialog
+          onCreated={(id) => {
+            setActiveId(id);
+            refresh();
+          }}
+        />
       </div>
 
       <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-[320px_1fr]">
@@ -65,16 +67,6 @@ export default function TeacherConversations() {
           )}
         </section>
       </div>
-
-      <NewConversationDialog
-        open={creating}
-        onOpenChange={setCreating}
-        onCreated={(id) => {
-          setActiveId(id);
-          setCreating(false);
-          refresh();
-        }}
-      />
     </div>
   );
 }
