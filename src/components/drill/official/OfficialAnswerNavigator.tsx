@@ -39,7 +39,7 @@ export default function OfficialAnswerNavigator({
 
   return (
     <div className="border-t border-slate-200 bg-white">
-      <div className="px-4 sm:px-6 py-3 flex items-end gap-3">
+      <div className="px-6 py-3 flex items-end gap-3">
         <ol className="flex items-end gap-2 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {questionQueue.map((qid, i) => {
             const isCurrent = i === currentIndex;
@@ -50,11 +50,10 @@ export default function OfficialAnswerNavigator({
                 key={qid}
                 className="relative flex flex-col items-center shrink-0 pt-2"
               >
-                {/* I-beam tick: thin vertical line above the current oval */}
                 {isCurrent && (
                   <span
                     aria-hidden
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-[7px] bg-slate-800"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-[8px] bg-slate-900"
                   />
                 )}
                 <button
@@ -71,17 +70,15 @@ export default function OfficialAnswerNavigator({
                       : undefined
                   }
                   className={cn(
-                    "w-[18px] h-[10px] rounded-full border transition-colors",
-                    isAnswered
-                      ? "border-slate-500 bg-slate-400"
-                      : "border-slate-400 bg-white",
+                    "w-[22px] h-[12px] rounded-full border border-slate-500 transition-colors",
+                    isAnswered ? "bg-slate-400" : "bg-white",
                     isClickable && "hover:bg-slate-200 cursor-pointer",
                     !isClickable && !isCurrent && "cursor-default",
                   )}
                 />
                 <span
                   className={cn(
-                    "mt-0.5 text-[11px] tabular-nums leading-none",
+                    "mt-0.5 text-[12px] tabular-nums leading-none",
                     isCurrent
                       ? "font-bold text-slate-900"
                       : "text-slate-700",
@@ -100,18 +97,18 @@ export default function OfficialAnswerNavigator({
             onClick={onPrev}
             disabled={currentIndex <= 0}
             aria-label="Previous question"
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded-sm border border-slate-400 bg-white px-3 py-2 text-slate-800 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" strokeWidth={2.25} />
           </button>
           <button
             type="button"
             onClick={onNext}
             disabled={currentIndex >= total - 1}
             aria-label="Next question"
-            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded-sm border-2 border-slate-500 bg-white px-3 py-2 text-slate-900 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" strokeWidth={2.25} />
           </button>
         </div>
       </div>
