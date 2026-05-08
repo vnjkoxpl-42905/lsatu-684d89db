@@ -124,28 +124,33 @@ export default function TodayView({
     } as Partial<StudyResource>;
   };
 
-  const GuidedStep = ({ 
-    num, 
-    title, 
-    label, 
-    items, 
-    icon: Icon, 
-    color, 
-    taskKey 
-  }: { 
-    num: string, 
-    title: string, 
-    label: string, 
-    items: string[], 
+  const GuidedStep = ({
+    num,
+    title,
+    label,
+    items,
+    icon: Icon,
+    color,
+    taskKey,
+    stepIndex,
+  }: {
+    num: string,
+    title: string,
+    label: string,
+    items: string[],
     icon: LucideIcon,
     color: string,
-    taskKey: string
+    taskKey: string,
+    stepIndex: number,
   }) => {
     const isDone = !!dayTasks[taskKey];
     
     return (
-      <motion.div 
+      <motion.div
         layout
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1], delay: stepIndex * 0.065 }}
         className={`relative flex gap-6 p-6 rounded-3xl border transition-colors duration-200 ${
           isDone
             ? 'bg-zinc-900/10 border-zinc-900 opacity-60'
@@ -233,31 +238,30 @@ export default function TodayView({
   }
 
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20 max-w-2xl mx-auto">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-[350ms] pb-20 max-w-2xl mx-auto">
       {/* Header Area */}
-      <div className="flex flex-col gap-6 text-center">
-        <div className="space-y-2">
-          <div className="flex items-center justify-center gap-2 text-emerald-500 mb-1">
-            <Sparkles size={14} className="animate-pulse" />
-            <span className="font-bold text-[10px] uppercase tracking-[0.3em]">Day {day} • {data.label}</span>
+      <div className="flex flex-col gap-5">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-emerald-500">
+            <Sparkles size={13} className="animate-pulse" />
+            <span className="font-bold text-[9px] uppercase tracking-[0.3em]">Day {day} &middot; {data.label}</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-serif italic text-white tracking-tight leading-tight">
+          <h1 className="text-4xl md:text-5xl font-serif italic text-white tracking-tight leading-tight">
             {data.focus}
           </h1>
-          <p className="text-zinc-500 font-light text-lg">
+          <p className="text-sm text-zinc-500 font-light leading-relaxed">
             {data.plainGoal}
           </p>
         </div>
-        
-        <div className="flex items-center justify-center gap-4">
-           <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/50 border border-white/[0.05]">
-             <Clock size={14} className="text-zinc-600" />
-             <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{data.time}</span>
-           </div>
-           <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-zinc-900/50 border border-white/[0.05]">
-             <Target size={14} className="text-zinc-600" />
-             <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{data.intensity} Intensity</span>
-           </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/50 border border-white/[0.05]">
+            <Clock size={13} className="text-zinc-600" />
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{data.time}</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/50 border border-white/[0.05]">
+            <Target size={13} className="text-zinc-600" />
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{data.intensity}</span>
+          </div>
         </div>
       </div>
 
@@ -307,48 +311,55 @@ export default function TodayView({
       <div className="space-y-8 relative">
         <div className="absolute left-[30px] top-10 bottom-10 w-px bg-zinc-900" />
         
-        <GuidedStep 
-          num="1" 
-          label="Setup" 
-          title="Open This" 
-          items={data.open} 
-          icon={FileSearch} 
+        <GuidedStep
+          num="1"
+          label="Setup"
+          title="Open This"
+          items={data.open}
+          icon={FileSearch}
           color="text-blue-500"
           taskKey="open"
+          stepIndex={0}
         />
 
-        <GuidedStep 
-          num="2" 
-          label="Knowledge" 
-          title="Read This" 
-          items={data.read} 
-          icon={BookOpen} 
+        <GuidedStep
+          num="2"
+          label="Knowledge"
+          title="Read This"
+          items={data.read}
+          icon={BookOpen}
           color="text-emerald-500"
           taskKey="read"
+          stepIndex={1}
         />
 
-        <GuidedStep 
-          num="3" 
-          label="Execution" 
-          title="Do This" 
-          items={data.do} 
-          icon={Target} 
+        <GuidedStep
+          num="3"
+          label="Execution"
+          title="Do This"
+          items={data.do}
+          icon={Target}
           color="text-indigo-400"
           taskKey="do"
+          stepIndex={2}
         />
 
-        <GuidedStep 
-          num="4" 
-          label="Mastery" 
-          title="Think About This" 
-          items={data.review} 
-          icon={AlertCircle} 
+        <GuidedStep
+          num="4"
+          label="Mastery"
+          title="Think About This"
+          items={data.review}
+          icon={AlertCircle}
           color="text-amber-500"
           taskKey="review"
+          stepIndex={3}
         />
 
-        <motion.div 
+        <motion.div
           layout
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1], delay: 4 * 0.065 }}
           className={`relative flex gap-6 p-6 rounded-3xl border transition-colors duration-200 ${
             !!dayTasks['log']
               ? 'bg-zinc-900/10 border-zinc-900 opacity-60'

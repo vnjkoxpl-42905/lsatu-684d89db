@@ -252,10 +252,30 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
 
 function NavItem({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} aria-current={active ? 'page' : undefined}
-      className={`relative flex items-center gap-3 w-full min-h-[40px] px-3 py-2 text-sm rounded-lg transition-colors duration-150 active:scale-[0.97] transition-transform ${active ? 'bg-zinc-100 text-zinc-950 font-semibold shadow-lg shadow-white/5' : 'text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900/50'}`}>
-      <span className={active ? 'text-zinc-950' : 'text-zinc-600'} aria-hidden="true">{icon}</span>
-      <span className="truncate">{label}</span>
+    <button
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+      className={`relative flex items-center gap-3 w-full min-h-[40px] px-3 py-2 text-sm rounded-lg active:scale-[0.97] transition-transform duration-100 overflow-hidden ${
+        active ? 'text-zinc-950 font-semibold' : 'text-zinc-500 hover:text-zinc-200'
+      }`}
+    >
+      {active && (
+        <motion.div
+          layoutId="pfSidebarIndicator"
+          className="absolute inset-0 bg-zinc-100 rounded-lg shadow-lg shadow-white/5"
+          transition={{ type: 'spring', bounce: 0.12, duration: 0.4 }}
+        />
+      )}
+      {!active && (
+        <span
+          className="absolute inset-0 rounded-lg opacity-0 hover:opacity-100 bg-zinc-900/50 transition-opacity duration-150"
+          aria-hidden="true"
+        />
+      )}
+      <span className={`relative z-10 ${active ? 'text-zinc-950' : 'text-zinc-600'}`} aria-hidden="true">
+        {icon}
+      </span>
+      <span className="relative z-10 truncate">{label}</span>
     </button>
   );
 }
