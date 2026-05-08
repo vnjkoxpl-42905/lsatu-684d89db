@@ -41,6 +41,8 @@ export default function OfficialQuestionPane({
   selectedAnswer,
   eliminatedAnswers,
   isFlagged,
+  answerRevealed = false,
+  correctAnswer,
   highlights,
   highlightMode,
   searchTerm,
