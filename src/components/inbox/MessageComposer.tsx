@@ -239,14 +239,13 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           }
         }}
         placeholder="Write a message…"
-        className="w-full resize-none"
+        className="w-full resize-none min-h-0"
         style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}
       />
-      <div className="flex items-center gap-0.5">
+      <div className="flex items-center gap-1">
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8"
           onClick={() => fileRef.current?.click()}
           disabled={sending}
           aria-label="Attach PDF"
@@ -260,7 +259,6 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
             onClick={polish}
             disabled={sending || polishing || body.trim().length < 3}
             aria-label="Polish with AI"
@@ -275,7 +273,6 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           onClick={send}
           disabled={sending || !canSend}
           size="icon"
-          className="h-8 w-8"
           variant={canSend ? 'default' : 'ghost'}
           aria-label="Send"
         >

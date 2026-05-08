@@ -10,6 +10,7 @@
 //                                          stack against it.
 
 import { useEffect, useMemo, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MessageSquare, ArrowLeft, ExternalLink, X } from 'lucide-react';
@@ -104,6 +105,8 @@ export function FloatingMessenger() {
     }
   };
 
+  const reducedMotion = useReducedMotion();
+
   const showStudentEmpty = !is_admin && !active && !loading && conversations.length === 0;
 
   return (
@@ -118,7 +121,7 @@ export function FloatingMessenger() {
           studentPrimaryId ? 'border-emerald-500/30' : 'border-border',
           'flex items-center justify-center',
           'text-foreground/80 hover:text-foreground',
-          'hover:bg-background transition-colors active:scale-[0.95]',
+          'hover:bg-background transition active:scale-[0.95]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         )}
         aria-label={unreadCount > 0 ? `Open messenger, ${unreadCount} unread` : 'Open messenger'}
@@ -167,21 +170,19 @@ export function FloatingMessenger() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold truncate">Joshua</div>
-                <div className="text-[11px] text-muted-foreground truncate">
-                  {active ? 'Messages and PDF attachments' : 'Your coach'}
-                </div>
+                <div className="text-[11px] text-muted-foreground truncate">Your coach</div>
               </div>
               <button
                 type="button"
                 onClick={openFullInbox}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-accent"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 title="Open full inbox"
               >
                 <span className="hidden sm:inline">Full inbox</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
               <SheetPrimitive.Close
-                className="rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                className="rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="Close messenger"
               >
                 <X className="w-4 h-4" />
@@ -193,10 +194,10 @@ export function FloatingMessenger() {
                 {active ? (
                   <motion.div
                     key="active"
-                    initial={{ opacity: 0, x: 12 }}
+                    initial={reducedMotion ? false : { opacity: 0, x: 12 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 12 }}
-                    transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                    exit={reducedMotion ? {} : { opacity: 0, x: 12 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
                     className="h-full"
                   >
                     <ConversationView
@@ -208,10 +209,10 @@ export function FloatingMessenger() {
                 ) : showStudentEmpty ? (
                   <motion.div
                     key="student-empty"
-                    initial={{ opacity: 0 }}
+                    initial={reducedMotion ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.18 }}
+                    exit={reducedMotion ? {} : { opacity: 0 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.18 }}
                     className="h-full flex"
                   >
                     <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} compact />
@@ -219,10 +220,10 @@ export function FloatingMessenger() {
                 ) : (
                   <motion.div
                     key="list"
-                    initial={{ opacity: 0, x: -12 }}
+                    initial={reducedMotion ? false : { opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -12 }}
-                    transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                    exit={reducedMotion ? {} : { opacity: 0, x: -12 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
                     className="h-full flex flex-col"
                   >
                     {is_admin && (

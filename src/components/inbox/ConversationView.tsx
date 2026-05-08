@@ -122,7 +122,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   const headerInitial = headerName.charAt(0).toUpperCase();
   const headerSubtitle = is_admin
     ? conversation.subject || 'Student message thread'
-    : 'Messages and PDF attachments';
+    : 'Your coach';
 
   const nameById = new Map(
     conversation.participants.map((p) => [p.user_id, formatParticipantName(p.display_name, p.is_admin)]),
