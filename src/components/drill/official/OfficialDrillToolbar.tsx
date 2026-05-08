@@ -92,7 +92,7 @@ export default function OfficialDrillToolbar({
     setHighlightMode(highlightMode === mode ? "none" : mode);
   };
 
-  const timerLabelPrefix = isFullSection ? "Section Time Remaining" : "Elapsed";
+  const timerLabelPrefix = isFullSection || isPracticeSet ? "Section Time Remaining" : "Elapsed";
 
   return (
     <>
