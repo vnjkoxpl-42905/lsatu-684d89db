@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Compass } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,9 +11,10 @@ import { startJoshuaConversation } from "@/lib/joshuaThread";
 interface HelpDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onReplayTour?: () => void;
 }
 
-export default function HelpDialog({ open, onOpenChange }: HelpDialogProps) {
+export default function HelpDialog({ open, onOpenChange, onReplayTour }: HelpDialogProps) {
   const { user } = useAuth();
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
@@ -60,6 +62,20 @@ export default function HelpDialog({ open, onOpenChange }: HelpDialogProps) {
           className="min-h-[140px]"
           autoFocus
         />
+        {onReplayTour && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              onOpenChange(false);
+              onReplayTour();
+            }}
+            className="w-full justify-start gap-2"
+          >
+            <Compass className="h-4 w-4" />
+            Replay the welcome tour
+          </Button>
+        )}
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={sending}>
             Cancel

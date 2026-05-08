@@ -12,12 +12,18 @@ import {
   MessageSquare,
   Calendar,
   Rocket,
+  LifeBuoy,
+  Bell,
   ChevronLeft,
   ChevronRight,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+  useUserPermissions,
+  type PermissionFlag,
+} from "@/hooks/useUserPermissions";
 
 const STORAGE_KEY = "lsatu_guided_tour_v2";
 const LEGACY_KEYS = ["lsatu_guided_tour_v1", "lsatu_welcome_walkthrough_v1"];
@@ -40,9 +46,13 @@ type Step = {
   anchor?: string;
   /** Preferred side for the tooltip relative to the anchor. */
   side?: Side;
+  /** Skip this step if the user lacks the listed permission flag. */
+  requires?: PermissionFlag;
+  /** Skip this step on viewports narrower than `md` (768px). */
+  desktopOnly?: boolean;
 };
 
-const STEPS: Step[] = [
+const ALL_STEPS: Step[] = [
   {
     path: "/foyer",
     icon: Compass,
@@ -54,8 +64,8 @@ const STEPS: Step[] = [
     path: "/foyer",
     icon: Zap,
     eyebrow: "Orbital ring",
-    title: "Your three daily actions",
-    body: "Click the center compass, or any node on the ring, to jump straight into Smart Drill, Resume Practice, or Find a question.",
+    title: "Your primary daily actions",
+    body: "The orbital ring holds your top shortcuts. Click the center node to activate it, or click any outer node to jump straight into that surface. You can swap which actions live here from Settings → Layout.",
     anchor: '[data-tour="foyer-orbital"]',
     side: "right",
   },
@@ -64,18 +74,28 @@ const STEPS: Step[] = [
     icon: PanelLeft,
     eyebrow: "Sidebar",
     title: "Your full workspace",
-    body: "Classroom, Messages, Practice, Schedule — every page in the app lives here. The numbers are unread or due-today counts.",
+    body: "Every workspace surface — Classroom, Messages, Practice, Schedule, and more — opens from the sidebar. The active page is highlighted as you move around.",
     anchor: '[data-tour="foyer-sidebar"]',
     side: "right",
+    desktopOnly: true,
   },
   {
     path: "/foyer",
-    icon: Compass,
-    eyebrow: "Quick dock",
-    title: "Quick tools and notifications",
-    body: "Help, settings, notifications, and your account live up here. Click Help anytime to replay this tour.",
+    icon: Bell,
+    eyebrow: "Top dock",
+    title: "Notifications & your account",
+    body: "The bell shows new alerts; the avatar opens your account menu. New messages from Joshua surface here too.",
     anchor: '[data-tour="foyer-dock"]',
     side: "bottom",
+  },
+  {
+    path: "/foyer",
+    icon: LifeBuoy,
+    eyebrow: "Quick dock",
+    title: "Help, settings, and quick tools",
+    body: "The floating dock at the bottom is your quick-launch row — settings, profile, schedule, inbox, and Help. Open Help to send Joshua a message or replay this tour.",
+    anchor: '[data-tour="foyer-quickdock"]',
+    side: "top",
   },
   {
     path: "/practice",
@@ -83,6 +103,7 @@ const STEPS: Step[] = [
     eyebrow: "Practice",
     title: "Where you actually drill questions",
     body: "Pick Full Section for a 25-question timed test, Smart Builder to let the AI choose your weakest types, or Build a Set to hand-pick.",
+    requires: "has_practice_access",
   },
   {
     path: "/bootcamps",
@@ -90,6 +111,7 @@ const STEPS: Step[] = [
     eyebrow: "Bootcamps",
     title: "Multi-day skill modules",
     body: "Each bootcamp teaches a specific skill — Causation, Flaw, Intro to LR — across days of focused practice. Open one to start.",
+    requires: "has_bootcamp_access",
   },
   {
     path: "/inbox",
@@ -97,6 +119,7 @@ const STEPS: Step[] = [
     eyebrow: "Inbox",
     title: "Direct line to Joshua",
     body: "Real 1-on-1 messaging with your instructor. Send questions, attach PDFs, get personalized feedback.",
+    requires: "has_chat_access",
   },
   {
     path: "/schedule",
@@ -104,13 +127,14 @@ const STEPS: Step[] = [
     eyebrow: "Schedule",
     title: "What's due and when",
     body: "Your weekly plan and upcoming tutoring sessions. Anything scheduled or assigned shows up here so nothing slips.",
+    requires: "has_schedule_access",
   },
   {
     path: "/foyer",
     icon: Rocket,
     eyebrow: "Ready",
     title: "You're all set",
-    body: "Click Help in the dock anytime to replay this tour. Now jump into a Smart Drill to calibrate the engine.",
+    body: "You can replay this tour anytime from Help in the bottom dock. Now jump into a Smart Drill to calibrate the engine.",
   },
 ];
 
@@ -238,27 +262,52 @@ function clamp(v: number, lo: number, hi: number): number {
 export default function GuidedTour() {
   const navigate = useNavigate();
   const location = useLocation();
+  const perms = useUserPermissions();
   const [active, setActive] = React.useState(false);
   const [step, setStep] = React.useState(0);
   const tooltipRef = React.useRef<HTMLDivElement | null>(null);
   const [tooltipH, setTooltipH] = React.useState(180);
   const [vp, setVp] = React.useState({ vw: typeof window !== "undefined" ? window.innerWidth : 1280, vh: typeof window !== "undefined" ? window.innerHeight : 720 });
 
+  // Filter steps the user can't reach so the tour never strands them on a
+  // gated route or a viewport where the anchor is hidden.
+  const STEPS = React.useMemo(() => {
+    const isMobile = vp.vw < 768;
+    return ALL_STEPS.filter((s) => {
+      if (s.desktopOnly && isMobile) return false;
+      if (s.requires && !perms.is_admin && !perms[s.requires]) return false;
+      return true;
+    });
+  }, [perms, vp.vw]);
+
+  // Pick a safe finish destination: prefer /practice, fall back to /foyer.
+  const finishPath = React.useMemo(() => {
+    if (perms.is_admin || perms.has_practice_access) return "/practice";
+    return "/foyer";
+  }, [perms]);
+
   React.useEffect(() => {
     const onStart = () => {
       setStep(0);
       setActive(true);
-      if (location.pathname !== STEPS[0].path) navigate(STEPS[0].path);
+      if (STEPS.length > 0 && location.pathname !== STEPS[0].path) {
+        navigate(STEPS[0].path);
+      }
     };
     window.addEventListener(EVENT_START, onStart as EventListener);
     return () => window.removeEventListener(EVENT_START, onStart as EventListener);
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, STEPS]);
 
   React.useEffect(() => {
     const onResize = () => setVp({ vw: window.innerWidth, vh: window.innerHeight });
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  // If the filtered list shrinks below the current index, snap back in range.
+  React.useEffect(() => {
+    if (step > STEPS.length - 1) setStep(Math.max(0, STEPS.length - 1));
+  }, [STEPS.length, step]);
 
   const close = React.useCallback(() => {
     try {
@@ -273,7 +322,7 @@ export default function GuidedTour() {
       if (next !== s && STEPS[next].path !== location.pathname) navigate(STEPS[next].path);
       return next;
     });
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, STEPS]);
 
   const goBack = React.useCallback(() => {
     setStep((s) => {
@@ -281,12 +330,24 @@ export default function GuidedTour() {
       if (prev !== s && STEPS[prev].path !== location.pathname) navigate(STEPS[prev].path);
       return prev;
     });
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, STEPS]);
 
   React.useEffect(() => {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      // Don't hijack arrow keys when the user is editing text.
+      const t = e.target as HTMLElement | null;
+      const editing =
+        !!t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.tagName === "SELECT" ||
+          t.isContentEditable);
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      if (editing) return;
       if (e.key === "ArrowRight") goNext();
       if (e.key === "ArrowLeft") goBack();
     };
@@ -318,7 +379,7 @@ export default function GuidedTour() {
   const isLast = step === STEPS.length - 1;
   const handleFinish = () => {
     close();
-    navigate("/practice");
+    navigate(finishPath);
   };
 
   // Compute placement
@@ -340,7 +401,10 @@ export default function GuidedTour() {
 
   return (
     <>
-      {/* Dim overlay with cutout for the spotlight */}
+      {/* Dim overlay with cutout for the spotlight. Clicks on the dim area
+          are eaten so users don't accidentally navigate mid-tour; the
+          spotlight cutout itself stays click-through so the highlighted
+          element remains interactive. */}
       <AnimatePresence>
         <motion.div
           key="tour-overlay"
@@ -348,11 +412,13 @@ export default function GuidedTour() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[110] pointer-events-none"
+          className="fixed inset-0 z-[110]"
           aria-hidden
+          onClick={(e) => {
+            // Only swallow clicks on the dim area itself, not on the spotlight.
+            if (e.target === e.currentTarget) e.stopPropagation();
+          }}
         >
-          {/* Backdrop. Use a full overlay; if we have a spot, layer a transparent
-              cutout over it via an inner element with a huge box-shadow. */}
           {spot ? (
             <div
               className="absolute rounded-2xl pointer-events-none"
