@@ -625,69 +625,6 @@ export type Database = {
         }
         Relationships: []
       }
-      external_work_uploads: {
-        Row: {
-          applied_to_analytics: boolean
-          class_id: string | null
-          confidence_score: number | null
-          created_at: string
-          extracted_text: string | null
-          file_name: string
-          file_type: string | null
-          id: string
-          parsed_json: Json | null
-          processing_status: string
-          reviewed_at: string | null
-          reviewed_by: string | null
-          source_platform: string | null
-          storage_path: string
-          student_id: string
-          updated_at: string
-          upload_type: string
-          uploaded_by: string
-        }
-        Insert: {
-          applied_to_analytics?: boolean
-          class_id?: string | null
-          confidence_score?: number | null
-          created_at?: string
-          extracted_text?: string | null
-          file_name: string
-          file_type?: string | null
-          id?: string
-          parsed_json?: Json | null
-          processing_status?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          source_platform?: string | null
-          storage_path: string
-          student_id: string
-          updated_at?: string
-          upload_type?: string
-          uploaded_by: string
-        }
-        Update: {
-          applied_to_analytics?: boolean
-          class_id?: string | null
-          confidence_score?: number | null
-          created_at?: string
-          extracted_text?: string | null
-          file_name?: string
-          file_type?: string | null
-          id?: string
-          parsed_json?: Json | null
-          processing_status?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          source_platform?: string | null
-          storage_path?: string
-          student_id?: string
-          updated_at?: string
-          upload_type?: string
-          uploaded_by?: string
-        }
-        Relationships: []
-      }
       flagged_questions: {
         Row: {
           class_id: string
@@ -923,20 +860,8 @@ export type Database = {
           created_at: string
           created_by: string
           description: string | null
-          difficulty_max: number | null
-          difficulty_min: number | null
-          estimated_minutes: number | null
-          guided_set_type: string | null
           id: string
-          instruction_layout: string | null
-          instructions_markdown: string | null
-          is_guided_set: boolean
-          question_feature: string | null
           question_qids: string[]
-          question_type: string | null
-          reasoning_type: string | null
-          source_pts: string[] | null
-          start_button_label: string | null
           title: string
           updated_at: string
         }
@@ -945,20 +870,8 @@ export type Database = {
           created_at?: string
           created_by: string
           description?: string | null
-          difficulty_max?: number | null
-          difficulty_min?: number | null
-          estimated_minutes?: number | null
-          guided_set_type?: string | null
           id?: string
-          instruction_layout?: string | null
-          instructions_markdown?: string | null
-          is_guided_set?: boolean
-          question_feature?: string | null
           question_qids?: string[]
-          question_type?: string | null
-          reasoning_type?: string | null
-          source_pts?: string[] | null
-          start_button_label?: string | null
           title: string
           updated_at?: string
         }
@@ -967,20 +880,8 @@ export type Database = {
           created_at?: string
           created_by?: string
           description?: string | null
-          difficulty_max?: number | null
-          difficulty_min?: number | null
-          estimated_minutes?: number | null
-          guided_set_type?: string | null
           id?: string
-          instruction_layout?: string | null
-          instructions_markdown?: string | null
-          is_guided_set?: boolean
-          question_feature?: string | null
           question_qids?: string[]
-          question_type?: string | null
-          reasoning_type?: string | null
-          source_pts?: string[] | null
-          start_button_label?: string | null
           title?: string
           updated_at?: string
         }
@@ -1488,36 +1389,6 @@ export type Database = {
         }
         Relationships: []
       }
-      session_replays: {
-        Row: {
-          class_id: string
-          created_at: string
-          events_jsonb: Json
-          id: string
-          mode: string
-          qid: string
-          user_id: string
-        }
-        Insert: {
-          class_id: string
-          created_at?: string
-          events_jsonb: Json
-          id?: string
-          mode: string
-          qid: string
-          user_id: string
-        }
-        Update: {
-          class_id?: string
-          created_at?: string
-          events_jsonb?: Json
-          id?: string
-          mode?: string
-          qid?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       sessions: {
         Row: {
           class_id: string
@@ -1590,96 +1461,6 @@ export type Database = {
           pace_vs_challenge?: number | null
           time_pref?: string | null
           updated_at?: string | null
-        }
-        Relationships: []
-      }
-      smartboard_sessions: {
-        Row: {
-          class_id: string | null
-          created_at: string
-          created_by: string
-          excalidraw_scene_json: Json | null
-          export_pdf_path: string | null
-          id: string
-          linked_recap_item_id: string | null
-          posted_to_classroom: boolean
-          preview_image_path: string | null
-          session_date: string
-          student_id: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          class_id?: string | null
-          created_at?: string
-          created_by: string
-          excalidraw_scene_json?: Json | null
-          export_pdf_path?: string | null
-          id?: string
-          linked_recap_item_id?: string | null
-          posted_to_classroom?: boolean
-          preview_image_path?: string | null
-          session_date?: string
-          student_id: string
-          title?: string
-          updated_at?: string
-        }
-        Update: {
-          class_id?: string | null
-          created_at?: string
-          created_by?: string
-          excalidraw_scene_json?: Json | null
-          export_pdf_path?: string | null
-          id?: string
-          linked_recap_item_id?: string | null
-          posted_to_classroom?: boolean
-          preview_image_path?: string | null
-          session_date?: string
-          student_id?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      student_analytics_sources: {
-        Row: {
-          class_id: string | null
-          created_at: string
-          embed_status: string
-          id: string
-          last_imported_at: string | null
-          last_parsed_summary_json: Json | null
-          notes: string | null
-          source_name: string
-          source_url: string | null
-          student_id: string
-          updated_at: string
-        }
-        Insert: {
-          class_id?: string | null
-          created_at?: string
-          embed_status?: string
-          id?: string
-          last_imported_at?: string | null
-          last_parsed_summary_json?: Json | null
-          notes?: string | null
-          source_name: string
-          source_url?: string | null
-          student_id: string
-          updated_at?: string
-        }
-        Update: {
-          class_id?: string | null
-          created_at?: string
-          embed_status?: string
-          id?: string
-          last_imported_at?: string | null
-          last_parsed_summary_json?: Json | null
-          notes?: string | null
-          source_name?: string
-          source_url?: string | null
-          student_id?: string
-          updated_at?: string
         }
         Relationships: []
       }
@@ -2131,108 +1912,6 @@ export type Database = {
         }
         Relationships: []
       }
-      weekly_plan_items: {
-        Row: {
-          classroom_item_id: string | null
-          created_at: string
-          day_date: string
-          due_at: string | null
-          estimated_minutes: number | null
-          id: string
-          instructions: string | null
-          metadata_json: Json
-          sort_order: number
-          status: string
-          student_id: string
-          title: string
-          unlock_at: string | null
-          updated_at: string
-          weekly_plan_id: string
-        }
-        Insert: {
-          classroom_item_id?: string | null
-          created_at?: string
-          day_date: string
-          due_at?: string | null
-          estimated_minutes?: number | null
-          id?: string
-          instructions?: string | null
-          metadata_json?: Json
-          sort_order?: number
-          status?: string
-          student_id: string
-          title: string
-          unlock_at?: string | null
-          updated_at?: string
-          weekly_plan_id: string
-        }
-        Update: {
-          classroom_item_id?: string | null
-          created_at?: string
-          day_date?: string
-          due_at?: string | null
-          estimated_minutes?: number | null
-          id?: string
-          instructions?: string | null
-          metadata_json?: Json
-          sort_order?: number
-          status?: string
-          student_id?: string
-          title?: string
-          unlock_at?: string | null
-          updated_at?: string
-          weekly_plan_id?: string
-        }
-        Relationships: []
-      }
-      weekly_plans: {
-        Row: {
-          ai_generated: boolean
-          class_id: string | null
-          created_at: string
-          created_by: string
-          id: string
-          published_at: string | null
-          rationale: string | null
-          status: string
-          student_id: string
-          title: string
-          updated_at: string
-          week_end: string
-          week_start: string
-        }
-        Insert: {
-          ai_generated?: boolean
-          class_id?: string | null
-          created_at?: string
-          created_by: string
-          id?: string
-          published_at?: string | null
-          rationale?: string | null
-          status?: string
-          student_id: string
-          title: string
-          updated_at?: string
-          week_end: string
-          week_start: string
-        }
-        Update: {
-          ai_generated?: boolean
-          class_id?: string | null
-          created_at?: string
-          created_by?: string
-          id?: string
-          published_at?: string | null
-          rationale?: string | null
-          status?: string
-          student_id?: string
-          title?: string
-          updated_at?: string
-          week_end?: string
-          week_start?: string
-        }
-        Relationships: []
-      }
       wrong_answer_journal: {
         Row: {
           class_id: string
@@ -2329,16 +2008,6 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
-      get_assignment_counts_per_student: {
-        Args: Record<string, never>
-        Returns: {
-          assigned: number
-          completed: number
-          student_id: string
-          total: number
-          viewed: number
-        }[]
-      }
       get_conversation_participant_names: {
         Args: { _user_ids: string[] }
         Returns: {
@@ -2346,14 +2015,6 @@ export type Database = {
           is_admin: boolean
           user_id: string
         }[]
-      }
-      get_or_create_joshua_conversation: {
-        Args: Record<string, never>
-        Returns: string
-      }
-      get_student_email: {
-        Args: { _student_id: string }
-        Returns: string
       }
       has_role: {
         Args: {

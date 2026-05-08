@@ -1984,11 +1984,10 @@ function DrillContent() {
   // attempt save / WAJ / blind review / section-complete flow is identical
   // to the default layout. Pure visual swap.
   const layoutParam = searchParams.get('layout');
-  const officialEligible =
-    session?.mode === 'full-section' || isPracticeSetMode;
-  const isOfficialLayout =
-    layoutParam === 'official' ||
-    (officialEligible && layoutParam !== 'classic');
+  // Official testing-format layout is now the default for every drill mode
+  // (smart-drill, type-drill, full-section, practice-set, review, etc.).
+  // Pass ?layout=classic to opt out.
+  const isOfficialLayout = layoutParam !== 'classic';
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     // Show navigator only for full sections and build-a-set (practice-set).
