@@ -235,12 +235,12 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
 function EraserIcon() {
   return (
     <svg
-      width="30"
-      height="20"
+      width="36"
+      height="24"
       viewBox="0 0 28 18"
       fill="none"
-      stroke="#334155"
-      strokeWidth="1.25"
+      stroke="#1f2937"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
