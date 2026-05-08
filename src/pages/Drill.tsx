@@ -1982,7 +1982,10 @@ function DrillContent() {
   const isOfficialLayout = searchParams.get('layout') === 'official';
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
-    const showOfficialAnswerNavigator = true;
+    // Show navigator only for full sections and build-a-set (practice-set).
+    // Smart Drill (adaptive) feeds questions one at a time — a per-question
+    // navigator would be misleading there.
+    const showOfficialAnswerNavigator = isFullSection || isPracticeSetMode;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
     if (sectionTimer) {
