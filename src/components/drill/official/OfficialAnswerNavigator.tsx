@@ -53,7 +53,7 @@ export default function OfficialAnswerNavigator({
                 {isCurrent && (
                   <span
                     aria-hidden
-                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-[8px] bg-slate-900"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-[10px] bg-slate-900"
                   />
                 )}
                 <button
@@ -70,7 +70,7 @@ export default function OfficialAnswerNavigator({
                       : undefined
                   }
                   className={cn(
-                    "w-[22px] h-[12px] rounded-full border border-slate-500 transition-colors",
+                    "w-[26px] h-[14px] rounded-full border border-slate-500 transition-colors",
                     isAnswered ? "bg-slate-400" : "bg-white",
                     isClickable && "hover:bg-slate-200 cursor-pointer",
                     !isClickable && !isCurrent && "cursor-default",
@@ -78,7 +78,7 @@ export default function OfficialAnswerNavigator({
                 />
                 <span
                   className={cn(
-                    "mt-0.5 text-[12px] tabular-nums leading-none",
+                    "mt-0.5 text-[13px] tabular-nums leading-none",
                     isCurrent
                       ? "font-bold text-slate-900"
                       : "text-slate-700",
