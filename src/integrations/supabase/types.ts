@@ -1721,6 +1721,57 @@ export type Database = {
         }
         Relationships: []
       }
+      tutor_conversations: {
+        Row: {
+          content: string
+          correct_answer: string | null
+          created_at: string
+          id: string
+          mode: string | null
+          pt: number | null
+          qid: string
+          qnum: number | null
+          qtype: string | null
+          role: string
+          section: number | null
+          session_id: string | null
+          user_answer: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          mode?: string | null
+          pt?: number | null
+          qid: string
+          qnum?: number | null
+          qtype?: string | null
+          role: string
+          section?: number | null
+          session_id?: string | null
+          user_answer?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          mode?: string | null
+          pt?: number | null
+          qid?: string
+          qnum?: number | null
+          qtype?: string | null
+          role?: string
+          section?: number | null
+          session_id?: string | null
+          user_answer?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string
