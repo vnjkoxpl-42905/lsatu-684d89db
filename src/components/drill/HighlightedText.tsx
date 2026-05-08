@@ -7,10 +7,11 @@ interface HighlightedTextProps {
   highlights: Highlight[];
   onHighlightClick?: (id: string) => void;
   eraserMode?: boolean;
+  /** Optional case-insensitive search term to overlay (does not mutate user highlights). */
+  searchTerm?: string;
 }
 
 // ─── Single source of truth for highlight/underline styles ───────────────────
-// Shared by both the dialogue and paragraph rendering paths.
 function getHighlightStyles(color: string): React.CSSProperties {
   const base: React.CSSProperties = {
     display: 'inline',
@@ -24,7 +25,7 @@ function getHighlightStyles(color: string): React.CSSProperties {
     whiteSpace: 'pre-wrap',
     borderRadius: 0,
     WebkitBoxDecorationBreak: 'clone',
-    // @ts-ignore — valid CSS property, missing from older React types
+    // @ts-ignore
     boxDecorationBreak: 'clone',
   };
 
@@ -55,17 +56,51 @@ function getHighlightStyles(color: string): React.CSSProperties {
   };
 }
 
+// ─── Search-term overlay for plain-text segments only ───────────────────────
+// Wraps case-insensitive matches inside a <mark> WITHOUT touching user
+// highlight spans. Returns React nodes for the given plain text slice.
+function renderWithSearch(text: string, searchTerm: string | undefined, keyPrefix: string): React.ReactNode {
+  if (!searchTerm || searchTerm.trim().length < 2) return text;
+  const term = searchTerm.trim();
+  const lower = text.toLowerCase();
+  const lowerTerm = term.toLowerCase();
+  if (!lower.includes(lowerTerm)) return text;
+
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+  let i = 0;
+  while (cursor < text.length) {
+    const idx = lower.indexOf(lowerTerm, cursor);
+    if (idx === -1) {
+      nodes.push(text.slice(cursor));
+      break;
+    }
+    if (idx > cursor) nodes.push(text.slice(cursor, idx));
+    nodes.push(
+      <mark
+        key={`${keyPrefix}-s${i++}`}
+        style={{ backgroundColor: 'rgba(56, 189, 248, 0.55)', color: 'inherit', padding: 0 }}
+      >
+        {text.slice(idx, idx + term.length)}
+      </mark>,
+    );
+    cursor = idx + term.length;
+  }
+  return <>{nodes}</>;
+}
+
 // ─── Inline segment renderer ─────────────────────────────────────────────────
-// Splits `text` into plain and highlighted spans given pre-adjusted highlights
-// (offsets already relative to the start of `text`).
 function renderSegments(
   text: string,
   highlights: Highlight[],
   prefix: string,
   eraserMode: boolean | undefined,
-  onHighlightClick: ((id: string) => void) | undefined
+  onHighlightClick: ((id: string) => void) | undefined,
+  searchTerm?: string,
 ): React.ReactNode {
-  if (highlights.length === 0) return text;
+  if (highlights.length === 0) {
+    return renderWithSearch(text, searchTerm, prefix);
+  }
 
   const sorted = [...highlights].sort((a, b) => a.start - b.start);
   const nodes: React.ReactNode[] = [];
@@ -74,7 +109,8 @@ function renderSegments(
   for (let i = 0; i < sorted.length; i++) {
     const h = sorted[i];
     if (h.start > cursor) {
-      nodes.push(<span key={`${prefix}-t${i}`}>{text.slice(cursor, h.start)}</span>);
+      const slice = text.slice(cursor, h.start);
+      nodes.push(<span key={`${prefix}-t${i}`}>{renderWithSearch(slice, searchTerm, `${prefix}-t${i}`)}</span>);
     }
     nodes.push(
       <span
@@ -91,7 +127,8 @@ function renderSegments(
   }
 
   if (cursor < text.length) {
-    nodes.push(<span key={`${prefix}-tend`}>{text.slice(cursor)}</span>);
+    const slice = text.slice(cursor);
+    nodes.push(<span key={`${prefix}-tend`}>{renderWithSearch(slice, searchTerm, `${prefix}-tend`)}</span>);
   }
 
   return <>{nodes}</>;
@@ -103,8 +140,8 @@ export function HighlightedText({
   highlights,
   onHighlightClick,
   eraserMode,
+  searchTerm,
 }: HighlightedTextProps) {
-  // Detect multi-speaker dialogue (e.g. "Sam: text\nTiya: text")
   const speakerPattern = /^([A-Z][a-z]*):\s+/;
   const turnSplitPattern = /(?=^[A-Z][a-z]*:\s)/gm;
   const rawSegments = text.split(turnSplitPattern).filter(s => s.trim());
@@ -122,13 +159,12 @@ export function HighlightedText({
     dialogueTurns.length === rawSegments.length &&
     dialogueTurns.every(t => t !== null);
 
-  // ── Dialogue rendering ──────────────────────────────────────────────────
   if (isDialogue) {
     let currentOffset = 0;
     const turnRanges = dialogueTurns.map(turn => {
       const speakerPrefix = `${turn!.speaker}: `;
       const turnStart = text.indexOf(speakerPrefix, currentOffset);
-      const start = turnStart + speakerPrefix.length; // body start in raw string
+      const start = turnStart + speakerPrefix.length;
       const end = start + turn!.text.length;
       currentOffset = end;
       return { turn: turn!, start, end };
@@ -148,13 +184,8 @@ export function HighlightedText({
           return (
             <div key={idx} className="leading-relaxed" style={{ lineHeight: 1.7 }}>
               <span className="font-bold">{tr.turn.speaker}:</span>{' '}
-              {/*
-                data-para-start = raw-string offset where this turn's body begins.
-                captureTextSelection uses this to compute accurate character offsets
-                without relying on DOM .toString() across block boundaries.
-              */}
               <span className="inline" data-para-start={tr.start}>
-                {renderSegments(tr.turn.text, turnHighlights, `d${idx}`, eraserMode, onHighlightClick)}
+                {renderSegments(tr.turn.text, turnHighlights, `d${idx}`, eraserMode, onHighlightClick, searchTerm)}
               </span>
             </div>
           );
@@ -163,26 +194,13 @@ export function HighlightedText({
     );
   }
 
-  // ── Paragraph rendering ─────────────────────────────────────────────────
   const paragraphs = text.split('\n\n');
-
-  if (highlights.length === 0) {
-    return (
-      <>
-        {paragraphs.map((para, i) => (
-          <p key={i} style={{ margin: '0 0 12px', lineHeight: 1.6 }}>
-            {para}
-          </p>
-        ))}
-      </>
-    );
-  }
 
   let currentOffset = 0;
   const paragraphRanges = paragraphs.map(para => {
     const start = currentOffset;
     const end = currentOffset + para.length;
-    currentOffset = end + 2; // account for the '\n\n' separator
+    currentOffset = end + 2;
     return { start, end, text: para };
   });
 
@@ -198,13 +216,8 @@ export function HighlightedText({
           }));
 
         return (
-          /*
-            data-para-start = raw-string offset where this paragraph begins.
-            Within a single <p> there are no block boundaries, so within-element
-            DOM text offsets match raw string offsets exactly.
-          */
           <p key={idx} data-para-start={pr.start} style={{ margin: '0 0 12px', lineHeight: 1.6 }}>
-            {renderSegments(pr.text, paraHighlights, `p${idx}`, eraserMode, onHighlightClick)}
+            {renderSegments(pr.text, paraHighlights, `p${idx}`, eraserMode, onHighlightClick, searchTerm)}
           </p>
         );
       })}
