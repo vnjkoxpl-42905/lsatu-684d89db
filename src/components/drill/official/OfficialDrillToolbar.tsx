@@ -271,7 +271,7 @@ function LineSpacingIcon() {
 }
 
 function PipeSeparator() {
-  return <span aria-hidden className="w-px h-7 bg-slate-300 mx-2" />;
+  return <span aria-hidden className="w-px h-7 bg-slate-400 mx-2" />;
 }
 
 export type { HighlightColor };
