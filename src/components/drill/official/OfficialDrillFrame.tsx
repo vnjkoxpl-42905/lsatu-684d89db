@@ -1,24 +1,24 @@
 import * as React from "react";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Play } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
   header?: React.ReactNode;
   children: React.ReactNode;
+  /** When true, dim+blur the runner and show a centered Resume modal. */
+  isPaused?: boolean;
+  /** Resume handler invoked from the overlay button. */
+  onResume?: () => void;
 }
 
 /**
- * Official LawHub-style shell:
- * - Tall white global header with two zones:
- *     • top row: right-aligned help icon, divider, "Welcome, {name}"
- *     • bottom row: caller-provided breadcrumb + action pills
- * - Deep purple-navy body underneath
- * - Centered white "paper" card with visible dark gaps above and below
+ * Official LawHub-style shell: white global header, dark body, centered
+ * white "paper" card. When `isPaused` is true, the card is blurred/dimmed
+ * and a centered modal blocks all interaction until Resume is clicked.
  */
-export default function OfficialDrillFrame({ header, children }: Props) {
+export default function OfficialDrillFrame({ header, children, isPaused, onResume }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
-  // Per spec: never render bare "Welcome". Fall back to "Joshua".
   const welcomeName = rawName && rawName.length > 0 ? rawName.split(/\s+/)[0] : "Joshua";
 
   return (
@@ -27,7 +27,6 @@ export default function OfficialDrillFrame({ header, children }: Props) {
       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
       <header className="bg-white border-b border-slate-200">
-        {/* Top row: right-aligned help icon + Welcome */}
         <div className="px-4 sm:px-6 pt-2 pb-1.5 flex items-center justify-end gap-3 text-[13px] text-slate-700">
           <button
             type="button"
@@ -40,17 +39,46 @@ export default function OfficialDrillFrame({ header, children }: Props) {
           <span aria-hidden className="w-px h-5 bg-slate-300" />
           <span className="font-medium">Welcome, {welcomeName}</span>
         </div>
-        {/* Bottom row: breadcrumb + pill buttons */}
         {header && (
           <div className="px-4 sm:px-6 pb-2 pt-0.5">
             {header}
           </div>
         )}
       </header>
-      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex">
-        <div className="mx-auto w-full max-w-[1400px] flex-1 min-h-[680px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col">
+      <main className="flex-1 px-2 sm:px-4 pt-3 sm:pt-4 pb-3 sm:pb-5 flex relative">
+        <div
+          className={
+            "mx-auto w-full max-w-[1400px] flex-1 min-h-[700px] bg-white text-black rounded-md border border-slate-300 shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col transition-[filter,opacity] " +
+            (isPaused ? "blur-[3px] opacity-60 pointer-events-none select-none" : "")
+          }
+          aria-hidden={isPaused ? "true" : undefined}
+        >
           {children}
         </div>
+
+        {isPaused && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Section paused"
+            className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          >
+            <div className="bg-white rounded-md shadow-2xl border border-slate-200 px-10 py-8 max-w-md w-[92%] text-center">
+              <h2 className="text-[20px] font-semibold text-slate-900 mb-2">Section Paused</h2>
+              <p className="text-[14px] text-slate-600 mb-6">
+                The timer is paused. Click Resume to continue your section.
+              </p>
+              <button
+                type="button"
+                onClick={onResume}
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-[#7f1d1d] hover:bg-[#991b1b] text-white px-6 py-2.5 text-[14px] font-semibold min-w-[160px] transition-colors"
+              >
+                <Play className="w-4 h-4" />
+                Resume
+              </button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
