@@ -1,21 +1,27 @@
 import * as React from "react";
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ArrowRight, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { LRQuestion } from '@/lib/questionLoader';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
+export type TutorMode = 'post-answer' | 'socratic';
+
 interface TutorChatModalProps {
   open: boolean;
   question: LRQuestion | null;
   userAnswer: string;
   onClose: () => void;
+  mode?: TutorMode;
+  sessionId?: string;
+  onNext?: () => void;
 }
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -26,29 +32,30 @@ export function TutorChatModal({
   question,
   userAnswer,
   onClose,
+  mode = 'socratic',
+  sessionId,
+  onNext,
 }: TutorChatModalProps) {
   const isMobile = useIsMobile();
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [initializing, setInitializing] = React.useState(true);
+  const [breakdownOpen, setBreakdownOpen] = React.useState(true);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const abortRef = React.useRef<AbortController | null>(null);
 
-  // Scroll to bottom as messages arrive
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Focus input when coaching surface is ready
   React.useEffect(() => {
     if (!isLoading && !initializing) {
       inputRef.current?.focus();
     }
   }, [isLoading, initializing]);
 
-  // Open → load first Socratic question
   React.useEffect(() => {
     if (open && question && initializing) {
       loadInitialQuestion();
@@ -56,7 +63,6 @@ export function TutorChatModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, question, initializing]);
 
-  // Reset + abort on close
   React.useEffect(() => {
     if (!open) {
       abortRef.current?.abort();
@@ -65,10 +71,10 @@ export function TutorChatModal({
       setInput('');
       setInitializing(true);
       setIsLoading(false);
+      setBreakdownOpen(true);
     }
   }, [open]);
 
-  // Abort on unmount
   React.useEffect(() => {
     return () => {
       abortRef.current?.abort();
@@ -93,9 +99,33 @@ export function TutorChatModal({
     reasoningType: q.reasoningType,
   });
 
-  // Stream SSE chunks from the tutor-chat edge function, appending deltas.
+  // Persist a single message to the tutor_conversations table (best-effort).
+  const persistMessage = async (q: LRQuestion, role: 'user' | 'assistant', content: string) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      await (supabase as any).from('tutor_conversations').insert({
+        user_id: user.id,
+        qid: q.qid,
+        session_id: sessionId ?? null,
+        pt: q.pt,
+        section: q.section,
+        qnum: q.qnum,
+        qtype: q.qtype,
+        user_answer: userAnswer,
+        correct_answer: q.correctAnswer,
+        role,
+        content,
+        mode,
+      });
+    } catch (e) {
+      // non-fatal
+      console.warn('persist tutor message failed', e);
+    }
+  };
+
   const streamTutorReply = async (
-    body: { question: any; messages: Message[] },
+    body: { question: any; messages: Message[]; mode: TutorMode },
     signal: AbortSignal,
     onDelta: (text: string) => void,
   ): Promise<void> => {
@@ -118,9 +148,7 @@ export function TutorChatModal({
       try {
         const err = await resp.json();
         msg = err.error || err.message || msg;
-      } catch {
-        // non-JSON error body
-      }
+      } catch {}
       throw new Error(msg);
     }
 
@@ -145,9 +173,7 @@ export function TutorChatModal({
           const json = JSON.parse(payload);
           const delta = json.choices?.[0]?.delta?.content;
           if (typeof delta === 'string' && delta.length > 0) onDelta(delta);
-        } catch {
-          // skip malformed chunk
-        }
+        } catch {}
       }
     }
   };
@@ -167,17 +193,18 @@ export function TutorChatModal({
     const controller = new AbortController();
     abortRef.current = controller;
 
-    // Prime empty assistant message we'll stream into
     setMessages([{ role: 'assistant', content: '' }]);
     setIsLoading(true);
 
+    let final = '';
     try {
       await streamTutorReply(
-        { question: buildQuestionData(question), messages: [] },
+        { question: buildQuestionData(question), messages: [], mode },
         controller.signal,
-        appendDelta,
+        (d) => { final += d; appendDelta(d); },
       );
       setInitializing(false);
+      if (final.trim()) persistMessage(question, 'assistant', final);
     } catch (e: any) {
       if (e?.name === 'AbortError') return;
       const msg = e?.message || 'Unexpected error from coaching service.';
@@ -199,16 +226,20 @@ export function TutorChatModal({
     setMessages([...nextHistory, { role: 'assistant', content: '' }]);
     setIsLoading(true);
 
+    persistMessage(question, 'user', userMessage);
+
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
+    let final = '';
     try {
       await streamTutorReply(
-        { question: buildQuestionData(question), messages: nextHistory },
+        { question: buildQuestionData(question), messages: nextHistory, mode },
         controller.signal,
-        appendDelta,
+        (d) => { final += d; appendDelta(d); },
       );
+      if (final.trim()) persistMessage(question, 'assistant', final);
     } catch (e: any) {
       if (e?.name === 'AbortError') return;
       const msg = e?.message || 'Unexpected error from coaching service.';
@@ -238,58 +269,101 @@ export function TutorChatModal({
   const awaitingFirstToken =
     isLoading && (!lastMsg || (lastMsg.role === 'assistant' && lastMsg.content === ''));
 
+  const isPostAnswer = mode === 'post-answer';
+  const breakdown = question.breakdown;
+
   return (
     <div
       className={cn(
-        "fixed z-50 flex flex-col",
+        "fixed z-50 flex flex-col font-sans",
         "bg-neutral-950/95 backdrop-blur-xl",
         "border border-white/[0.06] ring-1 ring-white/[0.04]",
         "shadow-2xl shadow-black/40",
         isMobile
-          ? "inset-x-0 bottom-0 h-[85dvh] rounded-t-2xl animate-in slide-in-from-bottom duration-300"
-          : "bottom-6 left-6 w-[380px] max-h-[420px] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+          ? "inset-x-0 bottom-0 h-[88dvh] rounded-t-2xl animate-in slide-in-from-bottom duration-300"
+          : isPostAnswer
+            ? "bottom-6 right-6 w-[440px] max-h-[78vh] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
+            : "bottom-6 left-6 w-[380px] max-h-[420px] rounded-2xl animate-in slide-in-from-bottom-4 fade-in duration-300"
       )}
     >
-      {/* ── Drag handle (mobile only) ── */}
       {isMobile && (
         <div className="shrink-0 flex justify-center pt-2 pb-1">
           <div className="h-1 w-10 rounded-full bg-white/20" />
         </div>
       )}
 
-      {/* ── Header ─────────────────────────────────────────────────── */}
-      <div className="shrink-0 px-5 pt-3 pb-3">
-        <span className="text-[10px] tracking-[0.18em] text-neutral-500 font-medium uppercase select-none">
-          Coach
-        </span>
+      {/* Header */}
+      <div className="shrink-0 px-5 pt-3 pb-3 flex items-center justify-between border-b border-white/[0.04]">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400/80" />
+          <span className="text-[10px] tracking-[0.18em] text-neutral-400 font-semibold uppercase select-none">
+            {isPostAnswer ? 'AI Tutor' : 'Coach'}
+          </span>
+        </div>
+        {isPostAnswer && (
+          <span className="text-[10px] text-neutral-500 tabular-nums">
+            You: ({userAnswer}) · Correct: ({question.correctAnswer})
+          </span>
+        )}
       </div>
 
-      {/* ── Messages ────────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-5 pb-2 min-h-0">
-        <div className="space-y-4">
+      {/* Structural breakdown (post-answer only) */}
+      {isPostAnswer && breakdown && (
+        <div className="shrink-0 px-5 pt-3 pb-2 border-b border-white/[0.04]">
+          <button
+            onClick={() => setBreakdownOpen(o => !o)}
+            className="flex items-center justify-between w-full text-[11px] tracking-wide uppercase text-neutral-400 hover:text-neutral-200 font-medium"
+          >
+            <span>Question breakdown</span>
+            {breakdownOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+          {breakdownOpen && (
+            <dl className="mt-2.5 space-y-1.5 text-[12.5px] leading-[1.55] text-neutral-300">
+              {breakdown.conclusion && (
+                <div><dt className="inline text-neutral-500 font-medium">Conclusion · </dt><dd className="inline">{breakdown.conclusion}</dd></div>
+              )}
+              {Array.isArray(breakdown.evidence) && breakdown.evidence.length > 0 && (
+                <div><dt className="inline text-neutral-500 font-medium">Evidence · </dt><dd className="inline">{breakdown.evidence.join('; ')}</dd></div>
+              )}
+              {breakdown.objection && (
+                <div><dt className="inline text-neutral-500 font-medium">Objection · </dt><dd className="inline">{breakdown.objection}</dd></div>
+              )}
+              {breakdown.crucialInsight && (
+                <div className="pt-1 mt-1.5 border-t border-white/[0.04]"><dt className="inline text-amber-400/80 font-medium">Key insight · </dt><dd className="inline text-neutral-200">{breakdown.crucialInsight}</dd></div>
+              )}
+            </dl>
+          )}
+        </div>
+      )}
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-5 py-3 min-h-0">
+        <div className="space-y-3.5">
           {messages.map((msg, idx) =>
             msg.role === 'assistant' ? (
               msg.content.length > 0 ? (
-                <p
+                <div
                   key={idx}
                   className={cn(
-                    "leading-[1.65] text-neutral-200 whitespace-pre-wrap animate-in fade-in duration-200 select-text",
-                    isMobile ? "text-[15px]" : "text-[13px]"
+                    "leading-[1.65] text-neutral-100 select-text prose prose-invert prose-sm max-w-none",
+                    "prose-p:my-2 prose-strong:text-white prose-strong:font-semibold",
+                    "prose-code:text-amber-300 prose-code:bg-white/5 prose-code:px-1 prose-code:rounded",
+                    isMobile ? "text-[15px]" : "text-[13.5px]"
                   )}
                 >
-                  {msg.content}
-                </p>
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
               ) : null
             ) : (
-              <p
+              <div
                 key={idx}
                 className={cn(
-                  "text-right leading-[1.5] text-neutral-500 italic whitespace-pre-wrap animate-in fade-in duration-150 select-text",
-                  isMobile ? "text-[14px]" : "text-[12px]"
+                  "ml-8 px-3 py-2 rounded-lg bg-white/[0.05] text-neutral-200 select-text",
+                  isMobile ? "text-[14.5px] leading-[1.55]" : "text-[12.5px] leading-[1.5]"
                 )}
               >
                 {msg.content}
-              </p>
+              </div>
             )
           )}
 
@@ -303,25 +377,15 @@ export function TutorChatModal({
         </div>
       </div>
 
-      {/* ── Input ───────────────────────────────────────────────────── */}
+      {/* Input + actions */}
       <div
         className={cn(
-          "shrink-0 px-4 pt-2",
+          "shrink-0 px-4 pt-2 border-t border-white/[0.04]",
           isMobile
-            ? "pb-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/[0.04] bg-neutral-950/95"
+            ? "pb-3 [padding-bottom:max(0.75rem,env(safe-area-inset-bottom))] bg-neutral-950/95"
             : "pb-3"
         )}
       >
-        {/* Return CTA pinned above composer on mobile */}
-        {isMobile && (
-          <button
-            onClick={onClose}
-            className="w-full mb-2 min-h-[48px] py-3 rounded-lg bg-white text-neutral-900 text-[14px] font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none"
-          >
-            Return to question →
-          </button>
-        )}
-
         <div className={cn(
           "flex items-center gap-2 px-3",
           isMobile ? "py-3" : "py-2",
@@ -345,27 +409,49 @@ export function TutorChatModal({
             disabled={!input.trim() || isLoading || initializing}
             className={cn(
               "shrink-0 rounded-full flex items-center justify-center transition-all duration-150",
-              isMobile ? "w-9 h-9" : "w-6 h-6",
+              isMobile ? "w-9 h-9" : "w-7 h-7",
               input.trim() && !isLoading && !initializing
-                ? "bg-white/10 text-neutral-200 hover:bg-white/20 active:scale-95"
+                ? "bg-white/15 text-neutral-100 hover:bg-white/25 active:scale-95"
                 : "bg-white/[0.04] text-neutral-600 cursor-not-allowed"
             )}
           >
-            <ArrowUp className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
+            <ArrowUp className={isMobile ? "w-4 h-4" : "w-3.5 h-3.5"} />
           </button>
         </div>
 
-        {/* Desktop: return CTA below composer */}
-        {!isMobile && (
-          <div className="mt-2 px-1">
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={onClose}
+            className={cn(
+              "flex-1 rounded-lg bg-white/[0.06] text-neutral-300 font-medium hover:bg-white/[0.1] active:bg-white/[0.12] transition-colors duration-150 select-none",
+              isMobile ? "py-3 text-[14px]" : "py-2 text-[12.5px]"
+            )}
+          >
+            Close
+          </button>
+          {isPostAnswer && onNext && (
+            <button
+              onClick={onNext}
+              className={cn(
+                "flex-[1.4] rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none flex items-center justify-center gap-1.5",
+                isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
+              )}
+            >
+              Next question <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          )}
+          {!isPostAnswer && (
             <button
               onClick={onClose}
-              className="w-full py-2.5 rounded-lg bg-white text-neutral-900 text-[13px] font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none"
+              className={cn(
+                "flex-1 rounded-lg bg-white text-neutral-900 font-semibold hover:bg-neutral-100 active:bg-neutral-200 transition-colors duration-150 select-none",
+                isMobile ? "py-3 text-[14px]" : "py-2 text-[13px]"
+              )}
             >
               Return to question →
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

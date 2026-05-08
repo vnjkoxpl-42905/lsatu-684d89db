@@ -2081,6 +2081,12 @@ function DrillContent() {
               onShowAnswer={() => {
                 if (!currentQuestion) return;
                 setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
+                // If wrong, auto-open the AI tutor in post-answer mode
+                if (selectedAnswer && selectedAnswer !== currentQuestion.correctAnswer) {
+                  setTutorQuestionSnapshot(currentQuestion);
+                  setTutorUserAnswerSnapshot(selectedAnswer);
+                  setTutorChatOpen(true);
+                }
               }}
             />
           }
@@ -2573,6 +2579,16 @@ function DrillContent() {
             open={tutorChatOpen}
             question={tutorQuestionSnapshot}
             userAnswer={tutorUserAnswerSnapshot}
+            mode={session?.mode === 'adaptive' && tutorQuestionSnapshot && showAnswerRevealed.get(tutorQuestionSnapshot.qid) ? 'post-answer' : 'socratic'}
+            sessionId={session?.sessionId}
+            onNext={() => {
+              setTutorChatOpen(false);
+              setTutorQuestionSnapshot(null);
+              setTutorUserAnswerSnapshot('');
+              setAnswerLocked(false);
+              const next = isPracticeSetMode ? handlePracticeSetNext : handleNext;
+              next();
+            }}
             onClose={() => {
               setTutorChatOpen(false);
               setTutorQuestionSnapshot(null);
