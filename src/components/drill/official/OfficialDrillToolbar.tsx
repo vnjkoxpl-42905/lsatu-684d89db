@@ -210,12 +210,12 @@ export default function OfficialDrillToolbar({
 function MarkerIcon({ tipColor }: { tipColor: string }) {
   return (
     <svg
-      width="26"
-      height="26"
+      width="30"
+      height="30"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#334155"
-      strokeWidth="1.25"
+      stroke="#1f2937"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
