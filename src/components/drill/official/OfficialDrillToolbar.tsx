@@ -59,7 +59,7 @@ export default function OfficialDrillToolbar({
     {
       mode: "underline",
       label: "Underline",
-      icon: <UnderlineIcon className="w-[22px] h-[22px] text-slate-600" strokeWidth={2.25} />,
+      icon: <UnderlineIcon className="w-[24px] h-[24px] text-slate-700" strokeWidth={2.5} />,
       activeBg: "bg-slate-200",
     },
     {
@@ -168,9 +168,9 @@ export default function OfficialDrillToolbar({
           <div className="ml-auto">
             <div
               role="timer"
-              className="rounded-sm border-2 border-[#7f1d1d] text-black px-5 py-2 text-[15px] font-medium tabular-nums whitespace-nowrap"
+              className="rounded-sm border-2 border-[#7f1d1d] text-black px-6 py-2 text-[15px] font-semibold tabular-nums whitespace-nowrap min-w-[260px] text-center"
             >
-              {timerLabelPrefix}: {timerLabel || "00:00"}
+              {timerLabelPrefix}: {(timerLabel || "00:00").replace(/^(\d):/, "0$1:")}
             </div>
           </div>
         </div>
@@ -210,8 +210,8 @@ export default function OfficialDrillToolbar({
 function MarkerIcon({ tipColor }: { tipColor: string }) {
   return (
     <svg
-      width="30"
-      height="30"
+      width="34"
+      height="34"
       viewBox="0 0 24 24"
       fill="none"
       stroke="#1f2937"
@@ -235,8 +235,8 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
 function EraserIcon() {
   return (
     <svg
-      width="36"
-      height="24"
+      width="40"
+      height="26"
       viewBox="0 0 28 18"
       fill="none"
       stroke="#1f2937"

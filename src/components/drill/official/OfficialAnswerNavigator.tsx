@@ -38,8 +38,8 @@ export default function OfficialAnswerNavigator({
   if (total === 0) return null;
 
   return (
-    <div className="border-t border-slate-200 bg-white">
-      <div className="px-6 py-3 flex items-end gap-3">
+    <div className="border-t-2 border-slate-300 bg-white shadow-[0_-2px_6px_rgba(0,0,0,0.06)] mt-auto">
+      <div className="px-6 py-4 flex items-end gap-3">
         <ol className="flex items-end gap-2 flex-nowrap overflow-x-auto min-w-0 flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {questionQueue.map((qid, i) => {
             const isCurrent = i === currentIndex;
@@ -70,7 +70,7 @@ export default function OfficialAnswerNavigator({
                       : undefined
                   }
                   className={cn(
-                    "w-[26px] h-[14px] rounded-full border border-slate-500 transition-colors",
+                    "w-[28px] h-[15px] rounded-full border border-slate-500 transition-colors",
                     isAnswered ? "bg-slate-400" : "bg-white",
                     isClickable && "hover:bg-slate-200 cursor-pointer",
                     !isClickable && !isCurrent && "cursor-default",
@@ -97,18 +97,18 @@ export default function OfficialAnswerNavigator({
             onClick={onPrev}
             disabled={currentIndex <= 0}
             aria-label="Previous question"
-            className="rounded-sm border border-slate-400 bg-white px-3 py-2 text-slate-800 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded-sm border border-slate-500 bg-white w-10 h-10 flex items-center justify-center text-slate-800 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" strokeWidth={2.25} />
+            <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
           </button>
           <button
             type="button"
             onClick={onNext}
             disabled={currentIndex >= total - 1}
             aria-label="Next question"
-            className="rounded-sm border-2 border-slate-500 bg-white px-3 py-2 text-slate-900 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="rounded-sm border border-slate-500 bg-white w-10 h-10 flex items-center justify-center text-slate-900 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            <ArrowRight className="w-5 h-5" strokeWidth={2.25} />
+            <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
           </button>
         </div>
       </div>
