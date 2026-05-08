@@ -2579,6 +2579,16 @@ function DrillContent() {
             open={tutorChatOpen}
             question={tutorQuestionSnapshot}
             userAnswer={tutorUserAnswerSnapshot}
+            mode={session?.mode === 'adaptive' && tutorQuestionSnapshot && showAnswerRevealed.get(tutorQuestionSnapshot.qid) ? 'post-answer' : 'socratic'}
+            sessionId={session?.sessionId}
+            onNext={() => {
+              setTutorChatOpen(false);
+              setTutorQuestionSnapshot(null);
+              setTutorUserAnswerSnapshot('');
+              setAnswerLocked(false);
+              const next = isPracticeSetMode ? handlePracticeSetNext : handleNext;
+              next();
+            }}
             onClose={() => {
               setTutorChatOpen(false);
               setTutorQuestionSnapshot(null);
