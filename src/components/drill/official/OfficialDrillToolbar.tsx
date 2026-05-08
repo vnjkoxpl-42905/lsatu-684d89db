@@ -19,7 +19,7 @@ type HighlightMode = "none" | "yellow" | "pink" | "orange" | "underline" | "eras
 
 export const FONT_SCALES = [
   { key: "sm", label: "Small", value: 0.9 },
-  { key: "md", label: "Medium", value: 1.0 },
+  { key: "md", label: "Default", value: 1.0 },
   { key: "lg", label: "Large", value: 1.15 },
   { key: "xl", label: "Extra Large", value: 1.3 },
 ] as const;
@@ -148,7 +148,7 @@ export default function OfficialDrillToolbar({
                   <span aria-hidden className="text-[13px] font-bold leading-none">a</span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="start" className="w-44 p-1">
+              <PopoverContent align="start" sideOffset={6} className="w-56 p-2 bg-white border border-slate-200 shadow-lg rounded-md">
                 {FONT_SCALES.map((opt) => {
                   const selected = Math.abs(fontScale - opt.value) < 0.001;
                   return (
@@ -160,12 +160,19 @@ export default function OfficialDrillToolbar({
                         setAaOpen(false);
                       }}
                       className={cn(
-                        "w-full flex items-center justify-between px-2 py-1.5 text-[14px] rounded-sm hover:bg-slate-100 text-slate-800",
-                        selected && "font-semibold",
+                        "w-full flex items-center justify-between px-3 py-2 text-[15px] rounded-sm hover:bg-slate-50 text-slate-900",
                       )}
                     >
                       <span>{opt.label}</span>
-                      {selected && <Check className="w-4 h-4 text-slate-700" />}
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "w-4 h-4 rounded-full border-2 flex items-center justify-center",
+                          selected ? "border-blue-600" : "border-slate-400",
+                        )}
+                      >
+                        {selected && <span className="w-2 h-2 rounded-full bg-blue-600" />}
+                      </span>
                     </button>
                   );
                 })}
