@@ -1979,7 +1979,12 @@ function DrillContent() {
   // Opt-in via /drill?layout=official. Reuses every existing handler so the
   // attempt save / WAJ / blind review / section-complete flow is identical
   // to the default layout. Pure visual swap.
-  const isOfficialLayout = searchParams.get('layout') === 'official';
+  const layoutParam = searchParams.get('layout');
+  const officialEligible =
+    session?.mode === 'full-section' || isPracticeSetMode;
+  const isOfficialLayout =
+    layoutParam === 'official' ||
+    (officialEligible && layoutParam !== 'classic');
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
     // Show navigator only for full sections and build-a-set (practice-set).

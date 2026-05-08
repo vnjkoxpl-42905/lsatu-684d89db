@@ -6,27 +6,15 @@ interface BreadcrumbItem {
 }
 
 interface Props {
-  /**
-   * Breadcrumb items rendered on the left of the strip. Last item is treated
-   * as the current location (rendered without a link). Example:
-   *   [
-   *     { label: "Library", onClick: () => navigate("/practice") },
-   *     { label: "The Official LSAT PrepTest 101", onClick: ... },
-   *     { label: "Section 2" },
-   *   ]
-   */
   breadcrumbs: BreadcrumbItem[];
   isPaused?: boolean;
-  /** Undefined when no pausable timer (e.g. unlimited stopwatch modes). */
   onTogglePause?: () => void;
   onComplete: () => void;
 }
 
 /**
- * Session strip rendered on the navy backdrop, ABOVE the white test paper.
- * Mirrors the LawHub layout: breadcrumb left, "Pause Section" + "Complete
- * Section" pill buttons right. The timer is NOT here — it lives only in
- * the toolbar's dark-red box.
+ * Content of the white global header bar. Breadcrumb on the left,
+ * gray pill action buttons on the right.
  */
 export default function OfficialSessionStrip({
   breadcrumbs,
@@ -35,7 +23,7 @@ export default function OfficialSessionStrip({
   onComplete,
 }: Props) {
   return (
-    <div className="mx-auto w-full max-w-[1280px] mb-3 sm:mb-4 px-1 sm:px-2 flex items-center gap-3 text-[13px]">
+    <div className="flex items-center justify-between gap-4 w-full text-[14px]">
       {/* Left: breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 flex-1 truncate">
         {breadcrumbs.map((bc, i) => {
@@ -43,18 +31,18 @@ export default function OfficialSessionStrip({
           const isClickable = !isLast && !!bc.onClick;
           return (
             <React.Fragment key={`${bc.label}-${i}`}>
-              {i > 0 && <span aria-hidden className="text-slate-500">/</span>}
+              {i > 0 && <span aria-hidden className="text-slate-400">/</span>}
               {isClickable ? (
                 <button
                   type="button"
                   onClick={bc.onClick}
-                  className="text-sky-300 hover:text-sky-200 transition-colors"
+                  className="text-blue-700 hover:text-blue-800 transition-colors"
                 >
                   {bc.label}
                 </button>
               ) : (
                 <span
-                  className={isLast ? "text-rose-300 font-medium" : "text-slate-300"}
+                  className={isLast ? "text-[#7f1d1d] font-medium" : "text-blue-700"}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {bc.label}
@@ -65,13 +53,13 @@ export default function OfficialSessionStrip({
         })}
       </nav>
 
-      {/* Right: Pause Section + Complete Section pills */}
+      {/* Right: gray pill buttons */}
       <div className="flex items-center gap-2 shrink-0">
         {onTogglePause && (
           <button
             type="button"
             onClick={onTogglePause}
-            className="rounded border border-slate-300 bg-white px-4 py-1.5 text-[13px] font-medium text-slate-900 hover:bg-slate-100 transition-colors"
+            className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-blue-900 px-5 py-1.5 text-[14px] font-medium transition-colors"
           >
             {isPaused ? "Resume Section" : "Pause Section"}
           </button>
@@ -79,7 +67,7 @@ export default function OfficialSessionStrip({
         <button
           type="button"
           onClick={onComplete}
-          className="rounded border border-slate-300 bg-white px-4 py-1.5 text-[13px] font-medium text-slate-900 hover:bg-slate-100 transition-colors"
+          className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-blue-900 px-5 py-1.5 text-[14px] font-medium transition-colors"
         >
           Complete Section
         </button>

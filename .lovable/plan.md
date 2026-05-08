@@ -1,66 +1,145 @@
 ## Goal
 
-Make the `/drill?layout=official` surface visually identical to the official LawHub testing UI (image 1). Today's version (image 2) is close in skeleton but drifts on the backdrop color, the way the white paper sits inside it, button styling, icons, answer choice shape, and a missing bottom navigator on non-full-section runs.
+Make the section-runner visually emulate the official LawHub screenshot. Current preview drifts on header structure, card placement/height, toolbar weight, timer label, typography scale, pane split, and bottom navigator presence. Presentation-only — no business logic, no handler signatures, no new deps.
 
-## Differences I found (image 2 → image 1)
+## Mode flags (verified in Drill.tsx)
 
-1. **Background "blue ocean"**
-   - Now: `bg-[#0f172a]` (almost black slate).
-   - Target: a true deep navy with a slight blue cast (≈ `#0B1F3A` / `hsl(217 55% 14%)`), matching the LawHub canvas.
+- Full Section → `session.mode === 'full-section'`
+- Build-a-Set → local boolean `isPracticeSetMode` (set when a practice-set is detected at session boot)
+- Smart Drill → `session.mode === 'adaptive'`
 
-2. **How the white paper "sits"**
-   - Now: rounded-md card, big shadow, only as tall as its content → a small white box floating in a huge dark void below.
-   - Target: the paper is essentially a full testing surface — square corners (or 2px radius max), thin 1px dark navy border, no drop shadow, and it stretches to fill the viewport height so there is no dark void below the choices. Bottom navigator is *always* attached at the bottom of the paper.
-
-3. **Outer max-width / padding**
-   - Now: `max-w-[1180px]`, `py-3 sm:py-6`, paper hugs content height.
-   - Target: `max-w-[1280px]`, slightly tighter top padding, paper uses `min-h-[calc(100vh-72px)]` and `flex flex-col` so the question pane grows and the navigator pins to the bottom edge of the paper.
-
-4. **Session strip (top, on the navy)**
-   - Breadcrumb: looks right. Keep "Library" gray, "PrepTest …" sky blue link, "Section N" rose.
-   - Buttons: today they're transparent with a slate border. Target is **solid white pills with dark slate text** (`bg-white text-slate-900 border border-slate-300`) and slightly larger horizontal padding.
-
-5. **Toolbar row**
-   - Order in image 1: `Directions | Find Text | U | yellow | pink | orange | eraser | Aa | line-spacing | Section Time Remaining` — current order matches, but:
-     - `U` underline button: keep, but render as a real underlined "U" glyph (current code uses a Lucide `Underline` icon — close enough; just confirm spacing).
-     - Highlighter pen icons: bigger (24×24) and visibly slanted with a clearly colored tip — current SVG is correct but needs ~+2px and slightly thicker stroke so the tip reads as colored, not gray.
-     - Eraser: chunky two-tone (pink top / white bottom) — current is OK; just enlarge to match.
-     - Pipe separators: a touch taller and lighter color (`bg-slate-300` → `bg-slate-200`, height `h-6`).
-     - Timer box: dark-red border + dark-red text, narrow vertical padding — currently good; tweak border width to 1.5px and font to medium tabular.
-
-6. **Question pane (the biggest visual delta)**
-   - Now: two-column grid, `min-h-[420px]`, content top-aligned, lots of empty white below (because the paper itself doesn't expand).
-   - Target: stimulus left / stem+choices right with the **stimulus column wider** and choices column slightly narrower (≈ `40% / 60%` instead of `50/50`). Pane should `flex-1` so it expands to fill the paper.
-   - Answer choice "bullets": currently perfect circles. Target is **elliptical ovals** (≈ `28×18px`, `rounded-full`) with the letter centered inside, thin slate border. Selected = filled dark slate w/ white letter (already correct).
-   - Each choice row has the eye/eliminate icon on the far right — already present, just align baseline with the choice letter.
-   - Stem flag icon: blue outline flag (`text-[#2563eb]`) — already correct, just bump to `w-5 h-5` and align top-right.
-
-7. **Bottom answer navigator**
-   - Now: only renders when `isFullSection === true` (so single-question drills like the current `/drill?layout=official` test render with no bottom strip and a giant void).
-   - Target: **always** render the bottom navigator inside the paper (even for 1-question drills it should show a single oval with "1" and the prev/next arrows disabled). This is the single change that makes the paper "feel right" — it caps the white surface and removes the dark void.
-
-8. **Typography**
-   - Frame already scopes Helvetica/Arial — keep. Bump body size from `15px` to `16px` and line-height to `1.6` to match the LawHub spacing.
-   - Question number `2.` rendered to the LEFT of the stem (already correct).
+These names are used as-is below.
 
 ## Files to change
 
 ```text
-src/components/drill/official/OfficialDrillFrame.tsx     // background color, paper border/shape, full-height layout
-src/components/drill/official/OfficialSessionStrip.tsx   // white-pill buttons
-src/components/drill/official/OfficialDrillToolbar.tsx   // icon sizing, separator styling
-src/components/drill/official/OfficialQuestionPane.tsx   // 40/60 columns, oval bullets, flex-1 height, type sizes
-src/components/drill/official/OfficialAnswerNavigator.tsx// no functional change (just confirm always-mount)
-src/pages/Drill.tsx                                       // remove `showOfficialAnswerNavigator = isFullSection` gate; always show navigator inside the paper
+src/components/drill/official/OfficialDrillFrame.tsx       // white global header band + deep-purple body
+src/components/drill/official/OfficialSessionStrip.tsx     // restyle into white-header bar, gray pill buttons
+src/components/drill/official/OfficialDrillToolbar.tsx     // chunkier toolbar, bigger icons, real separators, big red timer
+src/components/drill/official/OfficialQuestionPane.tsx     // 55/45 split, bigger type, larger bubbles, darker eye icons
+src/components/drill/official/OfficialAnswerNavigator.tsx  // larger ovals, stronger arrow buttons
+src/pages/Drill.tsx                                         // default-on for full-section + build-a-set; navigator unchanged
 ```
 
-No business logic, no handler changes, no new dependencies — pure presentation.
+## Structural changes
+
+### 1. Frame (white header + lower card)
+
+Rewrite `OfficialDrillFrame` so the page is split into a true global header row and a separately-colored body, with the white test card pushed down and not stretching to the viewport bottom.
+
+```text
+<div min-h-screen bg-[#1A1635] flex flex-col>
+  <header bg-white border-b border-slate-200 px-6 py-3>{header}</header>
+  <main flex-1 px-6 sm:px-10 pt-10 sm:pt-14 pb-10>
+    <div mx-auto w-full max-w-[1200px] bg-white border border-slate-300
+         rounded-md shadow-[0_4px_18px_rgba(0,0,0,0.35)] overflow-hidden
+         flex flex-col>
+      {children}                                {/* toolbar + pane + navigator */}
+    </div>
+  </main>
+</div>
+```
+
+- Body bg `#1A1635` (deep purple-navy from reference).
+- Card no longer uses `min-h-[calc(100vh-…)]`; height is driven by content, leaving visible dark gap below.
+- Drop the `flex-1 min-h-0` chain on the question pane (see §4).
+
+### 2. Session strip (white header)
+
+`OfficialSessionStrip` becomes the content of the white header row:
+
+- Outer container: `flex items-center justify-between gap-4 w-full`.
+- Breadcrumb left, `text-[14px]`, separators rendered as light-gray slashes:
+  - `Library` and PrepTest title in `text-blue-700 hover:text-blue-800`.
+  - Section label in `text-[#7f1d1d] font-medium`.
+- Right: Pause Section + Complete Section restyled as **light-gray pills**:
+  - `rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-blue-900 px-5 py-1.5 text-[14px] font-medium`.
+
+### 3. Toolbar (chunkier, big timer, real separators)
+
+In `OfficialDrillToolbar`:
+
+- Outer row: `bg-slate-50 border-b border-slate-200 px-4 py-3` (taller).
+- Directions button: `border border-slate-400 bg-white px-3 py-1.5 text-[14px]`.
+- Find input: `border border-slate-400 px-3 py-1.5 text-[14px] w-[260px]`, placeholder `Find Text, Type Here`.
+- `PipeSeparator` → real bar: `<span className="w-px h-7 bg-slate-300 mx-2" />`.
+- Annotation buttons: `p-2`; marker SVG `26×26`, eraser `30×20`.
+- Aa button: `<span class="text-[18px] font-semibold">A<span class="text-[12px]">A</span></span>`.
+- Line-spacing icon enlarged to `22×22`.
+- Timer cluster (right):
+  ```tsx
+  <div className="ml-auto rounded-sm border-2 border-[#7f1d1d] px-3 py-1.5
+                  text-[14px] font-medium text-black tabular-nums whitespace-nowrap">
+    {isFullSection ? "Section Time Remaining" : "Elapsed"}: {timerLabel || "00:00"}
+  </div>
+  ```
+  No green progress fill. Full sections always read `Section Time Remaining: 00:00`.
+
+### 4. Question pane (split, type, bubbles, eyes)
+
+In `OfficialQuestionPane`:
+
+- Grid: `grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]` (passage wider, divider farther right). Remove `flex-1 min-h-0`.
+- Both columns: `px-8 py-8 text-[17px] leading-[1.65] text-black`.
+- Stem block at same `text-[17px]`.
+- Answer list: `space-y-5 mt-5`, each `text-[16px] leading-[1.55]`.
+- Bubbles: `w-7 h-7 border-[1.5px] border-slate-500 text-[13px] font-semibold` (round, larger, stronger outline). Selected keeps `slate-900` fill.
+- Eye icon: `Eye` `w-[18px] h-[18px] text-slate-500 hover:text-slate-800 strokeWidth={2}`.
+- Flag icon stays blue, `w-[22px] h-[22px]`.
+
+### 5. Bottom navigator (Full Section + Build-a-Set only)
+
+In `OfficialAnswerNavigator`:
+
+- Strip: `border-t border-slate-200 bg-white px-6 py-3`.
+- Ovals: `w-[22px] h-[12px] border border-slate-500`.
+- Number under each oval: `text-[12px]`, current bold.
+- I-beam tick: `w-[2px] h-[8px] bg-slate-900`.
+- Prev/next: `border border-slate-400 px-3 py-2 rounded-sm`, arrow icons `w-5 h-5 strokeWidth={2.25}`. Next button gets `border-2`.
+
+`Drill.tsx` already gates the navigator with `showOfficialAnswerNavigator = isFullSection || isPracticeSetMode`. Keep as-is — Smart Drill (`session.mode === 'adaptive'`) does not render the navigator.
+
+### 6. Default to official layout for Full Section and Build-a-Set
+
+In `src/pages/Drill.tsx`, replace:
+
+```ts
+const isOfficialLayout = searchParams.get('layout') === 'official';
+```
+
+with:
+
+```ts
+const layoutParam = searchParams.get('layout');
+const officialEligible =
+  session?.mode === 'full-section' || isPracticeSetMode;
+const isOfficialLayout =
+  layoutParam === 'official' ||
+  (officialEligible && layoutParam !== 'classic');
+```
+
+Result:
+
+- Full Section (normal app flow) → official layout, with bottom navigator.
+- Build-a-Set (normal app flow) → official layout, with bottom navigator.
+- Smart Drill (`adaptive`) → unchanged surface, no bottom navigator (the official layout is not auto-applied).
+- `?layout=classic` → escape hatch back to the previous default for any mode.
+- `?layout=official` → still forces the official layout for any mode (dev/QA).
 
 ## Acceptance check
 
-After the change, on `/drill?layout=official` with both a 1-question drill and a full section:
-- Backdrop reads as deep navy, not near-black.
-- The white paper fills the viewport vertically, with the toolbar at the top and the answer-oval navigator pinned to the bottom edge.
-- "Pause Section" / "Complete Section" appear as solid white pills.
-- Answer choices show oval letter bullets, not perfect circles.
-- Side-by-side compared to image 1 at 1453×1012, the layouts line up within a few pixels.
+With a Full Section drill launched from the normal app flow (no query param):
+
+- Top is a full-width **white** bar with breadcrumb (left) and two **light-gray pill** buttons (right).
+- Below it, a deep purple-navy field; the white test card sits lower with a visible dark gap above and below.
+- Toolbar is taller; icons clearly larger; vertical bars (not pipes) separate clusters.
+- Timer at far right shows `Section Time Remaining: 00:00` in a thick red-bordered box, black text.
+- Passage column wider than the question column; body type ≈ 17px.
+- A/B/C/D/E circles larger with stronger gray outline; eye icons visibly darker.
+- 1–25 oval strip with prev/next arrows pinned at the bottom of the card; current question number bold with I-beam tick above its oval.
+
+With a Build-a-Set session: same as above, including the bottom navigator.
+
+With a Smart Drill session: surface is unchanged (no bottom navigator, no auto-switch to the official frame).
+
+`/drill?layout=classic` still renders the previous default surface for any mode.

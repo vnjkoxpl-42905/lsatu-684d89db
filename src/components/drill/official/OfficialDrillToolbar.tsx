@@ -94,12 +94,12 @@ export default function OfficialDrillToolbar({
   return (
     <>
       <div className="border-b border-slate-200 bg-slate-50">
-        <div className="px-3 sm:px-4 py-2 flex flex-wrap items-center gap-2 text-[13px] text-slate-800">
+        <div className="px-3 sm:px-4 py-3 flex flex-wrap items-center gap-2 text-[14px] text-slate-800">
           {/* Directions pill (leftmost) */}
           <button
             type="button"
             onClick={() => setDirectionsOpen(true)}
-            className="rounded border border-slate-400 bg-white px-2.5 py-1 text-slate-800 hover:bg-slate-100 transition-colors text-[13px] font-medium"
+            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-slate-800 hover:bg-slate-100 transition-colors text-[14px] font-medium"
           >
             Directions
           </button>
@@ -111,7 +111,7 @@ export default function OfficialDrillToolbar({
             aria-disabled="true"
             placeholder="Find Text, Type Here"
             title="Find text — coming soon"
-            className="rounded border border-slate-300 bg-white px-2 py-1 text-[13px] text-slate-700 placeholder:text-slate-400 w-[180px] cursor-not-allowed"
+            className="rounded border border-slate-400 bg-white px-3 py-1.5 text-[14px] text-slate-700 placeholder:text-slate-400 w-[260px] cursor-not-allowed"
           />
 
           <PipeSeparator />
@@ -127,7 +127,7 @@ export default function OfficialDrillToolbar({
                 aria-label={t.label}
                 title={t.label}
                 className={cn(
-                  "p-1.5 rounded transition-colors",
+                  "p-2 rounded transition-colors",
                   highlightMode === t.mode ? t.activeBg : "hover:bg-slate-200",
                 )}
               >
@@ -144,10 +144,10 @@ export default function OfficialDrillToolbar({
             disabled
             aria-disabled="true"
             title="Font size — coming soon"
-            className="p-1.5 rounded text-slate-700 cursor-not-allowed text-[14px] font-semibold"
+            className="p-2 rounded text-slate-700 cursor-not-allowed"
           >
-            <span aria-hidden>A</span>
-            <span aria-hidden className="text-[10px]">A</span>
+            <span aria-hidden className="text-[18px] font-semibold">A</span>
+            <span aria-hidden className="text-[12px] font-semibold">A</span>
             <span className="sr-only">Font size</span>
           </button>
           <button
@@ -155,19 +155,17 @@ export default function OfficialDrillToolbar({
             disabled
             aria-disabled="true"
             title="Line spacing — coming soon"
-            className="p-1.5 rounded text-slate-700 cursor-not-allowed"
+            className="p-2 rounded text-slate-700 cursor-not-allowed"
           >
             <LineSpacingIcon />
             <span className="sr-only">Line spacing</span>
           </button>
 
-          <PipeSeparator />
-
           {/* Right cluster: timer in dark-red box */}
           <div className="ml-auto">
             <div
               role="timer"
-              className="rounded border-2 border-[#7f1d1d] text-[#7f1d1d] px-2.5 py-0.5 text-[13px] font-medium tabular-nums whitespace-nowrap"
+              className="rounded-sm border-2 border-[#7f1d1d] text-black px-3 py-1.5 text-[14px] font-medium tabular-nums whitespace-nowrap"
             >
               {timerLabelPrefix}: {timerLabel || "00:00"}
             </div>
@@ -207,12 +205,10 @@ export default function OfficialDrillToolbar({
 // Slanted pen with a clearly colored tip; chunky two-tone eraser.
 
 function MarkerIcon({ tipColor }: { tipColor: string }) {
-  // Slanted highlighter: long barrel tilted ~45°, clearly colored
-  // triangular tip at lower-left. White cap at upper-right.
   return (
     <svg
-      width="22"
-      height="22"
+      width="26"
+      height="26"
       viewBox="0 0 24 24"
       fill="none"
       stroke="#334155"
@@ -220,13 +216,9 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {/* Cap (top-right end) */}
       <path d="M17 3 L21 7 L19 9 L15 5 Z" fill="#cbd5e1" />
-      {/* Barrel — long slanted rectangle */}
       <path d="M15 5 L19 9 L9 19 L5 15 Z" fill="#fff" />
-      {/* Ferrule line just before tip */}
       <line x1="7" y1="13" x2="11" y2="17" />
-      {/* Colored tip — triangle pointing down-left */}
       <path
         d="M5 15 L9 19 L4 22 L3 21 Z"
         fill={tipColor}
@@ -238,12 +230,10 @@ function MarkerIcon({ tipColor }: { tipColor: string }) {
 }
 
 function EraserIcon() {
-  // Wide chunky eraser: pink top half, gray-white bottom half, with a
-  // crisp separator line. ~28x18 visual footprint.
   return (
     <svg
-      width="26"
-      height="18"
+      width="30"
+      height="20"
       viewBox="0 0 28 18"
       fill="none"
       stroke="#334155"
@@ -252,10 +242,7 @@ function EraserIcon() {
       strokeLinejoin="round"
     >
       <rect x="1.5" y="1.5" width="25" height="15" rx="2" fill="#fff" />
-      {/* Pink top band */}
       <path d="M1.5 8.5 L1.5 3.5 Q1.5 1.5 3.5 1.5 L24.5 1.5 Q26.5 1.5 26.5 3.5 L26.5 8.5 Z" fill="#FBCFE8" />
-      {/* Gray-white bottom is the rect default */}
-      {/* Separator */}
       <line x1="1.5" y1="8.5" x2="26.5" y2="8.5" />
     </svg>
   );
@@ -264,8 +251,8 @@ function EraserIcon() {
 function LineSpacingIcon() {
   return (
     <svg
-      width="18"
-      height="18"
+      width="22"
+      height="22"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -281,8 +268,7 @@ function LineSpacingIcon() {
 }
 
 function PipeSeparator() {
-  return <span aria-hidden className="w-px h-6 bg-slate-200 mx-1" />;
+  return <span aria-hidden className="w-px h-7 bg-slate-300 mx-2" />;
 }
 
-// Re-export to avoid an unused-import warning from the shared type.
 export type { HighlightColor };

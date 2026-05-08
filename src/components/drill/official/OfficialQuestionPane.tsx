@@ -54,10 +54,10 @@ export default function OfficialQuestionPane({
   const answerEntries = Object.entries(question.answerChoices);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] flex-1 min-h-0">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr]">
       {/* Stimulus column */}
       <div
-        className="px-6 sm:px-8 py-6 lg:border-r border-slate-200 text-[16px] leading-[1.6] text-black whitespace-pre-wrap"
+        className="px-8 py-8 lg:border-r border-slate-200 text-[17px] leading-[1.65] text-black whitespace-pre-wrap"
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
@@ -69,7 +69,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-6 sm:px-8 py-6 text-[16px] leading-[1.6] text-black">
+      <div className="px-8 py-8 text-[17px] leading-[1.65] text-black">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -97,14 +97,14 @@ export default function OfficialQuestionPane({
           >
             <Flag
               className={cn(
-                "w-5 h-5 transition-colors text-[#2563eb]",
+                "w-[22px] h-[22px] transition-colors text-[#2563eb]",
                 isFlagged && "fill-[#2563eb]",
               )}
             />
           </button>
         </div>
 
-        <ul className="space-y-3 mt-4">
+        <ul className="space-y-5 mt-5">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
@@ -123,11 +123,11 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 mt-0.5 rounded-full border flex items-center justify-center text-[12px] font-medium transition-colors",
-                    "w-6 h-6",
+                    "shrink-0 mt-0.5 rounded-full border-[1.5px] flex items-center justify-center text-[13px] font-semibold transition-colors",
+                    "w-7 h-7",
                     isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-400 bg-white text-slate-700 hover:border-slate-700",
+                      : "border-slate-500 bg-white text-slate-700 hover:border-slate-800",
                     isEliminated && "cursor-not-allowed",
                   )}
                 >
@@ -138,7 +138,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && onAnswerSelect(key)}
                   disabled={isEliminated}
                   className={cn(
-                    "flex-1 text-left text-[15px] leading-[1.5] pt-0.5",
+                    "flex-1 text-left text-[16px] leading-[1.55] pt-0.5",
                     isEliminated && "line-through cursor-not-allowed",
                   )}
                 >
@@ -150,9 +150,9 @@ export default function OfficialQuestionPane({
                   aria-pressed={isEliminated}
                   aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  className="shrink-0 p-1 mt-0.5 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                  className="shrink-0 p-1 mt-0.5 text-slate-500 hover:text-slate-800 rounded transition-colors"
                 >
-                  <Eye className="w-4 h-4" />
+                  <Eye className="w-[18px] h-[18px]" strokeWidth={2} />
                 </button>
               </li>
             );
