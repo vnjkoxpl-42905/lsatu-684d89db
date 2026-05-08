@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2, Sparkles, Check, X } from 'lucide-react';
+import { Loader2, Check, X, MessageSquare, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
@@ -9,7 +10,9 @@ import { postDraftAsClassroomItem } from '@/lib/aiTAQueue';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
-import NewAIDraftCard from '@/components/teacher/NewAIDraftCard';
+import OperatorChat from '@/components/teacher/ai-ta/OperatorChat';
+
+type TopTab = 'chat' | 'drafts';
 
 const STATUS_TABS: { id: AITADraftStatus | 'all'; label: string }[] = [
   { id: 'draft', label: 'Pending' },
@@ -19,7 +22,7 @@ const STATUS_TABS: { id: AITADraftStatus | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
 ];
 
-export default function TeacherAITA() {
+function DraftsView() {
   const { user } = useAuth();
   const [status, setStatus] = useState<AITADraftStatus | 'all'>('draft');
   const { data: drafts = [], isLoading, refetch } = useAITADrafts({ status });
@@ -42,27 +45,25 @@ export default function TeacherAITA() {
     },
   });
 
-  const handleApprove = async (draftId: string) => {
+  const handleApprove = async (id: string) => {
     try {
-      await updateStatus.mutateAsync({ id: draftId, status: 'approved' });
+      await updateStatus.mutateAsync({ id, status: 'approved' });
       toast.success('Approved');
     } catch (e: any) {
       toast.error(e?.message ?? 'Approve failed');
     }
   };
-
-  const handleReject = async (draftId: string) => {
+  const handleReject = async (id: string) => {
     try {
-      await updateStatus.mutateAsync({ id: draftId, status: 'rejected' });
+      await updateStatus.mutateAsync({ id, status: 'rejected' });
       toast.success('Rejected');
     } catch (e: any) {
       toast.error(e?.message ?? 'Reject failed');
     }
   };
-
-  const handlePost = async (draftId: string) => {
+  const handlePost = async (id: string) => {
     if (!user) return;
-    const draft = drafts.find((d) => d.id === draftId);
+    const draft = drafts.find((d) => d.id === id);
     if (!draft) return;
     try {
       await postDraftAsClassroomItem(draft, user.id);
@@ -74,22 +75,13 @@ export default function TeacherAITA() {
   };
 
   return (
-    <div className="px-6 py-6 max-w-4xl space-y-5">
-      <div className="space-y-1.5">
-        <div className="flex items-center gap-2 text-zinc-400">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-[11px] uppercase tracking-wider font-semibold">
-            AI Teaching Assistant
-          </span>
-        </div>
-        <h2 className="text-2xl font-semibold tracking-tight">Drafts</h2>
-        <p className="text-sm text-zinc-400">
-          Drafts the AI created for your review. Nothing posts to a student
-          until you approve it.
+    <div className="px-6 py-6 max-w-4xl mx-auto space-y-5">
+      <div>
+        <h2 className="text-2xl font-semibold tracking-tight text-zinc-100">Drafts</h2>
+        <p className="text-sm text-zinc-400 mt-1">
+          Everything the assistant proposed — nothing reaches a student until you approve.
         </p>
       </div>
-
-      <NewAIDraftCard />
 
       <div className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-zinc-900/60">
         {STATUS_TABS.map((t) => (
@@ -114,7 +106,7 @@ export default function TeacherAITA() {
         </div>
       ) : drafts.length === 0 ? (
         <div className="rounded-lg border border-dashed border-zinc-800 px-4 py-10 text-center text-sm text-zinc-500">
-          No drafts here.
+          No drafts here. Ask the assistant to make one.
         </div>
       ) : (
         <ul className="space-y-2">
@@ -164,6 +156,53 @@ export default function TeacherAITA() {
           ))}
         </ul>
       )}
+    </div>
+  );
+}
+
+export default function TeacherAITA() {
+  const [params, setParams] = useSearchParams();
+  const tab: TopTab = (params.get('tab') as TopTab) === 'drafts' ? 'drafts' : 'chat';
+  const setTab = (t: TopTab) => {
+    if (t === 'chat') setParams({});
+    else setParams({ tab: t });
+  };
+
+  return (
+    <div className="flex flex-col h-full min-h-0">
+      <div className="shrink-0 border-b border-zinc-800/60 px-6 py-2 flex items-center gap-1">
+        <button
+          onClick={() => setTab('chat')}
+          className={cn(
+            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
+            tab === 'chat'
+              ? 'bg-amber-500/15 text-amber-200 border border-amber-500/20'
+              : 'text-zinc-400 hover:text-zinc-100 border border-transparent',
+          )}
+        >
+          <MessageSquare className="w-3.5 h-3.5" /> Chat
+        </button>
+        <button
+          onClick={() => setTab('drafts')}
+          className={cn(
+            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
+            tab === 'drafts'
+              ? 'bg-amber-500/15 text-amber-200 border border-amber-500/20'
+              : 'text-zinc-400 hover:text-zinc-100 border border-transparent',
+          )}
+        >
+          <FileText className="w-3.5 h-3.5" /> Drafts
+        </button>
+      </div>
+      <div className="flex-1 min-h-0 overflow-hidden">
+        {tab === 'chat' ? (
+          <OperatorChat />
+        ) : (
+          <div className="h-full overflow-y-auto">
+            <DraftsView />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
