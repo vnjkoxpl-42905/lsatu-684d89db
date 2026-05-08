@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
-import { MessageSquare, Plus } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
 import { ThreadList } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
 import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
-import { Button } from '@/components/ui/button';
 
 export default function TeacherConversations() {
   const { user } = useAuth();
