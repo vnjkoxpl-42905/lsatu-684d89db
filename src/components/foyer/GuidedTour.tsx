@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Compass,
@@ -57,7 +57,7 @@ const ALL_STEPS: Step[] = [
     path: "/foyer",
     icon: Compass,
     eyebrow: "Foyer",
-    title: "Welcome — this is your home base",
+    title: "Welcome: this is your home base",
     body: "Everything you need each day starts here. Let's quickly point out where things live.",
   },
   {
@@ -74,7 +74,7 @@ const ALL_STEPS: Step[] = [
     icon: PanelLeft,
     eyebrow: "Sidebar",
     title: "Your full workspace",
-    body: "Every workspace surface — Classroom, Messages, Practice, Schedule, and more — opens from the sidebar. The active page is highlighted as you move around.",
+    body: "Every workspace surface (Classroom, Messages, Practice, Schedule, and more) opens from the sidebar. The active page is highlighted as you move around.",
     anchor: '[data-tour="foyer-sidebar"]',
     side: "right",
     desktopOnly: true,
@@ -93,7 +93,7 @@ const ALL_STEPS: Step[] = [
     icon: LifeBuoy,
     eyebrow: "Quick dock",
     title: "Help, settings, and quick tools",
-    body: "The floating dock at the bottom is your quick-launch row — settings, profile, schedule, inbox, and Help. Open Help to send Joshua a message or replay this tour.",
+    body: "The floating dock at the bottom is your quick-launch row: settings, profile, schedule, inbox, and Help. Open Help to send Joshua a message or replay this tour.",
     anchor: '[data-tour="foyer-quickdock"]',
     side: "top",
   },
@@ -110,7 +110,7 @@ const ALL_STEPS: Step[] = [
     icon: GraduationCap,
     eyebrow: "Bootcamps",
     title: "Multi-day skill modules",
-    body: "Each bootcamp teaches a specific skill — Causation, Flaw, Intro to LR — across days of focused practice. Open one to start.",
+    body: "Each bootcamp covers one skill (Causation, Flaw, Intro to LR) through days of focused practice. Open one to start.",
     requires: "has_bootcamp_access",
   },
   {
@@ -221,6 +221,7 @@ function useAnchorRect(selector: string | undefined, deps: unknown[]): AnchorRec
 const TOOLTIP_W = 360;
 const TOOLTIP_GAP = 16;
 const PAD = 12;
+const SPOT_PAD = 8;
 
 function placeTooltip(
   rect: AnchorRect,
@@ -332,6 +333,12 @@ export default function GuidedTour() {
     if (step > STEPS.length - 1) setStep(Math.max(0, STEPS.length - 1));
   }, [STEPS.length, step]);
 
+  const handleFinish = React.useCallback(() => {
+    try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
+    setActive(false);
+    navigate(finishPath);
+  }, [navigate, finishPath]);
+
   const close = React.useCallback(() => {
     try {
       localStorage.setItem(STORAGE_KEY, "1");
@@ -397,17 +404,12 @@ export default function GuidedTour() {
 
   const Icon = current.icon;
   const isLast = step === STEPS.length - 1;
-  const handleFinish = () => {
-    close();
-    navigate(finishPath);
-  };
 
   const usingAnchor = !!anchorRect;
   const placement = usingAnchor
     ? placeTooltip(anchorRect, current.side, vp.vw, vp.vh, tooltipH)
     : null;
 
-  const SPOT_PAD = 8;
   const spot = anchorRect
     ? {
         top: anchorRect.top - SPOT_PAD,
@@ -418,7 +420,7 @@ export default function GuidedTour() {
     : null;
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       {/* Dim overlay with cutout for the spotlight. Clicks on the dim area
           are eaten so users don't accidentally navigate mid-tour; the
           spotlight cutout itself stays click-through so the highlighted
@@ -502,7 +504,7 @@ export default function GuidedTour() {
                     <Icon className="h-3.5 w-3.5 text-[#E8D08B]" />
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#94A3B8]">
-                    <span className="text-[#E8D08B]">{step + 1}/{STEPS.length}</span>
+                    <span aria-live="polite" aria-atomic="true" className="tracking-normal text-[#E8D08B]">{step + 1}/{STEPS.length}</span>
                     <span className="text-[#94A3B8]/40">·</span>
                     <span className="normal-case tracking-normal text-[#CBD5E1]">{current.eyebrow}</span>
                   </div>
@@ -510,7 +512,7 @@ export default function GuidedTour() {
                 <button
                   onClick={close}
                   aria-label="Close tour"
-                  className="rounded-md p-1 text-[#94A3B8] hover:bg-white/5 hover:text-[#F1F5F9] transition"
+                  className="rounded-md p-1 text-[#94A3B8] transition-colors duration-150 hover:bg-white/5 hover:text-[#F1F5F9] active:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E8D08B]"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -524,7 +526,7 @@ export default function GuidedTour() {
               <div className="mt-3.5 flex items-center justify-between">
                 <button
                   onClick={close}
-                  className="text-[11px] text-[#94A3B8] hover:text-[#F1F5F9] transition"
+                  className="rounded px-1 text-[11px] text-[#94A3B8] transition-colors duration-150 hover:text-[#F1F5F9] active:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E8D08B]"
                 >
                   Skip tour
                 </button>
@@ -545,7 +547,7 @@ export default function GuidedTour() {
                     <Button
                       size="sm"
                       onClick={handleFinish}
-                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A]"
+                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A] active:bg-[#C5A059]"
                     >
                       Start practicing
                       <Rocket className="h-3 w-3" />
@@ -554,7 +556,7 @@ export default function GuidedTour() {
                     <Button
                       size="sm"
                       onClick={goNext}
-                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A]"
+                      className="h-7 bg-[#E8D08B] px-2.5 text-[11px] text-[#05070A] hover:bg-[#F2DF9A] active:bg-[#C5A059]"
                     >
                       Next
                       <ChevronRight className="h-3 w-3" />
@@ -566,7 +568,7 @@ export default function GuidedTour() {
           </div>
         </motion.div>
       </AnimatePresence>
-    </>
+    </MotionConfig>
   );
 }
 
