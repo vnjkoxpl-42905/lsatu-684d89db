@@ -26,6 +26,8 @@ interface Props {
   /** Remaining ms for countdown; ignored if totalMs is undefined. */
   remainingMs?: number;
   isFullSection: boolean;
+  /** When true (Build-a-Set), use the "Section Time Remaining" timer label. */
+  isPracticeSet?: boolean;
 }
 
 /**
