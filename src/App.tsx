@@ -62,12 +62,13 @@ const TeacherBootcamps = React.lazy(() => import("./pages/teacher/TeacherBootcam
 const TeacherUploads = React.lazy(() => import("./pages/teacher/TeacherUploads"));
 const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
 const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
+const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherConversations"));
+const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
-import AdminChatHub from "./components/chat-hub/AdminChatHub";
 import FloatingTutorButton from "./components/tutor/FloatingTutorButton";
 import GuidedTour from "./components/foyer/GuidedTour";
 
