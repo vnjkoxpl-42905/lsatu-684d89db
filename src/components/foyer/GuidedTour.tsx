@@ -174,29 +174,42 @@ function useAnchorRect(selector: string | undefined, deps: unknown[]): AnchorRec
       setRect(null);
       return;
     }
-    let raf = 0;
+
+    // Cache the element once per selector change — don't re-query on every scroll frame.
+    const el = document.querySelector(selector) as HTMLElement | null;
+    if (!el) {
+      setRect(null);
+      return;
+    }
+
+    let rafId = 0;
     const measure = () => {
-      const el = document.querySelector(selector) as HTMLElement | null;
-      if (!el) {
-        setRect(null);
-        return;
-      }
       const r = el.getBoundingClientRect();
       setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
     };
-    // Initial measure (and one more on next frame to catch transitions)
+
+    // Initial measure + one deferred to catch in-flight CSS transitions on the anchor.
     measure();
-    raf = window.requestAnimationFrame(measure);
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", onResize, true);
+    rafId = window.requestAnimationFrame(measure);
+
+    // RAF-debounce scroll and resize so we never call getBoundingClientRect
+    // synchronously on every frame — that would force a layout flush at 60fps.
+    const scheduleRaf = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(measure);
+    };
+
+    window.addEventListener("resize", scheduleRaf);
+    // passive:true lets the browser optimize scroll without waiting for JS.
+    window.addEventListener("scroll", scheduleRaf, { passive: true, capture: true });
+
     const ro = new ResizeObserver(measure);
-    const el = document.querySelector(selector) as HTMLElement | null;
-    if (el) ro.observe(el);
+    ro.observe(el);
+
     return () => {
-      window.cancelAnimationFrame(raf);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onResize, true);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", scheduleRaf);
+      window.removeEventListener("scroll", scheduleRaf, true);
       ro.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -216,7 +229,6 @@ function placeTooltip(
   vh: number,
   tooltipH: number,
 ): { top: number; left: number; side: Side } {
-  // Generous padding; if a side doesn't fit, try the next one in priority order.
   const order: Side[] = preferred
     ? [preferred, ...(["right", "bottom", "left", "top"] as Side[]).filter((s) => s !== preferred)]
     : (["right", "bottom", "left", "top"] as Side[]);
@@ -251,13 +263,17 @@ function placeTooltip(
       };
     }
   }
-  // Fallback: center under viewport
   return { top: vh - tooltipH - PAD, left: clamp(vw / 2 - TOOLTIP_W / 2, PAD, vw - TOOLTIP_W - PAD), side: "bottom" };
 }
 
 function clamp(v: number, lo: number, hi: number): number {
   return Math.max(lo, Math.min(hi, v));
 }
+
+// Explicit transition for the spotlight box — never use "all" since it
+// triggers a full layout recalculation for every transitionable property.
+const SPOTLIGHT_TRANSITION =
+  "top 220ms cubic-bezier(0.22, 1, 0.36, 1), left 220ms cubic-bezier(0.22, 1, 0.36, 1), width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1)";
 
 export default function GuidedTour() {
   const navigate = useNavigate();
@@ -269,8 +285,6 @@ export default function GuidedTour() {
   const [tooltipH, setTooltipH] = React.useState(180);
   const [vp, setVp] = React.useState({ vw: typeof window !== "undefined" ? window.innerWidth : 1280, vh: typeof window !== "undefined" ? window.innerHeight : 720 });
 
-  // Filter steps the user can't reach so the tour never strands them on a
-  // gated route or a viewport where the anchor is hidden.
   const STEPS = React.useMemo(() => {
     const isMobile = vp.vw < 768;
     return ALL_STEPS.filter((s) => {
@@ -280,7 +294,6 @@ export default function GuidedTour() {
     });
   }, [perms, vp.vw]);
 
-  // Pick a safe finish destination: prefer /practice, fall back to /foyer.
   const finishPath = React.useMemo(() => {
     if (perms.is_admin || perms.has_practice_access) return "/practice";
     return "/foyer";
@@ -298,13 +311,23 @@ export default function GuidedTour() {
     return () => window.removeEventListener(EVENT_START, onStart as EventListener);
   }, [location.pathname, navigate, STEPS]);
 
+  // Only track viewport size while the tour is active — no cost at rest.
   React.useEffect(() => {
-    const onResize = () => setVp({ vw: window.innerWidth, vh: window.innerHeight });
+    if (!active) return;
+    let rafId = 0;
+    const onResize = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() =>
+        setVp({ vw: window.innerWidth, vh: window.innerHeight })
+      );
+    };
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [active]);
 
-  // If the filtered list shrinks below the current index, snap back in range.
   React.useEffect(() => {
     if (step > STEPS.length - 1) setStep(Math.max(0, STEPS.length - 1));
   }, [STEPS.length, step]);
@@ -335,7 +358,6 @@ export default function GuidedTour() {
   React.useEffect(() => {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
-      // Don't hijack arrow keys when the user is editing text.
       const t = e.target as HTMLElement | null;
       const editing =
         !!t &&
@@ -359,12 +381,10 @@ export default function GuidedTour() {
   const onCurrentRoute = current ? location.pathname === current.path : false;
   const anchorRect = useAnchorRect(onCurrentRoute && current?.anchor ? current.anchor : undefined, [step, vp.vw, vp.vh]);
 
-  // Measure tooltip after render
   React.useLayoutEffect(() => {
     if (tooltipRef.current) setTooltipH(tooltipRef.current.offsetHeight);
   }, [step, active, anchorRect]);
 
-  // Scroll anchor into view when step changes
   React.useEffect(() => {
     if (!active || !current?.anchor) return;
     const el = document.querySelector(current.anchor) as HTMLElement | null;
@@ -382,13 +402,11 @@ export default function GuidedTour() {
     navigate(finishPath);
   };
 
-  // Compute placement
   const usingAnchor = !!anchorRect;
   const placement = usingAnchor
     ? placeTooltip(anchorRect, current.side, vp.vw, vp.vh, tooltipH)
     : null;
 
-  // Spotlight box (slightly larger than the anchor)
   const SPOT_PAD = 8;
   const spot = anchorRect
     ? {
@@ -415,7 +433,6 @@ export default function GuidedTour() {
           className="fixed inset-0 z-[110]"
           aria-hidden
           onClick={(e) => {
-            // Only swallow clicks on the dim area itself, not on the spotlight.
             if (e.target === e.currentTarget) e.stopPropagation();
           }}
         >
@@ -430,7 +447,7 @@ export default function GuidedTour() {
                 boxShadow: "0 0 0 9999px rgba(8, 11, 22, 0.62)",
                 outline: "2px solid rgba(232, 208, 139, 0.85)",
                 outlineOffset: "0px",
-                transition: "all 220ms cubic-bezier(0.22, 1, 0.36, 1)",
+                transition: SPOTLIGHT_TRANSITION,
               }}
             />
           ) : (
@@ -458,13 +475,13 @@ export default function GuidedTour() {
               : { paddingBottom: "env(safe-area-inset-bottom)" }
           }
         >
-          <div className="pointer-events-auto relative overflow-hidden rounded-2xl border border-white/10 bg-[#12151E]/95 backdrop-blur-xl shadow-[0_24px_60px_-16px_rgba(0,0,0,0.75)]">
-            {/* Arrow toward anchor */}
+          {/* bg is fully opaque so backdrop-blur is omitted — no visual loss, removes GPU compositing layer */}
+          <div className="pointer-events-auto relative overflow-hidden rounded-2xl border border-white/10 bg-[#12151E] shadow-[0_24px_60px_-16px_rgba(0,0,0,0.75)]">
             {usingAnchor && placement && (
               <Arrow side={placement.side} />
             )}
 
-            {/* Bronze glow */}
+            {/* Aspiring Gold ambient glow */}
             <div className="pointer-events-none absolute -top-16 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full bg-[#E8D08B]/14 blur-3xl" />
 
             {/* Progress bar */}
@@ -554,10 +571,8 @@ export default function GuidedTour() {
 }
 
 function Arrow({ side }: { side: Side }) {
-  // Small triangular nub pointing toward the anchor.
   const base = "absolute h-3 w-3 rotate-45 border border-white/10 bg-[#12151E]";
   if (side === "right") {
-    // Tooltip is to the right of anchor → arrow on the left edge of tooltip
     return <span aria-hidden className={cn(base, "-left-[6px] top-1/2 -translate-y-1/2 border-r-0 border-t-0")} />;
   }
   if (side === "left") {
@@ -566,6 +581,5 @@ function Arrow({ side }: { side: Side }) {
   if (side === "bottom") {
     return <span aria-hidden className={cn(base, "-top-[6px] left-1/2 -translate-x-1/2 border-r-0 border-b-0")} />;
   }
-  // top
   return <span aria-hidden className={cn(base, "-bottom-[6px] left-1/2 -translate-x-1/2 border-l-0 border-t-0")} />;
 }
