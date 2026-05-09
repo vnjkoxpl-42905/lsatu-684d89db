@@ -105,6 +105,36 @@ const PAGE_CSS = `
   .lsatu-arc .arc-cta-ghost:hover { background: ${ARC.bgTinted}; transform: translateY(-1px); box-shadow: ${ARC.shadowSoft}; }
   .lsatu-arc .arc-cta-arrow { display: inline-block; transition: transform 220ms ${ARC.easeOut}; }
   .lsatu-arc .arc-cta:hover .arc-cta-arrow { transform: translateX(3px); }
+
+  /* Hero entry CTA — single primary, larger pill, soft inset highlight + drop, tiny circular arrow puck */
+  .lsatu-arc .arc-cta-hero { height: 58px; padding: 0 22px 0 30px; border-radius: 30px; font-size: 15.5px; font-weight: 500; gap: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 2px rgba(15,17,29,0.10), 0 10px 28px -4px rgba(15,17,29,0.18); }
+  .lsatu-arc .arc-cta-hero:hover { transform: translateY(-2px); background: ${ARC.accentDeep}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 4px rgba(15,17,29,0.12), 0 18px 40px -6px rgba(15,17,29,0.26); }
+  .lsatu-arc .arc-cta-hero:active { transform: translateY(-1px); transition-duration: 80ms; }
+  .lsatu-arc .arc-cta-icon { width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.10); display: inline-flex; align-items: center; justify-content: center; transition: transform 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; flex-shrink: 0; }
+  .lsatu-arc .arc-cta-hero:hover .arc-cta-icon { background: rgba(255,255,255,0.18); transform: translateX(2px); }
+  .lsatu-arc .arc-cta-icon svg { width: 12px; height: 12px; }
+  .lsatu-arc .arc-cta-secondary { background: transparent; border: 0; padding: 8px 4px; font-family: ${ARC.sans}; font-size: 13px; font-weight: 500; color: ${ARC.inkSecondary}; cursor: pointer; letter-spacing: -0.005em; transition: color 180ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-cta-secondary:hover { color: ${ARC.ink}; }
+  .lsatu-arc .arc-cta-secondary u { text-decoration-color: ${ARC.hairlineStrong}; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+  /* Coded product moment — flat warm-cream argument-anatomy card with breathing float + accent pulse. */
+  .lsatu-arc .arc-preview { position: relative; margin: 16px auto 0; max-width: 580px; padding: 0 32px; }
+  .lsatu-arc .arc-preview-card { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 16px; padding: 22px 24px 18px; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 18px 44px -10px rgba(15,17,29,0.12); text-align: left; transition: transform 480ms ${ARC.easeOut}, box-shadow 480ms ${ARC.easeOut}, border-color 480ms ${ARC.easeOut}; animation: arcFloat 7s ease-in-out infinite; will-change: transform; }
+  .lsatu-arc .arc-preview-card:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 28px 64px -14px rgba(15,17,29,0.20); }
+  @keyframes arcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .lsatu-arc .arc-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .lsatu-arc .arc-preview-eyebrow { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 500; letter-spacing: 0.20em; text-transform: uppercase; color: ${ARC.inkMuted}; }
+  .lsatu-arc .arc-preview-pulse { position: relative; width: 7px; height: 7px; border-radius: 999px; background: ${ARC.accent}; }
+  .lsatu-arc .arc-preview-pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 999px; border: 1.5px solid ${ARC.accent}; opacity: 0.55; animation: arcPulse 2.4s ease-out infinite; }
+  @keyframes arcPulse { 0% { transform: scale(0.7); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
+  .lsatu-arc .arc-preview-row { display: grid; grid-template-columns: auto 1fr; gap: 12px 14px; align-items: start; }
+  .lsatu-arc .arc-preview-tag { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; padding: 3px 7px; border-radius: 5px; background: ${ARC.bgTinted}; color: ${ARC.inkSecondary}; align-self: start; margin-top: 4px; white-space: nowrap; }
+  .lsatu-arc .arc-preview-tag.is-conclusion { background: ${ARC.accentSoft}; color: ${ARC.accent}; }
+  .lsatu-arc .arc-preview-text { font-family: ${ARC.serif}; font-size: 15.5px; font-weight: 500; line-height: 1.45; letter-spacing: -0.012em; color: ${ARC.ink}; }
+  .lsatu-arc .arc-preview-text.is-muted { color: ${ARC.inkSecondary}; font-weight: 400; }
+  .lsatu-arc .arc-preview-bridge { margin-top: 14px; padding-top: 12px; border-top: 1px dashed ${ARC.hairline}; display: flex; align-items: center; gap: 10px; font-family: ${ARC.sans}; font-size: 12px; color: ${ARC.inkSecondary}; }
+  .lsatu-arc .arc-preview-bridge em { font-family: ${ARC.serif}; font-style: italic; color: ${ARC.ink}; font-weight: 500; }
+  .lsatu-arc .arc-preview-key { font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; color: ${ARC.accent}; letter-spacing: 0.04em; margin-left: auto; white-space: nowrap; }
   .lsatu-arc .arc-link { color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
   .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
 
@@ -144,13 +174,19 @@ const PAGE_CSS = `
 
   @media (prefers-reduced-motion: reduce) {
     .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
-    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link { transition: none; }
+    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
+    .lsatu-arc .arc-preview-card { animation: none; }
+    .lsatu-arc .arc-preview-pulse::after { animation: none; opacity: 0; }
   }
 
   @media (max-width: 720px) {
     .lsatu-arc .arc-card { flex: 0 0 280px; min-height: 220px; }
     .lsatu-arc .arc-marquee-item { font-size: 16px; padding: 0 14px; }
+    .lsatu-arc .arc-cta-hero { height: 54px; padding: 0 18px 0 24px; font-size: 14.5px; }
+    .lsatu-arc .arc-preview-text { font-size: 14.5px; }
+    .lsatu-arc .arc-preview-bridge { flex-wrap: wrap; }
+    .lsatu-arc .arc-preview-key { margin-left: 0; }
   }
 `;
 
@@ -295,10 +331,11 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
   </nav>
 );
 
-// ── Hero ── Type carries the whole composition. No image. Eyebrow + h1
-// + soft second line + lede + dual CTA. All three required phrases live here.
+// ── Hero ── One clear primary entry point. Typography unchanged; the
+// dual-button pattern collapses into a single substantial pill ("Enter LSAT
+// University") with a tiny secondary text link below for new accounts.
 const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
-  <section style={{ padding: 'clamp(72px, 10vw, 132px) 32px 80px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+  <section style={{ padding: 'clamp(72px, 10vw, 132px) 32px 56px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
     <div className="arc-fade">
       <span className="arc-eyebrow" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
       <h1 style={{
@@ -326,19 +363,58 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
       }}>
         Clearer thinking, higher scores.
       </p>
-      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button className="arc-cta" onClick={onCTA}>
-          Begin training
-          <span aria-hidden="true" className="arc-cta-arrow">→</span>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+        <button className="arc-cta arc-cta-hero" onClick={onCTA} aria-label="Enter LSAT University">
+          Enter LSAT University
+          <span aria-hidden="true" className="arc-cta-icon">
+            <svg viewBox="0 0 12 12" fill="none">
+              <path d="M2 6h7.5M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
         </button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Create account</button>
+        <button type="button" className="arc-cta-secondary" onClick={onSignUp}>
+          Or <u>create an account</u>
+        </button>
       </div>
       <p style={{
-        marginTop: 32, fontSize: 12, color: ARC.inkMuted,
+        marginTop: 22, fontSize: 12, color: ARC.inkMuted,
         letterSpacing: '0.06em',
       }}>
         Email or Google · No credit card to start
       </p>
+    </div>
+  </section>
+);
+
+// ── Coded product moment ── A real LSAT argument anatomy (premises → conclusion,
+// the gap a Necessary-Assumption drill teaches). Flat warm-cream surface, hairline
+// border, soft drop shadow, gentle 3px float, accent-blue pulse dot. Not a
+// screenshot — it's a working component, hand-built from real LR content.
+const ArcProductPreview = () => (
+  <section className="arc-preview arc-fade" aria-label="Sample question anatomy">
+    <div className="arc-preview-card">
+      <div className="arc-preview-header">
+        <span className="arc-preview-eyebrow">Logical Reasoning · Question anatomy</span>
+        <span className="arc-preview-pulse" aria-hidden="true" />
+      </div>
+      <div className="arc-preview-row">
+        <span className="arc-preview-tag">P1</span>
+        <span className="arc-preview-text is-muted">
+          Every successful trial lawyer the firm hired in the past decade was a strong reader.
+        </span>
+        <span className="arc-preview-tag">P2</span>
+        <span className="arc-preview-text is-muted">
+          Nora is a strong reader.
+        </span>
+        <span className="arc-preview-tag is-conclusion">C</span>
+        <span className="arc-preview-text">
+          So the firm should hire Nora as a trial lawyer.
+        </span>
+      </div>
+      <div className="arc-preview-bridge">
+        <span>The flaw is the gap from <em>necessary</em> to <em>sufficient</em>.</span>
+        <span className="arc-preview-key">Find the gap →</span>
+      </div>
     </div>
   </section>
 );
@@ -946,6 +1022,7 @@ export default function Auth() {
 
       <ArcNav onSignIn={openSignIn} />
       <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+      <ArcProductPreview />
       <ArcMarquee />
       <ArcProof onPrimary={openSignIn} />
       <ArcCarousel />
