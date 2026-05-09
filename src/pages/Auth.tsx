@@ -855,76 +855,14 @@ export default function Auth() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Return-leg OAuth session finalization — Auth.tsx owns the visible timeout.
-  // When the user returns from Google via the Lovable broker, re-invoke the
-  // broker so it can deliver tokens (without redirecting) and call setSession.
-  // Wrapped in a 10s race so a stalled broker cannot hang the UI ambiguously.
-  React.useEffect(() => {
-    if (sessionStorage.getItem('oauth_pending') !== '1') return;
-    console.log('[Auth] OAuth return-leg detected — re-invoking broker');
-
-    let settled = false;
-    const timeoutId = window.setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      sessionStorage.removeItem('oauth_pending');
-      sessionStorage.removeItem('oauth_pending_ts');
-      setLoading(false);
-      setModalOpen(true);
-      toast({
-        title: "Google sign-in didn't finish",
-        description: "We couldn't complete your sign-in. Please try again.",
-        variant: 'destructive',
-      });
-    }, 10000);
-
-    lovable.auth
-      .signInWithOAuth('google', { redirect_uri: window.location.origin + '/auth' })
-      .then((result) => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(timeoutId);
-        if (result.error) {
-          sessionStorage.removeItem('oauth_pending');
-          sessionStorage.removeItem('oauth_pending_ts');
-          console.error('[Auth] OAuth return-leg failed', result.error);
-          setLoading(false);
-          setModalOpen(true);
-          const inPreview = window.self !== window.top && (window.location.hostname.includes('id-preview--') || window.location.hostname.endsWith('.lovableproject.com'));
-          toast({
-            title: inPreview ? 'Google sign-in unavailable in preview' : 'Google sign-in failed',
-            description: inPreview
-              ? 'Open the published URL (lsatu.lovable.app) to sign in with Google.'
-              : String(result.error),
-            variant: 'destructive',
-          });
-        }
-        // Success path: AuthContext.onAuthStateChange picks up the new session.
-      })
-      .catch((err) => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(timeoutId);
-        sessionStorage.removeItem('oauth_pending');
-        sessionStorage.removeItem('oauth_pending_ts');
-        console.error('[Auth] OAuth return-leg threw', err);
-        setLoading(false);
-        setModalOpen(true);
-        toast({
-          title: 'Google sign-in failed',
-          description: err?.message || 'Unknown error',
-          variant: 'destructive',
-        });
-      });
-
-    return () => {
-      settled = true;
-      window.clearTimeout(timeoutId);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // ── Auth handlers ──
+  // Note: the OAuth return leg is handled implicitly. Supabase's
+  // `detectSessionInUrl: true` (default) exchanges the `?code=` for a session
+  // at module-init time; AuthContext's `onAuthStateChange` listener then
+  // fires SIGNED_IN, calls markReady (which clears oauth_pending and sets
+  // authReady=true), and the user-watcher effect above navigates via
+  // `redirectAfterAuth`. AuthContext owns the 15s safety timer for
+  // pathological cases. No explicit broker re-invoke is needed here.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -942,6 +880,12 @@ export default function Auth() {
           setShowConfirmation(true);
         }
       } else {
+        // Set the skip-redirect ref BEFORE the signIn await. Supabase fires
+        // onAuthStateChange synchronously when the credentials succeed, which
+        // populates `user` and triggers the user-watcher effect on the very
+        // next render. Setting the ref first guarantees the user-watcher
+        // never races our manual redirectAfterAuth call below.
+        skipAutoRedirectRef.current = true;
         let error: { message?: string; status?: number } | null = null;
         try {
           const result = await signIn(trimmedEmail, password);
@@ -950,6 +894,7 @@ export default function Auth() {
           // Thrown errors typically mean the request never reached
           // Supabase (network down, DNS failure, blocked by extension).
           // The non-throw path returns { error } already.
+          skipAutoRedirectRef.current = false;
           toast({
             title: "Couldn't reach the server",
             description: 'Check your connection and try again.',
@@ -958,6 +903,9 @@ export default function Auth() {
           return;
         }
         if (error) {
+          // Sign-in failed — release the skip-redirect ref so a subsequent
+          // successful attempt can trigger the user-watcher normally.
+          skipAutoRedirectRef.current = false;
           const msg = (error.message || '').toLowerCase();
           const status = error.status;
           let title = 'Sign-in failed';
@@ -981,7 +929,6 @@ export default function Auth() {
           } else {
             localStorage.removeItem('lsatu_saved_email');
           }
-          skipAutoRedirectRef.current = true;
 
           const { data: { user: freshUser } } = await supabase.auth.getUser();
           if (freshUser) await redirectAfterAuth(freshUser.id, navigate);
@@ -1060,59 +1007,58 @@ export default function Auth() {
   const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
   const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
 
-  const oauthReturning =
-    typeof window !== 'undefined' &&
-    sessionStorage.getItem('oauth_pending') === '1';
-
-  if (authReady && user) {
-    // Already signed in — the redirect effect above will fire imminently.
-    // Show a calm "Redirecting…" panel rather than a flat blank rectangle
-    // so the user knows something is happening.
+  // ── OAuth return-leg detection ──
+  // We're "returning from OAuth" if EITHER:
+  //   (a) the sessionStorage flag set on outbound is still present, OR
+  //   (b) the URL itself carries a return-leg signal (?code=, #access_token,
+  //       ?error=, #error=) — covers the case where a user pastes/bookmarks
+  //       a callback URL, or the flag was cleared between renders.
+  // Computing inline at render keeps it a function of current state, not a
+  // stale React state value. The URL check runs once per render but is cheap.
+  const oauthReturning = (() => {
+    if (typeof window === 'undefined') return false;
+    if (sessionStorage.getItem('oauth_pending') === '1') return true;
+    const search = window.location.search;
+    const hash = window.location.hash;
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        style={{
-          minHeight: '100vh',
-          background: ARC.bg,
-          color: ARC.ink,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          Redirecting…
-        </div>
-      </div>
+      search.includes('code=') ||
+      search.includes('error=') ||
+      hash.includes('access_token=') ||
+      hash.includes('error=')
     );
+  })();
+
+  // Calm loading panel used by both early-return branches.
+  const LoadingPanel = ({ label }: { label: string }) => (
+    <div
+      role="status"
+      aria-live="polite"
+      style={{
+        minHeight: '100vh',
+        background: ARC.bg,
+        color: ARC.ink,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
+        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+        {label}
+      </div>
+    </div>
+  );
+
+  // Order matters: while the OAuth return is mid-flight (URL or flag says
+  // so AND we don't yet have a user), show "Finishing sign in…". As soon as
+  // the user is established (and we may still be on /auth for a frame or
+  // two), show "Redirecting…". Either path prevents the marketing page from
+  // flashing during the resolved-but-not-yet-navigated window.
+  if (oauthReturning && !user) {
+    return <LoadingPanel label="Finishing sign in…" />;
   }
-
-  if (oauthReturning) {
-    // OAuth return leg in progress. Show real copy + a spinner so the
-    // user knows something is happening instead of staring at a blank
-    // page. The OAuth effect resolves and either signs in (Auth context
-    // navigates away) or shows a toast and unsets the flag.
-    return (
-      <div
-        role="status"
-        aria-live="polite"
-        style={{
-          minHeight: '100vh',
-          background: ARC.bg,
-          color: ARC.ink,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14 }}>
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          Finishing sign in…
-        </div>
-      </div>
-    );
+  if (authReady && user) {
+    return <LoadingPanel label="Redirecting…" />;
   }
 
   return (

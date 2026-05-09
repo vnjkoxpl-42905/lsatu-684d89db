@@ -32,3 +32,8 @@ supabase/.temp/
 # Local design extraction + dev screenshot artifacts (canonical extract lives in design-references/arc/extract/)
 design-extract-output/
 .dev-screens/
+
+# Playwright MCP / verification artifacts
+.playwright-mcp/
+audit-*.png
+audit-*.jpeg
