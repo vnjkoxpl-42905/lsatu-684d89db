@@ -48,7 +48,7 @@ export default function Overview({ userName, onStart }: { userName: string; onSt
           </motion.div>
 
           <motion.p variants={item} className="text-sm text-zinc-400 font-light leading-relaxed max-w-xs">
-            Master Flaw and Principle — LR&rsquo;s two highest-yield question types — in 14 focused days.
+            Two LR families. Fourteen days. The method that holds for both, drilled until it&rsquo;s automatic.
           </motion.p>
 
           <motion.div variants={item}>
@@ -126,13 +126,13 @@ export default function Overview({ userName, onStart }: { userName: string; onSt
               className="w-full h-full"
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {moduleOverviewSections.map((s, i) => (
-              <div key={i} className="bg-zinc-900/20 p-5 rounded-xl border border-white/[0.03]">
-                <h4 className="text-sm font-serif italic text-zinc-100 mb-2">{s.heading}</h4>
-                <div className="space-y-1.5">
+              <div key={i} className="bg-zinc-900/20 p-6 rounded-xl border border-white/[0.03]">
+                <h4 className="text-base font-serif italic text-zinc-100 mb-4">{s.heading}</h4>
+                <div className="space-y-3">
                   {s.body.map((p, j) => (
-                    <p key={j} className="text-xs text-zinc-400 font-light leading-relaxed">{p}</p>
+                    <p key={j} className="text-[13px] text-zinc-300 font-light leading-relaxed">{p}</p>
                   ))}
                 </div>
               </div>

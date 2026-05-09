@@ -224,13 +224,13 @@ export const PHASED_LESSONS: Record<string, PhasedLesson> = {
           ],
           rationale: {
             s1:
-              'Background. The author is setting the scene — nothing in the argument is being supported by Monica\'s reputation. Drop it from the structure.',
+              'Background. Monica\'s reputation isn\'t part of the argument. Drop it.',
             s2:
-              'Premise. The author treats this as given. No support is offered for it. Accept it and move on.',
+              'Premise. Treated as given, no support offered. Accept it and move on.',
             s3:
-              'Premise. The silliest one — accept it anyway. On the LSAT, premises are not where the action is.',
+              'Premise. The silliest one. Accept it anyway. Premises are not where the action is.',
             s4:
-              'Conclusion. "Therefore" is a giveaway, but the real test is the support test: the prior two sentences are aimed at this claim, and nothing is aimed at them.',
+              'Conclusion. "Therefore" is a tell, but the support test is the proof: the two sentences above aim at this claim. Nothing aims at them.',
           },
         },
       },
@@ -415,7 +415,7 @@ PHASED_LESSONS['1.3'] = {
       goal:
         'Learn the six categories of indicator words and how to use them as clues — not verdicts.',
       body:
-        'LSAC writers mark the role of each claim with a small set of words. Memorize the categories and your eyes start picking them up. But never let an indicator override the support test.',
+        'LSAC marks the role of each claim with a small set of words. Learn the six categories so your eye catches them on contact. Indicators are clues, not verdicts. The support test always wins.',
       primer: 'Indicators are clues, not verdicts.',
     },
     {

@@ -239,7 +239,7 @@ export default function FlawHub() {
             </p>
             <div className="bg-emerald-950/20 p-5 rounded-2xl border border-emerald-500/20">
               <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1 block">Tutor Tip</span>
-              <p className="text-xs text-zinc-300 italic font-light leading-relaxed">"If the argument provides evidence A and proves conclusion B, the flaw is almost always that A does not necessarily prove B. Your job is to say why."</p>
+              <p className="text-xs text-zinc-300 italic font-light leading-relaxed">"If the argument gives you evidence A and concludes B, the flaw is that A does not have to prove B. Your job is to say why."</p>
             </div>
           </div>
           <div className="p-6 rounded-3xl bg-zinc-900/30 border border-white/[0.02] space-y-4">
@@ -258,10 +258,10 @@ export default function FlawHub() {
       <Section title="The 4-Step Method" icon={ListChecks} step="Core Process" id="flaw-method">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { t: "Conclusion", d: "What is the author trying to prove?", s: "Goal: Underline the main claim." },
-            { t: "Evidence", d: "What support is provided?", s: "Goal: Look for 'since' or 'because'." },
-            { t: "Assumption", d: "What is the missing link?", s: "Goal: What MUST be true for this to work?" },
-            { t: "Flaw", d: "Name the error.", s: "Goal: State the gap in plain English." }
+            { t: "Conclusion", d: "What is the author trying to prove?", s: "Underline the main claim." },
+            { t: "Evidence", d: "What support is provided?", s: "Look for since or because." },
+            { t: "Assumption", d: "What is the missing link?", s: "What must be true for this to work?" },
+            { t: "Flaw", d: "Name the error.", s: "State the gap in plain English." }
           ].map((item, i) => (
             <div key={i} className="group p-5 rounded-2xl bg-zinc-900/40 border border-white/[0.03] hover:bg-zinc-900 transition-colors">
               <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-2 block">Step {i+1}</span>

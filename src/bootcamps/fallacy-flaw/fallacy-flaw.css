@@ -78,16 +78,42 @@
   font-style: italic;
 }
 
+/* Pull-quote — full hairline with a curly leading mark instead of a colored
+   side-stripe. Side-stripes are banned; the italic display face plus the
+   leading glyph already signal "quote" without a chrome accent. Vertical
+   margins are dropped because the parent BriefLayout uses space-y-* for
+   rhythm; the pull-quote receives a slightly larger top margin via a child
+   selector below to mark the section break without doubling spacing. */
 .ff-bootcamp .pull-quote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.25rem;
-  border-left: 3px solid var(--verdigris);
+  position: relative;
+  margin: 0;
+  padding: 1rem 1.25rem 1rem 2.25rem;
+  border: 1px solid var(--rule-soft);
+  background-color: var(--paper-bright);
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.15rem;
   line-height: 1.5;
   color: rgb(var(--ink));
 }
+
+.ff-bootcamp .pull-quote::before {
+  content: "\201C"; /* curly left-double-quote */
+  position: absolute;
+  top: 0.45rem;
+  left: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--verdigris);
+  opacity: 0.55;
+}
+
+/* Asymmetric breath — pull-quote gets a touch more top space than the
+   parent paragraph rhythm provides, so it reads as a section break rather
+   than another paragraph. */
+.ff-bootcamp .pull-quote + * { margin-top: 1.25rem; }
+.ff-bootcamp * + .pull-quote { margin-top: 1.25rem; }
 
 .ff-bootcamp .rule-line {
   border: none;
