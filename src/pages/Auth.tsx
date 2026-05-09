@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2, Home, LayoutGrid, Clock, Inbox, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable/index';
 import { redirectAfterAuth } from '@/lib/authRedirect';
@@ -117,24 +117,56 @@ const PAGE_CSS = `
   .lsatu-arc .arc-cta-secondary:hover { color: ${ARC.ink}; }
   .lsatu-arc .arc-cta-secondary u { text-decoration-color: ${ARC.hairlineStrong}; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
-  /* Coded product moment — flat warm-cream argument-anatomy card with breathing float + accent pulse. */
-  .lsatu-arc .arc-preview { position: relative; margin: 16px auto 0; max-width: 580px; padding: 0 32px; }
-  .lsatu-arc .arc-preview-card { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 16px; padding: 22px 24px 18px; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 18px 44px -10px rgba(15,17,29,0.12); text-align: left; transition: transform 480ms ${ARC.easeOut}, box-shadow 480ms ${ARC.easeOut}, border-color 480ms ${ARC.easeOut}; animation: arcFloat 7s ease-in-out infinite; will-change: transform; }
-  .lsatu-arc .arc-preview-card:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 28px 64px -14px rgba(15,17,29,0.20); }
+  /* Platform shell preview — soft app-like frame, slim sidebar, skeleton cards. No content, no labels that read as curriculum. */
+  .lsatu-arc .arc-shell { position: relative; margin: 24px auto 0; max-width: 920px; padding: 0 24px; }
+  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 600ms ${ARC.easeOut}, box-shadow 600ms ${ARC.easeOut}, border-color 600ms ${ARC.easeOut}; animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
+  .lsatu-arc .arc-shell-frame:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 36px 80px -20px rgba(15,17,29,0.24); }
   @keyframes arcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  .lsatu-arc .arc-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .lsatu-arc .arc-preview-eyebrow { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 500; letter-spacing: 0.20em; text-transform: uppercase; color: ${ARC.inkMuted}; }
-  .lsatu-arc .arc-preview-pulse { position: relative; width: 7px; height: 7px; border-radius: 999px; background: ${ARC.accent}; }
-  .lsatu-arc .arc-preview-pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 999px; border: 1.5px solid ${ARC.accent}; opacity: 0.55; animation: arcPulse 2.4s ease-out infinite; }
-  @keyframes arcPulse { 0% { transform: scale(0.7); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
-  .lsatu-arc .arc-preview-row { display: grid; grid-template-columns: auto 1fr; gap: 12px 14px; align-items: start; }
-  .lsatu-arc .arc-preview-tag { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; padding: 3px 7px; border-radius: 5px; background: ${ARC.bgTinted}; color: ${ARC.inkSecondary}; align-self: start; margin-top: 4px; white-space: nowrap; }
-  .lsatu-arc .arc-preview-tag.is-conclusion { background: ${ARC.accentSoft}; color: ${ARC.accent}; }
-  .lsatu-arc .arc-preview-text { font-family: ${ARC.serif}; font-size: 15.5px; font-weight: 500; line-height: 1.45; letter-spacing: -0.012em; color: ${ARC.ink}; }
-  .lsatu-arc .arc-preview-text.is-muted { color: ${ARC.inkSecondary}; font-weight: 400; }
-  .lsatu-arc .arc-preview-bridge { margin-top: 14px; padding-top: 12px; border-top: 1px dashed ${ARC.hairline}; display: flex; align-items: center; gap: 10px; font-family: ${ARC.sans}; font-size: 12px; color: ${ARC.inkSecondary}; }
-  .lsatu-arc .arc-preview-bridge em { font-family: ${ARC.serif}; font-style: italic; color: ${ARC.ink}; font-weight: 500; }
-  .lsatu-arc .arc-preview-key { font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; color: ${ARC.accent}; letter-spacing: 0.04em; margin-left: auto; white-space: nowrap; }
+
+  /* Window chrome */
+  .lsatu-arc .arc-shell-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid ${ARC.hairline}; background: ${ARC.bg}; }
+  .lsatu-arc .arc-shell-dots { display: inline-flex; gap: 6px; }
+  .lsatu-arc .arc-shell-dot { width: 9px; height: 9px; border-radius: 999px; background: ${ARC.hairlineStrong}; }
+  .lsatu-arc .arc-shell-title { flex: 1; text-align: center; font-family: ${ARC.serif}; font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.inkSecondary}; }
+  .lsatu-arc .arc-shell-kbd { font-family: ${ARC.sans}; font-size: 10px; font-weight: 500; letter-spacing: 0.02em; color: ${ARC.inkMuted}; padding: 3px 7px; border: 1px solid ${ARC.hairline}; border-radius: 5px; background: ${ARC.bgSurface}; }
+
+  /* Body: 2-column shell */
+  .lsatu-arc .arc-shell-body { display: grid; grid-template-columns: 168px 1fr; min-height: 320px; }
+  .lsatu-arc .arc-shell-side { padding: 18px 12px; border-right: 1px solid ${ARC.hairline}; background: ${ARC.bg}; display: flex; flex-direction: column; gap: 2px; }
+  .lsatu-arc .arc-shell-side-eyebrow { font-family: ${ARC.sans}; font-size: 9.5px; font-weight: 500; letter-spacing: 0.20em; text-transform: uppercase; color: ${ARC.inkMuted}; padding: 0 10px 10px; }
+  .lsatu-arc .arc-shell-nav { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-family: ${ARC.sans}; font-size: 12.5px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.inkSecondary}; transition: color 200ms ${ARC.easeOut}, background 200ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-shell-nav-icon { display: inline-flex; width: 14px; height: 14px; color: ${ARC.inkMuted}; }
+  .lsatu-arc .arc-shell-nav.is-active { background: ${ARC.bgSurface}; color: ${ARC.ink}; box-shadow: inset 0 0 0 1px ${ARC.hairline}; }
+  .lsatu-arc .arc-shell-nav.is-active .arc-shell-nav-icon { color: ${ARC.accent}; }
+
+  /* Main canvas */
+  .lsatu-arc .arc-shell-main { padding: 22px 26px 26px; display: flex; flex-direction: column; gap: 18px; background: ${ARC.bgSurface}; }
+  .lsatu-arc .arc-shell-main-head { display: flex; align-items: center; justify-content: space-between; }
+  .lsatu-arc .arc-shell-greet { font-family: ${ARC.serif}; font-size: 17px; font-weight: 500; letter-spacing: -0.018em; color: ${ARC.ink}; }
+  .lsatu-arc .arc-shell-greet-sub { font-family: ${ARC.serif}; font-style: italic; font-weight: 400; color: ${ARC.inkSecondary}; margin-left: 4px; }
+  .lsatu-arc .arc-shell-pill { font-family: ${ARC.sans}; font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 999px; background: ${ARC.bgTinted}; color: ${ARC.inkSecondary}; }
+  .lsatu-arc .arc-shell-pill .arc-shell-pill-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: ${ARC.accent}; margin-right: 6px; vertical-align: middle; }
+
+  /* Skeleton cards */
+  .lsatu-arc .arc-shell-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .lsatu-arc .arc-shell-card { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 116px; transition: border-color 280ms ${ARC.easeOut}, transform 280ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-shell-card:hover { border-color: ${ARC.hairlineStrong}; transform: translateY(-1px); }
+  .lsatu-arc .arc-shell-card-corner { display: flex; align-items: center; gap: 6px; }
+  .lsatu-arc .arc-shell-card-dot { width: 6px; height: 6px; border-radius: 999px; background: ${ARC.hairlineStrong}; }
+  .lsatu-arc .arc-shell-card-dot.is-accent { background: ${ARC.accent}; }
+  .lsatu-arc .arc-shell-card-pip { font-family: ${ARC.sans}; font-size: 9.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: ${ARC.inkMuted}; }
+  .lsatu-arc .arc-shell-bar-skel { height: 6px; border-radius: 3px; background: ${ARC.bgTinted}; }
+  .lsatu-arc .arc-shell-bar-skel.s-1 { width: 64%; }
+  .lsatu-arc .arc-shell-bar-skel.s-2 { width: 86%; }
+  .lsatu-arc .arc-shell-bar-skel.s-3 { width: 42%; }
+  .lsatu-arc .arc-shell-bar-skel.s-accent { background: ${ARC.accentSoft}; }
+
+  /* Wide footer panel (subtle continuation hint) */
+  .lsatu-arc .arc-shell-panel { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; }
+  .lsatu-arc .arc-shell-panel-icon { width: 32px; height: 32px; border-radius: 8px; background: ${ARC.bgTinted}; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .lsatu-arc .arc-shell-panel-icon svg { width: 14px; height: 14px; color: ${ARC.inkSecondary}; }
+  .lsatu-arc .arc-shell-panel-stack { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+  .lsatu-arc .arc-shell-panel-arrow { width: 22px; height: 22px; border-radius: 999px; background: ${ARC.bgTinted}; display: inline-flex; align-items: center; justify-content: center; color: ${ARC.inkSecondary}; flex-shrink: 0; }
   .lsatu-arc .arc-link { color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
   .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
 
@@ -176,17 +208,17 @@ const PAGE_CSS = `
     .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
     .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
-    .lsatu-arc .arc-preview-card { animation: none; }
-    .lsatu-arc .arc-preview-pulse::after { animation: none; opacity: 0; }
+    .lsatu-arc .arc-shell-frame { animation: none; }
   }
 
   @media (max-width: 720px) {
     .lsatu-arc .arc-card { flex: 0 0 280px; min-height: 220px; }
     .lsatu-arc .arc-marquee-item { font-size: 16px; padding: 0 14px; }
     .lsatu-arc .arc-cta-hero { height: 54px; padding: 0 18px 0 24px; font-size: 14.5px; }
-    .lsatu-arc .arc-preview-text { font-size: 14.5px; }
-    .lsatu-arc .arc-preview-bridge { flex-wrap: wrap; }
-    .lsatu-arc .arc-preview-key { margin-left: 0; }
+    .lsatu-arc .arc-shell-body { grid-template-columns: 1fr; }
+    .lsatu-arc .arc-shell-side { display: none; }
+    .lsatu-arc .arc-shell-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lsatu-arc .arc-shell-card:nth-child(3) { display: none; }
   }
 `;
 
@@ -386,34 +418,101 @@ const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void 
   </section>
 );
 
-// ── Coded product moment ── A real LSAT argument anatomy (premises → conclusion,
-// the gap a Necessary-Assumption drill teaches). Flat warm-cream surface, hairline
-// border, soft drop shadow, gentle 3px float, accent-blue pulse dot. Not a
-// screenshot — it's a working component, hand-built from real LR content.
-const ArcProductPreview = () => (
-  <section className="arc-preview arc-fade" aria-label="Sample question anatomy">
-    <div className="arc-preview-card">
-      <div className="arc-preview-header">
-        <span className="arc-preview-eyebrow">Logical Reasoning · Question anatomy</span>
-        <span className="arc-preview-pulse" aria-hidden="true" />
+// ── Platform preview ── A faux LSAT U workspace shell. Window chrome,
+// slim sidebar with platform-level nav, soft skeleton cards, one wide
+// continuation panel. Zero curriculum content. Reads as "this is the
+// tool", not "this is a lesson". All chrome is structural — labels are
+// platform concepts (Today, Workspace, Sessions, Inbox, Profile), the
+// canvas is intentionally light-on-content.
+const ArcPlatformPreview = () => (
+  <section className="arc-shell arc-fade" aria-label="LSAT U platform preview">
+    <div className="arc-shell-frame">
+      <div className="arc-shell-bar">
+        <div className="arc-shell-dots" aria-hidden="true">
+          <span className="arc-shell-dot" />
+          <span className="arc-shell-dot" />
+          <span className="arc-shell-dot" />
+        </div>
+        <div className="arc-shell-title">LSAT U · Workspace</div>
+        <div className="arc-shell-kbd">⌘ K</div>
       </div>
-      <div className="arc-preview-row">
-        <span className="arc-preview-tag">P1</span>
-        <span className="arc-preview-text is-muted">
-          Every successful trial lawyer the firm hired in the past decade was a strong reader.
-        </span>
-        <span className="arc-preview-tag">P2</span>
-        <span className="arc-preview-text is-muted">
-          Nora is a strong reader.
-        </span>
-        <span className="arc-preview-tag is-conclusion">C</span>
-        <span className="arc-preview-text">
-          So the firm should hire Nora as a trial lawyer.
-        </span>
-      </div>
-      <div className="arc-preview-bridge">
-        <span>The flaw is the gap from <em>necessary</em> to <em>sufficient</em>.</span>
-        <span className="arc-preview-key">Find the gap →</span>
+      <div className="arc-shell-body">
+        <aside className="arc-shell-side" aria-hidden="true">
+          <div className="arc-shell-side-eyebrow">Workspace</div>
+          <div className="arc-shell-nav is-active">
+            <span className="arc-shell-nav-icon"><Home strokeWidth={1.6} size={14} /></span>
+            Today
+          </div>
+          <div className="arc-shell-nav">
+            <span className="arc-shell-nav-icon"><LayoutGrid strokeWidth={1.6} size={14} /></span>
+            Spaces
+          </div>
+          <div className="arc-shell-nav">
+            <span className="arc-shell-nav-icon"><Clock strokeWidth={1.6} size={14} /></span>
+            Sessions
+          </div>
+          <div className="arc-shell-nav">
+            <span className="arc-shell-nav-icon"><Inbox strokeWidth={1.6} size={14} /></span>
+            Inbox
+          </div>
+          <div className="arc-shell-nav">
+            <span className="arc-shell-nav-icon"><User strokeWidth={1.6} size={14} /></span>
+            Profile
+          </div>
+        </aside>
+        <div className="arc-shell-main">
+          <div className="arc-shell-main-head">
+            <div>
+              <span className="arc-shell-greet">Welcome back,</span>
+              <span className="arc-shell-greet-sub">your space is ready.</span>
+            </div>
+            <span className="arc-shell-pill" aria-hidden="true">
+              <span className="arc-shell-pill-dot" />
+              Live
+            </span>
+          </div>
+          <div className="arc-shell-row" aria-hidden="true">
+            <div className="arc-shell-card">
+              <div className="arc-shell-card-corner">
+                <span className="arc-shell-card-dot is-accent" />
+                <span className="arc-shell-card-pip">01</span>
+              </div>
+              <div className="arc-shell-bar-skel s-2" />
+              <div className="arc-shell-bar-skel s-1" />
+              <div className="arc-shell-bar-skel s-accent s-3" style={{ marginTop: 'auto' }} />
+            </div>
+            <div className="arc-shell-card">
+              <div className="arc-shell-card-corner">
+                <span className="arc-shell-card-dot" />
+                <span className="arc-shell-card-pip">02</span>
+              </div>
+              <div className="arc-shell-bar-skel s-1" />
+              <div className="arc-shell-bar-skel s-2" />
+              <div className="arc-shell-bar-skel s-3" style={{ marginTop: 'auto' }} />
+            </div>
+            <div className="arc-shell-card">
+              <div className="arc-shell-card-corner">
+                <span className="arc-shell-card-dot" />
+                <span className="arc-shell-card-pip">03</span>
+              </div>
+              <div className="arc-shell-bar-skel s-2" />
+              <div className="arc-shell-bar-skel s-3" />
+              <div className="arc-shell-bar-skel s-1" style={{ marginTop: 'auto' }} />
+            </div>
+          </div>
+          <div className="arc-shell-panel" aria-hidden="true">
+            <div className="arc-shell-panel-icon">
+              <ArrowRight strokeWidth={1.7} />
+            </div>
+            <div className="arc-shell-panel-stack">
+              <div className="arc-shell-bar-skel s-2" />
+              <div className="arc-shell-bar-skel s-3" />
+            </div>
+            <div className="arc-shell-panel-arrow">
+              <ArrowRight size={12} strokeWidth={1.8} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1022,7 +1121,7 @@ export default function Auth() {
 
       <ArcNav onSignIn={openSignIn} />
       <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
-      <ArcProductPreview />
+      <ArcPlatformPreview />
       <ArcMarquee />
       <ArcProof onPrimary={openSignIn} />
       <ArcCarousel />
