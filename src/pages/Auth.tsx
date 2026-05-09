@@ -553,10 +553,11 @@ export default function Auth() {
         toast({ title: 'Google sign-in failed', description: String(result.error), variant: 'destructive' });
       }
       if (result.redirected) return;
-    } catch (err: any) {
+    } catch (err) {
       sessionStorage.removeItem('oauth_pending');
       sessionStorage.removeItem('oauth_pending_ts');
-      toast({ title: 'Google sign-in failed', description: err?.message || 'Unknown error', variant: 'destructive' });
+      const description = err instanceof Error ? err.message : 'Unknown error';
+      toast({ title: 'Google sign-in failed', description, variant: 'destructive' });
     } finally {
       setLoading(false);
     }
