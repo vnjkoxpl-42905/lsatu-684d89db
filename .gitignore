@@ -28,3 +28,7 @@ dist-ssr
 
 # Supabase CLI cache
 supabase/.temp/
+
+# Local design extraction + dev screenshot artifacts (canonical extract lives in design-references/arc/extract/)
+design-extract-output/
+.dev-screens/

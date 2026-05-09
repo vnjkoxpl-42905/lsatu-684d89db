@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useImageExists } from '@/hooks/useImageExists';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, X, Loader2 } from 'lucide-react';
@@ -57,69 +56,238 @@ const CTAButton = ({
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
-// HOMEPAGE LAYOUT — 1:1 ARC STRUCTURAL TRANSLATION
-// Layout / spacing / hierarchy / proportions / rhythm / component style
-// mirror arc.net (extracted into design-references/arc/). All copy, product
-// meaning, brand references swapped to LSAT U. No reinterpretation.
+// HOMEPAGE LAYOUT — Arc-translated, type-led, image-free.
+// Mirrors arc.net's chromatic restraint, 7-color budget, soft-pill CTAs,
+// flat material, type-as-hero, horizontal proof carousel, looping marquee
+// of subject signals. All copy, content, and meaning are LSAT U's own.
+// No screenshots, no Foyer imagery, no orbital system, no placeholders.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ARC = {
-  bg: '#FBF8F1',          // page base — warm off-white (Arc #fffcec → slightly cooler/less yellow)
-  bgTinted: '#F5EFE2',    // faint warm cream (Arc #fffadd, less saturated)
-  ink: '#15171D',         // near-black with the slightest blue cast (Arc #000000)
-  inkSecondary: '#6F7480',// one mid-grey (Arc #696969)
+  bg: '#FBF8F1',           // page base — warm off-white, slightly more paper-like than Arc's #FFFCEC
+  bgTinted: '#F5EFE2',     // soft cream — proof block, marquee strip
+  bgSurface: '#FFFDF7',    // near-white — carousel cards on the warm field
+  ink: '#15171D',          // near-black with a faint blue cast
+  inkSecondary: '#6F7480', // one mid-grey — secondary text, hairlines bias
+  inkMuted: '#A4A8B0',     // micro-text, kicker numerals
   hairline: 'rgba(21,23,29,0.08)',
-  accent: '#1F3FE3',      // one confident product blue (Arc accent #3139fb)
-  accentDeep: '#15224A',  // deep ink-blue for emphasis (Arc primary #2702c2)
-  accentSoft: '#DCE2FA',  // tint surface for hover/proof
+  hairlineStrong: 'rgba(21,23,29,0.14)',
+  accent: '#1F3FE3',       // one confident product blue (≈ Arc's #3139FB), used sparingly
+  accentDeep: '#15224A',   // deep ink-blue for emphasis on hover
+  accentSoft: '#E5EAFC',   // tint surface for hover/proof
   shadowSoft: '0 2px 8px rgba(15,17,29,0.06)',
   shadowLift: '0 5px 18px rgba(15,17,29,0.08)',
+  shadowCard: '0 1px 2px rgba(15,17,29,0.04), 0 8px 24px rgba(15,17,29,0.06)',
   radiusSm: '4px',
   radiusMd: '8px',
-  radiusPill: '22px',     // Arc's signature soft pill
+  radiusCard: '14px',
+  radiusPill: '22px',      // Arc's signature soft pill
   serif: '"Fraunces", "Iowan Old Style", "Times New Roman", serif',
-  sans: '"Inter", -apple-system, "SF Pro Display", system-ui, sans-serif',
+  sans: '"Outfit", -apple-system, "SF Pro Display", system-ui, sans-serif',
+  easeOut: 'cubic-bezier(0.16, 1, 0.3, 1)',
 };
 
-// ── Page-scoped CSS injected once. Reset, font defaults, Arc-tier transitions ──
+// ── Page-scoped CSS injected once. Reset, type defaults, motion tokens,
+// reveal animation, marquee, scroll-snap carousel. All motion respects
+// prefers-reduced-motion.
 const PAGE_CSS = `
-  .lsatu-arc { background: ${ARC.bg}; color: ${ARC.ink}; font-family: ${ARC.sans}; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .lsatu-arc { background: ${ARC.bg}; color: ${ARC.ink}; font-family: ${ARC.sans}; min-height: 100vh; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   .lsatu-arc * { box-sizing: border-box; }
   .lsatu-arc a { color: inherit; text-decoration: none; }
-  .lsatu-arc h1, .lsatu-arc h2, .lsatu-arc h3 { font-family: ${ARC.serif}; font-weight: 600; letter-spacing: -0.02em; color: ${ARC.ink}; }
-  .lsatu-arc .arc-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 22px; border-radius: ${ARC.radiusPill}; background: ${ARC.ink}; color: ${ARC.bg}; font-size: 14px; font-weight: 500; border: 0; cursor: pointer; transition: transform 180ms ease-out, box-shadow 180ms ease-out, background 180ms ease-out; }
+  .lsatu-arc h1, .lsatu-arc h2, .lsatu-arc h3 { font-family: ${ARC.serif}; font-weight: 600; letter-spacing: -0.025em; color: ${ARC.ink}; margin: 0; }
+  .lsatu-arc p { margin: 0; }
+
+  /* CTAs — Arc-style soft pill */
+  .lsatu-arc .arc-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 24px; border-radius: ${ARC.radiusPill}; background: ${ARC.ink}; color: ${ARC.bg}; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; border: 0; cursor: pointer; transition: transform 220ms ${ARC.easeOut}, box-shadow 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; }
   .lsatu-arc .arc-cta:hover { transform: translateY(-1px); box-shadow: ${ARC.shadowLift}; background: ${ARC.accentDeep}; }
+  .lsatu-arc .arc-cta:focus-visible { outline: 2px solid ${ARC.accent}; outline-offset: 3px; }
   .lsatu-arc .arc-cta-ghost { background: transparent; color: ${ARC.ink}; border: 1px solid ${ARC.hairline}; }
   .lsatu-arc .arc-cta-ghost:hover { background: ${ARC.bgTinted}; transform: translateY(-1px); box-shadow: ${ARC.shadowSoft}; }
-  .lsatu-arc .arc-link { color: ${ARC.accent}; font-weight: 500; transition: color 180ms ease-out; }
+  .lsatu-arc .arc-cta-arrow { display: inline-block; transition: transform 220ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-cta:hover .arc-cta-arrow { transform: translateX(3px); }
+  .lsatu-arc .arc-link { color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
   .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
-  .lsatu-arc .arc-fade { opacity: 0; animation: arcFade 480ms cubic-bezier(0.16,1,0.3,1) forwards; }
+
+  /* First-paint fade */
+  .lsatu-arc .arc-fade { opacity: 0; animation: arcFade 540ms ${ARC.easeOut} forwards; }
   @keyframes arcFade { to { opacity: 1; } }
+
+  /* Scroll-reveal — applied to .arc-rise, toggled by IntersectionObserver */
+  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 720ms ${ARC.easeOut}, transform 720ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); }
+
+  /* Marquee — seamless loop, edge-fade mask */
+  .lsatu-arc .arc-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); }
+  .lsatu-arc .arc-marquee-track { display: inline-flex; gap: 0; white-space: nowrap; animation: arcMarquee 64s linear infinite; will-change: transform; }
+  .lsatu-arc .arc-marquee:hover .arc-marquee-track { animation-play-state: paused; }
+  .lsatu-arc .arc-marquee-item { display: inline-flex; align-items: center; gap: 14px; padding: 0 18px; font-family: ${ARC.serif}; font-size: 18px; font-weight: 500; font-style: italic; letter-spacing: -0.01em; color: ${ARC.ink}; }
+  .lsatu-arc .arc-marquee-dot { width: 4px; height: 4px; border-radius: 999px; background: ${ARC.accent}; opacity: 0.55; }
+  @keyframes arcMarquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+
+  /* Scroll-snap carousel — hide native scrollbar, snap-mandatory */
+  .lsatu-arc .arc-carousel { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 32px; padding: 4px 32px 36px; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
+  .lsatu-arc .arc-carousel:active { cursor: grabbing; }
+  .lsatu-arc .arc-carousel::-webkit-scrollbar { display: none; }
+  .lsatu-arc .arc-card { scroll-snap-align: start; flex: 0 0 320px; background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: ${ARC.radiusCard}; padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 12px; min-height: 240px; transition: transform 320ms ${ARC.easeOut}, box-shadow 320ms ${ARC.easeOut}, border-color 320ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-card:hover { transform: translateY(-3px); box-shadow: ${ARC.shadowCard}; border-color: ${ARC.hairlineStrong}; }
+  .lsatu-arc .arc-card-kicker { font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: ${ARC.inkMuted}; }
+  .lsatu-arc .arc-card-title { font-family: ${ARC.serif}; font-size: 24px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: ${ARC.ink}; }
+  .lsatu-arc .arc-card-body { font-size: 14.5px; line-height: 1.55; color: ${ARC.inkSecondary}; margin-top: auto; }
+
+  /* Carousel hint row */
+  .lsatu-arc .arc-carousel-cue { display: flex; align-items: center; gap: 14px; padding: 0 32px 8px; color: ${ARC.inkMuted}; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+  .lsatu-arc .arc-carousel-cue-line { flex: 1; height: 1px; background: ${ARC.hairline}; }
+
+  /* Eyebrow / kicker text */
+  .lsatu-arc .arc-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: ${ARC.inkSecondary}; }
+  .lsatu-arc .arc-eyebrow::before { content: ''; width: 18px; height: 1px; background: ${ARC.inkSecondary}; opacity: 0.55; }
+
   @media (prefers-reduced-motion: reduce) {
-    .lsatu-arc .arc-fade { animation: none; opacity: 1; }
-    .lsatu-arc .arc-cta { transition: none; }
+    .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
+    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link { transition: none; }
+    .lsatu-arc .arc-marquee-track { animation: none; }
+  }
+
+  @media (max-width: 720px) {
+    .lsatu-arc .arc-card { flex: 0 0 280px; min-height: 220px; }
+    .lsatu-arc .arc-marquee-item { font-size: 16px; padding: 0 14px; }
   }
 `;
 
-// ── Nav ── Logo + sign-in CTA. Decorative section labels were removed in
-// the audit-fix pass (Phase 1) — they had no destinations and read as a
-// fake nav. Real nav lives inside the app at /foyer.
+// ── Scroll-reveal hook — IntersectionObserver with two safety nets:
+// (1) initial pass reveals anything already at-or-above the current viewport
+//     (covers reload-mid-page and instant-scroll deep links),
+// (2) generous rootMargin so smooth-scrolls always hit the trigger before the
+//     element fully enters view. Reduced-motion bypasses everything.
+function useScrollReveal() {
+  React.useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.lsatu-arc .arc-rise'));
+
+    if (reduced) {
+      els.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+
+    // Initial pass — anything already in/above the viewport is revealed without animation.
+    const vh = window.innerHeight;
+    els.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      // Reveal if the element top has reached the bottom 92% of the viewport
+      // OR if the element bottom is above the viewport (already scrolled past).
+      if (rect.top < vh * 0.92 || rect.bottom < 0) {
+        el.classList.add('is-in');
+      }
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -4% 0px' },
+    );
+    els.forEach((el) => {
+      if (!el.classList.contains('is-in')) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
+}
+
+// ── Drag-to-scroll hook — mouse drag for the carousel; trackpads/touch use
+// native scroll-snap. Adds Arc-style "grab and pull" feel.
+function useDragScroll(ref: React.RefObject<HTMLElement>) {
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    const onDown = (e: MouseEvent) => {
+      isDown = true;
+      el.classList.add('is-dragging');
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    };
+    const onLeave = () => { isDown = false; el.classList.remove('is-dragging'); };
+    const onUp = () => { isDown = false; el.classList.remove('is-dragging'); };
+    const onMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    };
+    el.addEventListener('mousedown', onDown);
+    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('mouseup', onUp);
+    el.addEventListener('mousemove', onMove);
+    return () => {
+      el.removeEventListener('mousedown', onDown);
+      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener('mouseup', onUp);
+      el.removeEventListener('mousemove', onMove);
+    };
+  }, [ref]);
+}
+
+// ── Content tokens — all real LSAT subject signals. No fake metrics. ──
+const QUESTION_TYPES = [
+  'Necessary Assumption',
+  'Strengthen',
+  'Weaken',
+  'Main Conclusion',
+  'Flaw in the Reasoning',
+  'Principle',
+  'Parallel Reasoning',
+  'Resolve the Paradox',
+  'Inference',
+  'Method of Reasoning',
+  'Sufficient Assumption',
+  'Role in Argument',
+];
+
+const PRINCIPLES: Array<{ kicker: string; title: string; body: string }> = [
+  { kicker: '01 — Anatomy',  title: 'Find the argument.',     body: 'Premises, conclusion, and the bridge between them. Every stem hides one — train the eye to see it before the clock starts.' },
+  { kicker: '02 — Bridge',   title: 'Test the gap.',          body: 'Strengthen and Weaken live in the space between premise and conclusion. Drill the gap, not the answer choice.' },
+  { kicker: '03 — Failure',  title: 'Spot the flaw.',         body: 'Most LR arguments break in a small, predictable set of ways. Learn the set; the arguments stop surprising you.' },
+  { kicker: '04 — Stems',    title: 'Read the stem first.',   body: 'The stem sets the search target. Reading the stimulus without a target is the most expensive mistake on the test.' },
+  { kicker: '05 — Patterns', title: 'Hunt patterns.',         body: 'One principle, dozens of questions. Compression beats memorization — and compresses time on test day.' },
+  { kicker: '06 — Pace',     title: 'Slow now, fast later.',  body: 'Trained instinct beats trained speed. Build the instinct in slow drills; speed becomes a side-effect of clarity.' },
+];
+
+const PILLARS: Array<{ title: string; body: string }> = [
+  { title: 'Adaptive drilling.',   body: 'Your weakest argument types surface first. The engine drills where the score gain is, not where the comfort is.' },
+  { title: 'A coach in the page.', body: 'Joshua’s coaching is woven into every drill — real-time feedback that anticipates the exact moment you’ll trip.' },
+  { title: 'Real numbers, only.',  body: 'No leaderboards. No vanity streaks. Every metric is measured, persisted, and tied to your actual progress.' },
+];
+
+// ── Nav ── Brand mark + Sign-in. Sticky with translucent warm-white blur.
 const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
   <nav style={{
     position: 'sticky', top: 0, zIndex: 30,
-    background: ARC.bg + 'F0', backdropFilter: 'blur(8px)',
+    background: ARC.bg + 'F2',
+    backdropFilter: 'saturate(160%) blur(10px)',
+    WebkitBackdropFilter: 'saturate(160%) blur(10px)',
     borderBottom: `1px solid ${ARC.hairline}`,
   }}>
     <div style={{
-      maxWidth: 1280, margin: '0 auto', padding: '18px 32px',
+      maxWidth: 1200, margin: '0 auto', padding: '18px 32px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
-      <Link to="/" style={{ fontFamily: ARC.serif, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', color: 'inherit', textDecoration: 'none' }}>
-        LSAT U
+      <Link to="/" style={{ fontFamily: ARC.serif, fontSize: 22, fontWeight: 600, letterSpacing: '-0.025em', color: ARC.ink, display: 'inline-flex', alignItems: 'baseline', gap: 6 }}>
+        LSAT
+        <span style={{ color: ARC.accent, fontStyle: 'italic', fontWeight: 500 }}>U</span>
       </Link>
       <button onClick={onSignIn} style={{
-        background: 'transparent', border: 0, padding: 0,
+        background: 'transparent', border: 0, padding: '6px 2px',
+        fontFamily: ARC.sans,
         fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
+        letterSpacing: '-0.005em',
       }}>
         Sign in
       </button>
@@ -127,164 +295,287 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
   </nav>
 );
 
-// ── Image probe ── HEAD-fetches a marketing asset; if it isn't served we
-// hide the framed image block entirely so visitors don't see an empty
-// colored rectangle. Returns null while checking too — landing renders
-// heading + lede only until we know the asset is real.
-function MarketingImage({ src, alt, aspect = '16 / 9', maxWidth = 1100, marginTop = 0 }: { src: string; alt: string; aspect?: string; maxWidth?: number; marginTop?: number }) {
-  const exists = useImageExists(src);
-  if (exists !== true) return null;
-  return (
-    <div style={{
-      marginTop,
-      borderRadius: ARC.radiusPill,
-      overflow: 'hidden',
-      background: ARC.bgTinted,
-      border: `1px solid ${ARC.hairline}`,
-      boxShadow: ARC.shadowLift,
-      aspectRatio: aspect,
-      maxWidth,
-      marginInline: 'auto',
-    }}>
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-      />
-    </div>
-  );
-}
-
-// ── Hero ── Arc: heading + subhead + 1 CTA + product image. h1 sized for typographic confidence.
+// ── Hero ── Type carries the whole composition. No image. Eyebrow + h1
+// + soft second line + lede + dual CTA. All three required phrases live here.
 const ArcHero = ({ onCTA, onSignUp }: { onCTA: () => void; onSignUp: () => void }) => (
-  <section style={{ padding: '90px 32px 72px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
+  <section style={{ padding: 'clamp(72px, 10vw, 132px) 32px 80px', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+    <div className="arc-fade">
+      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>For aspiring attorneys</span>
       <h1 style={{
-        fontSize: 'clamp(40px, 5.6vw, 72px)',
+        fontSize: 'clamp(44px, 7.4vw, 96px)',
         fontWeight: 600,
-        lineHeight: 0.96,
-        letterSpacing: '-0.035em',
-        marginBottom: 20,
+        lineHeight: 0.94,
+        letterSpacing: '-0.04em',
+        marginTop: 24,
+        marginBottom: 18,
       }}>
         Master the LSAT.<br />
-        <span style={{ color: ARC.inkSecondary, fontWeight: 400 }}>Own your future.</span>
+        <span style={{ color: ARC.inkSecondary, fontWeight: 400, fontStyle: 'italic' }}>
+          Own your future.
+        </span>
       </h1>
       <p style={{
-        fontSize: 18, lineHeight: 1.5, color: ARC.inkSecondary,
-        maxWidth: 560, margin: '0 auto 32px',
+        fontFamily: ARC.serif,
+        fontSize: 'clamp(18px, 1.7vw, 22px)',
+        lineHeight: 1.45,
+        color: ARC.inkSecondary,
+        maxWidth: 540,
+        margin: '0 auto 36px',
+        fontStyle: 'italic',
+        fontWeight: 400,
       }}>
-        Clearer thinking, higher scores. A training environment built for aspiring attorneys.
+        Clearer thinking, higher scores.
       </p>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
         <button className="arc-cta" onClick={onCTA}>
           Begin training
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true" className="arc-cta-arrow">→</span>
         </button>
-        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Sign up</button>
+        <button className="arc-cta arc-cta-ghost" onClick={onSignUp}>Create account</button>
       </div>
+      <p style={{
+        marginTop: 32, fontSize: 12, color: ARC.inkMuted,
+        letterSpacing: '0.06em',
+      }}>
+        Email or Google · No credit card to start
+      </p>
     </div>
-
-    <MarketingImage
-      src="/marketing/hero-foyer.png"
-      alt="The LSAT U Foyer — a calm, focused training entry"
-      marginTop={72}
-    />
   </section>
 );
 
-// ── Proof quote ── Arc: pull-quote + attribution + dual CTAs + "More details".
+// ── Marquee ── Auto-scrolling row of LSAT question types. Replaces the
+// "logo wall" beat that Arc puts under its hero. Real subject content,
+// not fake brand logos.
+const ArcMarquee = () => {
+  const items = [...QUESTION_TYPES, ...QUESTION_TYPES]; // duplicated for seamless loop
+  return (
+    <section className="arc-rise" style={{
+      borderTop: `1px solid ${ARC.hairline}`,
+      borderBottom: `1px solid ${ARC.hairline}`,
+      background: ARC.bgTinted,
+      padding: '20px 0',
+    }}>
+      <div style={{
+        maxWidth: 1200, margin: '0 auto',
+        padding: '0 32px 6px',
+        fontSize: 11, fontWeight: 500,
+        letterSpacing: '0.22em', textTransform: 'uppercase',
+        color: ARC.inkSecondary,
+      }}>
+        What you train
+      </div>
+      <div className="arc-marquee" aria-hidden="true">
+        <div className="arc-marquee-track">
+          {items.map((q, i) => (
+            <span key={i} className="arc-marquee-item">
+              <span className="arc-marquee-dot" />
+              {q}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ── Proof quote ── Founder statement of intent. Pull-quote in serif italic.
 const ArcProof = ({ onPrimary }: { onPrimary: () => void }) => (
-  <section style={{ padding: '120px 32px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
+  <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 144px) 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div style={{ maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
+      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>A statement of intent</span>
       <p style={{
         fontFamily: ARC.serif, fontStyle: 'italic',
-        fontSize: 'clamp(28px, 3.2vw, 40px)',
-        fontWeight: 500, lineHeight: 1.2, letterSpacing: '-0.02em',
-        marginBottom: 24, color: ARC.ink,
+        fontSize: 'clamp(28px, 3.6vw, 46px)',
+        fontWeight: 500, lineHeight: 1.16, letterSpacing: '-0.025em',
+        margin: '24px 0 28px', color: ARC.ink,
       }}>
-        “Built by Joshua. Trained on real LSAT arguments. Tested on real students.”
+        “Built by Joshua. Trained on real LSAT arguments. Tested by real students under real conditions.”
       </p>
-      <p style={{ fontSize: 13, color: ARC.inkSecondary, marginBottom: 40, letterSpacing: '0.04em' }}>
-        — A statement of intent from the founder
+      <p style={{
+        fontSize: 13, color: ARC.inkSecondary, marginBottom: 36,
+        letterSpacing: '0.06em',
+      }}>
+        — Joshua, founder · LSAT U
       </p>
-      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-      </div>
+      <button className="arc-cta" onClick={onPrimary}>
+        Begin training
+        <span aria-hidden="true" className="arc-cta-arrow">→</span>
+      </button>
     </div>
   </section>
 );
 
-// ── Feature 1 — full-width image-dominant. Arc Section 3.
-const ArcFeatureFullWidth = () => (
-  <section style={{ padding: '60px 32px 120px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto 56px', textAlign: 'center' }}>
-      <h2 style={{
-        fontSize: 'clamp(28px, 3.6vw, 44px)',
-        fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.025em',
-        marginBottom: 16,
-      }}>
-        A study tool that doesn’t just teach the LSAT — it trains the lawyer in you.
-      </h2>
-      <p style={{ fontSize: 17, lineHeight: 1.5, color: ARC.inkSecondary }}>
-        Joshua’s coaching, woven into every drill. Real-time feedback that anticipates where you’ll trip.
-      </p>
-    </div>
-    <MarketingImage
-      src="/marketing/feature-coach.png"
-      alt="A drill in progress with coaching feedback"
-    />
-  </section>
-);
-
-// ── Feature 2 — text-left / image-right. Arc Section 4.
-const ArcFeatureSplit = ({
-  heading, lede, image, alt, reverse = false,
-}: { heading: string; lede: string; image: string; alt: string; reverse?: boolean }) => (
-  <section style={{ padding: '60px 32px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{
-      display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
-      gap: 64, alignItems: 'center',
-      direction: reverse ? 'rtl' : 'ltr',
-    }}>
-      <div style={{ direction: 'ltr', maxWidth: 480 }}>
+// ── Carousel ── Horizontal scroll-snap row of LSAT thinking principles.
+// Cards are flat warm-cream surfaces with hairline borders. Drag-to-scroll
+// for mouse, native scroll-snap for trackpad/touch. Six cards fits Arc's
+// proof-row rhythm; mask-fade on the right cues "more to read".
+const ArcCarousel = () => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  useDragScroll(ref);
+  return (
+    <section className="arc-rise" style={{ padding: '12px 0 80px', maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ padding: '0 32px', maxWidth: 1100, margin: '0 auto', textAlign: 'center', marginBottom: 48 }}>
+        <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Six principles, one rhythm</span>
         <h2 style={{
-          fontSize: 'clamp(26px, 3.2vw, 40px)',
-          fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.025em',
-          marginBottom: 16,
+          fontSize: 'clamp(32px, 4.4vw, 56px)',
+          fontWeight: 600, lineHeight: 1.02, letterSpacing: '-0.03em',
+          marginTop: 22, marginBottom: 18,
         }}>
-          {heading}
+          The training,<br />
+          <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>distilled.</span>
         </h2>
-        <p style={{ fontSize: 17, lineHeight: 1.5, color: ARC.inkSecondary }}>
-          {lede}
+        <p style={{
+          fontSize: 17, lineHeight: 1.55, color: ARC.inkSecondary,
+          maxWidth: 580, margin: '0 auto',
+        }}>
+          The LSAT rewards a small set of habits, learned deeply. Each card is one of the habits the engine drills against you, until it stops being a drill and becomes the way you read.
         </p>
       </div>
-      <div style={{ direction: 'ltr' }}>
-        <MarketingImage src={image} alt={alt} aspect="4 / 3" maxWidth={520} />
+
+      <div className="arc-carousel-cue" style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <span>Scroll</span>
+        <span className="arc-carousel-cue-line" />
+        <span>Drag · or trackpad</span>
       </div>
+
+      <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training principles">
+        {PRINCIPLES.map((p, i) => (
+          <article key={i} className="arc-card" role="listitem">
+            <div className="arc-card-kicker">{p.kicker}</div>
+            <div className="arc-card-title">{p.title}</div>
+            <div className="arc-card-body">{p.body}</div>
+          </article>
+        ))}
+        {/* Closing card — gentle handoff to CTA */}
+        <article className="arc-card" role="listitem" style={{
+          background: ARC.ink, color: ARC.bg, borderColor: ARC.ink,
+        }}>
+          <div className="arc-card-kicker" style={{ color: ARC.bgTinted, opacity: 0.7 }}>Begin →</div>
+          <div className="arc-card-title" style={{ color: ARC.bg }}>The next card is the page in front of you.</div>
+          <div className="arc-card-body" style={{ color: ARC.bgTinted, opacity: 0.85 }}>
+            The principles only matter when you sit down to drill them. Sign in to start.
+          </div>
+        </article>
+      </div>
+    </section>
+  );
+};
+
+// ── Pillars ── Three flat columns. No images, no chrome — just type and
+// hairlines. Mirrors Arc's "three benefit blocks" beat without screenshots.
+const ArcPillars = () => (
+  <section className="arc-rise" style={{ padding: 'clamp(72px, 10vw, 120px) 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div style={{ maxWidth: 760, margin: '0 auto 64px', textAlign: 'center' }}>
+      <span className="arc-eyebrow" style={{ marginBottom: 24 }}>Built for serious training</span>
+      <h2 style={{
+        fontSize: 'clamp(28px, 3.8vw, 48px)',
+        fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
+        marginTop: 22,
+      }}>
+        A study tool that doesn’t just teach the test —<br />
+        <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>it trains the lawyer in you.</span>
+      </h2>
+    </div>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+      gap: 0,
+      borderTop: `1px solid ${ARC.hairline}`,
+    }}>
+      {PILLARS.map((p, i) => (
+        <div key={i} style={{
+          padding: '40px 28px',
+          borderBottom: `1px solid ${ARC.hairline}`,
+          borderRight: i < PILLARS.length - 1 ? `1px solid ${ARC.hairline}` : 'none',
+        }}>
+          <div style={{
+            fontFamily: ARC.sans, fontSize: 11, fontWeight: 500,
+            letterSpacing: '0.18em', textTransform: 'uppercase',
+            color: ARC.inkMuted, marginBottom: 16,
+          }}>
+            {String(i + 1).padStart(2, '0')}
+          </div>
+          <h3 style={{
+            fontFamily: ARC.serif, fontSize: 26, fontWeight: 500,
+            lineHeight: 1.12, letterSpacing: '-0.02em',
+            marginBottom: 12,
+          }}>
+            {p.title}
+          </h3>
+          <p style={{ fontSize: 15.5, lineHeight: 1.55, color: ARC.inkSecondary }}>
+            {p.body}
+          </p>
+        </div>
+      ))}
     </div>
   </section>
 );
 
-// ── Feature 4 — text-only with link. Arc Section 6 (Privacy).
+// ── Text-only — Arc's "build philosophy" beat. No graphic. Ink + accent link.
 const ArcTextOnly = () => (
-  <section style={{ padding: '120px 32px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
+  <section className="arc-rise" style={{ padding: 'clamp(96px, 12vw, 140px) 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
+      <span className="arc-eyebrow" style={{ marginBottom: 28 }}>The build philosophy</span>
       <h2 style={{
-        fontSize: 'clamp(28px, 3.6vw, 44px)',
-        fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.025em',
-        marginBottom: 20,
+        fontSize: 'clamp(30px, 4vw, 52px)',
+        fontWeight: 600, lineHeight: 1.04, letterSpacing: '-0.028em',
+        marginTop: 22, marginBottom: 22,
       }}>
         The discipline of focus.
       </h2>
-      <p style={{ fontSize: 17, lineHeight: 1.55, color: ARC.inkSecondary, marginBottom: 24 }}>
+      <p style={{ fontSize: 17, lineHeight: 1.6, color: ARC.inkSecondary, marginBottom: 28 }}>
         No leaderboards. No fake streaks. No vanity metrics. Every number you see is a real number — measured, persisted, and tied to your actual progress.
       </p>
-      <span className="arc-link" style={{ fontSize: 15 }}>
-        The LSAT U build philosophy is plain on the surface
+      <span className="arc-link" style={{ fontSize: 14, fontFamily: ARC.sans }}>
+        Plain on the surface. Serious underneath.
       </span>
     </div>
   </section>
+);
+
+// ── Closing CTA ── A final pull. Big serif lockup + single pill button.
+const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
+  <section className="arc-rise" style={{
+    padding: 'clamp(80px, 10vw, 128px) 32px',
+    maxWidth: 1200, margin: '0 auto',
+    textAlign: 'center',
+  }}>
+    <h2 style={{
+      fontSize: 'clamp(36px, 5.6vw, 80px)',
+      fontWeight: 600, lineHeight: 0.98, letterSpacing: '-0.035em',
+      marginBottom: 28,
+    }}>
+      Sit down.<br />
+      <span style={{ color: ARC.inkSecondary, fontStyle: 'italic', fontWeight: 400 }}>Begin.</span>
+    </h2>
+    <button className="arc-cta" onClick={onPrimary} style={{ height: 50, padding: '0 28px', fontSize: 14.5 }}>
+      Begin training
+      <span aria-hidden="true" className="arc-cta-arrow">→</span>
+    </button>
+  </section>
+);
+
+// ── Footer ── One line, Inter-grade, muted. No fake links — the public
+// surface only owns what it can deliver. Privacy and terms are in-app.
+const ArcFooter = () => (
+  <footer style={{
+    borderTop: `1px solid ${ARC.hairline}`,
+    padding: '32px',
+    fontSize: 12,
+    color: ARC.inkMuted,
+    letterSpacing: '0.04em',
+  }}>
+    <div style={{
+      maxWidth: 1200, margin: '0 auto',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      gap: 12, flexWrap: 'wrap',
+    }}>
+      <span style={{ fontFamily: ARC.serif, fontStyle: 'italic', color: ARC.inkSecondary }}>
+        LSAT U · A training environment for aspiring attorneys.
+      </span>
+      <span>© {new Date().getFullYear()}</span>
+    </div>
+  </footer>
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -327,6 +618,9 @@ export default function Auth() {
       setRememberMe(true);
     }
   }, []);
+
+  // Reveal-on-scroll for marketing sections (no library; respects reduced motion).
+  useScrollReveal();
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
   // useEffect never fires navigate('/foyer') while we're in the post-login async block.
@@ -650,26 +944,15 @@ export default function Auth() {
     <div className="lsatu-arc">
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
 
-      <div className="arc-fade">
-        <ArcNav onSignIn={openSignIn} />
-        <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
-        <ArcProof onPrimary={openSignIn} />
-        <ArcFeatureFullWidth />
-        <ArcFeatureSplit
-          heading="Space for every part of your prep."
-          lede="Lessons, Drills, and Diagnostics — three modes, one rhythm. Switch between them without breaking your study flow."
-          image="/marketing/feature-spaces.png"
-          alt="The LSAT U Foyer hero ring — three nodes for Smart Drill, Resume, and Ask Joshua"
-        />
-        <ArcFeatureSplit
-          reverse
-          heading="Your training, dialed in."
-          lede="Adaptive difficulty, your weakest argument types surfaced first, and a Smart Drill that learns from every attempt."
-          image="/marketing/feature-personal.png"
-          alt="The Smart Drill with adaptive difficulty"
-        />
-        <ArcTextOnly />
-      </div>
+      <ArcNav onSignIn={openSignIn} />
+      <ArcHero onCTA={openSignIn} onSignUp={openSignUp} />
+      <ArcMarquee />
+      <ArcProof onPrimary={openSignIn} />
+      <ArcCarousel />
+      <ArcPillars />
+      <ArcTextOnly />
+      <ArcFinalCTA onPrimary={openSignIn} />
+      <ArcFooter />
 
       {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
           Holds two views: main sign-in/sign-up (default) and reset-password
