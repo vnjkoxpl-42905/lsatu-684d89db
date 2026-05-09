@@ -41,9 +41,8 @@ export function Day2View() {
         }
       >
         <p>
-          Here&apos;s a fact most students never get told, which is wild
-          because it&apos;s the single most useful fact about Flaw answer
-          choices.
+          Most students never learn the single most useful fact about Flaw
+          answer choices.
         </p>
         <p>
           Flaw answers speak three different languages. Just three. Every

@@ -42,9 +42,8 @@ export function Day1View() {
         }
       >
         <p>
-          Here&apos;s the thing about Flaw questions. They&apos;re the most
-          winnable question type on the LSAT, and most students throw the win
-          away in the first three seconds.
+          Flaw is the most winnable question type on the LSAT. Most students
+          throw the win away in the first three seconds.
         </p>
         <p>
           Once you&apos;ve named the flaw, the right answer is just the choice
@@ -184,11 +183,10 @@ export function Day1View() {
         }
       >
         <p>
-          Whenever you meet an argument, your brain should immediately go to
-          its worst-case scenario. What&apos;s the author trying to hide from
-          you? What are they hoping you won&apos;t think about? Because there&apos;s
-          almost always something. The stimulus author lays out breadcrumbs and
-          counts on you to connect their dots for free.
+          Whenever you meet an argument, your brain should go straight to its
+          worst case. What&apos;s the author trying to hide? What do they hope
+          you won&apos;t think about? There is always something. The author lays
+          out breadcrumbs and counts on you to connect the dots for free.
         </p>
         <p>Don&apos;t connect. Object.</p>
         <p>

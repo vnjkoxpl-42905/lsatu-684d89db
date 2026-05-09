@@ -30,7 +30,7 @@ export default function Learn({ initialTab = 'flaw', targetSection }: LearnProps
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="pb-4 border-b border-zinc-900/50">
         <h2 className="text-4xl font-serif italic text-white tracking-tight">Learn</h2>
-        <p className="text-zinc-500 mt-2">Master the core concepts of Flaw and Principle questions.</p>
+        <p className="text-zinc-500 mt-2">The method behind Flaw and Principle. Read it once. Use it on every question.</p>
       </div>
 
       <Tabs 

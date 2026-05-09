@@ -25,14 +25,14 @@ export function BriefLayout({
     >
       <aside className="md:sticky md:top-6 md:self-start">
         {number && (
-          <div className="display-title text-5xl italic text-ink-mute md:text-6xl">
+          <div className="display-title text-3xl italic text-ink-mute md:text-4xl">
             {number}
           </div>
         )}
         {eyebrow && (
           <div className="protocol mt-2 text-ink-mute">{eyebrow}</div>
         )}
-        {margin && <div className="mt-4 text-sm text-ink-mute">{margin}</div>}
+        {margin && <div className="mt-5 text-sm text-ink-mute">{margin}</div>}
       </aside>
       <div className="max-w-prose">
         <h2 className="display-title text-3xl text-ink md:text-4xl">{title}</h2>

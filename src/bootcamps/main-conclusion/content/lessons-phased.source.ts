@@ -318,7 +318,7 @@ PHASED_LESSONS['1.2'] = {
           text: 'Therefore, the town\'s public health is improving.',
           role: 'conclusion',
           whisper:
-            'A claim that goes beyond the premises. This is the part that may be too strong, too narrow, or just unsupported. This is where you push.',
+            'A claim that goes beyond the premises. The author bets you will let it through. Push on it here.',
         },
       ],
     },
@@ -667,7 +667,7 @@ PHASED_LESSONS['1.5'] = {
       kind: 'briefing',
       goal: 'Recognize the first-sentence stash and verify it with the support test.',
       body:
-        'The opening sentence often sounds like a verdict ("X is the right move"). On Main Conclusion items, that verdict is almost always the conclusion. The rest of the stimulus is the support stack underneath it.',
+        'The opening sentence often sounds like a verdict ("X is the right move"). On Main Conclusion items, that verdict is the conclusion nine times out of ten. Everything that follows is support.',
       primer: 'Verdict-y first sentence → candidate conclusion.',
     },
     {
@@ -735,7 +735,7 @@ PHASED_LESSONS['1.5'] = {
       kind: 'reveal',
       title: 'First sentence wins',
       body:
-        'The verdict at the top set the frame. Everything that followed was built to support it. The closing sentence sounded conclusion-like — but it is a tactical reinforcement of the claim already made, not a new claim. The first-sentence stash relies on this kind of misdirection at the end.',
+        'The verdict at the top set the frame. Everything that followed supported it. The closing sentence sounds like a conclusion, but it is reinforcement of the claim already made, not a new claim. That is the trick: the stash works because you expect the verdict last.',
     },
     {
       kind: 'coach',

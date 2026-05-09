@@ -441,7 +441,7 @@ function PhaseBody({
       return (
         <Card variant="elev" className="border border-[color:var(--border-accent-strong)] bg-[rgb(var(--accent)/0.04)]">
           <h2 className="font-mc-serif text-h2 font-semibold text-ink leading-tight">{phase.title}</h2>
-          <CoachRow label="Structure map" body={phase.structure_map} />
+          <CoachRow isFirst label="Structure map" body={phase.structure_map} />
           <CoachRow label="Core move" body={phase.core_move} />
           <CoachRow label="Why it matters" body={phase.why_it_matters} />
         </Card>
@@ -452,11 +452,15 @@ function PhaseBody({
   }
 }
 
-function CoachRow({ label, body }: { label: string; body: string }): JSX.Element {
+function CoachRow({ label, body, isFirst }: { label: string; body: string; isFirst?: boolean }): JSX.Element {
   return (
-    <section className="mt-4">
+    <section
+      className={cn(
+        isFirst ? 'mt-5' : 'mt-5 border-t border-[rgb(var(--ink-soft)/0.08)] pt-5',
+      )}
+    >
       <h3 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">{label}</h3>
-      <p className="mt-1.5 font-mc-serif text-body-prose text-ink leading-relaxed">{body}</p>
+      <p className="mt-2 font-mc-serif text-body-prose text-ink leading-relaxed">{body}</p>
     </section>
   );
 }
@@ -648,7 +652,7 @@ function ClearedScreen({
             Nice. {title}
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft leading-relaxed max-w-[58ch]">
-            That session is logged. Open the trainer and your next step is teed up.
+            That session is logged. Your next step is ready in the trainer.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Button
