@@ -10,20 +10,18 @@ import { lovable } from '@/integrations/lovable/index';
 import { redirectAfterAuth } from '@/lib/authRedirect';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { BorderBeam } from '@/components/ui/border-beam';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { CinematicFooter } from '@/components/ui/motion-footer';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+} from '@/components/ui/drawer';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODULE-LEVEL CONSTANTS
 // Hoisted out of the component so they are never recreated on re-render.
 // ─────────────────────────────────────────────────────────────────────────────
-
-// Heavy Glass physics — cubic-bezier(0.16, 1, 0.3, 1): heavy settle, no bounce
-const HEAVY: { duration: number; ease: [number, number, number, number] } = {
-  duration: 0.5,
-  ease: [0.16, 1, 0.3, 1],
-};
 
 // ── Style tokens — hoisted so they never allocate new strings on keystroke ──
 const inputCls =
@@ -56,37 +54,6 @@ const CTAButton = ({
   >
     {children}
   </AnimatedButton>
-);
-
-// ── Glass panel shell ──
-// Two-layer structure: outer clips the beam, inner holds glass material + content.
-// CRITICAL: must be module-level. If defined inside Auth(), React sees a new
-// component type on every keystroke re-render → unmounts all inputs → focus lost.
-const GlassShell = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => (
-  <div className="relative rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-[0_24px_56px_-12px_rgba(0,0,0,0.9),0_4px_20px_-4px_rgba(0,0,0,0.55)]">
-    {/* Traveling border beam — conic-gradient rotation, full perimeter */}
-    <BorderBeam duration={6} color="rgba(255,255,255,0.55)" borderWidth={1.5} arcSize={0.15} />
-    {/* Inner glass panel */}
-    <div
-      className={cn(
-        'relative p-6 sm:p-8 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:pb-8 bg-[#121212]/85 backdrop-blur-xl',
-        'shadow-[0_0_0_1px_rgba(255,255,255,0.07),inset_0_1px_0_rgba(255,255,255,0.09)]',
-        className
-      )}
-    >
-      {/* Top specular catch-light */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
-      {/* Inner ambient glass glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_40%_at_50%_0%,rgba(255,255,255,0.04)_0%,transparent_100%)] pointer-events-none" />
-      {children}
-    </div>
-  </div>
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -335,9 +302,9 @@ export default function Auth() {
   const { user, authReady, signUp, signIn, resetPassword } = useAuth();
   const { toast } = useToast();
 
-  // ── Modal state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof,
-  // CinematicFooter). Default closed so visitors can read the landing page;
-  // a session-expired or OAuth bounce explicitly forces it open below.
+  // ── Drawer state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof).
+  // Default closed so visitors can read the landing page; a session-expired
+  // or OAuth bounce explicitly forces it open below.
   const [modalOpen, setModalOpen] = React.useState(false);
   const [forgotOpen, setForgotOpen] = React.useState(false);
 
@@ -368,22 +335,8 @@ export default function Auth() {
   // ── Forgot password state ──
   const [resetEmail, setResetEmail] = React.useState('');
 
-  // Escape key + scroll lock
-  React.useEffect(() => {
-    if (!modalOpen && !forgotOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (forgotOpen) setForgotOpen(false);
-        else setModalOpen(false);
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [modalOpen, forgotOpen]);
+  // Vaul's Drawer handles Escape, scroll lock, and focus trap natively;
+  // no custom keyboard/scroll plumbing needed.
 
   // Redirect authenticated users — single helper handles the profile lookup
   // so this effect, handleSubmit, and ResetPassword all agree on the rules.
@@ -618,7 +571,7 @@ export default function Auth() {
         title: 'Reset link sent',
         description: 'Check your email for a link to set a new password.',
       });
-      setForgotOpen(false); setModalOpen(true);
+      setForgotOpen(false);
       setResetEmail('');
     } else {
       toast({
@@ -631,9 +584,9 @@ export default function Auth() {
   };
 
 
-  // CTAs from every Arc section funnel into the existing modal — preserves
-  // the auth flow exactly. setModalOpen(true) opens the GlassShell sign-in,
-  // which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
+  // CTAs from every Arc section funnel into the auth drawer — preserves
+  // the flow exactly. setModalOpen(true) opens the vaul drawer's sign-in
+  // form, which already wires handleSubmit → Supabase + handleGoogleSignIn → Lovable.
   const openSignIn = React.useCallback(() => { setIsSignUp(false); setModalOpen(true); }, []);
   const openSignUp = React.useCallback(() => { setIsSignUp(true); setModalOpen(true); }, []);
 
@@ -715,356 +668,321 @@ export default function Auth() {
           alt="The Smart Drill with adaptive difficulty"
         />
         <ArcTextOnly />
-        <CinematicFooter onPrimary={openSignUp} onSecondary={openSignIn} />
       </div>
 
-      {/* ── z-40/50: Auth Modal ── */}
-      <AnimatePresence>
-        {modalOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[5px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => setModalOpen(false)}
-            />
+      {/* ── Auth drawer ── vaul bottom sheet, controlled by modalOpen.
+          Holds two views: main sign-in/sign-up (default) and reset-password
+          (when forgotOpen). Closing the drawer also resets forgotOpen so
+          reopening always lands on the main view. */}
+      <Drawer
+        open={modalOpen}
+        onOpenChange={(open) => {
+          setModalOpen(open);
+          if (!open) setForgotOpen(false);
+        }}
+      >
+        <DrawerContent
+          className="bg-[#121212]/95 backdrop-blur-xl border-0 border-t border-white/10 text-white outline-none focus:outline-none max-h-[92dvh] sm:max-h-[88vh] sm:max-w-[420px] sm:mx-auto px-6 sm:px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] [&>div:first-child]:bg-white/15"
+        >
+          <DrawerTitle className="sr-only">LSAT U Access</DrawerTitle>
+          <DrawerDescription className="sr-only">
+            Sign in or create your LSAT U account.
+          </DrawerDescription>
 
-            {/* Modal panel */}
-            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
-              <motion.div
-                role="dialog"
-                aria-modal="true"
-                aria-label="LSAT U Access"
-                aria-describedby="auth-modal-desc"
-                className="pointer-events-auto w-full sm:max-w-[390px] max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto will-change-transform rounded-t-2xl sm:rounded-2xl"
-                initial={{ opacity: 0, y: 60 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 60 }}
-                transition={HEAVY}
-              >
-                <GlassShell>
-                  {/* Close */}
-                  <button
-                    onClick={() => setModalOpen(false)}
-                    className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
-                    aria-label="Close"
-                  >
-                    <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
-                  </button>
+          {/* Top specular catch-light */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
 
-                  {/* Visually hidden description for screen readers */}
-                  <p id="auth-modal-desc" className="sr-only">
-                    Sign in or create your LSAT U account.
-                  </p>
+          {/* Close (desktop affordance — mobile users can drag down) */}
+          <button
+            onClick={() => setModalOpen(false)}
+            className="absolute top-4 right-4 z-10 p-2 -m-2 text-neutral-600 hover:text-white transition-colors duration-200"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
+          </button>
 
-                  {/* Header */}
-                  <div className="text-center mb-7">
-                    <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
-                      LSAT U
-                    </h2>
-                    <p className="text-[11px] text-neutral-500">
-                      {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
-                    </p>
-                  </div>
-
-                  {/* ── MAIN AUTH FLOW ── */}
-                      {/* Segmented control */}
-                      <div className="flex p-[3px] mb-6 bg-black/50 border border-white/[0.05] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
-                        {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
-                          const selected = (i === 1) === isSignUp;
-                          return (
-                            <button
-                              key={tab}
-                              type="button"
-                              onClick={() => setIsSignUp(i === 1)}
-                              className={cn(
-                                'relative w-full py-[7px] text-[12px] font-medium transition-colors z-10 rounded-[7px]',
-                                selected ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
-                              )}
-                            >
-                              {selected && (
-                                <motion.div
-                                  layoutId="seg"
-                                  className="absolute inset-0 bg-white/[0.08] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(255,255,255,0.06)]"
-                                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                />
-                              )}
-                              <span className="relative">{tab}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-
-                      {showConfirmation ? (
-                        <div className="text-center space-y-4 py-4">
-                          <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
-                            <Mail className="w-6 h-6 text-emerald-400" />
-                          </div>
-                          <h3 className="text-lg font-semibold text-white">Check your email</h3>
-                          <p className="text-[13px] text-neutral-400 leading-relaxed max-w-[280px] mx-auto">
-                            We sent a confirmation link to <span className="text-white font-medium">{email}</span>. Click the link to activate your account.
-                          </p>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setShowConfirmation(false);
-                              setIsSignUp(false);
-                              setEmail('');
-                              setPassword('');
-                              setConfirmPassword('');
-                              setName('');
-                            }}
-                            className="text-[11px] text-neutral-500 hover:text-white transition-colors pt-2"
-                          >
-                            Back to sign in
-                          </button>
-                        </div>
-                      ) : (
-                      <>
-                      <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Name — sign up only */}
-                        <AnimatePresence>
-                          {isSignUp && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <label htmlFor="auth-name" className={labelCls}>Name</label>
-                              <Input
-                                id="auth-name"
-                                type="text"
-                                required
-                                placeholder="Your name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                maxLength={50}
-                                className={inputCls}
-                              />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-
-                        {/* Email */}
-                        <div>
-                          <label htmlFor="auth-email" className={labelCls}>Email</label>
-                          {/* group + group-focus-within replaces focused state — zero re-renders */}
-                          <div className="relative group">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                            <Input
-                              id="auth-email"
-                              type="email"
-                              required
-                              placeholder="name@example.com"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              className={inputCls}
-                            />
-                          </div>
-                        </div>
-
-                        {/* Password */}
-                        <div>
-                          <div className="flex justify-between items-end mb-1.5">
-                            <label htmlFor="auth-password" className={labelCls} style={{ marginBottom: 0 }}>
-                              Password
-                            </label>
-                            {!isSignUp && (
-                              <button
-                                type="button"
-                                onClick={() => { setModalOpen(false); setForgotOpen(true); }}
-                                className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium"
-                              >
-                                Forgot?
-                              </button>
-                            )}
-                          </div>
-                          <div className="relative group mt-1.5">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                            <Input
-                              id="auth-password"
-                              type={showPassword ? 'text' : 'password'}
-                              required
-                              placeholder="••••••••••••"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              minLength={isSignUp ? 8 : undefined}
-                              className={inputWithToggleCls}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowPassword(!showPassword)}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                              aria-label={showPassword ? 'Hide password' : 'Show password'}
-                              aria-pressed={showPassword}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="w-4 h-4" />
-                              ) : (
-                                <Eye className="w-4 h-4" />
-                              )}
-                            </button>
-                          </div>
-                          {isSignUp && (
-                            <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">
-                              8+ characters
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Confirm password — sign up only */}
-                        <AnimatePresence>
-                          {isSignUp && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
-                              <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                                <Input
-                                  id="auth-confirm"
-                                  type={showPassword ? 'text' : 'password'}
-                                  required
-                                  placeholder="••••••••••••"
-                                  value={confirmPassword}
-                                  onChange={(e) => setConfirmPassword(e.target.value)}
-                                  className={inputWithToggleCls}
-                                />
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-
-                        {/* Remember me — sign in only */}
-                        {!isSignUp && (
-                          <label className="flex items-center gap-2 cursor-pointer select-none group">
-                            <input
-                              type="checkbox"
-                              checked={rememberMe}
-                              onChange={(e) => {
-                                setRememberMe(e.target.checked);
-                                if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
-                              }}
-                              className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
-                            />
-                            <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
-                              Remember my email
-                            </span>
-                          </label>
-                        )}
-
-                        {/* CTA */}
-                        <div className="pt-1">
-                          <CTAButton disabled={loading} loading={loading}>
-                            <span className="flex items-center gap-2">
-                              {isSignUp ? 'Create Account' : 'Sign In'}{' '}
-                              <ArrowRight className="w-4 h-4" />
-                            </span>
-                          </CTAButton>
-                        </div>
-                      </form>
-
-                      {/* Divider */}
-                      <div className="flex items-center gap-3 pt-4">
-                        <div className="flex-1 h-px bg-white/[0.06]" />
-                        <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-600 font-medium">or</span>
-                        <div className="flex-1 h-px bg-white/[0.06]" />
-                      </div>
-
-                      {/* Google Sign In */}
-                      <motion.button
-                        type="button"
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        onClick={handleGoogleSignIn}
-                        disabled={loading}
-                        className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <svg className="w-4 h-4" viewBox="0 0 24 24">
-                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                        </svg>
-                        Continue with Google
-                      </motion.button>
-                      </>
-                      )}
-
-                </GlassShell>
-              </motion.div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* ── Forgot password sub-modal ── */}
-      <AnimatePresence>
-        {forgotOpen && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => { setForgotOpen(false); setModalOpen(true); }}
-            />
-            <div className="fixed inset-0 z-[61] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
-              <motion.div
-                className="pointer-events-auto w-full sm:max-w-[340px] rounded-t-2xl sm:rounded-2xl"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 40 }}
-                transition={HEAVY}
-              >
-                <GlassShell className="p-5 sm:p-6">
-                  <button
-                    onClick={() => { setForgotOpen(false); setModalOpen(true); }}
-                    className="absolute top-4 right-4 z-10 text-neutral-600 hover:text-white transition-colors"
-                    aria-label="Close"
-                  >
-                    <X className="w-4 h-4 sm:w-[14px] sm:h-[14px]" />
-                  </button>
-                  <h3 className="text-[14px] font-semibold text-white mb-1">Reset Password</h3>
-                  <p className="text-[11px] text-neutral-500 mb-5">
+          <div className="pt-2">
+            {forgotOpen ? (
+              <>
+                <div className="text-center mb-6">
+                  <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
+                    Reset Password
+                  </h2>
+                  <p className="text-[11px] text-neutral-500">
                     Enter your email to receive a reset link.
                   </p>
-                  <form onSubmit={handleForgotPassword} className="space-y-4">
-                    <div>
-                      <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
-                      <div className="relative group">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
-                        <Input
-                          id="auth-reset-email"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={resetEmail}
-                          onChange={(e) => setResetEmail(e.target.value)}
-                          required
-                          className={inputCls}
-                        />
-                      </div>
+                </div>
+                <form onSubmit={handleForgotPassword} className="space-y-4">
+                  <div>
+                    <label htmlFor="auth-reset-email" className={labelCls}>Email</label>
+                    <div className="relative group">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                      <Input
+                        id="auth-reset-email"
+                        type="email"
+                        placeholder="name@example.com"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        required
+                        className={inputCls}
+                      />
                     </div>
-                    <CTAButton disabled={loading} loading={loading}>
-                      <span className="flex items-center gap-2">
-                        Send Link <ArrowRight className="w-4 h-4" />
-                      </span>
-                    </CTAButton>
-                  </form>
-                </GlassShell>
-              </motion.div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
+                  </div>
+                  <CTAButton disabled={loading} loading={loading}>
+                    <span className="flex items-center gap-2">
+                      Send Link <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </CTAButton>
+                </form>
+                <button
+                  type="button"
+                  onClick={() => setForgotOpen(false)}
+                  className="block mx-auto mt-4 text-[11px] text-neutral-500 hover:text-white transition-colors"
+                >
+                  Back to sign in
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="text-center mb-7">
+                  <h2 className="text-[1.15rem] font-semibold tracking-tight text-white mb-1.5">
+                    LSAT U
+                  </h2>
+                  <p className="text-[11px] text-neutral-500">
+                    {isSignUp ? 'Create your account.' : 'Sign in to continue.'}
+                  </p>
+                </div>
+
+                {/* Segmented control */}
+                <div className="flex p-[3px] mb-6 bg-black/50 border border-white/[0.05] rounded-[10px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] relative">
+                  {(['Sign In', 'Sign Up'] as const).map((tab, i) => {
+                    const selected = (i === 1) === isSignUp;
+                    return (
+                      <button
+                        key={tab}
+                        type="button"
+                        onClick={() => setIsSignUp(i === 1)}
+                        className={cn(
+                          'relative w-full py-[7px] text-[12px] font-medium transition-colors z-10 rounded-[7px]',
+                          selected ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+                        )}
+                      >
+                        {selected && (
+                          <motion.div
+                            layoutId="seg"
+                            className="absolute inset-0 bg-white/[0.08] rounded-[7px] shadow-[0_1px_3px_rgba(0,0,0,0.35),0_0_0_0.5px_rgba(255,255,255,0.06)]"
+                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                          />
+                        )}
+                        <span className="relative">{tab}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {showConfirmation ? (
+                  <div className="text-center space-y-4 py-4">
+                    <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
+                      <Mail className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">Check your email</h3>
+                    <p className="text-[13px] text-neutral-400 leading-relaxed max-w-[280px] mx-auto">
+                      We sent a confirmation link to <span className="text-white font-medium">{email}</span>. Click the link to activate your account.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowConfirmation(false);
+                        setIsSignUp(false);
+                        setEmail('');
+                        setPassword('');
+                        setConfirmPassword('');
+                        setName('');
+                      }}
+                      className="text-[11px] text-neutral-500 hover:text-white transition-colors pt-2"
+                    >
+                      Back to sign in
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      {/* Name — sign up only */}
+                      <AnimatePresence>
+                        {isSignUp && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <label htmlFor="auth-name" className={labelCls}>Name</label>
+                            <Input
+                              id="auth-name"
+                              type="text"
+                              required
+                              placeholder="Your name"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
+                              maxLength={50}
+                              className={inputCls}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Email */}
+                      <div>
+                        <label htmlFor="auth-email" className={labelCls}>Email</label>
+                        <div className="relative group">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                          <Input
+                            id="auth-email"
+                            type="email"
+                            required
+                            placeholder="name@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className={inputCls}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Password */}
+                      <div>
+                        <div className="flex justify-between items-end mb-1.5">
+                          <label htmlFor="auth-password" className={labelCls} style={{ marginBottom: 0 }}>
+                            Password
+                          </label>
+                          {!isSignUp && (
+                            <button
+                              type="button"
+                              onClick={() => setForgotOpen(true)}
+                              className="text-[11px] text-neutral-300 hover:text-white transition-colors duration-200 font-medium"
+                            >
+                              Forgot?
+                            </button>
+                          )}
+                        </div>
+                        <div className="relative group mt-1.5">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                          <Input
+                            id="auth-password"
+                            type={showPassword ? 'text' : 'password'}
+                            required
+                            placeholder="••••••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            minLength={isSignUp ? 8 : undefined}
+                            className={inputWithToggleCls}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
+                            aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            aria-pressed={showPassword}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                        {isSignUp && (
+                          <p className="text-[10px] text-neutral-600 mt-1.5 ml-0.5">
+                            8+ characters
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Confirm password — sign up only */}
+                      <AnimatePresence>
+                        {isSignUp && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <label htmlFor="auth-confirm" className={labelCls}>Confirm Password</label>
+                            <div className="relative group">
+                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 transition-colors duration-200 group-focus-within:text-white" />
+                              <Input
+                                id="auth-confirm"
+                                type={showPassword ? 'text' : 'password'}
+                                required
+                                placeholder="••••••••••••"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className={inputWithToggleCls}
+                              />
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Remember me — sign in only */}
+                      {!isSignUp && (
+                        <label className="flex items-center gap-2 cursor-pointer select-none group">
+                          <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={(e) => {
+                              setRememberMe(e.target.checked);
+                              if (!e.target.checked) localStorage.removeItem('lsatu_saved_email');
+                            }}
+                            className="w-4 h-4 rounded border-white/10 bg-black/50 text-white accent-white focus:ring-white/20 cursor-pointer"
+                          />
+                          <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                            Remember my email
+                          </span>
+                        </label>
+                      )}
+
+                      {/* CTA */}
+                      <div className="pt-1">
+                        <CTAButton disabled={loading} loading={loading}>
+                          <span className="flex items-center gap-2">
+                            {isSignUp ? 'Create Account' : 'Sign In'}{' '}
+                            <ArrowRight className="w-4 h-4" />
+                          </span>
+                        </CTAButton>
+                      </div>
+                    </form>
+
+                    {/* Divider */}
+                    <div className="flex items-center gap-3 pt-4">
+                      <div className="flex-1 h-px bg-white/[0.06]" />
+                      <span className="text-[10px] uppercase tracking-[0.15em] text-neutral-600 font-medium">or</span>
+                      <div className="flex-1 h-px bg-white/[0.06]" />
+                    </div>
+
+                    {/* Google Sign In */}
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={handleGoogleSignIn}
+                      disabled={loading}
+                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                      </svg>
+                      Continue with Google
+                    </motion.button>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
