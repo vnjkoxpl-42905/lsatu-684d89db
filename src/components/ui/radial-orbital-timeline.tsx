@@ -118,11 +118,11 @@ export default function RadialOrbitalTimeline({
   const getStatusStyles = (status: TimelineItem["status"]) => {
     switch (status) {
       case "completed":
-        return "text-background bg-foreground border-foreground";
+        return "text-black bg-white/95 border-white/95";
       case "in-progress":
-        return "text-foreground bg-[#E8D08B] border-[#E8D08B]";
+        return "text-black bg-white/70 border-white/70";
       default:
-        return "text-muted-foreground bg-muted border-border";
+        return "text-white/60 bg-white/10 border-white/20";
     }
   };
 
@@ -130,27 +130,42 @@ export default function RadialOrbitalTimeline({
     <div
       ref={containerRef}
       onClick={handleContainerClick}
-      className="relative w-full h-[520px] flex items-center justify-center overflow-visible select-none"
+      className="relative w-full h-[520px] flex items-center justify-center overflow-hidden select-none bg-black rounded-2xl"
     >
       <div
         ref={orbitRef}
         className="relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1000px" }}
       >
-        {/* Center core — bronze gradient orb with halo pulse */}
-        <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-[#F4DDA0] via-[#E8D08B] to-[#9B7A2A] flex items-center justify-center z-10 shadow-[0_0_40px_rgba(232,208,139,0.45)]">
-          <div className="absolute w-20 h-20 rounded-full border border-[#E8D08B]/40 animate-ping opacity-70" />
+        {/* Center core — glass orb refracting black */}
+        <div
+          className="absolute w-16 h-16 rounded-full flex items-center justify-center z-10 border"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), rgba(255,255,255,0.03))",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            borderColor: "rgba(255,255,255,0.18)",
+            boxShadow:
+              "inset 0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.08)",
+          }}
+        >
+          <div className="absolute w-20 h-20 rounded-full border border-white/15 animate-ping opacity-70" />
           <div
-            className="absolute w-24 h-24 rounded-full border border-[#E8D08B]/25 animate-ping opacity-50"
+            className="absolute w-24 h-24 rounded-full border border-white/8 animate-ping opacity-50"
             style={{ animationDelay: "0.5s" }}
           />
-          <div className="w-3 h-3 rounded-full bg-background shadow-sm" />
+          <div className="w-2 h-2 rounded-full bg-white/80" />
         </div>
 
-        {/* Orbit ring */}
+        {/* Orbit ring — nearly invisible until you focus */}
         <div
-          className="absolute rounded-full border border-foreground/12 shadow-[0_0_60px_rgba(232,208,139,0.18)]"
-          style={{ width: ORBIT_RADIUS * 2, height: ORBIT_RADIUS * 2 }}
+          className="absolute rounded-full border"
+          style={{
+            width: ORBIT_RADIUS * 2,
+            height: ORBIT_RADIUS * 2,
+            borderColor: "rgba(255,255,255,0.06)",
+          }}
         />
 
         {/* Nodes */}
@@ -187,15 +202,15 @@ export default function RadialOrbitalTimeline({
               }}
               onClick={handleNodeClick}
             >
-              {/* Energy glow */}
+              {/* Energy aura — soft white falloff */}
               <div
                 className={cn(
-                  "absolute rounded-full -inset-1",
+                  "absolute rounded-full -inset-1 pointer-events-none",
                   isPulsing && "animate-pulse",
                 )}
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(232,208,139,0.4) 0%, rgba(232,208,139,0) 70%)",
+                    "radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%)",
                   width: `${item.energy * 0.5 + 40}px`,
                   height: `${item.energy * 0.5 + 40}px`,
                   left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
@@ -203,20 +218,43 @@ export default function RadialOrbitalTimeline({
                 }}
               />
 
-              {/* Node icon */}
+              {/* Node icon — glass chip */}
               <button
                 type="button"
                 aria-label={item.title}
                 aria-expanded={isFinderNode ? isExpanded : undefined}
                 className={cn(
-                  "w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8D08B] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  "w-12 h-12 rounded-full flex items-center justify-center border transition-all duration-300 transform",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                   isExpanded
-                    ? "bg-[#E8D08B] text-white border-[#E8D08B] shadow-[0_0_40px_-2px_rgba(232,208,139,0.6)] scale-150"
+                    ? "scale-150"
                     : isRelated
-                      ? "bg-[#E8D08B]/15 text-foreground border-[#E8D08B] animate-pulse"
-                      : "bg-background text-foreground/75 border-foreground/20 hover:border-[#E8D08B] hover:text-[#E8D08B] hover:shadow-[0_0_20px_rgba(232,208,139,0.25)]",
+                      ? "animate-pulse"
+                      : "",
                 )}
+                style={
+                  isExpanded
+                    ? {
+                        backgroundColor: "rgba(255,255,255,0.95)",
+                        borderColor: "rgba(255,255,255,0.95)",
+                        color: "#000",
+                        boxShadow:
+                          "0 0 32px rgba(255,255,255,0.4), 0 0 64px rgba(255,255,255,0.18)",
+                      }
+                    : isRelated
+                      ? {
+                          backgroundColor: "rgba(255,255,255,0.3)",
+                          borderColor: "rgba(255,255,255,0.4)",
+                          color: "#fff",
+                        }
+                      : {
+                          backgroundColor: "rgba(255,255,255,0.08)",
+                          borderColor: "rgba(255,255,255,0.18)",
+                          color: "rgba(255,255,255,0.9)",
+                          backdropFilter: "blur(8px) saturate(180%)",
+                          WebkitBackdropFilter: "blur(8px) saturate(180%)",
+                        }
+                }
               >
                 <Icon className="w-5 h-5" />
               </button>
@@ -225,7 +263,7 @@ export default function RadialOrbitalTimeline({
               <div
                 className={cn(
                   "absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-[0.18em] uppercase transition-all duration-300",
-                  isExpanded ? "text-[#E8D08B] scale-110" : "text-muted-foreground",
+                  isExpanded ? "text-white/90 scale-110" : "text-white/40",
                 )}
               >
                 {item.title}
@@ -246,10 +284,21 @@ export default function RadialOrbitalTimeline({
                 }
                 return (
                   <Card
-                    className="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-card border-border shadow-xl shadow-foreground/10"
+                    className="absolute top-20 left-1/2 -translate-x-1/2 w-64"
+                    style={{
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      backdropFilter: "blur(40px) saturate(180%)",
+                      WebkitBackdropFilter: "blur(40px) saturate(180%)",
+                      borderColor: "rgba(255,255,255,0.1)",
+                      borderWidth: "1px",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+                    }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-foreground/40" />
+                    <div
+                      className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3"
+                      style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
+                    />
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
                         <Badge className={cn("px-2 text-xs", getStatusStyles(item.status))}>
@@ -259,32 +308,32 @@ export default function RadialOrbitalTimeline({
                               ? "IN PROGRESS"
                               : "PENDING"}
                         </Badge>
-                        <span className="text-xs font-mono text-muted-foreground">{item.date}</span>
+                        <span className="text-xs font-mono text-white/40">{item.date}</span>
                       </div>
-                      <CardTitle className="text-sm mt-2 text-foreground">{item.title}</CardTitle>
+                      <CardTitle className="text-sm mt-2 text-white/90">{item.title}</CardTitle>
                     </CardHeader>
-                    <CardContent className="text-xs text-foreground/80">
+                    <CardContent className="text-xs text-white/60">
                       <p>{item.content}</p>
-                      <div className="mt-4 pt-3 border-t border-border">
-                        <div className="flex justify-between items-center text-xs mb-1">
+                      <div className="mt-4 pt-3 border-t border-white/10">
+                        <div className="flex justify-between items-center text-xs mb-1 text-white/40">
                           <span className="flex items-center">
                             <Zap size={10} className="mr-1" />
                             Energy Level
                           </span>
                           <span className="font-mono">{item.energy}%</span>
                         </div>
-                        <div className="w-full h-1 bg-foreground/10 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-[#E8D08B] to-[#9B7A2A]"
+                            className="h-full bg-gradient-to-r from-white/70 to-white/20"
                             style={{ width: `${item.energy}%` }}
                           />
                         </div>
                       </div>
                       {item.relatedIds.length > 0 && (
-                        <div className="mt-4 pt-3 border-t border-border">
+                        <div className="mt-4 pt-3 border-t border-white/10">
                           <div className="flex items-center mb-2">
-                            <LinkIcon size={10} className="text-muted-foreground mr-1" />
-                            <h4 className="text-xs uppercase tracking-wider font-medium text-muted-foreground">
+                            <LinkIcon size={10} className="text-white/40 mr-1" />
+                            <h4 className="text-xs uppercase tracking-wider font-medium text-white/40">
                               Connected Nodes
                             </h4>
                           </div>
@@ -296,14 +345,14 @@ export default function RadialOrbitalTimeline({
                                   key={relatedId}
                                   variant="outline"
                                   size="sm"
-                                  className="flex items-center h-6 px-2 py-0 text-xs rounded-none border-border bg-transparent hover:bg-accent text-foreground/80 hover:text-foreground"
+                                  className="flex items-center h-6 px-2 py-0 text-xs rounded-none border-white/15 bg-transparent hover:bg-white/10 text-white/60 hover:text-white/90"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     expandNode(relatedId);
                                   }}
                                 >
                                   {rel?.title}
-                                  <ArrowRight size={8} className="ml-1 text-muted-foreground" />
+                                  <ArrowRight size={8} className="ml-1 text-white/40" />
                                 </Button>
                               );
                             })}
