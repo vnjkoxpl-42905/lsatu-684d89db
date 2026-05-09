@@ -184,8 +184,16 @@ const PAGE_CSS = `
   .lsatu-arc .arc-shell-panel-icon svg { width: 14px; height: 14px; color: ${ARC.inkSecondary}; }
   .lsatu-arc .arc-shell-panel-stack { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
   .lsatu-arc .arc-shell-panel-arrow { width: 22px; height: 22px; border-radius: 999px; background: ${ARC.bgTinted}; display: inline-flex; align-items: center; justify-content: center; color: ${ARC.inkSecondary}; flex-shrink: 0; }
-  .lsatu-arc .arc-link { color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
-  .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
+  /* Accent link — left-to-right underline reveal on hover (Linear/Vercel-style).
+     The static underline is rendered as a 1px ::after that scales from origin-left.
+     Gated on hover-capable pointers; on touch the link reads as plain accent text. */
+  .lsatu-arc .arc-link { position: relative; color: ${ARC.accent}; font-weight: 500; transition: color 180ms ${ARC.easeOut}; padding-bottom: 2px; }
+  .lsatu-arc .arc-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: left center; transition: transform 280ms ${ARC.easeOut}; }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-link::after { transform: scaleX(0); transform-origin: right center; }
+    .lsatu-arc .arc-link:hover { color: ${ARC.accentDeep}; }
+    .lsatu-arc .arc-link:hover::after { transform: scaleX(1); transform-origin: left center; }
+  }
 
   /* First-paint fade */
   .lsatu-arc .arc-fade { opacity: 0; animation: arcFade 540ms ${ARC.easeOut} forwards; }
@@ -195,6 +203,14 @@ const PAGE_CSS = `
   .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 560ms ${ARC.easeOut}, transform 560ms ${ARC.easeOut}; }
   .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); }
 
+  /* Pillar columns — cascade in 60ms apart once the parent section reveals.
+     Without this, all three columns arrive together which reads as static. */
+  .lsatu-arc .arc-pillar { opacity: 0; transform: translateY(8px); transition: opacity 480ms ${ARC.easeOut}, transform 480ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-rise.is-in .arc-pillar { opacity: 1; transform: translateY(0); }
+  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(1) { transition-delay: 80ms; }
+  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(2) { transition-delay: 140ms; }
+  .lsatu-arc .arc-rise.is-in .arc-pillar:nth-child(3) { transition-delay: 200ms; }
+
   /* Marquee — seamless loop, edge-fade mask */
   .lsatu-arc .arc-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%); }
   .lsatu-arc .arc-marquee-track { display: inline-flex; gap: 0; white-space: nowrap; animation: arcMarquee 64s linear infinite; will-change: transform; }
@@ -203,7 +219,10 @@ const PAGE_CSS = `
   .lsatu-arc .arc-marquee-dot { width: 4px; height: 4px; border-radius: 999px; background: ${ARC.accent}; opacity: 0.55; }
   @keyframes arcMarquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
 
-  /* Scroll-snap carousel — hide native scrollbar, snap-mandatory */
+  /* Scroll-snap carousel — hide native scrollbar, snap-mandatory.
+     Right-edge mask hints "more cards live this way" without a scrollbar.
+     Mask only on the right; left starts flush so the first card never feels clipped. */
+  .lsatu-arc .arc-carousel-wrap { position: relative; -webkit-mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%); mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%); }
   .lsatu-arc .arc-carousel { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 32px; padding: 4px 32px 36px; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
   .lsatu-arc .arc-carousel:active { cursor: grabbing; }
   .lsatu-arc .arc-carousel::-webkit-scrollbar { display: none; }
@@ -223,12 +242,21 @@ const PAGE_CSS = `
   .lsatu-arc .arc-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: ${ARC.inkSecondary}; }
   .lsatu-arc .arc-eyebrow::before { content: ''; width: 18px; height: 1px; background: ${ARC.inkSecondary}; opacity: 0.55; }
 
+  /* Top-nav Sign-in button — subtle press feedback + hover-gated tint shift. */
+  .lsatu-arc .arc-nav-signin { background: transparent; border: 0; padding: 6px 10px; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; color: ${ARC.ink}; cursor: pointer; border-radius: 8px; transition: background 200ms ${ARC.easeOut}, color 200ms ${ARC.easeOut}, transform 200ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-nav-signin:active { transform: scale(0.97); transition-duration: 90ms; }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-nav-signin:hover { background: ${ARC.bgTinted}; color: ${ARC.accent}; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .lsatu-arc .arc-fade, .lsatu-arc .arc-rise { animation: none; opacity: 1; transform: none; transition: none; }
-    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon { transition: none; }
+    .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon, .lsatu-arc .arc-pillar, .lsatu-arc .arc-link::after { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
     .lsatu-arc .arc-shell-frame { animation: none; }
     .lsatu-arc .arc-shell-card { animation: none; opacity: 1; transform: none; }
+    .lsatu-arc .arc-pillar { opacity: 1; transform: none; }
+    .lsatu-arc .arc-link::after { transform: scaleX(1); }
   }
 
   @media (max-width: 720px) {
@@ -371,12 +399,7 @@ const ArcNav = ({ onSignIn }: { onSignIn: () => void }) => (
         LSAT
         <span style={{ color: ARC.accent, fontStyle: 'italic', fontWeight: 500 }}>U</span>
       </Link>
-      <button onClick={onSignIn} style={{
-        background: 'transparent', border: 0, padding: '6px 2px',
-        fontFamily: ARC.sans,
-        fontSize: 14, color: ARC.ink, cursor: 'pointer', fontWeight: 500,
-        letterSpacing: '-0.005em',
-      }}>
+      <button type="button" className="arc-nav-signin" onClick={onSignIn}>
         Sign in
       </button>
     </div>
@@ -633,24 +656,26 @@ const ArcCarousel = () => {
         <span>Drag · or trackpad</span>
       </div>
 
-      <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training principles">
-        {PRINCIPLES.map((p, i) => (
-          <article key={i} className="arc-card" role="listitem">
-            <div className="arc-card-kicker">{p.kicker}</div>
-            <div className="arc-card-title">{p.title}</div>
-            <div className="arc-card-body">{p.body}</div>
+      <div className="arc-carousel-wrap">
+        <div ref={ref} className="arc-carousel" role="list" aria-label="LSAT training principles">
+          {PRINCIPLES.map((p, i) => (
+            <article key={i} className="arc-card" role="listitem">
+              <div className="arc-card-kicker">{p.kicker}</div>
+              <div className="arc-card-title">{p.title}</div>
+              <div className="arc-card-body">{p.body}</div>
+            </article>
+          ))}
+          {/* Closing card — gentle handoff to CTA */}
+          <article className="arc-card" role="listitem" style={{
+            background: ARC.ink, color: ARC.bg, borderColor: ARC.ink,
+          }}>
+            <div className="arc-card-kicker" style={{ color: ARC.bgTinted, opacity: 0.7 }}>Begin →</div>
+            <div className="arc-card-title" style={{ color: ARC.bg }}>The next card is the page in front of you.</div>
+            <div className="arc-card-body" style={{ color: ARC.bgTinted, opacity: 0.85 }}>
+              The principles only matter when you sit down to drill them. Sign in to start.
+            </div>
           </article>
-        ))}
-        {/* Closing card — gentle handoff to CTA */}
-        <article className="arc-card" role="listitem" style={{
-          background: ARC.ink, color: ARC.bg, borderColor: ARC.ink,
-        }}>
-          <div className="arc-card-kicker" style={{ color: ARC.bgTinted, opacity: 0.7 }}>Begin →</div>
-          <div className="arc-card-title" style={{ color: ARC.bg }}>The next card is the page in front of you.</div>
-          <div className="arc-card-body" style={{ color: ARC.bgTinted, opacity: 0.85 }}>
-            The principles only matter when you sit down to drill them. Sign in to start.
-          </div>
-        </article>
+        </div>
       </div>
     </section>
   );
@@ -678,7 +703,7 @@ const ArcPillars = () => (
       borderTop: `1px solid ${ARC.hairline}`,
     }}>
       {PILLARS.map((p, i) => (
-        <div key={i} style={{
+        <div key={i} className="arc-pillar" style={{
           padding: '40px 28px',
           borderBottom: `1px solid ${ARC.hairline}`,
           borderRight: i < PILLARS.length - 1 ? `1px solid ${ARC.hairline}` : 'none',
