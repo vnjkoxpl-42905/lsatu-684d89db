@@ -142,3 +142,16 @@ export function ThreadList({
     </div>
   );
 }
+
+export function ThreadListSkeleton({ count = 5 }: { count?: number }) {
+  return (
+    <div className="divide-y divide-border">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="p-3 animate-pulse">
+          <div className="h-4 w-1/2 bg-muted rounded mb-2" />
+          <div className="h-3 w-3/4 bg-muted rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
