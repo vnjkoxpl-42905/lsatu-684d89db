@@ -99,28 +99,38 @@ const PAGE_CSS = `
 
   /* CTAs — Arc-style soft pill */
   .lsatu-arc .arc-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 24px; border-radius: ${ARC.radiusPill}; background: ${ARC.ink}; color: ${ARC.bg}; font-family: ${ARC.sans}; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; border: 0; cursor: pointer; transition: transform 220ms ${ARC.easeOut}, box-shadow 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-cta:hover { transform: translateY(-1px); box-shadow: ${ARC.shadowLift}; background: ${ARC.accentDeep}; }
   .lsatu-arc .arc-cta:focus-visible { outline: 2px solid ${ARC.accent}; outline-offset: 3px; }
   .lsatu-arc .arc-cta-ghost { background: transparent; color: ${ARC.ink}; border: 1px solid ${ARC.hairline}; }
-  .lsatu-arc .arc-cta-ghost:hover { background: ${ARC.bgTinted}; transform: translateY(-1px); box-shadow: ${ARC.shadowSoft}; }
   .lsatu-arc .arc-cta-arrow { display: inline-block; transition: transform 220ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-cta:hover .arc-cta-arrow { transform: translateX(3px); }
+  /* Press feedback — instant scale-down on every primary CTA confirms the press. */
+  .lsatu-arc .arc-cta:active { transform: translateY(0) scale(0.98); transition-duration: 90ms; }
 
   /* Hero entry CTA — single primary, larger pill, soft inset highlight + drop, tiny circular arrow puck */
   .lsatu-arc .arc-cta-hero { height: 58px; padding: 0 22px 0 30px; border-radius: 30px; font-size: 15.5px; font-weight: 500; gap: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 1px 2px rgba(15,17,29,0.10), 0 10px 28px -4px rgba(15,17,29,0.18); }
-  .lsatu-arc .arc-cta-hero:hover { transform: translateY(-2px); background: ${ARC.accentDeep}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 4px rgba(15,17,29,0.12), 0 18px 40px -6px rgba(15,17,29,0.26); }
-  .lsatu-arc .arc-cta-hero:active { transform: translateY(-1px); transition-duration: 80ms; }
+  .lsatu-arc .arc-cta-hero:active { transform: translateY(0) scale(0.98); transition-duration: 90ms; }
+
+  /* Hover effects gated on hover-capable, fine pointers — touch taps shouldn't preview a hover lift. */
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-cta:hover { transform: translateY(-1px); box-shadow: ${ARC.shadowLift}; background: ${ARC.accentDeep}; }
+    .lsatu-arc .arc-cta-ghost:hover { background: ${ARC.bgTinted}; transform: translateY(-1px); box-shadow: ${ARC.shadowSoft}; }
+    .lsatu-arc .arc-cta:hover .arc-cta-arrow { transform: translateX(3px); }
+    .lsatu-arc .arc-cta-hero:hover { transform: translateY(-2px); background: ${ARC.accentDeep}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 4px rgba(15,17,29,0.12), 0 18px 40px -6px rgba(15,17,29,0.26); }
+    .lsatu-arc .arc-cta-hero:hover .arc-cta-icon { background: rgba(255,255,255,0.18); transform: translateX(2px); }
+  }
   .lsatu-arc .arc-cta-icon { width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.10); display: inline-flex; align-items: center; justify-content: center; transition: transform 220ms ${ARC.easeOut}, background 220ms ${ARC.easeOut}; flex-shrink: 0; }
-  .lsatu-arc .arc-cta-hero:hover .arc-cta-icon { background: rgba(255,255,255,0.18); transform: translateX(2px); }
   .lsatu-arc .arc-cta-icon svg { width: 12px; height: 12px; }
   .lsatu-arc .arc-cta-secondary { background: transparent; border: 0; padding: 8px 4px; font-family: ${ARC.sans}; font-size: 13px; font-weight: 500; color: ${ARC.inkSecondary}; cursor: pointer; letter-spacing: -0.005em; transition: color 180ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-cta-secondary:hover { color: ${ARC.ink}; }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-cta-secondary:hover { color: ${ARC.ink}; }
+  }
   .lsatu-arc .arc-cta-secondary u { text-decoration-color: ${ARC.hairlineStrong}; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 
   /* Platform shell preview — soft app-like frame, slim sidebar, skeleton cards. No content, no labels that read as curriculum. */
   .lsatu-arc .arc-shell { position: relative; margin: 24px auto 0; max-width: 920px; padding: 0 24px; }
-  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 600ms ${ARC.easeOut}, box-shadow 600ms ${ARC.easeOut}, border-color 600ms ${ARC.easeOut}; animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
-  .lsatu-arc .arc-shell-frame:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 36px 80px -20px rgba(15,17,29,0.24); }
+  .lsatu-arc .arc-shell-frame { background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 24px 60px -16px rgba(15,17,29,0.16); transition: transform 280ms ${ARC.easeOut}, box-shadow 280ms ${ARC.easeOut}, border-color 280ms ${ARC.easeOut}; animation: arcFloat 8s ease-in-out infinite; will-change: transform; }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-shell-frame:hover { transform: translateY(-4px); border-color: ${ARC.hairlineStrong}; box-shadow: 0 1px 2px rgba(15,17,29,0.04), 0 36px 80px -20px rgba(15,17,29,0.24); }
+  }
   @keyframes arcFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
   /* Window chrome */
@@ -149,8 +159,15 @@ const PAGE_CSS = `
 
   /* Skeleton cards */
   .lsatu-arc .arc-shell-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-  .lsatu-arc .arc-shell-card { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 116px; transition: border-color 280ms ${ARC.easeOut}, transform 280ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-shell-card:hover { border-color: ${ARC.hairlineStrong}; transform: translateY(-1px); }
+  .lsatu-arc .arc-shell-card { background: ${ARC.bg}; border: 1px solid ${ARC.hairline}; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 116px; transition: border-color 240ms ${ARC.easeOut}, transform 240ms ${ARC.easeOut}; opacity: 0; transform: translateY(8px); animation: arcShellCardIn 480ms ${ARC.easeOut} forwards; }
+  /* Stagger the three skeleton cards so they cascade in instead of arriving together. */
+  .lsatu-arc .arc-shell-card:nth-child(1) { animation-delay: 80ms; }
+  .lsatu-arc .arc-shell-card:nth-child(2) { animation-delay: 140ms; }
+  .lsatu-arc .arc-shell-card:nth-child(3) { animation-delay: 200ms; }
+  @keyframes arcShellCardIn { to { opacity: 1; transform: translateY(0); } }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-shell-card:hover { border-color: ${ARC.hairlineStrong}; transform: translateY(-1px); }
+  }
   .lsatu-arc .arc-shell-card-corner { display: flex; align-items: center; gap: 6px; }
   .lsatu-arc .arc-shell-card-dot { width: 6px; height: 6px; border-radius: 999px; background: ${ARC.hairlineStrong}; }
   .lsatu-arc .arc-shell-card-dot.is-accent { background: ${ARC.accent}; }
@@ -175,7 +192,7 @@ const PAGE_CSS = `
   @keyframes arcFade { to { opacity: 1; } }
 
   /* Scroll-reveal — applied to .arc-rise, toggled by IntersectionObserver */
-  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 720ms ${ARC.easeOut}, transform 720ms ${ARC.easeOut}; }
+  .lsatu-arc .arc-rise { opacity: 0; transform: translateY(14px); transition: opacity 560ms ${ARC.easeOut}, transform 560ms ${ARC.easeOut}; }
   .lsatu-arc .arc-rise.is-in { opacity: 1; transform: translateY(0); }
 
   /* Marquee — seamless loop, edge-fade mask */
@@ -190,8 +207,10 @@ const PAGE_CSS = `
   .lsatu-arc .arc-carousel { display: flex; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 32px; padding: 4px 32px 36px; scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
   .lsatu-arc .arc-carousel:active { cursor: grabbing; }
   .lsatu-arc .arc-carousel::-webkit-scrollbar { display: none; }
-  .lsatu-arc .arc-card { scroll-snap-align: start; flex: 0 0 320px; background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: ${ARC.radiusCard}; padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 12px; min-height: 240px; transition: transform 320ms ${ARC.easeOut}, box-shadow 320ms ${ARC.easeOut}, border-color 320ms ${ARC.easeOut}; }
-  .lsatu-arc .arc-card:hover { transform: translateY(-3px); box-shadow: ${ARC.shadowCard}; border-color: ${ARC.hairlineStrong}; }
+  .lsatu-arc .arc-card { scroll-snap-align: start; flex: 0 0 320px; background: ${ARC.bgSurface}; border: 1px solid ${ARC.hairline}; border-radius: ${ARC.radiusCard}; padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 12px; min-height: 240px; transition: transform 260ms ${ARC.easeOut}, box-shadow 260ms ${ARC.easeOut}, border-color 260ms ${ARC.easeOut}; }
+  @media (hover: hover) and (pointer: fine) {
+    .lsatu-arc .arc-card:hover { transform: translateY(-3px); box-shadow: ${ARC.shadowCard}; border-color: ${ARC.hairlineStrong}; }
+  }
   .lsatu-arc .arc-card-kicker { font-family: ${ARC.sans}; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: ${ARC.inkMuted}; }
   .lsatu-arc .arc-card-title { font-family: ${ARC.serif}; font-size: 24px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: ${ARC.ink}; }
   .lsatu-arc .arc-card-body { font-size: 14.5px; line-height: 1.55; color: ${ARC.inkSecondary}; margin-top: auto; }
@@ -209,6 +228,7 @@ const PAGE_CSS = `
     .lsatu-arc .arc-cta, .lsatu-arc .arc-card, .lsatu-arc .arc-cta-arrow, .lsatu-arc .arc-link, .lsatu-arc .arc-cta-icon { transition: none; }
     .lsatu-arc .arc-marquee-track { animation: none; }
     .lsatu-arc .arc-shell-frame { animation: none; }
+    .lsatu-arc .arc-shell-card { animation: none; opacity: 1; transform: none; }
   }
 
   @media (max-width: 720px) {
@@ -1365,14 +1385,14 @@ export default function Auth() {
                       <div className="flex-1 h-px bg-white/[0.06]" />
                     </div>
 
-                    {/* Google Sign In */}
-                    <motion.button
+                    {/* Google Sign In — CSS scale (GPU) instead of Framer's
+                         whileHover/whileTap shorthand, which runs on the main
+                         thread via rAF and drops frames under load. */}
+                    <button
                       type="button"
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
                       onClick={handleGoogleSignIn}
                       disabled={loading}
-                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full h-12 sm:h-11 mt-3 flex items-center justify-center gap-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] active:bg-white/[0.1] active:scale-[0.98] text-[13px] sm:text-[12px] font-medium text-neutral-300 transition-[transform,background-color,border-color] duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -1381,7 +1401,7 @@ export default function Auth() {
                         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                       </svg>
                       Continue with Google
-                    </motion.button>
+                    </button>
                   </>
                 )}
               </>
