@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { AnimatedButton } from '@/components/ui/animated-button';
+import { CinematicFooter } from '@/components/ui/motion-footer';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODULE-LEVEL CONSTANTS
@@ -319,44 +320,6 @@ const ArcTextOnly = () => (
   </section>
 );
 
-// ── Final CTA ── Arc: heading + dual CTAs centered.
-const ArcFinalCTA = ({ onPrimary }: { onPrimary: () => void }) => (
-  <section style={{ padding: '140px 32px 120px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
-      <h2 style={{
-        fontSize: 'clamp(32px, 4.2vw, 56px)',
-        fontWeight: 600, lineHeight: 1.0, letterSpacing: '-0.03em',
-        marginBottom: 36,
-      }}>
-        Enter your new home for the LSAT.
-      </h2>
-      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button className="arc-cta" onClick={onPrimary}>Begin training</button>
-      </div>
-    </div>
-  </section>
-);
-
-// ── Footer ── Brand line + copyright. Decorative columns (Product /
-// Resources / Legal) were removed in the audit-fix pass — they had no
-// destinations.
-const ArcFooter = () => (
-  <footer style={{ borderTop: `1px solid ${ARC.hairline}`, padding: '40px 32px 36px', background: ARC.bg }}>
-    <div style={{
-      maxWidth: 1280, margin: '0 auto',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      flexWrap: 'wrap', gap: 16,
-    }}>
-      <div style={{ fontFamily: ARC.serif, fontSize: 18, fontWeight: 600, letterSpacing: '-0.02em' }}>
-        LSAT U
-      </div>
-      <span style={{ fontSize: 12, color: ARC.inkSecondary }}>
-        © LSAT U · Built for aspiring attorneys.
-      </span>
-    </div>
-  </footer>
-);
-
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTH PAGE
 // ─────────────────────────────────────────────────────────────────────────────
@@ -373,7 +336,7 @@ export default function Auth() {
   const { toast } = useToast();
 
   // ── Modal state — opens via marketing CTAs (ArcNav, ArcHero, ArcProof,
-  // ArcFinalCTA). Default closed so visitors can read the landing page;
+  // CinematicFooter). Default closed so visitors can read the landing page;
   // a session-expired or OAuth bounce explicitly forces it open below.
   const [modalOpen, setModalOpen] = React.useState(false);
   const [forgotOpen, setForgotOpen] = React.useState(false);
@@ -752,8 +715,7 @@ export default function Auth() {
           alt="The Smart Drill with adaptive difficulty"
         />
         <ArcTextOnly />
-        <ArcFinalCTA onPrimary={openSignIn} />
-        <ArcFooter />
+        <CinematicFooter onPrimary={openSignUp} onSecondary={openSignIn} />
       </div>
 
       {/* ── z-40/50: Auth Modal ── */}
