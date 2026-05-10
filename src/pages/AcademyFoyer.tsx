@@ -239,7 +239,7 @@ export default function AcademyFoyer() {
             <FoyerAccountButton displayName={displayName} />
           </div>
         </div>
-        <div data-tour="foyer-orbital" className="relative w-[480px] h-[520px] max-w-full">
+        <div data-tour="foyer-orbital" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full">
           <RadialOrbitalTimeline
             timelineData={foyerNodes}
             onActivate={onOrbitalActivate}
