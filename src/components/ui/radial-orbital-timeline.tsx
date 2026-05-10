@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Zap, Link as LinkIcon, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-interface TimelineItem {
+export interface TimelineItem {
   id: number;
   title: string;
   date: string;
@@ -17,6 +17,8 @@ interface TimelineItem {
 
 interface RadialOrbitalTimelineProps {
   timelineData: TimelineItem[];
+  onActivate?: (nodeId: number | null) => void;
+  renderExpandedContent?: (item: TimelineItem, close: () => void) => React.ReactNode;
 }
 
 export default function RadialOrbitalTimeline({
