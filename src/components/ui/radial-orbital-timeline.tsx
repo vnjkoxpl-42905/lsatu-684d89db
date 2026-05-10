@@ -199,7 +199,12 @@ export default function RadialOrbitalTimeline({
                   {item.title}
                 </div>
 
-                {isExpanded && (
+                {isExpanded && renderExpandedContent && (
+                  <div className="absolute top-24 left-1/2 -translate-x-1/2" onClick={(e) => e.stopPropagation()}>
+                    {renderExpandedContent(item, () => toggleItem(item.id))}
+                  </div>
+                )}
+                {isExpanded && !renderExpandedContent && (
                   <div className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-black/90 backdrop-blur-lg border border-white/30 rounded-lg shadow-xl shadow-white/10 overflow-visible">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-white/40" />
                     <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
