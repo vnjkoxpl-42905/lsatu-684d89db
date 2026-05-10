@@ -114,7 +114,6 @@ export function FloatingMessenger() {
     }
   };
 
-  const reducedMotion = useReducedMotion();
 
   const showStudentEmpty = !is_admin && !active && !loading && conversations.length === 0;
 
