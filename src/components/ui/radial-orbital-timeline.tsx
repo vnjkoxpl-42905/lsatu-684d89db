@@ -24,6 +24,8 @@ interface RadialOrbitalTimelineProps {
 
 export default function RadialOrbitalTimeline({
   timelineData,
+  onActivate,
+  renderExpandedContent,
 }: RadialOrbitalTimelineProps) {
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [rotationAngle, setRotationAngle] = useState(0);
