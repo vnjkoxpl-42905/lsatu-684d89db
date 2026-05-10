@@ -1,29 +1,28 @@
-## Compact, usable Find-a-Question card
+## Problem
 
-### Problem
+When a node is clicked, two things break the visual:
 
-The Find popover stretches too tall — FINDER badge, "Find a Question" title, "Jump to a specific question" subtitle, then 3 stacked label+select blocks plus a button. On the orbital ring it overflows the orbit and overlaps the center orb. The header is redundant: the user already clicked the **Find** node.
+1. `centerViewOnNode` re-rotates the ring so the clicked node jumps to a new angle — the other nodes appear to "drift off" the path.
+2. The expanded node gets `scale-150` and the popover card is anchored to the node — so the node visually leaves the ring line and the card overlaps the orbit.
 
-### Plan
+Result: nodes look like they fall off the circle (see screenshot 2 — Resume sitting inside the ring).
 
-**1. Strip the header in `src/components/foyer/FoyerFindCard.tsx`**
-- Remove `CardHeader`, `Badge` (FINDER), `CardTitle` ("Find a Question"), and the subtitle ("Jump to a specific question").
-- Drop the per-field uppercase labels — the placeholders ("Test", "Section", "Question") already convey it.
-- Keep just three compact selects in a row of stacked rows, plus the Open button.
+## Fix (in `src/components/ui/radial-orbital-timeline.tsx`)
 
-**2. Tighten layout**
-- Wrap content in a single padded `div` (no Card subcomponents), `space-y-2` between selects.
-- Selects: `h-9 text-sm`, placeholders changed to plain `Test`, `Section`, `Question`.
-- Open button: full width, `size="sm"`, primary, sticky-feeling at the bottom (no separator needed).
+1. **Stop re-centering on click.** Remove the `centerViewOnNode(id)` call in `toggleItem`. Auto-rotate still pauses on expand, but the ring keeps its current angle so every node stays exactly where it was on the path.
+2. **Keep node geometry identical when expanded.**
+   - Drop `scale-150` from the expanded node class. Use a subtle visual change instead (filled bg + ring-2 ring-black/40), so the node footprint never changes and its center stays glued to the orbit path.
+   - Make sure `radius` (200) continues to exactly match the ring's `w-[400px] h-[400px]` (already aligned).
+3. **Render the expanded card off the ring, not attached to the node.** Move the `renderExpandedContent` block out of the per-node `<div>` and render it once, absolutely positioned at the bottom of the orbit container (e.g. `absolute left-1/2 -translate-x-1/2 bottom-4 w-[300px]`). This way:
+   - The node itself has no child popover pushing it visually off-axis.
+   - The card always appears in the same readable spot, never clipped, never overlapping the center orb.
+4. **Optional connector:** thin 1px line from active node toward the card anchor, computed from `position.x/y`, so the relationship is still clear without moving the node.
 
-**3. Constrain the popover wrapper in `src/components/ui/radial-orbital-timeline.tsx`**
-- The `renderExpandedContent` slot currently uses `top-24 left-1/2 -translate-x-1/2` with no width/height limits — wrap the rendered content in a fixed-size shell: `w-[280px] max-h-[360px] overflow-visible rounded-xl border border-black/15 bg-white/95 backdrop-blur shadow-xl p-3`.
-- Result: the card is short (~260px tall), uniform width, and never overruns the ring.
+## Out of scope
 
-### Outcome
+- No changes to `FoyerFindCard` or routing.
+- No changes to ring size, center orb, or rotation speed.
 
-Three labelled selects + Open button, ~260px tall, fits cleanly inside the orbit. No redundant title/subtitle. Same logic, same routing — only the chrome is cut.
+## Outcome
 
-### Files touched
-- `src/components/foyer/FoyerFindCard.tsx` — strip header/labels, compact layout
-- `src/components/ui/radial-orbital-timeline.tsx` — wrap `renderExpandedContent` in a fixed-size shell
+Nodes are permanently fixed on the ring path. Clicking only swaps which node is "active" and reveals a fixed card below the orbit — the ring composition never shifts.
