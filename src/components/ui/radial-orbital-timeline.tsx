@@ -141,13 +141,13 @@ export default function RadialOrbitalTimeline({
         >
           {/* Center orb */}
           <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-blue-500 to-teal-400 animate-pulse flex items-center justify-center z-10">
-            <div className="absolute w-20 h-20 rounded-full border border-white/20 animate-ping opacity-70" />
-            <div className="absolute w-24 h-24 rounded-full border border-white/10" style={{ animationDuration: "3s" }} />
+            <div className="absolute w-20 h-20 rounded-full border border-black/20 animate-ping opacity-70" />
+            <div className="absolute w-24 h-24 rounded-full border border-black/10" style={{ animationDuration: "3s" }} />
             <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md" />
           </div>
 
           {/* Orbit ring */}
-          <div className="absolute w-[400px] h-[400px] rounded-full border border-white/10" />
+          <div className="absolute w-[400px] h-[400px] rounded-full border border-black/20" />
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -176,16 +176,16 @@ export default function RadialOrbitalTimeline({
                 }}
               >
                 {isPulsing && (
-                  <div className="absolute inset-0 -m-2 rounded-full border border-white/30 animate-ping" />
+                  <div className="absolute inset-0 -m-2 rounded-full border border-black/30 animate-ping" />
                 )}
 
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform ${
                     isExpanded
-                      ? "bg-white text-black border-white shadow-lg shadow-white/30 scale-150"
+                      ? "bg-black text-white border-black shadow-lg shadow-black/30 scale-150"
                       : isRelated
-                      ? "bg-white/20 text-white border-white"
-                      : "bg-black text-white border-white/40"
+                      ? "bg-black/10 text-black border-black/60"
+                      : "bg-white/80 text-black border-black/30"
                   }`}
                 >
                   <Icon size={18} />
@@ -193,7 +193,7 @@ export default function RadialOrbitalTimeline({
 
                 <div
                   className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wider transition-all duration-300 ${
-                    isExpanded ? "text-white scale-110" : "text-white/70"
+                    isExpanded ? "text-black scale-110" : "text-black/70"
                   }`}
                 >
                   {item.title}
