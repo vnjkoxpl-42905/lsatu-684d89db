@@ -15,8 +15,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MessageSquare, ArrowLeft, ExternalLink, X } from 'lucide-react';
-import * as SheetPrimitive from '@radix-ui/react-dialog';
+import { MessageSquare, ExternalLink, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -121,7 +120,8 @@ export function FloatingMessenger() {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => handleOpenChange(!open)}
+        aria-expanded={open}
         className={cn(
           'fixed bottom-6 right-6 z-40',
           'h-12 w-12 rounded-full',
@@ -132,7 +132,7 @@ export function FloatingMessenger() {
           'hover:bg-background transition active:scale-[0.95]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         )}
-        aria-label={unreadCount > 0 ? `Open messenger, ${unreadCount} unread` : 'Open messenger'}
+        aria-label={open ? 'Close messenger' : unreadCount > 0 ? `Open messenger, ${unreadCount} unread` : 'Open messenger'}
       >
         <MessageSquare className="w-5 h-5" strokeWidth={1.75} />
         {unreadCount > 0 && (
@@ -151,23 +151,29 @@ export function FloatingMessenger() {
         )}
       </button>
 
-      <SheetPrimitive.Root open={open} onOpenChange={handleOpenChange}>
-        <SheetPrimitive.Portal>
-          <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <SheetPrimitive.Content
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="messenger-panel"
+            role="dialog"
+            aria-label="Messenger with Joshua"
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12 }}
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : { type: 'spring', stiffness: 320, damping: 28 }
+            }
+            style={{ transformOrigin: 'bottom right' }}
             className={cn(
-              'fixed inset-y-0 right-0 z-50 flex flex-col',
-              'w-full sm:max-w-md',
-              'bg-background border-l border-border shadow-2xl',
-              'data-[state=open]:animate-in data-[state=closed]:animate-out',
-              'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
-              'data-[state=closed]:duration-250 data-[state=open]:duration-300',
+              'fixed bottom-24 right-6 z-50 flex flex-col',
+              'w-[380px] max-w-[calc(100vw-2rem)]',
+              'h-[min(560px,calc(100dvh-7rem))]',
+              'bg-background border border-border rounded-2xl shadow-2xl overflow-hidden',
               'focus:outline-none',
             )}
-            aria-describedby={undefined}
           >
-            <SheetPrimitive.Title className="sr-only">Messenger</SheetPrimitive.Title>
-
             <div className="flex items-center gap-2 px-4 h-14 border-b border-border shrink-0">
               <div
                 className="w-9 h-9 rounded-full bg-emerald-500/15 text-emerald-500 ring-1 ring-emerald-500/30 flex items-center justify-center text-xs font-semibold shrink-0 relative"
@@ -189,12 +195,14 @@ export function FloatingMessenger() {
                 <span className="hidden sm:inline">Full inbox</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
-              <SheetPrimitive.Close
+              <button
+                type="button"
+                onClick={() => handleOpenChange(false)}
                 className="rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="Close messenger"
               >
                 <X className="w-4 h-4" />
-              </SheetPrimitive.Close>
+              </button>
             </div>
 
             <div className="flex-1 min-h-0 overflow-hidden">
@@ -268,9 +276,9 @@ export function FloatingMessenger() {
                 )}
               </AnimatePresence>
             </div>
-          </SheetPrimitive.Content>
-        </SheetPrimitive.Portal>
-      </SheetPrimitive.Root>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
