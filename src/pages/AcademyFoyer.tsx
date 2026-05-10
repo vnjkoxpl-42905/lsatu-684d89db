@@ -270,7 +270,6 @@ export default function AcademyFoyer() {
           />
         </div>
 
-        <FoyerQuickDock onReplayTour={() => startTour()} />
       </main>
     </div>
   );

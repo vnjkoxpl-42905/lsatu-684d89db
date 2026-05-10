@@ -1,12 +1,12 @@
 import { useMotionValue, motion } from "framer-motion";
 import NotificationBell from "@/components/notifications/NotificationBell";
+import FoyerChatButton from "@/components/foyer/FoyerChatButton";
 
 /**
- * Top-right Foyer cluster. Used to also hold an Inbox button — that has
- * moved into the customizable GooeyDock (catalog id "inbox") which now
- * supports unread badges. The bell stays here because it is the anchor
- * for the notifications Popover; the GooeyDock notifications item fires
- * the same Popover via the notificationsBus.
+ * Top-right Foyer cluster. Holds the messenger button (fires chatBus →
+ * FloatingMessenger compact panel) and the notifications bell (anchor for
+ * the Popover). The full Inbox lives at /inbox via the GooeyDock "inbox"
+ * item; this dock owns quick-reply + alerts.
  */
 export default function FoyerDock() {
   const mouseX = useMotionValue(Infinity);
@@ -19,6 +19,7 @@ export default function FoyerDock() {
       role="toolbar"
       aria-label="Foyer dock"
     >
+      <FoyerChatButton mouseX={mouseX} />
       <NotificationBell mouseX={mouseX} />
     </motion.div>
   );
