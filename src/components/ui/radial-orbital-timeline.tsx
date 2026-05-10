@@ -79,7 +79,6 @@ export default function RadialOrbitalTimeline({
           newPulseEffect[relId] = true;
         });
         setPulseEffect(newPulseEffect);
-        centerViewOnNode(id);
         onActivate?.(id);
       } else {
         setActiveNodeId(null);
