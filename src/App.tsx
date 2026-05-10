@@ -2,10 +2,9 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AskJoshuaWidget from "@/components/chat/AskJoshuaWidget";
-import { OrbitalActiveProvider, useOrbitalActive } from "@/contexts/OrbitalActiveContext";
+import { OrbitalActiveProvider } from "@/contexts/OrbitalActiveContext";
 
 const queryClient = new QueryClient();
 import { QuestionBankProvider } from "./contexts/QuestionBankContext";
@@ -78,21 +77,6 @@ import GuidedTour from "./components/foyer/GuidedTour";
 // React root is remounting (e.g. from a service-worker replace) vs its child
 // providers re-initializing.
 let APP_MOUNT_COUNT = 0;
-
-// Routes where the floating Ask Joshua widget should NOT appear.
-// /auth: pre-auth surface; /drill: dark-mode focused work, no interruptions.
-const ASK_JOSHUA_HIDDEN_ROUTES = ["/auth", "/reset-password", "/onboarding", "/drill"];
-
-function AskJoshuaMount() {
-  const location = useLocation();
-  const { active: orbitalActive } = useOrbitalActive();
-  const path = location.pathname;
-  const hidden =
-    ASK_JOSHUA_HIDDEN_ROUTES.some((p) => path === p || path.startsWith(`${p}/`)) ||
-    (path.startsWith("/foyer") && orbitalActive);
-  if (hidden) return null;
-  return <AskJoshuaWidget />;
-}
 
 const App = () => {
   React.useEffect(() => {
@@ -405,7 +389,6 @@ const App = () => {
           <FloatingWhiteboard />
 
           <FloatingTutorButton />
-          <AskJoshuaMount />
           <GuidedTour />
         </BrowserRouter>
       </TooltipProvider>

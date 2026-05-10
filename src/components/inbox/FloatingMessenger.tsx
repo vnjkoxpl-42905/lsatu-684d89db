@@ -3,11 +3,13 @@
 // Hidden routes:
 //   /auth, /onboarding, /reset-password — pre-auth surfaces.
 //   /inbox                              — full inbox already visible.
-//   /foyer                              — FoyerDock owns the inbox entry there;
-//                                          showing both would visually collide.
 //   /admin/ta                           — TA workspace owns its own widget at
 //                                          right-24 z-40; Messenger here would
 //                                          stack against it.
+//
+// Foyer behavior: visible by default; hidden only while a node is in the
+// expanded state on /foyer (via useOrbitalActive) so the Find overlay and
+// the messenger panel don't compete.
 
 import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
@@ -21,13 +23,14 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { useOrbitalActive } from '@/contexts/OrbitalActiveContext';
 import { ThreadList, ThreadListSkeleton } from './ThreadList';
 import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/foyer', '/admin/ta', '/teacher', '/drill'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill'];
 
 export function FloatingMessenger() {
   const location = useLocation();
@@ -35,6 +38,7 @@ export function FloatingMessenger() {
   const { user, authReady } = useAuth();
   const { has_chat_access, is_admin, loading: permsLoading } = useUserPermissions();
   const { conversations, loading, unreadCount, refresh } = useInbox();
+  const { active: orbitalActive } = useOrbitalActive();
 
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -80,6 +84,9 @@ export function FloatingMessenger() {
     (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
   );
   if (pathHidden) return null;
+  // On /foyer, defer to the orbital while a node is in the expanded state so
+  // the Find overlay and the messenger panel don't compete for attention.
+  if (location.pathname.startsWith('/foyer') && orbitalActive) return null;
 
   const openFullInbox = () => {
     setOpen(false);
