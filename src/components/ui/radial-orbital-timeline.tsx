@@ -179,9 +179,9 @@ export default function RadialOrbitalTimeline({
                 )}
 
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
                     isExpanded
-                      ? "bg-black text-white border-black shadow-lg shadow-black/30 scale-150"
+                      ? "bg-black text-white border-black ring-2 ring-black/30"
                       : isRelated
                       ? "bg-black/10 text-black border-black/60"
                       : "bg-white/80 text-black border-black/30"
@@ -191,85 +191,100 @@ export default function RadialOrbitalTimeline({
                 </div>
 
                 <div
-                  className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wider transition-all duration-300 ${
-                    isExpanded ? "text-black scale-110" : "text-black/70"
+                  className={`absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wider transition-colors duration-300 ${
+                    isExpanded ? "text-black" : "text-black/70"
                   }`}
                 >
                   {item.title}
                 </div>
+              </div>
+            );
+          })}
 
-                {isExpanded && renderExpandedContent && (
-                  <div
-                    className="absolute top-16 left-1/2 -translate-x-1/2 w-[280px] rounded-xl border border-black/15 bg-white/95 backdrop-blur shadow-xl p-3"
-                    onClick={(e) => e.stopPropagation()}
+          {/* Expanded card — fixed slot below the ring, never attached to a node */}
+          {(() => {
+            const activeItem = activeNodeId
+              ? timelineData.find((i) => i.id === activeNodeId)
+              : null;
+            if (!activeItem) return null;
+
+            if (renderExpandedContent) {
+              return (
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 w-[300px] rounded-xl border border-black/15 bg-white/95 backdrop-blur shadow-xl p-3"
+                  style={{ top: "calc(50% + 220px)" }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {renderExpandedContent(activeItem, () => toggleItem(activeItem.id))}
+                </div>
+              );
+            }
+
+            return (
+              <div
+                className="absolute left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-lg border border-black/20 rounded-lg shadow-xl shadow-black/10 overflow-visible"
+                style={{ top: "calc(50% + 220px)" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
+                  <Badge
+                    variant="outline"
+                    className={`px-2 text-[10px] tracking-wider ${getStatusStyles(activeItem.status)}`}
                   >
-                    {renderExpandedContent(item, () => toggleItem(item.id))}
+                    {activeItem.status === "completed"
+                      ? "COMPLETE"
+                      : activeItem.status === "in-progress"
+                      ? "IN PROGRESS"
+                      : "PENDING"}
+                  </Badge>
+                  <span className="text-[10px] text-black/60 font-mono">{activeItem.date}</span>
+                </div>
+                <div className="px-4 pt-2 pb-1 text-sm font-semibold text-black">{activeItem.title}</div>
+                <div className="px-4 pb-3 text-xs text-black/70 leading-relaxed">{activeItem.content}</div>
+                <div className="px-4 pb-3">
+                  <div className="flex items-center justify-between text-[10px] text-black/60 mb-1">
+                    <span className="flex items-center gap-1">
+                      <Zap size={10} />
+                      Energy Level
+                    </span>
+                    <span className="font-mono">{activeItem.energy}%</span>
                   </div>
-                )}
-                {isExpanded && !renderExpandedContent && (
-                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-lg border border-black/20 rounded-lg shadow-xl shadow-black/10 overflow-visible">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-black/40" />
-                    <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
-                      <Badge
-                        variant="outline"
-                        className={`px-2 text-[10px] tracking-wider ${getStatusStyles(item.status)}`}
-                      >
-                        {item.status === "completed"
-                          ? "COMPLETE"
-                          : item.status === "in-progress"
-                          ? "IN PROGRESS"
-                          : "PENDING"}
-                      </Badge>
-                      <span className="text-[10px] text-black/60 font-mono">{item.date}</span>
+                  <div className="w-full h-1 rounded-full bg-black/10 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-400 to-teal-300"
+                      style={{ width: `${activeItem.energy}%` }}
+                    />
+                  </div>
+                </div>
+                {activeItem.relatedIds.length > 0 && (
+                  <div className="px-4 py-3 border-t border-black/10">
+                    <div className="flex items-center gap-1 text-[10px] text-black/60 mb-2">
+                      <LinkIcon size={10} />
+                      <span>Connected Nodes</span>
                     </div>
-                    <div className="px-4 pt-2 pb-1 text-sm font-semibold text-black">{item.title}</div>
-                    <div className="px-4 pb-3 text-xs text-black/70 leading-relaxed">{item.content}</div>
-                    <div className="px-4 pb-3">
-                      <div className="flex items-center justify-between text-[10px] text-black/60 mb-1">
-                        <span className="flex items-center gap-1">
-                          <Zap size={10} />
-                          Energy Level
-                        </span>
-                        <span className="font-mono">{item.energy}%</span>
-                      </div>
-                      <div className="w-full h-1 rounded-full bg-black/10 overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-indigo-400 to-teal-300"
-                          style={{ width: `${item.energy}%` }}
-                        />
-                      </div>
+                    <div className="flex flex-wrap gap-1">
+                      {activeItem.relatedIds.map((relatedId) => {
+                        const relatedItem = timelineData.find((i) => i.id === relatedId);
+                        return (
+                          <button
+                            key={relatedId}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleItem(relatedId);
+                            }}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] border border-black/20 text-black/80 hover:bg-black/10 transition-colors"
+                          >
+                            {relatedItem?.title}
+                            <ArrowRight size={8} />
+                          </button>
+                        );
+                      })}
                     </div>
-                    {item.relatedIds.length > 0 && (
-                      <div className="px-4 py-3 border-t border-black/10">
-                        <div className="flex items-center gap-1 text-[10px] text-black/60 mb-2">
-                          <LinkIcon size={10} />
-                          <span>Connected Nodes</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1">
-                          {item.relatedIds.map((relatedId) => {
-                            const relatedItem = timelineData.find((i) => i.id === relatedId);
-                            return (
-                              <button
-                                key={relatedId}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleItem(relatedId);
-                                }}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] border border-black/20 text-black/80 hover:bg-black/10 transition-colors"
-                              >
-                                {relatedItem?.title}
-                                <ArrowRight size={8} />
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
             );
-          })}
+          })()}
         </div>
       </div>
     </div>
