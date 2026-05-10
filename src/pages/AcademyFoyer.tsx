@@ -84,8 +84,9 @@ export default function AcademyFoyer() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const perms = useUserPermissions();
-  const { prefs } = useLayoutPrefs();
+  const { prefs, loading: prefsLoading } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
+  const orbitalReady = !perms.loading && !prefsLoading;
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   
 
@@ -127,12 +128,16 @@ export default function AcademyFoyer() {
 
   const foyerNodes: TimelineItem[] = React.useMemo(() => {
     return prefs.orbital
-      .map((id, idx) => {
+      .map((id) => {
         const cat = findCatalogItem(ORBITAL_CATALOG, id);
         const r = ORBITAL_RENDER[id];
         if (!cat || !r || !userHasAccess(cat)) return null;
+        // Stable id: position in ORBITAL_CATALOG. Survives perms-driven
+        // filter changes and prefs.orbital reordering, so React's key
+        // tracks the same DOM element across renders.
+        const stableId = ORBITAL_CATALOG.findIndex((c) => c.id === id) + 1;
         const node: TimelineItem = {
-          id: idx + 1,
+          id: stableId,
           title: cat.label,
           date: r.date,
           content: r.content,
@@ -150,8 +155,9 @@ export default function AcademyFoyer() {
 
   const onOrbitalActivate = React.useCallback(
     (nodeId: number) => {
-      const idx = nodeId - 1;
-      const itemId = prefs.orbital[idx];
+      // nodeId is now ORBITAL_CATALOG position + 1 (stable across filters
+      // and prefs.orbital reordering), so look up the catalog id directly.
+      const itemId = ORBITAL_CATALOG[nodeId - 1]?.id;
       if (itemId === "smart-drill") {
         navigate("/drill", { state: { mode: "adaptive" } });
       } else if (itemId === "resume") {
@@ -179,7 +185,7 @@ export default function AcademyFoyer() {
         // intentionally a no-op so the overlay doesn't navigate away.
       }
     },
-    [navigate, prefs.orbital, classroomItems],
+    [navigate, classroomItems],
   );
 
   const renderOrbitalExpanded = React.useCallback(
@@ -239,12 +245,17 @@ export default function AcademyFoyer() {
             <FoyerAccountButton displayName={displayName} />
           </div>
         </div>
-        <div data-tour="foyer-orbital" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full">
-          <RadialOrbitalTimeline
-            timelineData={foyerNodes}
-            onActivate={onOrbitalActivate}
-            renderExpandedContent={renderOrbitalExpanded}
-          />
+        <div
+          data-tour="foyer-orbital"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full transition-opacity duration-300 ${orbitalReady ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        >
+          {orbitalReady && (
+            <RadialOrbitalTimeline
+              timelineData={foyerNodes}
+              onActivate={onOrbitalActivate}
+              renderExpandedContent={renderOrbitalExpanded}
+            />
+          )}
         </div>
 
         <FoyerQuickDock onReplayTour={() => startTour()} />

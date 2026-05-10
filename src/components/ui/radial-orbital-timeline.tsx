@@ -34,9 +34,23 @@ export default function RadialOrbitalTimeline({
   const [autoRotate, setAutoRotate] = useState(true);
   const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
+  // First paint renders nodes at their final positions with NO transition.
+  // Without this gate, transition-all would interpolate from the element's
+  // pre-transform position (top-left of element at parent center, since
+  // top-1/2 left-1/2 puts the corner there) to the final ring position,
+  // visibly showing all nodes converging from center → outward over 700ms.
+  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const orbitRef = useRef<HTMLDivElement | null>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    // Wait until after the first paint commits the inline transform, then
+    // enable transitions for subsequent updates (auto-rotate ticks,
+    // expand/collapse, related-pulse).
+    const id = requestAnimationFrame(() => setTransitionsEnabled(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const handleContainerClick = (e: React.MouseEvent) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -166,7 +180,7 @@ export default function RadialOrbitalTimeline({
                 ref={(el) => {
                   nodeRefs.current[item.id] = el;
                 }}
-                className="absolute top-1/2 left-1/2 transition-all duration-700 cursor-pointer"
+                className={`absolute top-1/2 left-1/2 cursor-pointer ${transitionsEnabled ? "transition-all duration-700" : ""}`}
                 style={nodeStyle}
                 onClick={(e) => {
                   e.stopPropagation();
