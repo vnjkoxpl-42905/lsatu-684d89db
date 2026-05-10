@@ -75,6 +75,8 @@ export function FloatingMessenger() {
     return realNames.join(', ') || active.subject || 'Conversation';
   }, [active, user, is_admin]);
 
+  const reducedMotion = useReducedMotion();
+
   if (!authReady || !user || permsLoading) return null;
   // Admins use the consolidated AdminChatHub instead.
   if (is_admin) return null;
