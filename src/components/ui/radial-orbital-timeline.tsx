@@ -13,6 +13,7 @@ export interface TimelineItem {
   relatedIds: number[];
   status: "completed" | "in-progress" | "pending";
   energy: number;
+  variant?: string;
 }
 
 interface RadialOrbitalTimelineProps {
