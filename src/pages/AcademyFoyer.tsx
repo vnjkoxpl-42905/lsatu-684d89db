@@ -84,9 +84,8 @@ export default function AcademyFoyer() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const perms = useUserPermissions();
-  const { prefs, loading: prefsLoading } = useLayoutPrefs();
+  const { prefs } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
-  const orbitalReady = !perms.loading && !prefsLoading;
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   
 
@@ -119,6 +118,10 @@ export default function AcademyFoyer() {
 
   const userHasAccess = React.useCallback(
     (item: CatalogItem) => {
+      // Optimistic during perm load: useUserPermissions refetches per mount,
+      // taking 1-3s. The orbital is a nav surface; ProtectedRoute gates the
+      // actual route. Optimism here keeps the foyer from staying blank.
+      if (perms.loading) return true;
       if (item.adminOnly) return perms.is_admin;
       if (item.requires) return perms.is_admin || !!perms[item.requires as PermissionFlag];
       return true;
@@ -247,15 +250,13 @@ export default function AcademyFoyer() {
         </div>
         <div
           data-tour="foyer-orbital"
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full transition-opacity duration-300 ${orbitalReady ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full"
         >
-          {orbitalReady && (
-            <RadialOrbitalTimeline
-              timelineData={foyerNodes}
-              onActivate={onOrbitalActivate}
-              renderExpandedContent={renderOrbitalExpanded}
-            />
-          )}
+          <RadialOrbitalTimeline
+            timelineData={foyerNodes}
+            onActivate={onOrbitalActivate}
+            renderExpandedContent={renderOrbitalExpanded}
+          />
         </div>
 
         <FoyerQuickDock onReplayTour={() => startTour()} />
