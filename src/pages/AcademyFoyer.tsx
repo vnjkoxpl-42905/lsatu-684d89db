@@ -20,6 +20,7 @@ import { openNotifications } from "@/components/notifications/notificationsBus";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
+import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useInbox } from "@/hooks/useInbox";
 import { useNotifications } from "@/hooks/useNotifications";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
@@ -86,6 +87,7 @@ export default function AcademyFoyer() {
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
+  const { setActive: setOrbitalActive } = useOrbitalActive();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   
 
@@ -157,7 +159,10 @@ export default function AcademyFoyer() {
   }, [prefs.orbital, userHasAccess]);
 
   const onOrbitalActivate = React.useCallback(
-    (nodeId: number) => {
+    (nodeId: number | null) => {
+      // Push orbital-active state for the floating chat widget gate.
+      setOrbitalActive(nodeId !== null);
+      if (nodeId === null) return;
       // nodeId is now ORBITAL_CATALOG position + 1 (stable across filters
       // and prefs.orbital reordering), so look up the catalog id directly.
       const itemId = ORBITAL_CATALOG[nodeId - 1]?.id;
@@ -188,8 +193,14 @@ export default function AcademyFoyer() {
         // intentionally a no-op so the overlay doesn't navigate away.
       }
     },
-    [navigate, classroomItems],
+    [navigate, classroomItems, setOrbitalActive],
   );
+
+  React.useEffect(() => {
+    // If user navigates away while a node is expanded, clear orbital-active
+    // so the chat widget reappears on the next route.
+    return () => setOrbitalActive(false);
+  }, [setOrbitalActive]);
 
   const renderOrbitalExpanded = React.useCallback(
     (item: TimelineItem, close: () => void) => {
