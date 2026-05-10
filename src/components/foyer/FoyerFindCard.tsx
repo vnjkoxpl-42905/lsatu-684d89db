@@ -1,8 +1,6 @@
 import * as React from "react";
 import { ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -10,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { questionBank } from "@/lib/questionLoader";
 
@@ -26,7 +23,6 @@ export default function FoyerFindCard({ onOpen, onClose }: FoyerFindCardProps) {
   const [selectedSection, setSelectedSection] = React.useState<string>("");
   const [selectedQnum, setSelectedQnum] = React.useState<string>("");
 
-  // Group structure: pt -> section -> sorted qnum[]
   const grouped = React.useMemo(() => {
     const map = new Map<number, Map<number, number[]>>();
     if (isLoading) return map;
@@ -93,102 +89,67 @@ export default function FoyerFindCard({ onOpen, onClose }: FoyerFindCardProps) {
     onClose();
   };
 
-  const labelClass = "text-xs uppercase tracking-[0.2em] text-muted-foreground";
-
   return (
-    <>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between mb-1">
-          <Badge
-            className={cn(
-              "text-[10px] px-2 py-0.5",
-              "text-foreground bg-background border-foreground",
-            )}
-          >
-            FINDER
-          </Badge>
-        </div>
-        <CardTitle className="text-base">Find a Question</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Jump to a specific question
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="space-y-1.5">
-          <span className={labelClass}>Test</span>
-          <Select
-            value={selectedPt}
-            onValueChange={handlePtChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue
-                placeholder={isLoading ? "Loading questions..." : "Select a test"}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {ptOptions.map((pt) => (
-                <SelectItem key={pt} value={String(pt)}>
-                  PT {pt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="space-y-2">
+      <Select value={selectedPt} onValueChange={handlePtChange} disabled={isLoading}>
+        <SelectTrigger className="h-9 text-sm">
+          <SelectValue placeholder={isLoading ? "Loading…" : "Test"} />
+        </SelectTrigger>
+        <SelectContent>
+          {ptOptions.map((pt) => (
+            <SelectItem key={pt} value={String(pt)}>
+              PT {pt}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-        <div className="space-y-1.5">
-          <span className={labelClass}>Section</span>
-          <Select
-            value={selectedSection}
-            onValueChange={handleSectionChange}
-            disabled={isLoading || !selectedPt}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue placeholder="Select a section" />
-            </SelectTrigger>
-            <SelectContent>
-              {sectionOptions.map((s) => (
-                <SelectItem key={s} value={String(s)}>
-                  Section {s}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <Select
+        value={selectedSection}
+        onValueChange={handleSectionChange}
+        disabled={isLoading || !selectedPt}
+      >
+        <SelectTrigger className="h-9 text-sm">
+          <SelectValue placeholder="Section" />
+        </SelectTrigger>
+        <SelectContent>
+          {sectionOptions.map((s) => (
+            <SelectItem key={s} value={String(s)}>
+              Section {s}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-        <div className="space-y-1.5">
-          <span className={labelClass}>Question</span>
-          <Select
-            value={selectedQnum}
-            onValueChange={setSelectedQnum}
-            disabled={isLoading || !selectedSection}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue placeholder="Select a question" />
-            </SelectTrigger>
-            <SelectContent>
-              {qnumOptions.map((q) => (
-                <SelectItem key={q} value={String(q)}>
-                  Question {q}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <Select
+        value={selectedQnum}
+        onValueChange={setSelectedQnum}
+        disabled={isLoading || !selectedSection}
+      >
+        <SelectTrigger className="h-9 text-sm">
+          <SelectValue placeholder="Question" />
+        </SelectTrigger>
+        <SelectContent>
+          {qnumOptions.map((q) => (
+            <SelectItem key={q} value={String(q)}>
+              Question {q}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-        <Button
-          size="sm"
-          className="w-full"
-          disabled={!canOpen}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleOpen();
-          }}
-        >
-          Open
-          <ArrowRight className="w-3 h-3 ml-1" />
-        </Button>
-      </CardContent>
-    </>
+      <Button
+        size="sm"
+        className="w-full mt-1"
+        disabled={!canOpen}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpen();
+        }}
+      >
+        Open
+        <ArrowRight className="w-3 h-3 ml-1" />
+      </Button>
+    </div>
   );
 }
