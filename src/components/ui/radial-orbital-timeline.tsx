@@ -117,13 +117,13 @@ export default function RadialOrbitalTimeline({
   const getStatusStyles = (status: TimelineItem["status"]): string => {
     switch (status) {
       case "completed":
-        return "text-white bg-black border-white";
+        return "text-black bg-white border-black";
       case "in-progress":
-        return "text-white bg-white/10 border-white/70";
+        return "text-black bg-black/5 border-black/70";
       case "pending":
-        return "text-white/70 bg-black/40 border-white/40";
+        return "text-black/70 bg-white/60 border-black/40";
       default:
-        return "text-white bg-black/40 border-white/50";
+        return "text-black bg-white/60 border-black/50";
     }
   };
 

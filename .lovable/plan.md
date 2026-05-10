@@ -1,35 +1,21 @@
-## Add RadialOrbitalTimeline component
+## Fix: Make orbital ring visible on light background
 
-Create a new reusable orbital timeline UI component (clean, fixed version of the snippet you pasted — the original had broken JSX/TS syntax) and wire it up so you can use it anywhere.
+The component currently uses `border-white/10` for the orbit ring and white text/borders for nodes — invisible on the Foyer's light background (screenshot 1). Goal: match screenshot 2's structure (visible thin ring + labeled nodes) but in **black on transparent** instead of white on black.
 
-### Files to create
+### Changes in `src/components/ui/radial-orbital-timeline.tsx`
 
-1. **`src/components/ui/radial-orbital-timeline.tsx`**
-   - Properly typed `TimelineItem` interface (id, title, date, content, category, icon, relatedIds, status, energy)
-   - State: `expandedItems`, `rotationAngle`, `autoRotate`, `pulseEffect`, `activeNodeId`, refs for container/orbit/nodes
-   - Auto-rotate orbit (0.3°/50ms) that pauses when a node is expanded
-   - Click node → expand card with status badge, date, content, energy bar, related-node chips
-   - Click empty space → collapse all
-   - Full-screen black background (`bg-black`), white orbit rings, white node icons — **no card-style colors, pure black/white per your request**
-   - Expanded card: `bg-black/90` with `border-white/30`, white text, subtle backdrop blur
+1. **Orbit ring** (line 150): `border-white/10` → `border-black/15` so the ring is visible on the light Foyer background.
+2. **Node circles** (line 183-189): swap white-on-black for black-on-transparent
+   - default: `bg-white/80 text-black border-black/30`
+   - related: `bg-black/10 text-black border-black/60`
+   - expanded: `bg-black text-white border-black scale-150`
+3. **Node labels** (line 195-197): `text-white/70` → `text-black/70`, expanded `text-black`.
+4. **Pulse ring** (line 179): `border-white/30` → `border-black/30`.
+5. **Center orb rings** (line 144-145): `border-white/20` and `border-white/10` → `border-black/20` / `border-black/10`. Keep the colored gradient orb (matches screenshot 2's blue center).
+6. **Expanded popover** (line 208-266): keep dark scheme since it overlays content — change to `bg-white/95 text-black border-black/20` so the popover is readable on a light background. Update `getStatusStyles` to black-on-white variants.
 
-2. **`src/components/ui/radial-orbital-timeline-demo.tsx`**
-   - Demo with 5 nodes (Planning, Design, Development, Testing, Release) matching your screenshot
-   - Exported so you can drop it into any page
+No prop/API changes. No changes to `AcademyFoyer` or other consumers.
 
-### Dependencies
-All already installed in this project — no `npm install` needed:
-- `lucide-react` ✓
-- `class-variance-authority` ✓
-- `@radix-ui/react-slot` ✓
-- `@/components/ui/badge`, `button`, `card` ✓
+### Why this matches screenshot 2
 
-### CSS
-Skip the globals.css block from the snippet — Tailwind v3 in this project already provides `animate-pulse`, `animate-ping`, `backdrop-blur-lg`, opacity utilities, etc. Adding it would duplicate/conflict with existing tokens.
-
-### Where it gets used
-This plan **only creates the component + demo**. I will not auto-mount it on `/foyer` (that route already uses `FoyerHeroRing` per project rules). Tell me where you want it shown after the component lands — e.g. a new `/timeline` route, inside a bootcamp page, or replacing another widget — and I'll wire it up in a follow-up.
-
-### Technical notes
-- Fixes from the original snippet: typed `useState<Record<number, boolean>>`, typed refs (`HTMLDivElement`), restored all JSX (the paste lost most of the markup), removed unused imports (`ArrowRight`, `Link`, `Zap`, `CardHeader`, `CardTitle`)
-- Black-only palette: replaces the original status color logic so all three states (`completed`, `in-progress`, `pending`) render on black with white borders/text at varying opacity instead of inverted white cards
+Screenshot 2 shows a faint ring + outlined nodes + labels under each. The structure is already correct — only the color tokens need flipping from white to black so they show against the existing light Foyer surface (the user explicitly said "ignore the black background, just black ring").
