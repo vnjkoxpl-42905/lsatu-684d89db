@@ -1,21 +1,29 @@
-## Fix: Make orbital ring visible on light background
+## Compact, usable Find-a-Question card
 
-The component currently uses `border-white/10` for the orbit ring and white text/borders for nodes — invisible on the Foyer's light background (screenshot 1). Goal: match screenshot 2's structure (visible thin ring + labeled nodes) but in **black on transparent** instead of white on black.
+### Problem
 
-### Changes in `src/components/ui/radial-orbital-timeline.tsx`
+The Find popover stretches too tall — FINDER badge, "Find a Question" title, "Jump to a specific question" subtitle, then 3 stacked label+select blocks plus a button. On the orbital ring it overflows the orbit and overlaps the center orb. The header is redundant: the user already clicked the **Find** node.
 
-1. **Orbit ring** (line 150): `border-white/10` → `border-black/15` so the ring is visible on the light Foyer background.
-2. **Node circles** (line 183-189): swap white-on-black for black-on-transparent
-   - default: `bg-white/80 text-black border-black/30`
-   - related: `bg-black/10 text-black border-black/60`
-   - expanded: `bg-black text-white border-black scale-150`
-3. **Node labels** (line 195-197): `text-white/70` → `text-black/70`, expanded `text-black`.
-4. **Pulse ring** (line 179): `border-white/30` → `border-black/30`.
-5. **Center orb rings** (line 144-145): `border-white/20` and `border-white/10` → `border-black/20` / `border-black/10`. Keep the colored gradient orb (matches screenshot 2's blue center).
-6. **Expanded popover** (line 208-266): keep dark scheme since it overlays content — change to `bg-white/95 text-black border-black/20` so the popover is readable on a light background. Update `getStatusStyles` to black-on-white variants.
+### Plan
 
-No prop/API changes. No changes to `AcademyFoyer` or other consumers.
+**1. Strip the header in `src/components/foyer/FoyerFindCard.tsx`**
+- Remove `CardHeader`, `Badge` (FINDER), `CardTitle` ("Find a Question"), and the subtitle ("Jump to a specific question").
+- Drop the per-field uppercase labels — the placeholders ("Test", "Section", "Question") already convey it.
+- Keep just three compact selects in a row of stacked rows, plus the Open button.
 
-### Why this matches screenshot 2
+**2. Tighten layout**
+- Wrap content in a single padded `div` (no Card subcomponents), `space-y-2` between selects.
+- Selects: `h-9 text-sm`, placeholders changed to plain `Test`, `Section`, `Question`.
+- Open button: full width, `size="sm"`, primary, sticky-feeling at the bottom (no separator needed).
 
-Screenshot 2 shows a faint ring + outlined nodes + labels under each. The structure is already correct — only the color tokens need flipping from white to black so they show against the existing light Foyer surface (the user explicitly said "ignore the black background, just black ring").
+**3. Constrain the popover wrapper in `src/components/ui/radial-orbital-timeline.tsx`**
+- The `renderExpandedContent` slot currently uses `top-24 left-1/2 -translate-x-1/2` with no width/height limits — wrap the rendered content in a fixed-size shell: `w-[280px] max-h-[360px] overflow-visible rounded-xl border border-black/15 bg-white/95 backdrop-blur shadow-xl p-3`.
+- Result: the card is short (~260px tall), uniform width, and never overruns the ring.
+
+### Outcome
+
+Three labelled selects + Open button, ~260px tall, fits cleanly inside the orbit. No redundant title/subtitle. Same logic, same routing — only the chrome is cut.
+
+### Files touched
+- `src/components/foyer/FoyerFindCard.tsx` — strip header/labels, compact layout
+- `src/components/ui/radial-orbital-timeline.tsx` — wrap `renderExpandedContent` in a fixed-size shell
