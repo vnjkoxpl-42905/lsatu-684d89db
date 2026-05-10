@@ -133,19 +133,19 @@ export default function RadialOrbitalTimeline({
     >
       <div className="relative w-full max-w-4xl h-full flex items-center justify-center">
         <div
-          className="absolute w-full h-full flex items-center justify-center"
+          className="absolute w-full h-full"
           ref={orbitRef}
           style={{ perspective: "1000px" }}
         >
           {/* Center orb */}
-          <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-blue-500 to-teal-400 animate-pulse flex items-center justify-center z-10">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-blue-500 to-teal-400 animate-pulse flex items-center justify-center z-10">
             <div className="absolute w-20 h-20 rounded-full border border-black/20 animate-ping opacity-70" />
             <div className="absolute w-24 h-24 rounded-full border border-black/10" style={{ animationDuration: "3s" }} />
             <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md" />
           </div>
 
           {/* Orbit ring */}
-          <div className="absolute w-[400px] h-[400px] rounded-full border border-black/20" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-black/20" />
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -155,7 +155,7 @@ export default function RadialOrbitalTimeline({
             const Icon = item.icon;
 
             const nodeStyle = {
-              transform: `rotate(${position.angle}deg) translateX(${ORBIT_RADIUS}px) rotate(-${position.angle}deg)`,
+              transform: `translate(-50%, -50%) rotate(${position.angle}deg) translateX(${ORBIT_RADIUS}px) rotate(-${position.angle}deg)`,
               zIndex: isExpanded ? 200 : position.zIndex,
               opacity: isExpanded ? 1 : position.opacity,
             };
@@ -166,7 +166,7 @@ export default function RadialOrbitalTimeline({
                 ref={(el) => {
                   nodeRefs.current[item.id] = el;
                 }}
-                className="absolute transition-all duration-700 cursor-pointer"
+                className="absolute top-1/2 left-1/2 transition-all duration-700 cursor-pointer"
                 style={nodeStyle}
                 onClick={(e) => {
                   e.stopPropagation();
