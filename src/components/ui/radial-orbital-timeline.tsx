@@ -80,10 +80,12 @@ export default function RadialOrbitalTimeline({
         });
         setPulseEffect(newPulseEffect);
         centerViewOnNode(id);
+        onActivate?.(id);
       } else {
         setActiveNodeId(null);
         setAutoRotate(true);
         setPulseEffect({});
+        onActivate?.(null);
       }
       return newState;
     });
