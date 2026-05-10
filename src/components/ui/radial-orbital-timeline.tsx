@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Zap, Link as LinkIcon, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+const ORBIT_RADIUS = 200;
+
 export interface TimelineItem {
   id: number;
   title: string;
@@ -104,13 +106,10 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
     const radian = (angle * Math.PI) / 180;
-    const x = radius * Math.cos(radian);
-    const y = radius * Math.sin(radian);
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     const opacity = Math.max(0.4, Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)));
-    return { x, y, angle, zIndex, opacity };
+    return { angle, zIndex, opacity };
   };
 
   const getStatusStyles = (status: TimelineItem["status"]): string => {
@@ -156,7 +155,7 @@ export default function RadialOrbitalTimeline({
             const Icon = item.icon;
 
             const nodeStyle = {
-              transform: `translate(${position.x}px, ${position.y}px)`,
+              transform: `rotate(${position.angle}deg) translateX(${ORBIT_RADIUS}px) rotate(-${position.angle}deg)`,
               zIndex: isExpanded ? 200 : position.zIndex,
               opacity: isExpanded ? 1 : position.opacity,
             };
