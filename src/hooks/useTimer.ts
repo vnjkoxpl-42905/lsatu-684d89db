@@ -20,7 +20,12 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
     duration: durationMs ?? 0
   });
   const [, force] = React.useReducer((x: number) => x + 1, 0);
-  const mountedRef = React.useRef(false);
+  // Initialized to true so the first tick scheduled synchronously from
+  // start() (which may run inside a child component's effect, before this
+  // provider's own mount effect fires under React's child-first effect
+  // order) doesn't get gated out. The cleanup below flips it to false on
+  // unmount to prevent zombie ticks.
+  const mountedRef = React.useRef(true);
 
   const now = () => performance.now();
 
@@ -74,7 +79,6 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
   }, [durationMs]);
 
   React.useEffect(() => {
-    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
       if (raf.current !== null) {
