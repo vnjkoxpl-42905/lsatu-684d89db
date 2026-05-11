@@ -1,9 +1,15 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Zap, Link as LinkIcon, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const ORBIT_RADIUS = 200;
+const RING_DIAMETER = ORBIT_RADIUS * 2;
+const ROTATION_SPEED_DEG_PER_SEC = 6; // full revolution every 60s
+// Cap per-frame dt so a backgrounded tab (rAF paused) doesn't dump a
+// multi-second jump on resume — clamp to ~50ms (one prior interval tick).
+const MAX_FRAME_DT_SEC = 0.05;
 
 export interface TimelineItem {
   id: number;
@@ -34,23 +40,9 @@ export default function RadialOrbitalTimeline({
   const [autoRotate, setAutoRotate] = useState(true);
   const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
-  // First paint renders nodes at their final positions with NO transition.
-  // Without this gate, transition-all would interpolate from the element's
-  // pre-transform position (top-left of element at parent center, since
-  // top-1/2 left-1/2 puts the corner there) to the final ring position,
-  // visibly showing all nodes converging from center → outward over 700ms.
-  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const orbitRef = useRef<HTMLDivElement | null>(null);
-  const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
-
-  useEffect(() => {
-    // Wait until after the first paint commits the inline transform, then
-    // enable transitions for subsequent updates (auto-rotate ticks,
-    // expand/collapse, related-pulse).
-    const id = requestAnimationFrame(() => setTransitionsEnabled(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   const handleContainerClick = (e: React.MouseEvent) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -69,13 +61,6 @@ export default function RadialOrbitalTimeline({
   const isRelatedToActive = (itemId: number): boolean => {
     if (!activeNodeId) return false;
     return getRelatedItems(activeNodeId).includes(itemId);
-  };
-
-  const centerViewOnNode = (nodeId: number) => {
-    const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
-    const totalNodes = timelineData.length;
-    const targetAngle = (nodeIndex / totalNodes) * 360;
-    setRotationAngle(270 - targetAngle);
   };
 
   const toggleItem = (id: number) => {
@@ -106,23 +91,28 @@ export default function RadialOrbitalTimeline({
     });
   };
 
+  // Frame-paced rotation loop. rAF auto-pauses on hidden tabs and resumes
+  // cleanly without state queuing (a previous setInterval(50ms) approach
+  // queued ticks under throttling and burst-applied them on focus return).
   useEffect(() => {
-    let rotationTimer: ReturnType<typeof setInterval> | undefined;
-    if (autoRotate) {
-      rotationTimer = setInterval(() => {
-        setRotationAngle((prev) => Number(((prev + 0.3) % 360).toFixed(3)));
-      }, 50);
-    }
-    return () => {
-      if (rotationTimer) clearInterval(rotationTimer);
+    if (!autoRotate || reducedMotion) return;
+    let rafId = 0;
+    let lastTime = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DT_SEC);
+      lastTime = now;
+      setRotationAngle((prev) => (prev + dt * ROTATION_SPEED_DEG_PER_SEC) % 360);
+      rafId = requestAnimationFrame(tick);
     };
-  }, [autoRotate]);
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [autoRotate, reducedMotion]);
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
     const radian = (angle * Math.PI) / 180;
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
-    const opacity = Math.max(0.4, Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)));
+    const opacity = 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2);
     return { angle, zIndex, opacity };
   };
 
@@ -154,12 +144,16 @@ export default function RadialOrbitalTimeline({
           {/* Center orb */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 via-blue-500 to-teal-400 animate-pulse flex items-center justify-center z-10">
             <div className="absolute w-20 h-20 rounded-full border border-black/20 animate-ping opacity-70" />
-            <div className="absolute w-24 h-24 rounded-full border border-black/10" style={{ animationDuration: "3s" }} />
+            <div className="absolute w-24 h-24 rounded-full border border-black/10" />
             <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md" />
           </div>
 
-          {/* Orbit ring */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-black/20" />
+          {/* Orbit ring — sized from ORBIT_RADIUS so the visual ring and node
+              translateX can never drift apart. */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black/20"
+            style={{ width: RING_DIAMETER, height: RING_DIAMETER }}
+          />
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -177,10 +171,7 @@ export default function RadialOrbitalTimeline({
             return (
               <div
                 key={item.id}
-                ref={(el) => {
-                  nodeRefs.current[item.id] = el;
-                }}
-                className={`absolute top-1/2 left-1/2 cursor-pointer ${transitionsEnabled ? "transition-all duration-700" : ""}`}
+                className="absolute top-1/2 left-1/2 cursor-pointer will-change-transform"
                 style={nodeStyle}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -233,6 +224,10 @@ export default function RadialOrbitalTimeline({
               );
             }
 
+            const knownRelatedIds = activeItem.relatedIds.filter((rid) =>
+              timelineData.some((i) => i.id === rid),
+            );
+
             return (
               <div
                 className="absolute left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-lg border border-black/20 rounded-lg shadow-xl shadow-black/10 overflow-visible"
@@ -269,14 +264,14 @@ export default function RadialOrbitalTimeline({
                     />
                   </div>
                 </div>
-                {activeItem.relatedIds.length > 0 && (
+                {knownRelatedIds.length > 0 && (
                   <div className="px-4 py-3 border-t border-black/10">
                     <div className="flex items-center gap-1 text-[10px] text-black/60 mb-2">
                       <LinkIcon size={10} />
                       <span>Connected Nodes</span>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                      {activeItem.relatedIds.map((relatedId) => {
+                      {knownRelatedIds.map((relatedId) => {
                         const relatedItem = timelineData.find((i) => i.id === relatedId);
                         return (
                           <button
