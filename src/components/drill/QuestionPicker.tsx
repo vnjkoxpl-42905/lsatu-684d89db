@@ -12,7 +12,8 @@ import { ChevronDown, X, Search, AlertCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { TypeDrillConfig } from '@/types/drill';
 import type { QuestionManifest, LRQuestion } from '@/lib/questionLoader';
-import { questionBank, CANONICAL_QTYPES } from '@/lib/questionLoader';
+import { questionBank, CANONICAL_QTYPES, shuffleArray } from '@/lib/questionLoader';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -63,6 +64,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   // Target set size for Generate
   const [setSize, setSetSize] = useState<number>(10);
   const setSizeOptions = [5, 10, 15, 25];
+
+  // Materialized preview of a generated set (exact qids that would launch).
+  // null = no active preview.
+  const [previewedQids, setPreviewedQids] = useState<string[] | null>(null);
+
+  // Drawer state — single qid open at a time
+  const [drawerQid, setDrawerQid] = useState<string | null>(null);
+  const [revealAnswer, setRevealAnswer] = useState(false);
   
   // Available options
   const allPTs = useMemo(() => 
@@ -289,8 +298,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     }
     
     const toAdd = Math.min(count, available.length);
-    const shuffled = available.sort(() => Math.random() - 0.5);
-    const randomQids = shuffled.slice(0, toAdd);
+    const randomQids = shuffleArray(available).slice(0, toAdd);
     
     setSelectedQids(prev => {
       const next = new Set(prev);
@@ -313,12 +321,44 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     filters.difficulties.length > 0 ||
     filters.searchQuery.trim() !== '';
 
-  // Create drill
-  const handleCreateSet = () => {
+  // Materialize a fresh preview from the current filter pool
+  const handleGeneratePreview = () => {
+    if (!hasAnyFilter) {
+      toast({
+        title: "Nothing to build a set from",
+        description: "Pick at least one filter or select questions from the table.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (filteredQuestions.length === 0) {
+      toast({
+        title: "No questions match filters",
+        description: "Try relaxing your filters to find more questions.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const count = Math.min(setSize, filteredQuestions.length);
+    const sample = questionBank.shuffleQuestions(filteredQuestions).slice(0, count);
+    setPreviewedQids(sample.map((q) => q.qid));
+  };
+
+  // Convert the current preview into an editable selection (qids land in selectedQids)
+  const handleEditPreview = () => {
+    if (!previewedQids || previewedQids.length === 0) return;
+    setSelectedQids(new Set(previewedQids));
+    setPreviewedQids(null);
+  };
+
+  // Launch the drill. Source-of-truth order:
+  //   1. selectedQids (manual picks)
+  //   2. previewedQids (generated preview)
+  //   3. otherwise: materialize now from filters (legacy fallback)
+  const handleLaunch = () => {
     let questionsToUse: LRQuestion[] = [];
 
-    // If no questions are manually selected, use filtered questions
-    if (selectedQids.size === 0) {
+    if (selectedQids.size === 0 && (!previewedQids || previewedQids.length === 0)) {
       if (!hasAnyFilter) {
         toast({
           title: "Nothing to build a set from",
@@ -338,16 +378,19 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       }
 
       const count = Math.min(setSize, filteredQuestions.length);
-      const shuffled = questionBank.shuffleQuestions(filteredQuestions);
-      questionsToUse = shuffled.slice(0, count);
-
-      toast({
-        title: `Created set with ${questionsToUse.length} questions`,
-        description:
-          count < setSize
-            ? `Only ${count} available for these filters.`
-            : `Using ${count} random questions matching your filters.`,
-      });
+      questionsToUse = questionBank.shuffleQuestions(filteredQuestions).slice(0, count);
+    } else if (selectedQids.size === 0 && previewedQids && previewedQids.length > 0) {
+      questionsToUse = previewedQids
+        .map((qid) => questionBank.getQuestion(qid))
+        .filter(Boolean) as LRQuestion[];
+      if (questionsToUse.length === 0) {
+        toast({
+          title: "Preview invalid",
+          description: "Generated questions could not be loaded. Try Generate again.",
+          variant: "destructive",
+        });
+        return;
+      }
     } else {
       // Use manually selected questions
       questionsToUse = Array.from(selectedQids)
@@ -390,6 +433,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     onStartDrill(config);
   };
   
+  // Invalidate preview when filters, size, or selection change
+  useEffect(() => {
+    setPreviewedQids(null);
+  }, [filters, setSize, selectedQids]);
+
+  // Reset reveal toggle whenever a different drawer opens
+  useEffect(() => {
+    setRevealAnswer(false);
+  }, [drawerQid]);
+
   // Clear selection
   const clearSelection = () => {
     setSelectedQids(new Set());
@@ -399,14 +452,23 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     });
   };
   
-  // Live summary stats — uses selected qids when present, otherwise the filter pool
+  // Live summary stats — selectedQids wins, then previewedQids, then filter pool
   const summary = useMemo(() => {
-    const source: LRQuestion[] =
-      selectedQids.size > 0
-        ? (Array.from(selectedQids)
-            .map(qid => questionBank.getQuestion(qid))
-            .filter(Boolean) as LRQuestion[])
-        : filteredQuestions;
+    let mode: 'selection' | 'preview' | 'pool' = 'pool';
+    let source: LRQuestion[];
+    if (selectedQids.size > 0) {
+      mode = 'selection';
+      source = Array.from(selectedQids)
+        .map(qid => questionBank.getQuestion(qid))
+        .filter(Boolean) as LRQuestion[];
+    } else if (previewedQids && previewedQids.length > 0) {
+      mode = 'preview';
+      source = previewedQids
+        .map(qid => questionBank.getQuestion(qid))
+        .filter(Boolean) as LRQuestion[];
+    } else {
+      source = filteredQuestions;
+    }
 
     const qtypeCounts = new Map<string, number>();
     const diffBucket = { easy: 0, med: 0, hard: 0 };
@@ -442,17 +504,23 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           : `PT ${minPT}–${maxPT}`,
       attempted,
       unseen: source.length - attempted,
-      isFromSelection: selectedQids.size > 0,
+      mode,
+      isFromSelection: mode === 'selection',
+      isFromPreview: mode === 'preview',
     };
-  }, [selectedQids, filteredQuestions, attemptCounts]);
+  }, [selectedQids, previewedQids, filteredQuestions, attemptCounts]);
 
-  // Disabled-state hint for Launch button
-  const launchDisabled =
-    selectedQids.size === 0 && (!hasAnyFilter || filteredQuestions.length === 0);
-  const launchHint =
-    selectedQids.size > 0
-      ? null
-      : !hasAnyFilter
+  const hasPreview = !!previewedQids && previewedQids.length > 0;
+
+  // Generate-Preview button enabled when we have a usable filter pool and no selection
+  const canGenerate =
+    selectedQids.size === 0 && hasAnyFilter && filteredQuestions.length > 0;
+
+  // Launch enabled if we have a manual selection OR an active preview
+  const launchDisabled = selectedQids.size === 0 && !hasPreview;
+
+  const generateHint =
+    !hasAnyFilter
       ? 'Pick at least one filter or select questions.'
       : filteredQuestions.length === 0
       ? 'No questions match — adjust filters.'
@@ -881,7 +949,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                       "cursor-pointer hover:bg-muted/50",
                       selectedQids.has(q.qid) && "bg-primary/5"
                     )}
-                    onClick={() => toggleQuestion(q.qid)}
+                    onClick={() => setDrawerQid(q.qid)}
                   >
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <Checkbox
@@ -955,10 +1023,18 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <aside className="hidden lg:block">
           <div className="sticky top-4">
             <Card className="p-4 space-y-3">
-              <div className="font-semibold text-sm">Set Summary</div>
+              <div className="font-semibold text-sm">
+                {summary.isFromPreview
+                  ? 'Preview'
+                  : summary.isFromSelection
+                  ? 'Selection'
+                  : 'Set Summary'}
+              </div>
               <div className="text-sm text-muted-foreground">
                 {summary.isFromSelection
                   ? `${summary.total} selected`
+                  : summary.isFromPreview
+                  ? `${summary.total} ready to launch`
                   : `${Math.min(setSize, summary.total)} / ${setSize} from pool of ${summary.total}`}
               </div>
               <div className="space-y-2 text-xs">
@@ -982,6 +1058,31 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </div>
               </div>
 
+              {hasPreview && previewedQids && (
+                <div className="pt-2 border-t space-y-1">
+                  <div className="text-xs text-muted-foreground">Preview</div>
+                  <ul className="text-xs space-y-0.5">
+                    {previewedQids.slice(0, 5).map((qid) => {
+                      const q = questionBank.getQuestion(qid);
+                      if (!q) return null;
+                      return (
+                        <li key={qid} className="flex items-baseline gap-2">
+                          <span className="font-medium tabular-nums">PT{q.pt}·Q{q.qnum}</span>
+                          <span className="text-muted-foreground truncate">
+                            {q.qtype} · L{q.difficulty}
+                          </span>
+                        </li>
+                      );
+                    })}
+                    {previewedQids.length > 5 && (
+                      <li className="text-muted-foreground italic">
+                        and {previewedQids.length - 5} more…
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
+
               <div className="pt-2 border-t space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <label className="text-xs text-muted-foreground">Set size</label>
@@ -1001,19 +1102,46 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     </SelectContent>
                   </Select>
                 </div>
-                <Button
-                  onClick={handleCreateSet}
-                  disabled={launchDisabled}
-                  className="w-full"
-                >
-                  {selectedQids.size > 0
-                    ? `Launch (${selectedQids.size})`
-                    : hasAnyFilter && filteredQuestions.length > 0
-                    ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
-                    : 'Launch'}
-                </Button>
-                {launchHint && (
-                  <div className="text-xs text-muted-foreground">{launchHint}</div>
+
+                {selectedQids.size > 0 ? (
+                  <Button onClick={handleLaunch} className="w-full">
+                    Launch ({selectedQids.size})
+                  </Button>
+                ) : hasPreview ? (
+                  <div className="space-y-2">
+                    <Button onClick={handleLaunch} className="w-full">
+                      Launch this set ({previewedQids!.length})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleGeneratePreview}
+                      className="w-full"
+                    >
+                      Generate another
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={handleEditPreview}
+                      className="text-xs text-muted-foreground hover:text-foreground underline w-full text-center"
+                    >
+                      Edit in table
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      onClick={handleGeneratePreview}
+                      disabled={!canGenerate}
+                      className="w-full"
+                    >
+                      {canGenerate
+                        ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
+                        : 'Generate Preview'}
+                    </Button>
+                    {generateHint && (
+                      <div className="text-xs text-muted-foreground">{generateHint}</div>
+                    )}
+                  </>
                 )}
               </div>
             </Card>
@@ -1069,22 +1197,161 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </Button>
               )}
 
-              <Button
-                onClick={handleCreateSet}
-                disabled={launchDisabled}
-                className="min-w-[160px]"
-                title={launchHint ?? undefined}
-              >
-                {selectedQids.size > 0
-                  ? `Start Drill (${selectedQids.size})`
-                  : hasAnyFilter && filteredQuestions.length > 0
-                  ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
-                  : 'Start Drill'}
-              </Button>
+              {selectedQids.size > 0 ? (
+                <Button onClick={handleLaunch} className="min-w-[160px]">
+                  Start Drill ({selectedQids.size})
+                </Button>
+              ) : hasPreview ? (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleGeneratePreview}
+                  >
+                    Regenerate
+                  </Button>
+                  <Button onClick={handleLaunch} className="min-w-[160px]">
+                    Launch ({previewedQids!.length})
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={handleGeneratePreview}
+                  disabled={!canGenerate}
+                  className="min-w-[160px]"
+                  title={generateHint ?? undefined}
+                >
+                  {canGenerate
+                    ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
+                    : 'Generate Preview'}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Question Preview Drawer */}
+      <Sheet open={!!drawerQid} onOpenChange={(open) => !open && setDrawerQid(null)}>
+        <SheetContent side="right" className="w-full sm:max-w-[480px] overflow-y-auto">
+          {(() => {
+            if (!drawerQid) return null;
+            const q = questionBank.getQuestion(drawerQid);
+            if (!q) return (
+              <div className="text-sm text-muted-foreground">Question not found.</div>
+            );
+            const isSelected = selectedQids.has(q.qid);
+            const tags = [
+              ...(q.reasoningType || []),
+              ...(q.questionFeatures || []),
+            ];
+            const attemptedN = attemptCounts.get(q.qid) || 0;
+            return (
+              <>
+                <SheetHeader>
+                  <SheetTitle className="text-base">
+                    PT{q.pt} · S{q.section} · Q{q.qnum}
+                  </SheetTitle>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Badge variant="outline">{q.qtype}</Badge>
+                    <Badge variant="secondary">Level {q.difficulty}</Badge>
+                    {attemptedN > 0 && (
+                      <Badge variant="secondary">Attempted {attemptedN}×</Badge>
+                    )}
+                  </div>
+                </SheetHeader>
+
+                <div className="space-y-4 mt-4 text-sm">
+                  {q.stimulus && (
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                        Stimulus
+                      </div>
+                      <div className="whitespace-pre-wrap leading-relaxed">{q.stimulus}</div>
+                    </div>
+                  )}
+
+                  <div>
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                      Question
+                    </div>
+                    <div className="font-medium leading-relaxed">{q.questionStem}</div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      Answer Choices
+                    </div>
+                    {(['A','B','C','D','E'] as const).map((letter) => {
+                      const isCorrect = q.correctAnswer === letter;
+                      return (
+                        <div
+                          key={letter}
+                          className={cn(
+                            "flex gap-3 p-2 rounded border",
+                            revealAnswer && isCorrect && "border-green-500/40 bg-green-500/5"
+                          )}
+                        >
+                          <span className="font-bold w-6 shrink-0">{letter}.</span>
+                          <span className="flex-1">{q.answerChoices[letter]}</span>
+                          {revealAnswer && isCorrect && (
+                            <Badge variant="secondary" className="bg-green-500/15 text-green-500 shrink-0">
+                              Correct
+                            </Badge>
+                          )}
+                        </div>
+                      );
+                    })}
+                    {!revealAnswer ? (
+                      <button
+                        type="button"
+                        onClick={() => setRevealAnswer(true)}
+                        className="text-xs text-muted-foreground hover:text-foreground underline"
+                      >
+                        Reveal answer
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setRevealAnswer(false)}
+                        className="text-xs text-muted-foreground hover:text-foreground underline"
+                      >
+                        Hide answer
+                      </button>
+                    )}
+                  </div>
+
+                  {tags.length > 0 && (
+                    <div>
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                        Tags
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {tags.map((t) => (
+                          <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <SheetFooter className="mt-6 flex-row gap-2 sm:justify-between">
+                  <Button
+                    variant={isSelected ? 'outline' : 'default'}
+                    onClick={() => toggleQuestion(q.qid)}
+                    className="flex-1"
+                  >
+                    {isSelected ? 'Remove from set' : 'Add to set'}
+                  </Button>
+                  <Button variant="ghost" onClick={() => setDrawerQid(null)}>
+                    Close
+                  </Button>
+                </SheetFooter>
+              </>
+            );
+          })()}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
