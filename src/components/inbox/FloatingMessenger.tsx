@@ -1,4 +1,4 @@
-// FloatingMessenger — quick-access messaging fly-out.
+// FloatingMessenger — bottom-right compact chat widget.
 //
 // Hidden routes:
 //   /auth, /onboarding, /reset-password — pre-auth surfaces.
@@ -28,7 +28,6 @@ import { ConversationView } from './ConversationView';
 import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
-import { subscribeChat } from './chatBus';
 
 const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill'];
 
@@ -43,9 +42,6 @@ export function FloatingMessenger() {
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
-
-  // External trigger: top-right FoyerDock chat button fires chatBus.openChat().
-  useEffect(() => subscribeChat(() => setOpen(true)), []);
 
   // Student auto-pin: prefer the thread that contains an admin participant.
   const studentPrimaryId = useMemo(() => {
@@ -93,10 +89,6 @@ export function FloatingMessenger() {
   // On /foyer, defer to the orbital while a node is in the expanded state so
   // the Find overlay and the messenger panel don't compete for attention.
   if (onFoyer && orbitalActive) return null;
-  // On /foyer the entry point lives in the top-right FoyerDock cluster
-  // (FoyerChatButton fires chatBus); hide the bottom-right FAB to avoid two
-  // competing entry points. The panel still appears on bus trigger.
-  const showFab = !onFoyer;
 
   const openFullInbox = () => {
     setOpen(false);
@@ -127,7 +119,6 @@ export function FloatingMessenger() {
 
   return (
     <>
-      {showFab && (
       <button
         type="button"
         onClick={() => handleOpenChange(!open)}
@@ -160,7 +151,6 @@ export function FloatingMessenger() {
           />
         )}
       </button>
-      )}
 
       <AnimatePresence>
         {open && (

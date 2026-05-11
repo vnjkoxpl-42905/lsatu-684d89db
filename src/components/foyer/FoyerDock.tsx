@@ -3,10 +3,9 @@ import NotificationBell from "@/components/notifications/NotificationBell";
 import FoyerChatButton from "@/components/foyer/FoyerChatButton";
 
 /**
- * Top-right Foyer cluster. Holds the messenger button (fires chatBus →
- * FloatingMessenger compact panel) and the notifications bell (anchor for
- * the Popover). The full Inbox lives at /inbox via the GooeyDock "inbox"
- * item; this dock owns quick-reply + alerts.
+ * Top-right Foyer cluster. Holds the inbox preview button (Popover with
+ * recent threads + link to full Inbox) and the notifications bell. The
+ * bottom-right FloatingMessenger is a separate compact chat widget.
  */
 export default function FoyerDock() {
   const mouseX = useMotionValue(Infinity);
