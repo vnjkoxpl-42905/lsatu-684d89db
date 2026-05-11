@@ -205,24 +205,29 @@ serve(async (req) => {
   }
 
   try {
-    // Optional authentication (phase 1 can be public)
-    const authHeader = req.headers.get('Authorization') || null;
+    // Require authentication to prevent AI credit abuse
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    
-    // Create client with user's auth token only if provided
-    let supabaseClient: any = null;
-    let user: any = null;
-    if (authHeader) {
-      supabaseClient = createClient(
-        supabaseUrl,
-        supabaseAnonKey,
-        { global: { headers: { Authorization: authHeader } } }
-      );
-      const { data, error: authError } = await supabaseClient.auth.getUser();
-      if (!authError) user = data.user;
+
+    const supabaseClient = createClient(
+      supabaseUrl,
+      supabaseAnonKey,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const { data: authData, error: authError } = await supabaseClient.auth.getUser();
+    if (authError || !authData?.user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
+    const user = authData.user;
 
     // Parse and validate input
     const body = await req.json();
