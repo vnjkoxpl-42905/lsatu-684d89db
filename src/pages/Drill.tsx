@@ -24,7 +24,6 @@ import { useHomeworkSet } from '@/hooks/useHomeworkSets';
 import { HighlightedText } from '@/components/drill/HighlightedText';
 import { BlindReviewSelection } from '@/components/drill/BlindReviewSelection';
 import { BlindReviewFlow, type BlindReviewResult } from '@/components/drill/BlindReviewFlow';
-import { BlindReviewResults } from '@/components/drill/BlindReviewResults';
 import { SectionComplete } from '@/components/drill/SectionComplete';
 import { ScoreReport } from '@/components/drill/ScoreReport';
 import { LRSectionResults } from '@/components/drill/LRSectionResults';
@@ -162,7 +161,6 @@ function DrillContent() {
   const [showBRFlow, setShowBRFlow] = React.useState(false);
   const [brSelectedQids, setBrSelectedQids] = React.useState<string[]>([]);
   const [brResults, setBrResults] = React.useState<any[]>([]);
-  const [showBRResults, setShowBRResults] = React.useState(false);
   const [isRetryAfterWrong, setIsRetryAfterWrong] = React.useState(false);
   const [correctExplanation, setCorrectExplanation] = React.useState<string>('');
   const [showReviewButton, setShowReviewButton] = React.useState(false);
@@ -1234,6 +1232,10 @@ function DrillContent() {
   const handleFinishSection = async () => {
     if (!session) return;
 
+    // Stop the section timer so it does not keep ticking through
+    // SectionComplete / blind review / LRSectionResults.
+    if (timer) timer.pause();
+
     // Flush final-question rrweb events before tearing down the session view
     if (currentQuestion) await flushReplay(currentQuestion.qid, session.mode);
 
@@ -1667,7 +1669,7 @@ function DrillContent() {
   // Handle session completion with BR (old flow)
   if (!session || !currentQuestion) {
     // Check if we should show BR selection
-    if (session && brEnabled && brMarked.size > 0 && !showBRSelection && !showBRFlow && !showBRResults) {
+    if (session && brEnabled && brMarked.size > 0 && !showBRSelection && !showBRFlow) {
       setShowBRSelection(true);
     }
 
@@ -1696,7 +1698,8 @@ function DrillContent() {
       );
     }
 
-    // Show BR Flow
+    // Show BR Flow — on completion, route to the unified score-report
+    // surface (LRSectionResults for full-section, ScoreReport otherwise).
     if (showBRFlow) {
       return (
         <BlindReviewFlow
@@ -1705,22 +1708,9 @@ function DrillContent() {
           onComplete={async (results: BlindReviewResult[]) => {
             setBrResults(results);
             setShowBRFlow(false);
-            setShowBRResults(true);
-            
-            // Save BR results to database
+            setPostSectionScreen('score-report');
             await saveBRResults(session!, results);
           }}
-        />
-      );
-    }
-
-    // Show BR Results
-    if (showBRResults) {
-      return (
-        <BlindReviewResults
-          session={session!}
-          results={brResults}
-          onFinish={() => navigate('/foyer')}
         />
       );
     }

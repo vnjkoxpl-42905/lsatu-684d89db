@@ -209,8 +209,8 @@ export default function OfficialDrillToolbar({
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Logical Reasoning Directions</DialogTitle>
-            <DialogDescription>
-              Verbatim from the official LSAT directions for the Logical Reasoning section.
+            <DialogDescription className="sr-only">
+              Directions for the LSAT Logical Reasoning section.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 text-[14px] leading-relaxed text-slate-800">

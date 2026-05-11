@@ -1,14 +1,16 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { 
-  ArrowLeft, 
-  CheckCircle2, 
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
   XCircle,
   Flag,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { questionBank } from '@/lib/questionLoader';
@@ -46,13 +48,25 @@ interface FocusArea {
   correct: number;
   total: number;
   accuracy: number;
+  avgTimeMs: number;
 }
 
 export function LRSectionResults({ session, brResults, classId, onBack }: LRSectionResultsProps) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = React.useState<string | null>(null);
   const [savingToHistory, setSavingToHistory] = React.useState(false);
+  const [showAllTypes, setShowAllTypes] = React.useState(false);
+  // Drives the mount-time donut fill tween. First paint renders the rings
+  // empty (dashoffset = full circumference); the rAF below flips this to
+  // true on the next frame so the existing transition-all duration-500
+  // animates the stroke to its final value.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   // Build question stats
   const stats: QuestionStat[] = React.useMemo(() => {
@@ -97,31 +111,33 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
   const avgTimeMs = Math.round(totalTimeMs / stats.length);
   const unansweredCount = stats.filter(s => s.initialAnswer === '—').length;
 
-  // Top 3 Focus Areas
-  const focusAreas: FocusArea[] = React.useMemo(() => {
-    const byType = new Map<string, { correct: number; total: number }>();
-    
-    stats.forEach(s => {
+  // Per-question-type breakdown, sorted by lowest accuracy first so the
+  // weakest areas surface at the top of "Show all types".
+  const allFocusAreas: FocusArea[] = React.useMemo(() => {
+    const byType = new Map<string, { correct: number; total: number; timeMs: number }>();
+
+    stats.forEach((s) => {
       if (!byType.has(s.qtype)) {
-        byType.set(s.qtype, { correct: 0, total: 0 });
+        byType.set(s.qtype, { correct: 0, total: 0, timeMs: 0 });
       }
       const data = byType.get(s.qtype)!;
       data.total++;
+      data.timeMs += s.timeMs;
       if (s.initialCorrect) data.correct++;
     });
 
-    const areas = Array.from(byType.entries())
-      .map(([qtype, { correct, total }]) => ({
+    return Array.from(byType.entries())
+      .map(([qtype, { correct, total, timeMs }]) => ({
         qtype,
         correct,
         total,
         accuracy: Math.round((correct / total) * 100),
+        avgTimeMs: total > 0 ? Math.round(timeMs / total) : 0,
       }))
-      .sort((a, b) => a.accuracy - b.accuracy)
-      .slice(0, 3);
-
-    return areas;
+      .sort((a, b) => a.accuracy - b.accuracy);
   }, [stats]);
+
+  const focusAreas = allFocusAreas.slice(0, 3);
 
   // Difficulty distribution
   const difficultyDist = React.useMemo(() => {
@@ -271,7 +287,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           <div className="flex items-center justify-center gap-12 mb-8">
             {/* Initial Score Ring */}
             <div className="flex flex-col items-center gap-3">
-              <div className="relative w-32 h-32">
+              <div className="group relative w-32 h-32">
                 <svg className="w-32 h-32 -rotate-90">
                   <circle
                     cx="64"
@@ -290,13 +306,19 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
                     strokeWidth="8"
                     fill="none"
                     strokeDasharray={`${2 * Math.PI * 56}`}
-                    strokeDashoffset={`${2 * Math.PI * 56 * (1 - initialScore / initialTotal)}`}
-                    className="text-primary transition-all duration-500"
+                    strokeDashoffset={`${2 * Math.PI * 56 * (mounted ? 1 - initialScore / initialTotal : 1)}`}
+                    className="text-primary transition-all duration-500 ease-out"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <div className="text-3xl font-bold">{initialScore}</div>
                   <div className="text-sm text-muted-foreground">/{initialTotal}</div>
+                </div>
+                <div
+                  role="tooltip"
+                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
+                >
+                  {initialScore} / {initialTotal}
                 </div>
               </div>
               <div className="text-center">
@@ -310,7 +332,7 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
               <>
                 <div className="w-px h-24 bg-border" />
                 <div className="flex flex-col items-center gap-3">
-                  <div className="relative w-32 h-32">
+                  <div className="group relative w-32 h-32">
                     <svg className="w-32 h-32 -rotate-90">
                       <circle
                         cx="64"
@@ -329,13 +351,19 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
                         strokeWidth="8"
                         fill="none"
                         strokeDasharray={`${2 * Math.PI * 56}`}
-                        strokeDashoffset={`${2 * Math.PI * 56 * (1 - brScore / initialTotal)}`}
-                        className="text-primary transition-all duration-500"
+                        strokeDashoffset={`${2 * Math.PI * 56 * (mounted ? 1 - brScore / initialTotal : 1)}`}
+                        className="text-primary transition-all duration-500 ease-out"
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <div className="text-3xl font-bold">{brScore}</div>
                       <div className="text-sm text-muted-foreground">/{initialTotal}</div>
+                    </div>
+                    <div
+                      role="tooltip"
+                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
+                    >
+                      {brScore} / {initialTotal}
                     </div>
                   </div>
                   <div className="text-center">
@@ -390,18 +418,18 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
           <div className="mb-6">
             <div className="text-xs text-muted-foreground mb-3 text-center">Top 3 Focus Areas</div>
             <div className="flex items-center justify-center gap-6">
-              {focusAreas.map((area, idx) => (
+              {focusAreas.map((area) => (
                 <button
-                  key={area.qtype}
+                  key={`top-${area.qtype}`}
                   onClick={() => setActiveFilter(activeFilter === `qtype:${area.qtype}` ? null : `qtype:${area.qtype}`)}
                   className={cn(
                     "flex flex-col items-center gap-2 p-3 rounded-lg transition-colors",
-                    activeFilter === `qtype:${area.qtype}` 
-                      ? "bg-primary/10 ring-2 ring-primary" 
+                    activeFilter === `qtype:${area.qtype}`
+                      ? "bg-primary/10 ring-2 ring-primary"
                       : "hover:bg-accent/30"
                   )}
                 >
-                  <div className="relative w-16 h-16">
+                  <div className="group relative w-16 h-16">
                     <svg className="w-16 h-16 -rotate-90">
                       <circle
                         cx="32"
@@ -420,9 +448,9 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
                         strokeWidth="4"
                         fill="none"
                         strokeDasharray={`${2 * Math.PI * 28}`}
-                        strokeDashoffset={`${2 * Math.PI * 28 * (1 - area.accuracy / 100)}`}
+                        strokeDashoffset={`${2 * Math.PI * 28 * (mounted ? 1 - area.accuracy / 100 : 1)}`}
                         className={cn(
-                          "transition-all duration-500",
+                          "transition-all duration-500 ease-out",
                           area.accuracy < 50 ? "text-destructive" : "text-primary"
                         )}
                       />
@@ -430,12 +458,73 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-sm font-bold">{area.accuracy}%</div>
                     </div>
+                    <div
+                      role="tooltip"
+                      className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full px-2 py-1 rounded-md bg-foreground text-background text-[11px] font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md"
+                    >
+                      {area.correct} / {area.total}
+                    </div>
                   </div>
                   <div className="text-xs font-medium">{area.qtype}</div>
                   <div className="text-xs text-muted-foreground">{area.correct}/{area.total}</div>
                 </button>
               ))}
             </div>
+
+            {allFocusAreas.length > focusAreas.length && (
+              <div className="mt-4 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowAllTypes((v) => !v)}
+                  className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  aria-expanded={showAllTypes}
+                >
+                  {showAllTypes ? 'Hide' : 'Show all types'}
+                  {showAllTypes ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            )}
+
+            {showAllTypes && (
+              <div className="mt-3 max-w-xl mx-auto divide-y divide-border rounded-lg border border-border bg-card overflow-hidden">
+                {allFocusAreas.map((area) => {
+                  const isActive = activeFilter === `qtype:${area.qtype}`;
+                  return (
+                    <button
+                      key={`all-${area.qtype}`}
+                      type="button"
+                      onClick={() =>
+                        setActiveFilter(isActive ? null : `qtype:${area.qtype}`)
+                      }
+                      className={cn(
+                        'w-full flex items-center gap-3 px-3 py-2 text-left transition-colors',
+                        isActive
+                          ? 'bg-primary/10 ring-1 ring-inset ring-primary'
+                          : 'hover:bg-accent/40'
+                      )}
+                    >
+                      <div className="flex-1 min-w-0 text-sm font-medium truncate">
+                        {area.qtype}
+                      </div>
+                      <div className="text-xs font-mono text-muted-foreground tabular-nums">
+                        {area.correct}/{area.total}
+                      </div>
+                      <div
+                        className={cn(
+                          'text-xs font-semibold tabular-nums w-10 text-right',
+                          area.accuracy < 50 ? 'text-destructive' : 'text-foreground'
+                        )}
+                      >
+                        {area.accuracy}%
+                      </div>
+                      <div className="text-xs text-muted-foreground tabular-nums w-12 text-right">
+                        {formatTime(area.avgTimeMs)}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Difficulty Distribution */}
@@ -616,10 +705,45 @@ export function LRSectionResults({ session, brResults, classId, onBack }: LRSect
 
               {/* Expanded Details */}
               {isExpanded && (
-                <div className="px-4 py-3 border-t bg-accent/10 text-xs space-y-1">
-                  <div>Revisit count: —</div>
-                  <div>Switch count: {stat.switchCount}</div>
-                  <div>Timeline: {formatTime(stat.timeMs)} - Answer selected ({stat.initialAnswer})</div>
+                <div className="px-4 py-3 border-t bg-accent/10 text-xs space-y-2">
+                  <div className="flex flex-wrap gap-x-6 gap-y-1">
+                    <div>
+                      Your answer:{' '}
+                      <span className="font-mono font-semibold">{stat.initialAnswer}</span>
+                    </div>
+                    <div>
+                      Correct answer:{' '}
+                      <span className="font-mono font-semibold">{stat.correctAnswer}</span>
+                    </div>
+                    <div>
+                      Time: <span className="font-mono">{formatTime(stat.timeMs)}</span>
+                    </div>
+                    <div>Switches: {stat.switchCount}</div>
+                  </div>
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/drill', {
+                          state: {
+                            mode: 'type-drill',
+                            config: {
+                              qtypes: [],
+                              difficulties: [],
+                              pts: [],
+                              count: 1,
+                              selectedQids: [stat.qid],
+                            },
+                          },
+                        });
+                      }}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      Review this question
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
               )}
             </Card>
