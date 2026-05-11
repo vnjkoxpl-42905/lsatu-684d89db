@@ -59,7 +59,10 @@ export default function OfficialQuestionPane({
 
   const baseSize = 17 * fontScale;
   const answerSize = 16 * fontScale;
-  const stimStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
+  // Reading-optimized leading scales with Aa so size + line-height move together.
+  const stimLeading =
+    fontScale <= 0.95 ? 1.6 : fontScale <= 1.05 ? 1.75 : fontScale <= 1.2 ? 1.85 : 1.9;
+  const stimStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: stimLeading };
   const stemStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
@@ -67,7 +70,18 @@ export default function OfficialQuestionPane({
     <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] flex-1">
       {/* Stimulus column */}
       <div
-        className="px-9 pt-6 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap"
+        className={cn(
+          "px-9 pt-6 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          // Reading-optimized typography for every question.
+          "max-w-[65ch] antialiased text-pretty",
+          "selection:bg-yellow-200/40 selection:text-foreground",
+          // HighlightedText already splits on \n\n and emits <p data-para-start=…>
+          // so selection capture and highlight offsets stay paragraph-aware.
+          // Add paragraph spacing here; defeat the legacy inline lineHeight on
+          // those <p> elements so the container's scaling leading wins.
+          "[&_p]:mb-4 [&_p:last-child]:mb-0",
+          "[&_p]:!leading-[inherit]",
+        )}
         style={stimStyle}
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
