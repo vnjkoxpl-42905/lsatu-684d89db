@@ -27,10 +27,16 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { LogoutButton } from '@/components/LogoutButton';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useTheme } from '@/contexts/ThemeContext';
 import type { DrillMode, FullSectionConfig, TypeDrillConfig } from '@/types/drill';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 
@@ -134,7 +140,8 @@ class SplineBoundary extends React.Component<{ children: React.ReactNode }, { ha
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Practice() {
   const navigate = useNavigate();
-  const { user, authReady } = useAuth();
+  const { user, authReady, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const { manifest, isLoading, error } = useQuestionBank();
   const perms = useUserPermissions();
   const [selectedAction, setSelectedAction] = React.useState<DrillMode | null>(null);
@@ -309,58 +316,88 @@ export default function Practice() {
               })}
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <div
-              className="hidden sm:flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5"
-              title="LawHub-style testing chrome. Toggle on for official LSAT testing layout."
-            >
-              <Label
-                htmlFor="practice-official-toggle"
-                className="text-xs font-medium text-muted-foreground cursor-pointer select-none"
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                aria-label="Account menu"
+                className="rounded-full ring-1 ring-border transition-shadow hover:ring-2 hover:ring-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:ring-2 data-[state=open]:ring-foreground/40"
               >
-                Official Format
-              </Label>
-              <Switch
-                id="practice-official-toggle"
-                checked={useOfficial}
-                onCheckedChange={setUseOfficial}
-                aria-label="Toggle official LSAT testing format"
-              />
-            </div>
-            <LogoutButton />
-            <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground hover:bg-accent"
-              onClick={() => navigate('/foyer')}
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback className="text-xs bg-secondary text-foreground/80">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="w-64 rounded-xl shadow-lg"
             >
-              Main Hub
-            </Button>
-            {perms.has_analytics_access && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground hover:bg-accent"
-                onClick={() => navigate('/analytics')}
+              <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
+                <span className="text-sm font-semibold text-foreground">
+                  {getFirstName()}
+                </span>
+                {user?.email && (
+                  <span className="text-xs font-normal text-muted-foreground truncate">
+                    {user.email}
+                  </span>
+                )}
+              </DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onSelect={() => navigate('/profile')}>
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => navigate('/foyer')}>
+                Main Hub
+              </DropdownMenuItem>
+              {perms.has_analytics_access && (
+                <DropdownMenuItem onSelect={() => navigate('/analytics')}>
+                  View Analytics
+                </DropdownMenuItem>
+              )}
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="flex items-center justify-between gap-3 cursor-default"
               >
-                View Analytics
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent"
-              onClick={() => navigate('/profile')}
-            >
-              <Avatar className="h-7 w-7 border border-border">
-                <AvatarFallback className="text-xs bg-secondary text-foreground/80">
-                  {userInitials}
-                </AvatarFallback>
-              </Avatar>
-              Profile
-            </Button>
-          </div>
+                <span>Official Format</span>
+                <Switch
+                  checked={useOfficial}
+                  onCheckedChange={setUseOfficial}
+                  aria-label="Toggle official LSAT testing format"
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="flex items-center justify-between gap-3 cursor-default"
+              >
+                <span>Dark mode</span>
+                <Switch
+                  checked={theme === 'dark'}
+                  onCheckedChange={toggleTheme}
+                  aria-label="Toggle dark mode"
+                />
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onSelect={async () => {
+                  await signOut();
+                  navigate('/auth');
+                }}
+                className="text-destructive focus:text-destructive focus:bg-destructive/10"
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
