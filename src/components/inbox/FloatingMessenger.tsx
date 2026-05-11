@@ -29,7 +29,7 @@ import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/foyer'];
 
 export function FloatingMessenger() {
   const location = useLocation();

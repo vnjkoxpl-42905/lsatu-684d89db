@@ -9,6 +9,7 @@ import FoyerSidebar from "@/components/foyer/FoyerSidebar";
 import FoyerDock from "@/components/foyer/FoyerDock";
 import FoyerAccountButton from "@/components/foyer/FoyerAccountButton";
 import FoyerFindCard from "@/components/foyer/FoyerFindCard";
+import FoyerFloatingChat from "@/components/foyer/FoyerFloatingChat";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
@@ -271,6 +272,8 @@ export default function AcademyFoyer() {
         </div>
 
       </main>
+
+      <FoyerFloatingChat />
     </div>
   );
 }
