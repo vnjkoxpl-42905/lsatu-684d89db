@@ -287,13 +287,13 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
       <div className="space-y-3">
         {type === 'homework' && (
           <div>
-            <Label className="text-xs">Homework set (optional)</Label>
+            <Label className="text-xs">Homework set</Label>
             <select
               value={homeworkSetId}
               onChange={(e) => setHomeworkSetId(e.target.value)}
               className="mt-1 w-full text-sm rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-zinc-100"
             >
-              <option value="">— No specific set —</option>
+              <option value="" disabled>— Choose a homework set —</option>
               {(() => {
                 const guided = homeworkSets.filter((h) => h.is_guided_set);
                 const regular = homeworkSets.filter((h) => !h.is_guided_set);
@@ -330,6 +330,11 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
                 );
               })()}
             </select>
+            {!homeworkSetId && (
+              <p className="mt-1 text-[11px] text-amber-400/80">
+                Required for homework. Use Note or Announcement for general instructions.
+              </p>
+            )}
           </div>
         )}
 
@@ -406,7 +411,7 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
             Done
           </Button>
         )}
-        <Button size="sm" onClick={submit} disabled={submitting || duplicate}>
+        <Button size="sm" onClick={submit} disabled={submitting || duplicate || (type === 'homework' && !homeworkSetId)}>
           {submitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
           {activeType.submitLabel}
         </Button>

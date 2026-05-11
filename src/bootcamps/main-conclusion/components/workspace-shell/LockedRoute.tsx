@@ -1,7 +1,8 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { ROUTE_REQUIREMENTS } from '@/bootcamps/main-conclusion/lib/ordering';
 import { LockedState } from '@/bootcamps/main-conclusion/components/primitives/LockedState';
+import { useUserPermissions } from '@/hooks/useUserPermissions';
 
 /**
  * Per architecture-plan.md §5.3.
@@ -16,10 +17,12 @@ export function LockedRoute({
   children: JSX.Element;
 }): JSX.Element {
   const { progress } = useModuleProgress();
-  // Preview mode: bypass the gate so reviewers can walk every surface end-to-end.
-  // Flip BOOTCAMP_PREVIEW_OPEN to false to restore strict unlock-cascade behavior.
-  const BOOTCAMP_PREVIEW_OPEN = true;
-  if (BOOTCAMP_PREVIEW_OPEN) return children;
+  const permissions = useUserPermissions();
+  const [searchParams] = useSearchParams();
+  // Admin-only preview: lets reviewers walk every surface end-to-end without
+  // dropping the gate for students.
+  const previewOpen = permissions.is_admin && searchParams.get('preview') === '1';
+  if (previewOpen) return children;
   if (!progress) return <></>;
   const accessible = progress.unlocked_routes.includes(routeId);
   if (accessible) return children;

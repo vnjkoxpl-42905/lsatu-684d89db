@@ -39,6 +39,7 @@ const Analytics = () => {
   const [data, setData] = React.useState<AnalyticsData | null>(null);
   const [opportunities, setOpportunities] = React.useState<OpportunityArea[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
   const { classId, loading: classIdLoading } = useClassId();
   const opportunitiesRef = useScrollAnimation();
   const performanceRef = useScrollAnimation();
@@ -60,6 +61,8 @@ const Analytics = () => {
   }, [user, classId, classIdLoading]);
 
   const loadAnalytics = async () => {
+    setLoading(true);
+    setLoadError(null);
     try {
       const now = new Date();
       const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -173,6 +176,7 @@ const Analytics = () => {
       setLoading(false);
     } catch (error) {
       console.error('Error loading analytics:', error);
+      setLoadError('Could not load analytics. Check your connection and try again.');
       setLoading(false);
     }
   };
@@ -224,7 +228,19 @@ const Analytics = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8 pb-16">
-        {!hasData ? (
+        {loadError ? (
+          <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center">
+            <p className="text-foreground text-sm font-medium">{loadError}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-4"
+              onClick={() => loadAnalytics()}
+            >
+              Retry
+            </Button>
+          </div>
+        ) : !hasData ? (
           <div className="rounded-xl bg-card border border-border shadow-sm p-12 text-center">
             <p className="text-muted-foreground text-sm">No data yet for this period</p>
             <p className="text-[12px] text-muted-foreground/70 mt-2">Complete some drills to see your analytics</p>
