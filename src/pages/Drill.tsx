@@ -148,7 +148,13 @@ function DrillContent() {
   const [questionStartTime, setQuestionStartTime] = React.useState(performance.now());
   const [hasTimer, setHasTimer] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
-  const [eliminatedAnswers, setEliminatedAnswers] = React.useState<Set<string>>(new Set());
+  const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
+  // Derived: eliminations for the active qid only (read-only proxy).
+  // Shaped so we can later promote into session.attempts.get(qid).eliminated.
+  const eliminatedAnswers = React.useMemo<Set<string>>(() => {
+    const qid = session?.questionQueue[session.currentIndex];
+    return qid ? eliminatedByQid.get(qid) ?? new Set<string>() : new Set<string>();
+  }, [eliminatedByQid, session?.currentIndex, session?.questionQueue]);
   const [highlightMode, setHighlightMode] = React.useState<'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'>('none');
   const [highlights, setHighlights] = React.useState<Map<string, Highlight[]>>(new Map());
   const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
@@ -446,18 +452,22 @@ function DrillContent() {
     }
 
     resetPerQuestionState();
-    
-    // For section mode, restore the saved answer if navigating back
-    if (session?.mode === 'full-section') {
+
+    // Restore saved answer + revealed solution for any non-adaptive mode.
+    // (Adaptive is narrowed out by prior control flow in this effect.)
+    if (session) {
       const qid = session.questionQueue[session.currentIndex];
       if (qid) {
         const savedAttempt = session.attempts.get(qid);
-        if (savedAttempt) {
+        if (savedAttempt?.selectedAnswer) {
           setSelectedAnswer(savedAttempt.selectedAnswer);
+        }
+        if (showAnswerRevealed.get(qid)) {
+          setShowSolution(true);
         }
       }
     }
-    
+
     // Check if current question is flagged
     checkIfFlagged();
   }, [session?.currentIndex, session?.mode]);
@@ -479,7 +489,6 @@ function DrillContent() {
     setVoiceCoachOpen(false);
     setShowVoiceChip(false);
     setAnswerLocked(false);
-    setEliminatedAnswers(new Set());
     setQuestionStartTime(performance.now());
     setHighlightHistory([]);
     setIsRetryAfterWrong(false);
@@ -554,22 +563,26 @@ function DrillContent() {
   };
 
   const handleEliminateAnswer = (key: string) => {
-    setEliminatedAnswers(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(key)) {
-        newSet.delete(key);
+    if (!currentQuestion) return;
+    const qid = currentQuestion.qid;
+    setEliminatedByQid(prev => {
+      const next = new Map(prev);
+      const current = new Set(prev.get(qid) ?? []);
+      if (current.has(key)) {
+        current.delete(key);
       } else {
-        newSet.add(key);
+        current.add(key);
         if (selectedAnswer === key) {
           setSelectedAnswer('');
-          if (session?.mode === 'full-section' && currentQuestion) {
+          if ((session?.mode === 'full-section' || isPracticeSetMode) && session) {
             const newAttempts = new Map(session.attempts);
-            newAttempts.delete(currentQuestion.qid);
+            newAttempts.delete(qid);
             setSession({ ...session, attempts: newAttempts });
           }
         }
       }
-      return newSet;
+      next.set(qid, current);
+      return next;
     });
   };
 

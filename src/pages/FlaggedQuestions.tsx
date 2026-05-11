@@ -85,7 +85,8 @@ export default function FlaggedQuestions() {
           qtypes: [question.qtype],
           difficulties: [question.difficulty],
           pts: [question.pt],
-          count: 1
+          count: 1,
+          selectedQids: [qid],
         }
       }
     });

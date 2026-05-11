@@ -53,6 +53,7 @@ export default function FlaggedQuestionsList() {
           difficulties: [question.difficulty],
           pts: [question.pt],
           count: 1,
+          selectedQids: [qid],
         },
       },
     });

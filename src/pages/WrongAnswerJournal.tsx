@@ -147,6 +147,7 @@ export default function WrongAnswerJournal() {
           difficulties: [entry.level],
           pts: [entry.pt],
           count: 1,
+          selectedQids: [entry.qid],
         },
       },
     });
