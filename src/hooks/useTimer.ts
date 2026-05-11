@@ -79,6 +79,10 @@ export function useTimer(mode: TimerMode, durationMs?: number) {
   }, [durationMs]);
 
   React.useEffect(() => {
+    // Re-assert true on every mount (including Strict Mode's cleanup-then-
+    // remount cycle, which would otherwise leave the ref stuck at false from
+    // the cleanup pass).
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
       if (raf.current !== null) {
