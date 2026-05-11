@@ -253,7 +253,12 @@ function DrillContent() {
       let available = rawQuestions;
       let exhausted = false;
       
-      if (classId) {
+      const explicitQids =
+        mode === 'type-drill' &&
+        state.config &&
+        ((state.config as TypeDrillConfig).selectedQids?.length ?? 0) > 0;
+
+      if (classId && !explicitQids) {
         const usage = await QuestionPoolService.getQuestionUsage(classId, mode);
         const typeDrillConfig = mode === 'type-drill' ? (state.config as TypeDrillConfig) : null;
         const poolSettings = {
@@ -261,7 +266,7 @@ function DrillContent() {
           preferUnseen: typeDrillConfig?.unseen_only ? true : settings.preferUnseen,
           recycleAfterDays: settings.recycleAfterDays
         };
-        
+
         const filtered = QuestionPoolService.filterQuestionPool(
           rawQuestions,
           usage,

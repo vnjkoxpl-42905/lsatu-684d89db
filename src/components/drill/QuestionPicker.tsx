@@ -59,6 +59,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [attemptCounts, setAttemptCounts] = useState<Map<string, number>>(new Map());
+
+  // Target set size for Generate
+  const [setSize, setSetSize] = useState<number>(10);
+  const setSizeOptions = [5, 10, 15, 25];
   
   // Available options
   const allPTs = useMemo(() => 
@@ -300,23 +304,30 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     });
   };
   
+  const hasAnyFilter =
+    filters.prepTests.length > 0 ||
+    filters.questionTypes.length > 0 ||
+    filters.reasoningTypes.length > 0 ||
+    filters.questionFeatures.length > 0 ||
+    filters.sections.length > 0 ||
+    filters.difficulties.length > 0 ||
+    filters.searchQuery.trim() !== '';
+
   // Create drill
   const handleCreateSet = () => {
     let questionsToUse: LRQuestion[] = [];
-    
+
     // If no questions are manually selected, use filtered questions
     if (selectedQids.size === 0) {
-      // Check if we have any filters applied (at least question types)
-      if (filters.questionTypes.length === 0) {
+      if (!hasAnyFilter) {
         toast({
-          title: "No questions selected",
-          description: "Please select question types or manually select questions from the table.",
+          title: "Nothing to build a set from",
+          description: "Pick at least one filter or select questions from the table.",
           variant: "destructive",
         });
         return;
       }
-      
-      // Use filtered questions
+
       if (filteredQuestions.length === 0) {
         toast({
           title: "No questions match filters",
@@ -325,15 +336,17 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         });
         return;
       }
-      
-      // Default to 10 random questions from filtered pool (or all if fewer)
-      const count = Math.min(10, filteredQuestions.length);
+
+      const count = Math.min(setSize, filteredQuestions.length);
       const shuffled = questionBank.shuffleQuestions(filteredQuestions);
       questionsToUse = shuffled.slice(0, count);
-      
+
       toast({
         title: `Created set with ${questionsToUse.length} questions`,
-        description: `Using ${questionsToUse.length} random questions matching your filters.`,
+        description:
+          count < setSize
+            ? `Only ${count} available for these filters.`
+            : `Using ${count} random questions matching your filters.`,
       });
     } else {
       // Use manually selected questions
@@ -368,8 +381,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       pts,
       count: questionsToUse.length,
       selectedQids: questionsToUse.map(q => q.qid),
+      qfeatures: filters.questionFeatures.length > 0 ? [...filters.questionFeatures] : undefined,
+      reasoningTypes: filters.reasoningTypes.length > 0 ? [...filters.reasoningTypes] : undefined,
+      sections: filters.sections.length > 0 ? [...filters.sections] : undefined,
+      searchQuery: filters.searchQuery.trim() || undefined,
     };
-    
+
     onStartDrill(config);
   };
   
@@ -382,6 +399,65 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     });
   };
   
+  // Live summary stats — uses selected qids when present, otherwise the filter pool
+  const summary = useMemo(() => {
+    const source: LRQuestion[] =
+      selectedQids.size > 0
+        ? (Array.from(selectedQids)
+            .map(qid => questionBank.getQuestion(qid))
+            .filter(Boolean) as LRQuestion[])
+        : filteredQuestions;
+
+    const qtypeCounts = new Map<string, number>();
+    const diffBucket = { easy: 0, med: 0, hard: 0 };
+    let minPT = Infinity;
+    let maxPT = -Infinity;
+    let attempted = 0;
+
+    for (const q of source) {
+      qtypeCounts.set(q.qtype, (qtypeCounts.get(q.qtype) || 0) + 1);
+      if (q.difficulty <= 2) diffBucket.easy++;
+      else if (q.difficulty === 3) diffBucket.med++;
+      else diffBucket.hard++;
+      if (q.pt < minPT) minPT = q.pt;
+      if (q.pt > maxPT) maxPT = q.pt;
+      if ((attemptCounts.get(q.qid) || 0) > 0) attempted++;
+    }
+
+    const qtypeMix = Array.from(qtypeCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([type, n]) => `${n} ${type}`)
+      .join(' · ');
+
+    return {
+      total: source.length,
+      qtypeMix: qtypeMix || '—',
+      difficulty: `Easy ${diffBucket.easy} · Med ${diffBucket.med} · Hard ${diffBucket.hard}`,
+      ptRange:
+        source.length === 0
+          ? '—'
+          : minPT === maxPT
+          ? `PT ${minPT}`
+          : `PT ${minPT}–${maxPT}`,
+      attempted,
+      unseen: source.length - attempted,
+      isFromSelection: selectedQids.size > 0,
+    };
+  }, [selectedQids, filteredQuestions, attemptCounts]);
+
+  // Disabled-state hint for Launch button
+  const launchDisabled =
+    selectedQids.size === 0 && (!hasAnyFilter || filteredQuestions.length === 0);
+  const launchHint =
+    selectedQids.size > 0
+      ? null
+      : !hasAnyFilter
+      ? 'Pick at least one filter or select questions.'
+      : filteredQuestions.length === 0
+      ? 'No questions match — adjust filters.'
+      : null;
+
   // Get first 6-7 words of stem
   const getStemPreview = (stem: string): string => {
     const words = stem.split(' ').slice(0, 7);
@@ -395,7 +471,9 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         <h1 className="text-3xl font-bold">Build a Set</h1>
         <Button variant="ghost" onClick={onCancel}>Cancel</Button>
       </div>
-      
+
+      <div className="flex-1 min-h-0 lg:grid lg:grid-cols-[1fr_320px] lg:gap-4">
+        <div className="flex flex-col min-h-0">
       {/* Filter Bar */}
       <Card className="p-4 mb-4">
         <div className="space-y-4">
@@ -871,8 +949,80 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         )}
       </Card>
       
+        </div>
+
+        {/* Right rail — sticky summary (lg+) */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-4">
+            <Card className="p-4 space-y-3">
+              <div className="font-semibold text-sm">Set Summary</div>
+              <div className="text-sm text-muted-foreground">
+                {summary.isFromSelection
+                  ? `${summary.total} selected`
+                  : `${Math.min(setSize, summary.total)} / ${setSize} from pool of ${summary.total}`}
+              </div>
+              <div className="space-y-2 text-xs">
+                <div>
+                  <div className="text-muted-foreground mb-1">Question types</div>
+                  <div className="font-medium">{summary.qtypeMix}</div>
+                </div>
+                <div>
+                  <div className="text-muted-foreground mb-1">Difficulty</div>
+                  <div className="font-medium">{summary.difficulty}</div>
+                </div>
+                <div>
+                  <div className="text-muted-foreground mb-1">PT range</div>
+                  <div className="font-medium">{summary.ptRange}</div>
+                </div>
+                <div>
+                  <div className="text-muted-foreground mb-1">History</div>
+                  <div className="font-medium">
+                    {summary.attempted} attempted · {summary.unseen} unseen
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <label className="text-xs text-muted-foreground">Set size</label>
+                  <Select
+                    value={setSize.toString()}
+                    onValueChange={(v) => setSetSize(parseInt(v))}
+                  >
+                    <SelectTrigger className="w-24 h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {setSizeOptions.map((n) => (
+                        <SelectItem key={n} value={n.toString()}>
+                          {n}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button
+                  onClick={handleCreateSet}
+                  disabled={launchDisabled}
+                  className="w-full"
+                >
+                  {selectedQids.size > 0
+                    ? `Launch (${selectedQids.size})`
+                    : hasAnyFilter && filteredQuestions.length > 0
+                    ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
+                    : 'Launch'}
+                </Button>
+                {launchHint && (
+                  <div className="text-xs text-muted-foreground">{launchHint}</div>
+                )}
+              </div>
+            </Card>
+          </div>
+        </aside>
+      </div>
+
       {/* Sticky Selection Tray */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 lg:hidden">
         <div className="max-w-7xl mx-auto p-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -891,42 +1041,46 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
             </div>
             
             <div className="flex items-center gap-2">
+              <Select
+                value={setSize.toString()}
+                onValueChange={(v) => setSetSize(parseInt(v))}
+              >
+                <SelectTrigger className="w-20 h-9">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {setSizeOptions.map((n) => (
+                    <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               {filteredQuestions.length > selectedQids.size && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    const count = Math.min(10, filteredQuestions.length - selectedQids.size);
+                    const count = Math.min(setSize, filteredQuestions.length - selectedQids.size);
                     addRandomQuestions(count);
                   }}
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
-                  Add {Math.min(10, filteredQuestions.length - selectedQids.size)} Random
+                  Add {Math.min(setSize, filteredQuestions.length - selectedQids.size)} Random
                 </Button>
               )}
-              
-              {(() => {
-                const zeroState = selectedQids.size === 0 && filters.questionTypes.length > 0 && filteredQuestions.length === 0;
-                const noSelection = selectedQids.size === 0 && filters.questionTypes.length === 0;
-                return (
-                  <Button
-                    onClick={handleCreateSet}
-                    disabled={noSelection || zeroState}
-                    className={cn(
-                      "min-w-[180px] transition-colors",
-                      zeroState && "bg-muted text-muted-foreground cursor-not-allowed"
-                    )}
-                  >
-                    {zeroState
-                      ? '0 Questions Match Filters'
-                      : selectedQids.size > 0
-                      ? `Start Drill (${selectedQids.size} Questions)`
-                      : filters.questionTypes.length > 0
-                      ? `Start Drill (${Math.min(10, filteredQuestions.length)} Questions)`
-                      : 'Create Set'}
-                  </Button>
-                );
-              })()}
+
+              <Button
+                onClick={handleCreateSet}
+                disabled={launchDisabled}
+                className="min-w-[160px]"
+                title={launchHint ?? undefined}
+              >
+                {selectedQids.size > 0
+                  ? `Start Drill (${selectedQids.size})`
+                  : hasAnyFilter && filteredQuestions.length > 0
+                  ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
+                  : 'Start Drill'}
+              </Button>
             </div>
           </div>
         </div>
