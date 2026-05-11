@@ -205,33 +205,41 @@ export default function RadialOrbitalTimeline({
             );
           })}
 
-          {/* Expanded card — fixed slot below the ring, never attached to a node */}
-          {(() => {
-            const activeItem = activeNodeId
-              ? timelineData.find((i) => i.id === activeNodeId)
-              : null;
-            if (!activeItem) return null;
+        </div>
+      </div>
 
-            if (renderExpandedContent) {
-              return (
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 w-[300px] rounded-xl border border-black/15 bg-white/95 backdrop-blur shadow-xl p-3"
-                  style={{ top: "calc(50% + 220px)" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {renderExpandedContent(activeItem, () => toggleItem(activeItem.id))}
-                </div>
-              );
-            }
+      {/* Expanded overlay — hoisted out of the clipped orbital wrapper to a
+          fixed-position spotlight with a dimmed backdrop. Backdrop click
+          collapses the active node; the active node itself remains visible
+          above the dim via z-index: 200. */}
+      {(() => {
+        const activeItem = activeNodeId
+          ? timelineData.find((i) => i.id === activeNodeId)
+          : null;
+        if (!activeItem) return null;
 
-            const knownRelatedIds = activeItem.relatedIds.filter((rid) =>
-              timelineData.some((i) => i.id === rid),
-            );
+        const knownRelatedIds = activeItem.relatedIds.filter((rid) =>
+          timelineData.some((i) => i.id === rid),
+        );
 
-            return (
+        return (
+          <>
+            <div
+              className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm transition-opacity duration-200"
+              onClick={() => toggleItem(activeItem.id)}
+              aria-hidden
+            />
+
+            {renderExpandedContent ? (
               <div
-                className="absolute left-1/2 -translate-x-1/2 w-72 bg-white/95 backdrop-blur-lg border border-black/20 rounded-lg shadow-xl shadow-black/10 overflow-visible"
-                style={{ top: "calc(50% + 220px)" }}
+                className="fixed left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 w-[420px] max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-4rem)] overflow-auto rounded-2xl border border-black/[0.08] bg-white shadow-2xl p-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {renderExpandedContent(activeItem, () => toggleItem(activeItem.id))}
+              </div>
+            ) : (
+              <div
+                className="fixed left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 w-72 max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-4rem)] overflow-auto bg-white/95 backdrop-blur-lg border border-black/20 rounded-lg shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="px-4 py-3 border-b border-black/10 flex items-center justify-between">
@@ -291,10 +299,10 @@ export default function RadialOrbitalTimeline({
                   </div>
                 )}
               </div>
-            );
-          })()}
-        </div>
-      </div>
+            )}
+          </>
+        );
+      })()}
     </div>
   );
 }
