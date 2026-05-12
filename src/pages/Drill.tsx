@@ -2068,6 +2068,9 @@ function DrillContent() {
           isPaused={!!timer?.isPaused}
           onResume={timer?.resume}
           pauseNoun={isFullSection ? 'Section' : 'Question'}
+          tutorToggleVisible={session?.mode === 'adaptive'}
+          tutorMode={tutorMode}
+          onTutorModeChange={setTutorMode}
           header={
             <OfficialSessionStrip
               breadcrumbs={[

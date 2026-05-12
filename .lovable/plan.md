@@ -1,45 +1,32 @@
-# Drill: Mini Notepad + Highlight Polish
+## Goal
 
-Three small UI/presentation changes to the official drill runner (`/drill`). No schema or business-logic changes.
+Add a **Tutor toggle button in the top-right corner** of the official drill header (next to the existing Help icon and "Welcome, …"), so the user can flip Tutor Mode on/off from there. When ON, the AI tutor auto-pops after a wrong answer (already wired today for adaptive mode); when OFF, it stays quiet.
 
-## 1. Mini Notepad (bottom-left corner)
+## What changes
 
-A persistent notepad pinned to the bottom-left of the drill page.
+1. **`src/components/drill/official/OfficialDrillFrame.tsx`** — add three optional props:
+   - `tutorToggleVisible?: boolean`
+   - `tutorMode?: boolean`
+   - `onTutorModeChange?: (next: boolean) => void`
 
-- New floating launcher button (notebook icon) in the bottom-left corner, visible only on the official drill runner.
-- Click → expands into a small panel (~320×360px) with a textarea, "Clear" link, and close (×) button.
-- Auto-saves to `localStorage` so notes survive question navigation and reloads (per-session key).
-- Hidden when the section is paused (matches existing pause overlay).
-- Mobile: expands as a bottom sheet (max-height 60vh).
-- New file: `src/components/drill/DrillNotepad.tsx`, mounted from `OfficialDrillFrame.tsx`.
-- Does not collide with `FloatingTutorButton` — the tutor button is already hidden on `/drill` per `HIDDEN_ROUTES`.
+   Render a small pill toggle in the existing top-right strip (the row that holds the Help icon + "Welcome, {name}"), placed just left of the Help icon. Visual: shadcn `Switch` with a "Tutor" label, matching the rest of that bar's typography (slate-700, 13px). On mobile it collapses to an icon-only round button (graduation-cap icon) that toggles the same state. Hidden entirely when `tutorToggleVisible` is false.
 
-## 2. Fix the bright yellow underline artifact
+2. **`src/pages/Drill.tsx`** — pass the new props into `OfficialDrillFrame`:
+   - `tutorToggleVisible={session?.mode === 'adaptive'}` (same gate as the existing top-bar toggle)
+   - `tutorMode={tutorMode}`
+   - `onTutorModeChange={setTutorMode}`
 
-Currently, when the user activates **Underline** and marks text, a soft-yellow band still appears behind the underlined text (visible on the highlighted patch in the user's screenshot). Underline should be a clean black line under the text — no fill, no yellow tint.
+   No changes to `tutorMode` state, the wrong-answer auto-open logic, or `TutorChatModal` — they already react to this state.
 
-In `src/components/drill/HighlightedText.tsx` `getHighlightStyles()`:
-- For `color === 'underline'`: explicitly clear `backgroundImage` and `backgroundColor` (set to `'none'`/`'transparent'`) so no fill survives from any prior style.
-- Keep only `text-decoration: underline` (black, 2px, 3px offset).
-- Also lower the marker fill alpha (yellow/pink/orange) from 0.5 → ~0.32 and switch to flat `backgroundColor` (drop the inset gradient band) so highlights look like a calm marker pass and overlapping ranges don't visually double up into a brighter patch. Add `mix-blend-mode: multiply` to keep overlaps stable.
-
-## 3. Stop underline from shifting the stimulus text
-
-Activating underline currently nudges/expands the surrounding text because the underlined `<span>` introduces extra padding/line-height versus the unmarked text.
-
-Fix in the same `getHighlightStyles()` base style:
-- Remove the `padding: '2px 0'` from the base (which applies to underline too) — pad only the marker variants, and use `padding: 0` for underline.
-- Force `lineHeight: 'inherit'` and `verticalAlign: 'baseline'` (already set) and ensure no margin/border is added on toggle.
-- Use `text-underline-offset` only (no padding) so the underline sits below the glyph without changing the line box.
-- Net effect: toggling underline should not reflow or visually grow the stimulus text.
+3. **No removal** of the existing `DrillTopBar` Tutor switch — both stay in sync because they share the same `tutorMode` state. (If you'd rather have it only in the header, say the word and we'll drop the top-bar one.)
 
 ## Out of scope
 
-- No changes to highlight data, ranges, persistence, toolbar, timer, or backend.
-- Notepad content is local-only (no DB sync) for v1.
+- No backend, no edge-function, no tutor-prompt changes.
+- No changes to the bottom-left FAB / notepad layout.
+- No changes for full-section or non-adaptive modes (toggle stays hidden there, same as today).
 
 ## Files touched
 
-- `src/components/drill/DrillNotepad.tsx` (new)
-- `src/components/drill/official/OfficialDrillFrame.tsx` (mount notepad)
-- `src/components/drill/HighlightedText.tsx` (underline cleanup, marker tone, no-reflow)
+- `src/components/drill/official/OfficialDrillFrame.tsx`
+- `src/pages/Drill.tsx`
