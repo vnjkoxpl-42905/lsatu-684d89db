@@ -2241,7 +2241,16 @@ function DrillContent() {
           onTimerToggle={timer ? (timer.isPaused ? timer.resume : timer.pause) : undefined}
           showTutorToggle={session?.mode === 'adaptive'}
           tutorMode={tutorMode}
-          onTutorModeChange={setTutorMode}
+          onTutorModeChange={(next) => {
+            setTutorMode(next);
+            if (next && currentQuestion && session?.mode === 'adaptive') {
+              setTutorQuestionSnapshot(currentQuestion);
+              setTutorUserAnswerSnapshot(selectedAnswer ?? null);
+              setTutorChatOpen(true);
+            } else if (!next) {
+              setTutorChatOpen(false);
+            }
+          }}
           onOpenTutor={() => setTutorChatOpen(true)}
           onOpenInfo={guidedSet?.is_guided_set ? () => setGuidedInfoOpen(true) : undefined}
         />
