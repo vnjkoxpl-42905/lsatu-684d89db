@@ -15,7 +15,7 @@ interface HighlightedTextProps {
 function getHighlightStyles(color: string): React.CSSProperties {
   const base: React.CSSProperties = {
     display: 'inline',
-    padding: '2px 0',
+    padding: 0,
     margin: 0,
     border: 'none',
     lineHeight: 'inherit',
@@ -32,7 +32,9 @@ function getHighlightStyles(color: string): React.CSSProperties {
   if (color === 'underline') {
     return {
       ...base,
-      background: 'none',
+      background: 'transparent',
+      backgroundImage: 'none',
+      backgroundColor: 'transparent',
       textDecoration: 'underline',
       textDecorationColor: '#000000',
       textDecorationThickness: '2px',
@@ -41,18 +43,18 @@ function getHighlightStyles(color: string): React.CSSProperties {
   }
 
   const colors: Record<string, string> = {
-    yellow: 'rgba(250, 204, 21, 0.5)',
-    pink: 'rgba(244, 114, 182, 0.5)',
-    orange: 'rgba(251, 146, 60, 0.5)',
+    yellow: 'rgba(250, 204, 21, 0.32)',
+    pink: 'rgba(244, 114, 182, 0.32)',
+    orange: 'rgba(251, 146, 60, 0.32)',
   };
   const bg = colors[color] ?? colors.yellow;
 
   return {
     ...base,
-    backgroundImage: `linear-gradient(${bg}, ${bg})`,
-    backgroundPosition: '0 0.15em',
-    backgroundSize: '100% calc(100% - 0.3em)',
-    backgroundRepeat: 'no-repeat',
+    backgroundImage: 'none',
+    backgroundColor: bg,
+    // Multiply keeps overlapping highlight ranges from visually doubling up.
+    mixBlendMode: 'multiply',
   };
 }
 
