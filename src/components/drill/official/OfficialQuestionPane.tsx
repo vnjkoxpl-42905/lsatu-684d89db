@@ -146,9 +146,12 @@ export default function OfficialQuestionPane({
                 key={key}
                 className={cn(
                   "flex items-start gap-3 group rounded-md transition-colors",
+                  // Reserve consistent padding so revealing answers (which adds a
+                  // ring) does not shift the row position.
+                  "px-2 py-1.5 ring-2 ring-transparent",
                   isEliminated && !answerRevealed && "opacity-50",
-                  isCorrect && "bg-green-50 ring-2 ring-green-500 px-2 py-1.5",
-                  isWrongSelected && "ring-2 ring-red-500 px-2 py-1.5",
+                  isCorrect && "bg-green-50 ring-green-500",
+                  isWrongSelected && "ring-red-500",
                 )}
               >
                 <button
