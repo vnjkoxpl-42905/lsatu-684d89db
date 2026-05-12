@@ -74,7 +74,7 @@ export default function OfficialQuestionPane({
           "px-9 pt-6 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
           "max-w-[65ch] antialiased text-pretty",
-          "selection:bg-yellow-200/40 selection:text-foreground",
+          "selection:bg-transparent selection:text-foreground",
           // HighlightedText already splits on \n\n and emits <p data-para-start=…>
           // so selection capture and highlight offsets stay paragraph-aware.
           // Add paragraph spacing here; defeat the legacy inline lineHeight on
