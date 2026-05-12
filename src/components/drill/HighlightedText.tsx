@@ -35,6 +35,7 @@ function getHighlightStyles(color: string): React.CSSProperties {
       background: 'transparent',
       backgroundImage: 'none',
       backgroundColor: 'transparent',
+      mixBlendMode: 'normal',
       textDecoration: 'underline',
       textDecorationColor: '#000000',
       textDecorationThickness: '2px',
