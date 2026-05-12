@@ -1,39 +1,49 @@
 import * as React from "react";
 import { NotebookPen, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  getActiveDrillQid,
+  subscribeActiveDrillQid,
+} from "@/lib/drillNotepadBus";
 
-const STORAGE_KEY = "drill-notepad:global";
+const STORAGE_PREFIX = "drill-notepad:";
+const GLOBAL_KEY = `${STORAGE_PREFIX}global`;
+const keyFor = (qid: string | null) =>
+  qid ? `${STORAGE_PREFIX}q:${qid}` : GLOBAL_KEY;
 
 /**
  * Mini notepad pinned to the bottom-left of the drill page.
- * - Collapsed: small notebook launcher button.
- * - Expanded: ~320×360 panel with textarea, Clear, and close.
- * - Persists locally to localStorage.
- * - On mobile, expands as a bottom sheet.
+ * - Notes are stored per-question (keyed by active qid) and auto-load on
+ *   question change. Falls back to a shared "global" pad outside questions.
+ * - Persists to localStorage.
  */
 export default function DrillNotepad() {
   const [open, setOpen] = React.useState(false);
+  const [qid, setQid] = React.useState<string | null>(() => getActiveDrillQid());
   const [value, setValue] = React.useState("");
-  const [hydrated, setHydrated] = React.useState(false);
 
+  // Track active question id from the drill page.
+  React.useEffect(() => subscribeActiveDrillQid(setQid), []);
+
+  // Load notes whenever the active qid changes.
   React.useEffect(() => {
     try {
-      const v = localStorage.getItem(STORAGE_KEY);
-      if (v) setValue(v);
+      setValue(localStorage.getItem(keyFor(qid)) ?? "");
+    } catch {
+      setValue("");
+    }
+  }, [qid]);
+
+  // Persist notes for the current qid (debounced via microtask).
+  React.useEffect(() => {
+    try {
+      const k = keyFor(qid);
+      if (value) localStorage.setItem(k, value);
+      else localStorage.removeItem(k);
     } catch {
       /* ignore */
     }
-    setHydrated(true);
-  }, []);
-
-  React.useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, value);
-    } catch {
-      /* ignore */
-    }
-  }, [value, hydrated]);
+  }, [value, qid]);
 
   const hasNotes = value.trim().length > 0;
 
