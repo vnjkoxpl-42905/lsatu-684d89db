@@ -76,7 +76,7 @@ export function WorkspaceShell(): JSX.Element {
       {/* Mobile back-to-foyer pill (left rail is hidden on phone). */}
       <Link
         to="/foyer"
-        aria-label="Back to Foyer"
+        aria-label="Back to Main Hub"
         className={cn(
           'desktop:hidden tablet:hidden',
           'fixed top-3 left-3 z-30 inline-flex items-center gap-1.5',
@@ -87,7 +87,7 @@ export function WorkspaceShell(): JSX.Element {
         )}
       >
         <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-        Foyer
+        Main Hub
       </Link>
       <div className="grid h-full desktop:grid-cols-[260px_1fr] phone:grid-cols-1 tablet:grid-cols-[220px_1fr]">
         <LeftRail />

@@ -221,7 +221,7 @@ export default function SettingsLayout() {
             </Button>
             <div>
               <h1 className="text-base font-semibold">Customize layout</h1>
-              <p className="text-xs text-muted-foreground">Reorder and toggle items across the Foyer.</p>
+              <p className="text-xs text-muted-foreground">Reorder and toggle items across the Main Hub.</p>
             </div>
           </div>
           <div className="grid grid-cols-3 sm:flex sm:items-center gap-2">

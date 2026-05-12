@@ -16,7 +16,7 @@ export default function FoyerDock() {
       onMouseLeave={() => mouseX.set(Infinity)}
       className="flex items-end gap-2.5 rounded-full border border-border/40 bg-background/70 px-2.5 py-1.5 shadow-sm shadow-black/5 backdrop-blur-md"
       role="toolbar"
-      aria-label="Foyer dock"
+      aria-label="Main Hub dock"
     >
       <FoyerChatButton mouseX={mouseX} />
       <NotificationBell mouseX={mouseX} />

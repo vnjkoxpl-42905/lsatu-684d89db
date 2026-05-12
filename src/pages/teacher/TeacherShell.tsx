@@ -45,7 +45,7 @@ export default function TeacherShell() {
             className="text-zinc-400 hover:text-zinc-100 inline-flex items-center text-sm transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1.5" />
-            Foyer
+            Main Hub
           </button>
           <div className="h-5 w-px bg-zinc-800" />
           <div className="flex items-center gap-2">

@@ -288,7 +288,7 @@ export default function AdminDashboard() {
           <button
             onClick={() => navigate("/foyer")}
             className="text-zinc-400 hover:text-white transition-colors shrink-0"
-            aria-label="Back to foyer"
+            aria-label="Back to Main Hub"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

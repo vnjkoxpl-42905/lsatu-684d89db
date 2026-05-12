@@ -56,7 +56,7 @@ const ALL_STEPS: Step[] = [
   {
     path: "/foyer",
     icon: Compass,
-    eyebrow: "Foyer",
+    eyebrow: "Main Hub",
     title: "Welcome: this is your home base",
     body: "Everything you need each day starts here. Let's quickly point out where things live.",
   },

@@ -68,7 +68,7 @@ export default function Classroom() {
             className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-1.5" />
-            Foyer
+            Main Hub
           </Button>
           <div className="flex items-center gap-2 text-foreground">
             <GraduationCap className="w-4 h-4" />

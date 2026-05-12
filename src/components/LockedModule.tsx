@@ -22,7 +22,7 @@ export default function LockedModule() {
           className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white"
           onClick={() => navigate("/foyer")}
         >
-          Return to Foyer
+          Return to Main Hub
         </Button>
       </div>
     </div>

@@ -48,7 +48,7 @@ export function LeftRail(): JSX.Element {
           )}
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          Foyer
+          Main Hub
         </Link>
         <div className="flex items-baseline gap-2">
           <span
