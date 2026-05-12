@@ -78,7 +78,7 @@ export default function OfficialSessionStrip({
             onClick={onTogglePause}
             className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
           >
-            {isPaused ? "Resume Section" : "Pause Section"}
+            {isPaused ? `Resume ${pauseNoun}` : `Pause ${pauseNoun}`}
           </button>
         )}
         {onComplete && (
