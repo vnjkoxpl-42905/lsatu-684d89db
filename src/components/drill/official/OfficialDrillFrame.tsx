@@ -63,13 +63,13 @@ export default function OfficialDrillFrame({ header, children, isPaused, onResum
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Section paused"
+            aria-label={`${pauseNoun} paused`}
             className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           >
             <div className="bg-white rounded-md shadow-2xl border border-slate-200 px-10 py-8 max-w-md w-[92%] text-center">
-              <h2 className="text-[20px] font-semibold text-slate-900 mb-2">Section Paused</h2>
+              <h2 className="text-[20px] font-semibold text-slate-900 mb-2">{pauseNoun} Paused</h2>
               <p className="text-[14px] text-slate-600 mb-6">
-                The timer is paused. Click Resume to continue your section.
+                The timer is paused. Click Resume to continue your {pauseNoun.toLowerCase()}.
               </p>
               <button
                 type="button"
