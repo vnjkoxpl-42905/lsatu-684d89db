@@ -27,7 +27,16 @@ interface Props {
  * white "paper" card. When `isPaused` is true, the card is blurred/dimmed
  * and a centered modal blocks all interaction until Resume is clicked.
  */
-export default function OfficialDrillFrame({ header, children, isPaused, onResume, pauseNoun = "Section" }: Props) {
+export default function OfficialDrillFrame({
+  header,
+  children,
+  isPaused,
+  onResume,
+  pauseNoun = "Section",
+  tutorToggleVisible,
+  tutorMode,
+  onTutorModeChange,
+}: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
   const welcomeName = rawName && rawName.length > 0 ? rawName.split(/\s+/)[0] : "Joshua";
@@ -39,6 +48,39 @@ export default function OfficialDrillFrame({ header, children, isPaused, onResum
     >
       <header className="bg-white border-b border-slate-200">
         <div className="px-4 sm:px-6 pt-2 pb-1.5 flex items-center justify-end gap-3 text-[13px] text-slate-700">
+          {tutorToggleVisible && onTutorModeChange && (
+            <>
+              {/* Desktop: switch + label */}
+              <div className="hidden sm:flex items-center gap-1.5">
+                <GraduationCap className="w-4 h-4 text-slate-600" />
+                <label htmlFor="official-tutor-toggle" className="cursor-pointer select-none font-medium">
+                  Tutor
+                </label>
+                <Switch
+                  id="official-tutor-toggle"
+                  checked={!!tutorMode}
+                  onCheckedChange={onTutorModeChange}
+                  className="scale-90 data-[state=checked]:bg-[#7f1d1d]"
+                />
+              </div>
+              {/* Mobile: icon-only round toggle */}
+              <button
+                type="button"
+                onClick={() => onTutorModeChange(!tutorMode)}
+                aria-label={tutorMode ? "Turn Tutor Mode off" : "Turn Tutor Mode on"}
+                aria-pressed={!!tutorMode}
+                className={cn(
+                  "sm:hidden h-7 w-7 rounded-full flex items-center justify-center border transition-colors",
+                  tutorMode
+                    ? "bg-[#7f1d1d] text-white border-[#7f1d1d]"
+                    : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100",
+                )}
+              >
+                <GraduationCap className="w-4 h-4" />
+              </button>
+              <span aria-hidden className="w-px h-5 bg-slate-300" />
+            </>
+          )}
           <button
             type="button"
             aria-label="Help"
