@@ -28,6 +28,7 @@ export default function OfficialSessionStrip({
   onComplete,
   showAnswerVisible,
   onShowAnswer,
+  pauseNoun = "Section",
 }: Props) {
   return (
     <div className="flex items-center justify-between gap-4 w-full text-[14px]">
