@@ -416,6 +416,12 @@ function DrillContent() {
     });
   }, [currentQuestion?.qid, classId, session?.mode]);
 
+  // Publish active qid for the floating drill notepad (per-question notes).
+  React.useEffect(() => {
+    setActiveDrillQid(currentQuestion?.qid ?? null);
+    return () => setActiveDrillQid(null);
+  }, [currentQuestion?.qid]);
+
   // Adaptive mode: select next question only when advanceToken changes
   React.useEffect(() => {
     if (!session || session.mode !== 'adaptive') return;
