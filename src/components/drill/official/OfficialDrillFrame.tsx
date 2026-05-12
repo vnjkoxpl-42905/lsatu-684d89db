@@ -10,6 +10,8 @@ interface Props {
   isPaused?: boolean;
   /** Resume handler invoked from the overlay button. */
   onResume?: () => void;
+  /** Noun used in the paused modal copy: "Section" (default) or "Question". */
+  pauseNoun?: string;
 }
 
 /**
@@ -17,7 +19,7 @@ interface Props {
  * white "paper" card. When `isPaused` is true, the card is blurred/dimmed
  * and a centered modal blocks all interaction until Resume is clicked.
  */
-export default function OfficialDrillFrame({ header, children, isPaused, onResume }: Props) {
+export default function OfficialDrillFrame({ header, children, isPaused, onResume, pauseNoun = "Section" }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
   const welcomeName = rawName && rawName.length > 0 ? rawName.split(/\s+/)[0] : "Joshua";
