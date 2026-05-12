@@ -13,6 +13,8 @@ interface Props {
   /** When true, show a "Show Answer" pill button (typically when an answer is selected and not yet revealed). */
   showAnswerVisible?: boolean;
   onShowAnswer?: () => void;
+  /** Noun used in pause/complete labels: "Section" (default) or "Question". */
+  pauseNoun?: string;
 }
 
 /**
