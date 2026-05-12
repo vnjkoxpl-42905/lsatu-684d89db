@@ -1,7 +1,9 @@
 import * as React from "react";
-import { HelpCircle, Play } from "lucide-react";
+import { HelpCircle, Play, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 interface Props {
   header?: React.ReactNode;
@@ -12,6 +14,12 @@ interface Props {
   onResume?: () => void;
   /** Noun used in the paused modal copy: "Section" (default) or "Question". */
   pauseNoun?: string;
+  /** Show the Tutor mode toggle in the top-right strip. */
+  tutorToggleVisible?: boolean;
+  /** Current Tutor mode state. */
+  tutorMode?: boolean;
+  /** Toggle handler for Tutor mode. */
+  onTutorModeChange?: (next: boolean) => void;
 }
 
 /**
