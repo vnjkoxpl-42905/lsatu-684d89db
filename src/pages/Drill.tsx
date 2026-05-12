@@ -34,7 +34,7 @@ import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useClassId } from '@/hooks/useClassId';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { questionBank } from '@/lib/questionLoader';
-import { AdaptiveEngine } from '@/lib/adaptiveEngine';
+import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { normalizeText } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
 import { Switch } from '@/components/ui/switch';
@@ -64,9 +64,8 @@ import { QuestionTimer } from '@/lib/questionTimer';
 import { record } from '@rrweb/record';
 import type { eventWithTime } from '@rrweb/types';
 
-const adaptiveEngine = new AdaptiveEngine();
-
 function DrillContent() {
+  const adaptiveEngine = useAdaptiveEngine();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

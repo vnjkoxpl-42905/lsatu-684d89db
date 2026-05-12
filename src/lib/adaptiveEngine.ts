@@ -3,6 +3,25 @@
 import { LRQuestion } from './questionLoader';
 import { supabase } from '@/integrations/supabase/client';
 
+const ADAPTIVE_CONFIG = {
+  weakAccuracyThreshold: 0.60,
+  strongAccuracyThreshold: 0.75,
+  weakAreaThreshold: 0.65,
+  advanceThreshold: 0.75,
+  retreatThreshold: 0.40,
+  strugglingThreshold: 0.5,
+  minAttemptsForAnalysis: 10,
+  minAttemptsForWeakDetection: 5,
+  hydrateLimit: 200,
+  analyzeLimit: 150,
+  generateLimit: 300,
+  cooldownMinutes: 60,
+  bucketWeights: { progression: 0.40, redemption: 0.40, maintenance: 0.20 },
+  recencyHalfLife: 70,
+  fastThresholdMs: 60000,
+  slowThresholdMs: 120000,
+} as const;
+
 export interface StudentAbility {
   overall: number;
   byQType: Record<string, number>;
@@ -46,6 +65,10 @@ export interface SmartDrillResult {
     maintenance: number;
   };
   explanation: string;
+  /** True when the engine could not compose a real adaptive drill (cold start or pool starvation). UI should suppress mastery surfaces. */
+  coldStart?: boolean;
+  weakQTypes?: string[];
+  confidence?: number;
 }
 
 export class AdaptiveEngine {
@@ -65,7 +88,7 @@ export class AdaptiveEngine {
         .select('qid, correct, time_ms, qtype, level, timestamp_iso')
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
-        .limit(200);
+        .limit(ADAPTIVE_CONFIG.hydrateLimit);
 
       if (error || !data) {
         console.warn('Failed to hydrate adaptive engine:', error);
@@ -115,8 +138,8 @@ export class AdaptiveEngine {
     const eligible = pool.filter((q) => {
       const lastSeen = this.cooldowns.get(q.qid);
       if (!lastSeen) return true;
-      const hoursSince = (now.getTime() - lastSeen.getTime()) / (1000 * 60 * 60);
-      return hoursSince > 1; // Reduced to 1-hour cooldown for better pool
+      const minutesSince = (now.getTime() - lastSeen.getTime()) / (1000 * 60);
+      return minutesSince > ADAPTIVE_CONFIG.cooldownMinutes;
     });
 
     if (eligible.length === 0) return pool[0]; // Fallback
@@ -205,9 +228,9 @@ export class AdaptiveEngine {
       // 5. Adaptive difficulty adjustment (if struggling, slightly prefer easier)
       const recentAccuracy = this.recentAttempts.slice(-10).filter(a => a.correct).length / 
                             Math.max(1, Math.min(10, this.recentAttempts.length));
-      if (recentAccuracy < 0.5 && q.difficulty < targetDifficulty) {
+      if (recentAccuracy < ADAPTIVE_CONFIG.strugglingThreshold && q.difficulty < targetDifficulty) {
         score += 1; // Small boost for easier questions when struggling
-      } else if (recentAccuracy > 0.75 && q.difficulty > targetDifficulty) {
+      } else if (recentAccuracy > ADAPTIVE_CONFIG.advanceThreshold && q.difficulty > targetDifficulty) {
         score += 0.5; // Small boost for harder questions when doing well
       }
       
@@ -218,6 +241,14 @@ export class AdaptiveEngine {
     }
 
     return best || eligible[0];
+  }
+
+  /** True if this qid was answered within the configured cooldown window. */
+  private isOnCooldown(qid: string, now: Date = new Date()): boolean {
+    const lastSeen = this.cooldowns.get(qid);
+    if (!lastSeen) return false;
+    const minutesSince = (now.getTime() - lastSeen.getTime()) / (1000 * 60);
+    return minutesSince <= ADAPTIVE_CONFIG.cooldownMinutes;
   }
 
   recordAttempt(attempt: AttemptRecord): void {
@@ -282,16 +313,16 @@ export class AdaptiveEngine {
         .select('qtype, level, correct, timestamp_iso, time_ms')
         .eq('class_id', classId)
         .order('timestamp_iso', { ascending: false })
-        .limit(150);
+        .limit(ADAPTIVE_CONFIG.analyzeLimit);
 
-      if (error || !attempts || attempts.length < 10) {
+      if (error || !attempts || attempts.length < ADAPTIVE_CONFIG.minAttemptsForAnalysis) {
         return null; // Not enough data
       }
 
       // Weight recent attempts more heavily using exponential decay
       const weightedAttempts = attempts.map((a, idx) => ({
         ...a,
-        weight: Math.exp(-idx / 50), // More recent = higher weight
+        weight: Math.exp(-idx / ADAPTIVE_CONFIG.recencyHalfLife),
       }));
 
       // Calculate weighted accuracy by question type
@@ -336,7 +367,7 @@ export class AdaptiveEngine {
 
       // Find weakest question types with enhanced criteria
       const weakQTypes = Object.entries(qtypeStats)
-        .filter(([_, stats]) => stats.rawTotal >= 5) // At least 5 attempts
+        .filter(([_, stats]) => stats.rawTotal >= ADAPTIVE_CONFIG.minAttemptsForWeakDetection)
         .map(([qtype, stats]) => ({
           qtype,
           weightedAccuracy: stats.correctWeighted / stats.totalWeighted,
@@ -346,7 +377,7 @@ export class AdaptiveEngine {
         }))
         .sort((a, b) => a.weightedAccuracy - b.weightedAccuracy) // Sort by weighted accuracy
         .slice(0, 4) // Top 4 weakest
-        .filter(q => q.weightedAccuracy < 0.65) // Accuracy threshold
+        .filter(q => q.weightedAccuracy < ADAPTIVE_CONFIG.weakAreaThreshold)
         .map(q => q.qtype);
 
       // Calculate accuracy by difficulty with weighting
@@ -367,20 +398,20 @@ export class AdaptiveEngine {
 
       // Find difficulty range where accuracy dips
       const weakDifficulties = Object.entries(diffStats)
-        .filter(([_, stats]) => stats.rawTotal >= 5) // At least 5 attempts
+        .filter(([_, stats]) => stats.rawTotal >= ADAPTIVE_CONFIG.minAttemptsForWeakDetection)
         .map(([diff, stats]) => ({
           diff: parseInt(diff),
           weightedAccuracy: stats.correctWeighted / stats.totalWeighted,
         }))
-        .filter(d => d.weightedAccuracy < 0.65)
+        .filter(d => d.weightedAccuracy < ADAPTIVE_CONFIG.weakAreaThreshold)
         .map(d => d.diff);
 
       // Identify struggling patterns (fast wrong answers = guessing, slow wrong = reasoning errors)
-      const fastWrongCount = attempts.filter(a => 
-        !a.correct && a.time_ms && a.time_ms < 60000 // Wrong in < 1 minute
+      const fastWrongCount = attempts.filter(a =>
+        !a.correct && a.time_ms && a.time_ms < ADAPTIVE_CONFIG.fastThresholdMs
       ).length;
-      const slowWrongCount = attempts.filter(a => 
-        !a.correct && a.time_ms && a.time_ms > 120000 // Wrong in > 2 minutes
+      const slowWrongCount = attempts.filter(a =>
+        !a.correct && a.time_ms && a.time_ms > ADAPTIVE_CONFIG.slowThresholdMs
       ).length;
 
       let timingInsight = '';
@@ -471,7 +502,7 @@ export class AdaptiveEngine {
         const stats = levelStats[lvl];
         if (stats && stats.total > 0) {
           const acc = stats.correct / stats.total;
-          if (acc >= 0.40) {
+          if (acc >= ADAPTIVE_CONFIG.retreatThreshold) {
             workingLevel = lvl;
             break;
           }
@@ -485,10 +516,10 @@ export class AdaptiveEngine {
         : overallAccuracy;
 
       let masteryLevel: number;
-      if (workingAccuracy > 0.75) {
+      if (workingAccuracy > ADAPTIVE_CONFIG.advanceThreshold) {
         // Mastered current level — push to the next
         masteryLevel = Math.min(5, workingLevel + 1);
-      } else if (workingAccuracy < 0.40) {
+      } else if (workingAccuracy < ADAPTIVE_CONFIG.retreatThreshold) {
         // Struggling — retreat one tier
         masteryLevel = Math.max(1, workingLevel - 1);
       } else {
@@ -501,8 +532,8 @@ export class AdaptiveEngine {
         masteryLevel,
         accuracy: overallAccuracy,
         attemptsCount: typeAttempts.length,
-        isWeak: overallAccuracy < 0.60,
-        isStrong: overallAccuracy >= 0.75 && masteryLevel >= 4,
+        isWeak: overallAccuracy < ADAPTIVE_CONFIG.weakAccuracyThreshold,
+        isStrong: overallAccuracy >= ADAPTIVE_CONFIG.strongAccuracyThreshold && masteryLevel >= 4,
       };
     }
 
@@ -534,23 +565,25 @@ export class AdaptiveEngine {
       .select('qid, qtype, level, correct, timestamp_iso')
       .eq('class_id', classId)
       .order('timestamp_iso', { ascending: false })
-      .limit(300);
+      .limit(ADAPTIVE_CONFIG.generateLimit);
 
-    if (error || !rawAttempts || rawAttempts.length === 0) {
-      // No history — fall back to a random sample
+    const attemptCount = !error && rawAttempts ? rawAttempts.length : 0;
+    if (error || !rawAttempts || attemptCount < ADAPTIVE_CONFIG.minAttemptsForAnalysis) {
+      // Cold start — too little history to compose a real adaptive drill.
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
       return {
         questions: shuffled.slice(0, count),
         masteryMap: {},
-        buckets: { progression: count, redemption: 0, maintenance: 0 },
-        explanation: 'No history found — returning a random sample to get you started.',
+        buckets: { progression: shuffled.slice(0, count).length, redemption: 0, maintenance: 0 },
+        explanation: 'Not enough history yet. Drilling a calibration set to learn your baseline.',
+        coldStart: true,
       };
     }
 
     // Exponential decay weight: most recent = 1.0, older → smaller
     const weighted = rawAttempts.map((a: any, idx: number) => ({
       ...a,
-      weight: Math.exp(-idx / 80),
+      weight: Math.exp(-idx / ADAPTIVE_CONFIG.recencyHalfLife),
     }));
 
     // ── 2. Calculate per-type mastery ────────────────────────────────────────
@@ -584,7 +617,9 @@ export class AdaptiveEngine {
     );
 
     // Progression: unseen questions whose type is weak AND difficulty matches mastery level
+    const now = new Date();
     const progressionPool = pool.filter(q => {
+      if (this.isOnCooldown(q.qid, now)) return false;
       if (attemptedQids.has(q.qid)) return false;
       if (!weakQTypes.has(q.qtype)) return false;
       const target = masteryMap[q.qtype]?.masteryLevel ?? 2;
@@ -592,20 +627,26 @@ export class AdaptiveEngine {
     });
 
     // Redemption: previously wrong questions in the pool
-    const redemptionPool = pool.filter(q => redemptionQids.has(q.qid));
+    const redemptionPool = pool.filter(q => {
+      if (this.isOnCooldown(q.qid, now)) return false;
+      return redemptionQids.has(q.qid);
+    });
 
     // Maintenance: unseen questions from strong types at difficulty 4–5
     const maintenancePool = pool.filter(q => {
+      if (this.isOnCooldown(q.qid, now)) return false;
       if (attemptedQids.has(q.qid)) return false;
       if (!strongQTypes.has(q.qtype)) return false;
       return q.difficulty >= 4;
     });
 
     // ── 5. Fill buckets with quota enforcement ───────────────────────────────
+    const progressionTarget = Math.round(count * ADAPTIVE_CONFIG.bucketWeights.progression);
+    const redemptionTarget  = Math.round(count * ADAPTIVE_CONFIG.bucketWeights.redemption);
     const target = {
-      progression: Math.round(count * 0.40),
-      redemption:  Math.round(count * 0.40),
-      maintenance: count - Math.round(count * 0.40) - Math.round(count * 0.40),
+      progression: progressionTarget,
+      redemption:  redemptionTarget,
+      maintenance: count - progressionTarget - redemptionTarget,
     };
 
     const pick = (src: LRQuestion[], n: number, used: Set<string>): LRQuestion[] => {
@@ -653,6 +694,27 @@ export class AdaptiveEngine {
       [merged[i], merged[j]] = [merged[j], merged[i]];
     }
 
+    // Pool starvation: every real bucket was empty before the deficit fallback ran.
+    // We still return the questions (so the drill can launch), but flag the result
+    // honestly instead of narrating fabricated buckets.
+    const realBucketsEmpty =
+      progressionPool.length === 0 &&
+      redemptionPool.length === 0 &&
+      maintenancePool.length === 0;
+    if (realBucketsEmpty) {
+      return {
+        questions: merged.slice(0, count),
+        masteryMap,
+        buckets: {
+          progression: progression.length,
+          redemption: redemption.length,
+          maintenance: maintenance.length,
+        },
+        explanation: 'Your filter pool is smaller than the requested set. Showing all available questions.',
+        coldStart: true,
+      };
+    }
+
     // Build human-readable explanation
     const weakList = [...weakQTypes].slice(0, 3).join(', ') || 'none identified';
     const dominantLevel = Object.values(masteryMap).length > 0
@@ -661,12 +723,24 @@ export class AdaptiveEngine {
           Object.values(masteryMap).length
         )
       : 2;
-    const explanation =
+    let explanation =
       `${merged.length}-question smart drill: ` +
       `${progression.length} progression (new ${weakList} questions at level ${dominantLevel}), ` +
       `${redemption.length} redemption (previously missed), ` +
       `${maintenance.length} maintenance (strong types at L4–5). ` +
       `Based on ${rawAttempts.length} attempts.`;
+
+    // ── 7. Layer in weak-area narrative + timing insights ──────────────────────
+    let weakAreaResult: WeakAreaAnalysis | null = null;
+    try {
+      weakAreaResult = await this.analyzeWeakAreas(classId);
+    } catch (err) {
+      // Non-fatal: keep the bucket explanation as-is.
+      console.warn('analyzeWeakAreas failed during smart drill build:', err);
+    }
+    if (weakAreaResult) {
+      explanation = `${weakAreaResult.explanation} ${explanation}`;
+    }
 
     return {
       questions: merged.slice(0, count),
@@ -677,67 +751,9 @@ export class AdaptiveEngine {
         maintenance: maintenance.length,
       },
       explanation,
+      weakQTypes: weakAreaResult?.weakQTypes ?? [...weakQTypes],
+      confidence: weakAreaResult?.confidence,
     };
   }
 
-  /**
-   * Generate an optimal sequence of questions for adaptive drilling
-   */
-  getAdaptiveDrillSequence(
-    pool: LRQuestion[],
-    ability: StudentAbility,
-    weakAreas: WeakAreaAnalysis,
-    count: number
-  ): LRQuestion[] {
-    const sequence: LRQuestion[] = [];
-    const used = new Set<string>();
-
-    // 70% weak areas, 20% breadth, 10% confidence builders
-    const weakCount = Math.floor(count * 0.7);
-    const breadthCount = Math.floor(count * 0.2);
-    const confidenceCount = count - weakCount - breadthCount;
-
-    // 1. Add weak area questions
-    const weakPool = pool.filter(q =>
-      weakAreas.weakQTypes.includes(q.qtype) ||
-      weakAreas.weakDifficulties.includes(q.difficulty)
-    );
-    for (let i = 0; i < weakCount && weakPool.length > 0; i++) {
-      const idx = Math.floor(Math.random() * weakPool.length);
-      const q = weakPool.splice(idx, 1)[0];
-      if (!used.has(q.qid)) {
-        sequence.push(q);
-        used.add(q.qid);
-      }
-    }
-
-    // 2. Add breadth questions (variety)
-    const breadthPool = pool.filter(q => !used.has(q.qid));
-    for (let i = 0; i < breadthCount && breadthPool.length > 0; i++) {
-      const idx = Math.floor(Math.random() * breadthPool.length);
-      const q = breadthPool.splice(idx, 1)[0];
-      sequence.push(q);
-      used.add(q.qid);
-    }
-
-    // 3. Add confidence builders (easier questions)
-    const easyPool = pool.filter(q => 
-      !used.has(q.qid) && 
-      q.difficulty <= Math.max(1, Math.floor(ability.overall) - 1)
-    );
-    for (let i = 0; i < confidenceCount && easyPool.length > 0; i++) {
-      const idx = Math.floor(Math.random() * easyPool.length);
-      const q = easyPool.splice(idx, 1)[0];
-      sequence.push(q);
-      used.add(q.qid);
-    }
-
-    // Shuffle to mix weak/breadth/confidence throughout drill
-    for (let i = sequence.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [sequence[i], sequence[j]] = [sequence[j], sequence[i]];
-    }
-
-    return sequence;
-  }
 }

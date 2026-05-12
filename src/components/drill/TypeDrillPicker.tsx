@@ -13,7 +13,8 @@ import { Switch } from '@/components/ui/switch';
 import type { TypeDrillConfig } from '@/types/drill';
 import type { QuestionManifest } from '@/lib/questionLoader';
 import { questionBank } from '@/lib/questionLoader';
-import { AdaptiveEngine, type WeakAreaAnalysis, type TypeMastery } from '@/lib/adaptiveEngine';
+import { type WeakAreaAnalysis, type TypeMastery } from '@/lib/adaptiveEngine';
+import { useAdaptiveEngine } from '@/contexts/AdaptiveEngineContext';
 import { templateService } from '@/lib/templateService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,7 +52,7 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
   const step2Ref = useRef<HTMLDivElement>(null);
   const step3Ref = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const adaptiveEngine = new AdaptiveEngine();
+  const adaptiveEngine = useAdaptiveEngine();
 
   // Single source of truth: Question types with counts and proper labels
   const QUESTION_TYPES: QuestionType[] = useMemo(() => {
@@ -206,7 +207,9 @@ export function TypeDrillPicker({ manifest, onStartDrill, onCancel }: TypeDrillP
         return;
       }
 
-      setSmartMastery(result.masteryMap);
+      // Cold start / pool starvation → suppress mastery UI rather than showing
+      // misleading bars built on too-thin or fabricated data.
+      setSmartMastery(result.coldStart ? null : result.masteryMap);
 
       // Launch immediately with the pre-selected question IDs
       onStartDrill({

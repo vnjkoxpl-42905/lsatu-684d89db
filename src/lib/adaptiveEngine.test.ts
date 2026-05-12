@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AdaptiveEngine, type AttemptRecord, type StudentAbility, type WeakAreaAnalysis } from './adaptiveEngine';
+import { AdaptiveEngine, type AttemptRecord, type StudentAbility } from './adaptiveEngine';
 import type { LRQuestion } from './questionLoader';
 
 function makeQuestion(overrides: Partial<LRQuestion> = {}): LRQuestion {
@@ -107,51 +107,3 @@ describe('AdaptiveEngine.recordAttempt', () => {
   });
 });
 
-// ─── getAdaptiveDrillSequence ─────────────────────────────────────────────────
-
-describe('AdaptiveEngine.getAdaptiveDrillSequence', () => {
-  let engine: AdaptiveEngine;
-  let pool: LRQuestion[];
-  let ability: StudentAbility;
-  let weakAreas: WeakAreaAnalysis;
-
-  beforeEach(() => {
-    engine = new AdaptiveEngine();
-    pool = [
-      makeQuestion({ qid: 'q1', qtype: 'Weaken',   difficulty: 1 }),
-      makeQuestion({ qid: 'q2', qtype: 'Weaken',   difficulty: 2 }),
-      makeQuestion({ qid: 'q3', qtype: 'Strengthen', difficulty: 3 }),
-      makeQuestion({ qid: 'q4', qtype: 'Flaw',      difficulty: 4 }),
-      makeQuestion({ qid: 'q5', qtype: 'Flaw',      difficulty: 5 }),
-      makeQuestion({ qid: 'q6', qtype: 'Assumption', difficulty: 2 }),
-      makeQuestion({ qid: 'q7', qtype: 'Assumption', difficulty: 3 }),
-      makeQuestion({ qid: 'q8', qtype: 'Inference',  difficulty: 1 }),
-      makeQuestion({ qid: 'q9', qtype: 'Inference',  difficulty: 2 }),
-      makeQuestion({ qid: 'q10',qtype: 'Role',       difficulty: 3 }),
-    ];
-    ability = { overall: 3, byQType: {} };
-    weakAreas = { weakQTypes: ['Weaken', 'Flaw'], weakDifficulties: [4, 5], recommendedSize: 10, explanation: '', sampleSize: 50 };
-  });
-
-  it('returns exactly the requested count (when pool is large enough)', () => {
-    const seq = engine.getAdaptiveDrillSequence(pool, ability, weakAreas, 5);
-    expect(seq).toHaveLength(5);
-  });
-
-  it('returns at most pool.length questions', () => {
-    const seq = engine.getAdaptiveDrillSequence(pool, ability, weakAreas, 100);
-    expect(seq.length).toBeLessThanOrEqual(pool.length);
-  });
-
-  it('never duplicates a question', () => {
-    const seq = engine.getAdaptiveDrillSequence(pool, ability, weakAreas, pool.length);
-    const ids = seq.map((q) => q.qid);
-    const unique = new Set(ids);
-    expect(unique.size).toBe(ids.length);
-  });
-
-  it('returns empty array for empty pool', () => {
-    const seq = engine.getAdaptiveDrillSequence([], ability, weakAreas, 10);
-    expect(seq).toHaveLength(0);
-  });
-});

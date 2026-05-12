@@ -11,6 +11,7 @@ import { QuestionBankProvider } from "./contexts/QuestionBankContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
 import Practice from "./pages/Practice";
 import AcademyFoyer from "./pages/AcademyFoyer";
 import Drill from "./pages/Drill";
@@ -90,6 +91,7 @@ const App = () => {
   <ThemeProvider>
   <AuthProvider>
     <UserSettingsProvider>
+    <AdaptiveEngineProvider>
     <OrbitalActiveProvider>
       <TooltipProvider>
         <Toaster />
@@ -390,6 +392,7 @@ const App = () => {
         </BrowserRouter>
       </TooltipProvider>
     </OrbitalActiveProvider>
+    </AdaptiveEngineProvider>
     </UserSettingsProvider>
   </AuthProvider>
   </ThemeProvider>
