@@ -2070,7 +2070,16 @@ function DrillContent() {
           pauseNoun={isFullSection ? 'Section' : 'Question'}
           tutorToggleVisible={session?.mode === 'adaptive'}
           tutorMode={tutorMode}
-          onTutorModeChange={setTutorMode}
+          onTutorModeChange={(next) => {
+            setTutorMode(next);
+            if (next && currentQuestion && session?.mode === 'adaptive') {
+              setTutorQuestionSnapshot(currentQuestion);
+              setTutorUserAnswerSnapshot(selectedAnswer ?? null);
+              setTutorChatOpen(true);
+            } else if (!next) {
+              setTutorChatOpen(false);
+            }
+          }}
           header={
             <OfficialSessionStrip
               breadcrumbs={[
