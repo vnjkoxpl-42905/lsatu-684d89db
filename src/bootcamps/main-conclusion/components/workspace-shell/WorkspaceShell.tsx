@@ -73,9 +73,9 @@ export function WorkspaceShell(): JSX.Element {
   return (
     <Ctx.Provider value={{ payload, open, close }}>
       <a className="skip-link" href="#main">Skip to main content</a>
-      {/* Mobile back-to-foyer pill (left rail is hidden on phone). */}
+      {/* Mobile back-to-mainhub pill (left rail is hidden on phone). */}
       <Link
-        to="/foyer"
+        to="/mainhub"
         aria-label="Back to Main Hub"
         className={cn(
           'desktop:hidden tablet:hidden',

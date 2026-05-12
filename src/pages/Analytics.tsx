@@ -215,7 +215,7 @@ const Analytics = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/foyer')}
+            onClick={() => navigate('/mainhub')}
             className="gap-2 text-muted-foreground hover:text-foreground hover:bg-accent -ml-2"
           >
             <ArrowLeft className="w-4 h-4" />

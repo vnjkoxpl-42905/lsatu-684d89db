@@ -170,12 +170,12 @@ export default function ResetPassword() {
     toast({ title: 'Password updated.' });
     try { window.history.replaceState(null, '', '/'); } catch {}
     // Route via the shared helper so a brand-new user without a display
-    // name lands on /onboarding instead of bouncing through Foyer first.
+    // name lands on /onboarding instead of bouncing through Mainhub first.
     const { data: { session } } = await supabase.auth.getSession();
     if (session?.user) {
       await redirectAfterAuth(session.user.id, navigate, { replace: true });
     } else {
-      navigate('/foyer', { replace: true });
+      navigate('/mainhub', { replace: true });
     }
   };
 

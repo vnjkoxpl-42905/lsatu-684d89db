@@ -14,8 +14,8 @@ interface Props {
 }
 
 /**
- * Scaled-down mock of the three Foyer surfaces driven by `prefs`. Drives
- * directly from the catalog + the same access predicate the real Foyer uses
+ * Scaled-down mock of the three Mainhub surfaces driven by `prefs`. Drives
+ * directly from the catalog + the same access predicate the real Mainhub uses
  * so the preview can't lie about what the user will see.
  *
  * Intentionally not the real surfaces — the orbital ring is a 3D component

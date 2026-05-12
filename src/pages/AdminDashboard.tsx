@@ -135,7 +135,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!permLoading && !is_admin) {
-      navigate("/foyer", { replace: true });
+      navigate("/mainhub", { replace: true });
     }
   }, [permLoading, is_admin, navigate]);
 
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
       <div className="border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
           <button
-            onClick={() => navigate("/foyer")}
+            onClick={() => navigate("/mainhub")}
             className="text-zinc-400 hover:text-white transition-colors shrink-0"
             aria-label="Back to Main Hub"
           >

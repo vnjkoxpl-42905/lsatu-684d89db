@@ -11,7 +11,7 @@ import {
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { questionBank } from "@/lib/questionLoader";
 
-interface FoyerFindCardProps {
+interface MainhubFindCardProps {
   onOpen: (qid: string) => void;
   onClose: () => void;
 }
@@ -19,7 +19,7 @@ interface FoyerFindCardProps {
 const labelClass =
   "text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium";
 
-export default function FoyerFindCard({ onOpen, onClose }: FoyerFindCardProps) {
+export default function MainhubFindCard({ onOpen, onClose }: MainhubFindCardProps) {
   const { isLoading, error } = useQuestionBank();
 
   const [selectedPt, setSelectedPt] = React.useState<string>("");

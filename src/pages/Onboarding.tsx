@@ -71,7 +71,7 @@ export default function Onboarding() {
     try {
       const classId = user!.id;
 
-      // Save profile FIRST — this is the gate the Foyer checks. If it fails,
+      // Save profile FIRST — this is the gate the Mainhub checks. If it fails,
       // we must not navigate (or the user gets bounced back here forever).
       const { error: profileError } = await supabase
         .from('profiles')
@@ -92,7 +92,7 @@ export default function Onboarding() {
         console.warn('[Onboarding] auth metadata update failed (non-fatal)', e);
       });
 
-      navigate('/foyer', { replace: true });
+      navigate('/mainhub', { replace: true });
     } catch (err: any) {
       console.error('[Onboarding] unexpected error', err);
       toast.error(err?.message || 'Failed to save name');

@@ -20,7 +20,7 @@ const AssignmentNotificationEmail = ({
   itemTitle = 'a new assignment',
   itemType = 'assignment',
   assignedBy = 'Joshua',
-  link = APP_URL + '/foyer',
+  link = APP_URL + '/mainhub',
 }: AssignmentNotificationProps) => (
   <Html lang="en" dir="ltr">
     <Head />
@@ -55,7 +55,7 @@ export const template = {
     itemTitle: 'Causation Station — Day 3',
     itemType: 'bootcamp',
     assignedBy: 'Joshua',
-    link: APP_URL + '/foyer',
+    link: APP_URL + '/mainhub',
   },
 } satisfies TemplateEntry
 

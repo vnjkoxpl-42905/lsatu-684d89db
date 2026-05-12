@@ -1,13 +1,13 @@
 import { useMotionValue, motion } from "framer-motion";
 import NotificationBell from "@/components/notifications/NotificationBell";
-import FoyerChatButton from "@/components/foyer/FoyerChatButton";
+import MainhubChatButton from "@/components/mainhub/MainhubChatButton";
 
 /**
- * Top-right Foyer cluster. Holds the inbox preview button (Popover with
+ * Top-right Mainhub cluster. Holds the inbox preview button (Popover with
  * recent threads + link to full Inbox) and the notifications bell. The
  * bottom-right FloatingMessenger is a separate compact chat widget.
  */
-export default function FoyerDock() {
+export default function MainhubDock() {
   const mouseX = useMotionValue(Infinity);
 
   return (
@@ -18,7 +18,7 @@ export default function FoyerDock() {
       role="toolbar"
       aria-label="Main Hub dock"
     >
-      <FoyerChatButton mouseX={mouseX} />
+      <MainhubChatButton mouseX={mouseX} />
       <NotificationBell mouseX={mouseX} />
     </motion.div>
   );

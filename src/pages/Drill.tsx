@@ -213,7 +213,7 @@ function DrillContent() {
   // Initialize session with question pool filtering
   React.useEffect(() => {
     if (!state?.mode) {
-      navigate('/foyer');
+      navigate('/mainhub');
       return;
     }
 
@@ -1535,7 +1535,7 @@ function DrillContent() {
     }
   };
 
-  const handleNavigation = (destination: '/practice' | '/foyer' | '/dashboard') => {
+  const handleNavigation = (destination: '/practice' | '/mainhub' | '/dashboard') => {
     setExitDestination(destination);
     setShowExitDialog(true);
   };
@@ -1626,7 +1626,7 @@ function DrillContent() {
             setAutoReviewQids(session.questionQueue);
             setPostSectionScreen('review');
           }}
-          onBack={() => navigate('/foyer')}
+          onBack={() => navigate('/mainhub')}
         />
       );
     }
@@ -1638,7 +1638,7 @@ function DrillContent() {
           session={session}
           brResults={brResults}
           classId={classId}
-          onBack={() => navigate('/foyer')}
+          onBack={() => navigate('/mainhub')}
         />
       );
     }
@@ -1652,7 +1652,7 @@ function DrillContent() {
           setAutoReviewQids(session.questionQueue);
           setPostSectionScreen('review');
         }}
-        onBack={() => navigate('/foyer')}
+        onBack={() => navigate('/mainhub')}
       />
     );
   }
@@ -1684,7 +1684,7 @@ function DrillContent() {
         <Card className="p-8 max-w-md text-center">
           <h2 className="text-xl font-semibold mb-3">No questions available</h2>
           <p className="text-sm text-muted-foreground mb-6">{bootError}</p>
-          <Button onClick={() => navigate('/foyer')}>Return to Main Hub</Button>
+          <Button onClick={() => navigate('/mainhub')}>Return to Main Hub</Button>
         </Card>
       </div>
     );
@@ -1716,7 +1716,7 @@ function DrillContent() {
             setShowBRFlow(true);
           }}
           onSkip={() => {
-            navigate('/foyer');
+            navigate('/mainhub');
           }}
         />
       );
@@ -1759,7 +1759,7 @@ function DrillContent() {
             )}
           </p>
           <div className="flex gap-3">
-            <Button onClick={() => navigate('/foyer')}>
+            <Button onClick={() => navigate('/mainhub')}>
               Return to Main Hub
             </Button>
           </div>
@@ -2272,7 +2272,7 @@ function DrillContent() {
                 }
               }}
               onExpandCriteria={() => {
-                navigate('/foyer');
+                navigate('/mainhub');
               }}
               onSettings={() => {
                 navigate('/profile');

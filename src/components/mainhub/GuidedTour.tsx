@@ -54,47 +54,47 @@ type Step = {
 
 const ALL_STEPS: Step[] = [
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: Compass,
     eyebrow: "Main Hub",
     title: "Welcome: this is your home base",
     body: "Everything you need each day starts here. Let's quickly point out where things live.",
   },
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: Zap,
     eyebrow: "Orbital ring",
     title: "Your primary daily actions",
     body: "The orbital ring holds your top shortcuts. Click the center node to activate it, or click any outer node to jump straight into that surface. You can swap which actions live here from Settings → Layout.",
-    anchor: '[data-tour="foyer-orbital"]',
+    anchor: '[data-tour="mainhub-orbital"]',
     side: "right",
   },
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: PanelLeft,
     eyebrow: "Sidebar",
     title: "Your full workspace",
     body: "Every workspace surface (Classroom, Messages, Practice, Schedule, and more) opens from the sidebar. The active page is highlighted as you move around.",
-    anchor: '[data-tour="foyer-sidebar"]',
+    anchor: '[data-tour="mainhub-sidebar"]',
     side: "right",
     desktopOnly: true,
   },
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: Bell,
     eyebrow: "Top dock",
     title: "Notifications & your account",
     body: "The bell shows new alerts; the avatar opens your account menu. New messages from Joshua surface here too.",
-    anchor: '[data-tour="foyer-dock"]',
+    anchor: '[data-tour="mainhub-dock"]',
     side: "bottom",
   },
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: LifeBuoy,
     eyebrow: "Quick dock",
     title: "Help, settings, and quick tools",
     body: "The floating dock at the bottom is your quick-launch row: settings, profile, schedule, inbox, and Help. Open Help to send Joshua a message or replay this tour.",
-    anchor: '[data-tour="foyer-quickdock"]',
+    anchor: '[data-tour="mainhub-quickdock"]',
     side: "top",
   },
   {
@@ -162,7 +162,7 @@ const ALL_STEPS: Step[] = [
     requires: "has_schedule_access",
   },
   {
-    path: "/foyer",
+    path: "/mainhub",
     icon: Rocket,
     eyebrow: "Ready",
     title: "You're all set",
@@ -329,7 +329,7 @@ export default function GuidedTour() {
 
   const finishPath = React.useMemo(() => {
     if (perms.is_admin || perms.has_practice_access) return "/practice";
-    return "/foyer";
+    return "/mainhub";
   }, [perms]);
 
   React.useEffect(() => {

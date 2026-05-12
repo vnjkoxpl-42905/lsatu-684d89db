@@ -10,7 +10,7 @@ import { useOrbitalActive } from '@/contexts/OrbitalActiveContext';
 import { ConversationView } from '@/components/inbox/ConversationView';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const STORAGE_KEY = 'foyer-chat.open';
+const STORAGE_KEY = 'mainhub-chat.open';
 
 function readPersistedOpen(): boolean {
   if (typeof window === 'undefined') return false;
@@ -30,7 +30,7 @@ function writePersistedOpen(open: boolean) {
   }
 }
 
-export default function FoyerFloatingChat() {
+export default function MainhubFloatingChat() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const { has_chat_access, is_admin, loading: permsLoading } = useUserPermissions();
@@ -105,7 +105,7 @@ export default function FoyerFloatingChat() {
       <AnimatePresence>
         {open && (
           <motion.div
-            key="foyer-chat-panel"
+            key="mainhub-chat-panel"
             role="dialog"
             aria-label="Chat with Joshua"
             initial={reducedMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}

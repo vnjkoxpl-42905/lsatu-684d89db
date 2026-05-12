@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
-export interface FoyerSidebarProps {
+export interface MainhubSidebarProps {
   displayName?: string | null;
 }
 
@@ -32,7 +32,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 
 const today = format(new Date(), "EEEE, MMMM d");
 
-export default function FoyerSidebar(_props: FoyerSidebarProps) {
+export default function MainhubSidebar(_props: MainhubSidebarProps) {
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
 

@@ -6,7 +6,7 @@ import { questionBank } from "@/lib/questionLoader";
 import { cn } from "@/lib/utils";
 
 /**
- * Multi-select question picker adapted from FoyerFindCard.
+ * Multi-select question picker adapted from MainhubFindCard.
  * Test and Section remain single-select. Question tier is an "Add" action
  * that pushes the picked qid into the parent-held array. Selection order is
  * preserved. Each chip has a per-chip remove button.

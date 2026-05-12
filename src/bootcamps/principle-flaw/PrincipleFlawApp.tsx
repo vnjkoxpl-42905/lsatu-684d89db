@@ -8,7 +8,7 @@
  *     to absolute inside the bootcamp container so it doesn't bleed into the
  *     rest of the app).
  *   - Mobile bottom nav is suppressed in favor of LSAT U's existing chrome
- *     (the host page provides the global Return-to-Foyer header).
+ *     (the host page provides the global Return-to-Mainhub header).
  *   - All localStorage keys are namespaced under `pf:` (see lib/streak,
  *     components/*, etc.).
  */

@@ -40,7 +40,7 @@ function typeIcon(type: NotificationType): ReactNode {
   }
 }
 
-// Mirrors the magnify-on-hover DockItem in FoyerDock.tsx exactly. We re-build
+// Mirrors the magnify-on-hover DockItem in MainhubDock.tsx exactly. We re-build
 // the motion wrapper here instead of importing because the Bell needs to be
 // the Popover anchor — the PopoverTrigger replaces the DockItem's <button>.
 interface Props {

@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import FoyerSidebar from "@/components/foyer/FoyerSidebar";
-import FoyerDock from "@/components/foyer/FoyerDock";
-import FoyerAccountButton from "@/components/foyer/FoyerAccountButton";
-import FoyerFindCard from "@/components/foyer/FoyerFindCard";
-import FoyerFloatingChat from "@/components/foyer/FoyerFloatingChat";
+import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
+import MainhubDock from "@/components/mainhub/MainhubDock";
+import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
+import MainhubFindCard from "@/components/mainhub/MainhubFindCard";
+import MainhubFloatingChat from "@/components/mainhub/MainhubFloatingChat";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
-import HelpDialog from "@/components/foyer/HelpDialog";
-import { hasSeenTour, startTour } from "@/components/foyer/GuidedTour";
+import HelpDialog from "@/components/mainhub/HelpDialog";
+import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 import { openWhiteboard } from "@/components/whiteboard/whiteboardBus";
 import { openTAWidget } from "@/components/ta/taWidgetBus";
 import { openNotifications } from "@/components/notifications/notificationsBus";
@@ -82,7 +82,7 @@ const ORBITAL_RENDER: Record<string, OrbitalRenderInfo> = {
   },
 };
 
-export default function AcademyFoyer() {
+export default function AcademyMainhub() {
   const navigate = useNavigate();
   const { user, authReady } = useAuth();
   const perms = useUserPermissions();
@@ -123,7 +123,7 @@ export default function AcademyFoyer() {
     (item: CatalogItem) => {
       // Optimistic during perm load: useUserPermissions refetches per mount,
       // taking 1-3s. The orbital is a nav surface; ProtectedRoute gates the
-      // actual route. Optimism here keeps the foyer from staying blank.
+      // actual route. Optimism here keeps the mainhub from staying blank.
       if (perms.loading) return true;
       if (item.adminOnly) return perms.is_admin;
       if (item.requires) return perms.is_admin || !!perms[item.requires as PermissionFlag];
@@ -132,7 +132,7 @@ export default function AcademyFoyer() {
     [perms],
   );
 
-  const foyerNodes: TimelineItem[] = React.useMemo(() => {
+  const mainhubNodes: TimelineItem[] = React.useMemo(() => {
     return prefs.orbital
       .map((id) => {
         const cat = findCatalogItem(ORBITAL_CATALOG, id);
@@ -190,7 +190,7 @@ export default function AcademyFoyer() {
         navigate(route ?? "/bootcamps");
       } else if (itemId === "find") {
         // Find is a content-overlay node — single click opens the inline
-        // FoyerFindCard via renderOrbitalExpanded. Double-click on Find is
+        // MainhubFindCard via renderOrbitalExpanded. Double-click on Find is
         // intentionally a no-op so the overlay doesn't navigate away.
       }
     },
@@ -207,7 +207,7 @@ export default function AcademyFoyer() {
     (item: TimelineItem, close: () => void) => {
       if (item.variant !== FINDER_VARIANT) return null;
       return (
-        <FoyerFindCard
+        <MainhubFindCard
           onOpen={(qid) =>
             navigate("/drill", {
               state: {
@@ -234,11 +234,11 @@ export default function AcademyFoyer() {
   return (
     <div className="relative flex h-[100dvh] w-full overflow-hidden bg-background text-foreground">
       <aside
-        data-tour="foyer-sidebar"
+        data-tour="mainhub-sidebar"
         className="hidden shrink-0 border-r border-border md:flex"
         style={{ width: "min(320px, 30vw)", minWidth: 280 }}
       >
-        <FoyerSidebar displayName={displayName} />
+        <MainhubSidebar displayName={displayName} />
       </aside>
 
       <Sheet>
@@ -249,37 +249,37 @@ export default function AcademyFoyer() {
           <Menu className="h-5 w-5" />
         </SheetTrigger>
         <SheetContent side="left" className="w-[320px] p-0">
-          <FoyerSidebar displayName={displayName} />
+          <MainhubSidebar displayName={displayName} />
         </SheetContent>
       </Sheet>
 
       <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
-          <div data-tour="foyer-dock" className="pointer-events-auto flex items-center gap-2">
-            <FoyerDock />
-            <FoyerAccountButton displayName={displayName} />
+          <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
+            <MainhubDock />
+            <MainhubAccountButton displayName={displayName} />
           </div>
         </div>
         <div
-          data-tour="foyer-orbital"
+          data-tour="mainhub-orbital"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full"
         >
           <RadialOrbitalTimeline
-            timelineData={foyerNodes}
+            timelineData={mainhubNodes}
             onActivate={onOrbitalActivate}
             renderExpandedContent={renderOrbitalExpanded}
           />
         </div>
 
-        <FoyerQuickDock />
+        <MainhubQuickDock />
       </main>
 
-      <FoyerFloatingChat />
+      <MainhubFloatingChat />
     </div>
   );
 }
 
-function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
+function MainhubQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
   const navigate = useNavigate();
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
@@ -338,7 +338,7 @@ function FoyerQuickDock({ onReplayTour }: { onReplayTour?: () => void }) {
     <>
       {items.length > 0 && (
         <div
-          data-tour="foyer-quickdock"
+          data-tour="mainhub-quickdock"
           className="pointer-events-none absolute inset-x-0 bottom-10 flex justify-center"
         >
           <div className="pointer-events-auto">

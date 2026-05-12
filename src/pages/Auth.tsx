@@ -60,7 +60,7 @@ const CTAButton = ({
 // Mirrors arc.net's chromatic restraint, 7-color budget, soft-pill CTAs,
 // flat material, type-as-hero, horizontal proof carousel, looping marquee
 // of subject signals. All copy, content, and meaning are LSAT U's own.
-// No screenshots, no Foyer imagery, no orbital system, no placeholders.
+// No screenshots, no Mainhub imagery, no orbital system, no placeholders.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ARC = {
@@ -843,7 +843,7 @@ export default function Auth() {
   useScrollReveal();
 
   // ── skipAutoRedirectRef: set synchronously in handleSubmit so the user-watcher
-  // useEffect never fires navigate('/foyer') while we're in the post-login async block.
+  // useEffect never fires navigate('/mainhub') while we're in the post-login async block.
   const skipAutoRedirectRef = React.useRef(false);
 
   // ── Forgot password state ──

@@ -171,7 +171,7 @@ export default function Practice() {
     }
   }, [user, authReady, navigate]);
 
-  // Source of truth for the greeting is profiles.display_name (Foyer's
+  // Source of truth for the greeting is profiles.display_name (Mainhub's
   // canonical name), not user_metadata which can lag.
   React.useEffect(() => {
     if (!user) return;
@@ -351,7 +351,7 @@ export default function Practice() {
               <DropdownMenuItem onSelect={() => navigate('/profile')}>
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => navigate('/foyer')}>
+              <DropdownMenuItem onSelect={() => navigate('/mainhub')}>
                 Main Hub
               </DropdownMenuItem>
               {perms.has_analytics_access && (

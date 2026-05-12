@@ -39,7 +39,7 @@ export function LeftRail(): JSX.Element {
     >
       <div className="px-5 pt-7 pb-6">
         <Link
-          to="/foyer"
+          to="/mainhub"
           className={cn(
             'mb-4 inline-flex items-center gap-1.5 rounded-3 px-2 py-1 -ml-2',
             'font-mc-mono text-label uppercase tracking-wider text-ink-faint',

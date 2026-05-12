@@ -29,7 +29,7 @@ export default function TeachingLibrary() {
   // Hard admin gate at the page level. has_ta_access flag acts as a secondary
   // switch but the feature itself is admin-only per the brief.
   useEffect(() => {
-    if (!loading && !is_admin) navigate("/foyer", { replace: true });
+    if (!loading && !is_admin) navigate("/mainhub", { replace: true });
   }, [loading, is_admin, navigate]);
 
   if (loading || !is_admin) {

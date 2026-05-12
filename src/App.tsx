@@ -13,7 +13,7 @@ import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
 import Practice from "./pages/Practice";
-import AcademyFoyer from "./pages/AcademyFoyer";
+import AcademyMainhub from "./pages/AcademyMainhub";
 import Drill from "./pages/Drill";
 import WrongAnswerJournal from "./pages/WrongAnswerJournal";
 import FlaggedQuestions from "./pages/FlaggedQuestions";
@@ -71,7 +71,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
-import GuidedTour from "./components/foyer/GuidedTour";
+import GuidedTour from "./components/mainhub/GuidedTour";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
 // React root is remounting (e.g. from a service-worker replace) vs its child
@@ -106,10 +106,12 @@ const App = () => {
             {/* Onboarding — username setup for new users */}
             <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Foyer — needs QuestionBankProvider for the FIND node's picker */}
-            <Route path="/foyer" element={
-              <QuestionBankProvider><AcademyFoyer /></QuestionBankProvider>
+            {/* Mainhub — needs QuestionBankProvider for the FIND node's picker */}
+            <Route path="/mainhub" element={
+              <QuestionBankProvider><AcademyMainhub /></QuestionBankProvider>
             } />
+            {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
+            <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
 
             {/* Admin Dashboard — no question bank needed */}
             <Route path="/admin" element={
@@ -203,7 +205,7 @@ const App = () => {
             <Route path="/*" element={
               <QuestionBankProvider>
                 <Routes>
-                  <Route path="/" element={<Navigate to="/foyer" replace />} />
+                  <Route path="/" element={<Navigate to="/mainhub" replace />} />
                   <Route path="/practice" element={
                     <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
                   } />

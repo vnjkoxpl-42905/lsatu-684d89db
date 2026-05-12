@@ -10,17 +10,17 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useInbox } from "@/hooks/useInbox";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import InboxPreviewCard from "@/components/foyer/InboxPreviewCard";
+import InboxPreviewCard from "@/components/mainhub/InboxPreviewCard";
 
 // Mirrors the magnify-on-hover DockItem pattern used by NotificationBell.
-// Lives in the top-right Foyer cluster (FoyerDock) and opens a small inbox
+// Lives in the top-right Mainhub cluster (MainhubDock) and opens a small inbox
 // preview popover. Distinct from the bottom-right FloatingMessenger, which
 // is the compact chat widget.
 interface Props {
   mouseX: MotionValue<number>;
 }
 
-export default function FoyerChatButton({ mouseX }: Props) {
+export default function MainhubChatButton({ mouseX }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { conversations, unreadCount } = useInbox();
   const { has_chat_access, is_admin, loading } = useUserPermissions();

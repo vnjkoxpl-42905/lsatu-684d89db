@@ -7,8 +7,8 @@
 //                                          right-24 z-40; Messenger here would
 //                                          stack against it.
 //
-// Foyer behavior: visible by default; hidden only while a node is in the
-// expanded state on /foyer (via useOrbitalActive) so the Find overlay and
+// Mainhub behavior: visible by default; hidden only while a node is in the
+// expanded state on /mainhub (via useOrbitalActive) so the Find overlay and
 // the messenger panel don't compete.
 
 import { useEffect, useMemo, useState } from 'react';
@@ -29,7 +29,7 @@ import { NewConversationDialog } from './NewConversationDialog';
 import { StudentEmptyState } from './StudentEmptyState';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 
-const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/foyer'];
+const HIDDEN_ROUTES = ['/auth', '/onboarding', '/inbox', '/reset-password', '/admin/ta', '/teacher', '/drill', '/mainhub'];
 
 export function FloatingMessenger() {
   const location = useLocation();
@@ -85,10 +85,10 @@ export function FloatingMessenger() {
     (r) => location.pathname === r || location.pathname.startsWith(`${r}/`),
   );
   if (pathHidden) return null;
-  const onFoyer = location.pathname.startsWith('/foyer');
-  // On /foyer, defer to the orbital while a node is in the expanded state so
+  const onMainhub = location.pathname.startsWith('/mainhub');
+  // On /mainhub, defer to the orbital while a node is in the expanded state so
   // the Find overlay and the messenger panel don't compete for attention.
-  if (onFoyer && orbitalActive) return null;
+  if (onMainhub && orbitalActive) return null;
 
   const openFullInbox = () => {
     setOpen(false);

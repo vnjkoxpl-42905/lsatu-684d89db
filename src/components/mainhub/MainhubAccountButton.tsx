@@ -28,11 +28,11 @@ function titleCase(s: string): string {
     .join(" ");
 }
 
-export interface FoyerAccountButtonProps {
+export interface MainhubAccountButtonProps {
   displayName?: string | null;
 }
 
-export default function FoyerAccountButton({ displayName }: FoyerAccountButtonProps) {
+export default function MainhubAccountButton({ displayName }: MainhubAccountButtonProps) {
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const navigate = useNavigate();

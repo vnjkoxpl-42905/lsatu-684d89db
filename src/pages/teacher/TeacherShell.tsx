@@ -28,7 +28,7 @@ export default function TeacherShell() {
   const { is_admin, loading } = useUserPermissions();
 
   useEffect(() => {
-    if (!loading && !is_admin) navigate('/foyer', { replace: true });
+    if (!loading && !is_admin) navigate('/mainhub', { replace: true });
   }, [loading, is_admin, navigate]);
 
   if (loading || !is_admin) {
@@ -41,7 +41,7 @@ export default function TeacherShell() {
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
           <button
             type="button"
-            onClick={() => navigate('/foyer')}
+            onClick={() => navigate('/mainhub')}
             className="text-zinc-400 hover:text-zinc-100 inline-flex items-center text-sm transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1.5" />

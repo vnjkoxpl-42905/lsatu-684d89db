@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Admin user id (Joshua). The product rule is 1:1 per student with the admin,
 // so the "Ask Joshua" entry point always targets this user. Kept as a const
-// instead of a user_roles lookup to avoid an extra round-trip on every foyer
+// instead of a user_roles lookup to avoid an extra round-trip on every mainhub
 // click — the id is stable in this deployment.
 export const ADMIN_USER_ID = "5ff160ef-016e-4ab5-aab1-55c7a2ad888f";
 

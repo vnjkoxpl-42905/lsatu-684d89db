@@ -64,7 +64,7 @@ export default function Classroom() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/foyer')}
+            onClick={() => navigate('/mainhub')}
             className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-1.5" />

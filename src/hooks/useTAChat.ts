@@ -56,7 +56,7 @@ export function useTAChat(studentId: string | null) {
   });
 
   // Realtime: INSERT events on this student's interactions. Both /admin/ta and
-  // the Foyer widget subscribe so edits in one surface reconcile the other.
+  // the Mainhub widget subscribe so edits in one surface reconcile the other.
   useEffect(() => {
     if (!studentId) return;
     const channel = supabase

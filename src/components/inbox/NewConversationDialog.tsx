@@ -25,7 +25,7 @@ export function NewConversationDialog({
   onCreated: (conversationId: string) => void;
   showTrigger?: boolean;
   // When this changes to a truthy string, the dialog opens with the recipient
-  // preselected. Used for cross-surface entry points like Foyer "Ask Joshua".
+  // preselected. Used for cross-surface entry points like Mainhub "Ask Joshua".
   autoOpenWith?: string | null;
   onAutoOpenHandled?: () => void;
 }) {
