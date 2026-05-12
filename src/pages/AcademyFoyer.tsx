@@ -271,6 +271,7 @@ export default function AcademyFoyer() {
           />
         </div>
 
+        <FoyerQuickDock />
       </main>
 
       <FoyerFloatingChat />
