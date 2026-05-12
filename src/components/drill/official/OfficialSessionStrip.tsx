@@ -13,6 +13,8 @@ interface Props {
   /** When true, show a "Show Answer" pill button (typically when an answer is selected and not yet revealed). */
   showAnswerVisible?: boolean;
   onShowAnswer?: () => void;
+  /** Noun used in pause/complete labels: "Section" (default) or "Question". */
+  pauseNoun?: string;
 }
 
 /**
@@ -26,6 +28,7 @@ export default function OfficialSessionStrip({
   onComplete,
   showAnswerVisible,
   onShowAnswer,
+  pauseNoun = "Section",
 }: Props) {
   return (
     <div className="flex items-center justify-between gap-4 w-full text-[14px]">
@@ -75,7 +78,7 @@ export default function OfficialSessionStrip({
             onClick={onTogglePause}
             className="rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-blue-900 px-5 py-1.5 text-[13px] font-medium transition-colors"
           >
-            {isPaused ? "Resume Section" : "Pause Section"}
+            {isPaused ? `Resume ${pauseNoun}` : `Pause ${pauseNoun}`}
           </button>
         )}
         {onComplete && (

@@ -2067,6 +2067,7 @@ function DrillContent() {
         <OfficialDrillFrame
           isPaused={!!timer?.isPaused}
           onResume={timer?.resume}
+          pauseNoun={isFullSection ? 'Section' : 'Question'}
           header={
             <OfficialSessionStrip
               breadcrumbs={[
@@ -2087,6 +2088,7 @@ function DrillContent() {
               ]}
               isPaused={!!timer?.isPaused}
               onTogglePause={handleTogglePauseClick}
+              pauseNoun={isFullSection ? 'Section' : 'Question'}
               onComplete={session.mode === 'adaptive' ? undefined : handleFinishSection}
               showAnswerVisible={
                 session.mode === 'adaptive' &&

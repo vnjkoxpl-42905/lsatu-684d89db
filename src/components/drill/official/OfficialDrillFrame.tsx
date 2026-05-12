@@ -10,6 +10,8 @@ interface Props {
   isPaused?: boolean;
   /** Resume handler invoked from the overlay button. */
   onResume?: () => void;
+  /** Noun used in the paused modal copy: "Section" (default) or "Question". */
+  pauseNoun?: string;
 }
 
 /**
@@ -17,7 +19,7 @@ interface Props {
  * white "paper" card. When `isPaused` is true, the card is blurred/dimmed
  * and a centered modal blocks all interaction until Resume is clicked.
  */
-export default function OfficialDrillFrame({ header, children, isPaused, onResume }: Props) {
+export default function OfficialDrillFrame({ header, children, isPaused, onResume, pauseNoun = "Section" }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
   const welcomeName = rawName && rawName.length > 0 ? rawName.split(/\s+/)[0] : "Joshua";
@@ -61,13 +63,13 @@ export default function OfficialDrillFrame({ header, children, isPaused, onResum
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Section paused"
+            aria-label={`${pauseNoun} paused`}
             className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           >
             <div className="bg-white rounded-md shadow-2xl border border-slate-200 px-10 py-8 max-w-md w-[92%] text-center">
-              <h2 className="text-[20px] font-semibold text-slate-900 mb-2">Section Paused</h2>
+              <h2 className="text-[20px] font-semibold text-slate-900 mb-2">{pauseNoun} Paused</h2>
               <p className="text-[14px] text-slate-600 mb-6">
-                The timer is paused. Click Resume to continue your section.
+                The timer is paused. Click Resume to continue your {pauseNoun.toLowerCase()}.
               </p>
               <button
                 type="button"
