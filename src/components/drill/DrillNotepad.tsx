@@ -66,11 +66,18 @@ export default function DrillNotepad() {
           style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
         >
           <div className="flex items-center justify-between px-3 py-2 border-b border-slate-200 bg-slate-50">
-            <div className="flex items-center gap-2 text-[13px] font-semibold text-slate-800">
-              <NotebookPen className="h-4 w-4" />
-              Notepad
+            <div className="flex items-center gap-2 text-[13px] font-semibold text-slate-800 min-w-0">
+              <NotebookPen className="h-4 w-4 shrink-0" />
+              <span className="truncate">
+                Notepad
+                {qid && (
+                  <span className="ml-1.5 font-normal text-slate-500">
+                    · this question
+                  </span>
+                )}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setValue("")}
@@ -92,7 +99,11 @@ export default function DrillNotepad() {
           <textarea
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Jot down notes for this question…"
+            placeholder={
+              qid
+                ? "Notes for this question (auto-saved)…"
+                : "Jot down notes (auto-saved)…"
+            }
             className={cn(
               "flex-1 w-full resize-none px-3 py-2 text-[14px] leading-relaxed",
               "text-slate-900 placeholder:text-slate-400 bg-white",
