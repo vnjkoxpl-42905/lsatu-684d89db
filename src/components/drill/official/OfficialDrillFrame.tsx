@@ -1,6 +1,7 @@
 import * as React from "react";
 import { HelpCircle, Play } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import DrillNotepad from "@/components/drill/DrillNotepad";
 
 interface Props {
   header?: React.ReactNode;
