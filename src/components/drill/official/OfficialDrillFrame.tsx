@@ -81,6 +81,7 @@ export default function OfficialDrillFrame({ header, children, isPaused, onResum
           </div>
         )}
       </main>
+      {!isPaused && <DrillNotepad />}
     </div>
   );
 }
