@@ -25,6 +25,7 @@ import {
   XCircle,
   Flag,
   ArrowRight,
+  ArrowLeft,
   Bookmark,
   Play,
 } from 'lucide-react';
