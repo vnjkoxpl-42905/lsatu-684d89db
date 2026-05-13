@@ -19,6 +19,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
+import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -70,8 +71,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
   const [type, setType] = useState<ClassroomItem['type']>('homework');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [unlockAt, setUnlockAt] = useState('');
-  const [dueAt, setDueAt] = useState('');
+  const [unlockAt, setUnlockAt] = useState<Date | undefined>(undefined);
+  const [dueAt, setDueAt] = useState<Date | undefined>(undefined);
   const [homeworkSetId, setHomeworkSetId] = useState<string>('');
   const [bootcampId, setBootcampId] = useState<string>(BOOTCAMPS[0].id);
   const [homeworkSets, setHomeworkSets] = useState<HomeworkSetRow[]>([]);
@@ -86,8 +87,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setTitle('');
     setDescription('');
     setHomeworkSetId('');
-    setUnlockAt('');
-    setDueAt('');
+    setUnlockAt(undefined);
+    setDueAt(undefined);
   }, [studentId]);
 
   useEffect(() => {
@@ -148,8 +149,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setTitle('');
     setDescription('');
     setHomeworkSetId('');
-    setUnlockAt('');
-    setDueAt('');
+    setUnlockAt(undefined);
+    setDueAt(undefined);
   };
 
   const submit = async () => {
@@ -204,8 +205,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         type,
         title: title.trim(),
         description: description.trim() || undefined,
-        unlockAt: unlockAt ? new Date(unlockAt).toISOString() : null,
-        dueAt: dueAt ? new Date(dueAt).toISOString() : null,
+        unlockAt: unlockAt ? unlockAt.toISOString() : null,
+        dueAt: dueAt ? dueAt.toISOString() : null,
         sourceId,
         sourceTable,
         visibleToStudent: true,
@@ -375,24 +376,35 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         </div>
 
         {SCHEDULABLE_TYPES.has(type) && (
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label className="text-xs">Unlocks</Label>
-              <Input
-                type="datetime-local"
+          <div>
+            <Label className="text-xs">Schedule</Label>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <AssignmentDateField
+                label="Unlocks"
                 value={unlockAt}
-                onChange={(e) => setUnlockAt(e.target.value)}
-                className="mt-1"
+                onChange={(d) => {
+                  setUnlockAt(d);
+                  if (dueAt && dueAt < d) setDueAt(undefined);
+                }}
               />
-            </div>
-            <div>
-              <Label className="text-xs">Due</Label>
-              <Input
-                type="datetime-local"
+              <AssignmentDateField
+                label="Due"
                 value={dueAt}
-                onChange={(e) => setDueAt(e.target.value)}
-                className="mt-1"
+                minDate={unlockAt}
+                onChange={setDueAt}
               />
+              {(unlockAt || dueAt) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUnlockAt(undefined);
+                    setDueAt(undefined);
+                  }}
+                  className="text-[11px] text-zinc-500 hover:text-zinc-300 underline-offset-2 hover:underline"
+                >
+                  Clear
+                </button>
+              )}
             </div>
           </div>
         )}

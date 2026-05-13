@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Flame, Loader2, CalendarIcon } from 'lucide-react';
+import { Flame, Loader2 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from 'sonner';
 import HubStudentList from '@/components/hub/HubStudentList';
+import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
 import { useStudentClassroomItems } from '@/hooks/useClassroomItems';
 import {
   createClassroomItem,
@@ -19,7 +18,6 @@ import {
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOTCAMPS, type BootcampDef } from '@/lib/bootcamps';
-import { cn } from '@/lib/utils';
 
 const DEFAULT_DURATION_DAYS: Record<string, number> = {
   'principle-flaw': 14,
@@ -31,46 +29,6 @@ const DEFAULT_DURATION_DAYS: Record<string, number> = {
 function defaultEnd(bootcampId: string, start: Date): Date {
   const days = DEFAULT_DURATION_DAYS[bootcampId] ?? 7;
   return addDays(start, days - 1);
-}
-
-interface DatePickerInlineProps {
-  label: string;
-  value: Date | undefined;
-  onChange: (d: Date) => void;
-  minDate?: Date;
-  disabled?: boolean;
-}
-
-function DatePickerInline({ label, value, onChange, minDate, disabled }: DatePickerInlineProps) {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={disabled}
-          className={cn(
-            'h-8 px-2.5 gap-1.5 text-xs font-normal',
-            !value && 'text-muted-foreground',
-          )}
-        >
-          <CalendarIcon className="h-3.5 w-3.5" />
-          <span className="text-[10px] uppercase tracking-wider opacity-60">{label}</span>
-          <span>{value ? format(value, 'MMM d') : '—'}</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={value}
-          onSelect={(d) => d && onChange(d)}
-          disabled={minDate ? (d) => d < minDate : undefined}
-          initialFocus
-          className={cn('p-3 pointer-events-auto')}
-        />
-      </PopoverContent>
-    </Popover>
-  );
 }
 
 export default function TeacherBootcamps() {
@@ -232,7 +190,7 @@ export default function TeacherBootcamps() {
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
-                    <DatePickerInline
+                    <AssignmentDateField
                       label="Start"
                       value={start}
                       disabled={busy === b.id}
@@ -242,7 +200,7 @@ export default function TeacherBootcamps() {
                         if (assigned) updateDates(b, d, newEnd);
                       }}
                     />
-                    <DatePickerInline
+                    <AssignmentDateField
                       label="End"
                       value={end}
                       minDate={start}
