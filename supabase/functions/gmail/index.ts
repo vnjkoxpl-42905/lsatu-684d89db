@@ -164,11 +164,10 @@ Deno.serve(async (req) => {
       const raw = b64urlEncode(lines.join("\r\n"));
       const payload: any = { raw };
       if (threadId) payload.threadId = threadId;
-      const res = await fetch(`${GATEWAY}/users/me/messages/send`, {
+      const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/messages/send`, {
         method: "POST", headers: gHeaders, body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail send ${res.status}: ${JSON.stringify(data)}`);
+      if (!res.ok) throw new Error(`Gmail send ${res.status}: ${txt.slice(0, 300)}`);
       return new Response(JSON.stringify({ ok: true, message: data }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
