@@ -39,6 +39,14 @@ function extractBody(payload: any): { text: string; html: string } {
   return { text, html };
 }
 
+async function safeFetchJson(url: string, init?: RequestInit) {
+  const res = await fetch(url, init);
+  const txt = await res.text();
+  let data: any = null;
+  try { data = txt ? JSON.parse(txt) : null; } catch { /* non-JSON body */ }
+  return { res, data, txt };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
