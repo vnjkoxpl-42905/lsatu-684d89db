@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
+import { Download, ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -58,6 +58,44 @@ async function fetchPage(q: string, pageToken: string | null) {
   const json = await res.json();
   if (!json?.ok) throw new Error(json?.error ?? 'Failed to load Drive');
   return { files: (json.files ?? []) as DriveFile[], nextPageToken: (json.nextPageToken ?? null) as string | null };
+}
+
+async function downloadFile(file: DriveFile) {
+  const t = toast.loading(`Downloading ${file.name}…`);
+  try {
+    const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
+    url.searchParams.set('action', 'download');
+    url.searchParams.set('id', file.id);
+    const session = (await supabase.auth.getSession()).data.session;
+    const res = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Bearer ${session?.access_token ?? ''}`,
+        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      },
+    });
+    if (!res.ok) {
+      const errText = await res.text();
+      let msg = `Download failed (${res.status})`;
+      try { const j = JSON.parse(errText); if (j?.error) msg = j.error; } catch { /* ignore */ }
+      throw new Error(msg);
+    }
+    // Filename from Content-Disposition if present
+    const cd = res.headers.get('Content-Disposition') ?? '';
+    const m = cd.match(/filename="?([^"]+)"?/i);
+    const filename = m?.[1] ?? file.name;
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
+    toast.success(`Downloaded ${filename}`, { id: t });
+  } catch (e: any) {
+    toast.error(e?.message ?? 'Download failed', { id: t });
+  }
 }
 
 export function DrivePanel() {
