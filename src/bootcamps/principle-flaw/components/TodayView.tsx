@@ -16,6 +16,9 @@ import {
   dayPracticeCount,
 } from '../lib/dayQuestions';
 import { useBootcampProgress } from '@/hooks/useBootcampProgress';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRecentExposures } from '@/hooks/useRecentExposures';
+import { recordExposures } from '@/lib/questionExposure';
 
 const TOTAL_TASK_KEYS = ['open', 'read', 'do', 'review', 'log'];
 
@@ -96,6 +99,8 @@ export default function TodayView({
   };
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { excludedQids } = useRecentExposures(500);
   const dayTasks = dailyChecklists[day] || {};
   const isComplete = completedDays.includes(day);
 
@@ -104,10 +109,20 @@ export default function TodayView({
   const pCount = dayPracticeCount(day);
 
   const launchDrill = (kind: 'homework' | 'practice') => {
-    const qids = kind === 'homework' ? pickHomeworkForDay(day) : pickPracticeForDay(day);
+    const qids =
+      kind === 'homework'
+        ? pickHomeworkForDay(day, undefined, excludedQids)
+        : pickPracticeForDay(day, undefined, excludedQids);
     if (qids.length === 0) {
       toast.error("No questions match today's filters yet. Pick a different day or check back later.");
       return;
+    }
+    // Fire-and-forget exposure write so subsequent picks (Smart Drill, another
+    // bootcamp day) exclude what we're about to serve.
+    if (user?.id) {
+      recordExposures(user.id, qids).catch((e) =>
+        console.error('[TodayView] recordExposures failed', e),
+      );
     }
     navigate('/drill', {
       state: {

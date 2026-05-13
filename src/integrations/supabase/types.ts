@@ -2256,6 +2256,27 @@ export type Database = {
         }
         Relationships: []
       }
+      question_exposures: {
+        Row: {
+          id: string
+          user_id: string
+          question_id: string
+          shown_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          question_id: string
+          shown_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          question_id?: string
+          shown_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       students_safe: {

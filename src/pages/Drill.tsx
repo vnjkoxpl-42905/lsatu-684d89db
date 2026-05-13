@@ -40,6 +40,7 @@ import { captureTextSelection, replaceOverlappingHighlights, type Highlight, typ
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
 import { upsertLastActivity, type DrillSnapshot, type SectionSnapshot } from '@/lib/lastActivity';
+import { getRecentExposureSet, recordExposures } from '@/lib/questionExposure';
 import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -477,28 +478,64 @@ function DrillContent() {
     })();
   }, [user?.id, session?.mode, session?.currentIndex, session?.attempts.size, currentQuestion?.qid, currentQuestion?.pt, currentQuestion?.section, currentQuestion?.qnum, assignmentId]);
 
-  // Adaptive mode: select next question only when advanceToken changes
+  // Adaptive mode: select next question only when advanceToken changes.
+  // SELECTOR LAYER ONLY — no rendering changes. Pre-filters the question
+  // pool against the user's most-recent-500 exposures (Wave 3A), then writes
+  // the picked qid back to question_exposures so subsequent picks see it.
   React.useEffect(() => {
     if (!session || session.mode !== 'adaptive') return;
 
-    const allQuestions = questionBank.getAllQuestions();
-    const attemptRecords = Array.from(session.attempts.entries()).map(([qid, attempt]) => {
-      const q = questionBank.getQuestion(qid)!;
-      return {
-        qid,
-        correct: attempt.correct,
-        time_ms: attempt.timeMs,
-        qtype: q.qtype,
-        difficulty: q.difficulty,
-        timestamp: new Date(attempt.timestamp),
-      };
-    });
-    
-    const ability = adaptiveEngine.calculateAbility(attemptRecords);
-    const nextQuestion = adaptiveEngine.selectNextQuestion(allQuestions, ability, 0.15);
-    
-    setCurrentQuestion(nextQuestion);
-    resetPerQuestionState();
+    let cancelled = false;
+    (async () => {
+      let excludedQids = new Set<string>();
+      if (user?.id) {
+        try {
+          excludedQids = await getRecentExposureSet(user.id, 500);
+        } catch (e) {
+          console.error('[Drill] getRecentExposureSet failed; falling back to no exclusion', e);
+        }
+      }
+      if (cancelled) return;
+
+      const allQuestions = questionBank.getAllQuestions();
+      const eligibleByExposure = allQuestions.filter((q) => !excludedQids.has(q.qid));
+      // If every question is in the 500-window (small bank or test data), fall
+      // back to the full pool so adaptive can still pick something.
+      const eligible = eligibleByExposure.length > 0 ? eligibleByExposure : allQuestions;
+
+      const attemptRecords = Array.from(session.attempts.entries()).map(([qid, attempt]) => {
+        const q = questionBank.getQuestion(qid)!;
+        return {
+          qid,
+          correct: attempt.correct,
+          time_ms: attempt.timeMs,
+          qtype: q.qtype,
+          difficulty: q.difficulty,
+          timestamp: new Date(attempt.timestamp),
+        };
+      });
+
+      const ability = adaptiveEngine.calculateAbility(attemptRecords);
+      const nextQuestion = adaptiveEngine.selectNextQuestion(eligible, ability, 0.15);
+
+      if (cancelled) return;
+
+      setCurrentQuestion(nextQuestion);
+      resetPerQuestionState();
+
+      // Fire-and-forget exposure write. Service silently skips if the table
+      // isn't deployed yet; real errors log + continue (no toast on adaptive
+      // pick — would interrupt the student's flow).
+      if (user?.id && nextQuestion?.qid) {
+        recordExposures(user.id, [nextQuestion.qid]).catch((e) =>
+          console.error('[Drill] recordExposures failed', e),
+        );
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [advanceToken]);
 
   // Non-adaptive mode: load question based on session.currentIndex
