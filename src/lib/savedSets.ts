@@ -27,7 +27,7 @@ function isMissingRelationError(err: unknown): boolean {
 
 export async function listSavedSets(userId: string): Promise<SavedSetRow[]> {
   if (!userId) return [];
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("user_saved_sets")
     .select("id, user_id, name, filter_state, question_ids, created_at")
     .eq("user_id", userId)
@@ -46,7 +46,7 @@ export async function saveSet(userId: string, input: SaveSetInput): Promise<Save
   if (!userId) throw new Error("saveSet: userId required");
   if (!input.name.trim()) throw new Error("saveSet: name required");
   if (input.question_ids.length === 0) throw new Error("saveSet: question_ids required");
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("user_saved_sets")
     .insert({
       user_id: userId,
@@ -67,7 +67,7 @@ export async function saveSet(userId: string, input: SaveSetInput): Promise<Save
 
 export async function deleteSavedSet(setId: string): Promise<void> {
   if (!setId) throw new Error("deleteSavedSet: setId required");
-  const { error } = await supabase.from("user_saved_sets").delete().eq("id", setId);
+  const { error } = await (supabase as any).from("user_saved_sets").delete().eq("id", setId);
   if (error) {
     if (isMissingRelationError(error)) return;
     throw new Error(`deleteSavedSet failed: ${error.message}`);
@@ -76,7 +76,7 @@ export async function deleteSavedSet(setId: string): Promise<void> {
 
 export async function duplicateSavedSet(setId: string, newName?: string): Promise<SavedSetRow> {
   if (!setId) throw new Error("duplicateSavedSet: setId required");
-  const { data: existing, error: fetchErr } = await supabase
+  const { data: existing, error: fetchErr } = await (supabase as any)
     .from("user_saved_sets")
     .select("user_id, name, filter_state, question_ids")
     .eq("id", setId)
@@ -100,7 +100,7 @@ export async function duplicateSavedSet(setId: string, newName?: string): Promis
 export async function renameSavedSet(setId: string, newName: string): Promise<void> {
   if (!setId) throw new Error("renameSavedSet: setId required");
   if (!newName.trim()) throw new Error("renameSavedSet: name required");
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from("user_saved_sets")
     .update({ name: newName.trim() })
     .eq("id", setId);

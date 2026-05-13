@@ -61,7 +61,7 @@ export async function upsertLastActivity(
 ): Promise<void> {
   const activity_type: LastActivityType = snapshot.kind;
   const activity_id = activityIdFor(snapshot);
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from("user_last_activity")
     .upsert(
       {
@@ -85,7 +85,7 @@ export async function upsertLastActivity(
 // Returns null when the user has no recorded activity yet OR when the
 // table isn't deployed yet. Throws on real transport errors.
 export async function getLastActivity(userId: string): Promise<LastActivityRow | null> {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("user_last_activity")
     .select("user_id, activity_type, activity_id, state_snapshot, updated_at")
     .eq("user_id", userId)
