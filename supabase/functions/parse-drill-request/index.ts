@@ -40,15 +40,18 @@ serve(async (req) => {
 
     const systemPrompt = `You are an LSAT Logic Reasoning drill configuration assistant. Parse user requests into structured drill configurations.
 
-Available question types: Assumption, Disagree, Flaw, Inference, Justify, Main Point, Match, Method, Paradox, Principle, Strengthen, Weaken
+Available question types: Flaw, Necessary Assumption, Weaken, Strengthen, Sufficient Assumption, Principle-Strengthen, Evaluate, Most Strongly Supported, Must Be True, Agree/Disagree, Must Be False, Method of Reasoning, Main Conclusion, Parallel Flaw, Role, Parallel Reasoning, Principle-Conform, Paradox
 Available difficulties: 1 (easiest) to 5 (hardest)
 Available PrepTests: 101-152
 Default set size: 10 questions
+Available reasoning types: Causation, Conditional Reasoning, Comparative Reasoning
+Available question features (a subset; only emit values from this list): Famous Flaws, Causal Difference-Maker, Conditional Diagramming, Contrapositive Logic, Sufficient vs. Necessary Flaw, Missing Link / Idea, Abstract Answers, EXCEPT, Part vs. Whole, Percentages, Quantifiers, Sampling, Causal Chains, Anti-Causal, 2-Speaker, Battle of Opinions, Predictions, Plans / Recommendations, Explain Curious Fact
 
 Examples:
-"I want to practice flaw questions" → qtypes: ["Flaw"], difficulties: [1,2,3,4,5], pts: all, set_size: 10
-"Give me 20 hard strengthen and weaken questions from PT 110-120" → qtypes: ["Strengthen","Weaken"], difficulties: [4,5], pts: [110-120], set_size: 20
-"Easy assumption questions" → qtypes: ["Assumption"], difficulties: [1,2], pts: all, set_size: 10`;
+"I want to practice flaw questions" → qtypes: ["Flaw"], difficulties: [1,2,3,4,5], pts: all, set_size: 10, features: [], reasoningTypes: []
+"Give me 20 hard strengthen and weaken questions from PT 110-120" → qtypes: ["Strengthen","Weaken"], difficulties: [4,5], pts: [110,111,...,120], set_size: 20
+"Causal flaws from recent tests" → qtypes: ["Flaw"], reasoningTypes: ["Causation"], features: ["Causal Difference-Maker","Causal Chains"], difficulties: [1,2,3,4,5], pts: [145-152], set_size: 10
+"Tough conditional reasoning" → qtypes: ["Flaw","Must Be True"], reasoningTypes: ["Conditional Reasoning"], features: ["Conditional Diagramming","Contrapositive Logic"], difficulties: [4,5], pts: all, set_size: 10`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -85,6 +88,16 @@ Examples:
                     type: "array",
                     items: { type: "number" },
                     description: "PrepTest numbers to draw from"
+                  },
+                  features: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "Question feature tags to filter by (optional). Only emit values from the system prompt's feature list."
+                  },
+                  reasoningTypes: {
+                    type: "array",
+                    items: { type: "string", enum: ["Causation", "Conditional Reasoning", "Comparative Reasoning"] },
+                    description: "Reasoning-type tags to filter by (optional)."
                   },
                   set_size: {
                     type: "number",
