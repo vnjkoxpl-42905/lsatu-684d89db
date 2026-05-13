@@ -238,10 +238,7 @@ export function DrivePanel() {
       const { files, nextPageToken } = await fetchPage(q, null);
       setFiles(files);
       setNextPageToken(nextPageToken);
-      setSelected(new Set());
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Failed to load Drive');
-      setFiles([]);
+      // Selection intentionally preserved across refresh.
       setNextPageToken(null);
     } finally {
       setLoading(false);
