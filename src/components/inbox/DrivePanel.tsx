@@ -407,7 +407,7 @@ export function DrivePanel() {
       if (controller.signal.aborted) throw new DOMException('aborted', 'AbortError');
       triggerBlobDownload(zipBlob, zipName);
       toast.success(`Downloaded ${zipName} (${entries.length} files)`);
-      setSelected(new Set());
+      setSelected(new Map());
     } catch (e: any) {
       if (e?.name === 'AbortError') toast.message('Download cancelled');
       else toast.error(e?.message ?? 'Bulk download failed');
