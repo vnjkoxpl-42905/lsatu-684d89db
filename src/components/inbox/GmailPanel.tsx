@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Loader2, Mail, RefreshCw, Send } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, RefreshCw, Send, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -53,7 +53,7 @@ export function GmailPanel() {
 
   const list = useQuery({
     queryKey: ["gmail-threads"],
-    queryFn: () => gmailCall({ action: "list", q: "in:inbox", max: 25 }),
+    queryFn: () => gmailCall({ action: "list", q: "in:inbox", max: 50 }),
     refetchInterval: 60_000,
   });
 
@@ -169,25 +169,52 @@ export function GmailPanel() {
           <ul className="divide-y divide-border">
             {threads.map((t) => {
               const { name } = parseAddress(t.from);
+              const d = t.internalDate ? new Date(Number(t.internalDate)) : t.date ? new Date(t.date) : null;
+              const now = new Date();
+              const sameYear = d && d.getFullYear() === now.getFullYear();
+              const dateLabel = d
+                ? sameYear
+                  ? d.toLocaleDateString(undefined, { month: "short", day: "numeric" })
+                  : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })
+                : "";
               return (
                 <li key={t.id}>
                   <button
                     onClick={() => setActiveId(t.id)}
                     className={cn(
-                      "w-full text-left px-4 py-3 hover:bg-accent/40 transition-colors",
-                      t.unread && "bg-primary/5",
+                      "group w-full text-left pl-3 pr-4 py-2 hover:bg-accent/40 hover:shadow-sm transition-colors",
+                      "flex items-center gap-3 min-w-0",
+                      t.unread ? "bg-background" : "bg-muted/30",
                     )}
                   >
-                    <div className="flex items-baseline justify-between gap-2">
-                      <p className={cn("text-sm truncate", t.unread ? "font-semibold" : "font-medium")}>{name || "(unknown)"}</p>
-                      <p className="text-[10px] text-muted-foreground shrink-0">
-                        {t.internalDate ? new Date(Number(t.internalDate)).toLocaleDateString() : ""}
-                      </p>
-                    </div>
-                    <p className={cn("text-xs truncate mt-0.5", t.unread ? "text-foreground" : "text-muted-foreground")}>
-                      {t.subject || "(no subject)"}
-                    </p>
-                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{t.snippet}</p>
+                    <Star className="w-4 h-4 text-muted-foreground/40 shrink-0" aria-hidden />
+                    <span
+                      className={cn(
+                        "text-sm shrink-0 truncate w-[180px]",
+                        t.unread ? "font-bold text-foreground" : "font-normal text-foreground/80",
+                      )}
+                    >
+                      {name || "(unknown)"}
+                      {t.messageCount > 1 && (
+                        <span className="ml-1 text-xs text-muted-foreground">({t.messageCount})</span>
+                      )}
+                    </span>
+                    <span className="flex-1 min-w-0 truncate text-sm">
+                      <span className={cn(t.unread ? "font-semibold text-foreground" : "text-foreground/80")}>
+                        {t.subject || "(no subject)"}
+                      </span>
+                      {t.snippet ? (
+                        <span className="text-muted-foreground"> — {t.snippet}</span>
+                      ) : null}
+                    </span>
+                    <span
+                      className={cn(
+                        "text-xs shrink-0 tabular-nums",
+                        t.unread ? "font-semibold text-foreground" : "text-muted-foreground",
+                      )}
+                    >
+                      {dateLabel}
+                    </span>
                   </button>
                 </li>
               );
