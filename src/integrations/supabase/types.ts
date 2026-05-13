@@ -1051,6 +1051,86 @@ export type Database = {
           },
         ]
       }
+      messenger_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string
+          last_message_text: string | null
+          page_id: string
+          profile_pic: string | null
+          psid: string
+          unread_count: number
+          updated_at: string
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          last_message_text?: string | null
+          page_id: string
+          profile_pic?: string | null
+          psid: string
+          unread_count?: number
+          updated_at?: string
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          last_message_text?: string | null
+          page_id?: string
+          profile_pic?: string | null
+          psid?: string
+          unread_count?: number
+          updated_at?: string
+          user_name?: string | null
+        }
+        Relationships: []
+      }
+      messenger_messages: {
+        Row: {
+          attachments: Json | null
+          conversation_id: string
+          created_at: string
+          direction: string
+          id: string
+          mid: string | null
+          sent_by: string | null
+          text: string | null
+        }
+        Insert: {
+          attachments?: Json | null
+          conversation_id: string
+          created_at?: string
+          direction: string
+          id?: string
+          mid?: string | null
+          sent_by?: string | null
+          text?: string | null
+        }
+        Update: {
+          attachments?: Json | null
+          conversation_id?: string
+          created_at?: string
+          direction?: string
+          id?: string
+          mid?: string | null
+          sent_by?: string | null
+          text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messenger_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "messenger_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null
