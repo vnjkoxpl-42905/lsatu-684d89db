@@ -1170,7 +1170,7 @@ export const scheduleData = [
     focus: "Flaw Level 3",
     plainGoal: "Attack high-difficulty flaws and continue application.",
     open: ["flaw-packet", "principle-packet"],
-    read: ["flaw-notes-strategy"],
+    read: ["flaw-notes-advanced"],
     do: ["flaw-pm-3", "strengthen-app-hw"],
     review: [
       "Abstract match consistency",
@@ -1266,7 +1266,7 @@ export const scheduleData = [
     plainGoal: "Close out Level 4 and incorporate reading.",
     open: ["flaw-packet", "Schedule"],
     read: ["rc-structure-strategy"],
-    do: ["flaw-pm-3", "Redo 5 Flaw hard ones", "One untimed RC passage"],
+    do: ["Redo 5 Flaw hard ones", "One untimed RC passage"],
     review: [
       "Full argument mapping for RC",
       "Proof lines for every answer",
