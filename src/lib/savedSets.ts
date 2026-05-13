@@ -67,7 +67,7 @@ export async function saveSet(userId: string, input: SaveSetInput): Promise<Save
 
 export async function deleteSavedSet(setId: string): Promise<void> {
   if (!setId) throw new Error("deleteSavedSet: setId required");
-  const { error } = await supabase.from("user_saved_sets").delete().eq("id", setId);
+  const { error } = await (supabase as any).from("user_saved_sets").delete().eq("id", setId);
   if (error) {
     if (isMissingRelationError(error)) return;
     throw new Error(`deleteSavedSet failed: ${error.message}`);
