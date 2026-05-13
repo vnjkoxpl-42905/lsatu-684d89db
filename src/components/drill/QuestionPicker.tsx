@@ -30,6 +30,24 @@ import { useSavedSets } from '@/hooks/useSavedSets';
 import { Bookmark } from 'lucide-react';
 import { recordExposures } from '@/lib/questionExposure';
 
+// Item J — abbreviations for the table's Type pill so multi-word qtypes
+// stay on one line at a consistent height. Full name surfaces via title.
+const QTYPE_ABBREVIATIONS: Record<string, string> = {
+  'Necessary Assumption': 'Nec. Assumption',
+  'Sufficient Assumption': 'Suf. Assumption',
+  'Principle-Strengthen': 'Principle (S)',
+  'Principle-Conform': 'Principle (C)',
+  'Most Strongly Supported': 'MSS',
+  'Must Be True': 'Must Be True',
+  'Must Be False': 'Must Be False',
+  'Method of Reasoning': 'Method',
+  'Main Conclusion': 'Main Conc.',
+  'Parallel Reasoning': 'Parallel',
+  'Parallel Flaw': 'Parallel Flaw',
+  'Agree/Disagree': 'Agree/Disagr.',
+};
+const abbreviateQtype = (qtype: string): string => QTYPE_ABBREVIATIONS[qtype] ?? qtype;
+
 interface QuestionPickerProps {
   manifest: QuestionManifest;
   onStartDrill: (config: TypeDrillConfig) => void;
@@ -931,24 +949,6 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 className="pl-8"
               />
             </div>
-            
-            {/* Page Size */}
-            <Select
-              value={pageSize.toString()}
-              onValueChange={(value) => {
-                setPageSize(parseInt(value));
-                setCurrentPage(1);
-              }}
-            >
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">Show 10</SelectItem>
-                <SelectItem value="25">Show 25</SelectItem>
-                <SelectItem value="50">Show 50</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
           
           {/* Active Filters */}
@@ -1048,10 +1048,31 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         </Card>
       ) : (
         <>
-      {/* Results Info */}
-      <div className="mb-4 text-sm text-muted-foreground">
-        Showing {paginatedQuestions.length} of {totalCount} questions
-        {selectedQids.size > 0 && ` • ${selectedQids.size} selected`}
+      {/* Results header — Item J: groups page-size with the table not the filters. */}
+      <div className="mb-3 flex items-center justify-between gap-3 text-sm">
+        <div className="text-muted-foreground">
+          Showing <span className="font-medium text-foreground">{paginatedQuestions.length}</span>{' '}
+          of <span className="font-medium text-foreground">{totalCount}</span> questions
+          {selectedQids.size > 0 && (
+            <span className="text-foreground"> · {selectedQids.size} selected</span>
+          )}
+        </div>
+        <Select
+          value={pageSize.toString()}
+          onValueChange={(value) => {
+            setPageSize(parseInt(value));
+            setCurrentPage(1);
+          }}
+        >
+          <SelectTrigger className="w-28 h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="10">Show 10</SelectItem>
+            <SelectItem value="25">Show 25</SelectItem>
+            <SelectItem value="50">Show 50</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Results Table */}
@@ -1083,9 +1104,14 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 <TableHead>PT</TableHead>
                 <TableHead>Sec</TableHead>
                 <TableHead>Q#</TableHead>
-                <TableHead className="w-[300px]">Stem</TableHead>
-                <TableHead className="w-[180px]">Type</TableHead>
-                <TableHead>Difficulty</TableHead>
+                <TableHead className="w-[320px]">Stem</TableHead>
+                <TableHead className="w-[160px]">Type</TableHead>
+                <TableHead
+                  title="1 = easiest · 5 = hardest. Blue / green / yellow / orange / red."
+                  className="cursor-help"
+                >
+                  Difficulty
+                </TableHead>
                 <TableHead>Attempts</TableHead>
               </TableRow>
             </TableHeader>
@@ -1101,31 +1127,40 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <TableRow
                     key={q.qid}
                     className={cn(
-                      "cursor-pointer hover:bg-muted/50",
-                      selectedQids.has(q.qid) && "bg-primary/5"
+                      "h-12 cursor-pointer border-b border-border/50 transition-colors hover:bg-accent/40",
+                      selectedQids.has(q.qid) && "bg-primary/5 hover:bg-primary/10"
                     )}
                     onClick={() => setDrawerQid(q.qid)}
                   >
-                    <TableCell onClick={(e) => e.stopPropagation()}>
+                    <TableCell onClick={(e) => e.stopPropagation()} className="py-0">
                       <Checkbox
                         checked={selectedQids.has(q.qid)}
                         onCheckedChange={() => toggleQuestion(q.qid)}
                       />
                     </TableCell>
-                    <TableCell className="font-medium">{q.pt}</TableCell>
-                    <TableCell>{q.section}</TableCell>
-                    <TableCell>{q.qnum}</TableCell>
-                    <TableCell className="text-sm">{getStemPreview(q.questionStem)}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                        {q.qtype}
+                    <TableCell className="py-0 font-medium tabular-nums">{q.pt}</TableCell>
+                    <TableCell className="py-0 tabular-nums">{q.section}</TableCell>
+                    <TableCell className="py-0 tabular-nums">{q.qnum}</TableCell>
+                    <TableCell className="py-0 text-sm">
+                      <span className="block max-w-[300px] truncate" title={q.questionStem}>
+                        {getStemPreview(q.questionStem)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="py-0">
+                      <Badge
+                        variant="outline"
+                        title={q.qtype}
+                        className="h-6 px-2 text-[11px] font-medium whitespace-nowrap"
+                      >
+                        {abbreviateQtype(q.qtype)}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-0">
                       <Badge
                         variant="secondary"
+                        title={`Level ${q.difficulty} of 5`}
                         className={cn(
-                          "text-xs",
+                          "h-6 px-2 text-[11px] font-semibold tabular-nums",
                           q.difficulty === 5 && "bg-red-500/10 text-red-400",
                           q.difficulty === 4 && "bg-orange-500/10 text-orange-400",
                           q.difficulty === 3 && "bg-yellow-500/10 text-yellow-400",
@@ -1136,7 +1171,7 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                         {q.difficulty}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{q.attemptCount}</TableCell>
+                    <TableCell className="py-0 text-muted-foreground tabular-nums">{q.attemptCount}</TableCell>
                   </TableRow>
                 ))
               )}
@@ -1345,11 +1380,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                     <Button
                       onClick={handleGeneratePreview}
                       disabled={!canGenerate}
-                      className="w-full"
+                      className={cn(
+                        "w-full transition-all",
+                        canGenerate
+                          ? "shadow-sm hover:shadow-md hover:-translate-y-px"
+                          : "opacity-60 cursor-not-allowed hover:bg-primary",
+                      )}
                     >
                       {canGenerate
                         ? `Generate ${Math.min(setSize, filteredQuestions.length)}`
-                        : 'Generate Preview'}
+                        : 'Generate preview'}
                     </Button>
                     {generateHint && (
                       <div className="text-xs text-muted-foreground">{generateHint}</div>
