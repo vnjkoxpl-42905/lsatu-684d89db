@@ -13,10 +13,22 @@ import { cn } from '@/lib/utils';
 import type { TypeDrillConfig } from '@/types/drill';
 import type { QuestionManifest, LRQuestion } from '@/lib/questionLoader';
 import { questionBank, CANONICAL_QTYPES, shuffleArray } from '@/lib/questionLoader';
+import { FEATURE_FAMILIES } from '@/lib/questionFeatureFamilies';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useSavedSets } from '@/hooks/useSavedSets';
+import { Bookmark } from 'lucide-react';
+import { recordExposures } from '@/lib/questionExposure';
 
 interface QuestionPickerProps {
   manifest: QuestionManifest;
@@ -32,6 +44,7 @@ interface FilterState {
   sections: number[];
   difficulties: number[];
   searchQuery: string;
+  questionNumber: number | null; // Item D — direct jump-to-Q affordance
 }
 
 interface QuestionRow extends LRQuestion {
@@ -51,10 +64,16 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     sections: [],
     difficulties: [],
     searchQuery: '',
+    questionNumber: null,
   });
   
   // Selection state
   const [selectedQids, setSelectedQids] = useState<Set<string>>(new Set());
+
+  // Item N (Wave 4) — Save set dialog (used by both selection and preview branches)
+  const { save: saveSetMut } = useSavedSets();
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [saveDialogName, setSaveDialogName] = useState('');
   
   // Table state
   const [currentPage, setCurrentPage] = useState(1);
@@ -206,11 +225,22 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     }
 
     if (filters.searchQuery.trim()) {
+      // Item E (Wave 4): full-text substring over stimulus + stem + qid.
+      // Bank is fully in-browser, ~2500 questions × ~500 chars ≈ 1.25 MB.
+      // Substring match completes well under 50ms even on mobile.
       const query = filters.searchQuery.toLowerCase();
-      questions = questions.filter(q => 
+      questions = questions.filter(q =>
+        (q.stimulus ?? '').toLowerCase().includes(query) ||
         q.questionStem.toLowerCase().includes(query) ||
         q.qid.toLowerCase().includes(query)
       );
+    }
+
+    // Item D (Wave 4): Question Number filter. Combines with PT + Section
+    // for a direct jump; alone it filters any qnum across the bank.
+    if (filters.questionNumber !== null && Number.isFinite(filters.questionNumber)) {
+      const target = filters.questionNumber;
+      questions = questions.filter(q => q.qnum === target);
     }
     
     return {
@@ -319,7 +349,8 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
     filters.questionFeatures.length > 0 ||
     filters.sections.length > 0 ||
     filters.difficulties.length > 0 ||
-    filters.searchQuery.trim() !== '';
+    filters.searchQuery.trim() !== '' ||
+    filters.questionNumber !== null;
 
   // Materialize a fresh preview from the current filter pool
   const handleGeneratePreview = () => {
@@ -429,6 +460,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       sections: filters.sections.length > 0 ? [...filters.sections] : undefined,
       searchQuery: filters.searchQuery.trim() || undefined,
     };
+
+    // Wave 3 / Item A — record exposures for the questions we're about to
+    // serve so Smart Drill and the other generators exclude them from the
+    // user's recent-500 window.
+    if (user?.id && config.selectedQids && config.selectedQids.length > 0) {
+      recordExposures(user.id, config.selectedQids).catch((e) =>
+        console.error('[QuestionPicker] recordExposures failed', e),
+      );
+    }
 
     onStartDrill(config);
   };
@@ -545,7 +585,10 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
       {/* Filter Bar */}
       <Card className="p-4 mb-4">
         <div className="space-y-4">
-          {/* Filter Controls */}
+          {/* Filter Controls
+              Item D order: PrepTest → Section → Q# → Type → Reasoning →
+              Features → Levels → Search. Reordered from the legacy layout
+              (PT → Type → Reasoning → Features → Section → Levels → Search). */}
           <div className="flex flex-wrap gap-2 items-center">
             {/* PrepTest Filter */}
             <Popover>
@@ -573,7 +616,60 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </div>
               </PopoverContent>
             </Popover>
-            
+
+            {/* Section Filter (moved earlier per Item D) */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Section {filters.sections.length > 0 && `(${filters.sections.length})`}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56" align="start">
+                <div className="space-y-2">
+                  <div className="font-medium text-sm mb-2">Select Sections</div>
+                  {allSections.map((s) => (
+                    <div key={s} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`section-${s}`}
+                        checked={filters.sections.includes(s)}
+                        onCheckedChange={() => toggleFilter('sections', s)}
+                      />
+                      <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
+                        Section {s} ({manifest.bySection?.[s] || 0})
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Question Number Filter (Item D — new direct-jump affordance).
+                Combines with PT + Section to pinpoint a specific question;
+                alone it filters every qnum across the bank. */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-muted-foreground font-medium">Q#</span>
+              <Input
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={26}
+                value={filters.questionNumber ?? ''}
+                onChange={(e) => {
+                  const raw = e.target.value.trim();
+                  const parsed = raw === '' ? null : Number.parseInt(raw, 10);
+                  setFilters((prev) => ({
+                    ...prev,
+                    questionNumber: parsed !== null && Number.isFinite(parsed) ? parsed : null,
+                  }));
+                  setCurrentPage(1);
+                }}
+                placeholder="14"
+                className="h-9 w-20 px-2"
+                aria-label="Question number"
+              />
+            </div>
+
             {/* Question Type Filter */}
             <Popover>
               <PopoverTrigger asChild>
@@ -709,7 +805,12 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
               </PopoverContent>
             </Popover>
 
-            {/* Question Features Filter */}
+            {/* Question Features Filter (Item F — family-grouped accordion).
+                The 60 distinct feature tags are bucketed into 9 families
+                (see src/lib/questionFeatureFamilies.ts). Each family is a
+                collapsed disclosure; the family header shows the count of
+                selected features in that family. Search filters across all
+                families simultaneously. */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm">
@@ -717,69 +818,75 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 max-h-[500px] flex flex-col z-[1000] bg-popover" align="start">
+              <PopoverContent className="w-96 max-h-[520px] flex flex-col z-[1000] bg-popover" align="start">
                 <div className="space-y-3">
                   <div className="font-medium text-sm">Select Question Features</div>
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search..."
+                      placeholder="Search features..."
                       value={featureSearch}
                       onChange={(e) => setFeatureSearch(e.target.value)}
                       className="pl-8 h-9"
                     />
                   </div>
-                  <div className="space-y-2 max-h-[340px] overflow-y-auto">
-                    {allQuestionFeatures
-                      .filter((f) => {
+                  <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                    {FEATURE_FAMILIES.map((family) => {
+                      // Apply search + zero-count filtering family-locally
+                      const visibleFeatures = family.features.filter((f) => {
                         const count = getFeatureCount(f);
                         if (count === 0) return false;
                         if (!featureSearch) return true;
-                        return f.toLowerCase().includes(featureSearch.toLowerCase());
-                      })
-                      .map((f) => {
-                        const count = getFeatureCount(f);
                         return (
-                          <div key={f} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`feat-${f}`}
-                              checked={filters.questionFeatures.includes(f)}
-                              onCheckedChange={() => toggleFilter('questionFeatures', f)}
-                            />
-                            <label htmlFor={`feat-${f}`} className="text-sm cursor-pointer flex-1">
-                              {f} <span className="text-muted-foreground">({count})</span>
-                            </label>
-                          </div>
+                          f.toLowerCase().includes(featureSearch.toLowerCase()) ||
+                          family.label.toLowerCase().includes(featureSearch.toLowerCase())
                         );
-                      })}
+                      });
+                      if (visibleFeatures.length === 0) return null;
+                      const selectedCount = visibleFeatures.filter((f) =>
+                        filters.questionFeatures.includes(f),
+                      ).length;
+                      // Auto-expand if any feature in this family is selected
+                      // or the user has typed a search query.
+                      const defaultOpen = selectedCount > 0 || !!featureSearch;
+                      return (
+                        <details
+                          key={family.id}
+                          open={defaultOpen}
+                          className="group/family rounded-md border border-border bg-card/60"
+                        >
+                          <summary className="cursor-pointer list-none flex items-center justify-between gap-2 px-2.5 py-1.5 select-none">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground group-hover/family:text-foreground transition-colors">
+                              {family.label}
+                              {selectedCount > 0 && (
+                                <span className="ml-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+                                  {selectedCount}
+                                </span>
+                              )}
+                            </span>
+                            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground transition-transform group-open/family:rotate-180" />
+                          </summary>
+                          <div className="space-y-1.5 px-3 pt-1 pb-2">
+                            {visibleFeatures.map((f) => {
+                              const count = getFeatureCount(f);
+                              return (
+                                <div key={f} className="flex items-center space-x-2">
+                                  <Checkbox
+                                    id={`feat-${f}`}
+                                    checked={filters.questionFeatures.includes(f)}
+                                    onCheckedChange={() => toggleFilter('questionFeatures', f)}
+                                  />
+                                  <label htmlFor={`feat-${f}`} className="text-sm cursor-pointer flex-1">
+                                    {f} <span className="text-muted-foreground">({count})</span>
+                                  </label>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </details>
+                      );
+                    })}
                   </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            {/* Section Filter */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
-                  Section {filters.sections.length > 0 && `(${filters.sections.length})`}
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56" align="start">
-                <div className="space-y-2">
-                  <div className="font-medium text-sm mb-2">Select Sections</div>
-                  {allSections.map((s) => (
-                    <div key={s} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`section-${s}`}
-                        checked={filters.sections.includes(s)}
-                        onCheckedChange={() => toggleFilter('sections', s)}
-                      />
-                      <label htmlFor={`section-${s}`} className="text-sm cursor-pointer flex-1">
-                        Section {s} ({manifest.bySection?.[s] || 0})
-                      </label>
-                    </div>
-                  ))}
                 </div>
               </PopoverContent>
             </Popover>
@@ -893,12 +1000,60 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
         </div>
       </Card>
       
+      {/* Item L (Wave 4) — empty state until at least one filter is applied
+          OR rows are selected. Replaces the "25 of 3964" cold-start noise. */}
+      {!hasAnyFilter && selectedQids.size === 0 ? (
+        <Card className="mb-20 p-10 flex flex-col items-center text-center gap-4 border-dashed">
+          <div className="space-y-1.5">
+            <h3 className="text-lg font-semibold">Pick a filter to start building your set.</h3>
+            <p className="text-sm text-muted-foreground max-w-md">
+              The full bank is {totalCount.toLocaleString()} questions. Narrow it down by PT,
+              type, or difficulty — or jump in with one of the shortcuts below.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center pt-1">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (allPTs.length === 0) return;
+                const latest = Math.max(...allPTs);
+                setFilters((prev) => ({ ...prev, prepTests: [latest] }));
+                setCurrentPage(1);
+              }}
+            >
+              Latest PT
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFilters((prev) => ({ ...prev, questionTypes: ['Flaw'] }));
+                setCurrentPage(1);
+              }}
+            >
+              Flaw questions
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFilters((prev) => ({ ...prev, difficulties: [4, 5] }));
+                setCurrentPage(1);
+              }}
+            >
+              Hard only
+            </Button>
+          </div>
+        </Card>
+      ) : (
+        <>
       {/* Results Info */}
       <div className="mb-4 text-sm text-muted-foreground">
         Showing {paginatedQuestions.length} of {totalCount} questions
         {selectedQids.size > 0 && ` • ${selectedQids.size} selected`}
       </div>
-      
+
       {/* Results Table */}
       <Card className="flex-1 overflow-hidden flex flex-col mb-20">
         <div className="overflow-x-auto flex-1">
@@ -1016,10 +1171,15 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           </div>
         )}
       </Card>
-      
+      </>
+      )}
+
         </div>
 
-        {/* Right rail — sticky summary (lg+) */}
+        {/* Right rail — sticky summary (lg+).
+            Item G (Wave 4) — empty until a filter is applied, then renders
+            a tiered hierarchy: tier 1 composition headline (largest, gold),
+            tier 2 type + difficulty (body), tier 3 PT range + history (muted). */}
         <aside className="hidden lg:block">
           <div className="sticky top-4">
             <Card className="p-4 space-y-3">
@@ -1030,33 +1190,64 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                   ? 'Selection'
                   : 'Set Summary'}
               </div>
-              <div className="text-sm text-muted-foreground">
-                {summary.isFromSelection
-                  ? `${summary.total} selected`
-                  : summary.isFromPreview
-                  ? `${summary.total} ready to launch`
-                  : `${Math.min(setSize, summary.total)} / ${setSize} from pool of ${summary.total}`}
-              </div>
-              <div className="space-y-2 text-xs">
-                <div>
-                  <div className="text-muted-foreground mb-1">Question types</div>
-                  <div className="font-medium">{summary.qtypeMix}</div>
+
+              {!hasAnyFilter && !summary.isFromSelection && !summary.isFromPreview ? (
+                <div className="rounded-md bg-muted/30 px-3 py-4 text-xs text-muted-foreground leading-relaxed">
+                  Pick a filter to start summarizing your set. The composition,
+                  type mix, difficulty spread, and history will surface here.
                 </div>
-                <div>
-                  <div className="text-muted-foreground mb-1">Difficulty</div>
-                  <div className="font-medium">{summary.difficulty}</div>
-                </div>
-                <div>
-                  <div className="text-muted-foreground mb-1">PT range</div>
-                  <div className="font-medium">{summary.ptRange}</div>
-                </div>
-                <div>
-                  <div className="text-muted-foreground mb-1">History</div>
-                  <div className="font-medium">
-                    {summary.attempted} attempted · {summary.unseen} unseen
+              ) : (
+                <>
+                  {/* Tier 1: composition headline */}
+                  <div className="rounded-md bg-primary/[0.06] border border-primary/15 px-3 py-3">
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
+                      Composition
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-primary tabular-nums">
+                      {summary.isFromSelection
+                        ? `${summary.total} selected`
+                        : summary.isFromPreview
+                        ? `${summary.total} ready`
+                        : `${Math.min(setSize, summary.total)} / ${setSize}`}
+                    </div>
+                    {!summary.isFromSelection && !summary.isFromPreview && (
+                      <div className="text-[11px] text-muted-foreground mt-0.5">
+                        from pool of {summary.total.toLocaleString()}
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
+
+                  {/* Tier 2: type + difficulty */}
+                  <div className="space-y-2 text-xs">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
+                        Question types
+                      </div>
+                      <div className="font-medium text-foreground">{summary.qtypeMix}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-1">
+                        Difficulty
+                      </div>
+                      <div className="font-medium text-foreground">{summary.difficulty}</div>
+                    </div>
+                  </div>
+
+                  {/* Tier 3: PT range + history */}
+                  <div className="space-y-1.5 text-[11px] text-muted-foreground pt-1 border-t border-border/60">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span>PT range</span>
+                      <span className="font-medium text-foreground/70 tabular-nums">{summary.ptRange}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span>History</span>
+                      <span className="font-medium text-foreground/70 tabular-nums">
+                        {summary.attempted} attempted · {summary.unseen} unseen
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
 
               {hasPreview && previewedQids && (
                 <div className="pt-2 border-t space-y-1">
@@ -1104,13 +1295,35 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
                 </div>
 
                 {selectedQids.size > 0 ? (
-                  <Button onClick={handleLaunch} className="w-full">
-                    Launch ({selectedQids.size})
-                  </Button>
+                  <div className="space-y-2">
+                    <Button onClick={handleLaunch} className="w-full">
+                      Launch ({selectedQids.size})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setSaveDialogName('');
+                        setSaveDialogOpen(true);
+                      }}
+                      className="w-full gap-2"
+                    >
+                      <Bookmark className="h-3.5 w-3.5" aria-hidden /> Save set
+                    </Button>
+                  </div>
                 ) : hasPreview ? (
                   <div className="space-y-2">
                     <Button onClick={handleLaunch} className="w-full">
                       Launch this set ({previewedQids!.length})
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setSaveDialogName('');
+                        setSaveDialogOpen(true);
+                      }}
+                      className="w-full gap-2"
+                    >
+                      <Bookmark className="h-3.5 w-3.5" aria-hidden /> Save set
                     </Button>
                     <Button
                       variant="outline"
@@ -1352,6 +1565,96 @@ export function QuestionPicker({ manifest, onStartDrill, onCancel }: QuestionPic
           })()}
         </SheetContent>
       </Sheet>
+
+      {/* Item N (Wave 4) — Save Set dialog. Captures a name + persists the
+          current set's question_ids + filter_state to user_saved_sets via
+          the savedSets service. Saved sets surface in /practice/sets. */}
+      <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save this set</DialogTitle>
+            <DialogDescription>
+              Give your set a name. You'll find it under "My Sets" on the
+              Practice Hub.
+            </DialogDescription>
+          </DialogHeader>
+          <Input
+            value={saveDialogName}
+            onChange={(e) => setSaveDialogName(e.target.value)}
+            placeholder="e.g. PT 70-80 Hard Flaws"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                void (async () => {
+                  const name = saveDialogName.trim();
+                  if (!name) return;
+                  const ids = selectedQids.size > 0
+                    ? Array.from(selectedQids)
+                    : (previewedQids ?? []);
+                  if (ids.length === 0) {
+                    toast({ title: 'Nothing to save', description: 'Select or generate questions first.' });
+                    return;
+                  }
+                  try {
+                    await saveSetMut.mutateAsync({
+                      name,
+                      filter_state: filters as unknown as Record<string, unknown>,
+                      question_ids: ids,
+                    });
+                    toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
+                    setSaveDialogOpen(false);
+                    setSaveDialogName('');
+                  } catch (err) {
+                    toast({
+                      title: "Couldn't save set",
+                      description: err instanceof Error ? err.message : 'Unknown error',
+                      variant: 'destructive',
+                    });
+                  }
+                })();
+              }
+            }}
+          />
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setSaveDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!saveDialogName.trim() || saveSetMut.isPending}
+              onClick={async () => {
+                const name = saveDialogName.trim();
+                if (!name) return;
+                const ids = selectedQids.size > 0
+                  ? Array.from(selectedQids)
+                  : (previewedQids ?? []);
+                if (ids.length === 0) {
+                  toast({ title: 'Nothing to save', description: 'Select or generate questions first.' });
+                  return;
+                }
+                try {
+                  await saveSetMut.mutateAsync({
+                    name,
+                    filter_state: filters as unknown as Record<string, unknown>,
+                    question_ids: ids,
+                  });
+                  toast({ title: 'Set saved', description: `${name} is now in My Sets.` });
+                  setSaveDialogOpen(false);
+                  setSaveDialogName('');
+                } catch (err) {
+                  toast({
+                    title: "Couldn't save set",
+                    description: err instanceof Error ? err.message : 'Unknown error',
+                    variant: 'destructive',
+                  });
+                }
+              }}
+            >
+              {saveSetMut.isPending ? 'Saving…' : 'Save'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
