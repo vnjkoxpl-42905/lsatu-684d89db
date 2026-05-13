@@ -446,13 +446,24 @@ export function DrivePanel() {
       {files.length > 0 && (
         <div className="border-b border-border px-4 py-2 flex items-center gap-3 shrink-0 bg-muted/20">
           <Checkbox
-            checked={allSelected ? true : someSelected ? 'indeterminate' : false}
-            onCheckedChange={toggleSelectAll}
-            aria-label="Select all"
+            checked={allVisibleSelected ? true : someVisibleSelected ? 'indeterminate' : false}
+            onCheckedChange={toggleSelectAllVisible}
+            aria-label="Select all on this page"
           />
           <span className="text-xs text-muted-foreground">
-            {selected.size > 0 ? `${selected.size} selected` : `${allVisibleIds.length} files`}
+            {selected.size > 0 ? `${selected.size} selected` : `${visibleSelectable.length} files`}
           </span>
+          {selected.size > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+              onClick={clearSelection}
+            >
+              <X className="w-3 h-3 mr-0.5" />
+              Clear
+            </Button>
+          )}
           <div className="ml-auto">
             <Button
               size="sm"
