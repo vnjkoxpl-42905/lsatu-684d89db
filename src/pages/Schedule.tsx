@@ -33,6 +33,7 @@ import { LogoutButton } from '@/components/LogoutButton';
 import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
+import GoogleCalendarPanel from '@/components/schedule/GoogleCalendarPanel';
 
 type CalView = 'month' | 'week' | 'day';
 
