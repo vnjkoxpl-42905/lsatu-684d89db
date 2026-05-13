@@ -1,16 +1,18 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Save, PencilRuler, Loader2 } from 'lucide-react';
+import { Save, PencilRuler, Loader2, CheckCircle2 } from 'lucide-react';
 import '@excalidraw/excalidraw/index.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import HubStudentList from '@/components/hub/HubStudentList';
+import { useSmartboardSessions } from '@/hooks/useSmartboardSessions';
 import {
-  useSaveSmartboardSession,
-  useSmartboardSessions,
-} from '@/hooks/useSmartboardSessions';
+  useSmartboardAutosave,
+  type ExcalidrawSceneJson,
+} from '@/hooks/useSmartboardAutosave';
+import { formatDistanceToNowStrict } from 'date-fns';
 
 // Excalidraw is heavy; load only when this route mounts.
 const Excalidraw = lazy(() =>
@@ -23,9 +25,7 @@ export default function TeacherSmartboard() {
   const sessionParam = searchParams.get('session');
 
   const { data: sessions = [] } = useSmartboardSessions(studentId);
-  const save = useSaveSmartboardSession();
 
-  type ExcalidrawScene = { elements?: unknown[]; appState?: unknown; files?: unknown } | null;
   type ExcalidrawApi = {
     getSceneElements: () => unknown[];
     getAppState: () => unknown;
@@ -33,8 +33,8 @@ export default function TeacherSmartboard() {
   } | null;
 
   const [title, setTitle] = useState('Smartboard session');
-  const [scene, setScene] = useState<ExcalidrawScene>(null);
-  const [api, setApi] = useState<ExcalidrawApi>(null);
+  const [scene, setScene] = useState<ExcalidrawSceneJson | null>(null);
+  const apiRef = useRef<ExcalidrawApi>(null);
 
   // When loading a previous session, prefill scene + title.
   useEffect(() => {
@@ -42,34 +42,44 @@ export default function TeacherSmartboard() {
     const found = sessions.find((s) => s.id === sessionParam);
     if (found) {
       setTitle(found.title);
-      setScene((found.excalidraw_scene_json ?? null) as ExcalidrawScene);
+      setScene((found.excalidraw_scene_json ?? null) as ExcalidrawSceneJson);
     }
   }, [sessionParam, sessions]);
 
-  const handleSave = async () => {
+  const getScene = useCallback((): ExcalidrawSceneJson | null => {
+    const api = apiRef.current;
+    if (!api?.getSceneElements) return scene;
+    return {
+      elements: api.getSceneElements(),
+      appState: api.getAppState(),
+      files: api.getFiles?.() ?? null,
+    };
+  }, [scene]);
+
+  const autosave = useSmartboardAutosave({
+    studentId,
+    sessionId: sessionParam,
+    title,
+    enabled: !!studentId,
+    getScene,
+    onSaved: (id) => {
+      if (id !== sessionParam) {
+        setSearchParams((p) => {
+          const c = new URLSearchParams(p);
+          c.set('session', id);
+          return c;
+        });
+      }
+    },
+  });
+
+  const handleManualSave = async () => {
     if (!studentId) {
       toast.error('Pick a student first');
       return;
     }
     try {
-      const sceneJson = api?.getSceneElements
-        ? {
-            elements: api.getSceneElements(),
-            appState: api.getAppState(),
-            files: api.getFiles?.() ?? null,
-          }
-        : scene;
-      const result = await save.mutateAsync({
-        id: sessionParam ?? undefined,
-        studentId,
-        title,
-        sceneJson,
-      });
-      setSearchParams((p) => {
-        const c = new URLSearchParams(p);
-        c.set('session', result.id);
-        return c;
-      });
+      await autosave.saveNow();
       toast.success('Saved');
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Save failed');
@@ -78,7 +88,6 @@ export default function TeacherSmartboard() {
 
   const initialData = useMemo(() => {
     if (!scene) return undefined;
-    // Excalidraw types are not exported from the lazy import; cast at the boundary.
     return {
       elements: (scene.elements ?? []) as never,
       appState: (scene.appState ?? {}) as never,
@@ -140,29 +149,32 @@ export default function TeacherSmartboard() {
           <Label className="text-xs text-zinc-400 shrink-0">Title</Label>
           <Input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              autosave.bumpChange();
+            }}
             className="h-8 text-sm flex-1 sm:max-w-md min-w-0"
           />
+          <AutosaveBadge status={autosave.status} lastSavedAt={autosave.lastSavedAt} />
           <Button
             size="sm"
-            className="ml-auto shrink-0"
-            onClick={handleSave}
-            disabled={!studentId || save.isPending}
+            className="shrink-0"
+            onClick={handleManualSave}
+            disabled={!studentId}
           >
-            {save.isPending ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="w-4 h-4 mr-2" />
-            )}
-            Save
+            <Save className="w-4 h-4 mr-2" />
+            Save now
           </Button>
         </div>
         <div className="flex-1 min-h-0">
           {studentId ? (
             <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-500">Loading board…</div>}>
               <Excalidraw
-                excalidrawAPI={(a: unknown) => setApi(a as ExcalidrawApi)}
+                excalidrawAPI={(a: unknown) => {
+                  apiRef.current = a as ExcalidrawApi;
+                }}
                 initialData={initialData}
+                onChange={() => autosave.bumpChange()}
               />
             </Suspense>
           ) : (
@@ -174,4 +186,35 @@ export default function TeacherSmartboard() {
       </section>
     </div>
   );
+}
+
+function AutosaveBadge({
+  status,
+  lastSavedAt,
+}: {
+  status: 'idle' | 'pending' | 'saving' | 'saved' | 'error';
+  lastSavedAt: Date | null;
+}) {
+  if (status === 'saving' || status === 'pending') {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400">
+        <Loader2 className="w-3 h-3 animate-spin" />
+        {status === 'saving' ? 'Saving…' : 'Edits pending'}
+      </span>
+    );
+  }
+  if (status === 'error') {
+    return (
+      <span className="text-[11px] text-rose-300">Save failed — try Save now</span>
+    );
+  }
+  if (status === 'saved' && lastSavedAt) {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-[11px] text-emerald-400/80">
+        <CheckCircle2 className="w-3 h-3" />
+        Saved {formatDistanceToNowStrict(lastSavedAt)} ago
+      </span>
+    );
+  }
+  return null;
 }
