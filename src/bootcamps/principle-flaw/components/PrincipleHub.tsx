@@ -60,7 +60,7 @@ export default function PrincipleHub() {
               <div className="w-10 h-10 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
                 <Target size={20} />
               </div>
-              <h1 className="text-3xl font-serif italic text-white">Daily Principle Action</h1>
+              <h1 className="text-3xl font-serif italic text-zinc-50">Daily Principle Action</h1>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
@@ -108,7 +108,7 @@ export default function PrincipleHub() {
             <div key={i} className="group p-5 rounded-2xl bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 hover:border-blue-500/20 transition-colors duration-200 space-y-3 flex flex-col justify-between shadow-lg">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-1 h-3 bg-blue-500 rounded-full" />
+                  <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
                   <strong className="text-zinc-100 block text-xs font-serif italic">{form.t}</strong>
                 </div>
                 <p className="text-[10px] text-zinc-400 leading-relaxed font-light">{form.d}</p>
@@ -127,10 +127,10 @@ export default function PrincipleHub() {
             {principleHubData.framework.map((item, i) => (
               <div key={i} className="group p-6 rounded-[24px] bg-zinc-900/40 border border-white/[0.03] hover:bg-zinc-950 hover:border-blue-500/20 transition-colors duration-200 shadow-xl">
                 <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-3 block">Pillar {i+1}</span>
-                <h4 className="text-xl font-serif italic text-white mb-2">{item.t}</h4>
+                <h4 className="text-xl font-serif italic text-zinc-50 mb-2">{item.t}</h4>
                 <p className="text-xs text-zinc-400 font-light mb-4 leading-relaxed">{item.d}</p>
                 <div className="p-4 rounded-xl bg-zinc-950 border border-white/[0.02]">
-                   <span className="text-[9px] font-bold text-blue-500/60 uppercase tracking-widest block mb-2">Primary Match</span>
+                   <span className="text-[10.5px] font-bold text-blue-500/60 uppercase tracking-widest block mb-2">Primary Match</span>
                    <p className="text-[10px] text-zinc-300 leading-relaxed italic">"{item.detail}"</p>
                 </div>
               </div>
@@ -157,14 +157,14 @@ export default function PrincipleHub() {
                      <div className="w-1.5 h-6 bg-blue-500 rounded-full" />
                      <span className="text-[10px] font-bold text-blue-500 uppercase tracking-[0.3em]">Module {i+1}</span>
                   </div>
-                  <div className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/10 text-[9px] font-bold text-blue-400 uppercase tracking-widest">
+                  <div className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/10 text-[10.5px] font-bold text-blue-400 uppercase tracking-widest">
                      Core Strategy
                   </div>
                </div>
                <div className="p-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
                   <div className="space-y-8">
                     <div className="space-y-2">
-                       <h4 className="text-2xl font-serif italic text-white tracking-tight">{type.type}</h4>
+                       <h4 className="text-2xl font-serif italic text-zinc-50 tracking-tight">{type.type}</h4>
                        <p className="text-sm text-zinc-400 font-light italic leading-relaxed">"{type.meaning}"</p>
                     </div>
                     <div className="space-y-4">
@@ -197,7 +197,7 @@ export default function PrincipleHub() {
                         <div className="p-5 rounded-2xl bg-rose-500/[0.02] border border-rose-500/10 space-y-2">
                            <div className="flex items-center gap-2">
                               <AlertCircle size={12} className="text-rose-500" />
-                              <span className="text-[9px] font-bold text-rose-500 uppercase tracking-widest">Common Trap</span>
+                              <span className="text-[10.5px] font-bold text-rose-500 uppercase tracking-widest">Common Trap</span>
                            </div>
                            <p className="text-[11px] text-zinc-400 font-light leading-relaxed">{type.mistake}</p>
                         </div>
@@ -221,7 +221,7 @@ export default function PrincipleHub() {
         <div className="bg-zinc-900/40 rounded-3xl border border-white/[0.03] overflow-hidden">
           <div className="p-8 border-b border-white/[0.03] bg-zinc-950/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-1">
-              <h4 className="text-2xl font-serif italic text-white leading-tight">Your Principle Review Blueprint</h4>
+              <h4 className="text-2xl font-serif italic text-zinc-50 leading-tight">Your Principle Review Blueprint</h4>
               <p className="text-xs text-zinc-500 font-light">Map every missed principle to this framework to find your trigger errors.</p>
             </div>
             <Button variant="outline" className="h-12 px-8 rounded-xl border-white/[0.1] text-xs font-bold uppercase tracking-widest whitespace-nowrap border-blue-500/20 text-blue-400">

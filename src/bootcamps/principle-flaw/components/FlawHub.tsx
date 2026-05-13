@@ -49,7 +49,7 @@ const Section = ({ title, icon: Icon, children, step, id }: SectionProps) => (
 const TeachingCard = ({ title, data }: { title: string; data: FlawStyle }) => (
   <div className="bg-zinc-900/40 rounded-[32px] border border-white/[0.05] overflow-hidden shadow-2xl shadow-black/40 group hover:border-white/10 transition-colors duration-200">
     <div className="p-8 border-b border-white/[0.03] bg-gradient-to-br from-zinc-900 to-zinc-950 flex items-center justify-between">
-      <h4 className="text-2xl font-serif italic text-white tracking-tight">{title}</h4>
+      <h4 className="text-2xl font-serif italic text-zinc-50 tracking-tight">{title}</h4>
       <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
         <HelpCircle size={18} className="text-zinc-500 group-hover:text-emerald-400 transition-colors" />
       </div>
@@ -82,15 +82,15 @@ const TeachingCard = ({ title, data }: { title: string; data: FlawStyle }) => (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-5 rounded-2xl bg-zinc-950/40 border border-white/[0.03] space-y-3">
              <div className="flex items-center gap-2">
-               <div className="w-1 h-3 bg-emerald-500 rounded-full" />
-               <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-[0.2em] block">Correct Answer</span>
+               <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+               <span className="text-[10.5px] font-bold text-zinc-500 uppercase tracking-[0.2em] block">Correct Answer</span>
              </div>
              <p className="text-xs text-zinc-400 font-light leading-relaxed">{data.correctBehavior}</p>
           </div>
           <div className="p-5 rounded-2xl bg-zinc-950/40 border border-white/[0.03] space-y-3">
              <div className="flex items-center gap-2">
-               <div className="w-1 h-3 bg-rose-500 rounded-full" />
-               <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-[0.2em] block">Wrong Answer Trap</span>
+               <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+               <span className="text-[10.5px] font-bold text-zinc-500 uppercase tracking-[0.2em] block">Wrong Answer Trap</span>
              </div>
              <p className="text-xs text-zinc-400 font-light leading-relaxed">{data.wrongBehavior}</p>
           </div>
@@ -130,7 +130,7 @@ const MiniDrill = () => {
     <div className="bg-zinc-950/50 rounded-2xl border border-white/[0.03] p-8 max-w-2xl mx-auto space-y-8">
       <div className="text-center space-y-2">
         <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Mini-Drill</span>
-        <h4 className="text-2xl font-serif italic text-white">"Which style is this?"</h4>
+        <h4 className="text-2xl font-serif italic text-zinc-50">"Which style is this?"</h4>
         <p className="text-xs text-zinc-500">Classify the generic answer-choice stem below.</p>
       </div>
 
@@ -210,7 +210,7 @@ export default function FlawHub() {
               <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
                 <Zap size={20} />
               </div>
-              <h1 className="text-3xl font-serif italic text-white">Daily Flaw Action</h1>
+              <h1 className="text-3xl font-serif italic text-zinc-50">Daily Flaw Action</h1>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
@@ -267,7 +267,7 @@ export default function FlawHub() {
               <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mb-2 block">Step {i+1}</span>
               <h4 className="text-zinc-100 font-serif italic text-lg mb-2">{item.t}</h4>
               <p className="text-xs text-zinc-400 mb-4 leading-relaxed font-light">{item.d}</p>
-              <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-widest">{item.s}</p>
+              <p className="text-[10.5px] text-emerald-500 font-bold uppercase tracking-widest">{item.s}</p>
             </div>
           ))}
         </div>
@@ -317,7 +317,7 @@ export default function FlawHub() {
           <div className="bg-zinc-900/40 p-8 rounded-[32px] border border-white/[0.05] flex flex-col md:flex-row items-center justify-between gap-6">
              <div className="space-y-1">
                 <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Next Step</span>
-                <h4 className="text-xl font-serif italic text-white">Master the Vocabulary</h4>
+                <h4 className="text-xl font-serif italic text-zinc-50">Master the Vocabulary</h4>
                 <p className="text-xs text-zinc-500 font-light leading-relaxed">Apply these style categories on your next Flaw Worksheet.</p>
              </div>
              <Button className="h-12 px-8 bg-zinc-100 text-zinc-950 rounded-xl text-[10px] font-bold uppercase tracking-widest">
@@ -341,11 +341,11 @@ export default function FlawHub() {
                 </div>
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest block">The Anatomy</span>
+                    <span className="text-[10.5px] font-bold text-zinc-600 uppercase tracking-widest block">The Anatomy</span>
                     <p className="text-xs text-zinc-300 leading-relaxed font-light">{trap.meaning}</p>
                   </div>
                   <div className="p-4 rounded-xl bg-zinc-950/40 border border-white/[0.02] space-y-1">
-                    <span className="text-[9px] font-bold text-rose-500/60 uppercase tracking-widest block">The Trick</span>
+                    <span className="text-[10.5px] font-bold text-rose-500/60 uppercase tracking-widest block">The Trick</span>
                     <p className="text-[11px] text-zinc-400 italic leading-relaxed font-light">"{trap.trick}"</p>
                   </div>
                 </div>
@@ -354,7 +354,7 @@ export default function FlawHub() {
                 <div className="flex items-start gap-3">
                    <Zap size={14} className="text-emerald-500 mt-0.5 flex-shrink-0" />
                    <div>
-                      <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest block mb-1">Defense Maneuver</span>
+                      <span className="text-[10.5px] font-bold text-emerald-500 uppercase tracking-widest block mb-1">Defense Maneuver</span>
                       <p className="text-[11px] text-zinc-200 font-medium leading-relaxed">{trap.avoid}</p>
                    </div>
                 </div>
@@ -370,21 +370,21 @@ export default function FlawHub() {
             <div key={i} className="p-8 rounded-[28px] bg-zinc-900/40 border border-white/[0.05] hover:bg-zinc-900 transition-colors duration-200 space-y-6 flex flex-col justify-between shadow-xl">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xl font-serif italic text-white leading-tight">{flaw.flaw}</h4>
-                  <div className="px-2 py-0.5 rounded-md bg-zinc-950 border border-white/5 text-[8px] text-zinc-500 uppercase font-black tracking-widest">Type {i+1}</div>
+                  <h4 className="text-xl font-serif italic text-zinc-50 leading-tight">{flaw.flaw}</h4>
+                  <div className="px-2 py-0.5 rounded-md bg-zinc-950 border border-white/5 text-[10px] text-zinc-500 uppercase font-black tracking-widest">Type {i+1}</div>
                 </div>
                 <div className="space-y-4">
                   <div className="p-4 rounded-2xl bg-zinc-950 border border-white/5">
-                     <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest block mb-1.5">Logical Failure</span>
+                     <span className="text-[10.5px] text-zinc-600 font-bold uppercase tracking-widest block mb-1.5">Logical Failure</span>
                      <p className="text-[13px] text-zinc-300 font-light leading-relaxed">{flaw.meaning}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4 pt-2">
                      <div className="space-y-1.5 border-l border-zinc-800 pl-3">
-                        <span className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest block">Spot Pattern</span>
+                        <span className="text-[10.5px] text-zinc-600 font-bold uppercase tracking-widest block">Spot Pattern</span>
                         <p className="text-[11px] text-zinc-500 italic leading-snug">{flaw.spot}</p>
                      </div>
                      <div className="space-y-1.5 border-l border-emerald-500/20 pl-3">
-                        <span className="text-[9px] text-emerald-500/60 font-bold uppercase tracking-widest block">Crucial Question</span>
+                        <span className="text-[10.5px] text-emerald-500/60 font-bold uppercase tracking-widest block">Crucial Question</span>
                         <p className="text-[11px] text-emerald-400 font-serif italic italic leading-snug">{flaw.ask}</p>
                      </div>
                   </div>
@@ -415,7 +415,7 @@ export default function FlawHub() {
         <div className="bg-zinc-900/40 rounded-3xl border border-white/[0.03] overflow-hidden">
           <div className="p-8 border-b border-white/[0.03] bg-zinc-950/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-1">
-              <h4 className="text-2xl font-serif italic text-white leading-tight">Your Flaw Review Blueprint</h4>
+              <h4 className="text-2xl font-serif italic text-zinc-50 leading-tight">Your Flaw Review Blueprint</h4>
               <p className="text-xs text-zinc-500 font-light">Every question you miss must follow this format in your log.</p>
             </div>
             <Button variant="outline" className="h-12 px-8 rounded-xl border-white/[0.1] text-xs font-bold uppercase tracking-widest whitespace-nowrap">

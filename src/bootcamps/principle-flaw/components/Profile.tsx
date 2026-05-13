@@ -33,7 +33,7 @@ export default function Profile({
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="space-y-4">
-        <h1 className="text-5xl font-serif italic text-white tracking-tight">Profile & Settings</h1>
+        <h1 className="text-5xl font-serif italic text-zinc-50 tracking-tight">Profile & Settings</h1>
         <p className="text-zinc-500 mt-2 font-light max-w-2xl leading-relaxed">
           Manage your personal details, exports, and app data.
         </p>

@@ -167,7 +167,7 @@ export default function FlashcardsView() {
             <Zap size={18} className="fill-current" />
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em]">Knowledge Retrieval</h2>
           </div>
-          <h1 className="text-5xl font-serif italic text-white tracking-tight">Active Recall</h1>
+          <h1 className="text-5xl font-serif italic text-zinc-50 tracking-tight">Active Recall</h1>
         </div>
         <div className="p-20 rounded-[40px] border border-dashed border-zinc-900 bg-zinc-900/5 text-center space-y-3">
           <p className="text-zinc-300 font-serif italic text-xl">No cards match this filter.</p>
@@ -185,7 +185,7 @@ export default function FlashcardsView() {
             <Zap size={18} className="fill-current" />
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em]">Knowledge Retrieval</h2>
           </div>
-          <h1 className="text-5xl font-serif italic text-white tracking-tight">Active Recall</h1>
+          <h1 className="text-5xl font-serif italic text-zinc-50 tracking-tight">Active Recall</h1>
           <p className="text-zinc-500 mt-2 font-light">Don't recognize. Recite. <span className="text-zinc-700">Space flips · ←/→ navigates · 1 / 2 grades.</span></p>
           <div className="mt-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-500">
             <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">Due today: {dueTodayCount}</span>
@@ -234,7 +234,7 @@ export default function FlashcardsView() {
               <div className="absolute top-0 right-0 p-8">
                 <Button 
                    variant="ghost" 
-                   className={`rounded-full p-3 h-auto ${mastered[currentCard.id] ? 'bg-emerald-500/10 text-emerald-500' : 'bg-transparent text-zinc-700 hover:text-white'}`}
+                   className={`rounded-full p-3 h-auto ${mastered[currentCard.id] ? 'bg-emerald-500/10 text-emerald-500' : 'bg-transparent text-zinc-700 hover:text-zinc-50'}`}
                    onClick={(e) => toggleMastery(currentCard.id, e)}
                 >
                   {mastered[currentCard.id] ? <CheckCircle2 size={24} /> : <Circle size={24} />}
@@ -242,7 +242,7 @@ export default function FlashcardsView() {
               </div>
               <div className="mt-8">
                 <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest block mb-4">{currentCard.topic} • {currentCard.tag}</span>
-                <p className="text-3xl font-serif italic text-white leading-tight">{currentCard.front}</p>
+                <p className="text-3xl font-serif italic text-zinc-50 leading-tight">{currentCard.front}</p>
               </div>
               <div className="flex justify-center">
                  <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-widest animate-pulse">Click to Reveal</span>
@@ -270,7 +270,7 @@ export default function FlashcardsView() {
             variant="ghost" 
             size="icon" 
             onClick={prevCard} 
-            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
+            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-zinc-50 transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
           >
             <ChevronLeft size={32} />
           </Button>
@@ -292,7 +292,7 @@ export default function FlashcardsView() {
             variant="ghost" 
             size="icon" 
             onClick={nextCard} 
-            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-white transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
+            className="w-16 h-16 rounded-full border border-zinc-900/50 hover:bg-zinc-900/50 text-zinc-400 hover:text-zinc-50 transition-colors active:scale-[0.93] transition-transform duration-100 shadow-xl"
           >
             <ChevronRight size={32} />
           </Button>
@@ -311,14 +311,14 @@ export default function FlashcardsView() {
                 onClick={() => grade(true)}
                 className="h-11 px-6 bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-xl text-[10px] font-bold uppercase tracking-widest gap-2"
               >
-                <ThumbsUp size={14} /> Got it <kbd className="text-[9px] font-bold opacity-60 ml-1">1</kbd>
+                <ThumbsUp size={14} /> Got it <kbd className="text-[10.5px] font-bold opacity-60 ml-1">1</kbd>
               </Button>
               <Button
                 onClick={() => grade(false)}
                 variant="outline"
                 className="h-11 px-6 border-rose-500/40 text-rose-300 hover:bg-rose-500/10 rounded-xl text-[10px] font-bold uppercase tracking-widest gap-2"
               >
-                <RefreshCw size={14} /> Review again <kbd className="text-[9px] font-bold opacity-60 ml-1">2</kbd>
+                <RefreshCw size={14} /> Review again <kbd className="text-[10.5px] font-bold opacity-60 ml-1">2</kbd>
               </Button>
             </motion.div>
           )}
@@ -338,7 +338,7 @@ export default function FlashcardsView() {
            <h3 className="text-sm font-serif italic text-zinc-300 px-2">Mastery Progress</h3>
            <div className="bg-zinc-900/20 rounded-[24px] border border-white/[0.03] p-8 flex items-center justify-between">
               <div>
-                 <span className="text-4xl font-bold text-white leading-none">
+                 <span className="text-4xl font-bold text-zinc-50 leading-none">
                     {Object.values(mastered).filter(Boolean).length}
                  </span>
                  <span className="text-zinc-600 font-bold text-[10px] uppercase tracking-widest ml-3">Cards Learned</span>

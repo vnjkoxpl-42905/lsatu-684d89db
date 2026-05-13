@@ -45,7 +45,7 @@ export default function Schedule({ currentDay, setDay }: { currentDay: number, s
               <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${isCurrent ? 'text-emerald-500' : 'text-zinc-600'}`}>
                 {data.label} {isCurrent && "• Current"}
               </span>
-              <h3 className={`text-xl font-serif italic ${isComplete ? 'text-zinc-500' : 'text-white'}`}>{data.focus}</h3>
+              <h3 className={`text-xl font-serif italic ${isComplete ? 'text-zinc-500' : 'text-zinc-50'}`}>{data.focus}</h3>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -103,7 +103,7 @@ export default function Schedule({ currentDay, setDay }: { currentDay: number, s
     <div className="space-y-3">
       <div className="flex items-center gap-2">
          <Icon size={14} className="text-zinc-600" />
-         <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">{label}: {title}</span>
+         <span className="text-[10.5px] font-bold text-zinc-600 uppercase tracking-widest">{label}: {title}</span>
       </div>
       <div className="space-y-2">
         {items.map((item, i) => {
@@ -126,7 +126,7 @@ export default function Schedule({ currentDay, setDay }: { currentDay: number, s
             <Sparkles size={14} className="animate-pulse" />
             <span className="font-bold text-[10px] uppercase tracking-[0.3em]">Curriculum Roadmap</span>
           </div>
-          <h1 className="text-4xl font-serif italic text-white tracking-tight">The 14-Day Path</h1>
+          <h1 className="text-4xl font-serif italic text-zinc-50 tracking-tight">The 14-Day Path</h1>
         </div>
       </div>
 

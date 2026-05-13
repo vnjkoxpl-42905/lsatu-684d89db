@@ -161,7 +161,7 @@ export default function ReviewLog() {
             <BookOpen size={18} />
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em]">Critical Analysis</h2>
           </div>
-          <h1 className="text-5xl font-serif italic text-white tracking-tight">Review Log</h1>
+          <h1 className="text-5xl font-serif italic text-zinc-50 tracking-tight">Review Log</h1>
           <p className="text-zinc-500 mt-2 font-light">Don't just record mistakes, solve them.</p>
           <ul className="mt-4 space-y-1 text-[11px] text-zinc-500 leading-relaxed max-w-xl">
             <li>1. Reference (PT, Section, Question), and the type.</li>
@@ -172,11 +172,11 @@ export default function ReviewLog() {
           </ul>
         </div>
         <div className="flex gap-3">
-          <Button variant="ghost" onClick={downloadCSV} className="rounded-xl border border-white/5 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white">
+          <Button variant="ghost" onClick={downloadCSV} className="rounded-xl border border-white/5 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-50">
             <Download size={14} className="mr-2" aria-hidden="true" /> Export CSV
           </Button>
           <span role="status" aria-live="polite" className="sr-only">{downloadStatus}</span>
-          <Button onClick={() => setIsAdding(!isAdding)} className="rounded-xl h-12 px-8 bg-zinc-100 text-zinc-950 hover:bg-white font-bold uppercase tracking-widest text-[10px] gap-2">
+          <Button onClick={() => setIsAdding(!isAdding)} className="rounded-xl h-12 px-8 bg-zinc-100 text-zinc-950 hover:bg-zinc-50 font-bold uppercase tracking-widest text-[10px] gap-2">
             {isAdding ? "Cancel" : <><Plus size={18} /> Log Mistake</>}
           </Button>
         </div>
@@ -280,7 +280,7 @@ export default function ReviewLog() {
 
             <div className="flex justify-end gap-4 pt-10 border-t border-white/5">
                <Button variant="ghost" onClick={() => setIsAdding(false)}>Cancel</Button>
-               <Button onClick={handleAdd} className="px-12 rounded-xl bg-zinc-100 text-zinc-950 hover:bg-white font-bold uppercase tracking-widest text-[10px]" disabled={!newLog.reference}>Save Review</Button>
+               <Button onClick={handleAdd} className="px-12 rounded-xl bg-zinc-100 text-zinc-950 hover:bg-zinc-50 font-bold uppercase tracking-widest text-[10px]" disabled={!newLog.reference}>Save Review</Button>
             </div>
           </motion.div>
         ) : (
@@ -290,7 +290,7 @@ export default function ReviewLog() {
                 <button
                   key={t}
                   onClick={() => setFilterType(t)}
-                  className={`text-[9px] font-bold uppercase tracking-widest px-6 py-2 rounded-xl transition-colors duration-150 active:scale-[0.96] transition-transform ${filterType === t ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-500 hover:text-zinc-300'}`}
+                  className={`text-[10.5px] font-bold uppercase tracking-widest px-6 py-2 rounded-xl transition-colors duration-150 active:scale-[0.96] transition-transform ${filterType === t ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   {t}
                 </button>
@@ -326,7 +326,7 @@ export default function ReviewLog() {
                               {log.type === 'Flaw' && log.conclusion && (
                                 <div className="space-y-4">
                                    <div className="space-y-1">
-                                      <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Logic Structure</span>
+                                      <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Logic Structure</span>
                                       <div className="p-4 bg-zinc-950/30 rounded-2xl border border-white/5 space-y-3">
                                          <p className="text-xs text-zinc-400 italic leading-relaxed"><span className="text-rose-500 not-italic mr-2 font-bold pointer-events-none">C:</span> {log.conclusion}</p>
                                          <p className="text-xs text-zinc-400 italic leading-relaxed"><span className="text-zinc-500 not-italic mr-2 font-bold pointer-events-none">E:</span> {log.evidence}</p>
@@ -335,7 +335,7 @@ export default function ReviewLog() {
                                 </div>
                               )}
                               <div className="space-y-2">
-                                <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">The Trap</span>
+                                <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">The Trap</span>
                                 <p className="text-sm text-zinc-300 font-light leading-relaxed italic">{log.whyMissed}</p>
                               </div>
                            </div>
@@ -343,29 +343,29 @@ export default function ReviewLog() {
                            <div className="space-y-6 border-l border-white/5 pl-10">
                               <div className="flex items-center gap-4">
                                  <div className="space-y-1">
-                                    <span className="text-[8px] font-bold text-rose-500 uppercase tracking-widest block">Wrong</span>
+                                    <span className="text-[10px] font-bold text-rose-500 uppercase tracking-widest block">Wrong</span>
                                     <span className="text-2xl font-bold text-rose-600 font-mono leading-none">{log.picked}</span>
                                  </div>
                                  <ChevronRight size={16} className="text-zinc-800 mt-4" />
                                  <div className="space-y-1">
-                                    <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-widest block">Right</span>
+                                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest block">Right</span>
                                     <span className="text-2xl font-bold text-emerald-500 font-mono leading-none">{log.correct}</span>
                                  </div>
                                  <div className="ml-auto text-right">
-                                    <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-widest block mb-1">Confidence</span>
+                                    <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest block mb-1">Confidence</span>
                                     <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded ${log.confidence === 'High' ? 'text-emerald-500 bg-emerald-500/10' : log.confidence === 'Medium' ? 'text-amber-500 bg-amber-500/10' : 'text-rose-500 bg-rose-500/10'}`}>{log.confidence}</span>
                                  </div>
                               </div>
 
                               <div className="bg-emerald-500/[0.03] p-6 rounded-[24px] border border-emerald-500/10">
-                                 <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-[0.2em] block mb-3">Key Takeaway</span>
+                                 <span className="text-[10.5px] font-bold text-emerald-500 uppercase tracking-[0.2em] block mb-3">Key Takeaway</span>
                                  <p className="text-zinc-100 font-medium italic text-sm leading-relaxed">"{log.noticeNext}"</p>
                               </div>
 
                               {log.redoLater && (
                                 <div className="flex items-center gap-2 text-rose-500 bg-rose-500/5 px-4 py-2 rounded-xl border border-rose-500/20 w-fit">
                                    <RotateCcw size={12} />
-                                   <span className="text-[8px] font-bold uppercase tracking-widest">Added to Redo Queue</span>
+                                   <span className="text-[10px] font-bold uppercase tracking-widest">Added to Redo Queue</span>
                                 </div>
                               )}
                            </div>
@@ -384,7 +384,7 @@ export default function ReviewLog() {
                     <p className="text-2xl font-serif italic text-zinc-400">Your log is clean.</p>
                     <p className="text-xs text-zinc-600 uppercase tracking-widest">Mistakes are information. Capture them.</p>
                  </div>
-                 <Button onClick={() => setIsAdding(true)} variant="outline" className="rounded-xl border-zinc-800 text-zinc-500 hover:text-white">Start Logging</Button>
+                 <Button onClick={() => setIsAdding(true)} variant="outline" className="rounded-xl border-zinc-800 text-zinc-500 hover:text-zinc-50">Start Logging</Button>
               </div>
             )}
           </div>

@@ -120,7 +120,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Section {q.section} • Q{q.question}</span>
-              <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter ${
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter ${
                 q.topic.includes('Principle') ? 'bg-blue-500/10 text-blue-500' :
                 q.topic.includes('Parallel') ? 'bg-amber-500/10 text-amber-500' :
                 'bg-emerald-500/10 text-emerald-500'
@@ -138,7 +138,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
             onClick={() => onToggleStatus('correct')}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.12, ease: [0.25, 1, 0.5, 1] }}
-            className={`px-3 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-colors ${status === 'correct' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-transparent text-zinc-600 border-zinc-800 hover:text-emerald-500 hover:border-emerald-500/30'}`}
+            className={`px-3 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-colors ${status === 'correct' ? 'bg-emerald-500 text-zinc-50 border-emerald-500' : 'bg-transparent text-zinc-600 border-zinc-800 hover:text-emerald-500 hover:border-emerald-500/30'}`}
           >
             Correct
           </motion.button>
@@ -146,7 +146,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
             onClick={() => onToggleStatus('missed')}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.12, ease: [0.25, 1, 0.5, 1] }}
-            className={`px-3 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-colors ${status === 'missed' ? 'bg-rose-500 text-white border-rose-500' : 'bg-transparent text-zinc-600 border-zinc-800 hover:text-rose-500 hover:border-rose-500/30'}`}
+            className={`px-3 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-colors ${status === 'missed' ? 'bg-rose-500 text-zinc-50 border-rose-500' : 'bg-transparent text-zinc-600 border-zinc-800 hover:text-rose-500 hover:border-rose-500/30'}`}
           >
             Review
           </motion.button>
@@ -171,7 +171,7 @@ function QuestionRow({ q, status, isRedo, onToggleStatus, onToggleRedo, onOpen, 
         >
           <div className="flex items-start gap-3 bg-rose-500/[0.02] p-3 rounded-xl border border-rose-500/5">
              <AlertCircle size={14} className="text-rose-500 mt-0.5" />
-             <p className="text-[11px] text-rose-300 leading-relaxed flex-1"><span className="font-bold uppercase tracking-widest text-[9px] mr-2">Review Prompt:</span> {q.reviewPrompt}</p>
+             <p className="text-[11px] text-rose-300 leading-relaxed flex-1"><span className="font-bold uppercase tracking-widest text-[10.5px] mr-2">Review Prompt:</span> {q.reviewPrompt}</p>
           </div>
           <div className="mt-3 flex justify-end">
             <button
@@ -249,14 +249,14 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
                    <div className="w-1 h-1 rounded-full bg-zinc-800" />
                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{set.whenToDo}</span>
                 </div>
-                <h3 className="text-3xl font-serif italic text-white leading-tight">{set.title}</h3>
+                <h3 className="text-3xl font-serif italic text-zinc-50 leading-tight">{set.title}</h3>
                 <p className="text-zinc-500 text-sm font-light italic">{set.purpose}</p>
               </div>
               <div className="hidden sm:block text-right">
                  <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-widest block mb-1">Pass Criteria</span>
                  <div className="flex gap-1 justify-end">
                     {set.completionCriteria.map((c, i) => (
-                      <span key={i} className="text-[9px] text-zinc-500 border border-zinc-800 px-2 py-0.5 rounded bg-zinc-950/50">{c}</span>
+                      <span key={i} className="text-[10.5px] text-zinc-500 border border-zinc-800 px-2 py-0.5 rounded bg-zinc-950/50">{c}</span>
                     ))}
                  </div>
               </div>
@@ -336,7 +336,7 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
     return (
       <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="space-y-2">
-           <h3 className="text-3xl font-serif italic text-white">Redo Queue</h3>
+           <h3 className="text-3xl font-serif italic text-zinc-50">Redo Queue</h3>
            <p className="text-zinc-500 text-sm font-light italic">Mistakes happen. Forgetting them is the error.</p>
         </div>
 
@@ -386,7 +386,7 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
     <div className="space-y-12 pb-20 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-serif italic text-white tracking-tight">Active Work</h1>
+          <h1 className="text-5xl font-serif italic text-zinc-50 tracking-tight">Active Work</h1>
           <p className="text-zinc-500 mt-2 italic font-light">Precision over speed. Accuracy over volume.</p>
         </div>
         
@@ -412,7 +412,7 @@ export default function Practice({ currentDay, onOpenResource }: { currentDay: n
                  <Icon size={14} aria-hidden="true" className="relative z-10" />
                  <span className="relative z-10">{label}</span>
                  {id === 'redo' && redoQueue.length > 0 && (
-                   <span className="relative z-10 bg-amber-500 text-zinc-950 px-1.5 rounded-full text-[8px] font-black">{redoQueue.length}</span>
+                   <span className="relative z-10 bg-amber-500 text-zinc-950 px-1.5 rounded-full text-[10px] font-black">{redoQueue.length}</span>
                  )}
                </button>
              );

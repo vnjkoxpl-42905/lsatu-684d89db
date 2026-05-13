@@ -208,7 +208,7 @@ export default function TodayView({
                         onClick={() => onOpenResource(res)}
                         variant="ghost" 
                         size="sm" 
-                        className="h-8 px-3 rounded-lg bg-white/5 hover:bg-white text-zinc-400 hover:text-zinc-950 text-[10px] uppercase font-bold tracking-widest gap-2"
+                        className="h-8 px-3 rounded-lg bg-zinc-50/5 hover:bg-zinc-50 text-zinc-400 hover:text-zinc-950 text-[10px] uppercase font-bold tracking-widest gap-2"
                       >
                         Open <ExternalLink size={10} />
                       </Button>

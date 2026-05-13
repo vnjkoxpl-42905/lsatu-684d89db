@@ -38,7 +38,7 @@ export default function Overview({ userName, onStart }: { userName: string; onSt
           className="space-y-8"
         >
           <motion.div variants={item} className="space-y-4">
-            <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600">
+            <span className="text-[10.5px] font-bold uppercase tracking-[0.3em] text-zinc-600">
               Student Plan
             </span>
             <h1 className="text-[clamp(2.2rem,4.5vw,3.6rem)] font-serif italic text-zinc-100 tracking-tight leading-[1.05]">
@@ -55,7 +55,7 @@ export default function Overview({ userName, onStart }: { userName: string; onSt
             <Button
               size="lg"
               onClick={onStart}
-              className="h-12 px-6 text-xs font-bold uppercase tracking-[0.2em] rounded-xl bg-zinc-100 text-zinc-950 hover:bg-white transition-colors active:scale-[0.97] transition-transform duration-100 group"
+              className="h-12 px-6 text-xs font-bold uppercase tracking-[0.2em] rounded-xl bg-zinc-100 text-zinc-950 hover:bg-zinc-50 transition-colors active:scale-[0.97] transition-transform duration-100 group"
             >
               Start Today
               <ArrowRight size={14} className="ml-2.5 group-hover:translate-x-0.5 transition-transform duration-150" />
@@ -84,11 +84,11 @@ export default function Overview({ userName, onStart }: { userName: string; onSt
                 {phase.label}
               </span>
               <span className="text-xs text-zinc-600 flex-1 truncate">{phase.desc}</span>
-              <span className="text-[9px] font-mono text-zinc-700 flex-shrink-0">{phase.time}</span>
+              <span className="text-[10.5px] font-mono text-zinc-700 flex-shrink-0">{phase.time}</span>
             </motion.div>
           ))}
           <div className="px-4 pt-2">
-            <span className="text-[9px] text-zinc-700 uppercase tracking-widest">
+            <span className="text-[10.5px] text-zinc-700 uppercase tracking-widest">
               Four phases &middot; every day &middot; 14 days
             </span>
           </div>
