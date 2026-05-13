@@ -20,6 +20,7 @@ import { createClassroomItem, resolveItemRoute } from '@/lib/classroomItems';
 import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useStudentClassroomItems, type ClassroomItem } from '@/hooks/useClassroomItems';
 import { AssignmentDateField } from '@/components/teacher/AssignmentDateField';
+import { bootcampDays } from '@/lib/bootcampDays';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -75,6 +76,10 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
   const [dueAt, setDueAt] = useState<Date | undefined>(undefined);
   const [homeworkSetId, setHomeworkSetId] = useState<string>('');
   const [bootcampId, setBootcampId] = useState<string>(BOOTCAMPS[0].id);
+  // Item B — null = "all days" (default). Empty array = explicitly none
+  // (UI guards against this). number[] = explicit subset.
+  const [assignedDayIds, setAssignedDayIds] = useState<number[] | null>(null);
+  const [daysExpanded, setDaysExpanded] = useState(false);
   const [homeworkSets, setHomeworkSets] = useState<HomeworkSetRow[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [recent, setRecent] = useState<ClassroomItem[]>([]);
@@ -121,6 +126,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
       setTitle(b.title);
       setDescription((d) => d || b.description);
     }
+    setAssignedDayIds(null);
+    setDaysExpanded(false);
   }, [type, bootcampId]);
 
   const duplicate = useMemo(() => {
@@ -151,6 +158,8 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
     setHomeworkSetId('');
     setUnlockAt(undefined);
     setDueAt(undefined);
+    setAssignedDayIds(null);
+    setDaysExpanded(false);
   };
 
   const submit = async () => {
@@ -196,7 +205,12 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         if (!b) throw new Error('Bootcamp not found');
         sourceTable = 'bootcamps';
         sourceId = b.route;
-        metadata = { bootcamp_id: b.id };
+        metadata = {
+          bootcamp_id: b.id,
+          ...(assignedDayIds && assignedDayIds.length > 0
+            ? { assigned_day_ids: [...assignedDayIds].sort((a, b) => a - b) }
+            : {}),
+        };
       }
 
       const item = await createClassroomItem({
@@ -340,17 +354,27 @@ export default function AssignmentBuilder({ studentId, adminUserId, onClose, onA
         )}
 
         {type === 'bootcamp_module' && (
-          <div>
-            <Label className="text-xs">Bootcamp</Label>
-            <select
-              value={bootcampId}
-              onChange={(e) => setBootcampId(e.target.value)}
-              className="mt-1 w-full text-sm rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-zinc-100"
-            >
-              {BOOTCAMPS.map((b) => (
-                <option key={b.id} value={b.id}>{b.title}</option>
-              ))}
-            </select>
+          <div className="space-y-3">
+            <div>
+              <Label className="text-xs">Bootcamp</Label>
+              <select
+                value={bootcampId}
+                onChange={(e) => setBootcampId(e.target.value)}
+                className="mt-1 w-full text-sm rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-zinc-100"
+              >
+                {BOOTCAMPS.map((b) => (
+                  <option key={b.id} value={b.id}>{b.title}</option>
+                ))}
+              </select>
+            </div>
+
+            <DayPicker
+              bootcampId={bootcampId}
+              value={assignedDayIds}
+              onChange={setAssignedDayIds}
+              expanded={daysExpanded}
+              onExpandedChange={setDaysExpanded}
+            />
           </div>
         )}
 
@@ -526,6 +550,140 @@ function TypeChip({
     >
       <Icon className="w-3 h-3" />
       {def.label}
+    </button>
+  );
+}
+
+// Item B — multi-select for bootcamp days. `value === null` means "all
+// days" (the default); the explicit array form turns on when the admin
+// deselects anything. Hides cleanly when the bootcamp has no day registry.
+function DayPicker({
+  bootcampId,
+  value,
+  onChange,
+  expanded,
+  onExpandedChange,
+}: {
+  bootcampId: string;
+  value: number[] | null;
+  onChange: (v: number[] | null) => void;
+  expanded: boolean;
+  onExpandedChange: (v: boolean) => void;
+}) {
+  const days = bootcampDays(bootcampId);
+  if (!days || days.length === 0) return null;
+  const total = days.length;
+  const allDayIds = days.map((d) => d.day);
+  const selected = value ?? allDayIds;
+  const selectedCount = selected.length;
+  const isAll = value === null || value.length === total;
+
+  const toggle = (dayId: number) => {
+    const current = value ?? allDayIds;
+    const next = current.includes(dayId)
+      ? current.filter((d) => d !== dayId)
+      : [...current, dayId];
+    if (next.length === 0) {
+      onChange([dayId]);
+      return;
+    }
+    onChange(next.length === total ? null : next);
+  };
+
+  const setRange = (start: number, end: number) => {
+    const range = allDayIds.filter((d) => d >= start && d <= end);
+    onChange(range.length === total ? null : range);
+  };
+
+  return (
+    <div className="rounded-lg border border-zinc-800 bg-zinc-900/30">
+      <button
+        type="button"
+        onClick={() => onExpandedChange(!expanded)}
+        className="w-full flex items-center justify-between px-3 py-2 text-left"
+      >
+        <div className="flex items-baseline gap-2">
+          <span className="text-xs font-medium text-zinc-100">Assigned days</span>
+          <span className="text-[11px] text-zinc-400">
+            {isAll ? `All ${total} days` : `${selectedCount} of ${total} days`}
+          </span>
+        </div>
+        <span className="text-[10px] uppercase tracking-wider text-zinc-500">
+          {expanded ? 'Hide' : 'Edit'}
+        </span>
+      </button>
+
+      {expanded && (
+        <div className="border-t border-zinc-800 px-3 py-2.5 space-y-2.5">
+          <div className="flex flex-wrap gap-1.5">
+            <PresetChip label="All" active={isAll} onClick={() => onChange(null)} />
+            <PresetChip
+              label={`Days 1–${Math.ceil(total / 2)}`}
+              active={
+                !isAll && selectedCount === Math.ceil(total / 2) &&
+                selected.every((d) => d <= Math.ceil(total / 2))
+              }
+              onClick={() => setRange(1, Math.ceil(total / 2))}
+            />
+            <PresetChip
+              label={`Days ${Math.ceil(total / 2) + 1}–${total}`}
+              active={
+                !isAll && selectedCount === total - Math.ceil(total / 2) &&
+                selected.every((d) => d > Math.ceil(total / 2))
+              }
+              onClick={() => setRange(Math.ceil(total / 2) + 1, total)}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            {days.map((d) => {
+              const on = selected.includes(d.day);
+              return (
+                <button
+                  type="button"
+                  key={d.day}
+                  onClick={() => toggle(d.day)}
+                  className={cn(
+                    'text-left rounded-md border px-2.5 py-1.5 transition-colors',
+                    on
+                      ? 'border-amber-400/70 bg-amber-400/10 text-zinc-100'
+                      : 'border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200',
+                  )}
+                >
+                  <div className="text-[11px] font-medium">
+                    Day {d.day} · {d.label}
+                  </div>
+                  <div className="text-[10px] text-zinc-500 truncate">{d.focus}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PresetChip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'text-[11px] px-2 py-1 rounded-full border transition-colors',
+        active
+          ? 'border-amber-400 bg-amber-400/10 text-zinc-100'
+          : 'border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-zinc-100',
+      )}
+    >
+      {label}
     </button>
   );
 }
