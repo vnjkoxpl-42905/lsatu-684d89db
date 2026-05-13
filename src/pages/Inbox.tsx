@@ -104,6 +104,7 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
+  const [source, setSource] = useState<'app' | 'gmail'>('app');
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
