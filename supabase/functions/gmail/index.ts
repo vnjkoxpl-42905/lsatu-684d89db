@@ -39,6 +39,14 @@ function extractBody(payload: any): { text: string; html: string } {
   return { text, html };
 }
 
+async function safeFetchJson(url: string, init?: RequestInit) {
+  const res = await fetch(url, init);
+  const txt = await res.text();
+  let data: any = null;
+  try { data = txt ? JSON.parse(txt) : null; } catch { /* non-JSON body */ }
+  return { res, data, txt };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -80,20 +88,18 @@ Deno.serve(async (req) => {
       const q = body.q ?? "in:inbox";
       const max = body.max ?? 20;
       const url = `${GATEWAY}/users/me/threads?maxResults=${max}&q=${encodeURIComponent(q)}`;
-      const res = await fetch(url, { headers: gHeaders });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail list ${res.status}: ${JSON.stringify(data)}`);
+      const { res, data, txt } = await safeFetchJson(url, { headers: gHeaders });
+      if (!res.ok) throw new Error(`Gmail list ${res.status}: ${txt.slice(0, 300)}`);
 
       // For each thread, fetch metadata for the latest message
-      const threads = await Promise.all((data.threads ?? []).map(async (t: any) => {
-        const r = await fetch(
+      const threads = await Promise.all((data?.threads ?? []).map(async (t: any) => {
+        const { data: td } = await safeFetchJson(
           `${GATEWAY}/users/me/threads/${t.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`,
           { headers: gHeaders },
         );
-        const td = await r.json();
-        const last = td.messages?.[td.messages.length - 1];
+        const last = td?.messages?.[td.messages.length - 1];
         const headers = last?.payload?.headers ?? [];
-        const unread = (td.messages ?? []).some((m: any) => (m.labelIds ?? []).includes("UNREAD"));
+        const unread = (td?.messages ?? []).some((m: any) => (m.labelIds ?? []).includes("UNREAD"));
         return {
           id: t.id,
           snippet: t.snippet,
@@ -114,10 +120,9 @@ Deno.serve(async (req) => {
     if (action === "thread") {
       const id = body.id;
       if (!id) throw new Error("id required");
-      const res = await fetch(`${GATEWAY}/users/me/threads/${id}?format=full`, { headers: gHeaders });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail thread ${res.status}: ${JSON.stringify(data)}`);
-      const messages = (data.messages ?? []).map((m: any) => {
+      const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/threads/${id}?format=full`, { headers: gHeaders });
+      if (!res.ok) throw new Error(`Gmail thread ${res.status}: ${txt.slice(0, 300)}`);
+      const messages = (data?.messages ?? []).map((m: any) => {
         const h = m.payload?.headers ?? [];
         const { text, html } = extractBody(m.payload);
         return {
@@ -134,7 +139,7 @@ Deno.serve(async (req) => {
         };
       });
       // Mark thread as read
-      const unreadIds = (data.messages ?? []).filter((m: any) => (m.labelIds ?? []).includes("UNREAD")).map((m: any) => m.id);
+      const unreadIds = (data?.messages ?? []).filter((m: any) => (m.labelIds ?? []).includes("UNREAD")).map((m: any) => m.id);
       await Promise.all(unreadIds.map((mid: string) => fetch(
         `${GATEWAY}/users/me/messages/${mid}/modify`,
         { method: "POST", headers: gHeaders, body: JSON.stringify({ removeLabelIds: ["UNREAD"] }) },
@@ -159,11 +164,10 @@ Deno.serve(async (req) => {
       const raw = b64urlEncode(lines.join("\r\n"));
       const payload: any = { raw };
       if (threadId) payload.threadId = threadId;
-      const res = await fetch(`${GATEWAY}/users/me/messages/send`, {
+      const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/messages/send`, {
         method: "POST", headers: gHeaders, body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail send ${res.status}: ${JSON.stringify(data)}`);
+      if (!res.ok) throw new Error(`Gmail send ${res.status}: ${txt.slice(0, 300)}`);
       return new Response(JSON.stringify({ ok: true, message: data }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
