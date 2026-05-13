@@ -299,15 +299,15 @@ export default function Practice() {
 
       {/* ── Header — minimal, no branding ──────────────────────────────────── */}
       <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-        <div className="px-4 lg:px-8 py-4 flex items-center justify-between max-w-7xl mx-auto">
-          <div>
+        <div className="px-4 lg:px-8 py-5 flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex flex-col gap-1.5">
             <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
               Practice Hub
             </div>
-            <h2 className="text-sm font-medium text-foreground mt-1">
+            <h2 className="text-base font-semibold text-foreground leading-tight">
               Welcome back, {getFirstName()}
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground">
               {new Date().toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -402,7 +402,7 @@ export default function Practice() {
       </header>
 
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8 pb-16 animate-fade-in">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-16 animate-fade-in">
 
         {/* ── Row 1 — Hero (intentionally dark on both themes) ──────────────── */}
         <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl">
