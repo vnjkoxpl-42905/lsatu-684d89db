@@ -40,8 +40,21 @@ export interface LastActivityRow {
   updated_at: string;
 }
 
-// Throws on any Supabase error. Caller decides whether to swallow, toast,
-// or rethrow — but the service layer itself never silently absorbs failures.
+// Recognizes the "the user_last_activity table hasn't been deployed yet"
+// error so we can silently skip during the deploy race instead of spamming
+// the student with a toast on every drill advance + lesson view. Real
+// errors (RLS denial, transport failure, schema drift on a deployed table)
+// still throw and surface through the call site's catch.
+function isMissingRelationError(err: unknown): boolean {
+  if (!err || typeof err !== "object") return false;
+  const e = err as { code?: string; message?: string };
+  if (e.code === "42P01" || e.code === "PGRST205") return true;
+  return /relation .*user_last_activity.* does not exist/i.test(e.message ?? "");
+}
+
+// Throws on any real Supabase error. Returns silently (no-op) when the
+// table itself isn't deployed yet — that's a deploy race, not a write
+// failure to surface.
 export async function upsertLastActivity(
   userId: string,
   snapshot: LastActivitySnapshot,
@@ -61,12 +74,16 @@ export async function upsertLastActivity(
       { onConflict: "user_id" },
     );
   if (error) {
+    if (isMissingRelationError(error)) {
+      console.warn("[lastActivity] user_last_activity table not deployed yet; skipping upsert");
+      return;
+    }
     throw new Error(`upsertLastActivity failed: ${error.message}`);
   }
 }
 
-// Returns null when the user has no recorded activity yet. Throws on
-// transport errors so cold-start failures surface to the caller.
+// Returns null when the user has no recorded activity yet OR when the
+// table isn't deployed yet. Throws on real transport errors.
 export async function getLastActivity(userId: string): Promise<LastActivityRow | null> {
   const { data, error } = await supabase
     .from("user_last_activity")
@@ -74,6 +91,10 @@ export async function getLastActivity(userId: string): Promise<LastActivityRow |
     .eq("user_id", userId)
     .maybeSingle();
   if (error) {
+    if (isMissingRelationError(error)) {
+      console.warn("[lastActivity] user_last_activity table not deployed yet; treating as empty");
+      return null;
+    }
     throw new Error(`getLastActivity failed: ${error.message}`);
   }
   if (!data) return null;
