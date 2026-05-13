@@ -1,4 +1,5 @@
-import { FileText, Download, Cloud, ExternalLink } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { FileText, Download, Cloud, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { MessageAttachment } from '@/hooks/useInbox';
@@ -9,8 +10,59 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function ImageAttachment({ attachment }: { attachment: MessageAttachment }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!attachment.storage_path) return;
+    let cancelled = false;
+    supabase.storage
+      .from('message-attachments')
+      .createSignedUrl(attachment.storage_path, 60 * 60)
+      .then(({ data }) => {
+        if (!cancelled && data?.signedUrl) setUrl(data.signedUrl);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [attachment.storage_path]);
+
+  const open = () => {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  return (
+    <button
+      onClick={open}
+      className="block max-w-xs mt-2 rounded-md border border-border bg-background/50 hover:bg-accent transition-colors overflow-hidden text-left"
+      title={attachment.file_name}
+    >
+      {url ? (
+        <img
+          src={url}
+          alt={attachment.file_name}
+          className="block w-full max-h-64 object-cover"
+          loading="lazy"
+        />
+      ) : (
+        <div className="flex items-center gap-2 px-3 py-3 text-xs text-muted-foreground">
+          <ImageIcon className="w-4 h-4" /> Loading {attachment.file_name}…
+        </div>
+      )}
+      <div className="px-3 py-1.5 text-[11px] text-muted-foreground border-t border-border flex items-center gap-1.5">
+        <ImageIcon className="w-3 h-3" /> {attachment.file_name} · {formatSize(attachment.file_size)}
+      </div>
+    </button>
+  );
+}
+
 export function AttachmentCard({ attachment }: { attachment: MessageAttachment }) {
   const isDrive = attachment.kind === 'drive';
+  const isImage = !isDrive && (attachment.mime_type ?? '').startsWith('image/');
+  if (isImage) {
+    return <ImageAttachment attachment={attachment} />;
+  }
 
   const open = async () => {
     if (isDrive) {

@@ -22,6 +22,7 @@ import CommandPalette from './components/CommandPalette';
 import { StudyResource } from './data';
 import { ElegantShape } from './components/ui/shape-landing-hero';
 import { computeStreak, readStreakDates } from './lib/streak';
+import { setBootcampContext } from '@/lib/helpContextBus';
 
 const Overview = lazy(() => import('./components/Overview'));
 const Schedule = lazy(() => import('./components/Schedule'));
@@ -59,6 +60,13 @@ export default function PrincipleFlawApp({ userName: incomingName }: Props) {
   }, []);
 
   useEffect(() => { setUserName(incomingName); }, [incomingName]);
+
+  // Item A (Wave 6A) — publish bootcamp context so the Help sheet can
+  // attach "you're on day N of Principle Flaw" without coupling.
+  useEffect(() => {
+    setBootcampContext({ id: 'principle-flaw', day: currentDay });
+    return () => setBootcampContext(null);
+  }, [currentDay]);
 
   const handleSaveName = (name: string) => {
     localStorage.setItem('pf:studentName', name);

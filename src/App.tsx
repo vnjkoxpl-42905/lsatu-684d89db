@@ -73,6 +73,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
 import { FloatingMessenger } from "./components/inbox/FloatingMessenger";
 import { FloatingWhiteboard } from "./components/whiteboard/FloatingWhiteboard";
+import { FloatingHelpButton } from "./components/help/FloatingHelpButton";
 import GuidedTour from "./components/mainhub/GuidedTour";
 
 // Module-scope remount counter (ID-9 diagnosis). Lets us detect whether the
@@ -398,6 +399,7 @@ const App = () => {
           </Routes>
           <FloatingMessenger />
           <FloatingWhiteboard />
+          <FloatingHelpButton />
           <GuidedTour />
         </BrowserRouter>
       </TooltipProvider>
