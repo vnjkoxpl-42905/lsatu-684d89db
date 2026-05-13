@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2, Circle, Clock, Target, FileSearch, Sparkles, MoveRight, BookOpen, AlertCircle, MessageSquare, ArrowRight, ExternalLink } from 'lucide-react';
+import { CheckCircle2, Clock, Target, FileSearch, Sparkles, BookOpen, AlertCircle, ArrowRight, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { scheduleData, studyResources, StudyResource, practiceSets, questionBank } from '../data';
 import { Card, CardContent } from './ui/card';
@@ -178,7 +178,7 @@ export default function TodayView({
               transition={{ duration: 0.14, ease: [0.25, 1, 0.5, 1] }}
               aria-label={isDone ? `Mark ${title} as not done` : `Mark ${title} as done`}
               aria-pressed={isDone}
-              className={`p-2 rounded-xl border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 isDone
                   ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
                   : 'bg-zinc-950/50 border-white/[0.05] text-zinc-700 hover:border-emerald-500/50 hover:text-emerald-500'
@@ -230,7 +230,7 @@ export default function TodayView({
           <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
             <CheckCircle2 size={32} />
           </div>
-          <h1 className="text-3xl font-serif italic text-white">All 14 days complete.</h1>
+          <h1 className="text-3xl font-serif italic text-zinc-50">All 14 days complete.</h1>
           <p className="text-zinc-500 font-light text-sm">Reset from Profile to start a fresh cycle, or revisit any day from the Schedule.</p>
         </div>
       </div>
@@ -244,9 +244,9 @@ export default function TodayView({
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-emerald-500">
             <Sparkles size={13} className="animate-pulse" />
-            <span className="font-bold text-[9px] uppercase tracking-[0.3em]">Day {day} &middot; {data.label}</span>
+            <span className="font-bold text-[10.5px] uppercase tracking-[0.3em]">Day {day} &middot; {data.label}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-serif italic text-white tracking-tight leading-tight">
+          <h1 className="text-4xl md:text-5xl font-serif italic text-zinc-50 tracking-tight leading-tight">
             {data.focus}
           </h1>
           <p className="text-sm text-zinc-500 font-light leading-relaxed">
@@ -287,7 +287,7 @@ export default function TodayView({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Today's Questions</span>
-            <span className="text-[10px] text-zinc-700 italic">Open your PT alongside the app.</span>
+            <span className="text-[10px] text-zinc-500">Open your PT alongside the app.</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {todaysQuestions.map((q) => (
@@ -298,7 +298,7 @@ export default function TodayView({
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-mono text-zinc-200">PT {q.pt}, S {q.section}, Q {q.question}</span>
-                  <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter ${q.topic.includes('Principle') ? 'bg-blue-500/10 text-blue-500' : q.topic.includes('Parallel') ? 'bg-amber-500/10 text-amber-500' : 'bg-emerald-500/10 text-emerald-500'}`}>{q.topic}</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-tight ${q.topic.includes('Principle') ? 'bg-blue-500/10 text-blue-500' : q.topic.includes('Parallel') ? 'bg-amber-500/10 text-amber-500' : 'bg-emerald-500/10 text-emerald-500'}`}>{q.topic}</span>
                 </div>
                 <span className="text-[10px] text-zinc-600 italic">{q.setTitle}</span>
               </button>
@@ -317,7 +317,7 @@ export default function TodayView({
           title="Open This"
           items={data.open}
           icon={FileSearch}
-          color="text-blue-500"
+          color="text-emerald-500"
           taskKey="open"
           stepIndex={0}
         />
@@ -339,7 +339,7 @@ export default function TodayView({
           title="Do This"
           items={data.do}
           icon={Target}
-          color="text-indigo-400"
+          color="text-emerald-500"
           taskKey="do"
           stepIndex={2}
         />
@@ -350,7 +350,7 @@ export default function TodayView({
           title="Think About This"
           items={data.review}
           icon={AlertCircle}
-          color="text-amber-500"
+          color="text-emerald-500"
           taskKey="review"
           stepIndex={3}
         />
@@ -368,7 +368,7 @@ export default function TodayView({
         >
           <div className="flex flex-col items-center gap-4">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border font-serif italic text-xl transition-colors duration-200 ${
-              !!dayTasks['log'] ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : 'text-rose-500 border-current bg-current/10'
+              !!dayTasks['log'] ? 'bg-zinc-950 border-zinc-800 text-zinc-600' : 'text-emerald-500 border-current bg-current/10'
             }`}>
               5
             </div>
@@ -379,15 +379,17 @@ export default function TodayView({
                 <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${!!dayTasks['log'] ? 'text-zinc-600' : 'text-zinc-400'}`}>Conclusion</span>
                 <h4 className={`text-xl font-serif italic ${!!dayTasks['log'] ? 'text-zinc-500 line-through' : 'text-zinc-100'}`}>Write & Prep</h4>
               </div>
-              <button 
+              <button
                 onClick={() => toggleChecklistItem('log')}
-                className={`p-2 rounded-xl border transition-colors duration-150 active:scale-[0.92] transition-transform ${
+                aria-label={!!dayTasks['log'] ? 'Mark Write & Prep as not done' : 'Mark Write & Prep as done'}
+                aria-pressed={!!dayTasks['log']}
+                className={`p-2.5 rounded-xl border transition-colors duration-150 active:scale-[0.92] ${
                   !!dayTasks['log']
                     ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
                     : 'bg-zinc-950/50 border-white/[0.05] text-zinc-700 hover:border-emerald-500/50 hover:text-emerald-500'
                 }`}
               >
-                <CheckCircle2 size={24} />
+                <CheckCircle2 size={24} aria-hidden="true" />
               </button>
             </div>
             {!dayTasks['log'] && (
@@ -404,9 +406,9 @@ export default function TodayView({
                       <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-bold">Prep for Tutoring</span>
                       <ul className="space-y-1">
                         {data.bring.map((item, i) => (
-                           <li key={i} className="text-sm text-zinc-300 font-light flex gap-2">
-                             <div className="w-1 h-4 bg-rose-500/50 rounded-full" />
-                             {item}
+                           <li key={i} className="text-sm text-zinc-300 font-light flex gap-2 items-start">
+                             <span aria-hidden className="w-1.5 h-1.5 mt-2 rounded-full bg-zinc-500 shrink-0" />
+                             <span>{item}</span>
                            </li>
                         ))}
                       </ul>
@@ -424,30 +426,6 @@ export default function TodayView({
           </div>
         </motion.div>
       </div>
-
-      {/* What To Do Next */}
-      {onJumpToTab && (
-        <div className="space-y-3">
-          <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">What To Do Next</span>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              { tab: 'learn' as Tab, label: 'Learn', icon: <BookOpen size={14} /> },
-              { tab: 'practice' as Tab, label: 'Practice', icon: <Target size={14} /> },
-              { tab: 'flashcards' as Tab, label: 'Flashcards', icon: <Sparkles size={14} /> },
-              { tab: 'review' as Tab, label: 'Review Log', icon: <MessageSquare size={14} /> },
-            ].map((item) => (
-              <button
-                key={item.tab}
-                onClick={() => onJumpToTab(item.tab)}
-                className="flex flex-col items-start gap-2 p-4 rounded-xl border border-white/[0.03] bg-zinc-900/30 hover:bg-zinc-900/50 hover:border-white/10 transition-colors"
-              >
-                <span className="text-zinc-400">{item.icon}</span>
-                <span className="text-xs font-medium text-zinc-200">{item.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Final Action */}
       <AnimatePresence>
@@ -467,8 +445,8 @@ export default function TodayView({
               >
                 <CheckCircle2 size={40} aria-hidden="true" />
               </motion.div>
-              <h3 className="text-2xl font-serif italic text-white uppercase tracking-tight">Day {day} Complete</h3>
-              <p className="text-zinc-500 text-sm max-w-xs mx-auto">Excellent consistency. You are one day closer to mastery.</p>
+              <h3 className="text-2xl font-serif italic text-zinc-50 uppercase tracking-tight">Day {day} Complete</h3>
+              <p className="text-zinc-500 text-sm max-w-xs mx-auto">{14 - day > 0 ? `${14 - day} day${14 - day === 1 ? '' : 's'} left.` : 'All 14 days done.'}</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -495,16 +473,3 @@ export default function TodayView({
 }
 
 
-function ChecklistItem({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) {
-  return (
-    <label className="flex items-center gap-3 py-1 cursor-pointer group">
-      <div className={`transition-colors ${checked ? 'text-emerald-500' : 'text-zinc-700 group-hover:text-zinc-500'}`}>
-        {checked ? <CheckCircle2 size={16} /> : <Circle size={16} />}
-      </div>
-      <span className={`text-[11px] font-medium tracking-tight transition-colors duration-150 ${checked ? 'text-zinc-500 line-through' : 'text-zinc-300'}`}>
-        {label}
-      </span>
-      <input type="checkbox" className="hidden" checked={checked} onChange={onChange} />
-    </label>
-  );
-}
