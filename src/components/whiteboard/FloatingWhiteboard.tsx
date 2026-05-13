@@ -10,6 +10,7 @@ import {
   type ExcalidrawSceneJson,
 } from '@/hooks/useSmartboardAutosave';
 import { useSmartboardSessions } from '@/hooks/useSmartboardSessions';
+import { TemplatePalette, type ExcalidrawTemplateApi } from '@/components/whiteboard/TemplatePalette';
 import '@excalidraw/excalidraw/index.css';
 
 const Excalidraw = lazy(() =>
@@ -24,6 +25,7 @@ type ExcalidrawApi = {
   getSceneElements: () => unknown[];
   getAppState: () => unknown;
   getFiles?: () => unknown;
+  updateScene?: (data: { elements: unknown[] }) => void;
 } | null;
 
 export function FloatingWhiteboard() {
@@ -148,30 +150,35 @@ export function FloatingWhiteboard() {
               </button>
             </div>
           </div>
-          <div className="flex-1 min-h-0">
-            <Suspense
-              fallback={
-                <div className="h-full flex items-center justify-center text-zinc-500">
-                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                  Loading board…
-                </div>
-              }
-            >
-              <Excalidraw
-                excalidrawAPI={(a: unknown) => {
-                  apiRef.current = a as ExcalidrawApi;
-                }}
-                initialData={
-                  hydrated
-                    ? {
-                        elements: (hydrated.elements ?? []) as never,
-                        appState: (hydrated.appState ?? {}) as never,
-                      }
-                    : undefined
+          <div className="flex-1 min-h-0 flex">
+            <div className="flex-1 min-w-0">
+              <Suspense
+                fallback={
+                  <div className="h-full flex items-center justify-center text-zinc-500">
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Loading board…
+                  </div>
                 }
-                onChange={() => autosave.bumpChange()}
-              />
-            </Suspense>
+              >
+                <Excalidraw
+                  excalidrawAPI={(a: unknown) => {
+                    apiRef.current = a as ExcalidrawApi;
+                  }}
+                  initialData={
+                    hydrated
+                      ? {
+                          elements: (hydrated.elements ?? []) as never,
+                          appState: (hydrated.appState ?? {}) as never,
+                        }
+                      : undefined
+                  }
+                  onChange={() => autosave.bumpChange()}
+                />
+              </Suspense>
+            </div>
+            <TemplatePalette
+              getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
+            />
           </div>
         </div>
       )}

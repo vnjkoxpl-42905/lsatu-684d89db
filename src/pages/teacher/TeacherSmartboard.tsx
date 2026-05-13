@@ -12,6 +12,7 @@ import {
   useSmartboardAutosave,
   type ExcalidrawSceneJson,
 } from '@/hooks/useSmartboardAutosave';
+import { TemplatePalette, type ExcalidrawTemplateApi } from '@/components/whiteboard/TemplatePalette';
 import { formatDistanceToNowStrict } from 'date-fns';
 
 // Excalidraw is heavy; load only when this route mounts.
@@ -30,6 +31,7 @@ export default function TeacherSmartboard() {
     getSceneElements: () => unknown[];
     getAppState: () => unknown;
     getFiles?: () => unknown;
+    updateScene?: (data: { elements: unknown[] }) => void;
   } | null;
 
   const [title, setTitle] = useState('Smartboard session');
@@ -166,19 +168,26 @@ export default function TeacherSmartboard() {
             Save now
           </Button>
         </div>
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 flex">
           {studentId ? (
-            <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-500">Loading board…</div>}>
-              <Excalidraw
-                excalidrawAPI={(a: unknown) => {
-                  apiRef.current = a as ExcalidrawApi;
-                }}
-                initialData={initialData}
-                onChange={() => autosave.bumpChange()}
+            <>
+              <div className="flex-1 min-w-0">
+                <Suspense fallback={<div className="h-full flex items-center justify-center text-zinc-500">Loading board…</div>}>
+                  <Excalidraw
+                    excalidrawAPI={(a: unknown) => {
+                      apiRef.current = a as ExcalidrawApi;
+                    }}
+                    initialData={initialData}
+                    onChange={() => autosave.bumpChange()}
+                  />
+                </Suspense>
+              </div>
+              <TemplatePalette
+                getApi={() => apiRef.current as ExcalidrawTemplateApi | null}
               />
-            </Suspense>
+            </>
           ) : (
-            <div className="h-full flex items-center justify-center text-sm text-zinc-500">
+            <div className="h-full flex-1 flex items-center justify-center text-sm text-zinc-500">
               Pick a student to start a board.
             </div>
           )}
