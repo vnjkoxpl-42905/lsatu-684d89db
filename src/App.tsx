@@ -13,6 +13,7 @@ import { UserSettingsProvider } from "./contexts/UserSettingsContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdaptiveEngineProvider } from "./contexts/AdaptiveEngineContext";
 import Practice from "./pages/Practice";
+import SavedSets from "./pages/SavedSets";
 import AcademyMainhub from "./pages/AcademyMainhub";
 import Drill from "./pages/Drill";
 import WrongAnswerJournal from "./pages/WrongAnswerJournal";
@@ -208,6 +209,9 @@ const App = () => {
                   <Route path="/" element={<Navigate to="/mainhub" replace />} />
                   <Route path="/practice" element={
                     <ProtectedRoute flag="has_practice_access"><Practice /></ProtectedRoute>
+                  } />
+                  <Route path="/practice/sets" element={
+                    <ProtectedRoute flag="has_practice_access"><SavedSets /></ProtectedRoute>
                   } />
                   <Route path="/drill" element={
                     <ProtectedRoute flag="has_drill_access"><Drill /></ProtectedRoute>

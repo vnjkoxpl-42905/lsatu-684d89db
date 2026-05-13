@@ -25,8 +25,12 @@ import {
   XCircle,
   Flag,
   ArrowRight,
+  Bookmark,
+  Play,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLastActivity } from '@/hooks/useLastActivity';
+import { resolveResumeTarget, type LastActivitySnapshot } from '@/lib/lastActivity';
 import { Switch } from '@/components/ui/switch';
 import {
   DropdownMenu,
@@ -43,26 +47,68 @@ import { useUserPermissions } from '@/hooks/useUserPermissions';
 // ─────────────────────────────────────────────────────────────────────────────
 // Mode strip data
 // ─────────────────────────────────────────────────────────────────────────────
-const modes = [
+type ModeCardId = DrillMode | 'my-sets';
+
+interface ModeCard {
+  id: ModeCardId;
+  icon: React.ElementType;
+  label: string;
+  description: string;
+  purpose: string;
+}
+
+const modes: ModeCard[] = [
   {
-    id: 'full-section' as const,
+    id: 'full-section',
     icon: BookOpen,
     label: 'Full Section',
-    description: 'Logical Reasoning Section',
+    description: 'Timed section',
+    purpose: 'A timed 25-question LR section under official conditions.',
   },
   {
-    id: 'natural-drill' as const,
+    id: 'natural-drill',
     icon: Sparkles,
     label: 'Smart Builder',
-    description: 'Natural language',
+    description: 'Plain English',
+    purpose: "Describe the drill in plain English; I'll assemble it.",
   },
   {
-    id: 'type-drill' as const,
+    id: 'type-drill',
     icon: Grid3x3,
     label: 'Build a Set',
-    description: 'Custom drill',
+    description: 'Hand-picked',
+    purpose: 'Filter the bank yourself and hand-pick questions.',
+  },
+  {
+    id: 'my-sets',
+    icon: Bookmark,
+    label: 'My Sets',
+    description: 'Saved sets',
+    purpose: 'Re-launch sets you saved earlier.',
   },
 ];
+
+function resumeSubtitle(snap: LastActivitySnapshot): string {
+  if (snap.kind === 'drill') {
+    const pretty =
+      snap.mode === 'adaptive'
+        ? 'Smart Drill'
+        : snap.mode === 'type-drill'
+        ? 'Custom drill'
+        : snap.mode === 'natural-drill'
+        ? 'Smart Builder'
+        : 'Drill';
+    const total = snap.qids?.length ?? 0;
+    const at = (snap.current_index ?? 0) + 1;
+    return total > 0 ? `${pretty} · Q ${at} of ${total}` : pretty;
+  }
+  if (snap.kind === 'section') {
+    const total = snap.qids?.length ?? 0;
+    const at = (snap.current_index ?? 0) + 1;
+    return total > 0 ? `Section · Q ${at} of ${total}` : 'Section in progress';
+  }
+  return `Bootcamp lesson · step ${snap.step_index}`;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Study tool row — quiet secondary utility
@@ -242,6 +288,17 @@ export default function Practice() {
     setSelectedAction((prev) => (prev === modeId ? null : modeId));
   };
 
+  const handleModeCardClick = (id: ModeCardId) => {
+    if (id === 'my-sets') {
+      navigate('/practice/sets');
+      return;
+    }
+    handleModeClick(id);
+  };
+
+  const { data: lastActivity } = useLastActivity();
+  const resumeSnapshot = lastActivity?.state_snapshot ?? null;
+
   // ── Manifest loading helper for action panels ───────────────────────────
   const renderActionPanel = () => {
     if (isLoading) {
@@ -404,27 +461,66 @@ export default function Practice() {
       {/* ── Canvas ─────────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-10 pb-16 animate-fade-in">
 
-        {/* ── Row 1 — Hero (intentionally dark on both themes) ──────────────── */}
+        {/* ── Row 1 — Hero (intentionally dark on both themes) ────────────────
+             With recent activity: surfaces the Resume CTA (Wave 3 / Item M),
+             reusing useLastActivity + resolveResumeTarget. Falls back to the
+             original "LR Smart Drill" entry on cold start. */}
         <Card className="w-full h-[280px] bg-zinc-950 relative overflow-hidden rounded-xl">
-          
+
           <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
           <div className="flex h-full">
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-              <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-                LR Smart Drill
-              </h1>
-              <p className="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed">
-                Take it one question at a time with your tutor.
-              </p>
-              <div className="mt-5">
-                <Button
-                  onClick={handleStartAdaptive}
-                  size="sm"
-                  className="bg-white text-black hover:bg-neutral-200 font-medium"
-                >
-                  Start Drilling
-                </Button>
-              </div>
+              {resumeSnapshot ? (
+                <>
+                  <div className="text-[10px] uppercase tracking-[0.25em] font-semibold text-neutral-400">
+                    Pick up where you left off
+                  </div>
+                  <h1 className="mt-2 text-3xl md:text-4xl font-bold text-neutral-50 leading-tight">
+                    {resumeSnapshot.label}
+                  </h1>
+                  <p className="mt-2 text-sm text-neutral-400 max-w-md leading-relaxed">
+                    {resumeSubtitle(resumeSnapshot)}
+                  </p>
+                  <div className="mt-5 flex items-center gap-3">
+                    <Button
+                      onClick={() => {
+                        const { path, state } = resolveResumeTarget(resumeSnapshot);
+                        navigate(path, { state });
+                      }}
+                      size="sm"
+                      className="bg-white text-black hover:bg-neutral-200 font-medium gap-2"
+                    >
+                      <Play className="h-3.5 w-3.5" aria-hidden /> Resume
+                    </Button>
+                    <Button
+                      onClick={handleStartAdaptive}
+                      size="sm"
+                      variant="ghost"
+                      className="text-neutral-400 hover:text-neutral-100 hover:bg-white/[0.06]"
+                    >
+                      New Smart Drill
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+                    LR Smart Drill
+                  </h1>
+                  <p className="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed">
+                    Take it one question at a time with your tutor.
+                  </p>
+                  <div className="mt-5">
+                    <Button
+                      onClick={handleStartAdaptive}
+                      size="sm"
+                      className="bg-white text-black hover:bg-neutral-200 font-medium"
+                    >
+                      Start Smart Drill
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
             <div className="flex-1 relative hidden md:block">
               <SplineBoundary>
@@ -437,49 +533,51 @@ export default function Practice() {
           </div>
         </Card>
 
-        {/* ── Row 2 — Glass-card mode selector ─────────────────────────────── */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* ── Row 2 — Mode selector cards ───────────────────────────────────
+             Each card carries an icon, label, eyebrow descriptor, and a
+             one-sentence purpose statement (Item I). The active card uses
+             a gold-ring outline + lift shadow so it reads as clearly chosen
+             rather than just tinted. My Sets routes to /practice/sets. */}
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {modes.map((mode) => {
             const Icon = mode.icon;
-            const isActive = selectedAction === mode.id;
+            const isActive = mode.id !== 'my-sets' && selectedAction === mode.id;
 
             return (
               <button
                 key={mode.id}
-                onClick={() => handleModeClick(mode.id)}
+                onClick={() => handleModeCardClick(mode.id)}
                 className={cn(
-                  'group w-full text-left rounded-xl py-6 px-5',
+                  'group w-full text-left rounded-xl py-5 px-5 min-h-[148px]',
                   'flex flex-col gap-3',
-                  'backdrop-blur-xl',
                   'transition-all duration-200',
                   isActive
                     ? [
                         'bg-accent',
-                        'border border-foreground/[0.18]',
-                        'shadow-sm',
+                        'ring-2 ring-foreground/40 ring-offset-2 ring-offset-background',
+                        'shadow-lg -translate-y-0.5',
                       ]
                     : [
                         'bg-card',
                         'border border-border',
-                        'hover:bg-accent',
-                        'hover:border-foreground/[0.12]',
-                        'hover:-translate-y-0.5',
+                        'hover:bg-accent/60',
+                        'hover:border-foreground/[0.18]',
+                        'hover:-translate-y-0.5 hover:shadow-md',
                       ],
                 )}
               >
-                {/* Icon */}
                 <Icon
                   className={cn(
                     'w-5 h-5 transition-colors duration-200',
                     isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground/80',
                   )}
+                  aria-hidden
                 />
 
-                {/* Label + description */}
-                <div>
+                <div className="flex-1">
                   <div
                     className={cn(
-                      'text-[15px] font-medium leading-snug transition-colors duration-200',
+                      'text-[15px] font-semibold leading-snug transition-colors duration-200',
                       isActive ? 'text-foreground' : 'text-foreground/90',
                     )}
                   >
@@ -487,12 +585,15 @@ export default function Practice() {
                   </div>
                   <div
                     className={cn(
-                      'text-[11px] uppercase tracking-[0.15em] mt-1 leading-snug transition-colors duration-200',
+                      'text-[10px] uppercase tracking-[0.18em] mt-1 leading-snug transition-colors duration-200 font-semibold',
                       isActive ? 'text-muted-foreground' : 'text-muted-foreground/70',
                     )}
                   >
                     {mode.description}
                   </div>
+                  <p className="text-[12px] text-muted-foreground/90 mt-2 leading-relaxed">
+                    {mode.purpose}
+                  </p>
                 </div>
               </button>
             );
