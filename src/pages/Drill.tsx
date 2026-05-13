@@ -683,6 +683,10 @@ function DrillContent() {
     if (error) console.error('Failed to save session replay:', error);
   };
 
+  // Throws on any failure path. Callers must surface the error (toast, retry,
+  // or rethrow); silent absorption is not allowed. Returns void on success.
+  // Returns false ONLY for the "classId not yet resolved" case, which is a
+  // deliberate skip during cold-start — not a write failure.
   const saveAttemptToDatabase = async (attemptData: {
     qid: string;
     correct: boolean;
@@ -694,23 +698,21 @@ function DrillContent() {
     selected_answer?: string;
   }): Promise<boolean> => {
     const question = questionBank.getQuestion(attemptData.qid);
-    if (!question) return false;
+    if (!question) {
+      throw new Error(`saveAttemptToDatabase: unknown qid ${attemptData.qid}`);
+    }
 
+    if (!classId && classIdLoading) {
+      console.warn('saveAttemptToDatabase called before classId resolved, skipping');
+      return false;
+    }
+    const resolvedClassId = classId || user?.id || '';
+    if (!resolvedClassId) {
+      throw new Error(
+        `saveAttemptToDatabase: no class_id and no user.id for qid ${attemptData.qid}`,
+      );
+    }
     try {
-      if (!classId && classIdLoading) {
-        console.warn('saveAttemptToDatabase called before classId resolved, skipping');
-        return false;
-      }
-      const resolvedClassId = classId || user?.id || '';
-      if (!resolvedClassId) {
-        console.error('[drill:saveAttempt] no class_id and no user.id', {
-          userId: user?.id,
-          email: user?.email,
-          qid: attemptData.qid,
-          mode: attemptData.mode,
-        });
-        return false;
-      }
       const { error } = await supabase.from('attempts').insert({
         user_id: user?.id,
         class_id: resolvedClassId,
@@ -735,7 +737,7 @@ function DrillContent() {
           mode: attemptData.mode,
           error,
         });
-        return false;
+        throw new Error(`saveAttemptToDatabase: insert failed (${error.message})`);
       }
       return true;
     } catch (err) {
@@ -745,33 +747,81 @@ function DrillContent() {
         mode: attemptData.mode,
         err,
       });
+      throw err;
+    }
+  };
+
+  // UI-level helper for the per-question submit handlers. Wraps the throwing
+  // service so existing `if (!saved)` toast logic keeps working — the error is
+  // logged at the service AND visible to the user via the caller's toast. This
+  // does NOT silently swallow: failures are logged + surfaced through the
+  // boolean return that callers already act on.
+  const persistAttempt = async (
+    attemptData: Parameters<typeof saveAttemptToDatabase>[0],
+  ): Promise<boolean> => {
+    try {
+      return await saveAttemptToDatabase(attemptData);
+    } catch (e) {
+      console.error('[drill:persistAttempt] threw, surfacing as save-failed', {
+        qid: attemptData.qid,
+        mode: attemptData.mode,
+        error: e,
+      });
       return false;
     }
   };
 
+  // Persists every selected-answer attempt in the session. Per design, this
+  // is the gate before a section closes — every attempt MUST hit the DB or
+  // we rethrow so handleFinishSection can surface the failure rather than
+  // silently completing a section with missing data.
+  //
+  // timeMs values are checked: a value of 0 (or negative) indicates a broken
+  // timer somewhere upstream and is logged + counted, never silently saved.
   const commitSessionAttempts = async (
     attempts: DrillSession['attempts'],
     mode: DrillMode
-  ): Promise<{ saved: number; failed: number; wajFailed: number }> => {
+  ): Promise<{ saved: number; wajFailed: number; timeMsZero: number }> => {
     let saved = 0;
-    let failed = 0;
     let wajFailed = 0;
+    let timeMsZero = 0;
+    const attemptErrors: unknown[] = [];
+
     for (const [qid, attempt] of attempts) {
       const question = questionBank.getQuestion(qid);
       if (!question || !attempt.selectedAnswer) continue;
 
-      const ok = await saveAttemptToDatabase({
-        qid,
-        correct: attempt.correct,
-        time_ms: attempt.timeMs,
-        qtype: question.qtype,
-        level: question.difficulty,
-        confidence: attempt.confidence ?? null,
-        mode,
-        selected_answer: attempt.selectedAnswer,
-      });
-      if (ok) saved++;
-      else failed++;
+      if (!Number.isFinite(attempt.timeMs) || attempt.timeMs <= 0) {
+        timeMsZero++;
+        console.warn('[commitSessionAttempts] non-positive timeMs', {
+          qid,
+          timeMs: attempt.timeMs,
+        });
+      }
+
+      try {
+        const ok = await saveAttemptToDatabase({
+          qid,
+          correct: attempt.correct,
+          time_ms: attempt.timeMs,
+          qtype: question.qtype,
+          level: question.difficulty,
+          confidence: attempt.confidence ?? null,
+          mode,
+          selected_answer: attempt.selectedAnswer,
+        });
+        if (ok === false) {
+          // Cold-start skip: classId not yet resolved. Treat as failure so the
+          // section is not closed with attempts silently dropped.
+          attemptErrors.push(
+            new Error(`saveAttemptToDatabase skipped (classId not resolved) for qid ${qid}`),
+          );
+        } else {
+          saved++;
+        }
+      } catch (e) {
+        attemptErrors.push(e);
+      }
 
       if (!attempt.correct) {
         try {
@@ -800,7 +850,16 @@ function DrillContent() {
         }
       }
     }
-    return { saved, failed, wajFailed };
+
+    if (attemptErrors.length > 0) {
+      console.error('[commitSessionAttempts] attempt write failures', attemptErrors);
+      const first = attemptErrors[0];
+      const firstMsg = first instanceof Error ? first.message : String(first);
+      throw new Error(
+        `commitSessionAttempts: ${attemptErrors.length} attempt write(s) failed; first: ${firstMsg}`,
+      );
+    }
+    return { saved, wajFailed, timeMsZero };
   };
 
   const handleWAJSave = async (review: { whyWrong: string; whyEliminated: string; plan: string }) => {
@@ -809,7 +868,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
     
     // Save to attempts database (final attempt after review)
-    const saved = await saveAttemptToDatabase({
+    const saved = await persistAttempt({
       qid: currentQuestion.qid,
       correct: false,
       time_ms: timeMs,
@@ -901,7 +960,7 @@ function DrillContent() {
     const timeMs = Math.floor(performance.now() - questionStartTime);
 
     // Save attempt to database (no confidence for non-adaptive)
-    const saved = await saveAttemptToDatabase({
+    const saved = await persistAttempt({
       qid: currentQuestion.qid,
       correct,
       time_ms: timeMs,
@@ -958,7 +1017,7 @@ function DrillContent() {
     // After wrong answer in adaptive mode, save attempt FIRST then show Joshua's feedback
     if (!correct && session.mode === 'adaptive') {
       // SAVE ATTEMPT FIRST
-      const saved = await saveAttemptToDatabase({
+      const saved = await persistAttempt({
         qid: currentQuestion.qid,
         correct: false,
         time_ms: timeMs,
@@ -1029,7 +1088,7 @@ function DrillContent() {
       }
     } else {
       // Correct answer - save and show solution with Next button (don't auto-advance)
-      const saved = await saveAttemptToDatabase({
+      const saved = await persistAttempt({
         qid: currentQuestion.qid,
         correct: true,
         time_ms: timeMs,
@@ -1232,12 +1291,21 @@ function DrillContent() {
       attemptsWithTiming.set(qid, { ...attempt, timeMs: totalTimeMs });
     }
 
-    const { failed, wajFailed } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
-    if (failed > 0) {
-      toast.error(`Failed to save ${failed} attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
-    }
-    if (wajFailed > 0) {
-      toast.error(`${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`);
+    try {
+      const { wajFailed, timeMsZero } = await commitSessionAttempts(attemptsWithTiming, 'practice-set');
+      if (timeMsZero > 0) {
+        toast.warning(
+          `${timeMsZero} attempt${timeMsZero === 1 ? '' : 's'} had a missing timer value. Saved, but pacing data may be incomplete.`,
+        );
+      }
+      if (wajFailed > 0) {
+        toast.error(
+          `${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`,
+        );
+      }
+    } catch (e) {
+      toast.error('Failed to save practice-set attempts. Your progress may be incomplete.');
+      throw e;
     }
 
     // Homework assignment: write status=completed + score.
@@ -1338,13 +1406,25 @@ function DrillContent() {
       attempts: updatedAttempts,
     };
 
-    // Persist per-question attempts to DB (F2.15)
-    const { failed, wajFailed } = await commitSessionAttempts(updatedAttempts, 'full-section');
-    if (failed > 0) {
-      toast.error(`Failed to save ${failed} question attempt${failed === 1 ? '' : 's'}. Your progress may be incomplete.`);
-    }
-    if (wajFailed > 0) {
-      toast.error(`${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`);
+    // Persist per-question attempts to DB (F2.15). commitSessionAttempts throws
+    // if any attempt write fails — per the don't-swallow-errors policy, we
+    // surface the failure to the user AND rethrow so the section closeout is
+    // not silently completed with incomplete data.
+    try {
+      const { wajFailed, timeMsZero } = await commitSessionAttempts(updatedAttempts, 'full-section');
+      if (timeMsZero > 0) {
+        toast.warning(
+          `${timeMsZero} attempt${timeMsZero === 1 ? '' : 's'} had a missing timer value. Saved, but pacing data may be incomplete.`,
+        );
+      }
+      if (wajFailed > 0) {
+        toast.error(
+          `${wajFailed} journal entr${wajFailed === 1 ? 'y' : 'ies'} didn't save. Your attempts were recorded but WAJ history may be incomplete.`,
+        );
+      }
+    } catch (e) {
+      toast.error('Failed to save section attempts. Your section may be incomplete.');
+      throw e;
     }
 
     // Build automatic review set based on rules (using updated session)

@@ -52,15 +52,26 @@ export function Lesson(): JSX.Element {
   useEffect(() => {
     if (!data || !user) return;
     (async () => {
-      const persist = getPersistence(user.id);
-      const id = newId();
-      const rec = LessonProgress.parse({
-        id,
-        user_id: user.id,
-        lesson_id: data.id,
-        viewed_at: now(),
-      });
-      await persist.set(TABLES.lesson_progress, id, rec);
+      try {
+        const persist = getPersistence(user.id);
+        const id = newId();
+        const rec = LessonProgress.parse({
+          id,
+          user_id: user.id,
+          lesson_id: data.id,
+          viewed_at: now(),
+        });
+        await persist.set(TABLES.lesson_progress, id, rec);
+      } catch (e) {
+        console.error('[Lesson] lesson_progress write failed', {
+          userId: user.id,
+          lessonId: data.id,
+          error: e,
+        });
+        // Surface via toast so the user sees the failure rather than us
+        // silently dropping the view-record on a quota-exceeded storage.
+        toast.error("Couldn't record this lesson view. Progress tracking may be incomplete.");
+      }
     })();
   }, [data, user]);
 
@@ -100,7 +111,16 @@ export function Lesson(): JSX.Element {
 
   async function handleMarkComplete() {
     if (!data) return;
-    await markLessonComplete(data.id, `/lessons/${data.number}`);
+    try {
+      await markLessonComplete(data.id, `/lessons/${data.number}`);
+    } catch (e) {
+      console.error('[Lesson] markLessonComplete failed', {
+        lessonId: data.id,
+        error: e,
+      });
+      toast.error("Couldn't save lesson completion. Please try again.");
+      throw e;
+    }
   }
 
   const completed = progress?.completed_lessons.includes(data.id) ?? false;

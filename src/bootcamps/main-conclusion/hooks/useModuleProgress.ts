@@ -43,22 +43,34 @@ export function useModuleProgress(_userId?: string): {
     const userId = authUser.id;
     const progressId = progressIdFor(userId);
     (async () => {
-      const persist = getPersistence(userId);
-      let existing = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
-      if (!existing) {
-        existing = ModuleProgress.parse({
-          id: progressId,
-          user_id: userId,
-          unlocked_modules: ['M1', 'M2', 'M3', 'M5', 'M6'],
-          unlocked_routes: INITIAL_UNLOCKED_ROUTES,
-          completed_lessons: [],
-          completed_drills: [],
-          completed_capstones: [],
-          updated_at: now(),
+      try {
+        const persist = getPersistence(userId);
+        let existing = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        if (!existing) {
+          existing = ModuleProgress.parse({
+            id: progressId,
+            user_id: userId,
+            unlocked_modules: ['M1', 'M2', 'M3', 'M5', 'M6'],
+            unlocked_routes: INITIAL_UNLOCKED_ROUTES,
+            completed_lessons: [],
+            completed_drills: [],
+            completed_capstones: [],
+            updated_at: now(),
+          });
+          await persist.set(TABLES.module_progress, progressId, existing);
+        }
+        if (!cancelled) setProgress(existing);
+      } catch (e) {
+        // Surface, don't silently swallow. This is local persistence (no
+        // Supabase), so the most common failure is IndexedDB quota or a
+        // disabled-storage browser. We log; the call site (Lesson page,
+        // LockedRoute) renders a fallback when progress stays null.
+        console.error('[useModuleProgress] initial load failed', {
+          userId,
+          error: e,
         });
-        await persist.set(TABLES.module_progress, progressId, existing);
+        throw e;
       }
-      if (!cancelled) setProgress(existing);
     })();
     return () => {
       cancelled = true;
@@ -71,62 +83,89 @@ export function useModuleProgress(_userId?: string): {
 
   const markLessonComplete = useCallback(
     async (lessonId: string, routeId: string) => {
-      if (!authUser) return;
+      if (!authUser) {
+        throw new Error('markLessonComplete called with no authenticated user');
+      }
       const userId = authUser.id;
       const progressId = progressIdFor(userId);
       const persist = getPersistence(userId);
-      const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
-      const base = current ?? progress;
-      if (!base) return;
-      const completed = base.completed_lessons.includes(lessonId)
-        ? base.completed_lessons
-        : [...base.completed_lessons, lessonId];
-      const shape: ProgressShape = {
-        unlocked_routes: base.unlocked_routes,
-        completed_lessons: completed,
-        completed_drills: base.completed_drills,
-      };
-      const additions = unlockNext(routeId, shape);
-      const merged: ModuleProgress = {
-        ...base,
-        completed_lessons: completed,
-        unlocked_routes: Array.from(new Set([...base.unlocked_routes, ...additions])),
-        updated_at: now(),
-      };
-      await persist.set(TABLES.module_progress, progressId, merged);
-      setProgress(merged);
+      try {
+        const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        const base = current ?? progress;
+        if (!base) {
+          throw new Error('markLessonComplete: progress not yet loaded');
+        }
+        const completed = base.completed_lessons.includes(lessonId)
+          ? base.completed_lessons
+          : [...base.completed_lessons, lessonId];
+        const shape: ProgressShape = {
+          unlocked_routes: base.unlocked_routes,
+          completed_lessons: completed,
+          completed_drills: base.completed_drills,
+        };
+        const additions = unlockNext(routeId, shape);
+        const merged: ModuleProgress = {
+          ...base,
+          completed_lessons: completed,
+          unlocked_routes: Array.from(new Set([...base.unlocked_routes, ...additions])),
+          updated_at: now(),
+        };
+        await persist.set(TABLES.module_progress, progressId, merged);
+        setProgress(merged);
+      } catch (e) {
+        console.error('[useModuleProgress] markLessonComplete failed', {
+          userId,
+          lessonId,
+          routeId,
+          error: e,
+        });
+        throw e;
+      }
     },
     [authUser, progress],
   );
 
   const markDrillComplete = useCallback(
     async (drillId: string) => {
-      if (!authUser) return;
+      if (!authUser) {
+        throw new Error('markDrillComplete called with no authenticated user');
+      }
       const userId = authUser.id;
       const progressId = progressIdFor(userId);
       const persist = getPersistence(userId);
-      const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
-      const base = current ?? progress;
-      if (!base) return;
-      const completed = base.completed_drills.includes(drillId)
-        ? base.completed_drills
-        : [...base.completed_drills, drillId];
-      const drillNumber = drillId.replace('MC-DRL-', '');
-      const routeId = `/drills/${drillNumber}`;
-      const shape: ProgressShape = {
-        unlocked_routes: base.unlocked_routes,
-        completed_lessons: base.completed_lessons,
-        completed_drills: completed,
-      };
-      const additions = unlockNext(routeId, shape);
-      const merged: ModuleProgress = {
-        ...base,
-        completed_drills: completed,
-        unlocked_routes: Array.from(new Set([...base.unlocked_routes, ...additions])),
-        updated_at: now(),
-      };
-      await persist.set(TABLES.module_progress, progressId, merged);
-      setProgress(merged);
+      try {
+        const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        const base = current ?? progress;
+        if (!base) {
+          throw new Error('markDrillComplete: progress not yet loaded');
+        }
+        const completed = base.completed_drills.includes(drillId)
+          ? base.completed_drills
+          : [...base.completed_drills, drillId];
+        const drillNumber = drillId.replace('MC-DRL-', '');
+        const routeId = `/drills/${drillNumber}`;
+        const shape: ProgressShape = {
+          unlocked_routes: base.unlocked_routes,
+          completed_lessons: base.completed_lessons,
+          completed_drills: completed,
+        };
+        const additions = unlockNext(routeId, shape);
+        const merged: ModuleProgress = {
+          ...base,
+          completed_drills: completed,
+          unlocked_routes: Array.from(new Set([...base.unlocked_routes, ...additions])),
+          updated_at: now(),
+        };
+        await persist.set(TABLES.module_progress, progressId, merged);
+        setProgress(merged);
+      } catch (e) {
+        console.error('[useModuleProgress] markDrillComplete failed', {
+          userId,
+          drillId,
+          error: e,
+        });
+        throw e;
+      }
     },
     [authUser, progress],
   );
