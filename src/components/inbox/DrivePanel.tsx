@@ -192,6 +192,9 @@ function triggerBlobDownload(blob: Blob, filename: string) {
 // Download Manager (progress + cancel + filename prompt + ZIP)
 // ─────────────────────────────────────────────────────────────────────
 
+const SELECTION_STORAGE_KEY = 'drive-selection-v1';
+const ZIP_NAME_STORAGE_KEY = 'drive-last-zip-name';
+
 type FileEntry = { file: DriveFile; format?: string };
 
 type ManagerState =
@@ -224,10 +227,34 @@ export function DrivePanel() {
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
   const [preview, setPreview] = useState<DriveFile | null>(null);
-  // Selection persists across pagination, search, and refresh.
-  // Stored as Map<id, DriveFile> so the file metadata travels with the selection
-  // even if the underlying `files` page no longer contains it.
-  const [selected, setSelected] = useState<Map<string, DriveFile>>(new Map());
+  // Selection persists across pagination, search, and refresh (and across reloads
+  // via localStorage). Stored as Map<id, DriveFile> so the file metadata travels
+  // with the selection even if the underlying `files` page no longer contains it.
+  const [selected, setSelected] = useState<Map<string, DriveFile>>(() => {
+    try {
+      const raw = localStorage.getItem(SELECTION_STORAGE_KEY);
+      if (!raw) return new Map();
+      const arr = JSON.parse(raw) as [string, DriveFile][];
+      return new Map(arr);
+    } catch {
+      return new Map();
+    }
+  });
+  useEffect(() => {
+    try {
+      if (selected.size === 0) {
+        localStorage.removeItem(SELECTION_STORAGE_KEY);
+      } else {
+        localStorage.setItem(
+          SELECTION_STORAGE_KEY,
+          JSON.stringify(Array.from(selected.entries())),
+        );
+      }
+    } catch {
+      // Quota exceeded or storage disabled. Silent fail; in-memory state still works.
+    }
+  }, [selected]);
+  const [selectingAll, setSelectingAll] = useState(false);
   const [manager, setManager] = useState<ManagerState>({ kind: 'idle' });
   const managerRef = useRef<ManagerState>(manager);
   managerRef.current = manager;
@@ -238,8 +265,6 @@ export function DrivePanel() {
       const { files, nextPageToken } = await fetchPage(q, null);
       setFiles(files);
       setNextPageToken(nextPageToken);
-      // Selection intentionally preserved across refresh.
-      setNextPageToken(null);
     } finally {
       setLoading(false);
     }
@@ -289,6 +314,39 @@ export function DrivePanel() {
     });
   }, [visibleSelectable]);
   const clearSelection = useCallback(() => setSelected(new Map()), []);
+
+  const selectAllMatching = useCallback(async () => {
+    if (selectingAll) return;
+    setSelectingAll(true);
+    const collected = new Map(selected);
+    let token: string | null = null;
+    let pagesScanned = 0;
+    const MAX_PAGES = 50;
+    try {
+      do {
+        const { files: page, nextPageToken } = await fetchPage(submitted, token);
+        for (const f of page) {
+          if (!f.mimeType.includes('folder')) collected.set(f.id, f);
+        }
+        token = nextPageToken;
+        pagesScanned++;
+        setSelected(new Map(collected));
+        if (pagesScanned >= MAX_PAGES && token) {
+          toast.warning(`Selection capped at ${MAX_PAGES} pages (${collected.size} files). Refine your search to select more.`);
+          break;
+        }
+      } while (token);
+      if (pagesScanned < MAX_PAGES || !token) {
+        toast.success(`Selected ${collected.size} matching files`);
+      }
+    } catch (e: any) {
+      // Keep whatever was collected up to this point; toast and bail.
+      setSelected(new Map(collected));
+      toast.error(e?.message ?? 'Failed to select all matching');
+    } finally {
+      setSelectingAll(false);
+    }
+  }, [selected, submitted, selectingAll]);
 
   // ---------- name prompt ----------
   const promptForName = useCallback((mode: 'single' | 'zip', entries: FileEntry[], defaultName: string) => {
@@ -343,7 +401,13 @@ export function DrivePanel() {
     const entries: FileEntry[] = Array.from(selected.values()).map((file) => ({ file }));
     if (entries.length === 0) return;
 
-    const defaultZipName = `drive-files-${new Date().toISOString().slice(0, 10)}.zip`;
+    const defaultZipName = (() => {
+      try {
+        const saved = localStorage.getItem(ZIP_NAME_STORAGE_KEY);
+        if (saved) return saved;
+      } catch { /* ignore */ }
+      return `drive-files-${new Date().toISOString().slice(0, 10)}.zip`;
+    })();
     const chosen = await promptForName('zip', entries, defaultZipName);
     if (chosen === null) { setManager({ kind: 'idle' }); return; }
     let zipName = sanitizeFilename(chosen);
@@ -406,6 +470,7 @@ export function DrivePanel() {
       });
       if (controller.signal.aborted) throw new DOMException('aborted', 'AbortError');
       triggerBlobDownload(zipBlob, zipName);
+      try { localStorage.setItem(ZIP_NAME_STORAGE_KEY, zipName); } catch { /* ignore */ }
       toast.success(`Downloaded ${zipName} (${entries.length} files)`);
       setSelected(new Map());
     } catch (e: any) {
@@ -462,6 +527,24 @@ export function DrivePanel() {
             >
               <X className="w-3 h-3 mr-0.5" />
               Clear
+            </Button>
+          )}
+          {submitted && nextPageToken && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+              onClick={selectAllMatching}
+              disabled={selectingAll || manager.kind !== 'idle'}
+            >
+              {selectingAll ? (
+                <>
+                  <RefreshCw className="w-3 h-3 mr-0.5 animate-spin" />
+                  Selecting…
+                </>
+              ) : (
+                <>+ Select all matching</>
+              )}
             </Button>
           )}
           <div className="ml-auto">
