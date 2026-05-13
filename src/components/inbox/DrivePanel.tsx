@@ -287,3 +287,60 @@ export function DrivePanel() {
     </div>
   );
 }
+
+function DownloadButton({ file }: { file: DriveFile }) {
+  const [busy, setBusy] = useState<string | null>(null);
+  const formats = NATIVE_EXPORT_FORMATS[file.mimeType];
+
+  const run = async (format?: string) => {
+    setBusy(format ?? 'binary');
+    try {
+      await downloadDriveFile(file, format);
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Download failed');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  if (!formats) {
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-7 px-2 text-[11px]"
+        onClick={() => run()}
+        disabled={busy !== null}
+        aria-label="Download"
+      >
+        <Download className="w-3 h-3 mr-1" />
+        {busy ? '…' : 'Download'}
+      </Button>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-7 px-2 text-[11px]"
+          disabled={busy !== null}
+          aria-label="Download as"
+        >
+          <Download className="w-3 h-3 mr-1" />
+          {busy ? '…' : 'Download'}
+          <ChevronDown className="w-3 h-3 ml-0.5 opacity-60" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        {formats.map((f) => (
+          <DropdownMenuItem key={f.format} onClick={() => run(f.format)} className="text-xs">
+            {f.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
