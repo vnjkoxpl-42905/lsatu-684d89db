@@ -356,105 +356,16 @@ export default function Practice() {
 
       {/* ── Header — minimal, no branding ──────────────────────────────────── */}
       <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10">
-        <div className="px-4 lg:px-8 py-5 flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex flex-col gap-1.5">
-            <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
-              Practice Hub
-            </div>
-            <h2 className="text-base font-semibold text-foreground leading-tight">
-              Welcome back, {getFirstName()}
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              {new Date().toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </p>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                aria-label="Account menu"
-                className="rounded-full ring-1 ring-border transition-shadow hover:ring-2 hover:ring-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:ring-2 data-[state=open]:ring-foreground/40"
-              >
-                <Avatar className="h-9 w-9">
-                  <AvatarFallback className="text-xs bg-secondary text-foreground/80">
-                    {userInitials}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              sideOffset={8}
-              className="w-64 rounded-xl shadow-lg"
-            >
-              <DropdownMenuLabel className="flex flex-col gap-0.5 py-2">
-                <span className="text-sm font-semibold text-foreground">
-                  {getFirstName()}
-                </span>
-                {user?.email && (
-                  <span className="text-xs font-normal text-muted-foreground truncate">
-                    {user.email}
-                  </span>
-                )}
-              </DropdownMenuLabel>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem onSelect={() => navigate('/profile')}>
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => navigate('/mainhub')}>
-                Main Hub
-              </DropdownMenuItem>
-              {perms.has_analytics_access && (
-                <DropdownMenuItem onSelect={() => navigate('/analytics')}>
-                  View Analytics
-                </DropdownMenuItem>
-              )}
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between gap-3 cursor-default"
-              >
-                <span>Official Format</span>
-                <Switch
-                  checked={useOfficial}
-                  onCheckedChange={setUseOfficial}
-                  aria-label="Toggle official LSAT testing format"
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between gap-3 cursor-default"
-              >
-                <span>Dark mode</span>
-                <Switch
-                  checked={theme === 'dark'}
-                  onCheckedChange={toggleTheme}
-                  aria-label="Toggle dark mode"
-                />
-              </DropdownMenuItem>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                onSelect={async () => {
-                  await signOut();
-                  navigate('/auth');
-                }}
-                className="text-destructive focus:text-destructive focus:bg-destructive/10"
-              >
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="px-4 lg:px-8 py-5 flex items-center max-w-7xl mx-auto">
+          <button
+            type="button"
+            onClick={() => navigate('/foyer')}
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            aria-label="Back to Main Hub"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Main Hub
+          </button>
         </div>
       </header>
 
