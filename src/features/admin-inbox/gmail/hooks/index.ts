@@ -5,3 +5,5 @@ export { useGmailLabels, gmailLabelsQueryKey } from "./useGmailLabels";
 export { useGmailModify } from "./useGmailModify";
 export type { ModifyAction } from "./useGmailModify";
 export { useGmailSend } from "./useGmailSend";
+export { useGmailProfile, gmailProfileQueryKey } from "./useGmailProfile";
+export type { GmailProfile } from "./useGmailProfile";

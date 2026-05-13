@@ -275,7 +275,10 @@ Deno.serve(async (req) => {
         return { id, ok: res.ok, error: res.ok ? null : txt.slice(0, 200) };
       }));
       const failed = results.filter((r) => !r.ok);
-      if (failed.length) return jsonResp({ ok: false, results, error: `${failed.length} of ${ids.length} failed` }, 207);
+      // Return 200 with ok:false on partial failure so supabase-js delivers the full
+      // results payload (per-id error reasons) to the client. The client treats this
+      // as an error via the `ok` field.
+      if (failed.length) return jsonResp({ ok: false, results, error: `${failed.length} of ${ids.length} failed` });
       return jsonResp({ ok: true, results });
     }
 
@@ -290,7 +293,10 @@ Deno.serve(async (req) => {
         return { id, ok: res.ok, error: res.ok ? null : txt.slice(0, 200) };
       }));
       const failed = results.filter((r) => !r.ok);
-      if (failed.length) return jsonResp({ ok: false, results, error: `${failed.length} of ${ids.length} failed` }, 207);
+      // Return 200 with ok:false on partial failure so supabase-js delivers the full
+      // results payload (per-id error reasons) to the client. The client treats this
+      // as an error via the `ok` field.
+      if (failed.length) return jsonResp({ ok: false, results, error: `${failed.length} of ${ids.length} failed` });
       return jsonResp({ ok: true, results });
     }
 

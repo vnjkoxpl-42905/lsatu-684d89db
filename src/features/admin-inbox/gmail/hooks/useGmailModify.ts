@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import {
   batchModifyThreads,
   batchTrashThreads,
+  GmailApiError,
   modifyThread,
   SYSTEM_LABELS,
   trashThread,
@@ -130,9 +131,20 @@ export function useGmailModify() {
       for (const snap of ctx?.snapshots ?? []) {
         qc.setQueryData(snap.key, snap.data);
       }
-      const msg = err instanceof Error ? err.message : "Action failed";
+      // TODO(v1.1): switch batchModify/batchTrash to per-id partial-success handling
+      // (preserve the rows that succeeded, retry only the failures). For now everything
+      // rolls back and we surface per-id reasons in the toast so the user can see what
+      // failed and why instead of "batch failed."
+      const baseMsg = err instanceof Error ? err.message : "Action failed";
+      const results = err instanceof GmailApiError ? err.results : undefined;
+      const failures = results?.filter((r) => !r.ok) ?? [];
+      const description = failures.length
+        ? `${failures.length} of ${action.ids.length} failed:\n${failures
+            .map((f) => `• ${f.id}: ${f.error ?? "unknown error"}`)
+            .join("\n")}`
+        : baseMsg;
       toast.error(`Could not ${action.kind} ${action.ids.length > 1 ? "threads" : "thread"}`, {
-        description: msg,
+        description,
       });
     },
     onSettled: (_data, _err, action) => {

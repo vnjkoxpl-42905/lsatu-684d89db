@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
-import { GmailPanel } from '@/components/inbox/GmailPanel';
+import { GmailPane } from '@/features/admin-inbox/gmail';
 import { DrivePanel } from '@/components/inbox/DrivePanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
@@ -221,9 +221,11 @@ export default function Inbox() {
         </div>
       </header>
 
+      {/* TODO: migrate to has_admin_inbox_access flag per CLAUDE.md "granular flags not roles."
+          Tracking ticket TBD. Until then, is_admin matches the existing admin-inbox gate. */}
       {is_admin && source === 'gmail' ? (
         <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
-          <GmailPanel />
+          <GmailPane />
         </div>
       ) : is_admin && source === 'drive' ? (
         <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
