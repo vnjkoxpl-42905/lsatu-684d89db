@@ -9,11 +9,12 @@ import { NewConversationDialog } from '@/components/inbox/NewConversationDialog'
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Inbox as InboxIcon, Search } from 'lucide-react';
+import { ArrowLeft, Inbox as InboxIcon, Mail, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
+import { GmailPanel } from '@/components/inbox/GmailPanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -103,6 +104,7 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
+  const [source, setSource] = useState<'app' | 'gmail'>('app');
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
@@ -176,16 +178,44 @@ export default function Inbox() {
               )}
             </div>
           </div>
-          <NewConversationDialog
-            showTrigger={is_admin}
-            autoOpenWith={composeTarget}
-            onAutoOpenHandled={clearComposeTarget}
-            onCreated={(id) => navigate(`/inbox/${id}`)}
-          />
+          <div className="flex items-center gap-2">
+            {is_admin && (
+              <div className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-muted/60">
+                <button
+                  onClick={() => setSource('app')}
+                  className={cn(
+                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
+                    source === 'app' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1"><InboxIcon className="w-3 h-3" /> Messages</span>
+                </button>
+                <button
+                  onClick={() => setSource('gmail')}
+                  className={cn(
+                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
+                    source === 'gmail' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1"><Mail className="w-3 h-3" /> Gmail</span>
+                </button>
+              </div>
+            )}
+            <NewConversationDialog
+              showTrigger={is_admin && source === 'app'}
+              autoOpenWith={composeTarget}
+              onAutoOpenHandled={clearComposeTarget}
+              onCreated={(id) => navigate(`/inbox/${id}`)}
+            />
+          </div>
         </div>
       </header>
 
-      {showEmptyStudent ? (
+      {is_admin && source === 'gmail' ? (
+        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
+          <GmailPanel />
+        </div>
+      ) : showEmptyStudent ? (
         <div className="max-w-7xl mx-auto">
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>

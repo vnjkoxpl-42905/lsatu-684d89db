@@ -23,3 +23,6 @@ verify_jwt = true
 
 [functions.gcal-list-calendars]
 verify_jwt = true
+
+[functions.gmail]
+verify_jwt = true
