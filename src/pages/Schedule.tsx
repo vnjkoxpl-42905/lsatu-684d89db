@@ -335,7 +335,7 @@ export default function Schedule() {
               <GoogleCalendarPanel />
             </div>
 
-
+            {isLoading ? (
               <div className="flex items-center justify-center py-24 text-sm text-muted-foreground">
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Loading…
