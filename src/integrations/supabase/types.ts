@@ -2232,30 +2232,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_last_activity: {
-        Row: {
-          user_id: string
-          activity_type: string
-          activity_id: string
-          state_snapshot: Json
-          updated_at: string
-        }
-        Insert: {
-          user_id: string
-          activity_type: string
-          activity_id: string
-          state_snapshot?: Json
-          updated_at?: string
-        }
-        Update: {
-          user_id?: string
-          activity_type?: string
-          activity_id?: string
-          state_snapshot?: Json
-          updated_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       students_safe: {

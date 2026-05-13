@@ -6,7 +6,8 @@
  */
 
 import { useState } from 'react';
-import { ArrowRight, Check, X as XIcon } from 'lucide-react';
+import { ArrowRight, Check, X as XIcon, BookOpen } from 'lucide-react';
+import LRQuestionModal from '@/components/drill/shared/LRQuestionModal';
 import calibration from '@/bootcamps/main-conclusion/data/calibration.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -225,52 +226,75 @@ function CapstoneQuestionView({
   onNext: () => void;
   isLast: boolean;
 }) {
+  const [open, setOpen] = useState(false);
   const submitted = pickedLetter != null;
+  const pickedChoice = submitted ? item.choices.find((c) => c.letter === pickedLetter) ?? null : null;
+  const correctLetter = item.choices.find((c) => c.is_correct)?.letter ?? '';
+
+  const answerChoices = Object.fromEntries(item.choices.map((c) => [c.letter, c.text]));
+  const explanations = Object.fromEntries(
+    item.choices.map((c) => [
+      c.letter,
+      {
+        verdict: c.is_correct ? ('correct' as const) : ('incorrect' as const),
+        whyCorrect: c.is_correct ? c.rationale : undefined,
+        whyIncorrect: !c.is_correct ? c.rationale : undefined,
+      },
+    ]),
+  );
+
   return (
     <Card variant="surface" data-capstone-item-id={item.id}>
       <p className="font-mc-serif text-body-prose text-ink leading-relaxed">{item.stimulus}</p>
       <p className="font-mc-serif text-body text-ink-soft italic mt-3">{item.prompt}</p>
-      <ol className="mt-3 space-y-1.5">
-        {item.choices.map((c) => {
-          const isPicked = pickedLetter === c.letter;
-          return (
-            <li key={c.letter}>
-              <Button
-                variant={isPicked ? 'primary' : 'subtle'}
-                className="w-full justify-start"
-                disabled={submitted}
-                onClick={() => onPick(c)}
-              >
-                <span className="font-mc-mono text-mono text-ink-faint mr-2">{c.letter}</span>
-                <span className="font-mc-serif text-body text-ink flex-1 text-left">{c.text}</span>
-                {submitted && c.is_correct ? <Badge tone="success" dot>correct</Badge> : null}
-                {submitted && isPicked && !c.is_correct ? <Badge tone="warn" dot>your pick</Badge> : null}
-              </Button>
-            </li>
-          );
-        })}
-      </ol>
-      {submitted ? (
-        <div className="mt-3 space-y-2">
-          {item.choices.map((c) => (
-            <p key={c.letter} className="font-mc-serif text-body text-ink-soft flex items-baseline gap-2">
-              <span className="font-mc-mono text-mono shrink-0">{c.letter}</span>
-              {c.is_correct ? (
-                <Check className="h-3.5 w-3.5 text-[rgb(var(--success))] shrink-0 self-center" strokeWidth={2.4} aria-label="Correct choice" />
-              ) : null}
-              <span>
-                {c.rationale}
-                {c.trap_label ? <span className="font-mc-mono text-mono text-ink-faint ml-2">[{c.trap_label}]</span> : null}
-              </span>
-            </p>
-          ))}
-          <div className="flex justify-end">
+
+      {!submitted ? (
+        <div className="mt-4">
+          <Button onClick={() => setOpen(true)} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+            Open question
+          </Button>
+        </div>
+      ) : (
+        <div className="mt-4 space-y-2">
+          <p className="font-mc-mono text-mono text-ink-faint">
+            You picked <span className="text-ink">{pickedLetter}</span>
+            {pickedChoice?.is_correct ? (
+              <Check className="inline h-3.5 w-3.5 text-[rgb(var(--success))] ml-2" strokeWidth={2.4} aria-label="Correct" />
+            ) : (
+              <XIcon className="inline h-3.5 w-3.5 text-[rgb(var(--error))] ml-2" strokeWidth={2.4} aria-label="Incorrect" />
+            )}
+          </p>
+          <div className="flex items-center gap-2">
+            <Button variant="subtle" size="sm" onClick={() => setOpen(true)} leftIcon={<BookOpen className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+              Review explanations
+            </Button>
             <Button onClick={onNext} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
               {isLast ? 'Finish' : 'Continue'}
             </Button>
           </div>
         </div>
-      ) : null}
+      )}
+
+      {open && (
+        <LRQuestionModal
+          inline={{
+            id: item.id,
+            number: item.number,
+            stimulus: item.stimulus,
+            questionStem: item.prompt,
+            answerChoices,
+            correctAnswer: correctLetter,
+            explanations,
+            eyebrow: `Capstone · Q${item.number}`,
+          }}
+          onClose={() => setOpen(false)}
+          onSubmit={({ key }) => {
+            if (submitted) return;
+            const choice = item.choices.find((c) => c.letter === key);
+            if (choice) void onPick(choice);
+          }}
+        />
+      )}
     </Card>
   );
 }
