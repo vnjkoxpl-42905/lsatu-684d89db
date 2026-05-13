@@ -120,10 +120,9 @@ Deno.serve(async (req) => {
     if (action === "thread") {
       const id = body.id;
       if (!id) throw new Error("id required");
-      const res = await fetch(`${GATEWAY}/users/me/threads/${id}?format=full`, { headers: gHeaders });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail thread ${res.status}: ${JSON.stringify(data)}`);
-      const messages = (data.messages ?? []).map((m: any) => {
+      const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/threads/${id}?format=full`, { headers: gHeaders });
+      if (!res.ok) throw new Error(`Gmail thread ${res.status}: ${txt.slice(0, 300)}`);
+      const messages = (data?.messages ?? []).map((m: any) => {
         const h = m.payload?.headers ?? [];
         const { text, html } = extractBody(m.payload);
         return {
