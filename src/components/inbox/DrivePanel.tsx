@@ -262,22 +262,33 @@ export function DrivePanel() {
   useEffect(() => { load(submitted); }, [load, submitted]);
 
   // ---------- selection helpers ----------
-  const toggleSelected = useCallback((id: string) => {
+  const toggleSelected = useCallback((file: DriveFile) => {
     setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      const next = new Map(prev);
+      if (next.has(file.id)) next.delete(file.id); else next.set(file.id, file);
       return next;
     });
   }, []);
-  const allVisibleIds = useMemo(() => files.filter((f) => !f.mimeType.includes('folder')).map((f) => f.id), [files]);
-  const allSelected = allVisibleIds.length > 0 && allVisibleIds.every((id) => selected.has(id));
-  const someSelected = selected.size > 0 && !allSelected;
-  const toggleSelectAll = useCallback(() => {
+  const visibleSelectable = useMemo(
+    () => files.filter((f) => !f.mimeType.includes('folder')),
+    [files],
+  );
+  const allVisibleSelected = visibleSelectable.length > 0 && visibleSelectable.every((f) => selected.has(f.id));
+  const someVisibleSelected = visibleSelectable.some((f) => selected.has(f.id)) && !allVisibleSelected;
+  const toggleSelectAllVisible = useCallback(() => {
     setSelected((prev) => {
-      if (allVisibleIds.every((id) => prev.has(id))) return new Set();
-      return new Set(allVisibleIds);
+      const next = new Map(prev);
+      const allOn = visibleSelectable.every((f) => next.has(f.id));
+      if (allOn) {
+        // Deselect only the currently visible ones; preserve off-page selections.
+        for (const f of visibleSelectable) next.delete(f.id);
+      } else {
+        for (const f of visibleSelectable) next.set(f.id, f);
+      }
+      return next;
     });
-  }, [allVisibleIds]);
+  }, [visibleSelectable]);
+  const clearSelection = useCallback(() => setSelected(new Map()), []);
 
   // ---------- name prompt ----------
   const promptForName = useCallback((mode: 'single' | 'zip', entries: FileEntry[], defaultName: string) => {
