@@ -53,7 +53,7 @@ export function GmailPanel() {
 
   const list = useQuery({
     queryKey: ["gmail-threads"],
-    queryFn: () => gmailCall({ action: "list", q: "in:inbox", max: 25 }),
+    queryFn: () => gmailCall({ action: "list", q: "in:inbox", max: 50 }),
     refetchInterval: 60_000,
   });
 
