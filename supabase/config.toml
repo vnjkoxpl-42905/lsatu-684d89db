@@ -26,9 +26,3 @@ verify_jwt = true
 
 [functions.gmail]
 verify_jwt = true
-
-[functions.messenger-webhook]
-verify_jwt = false
-
-[functions.messenger-send]
-verify_jwt = true

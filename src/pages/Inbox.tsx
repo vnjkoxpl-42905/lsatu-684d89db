@@ -104,7 +104,7 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
-  const [source, setSource] = useState<'app' | 'gmail' | 'messenger'>('app');
+  const [source, setSource] = useState<'app' | 'gmail'>('app');
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
@@ -199,15 +199,6 @@ export default function Inbox() {
                 >
                   <span className="inline-flex items-center gap-1"><Mail className="w-3 h-3" /> Gmail</span>
                 </button>
-                <button
-                  onClick={() => setSource('messenger')}
-                  className={cn(
-                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
-                    source === 'messenger' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1"><Facebook className="w-3 h-3" /> Messenger</span>
-                </button>
               </div>
             )}
             <NewConversationDialog
@@ -223,10 +214,6 @@ export default function Inbox() {
       {is_admin && source === 'gmail' ? (
         <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
           <GmailPanel />
-        </div>
-      ) : is_admin && source === 'messenger' ? (
-        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
-          <MessengerPanel />
         </div>
       ) : showEmptyStudent ? (
         <div className="max-w-7xl mx-auto">
