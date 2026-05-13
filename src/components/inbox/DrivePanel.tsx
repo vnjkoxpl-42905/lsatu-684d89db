@@ -220,17 +220,19 @@ export function DrivePanel() {
                         {f.modifiedTime ? ` · ${new Date(f.modifiedTime).toLocaleDateString()}` : ''}
                       </div>
                     </div>
-                    {f.webViewLink && (
-                      <a
-                        href={f.webViewLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="shrink-0 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline"
-                      >
-                        Open <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
+                    <div className="shrink-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                      <DownloadButton file={f} />
+                      {f.webViewLink && (
+                        <a
+                          href={f.webViewLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline px-1.5"
+                        >
+                          Open <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
                   </li>
                 );
               })}
