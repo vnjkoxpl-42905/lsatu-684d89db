@@ -7,3 +7,4 @@ export type { ModifyAction } from "./useGmailModify";
 export { useGmailSend } from "./useGmailSend";
 export { useGmailProfile, gmailProfileQueryKey } from "./useGmailProfile";
 export type { GmailProfile } from "./useGmailProfile";
+export { useGmailContacts, gmailContactsQueryKey } from "./useGmailContacts";

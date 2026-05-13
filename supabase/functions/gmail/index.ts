@@ -300,6 +300,119 @@ Deno.serve(async (req) => {
       return jsonResp({ ok: true, results });
     }
 
+    // ---- CONTACTS (derived from recent thread headers) ----
+    if (action === "listRecentContacts") {
+      // Scan recent threads across INBOX / SENT / DRAFT, parse From/To/Cc headers,
+      // dedupe by lowercased email, rank by recency + frequency.
+      // Gmail's labelIds param is AND-semantics on a single call, so we issue one
+      // threads.list per label and dedupe by thread id.
+      const perLabel: number = Math.min(body.maxThreads ?? 100, 200);
+      const LABELS = ["INBOX", "SENT", "DRAFT"];
+
+      // Derive the admin's own email so we can exclude it from suggestions.
+      let ownEmail = "";
+      const profileResp = await safeFetchJson(`${GATEWAY}/users/me/profile`, { headers: gHeaders });
+      if (profileResp.res.ok) ownEmail = (profileResp.data?.emailAddress ?? "").toLowerCase();
+      // Belt-and-suspenders: also skip the canonical admin address.
+      const HARDCODED_SKIP = "contact@aspiringattorneys.com";
+
+      // List threads per label, dedupe by thread id.
+      const threadIds = new Set<string>();
+      for (const labelId of LABELS) {
+        const params = new URLSearchParams();
+        params.set("maxResults", String(perLabel));
+        params.append("labelIds", labelId);
+        const url = `${GATEWAY}/users/me/threads?${params.toString()}`;
+        const { res, data, txt } = await safeFetchJson(url, { headers: gHeaders });
+        if (!res.ok) throw new Error(`Gmail listRecentContacts list ${labelId} ${res.status}: ${txt.slice(0, 300)}`);
+        for (const t of (data?.threads ?? [])) {
+          if (t?.id) threadIds.add(t.id);
+        }
+      }
+
+      // Fetch metadata for each thread in parallel.
+      const metadataHeaders = "metadataHeaders=From&metadataHeaders=To&metadataHeaders=Cc";
+      const threadResults = await Promise.all(
+        Array.from(threadIds).map(async (tid) => {
+          const { res, data } = await safeFetchJson(
+            `${GATEWAY}/users/me/threads/${tid}?format=metadata&${metadataHeaders}`,
+            { headers: gHeaders },
+          );
+          if (!res.ok) return null;
+          return data;
+        }),
+      );
+
+      // Parse RFC 2822 address lists: `"Display Name" <email@x>, second@y`.
+      // Captures optional quoted-or-bare display name and the bracketed email,
+      // or a bare email address.
+      function parseAddressList(value: string): Array<{ name?: string; email: string }> {
+        if (!value) return [];
+        const out: Array<{ name?: string; email: string }> = [];
+        // Split on commas at the top level. Quoted display names cannot contain
+        // unescaped commas inside quotes in practice for our scan, so a naive split is fine.
+        const parts = value.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+        for (const raw of parts) {
+          const piece = raw.trim();
+          if (!piece) continue;
+          const angle = piece.match(/^(.*?)<([^>]+)>\s*$/);
+          if (angle) {
+            const rawName = angle[1].trim().replace(/^"|"$/g, "").trim();
+            const email = angle[2].trim().toLowerCase();
+            if (email.includes("@")) {
+              out.push(rawName ? { name: rawName, email } : { email });
+            }
+          } else if (piece.includes("@")) {
+            out.push({ email: piece.toLowerCase() });
+          }
+        }
+        return out;
+      }
+
+      interface ContactAgg { email: string; name?: string; lastUsed: number; frequency: number; }
+      const contacts = new Map<string, ContactAgg>();
+
+      for (const td of threadResults) {
+        if (!td?.messages) continue;
+        // Use the thread's most recent internalDate for recency on every contact in the thread.
+        const lastMsg = td.messages[td.messages.length - 1];
+        const internalDate = Number(lastMsg?.internalDate ?? 0);
+        for (const msg of td.messages) {
+          const headers = msg.payload?.headers ?? [];
+          const combined = [
+            header(headers, "From"),
+            header(headers, "To"),
+            header(headers, "Cc"),
+          ].filter(Boolean).join(", ");
+          const parsed = parseAddressList(combined);
+          for (const addr of parsed) {
+            if (!addr.email || addr.email === ownEmail || addr.email === HARDCODED_SKIP) continue;
+            const existing = contacts.get(addr.email);
+            if (existing) {
+              existing.frequency += 1;
+              if (internalDate > existing.lastUsed) {
+                existing.lastUsed = internalDate;
+                if (addr.name) existing.name = addr.name; // most recent display name wins
+              }
+            } else {
+              contacts.set(addr.email, {
+                email: addr.email,
+                name: addr.name,
+                lastUsed: internalDate,
+                frequency: 1,
+              });
+            }
+          }
+        }
+      }
+
+      const sorted = Array.from(contacts.values())
+        .sort((a, b) => (b.lastUsed - a.lastUsed) || (b.frequency - a.frequency))
+        .slice(0, 500);
+
+      return jsonResp({ ok: true, contacts: sorted });
+    }
+
     // ---- MESSAGES ----
     if (action === "getMessage") {
       const id: string = body.id;

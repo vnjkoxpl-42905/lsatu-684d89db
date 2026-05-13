@@ -11,3 +11,4 @@ export {
 } from "./gmailThreads";
 export { getMessage, sendMessage, parseAddress } from "./gmailMessages";
 export { listLabels } from "./gmailLabels";
+export { listRecentContacts, type GmailContact, type ListRecentContactsParams } from "./gmailContacts";

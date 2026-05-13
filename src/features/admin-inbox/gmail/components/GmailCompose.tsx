@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useGmailSend } from "../hooks";
+import { useGmailContacts, useGmailSend } from "../hooks";
+import { GmailRecipientInput } from "./GmailRecipientInput";
 
 interface GmailComposeProps {
   open: boolean;
@@ -24,6 +25,8 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
   const [minimized, setMinimized] = useState(false);
 
   const send = useGmailSend();
+  const contactsQuery = useGmailContacts({ enabled: open });
+  const contacts = contactsQuery.data ?? [];
 
   if (!open) return null;
 
@@ -83,11 +86,11 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
         <div className="flex flex-col">
           <ComposeRow>
             <label className="w-12 text-xs text-muted-foreground">To</label>
-            <Input
+            <GmailRecipientInput
               value={to}
-              onChange={(e) => setTo(e.target.value)}
+              onChange={setTo}
               placeholder="recipient@example.com"
-              className="border-0 focus-visible:ring-0 h-8 text-sm shadow-none"
+              contacts={contacts}
             />
             <div className="flex items-center gap-1 text-[11px] text-muted-foreground pr-2">
               {!showCc ? (
@@ -101,22 +104,22 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
           {showCc ? (
             <ComposeRow>
               <label className="w-12 text-xs text-muted-foreground">Cc</label>
-              <Input
+              <GmailRecipientInput
                 value={cc}
-                onChange={(e) => setCc(e.target.value)}
+                onChange={setCc}
                 placeholder="cc@example.com"
-                className="border-0 focus-visible:ring-0 h-8 text-sm shadow-none"
+                contacts={contacts}
               />
             </ComposeRow>
           ) : null}
           {showBcc ? (
             <ComposeRow>
               <label className="w-12 text-xs text-muted-foreground">Bcc</label>
-              <Input
+              <GmailRecipientInput
                 value={bcc}
-                onChange={(e) => setBcc(e.target.value)}
+                onChange={setBcc}
                 placeholder="bcc@example.com"
-                className="border-0 focus-visible:ring-0 h-8 text-sm shadow-none"
+                contacts={contacts}
               />
             </ComposeRow>
           ) : null}
