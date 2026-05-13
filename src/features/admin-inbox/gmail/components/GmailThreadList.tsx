@@ -37,7 +37,7 @@ export function GmailThreadList(props: GmailThreadListProps) {
   const virtualizer = useVirtualizer({
     count: threads.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => 44,
+    estimateSize: () => 60,
     overscan: 8,
   });
 
@@ -45,12 +45,18 @@ export function GmailThreadList(props: GmailThreadListProps) {
     return (
       <div className="divide-y divide-border" aria-busy>
         {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 px-4 h-11 animate-pulse">
-            <div className="w-4 h-4 rounded bg-muted" />
-            <div className="w-4 h-4 rounded bg-muted" />
-            <div className="w-32 h-3.5 rounded bg-muted" />
-            <div className="flex-1 h-3.5 rounded bg-muted" />
-            <div className="w-10 h-3.5 rounded bg-muted" />
+          <div key={i} className="flex items-start gap-2 px-3 py-2.5 min-h-[60px] animate-pulse">
+            <div className="flex items-center gap-1 shrink-0 w-11 pt-0.5">
+              <div className="w-4 h-4 rounded bg-muted" />
+              <div className="w-4 h-4 rounded bg-muted" />
+            </div>
+            <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between gap-2">
+                <div className="w-32 h-3 rounded bg-muted" />
+                <div className="w-10 h-3 rounded bg-muted" />
+              </div>
+              <div className="w-full h-3 rounded bg-muted" />
+            </div>
           </div>
         ))}
       </div>
