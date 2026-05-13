@@ -28,6 +28,8 @@ interface GmailMessage {
   html: string;
   messageIdHeader: string;
   references: string;
+  internalDate?: string;
+  snippet?: string;
 }
 
 function parseAddress(s: string): { name: string; email: string } {
