@@ -9,13 +9,12 @@ import { NewConversationDialog } from '@/components/inbox/NewConversationDialog'
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Inbox as InboxIcon, Mail, Search, Facebook } from 'lucide-react';
+import { ArrowLeft, Inbox as InboxIcon, Mail, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
 import { GmailPanel } from '@/components/inbox/GmailPanel';
-import { MessengerPanel } from '@/components/inbox/MessengerPanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
