@@ -712,6 +712,30 @@ export type Database = {
         }
         Relationships: []
       }
+      gcal_sync_state: {
+        Row: {
+          calendar_id: string
+          id: number
+          last_full_sync_at: string | null
+          last_synced_at: string | null
+          sync_token: string | null
+        }
+        Insert: {
+          calendar_id?: string
+          id?: number
+          last_full_sync_at?: string | null
+          last_synced_at?: string | null
+          sync_token?: string | null
+        }
+        Update: {
+          calendar_id?: string
+          id?: number
+          last_full_sync_at?: string | null
+          last_synced_at?: string | null
+          sync_token?: string | null
+        }
+        Relationships: []
+      }
       guided_drill_assignments: {
         Row: {
           assigned_at: string
@@ -1353,6 +1377,69 @@ export type Database = {
           relevant_question_types?: string[] | null
           strengthen_tactics?: string | null
           weaken_tactics?: string | null
+        }
+        Relationships: []
+      }
+      schedule_events: {
+        Row: {
+          all_day: boolean
+          calendar_id: string
+          created_at: string
+          created_by: string | null
+          deleted_at: string | null
+          description: string | null
+          end_at: string
+          etag: string | null
+          google_event_id: string | null
+          html_link: string | null
+          id: string
+          last_synced_at: string
+          location: string | null
+          source: string
+          start_at: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          all_day?: boolean
+          calendar_id?: string
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          description?: string | null
+          end_at: string
+          etag?: string | null
+          google_event_id?: string | null
+          html_link?: string | null
+          id?: string
+          last_synced_at?: string
+          location?: string | null
+          source?: string
+          start_at: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          all_day?: boolean
+          calendar_id?: string
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          description?: string | null
+          end_at?: string
+          etag?: string | null
+          google_event_id?: string | null
+          html_link?: string | null
+          id?: string
+          last_synced_at?: string
+          location?: string | null
+          source?: string
+          start_at?: string
+          status?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
