@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "d3-q01",
+      "phrase": "Infers that X on the grounds that Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: X and Y, no Evidence" },
+        { "id": "d", "text": "No Conclusion, Evidence: Y" }
+      ],
+      "correct": "a",
+      "explanation": "'On the grounds that' points backward to evidence, so Y is the evidence and X is the conclusion."
+    },
+    {
+      "id": "d3-q02",
+      "phrase": "Concludes X on the basis of Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "b", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "c", "text": "Conclusion: X, no Evidence" },
+        { "id": "d", "text": "No Conclusion, Evidence: X" }
+      ],
+      "correct": "b",
+      "explanation": "'On the basis of' points backward to evidence. Y is the evidence; X is the conclusion."
+    },
+    {
+      "id": "d3-q03",
+      "phrase": "Concludes, from the claim that X, that Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: X and Y" },
+        { "id": "d", "text": "Neither" }
+      ],
+      "correct": "b",
+      "explanation": "'From' points backward. X is the evidence (the starting claim). Y is the conclusion drawn from it."
+    },
+    {
+      "id": "d3-q04",
+      "phrase": "Uses X to support Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: X, no Evidence" },
+        { "id": "d", "text": "Conclusion: neither" }
+      ],
+      "correct": "b",
+      "explanation": "'To support' points forward to the conclusion. X is the evidence; Y is the conclusion."
+    },
+    {
+      "id": "d3-q05",
+      "phrase": "Takes for granted that Y because X",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: X and Y" },
+        { "id": "d", "text": "Conclusion: neither" }
+      ],
+      "correct": "b",
+      "explanation": "'Because' points backward to evidence. X is the evidence; Y is the conclusion."
+    },
+    {
+      "id": "d3-q06",
+      "phrase": "Argues for X by appealing to Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: X and Y" },
+        { "id": "d", "text": "Conclusion: neither" }
+      ],
+      "correct": "a",
+      "explanation": "'By appealing to' points backward to evidence. Y is the evidence; X is the conclusion."
+    },
+    {
+      "id": "d3-q07",
+      "phrase": "Cites X in order to establish Y",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: neither" },
+        { "id": "d", "text": "Conclusion: X and Y" }
+      ],
+      "correct": "b",
+      "explanation": "'In order to establish' points forward to the conclusion. X is the evidence; Y is the conclusion."
+    },
+    {
+      "id": "d3-q08",
+      "phrase": "Y follows from X",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: neither" },
+        { "id": "d", "text": "Conclusion: X and Y" }
+      ],
+      "correct": "b",
+      "explanation": "'Follows from' points backward to evidence. X is the evidence; Y is the conclusion."
+    },
+    {
+      "id": "d3-q09",
+      "phrase": "Bonus: Infers Y given that X",
+      "options": [
+        { "id": "a", "text": "Conclusion: X, Evidence: Y" },
+        { "id": "b", "text": "Conclusion: Y, Evidence: X" },
+        { "id": "c", "text": "Conclusion: neither" },
+        { "id": "d", "text": "Conclusion: X and Y" }
+      ],
+      "correct": "b",
+      "explanation": "'Given that' points backward to evidence. X is the evidence; Y is the conclusion."
+    }
+  ]
+}

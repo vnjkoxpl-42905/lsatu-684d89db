@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "d5-q01",
+      "type": "mc",
+      "prompt": "On the LSAT, 'presupposes' most directly means:",
+      "options": [
+        { "id": "a", "text": "assumes for the sake of argument" },
+        { "id": "b", "text": "requires (treats as a necessary condition)" },
+        { "id": "c", "text": "predicts" },
+        { "id": "d", "text": "denies" }
+      ],
+      "correct": "b",
+      "explanation": "Presuppose = require. The argument depends on the presupposed claim; if it failed, the argument would collapse."
+    },
+    {
+      "id": "d5-q02",
+      "type": "mc",
+      "prompt": "On the LSAT, 'explanation' most directly means:",
+      "options": [
+        { "id": "a", "text": "definition" },
+        { "id": "b", "text": "elaboration" },
+        { "id": "c", "text": "cause" },
+        { "id": "d", "text": "summary" }
+      ],
+      "correct": "c",
+      "explanation": "Explanation = cause. The cause that produced the effect. Master Key #1."
+    },
+    {
+      "id": "d5-q03",
+      "type": "mc",
+      "prompt": "On the LSAT, 'hypothesis' most directly means:",
+      "options": [
+        { "id": "a", "text": "definitive theory" },
+        { "id": "b", "text": "potential cause; a causal guess" },
+        { "id": "c", "text": "prediction about the future" },
+        { "id": "d", "text": "an established law" }
+      ],
+      "correct": "b",
+      "explanation": "Hypothesis = potential cause. A guess at what caused some curious thing."
+    },
+    {
+      "id": "d5-q04",
+      "type": "mc",
+      "prompt": "An 'inference' on the LSAT must be:",
+      "options": [
+        { "id": "a", "text": "interesting and surprising" },
+        { "id": "b", "text": "the main conclusion of the argument" },
+        { "id": "c", "text": "something that must be true given the statements" },
+        { "id": "d", "text": "the author's recommendation" }
+      ],
+      "correct": "c",
+      "explanation": "Inference = must be true. Provable, not necessarily important."
+    },
+    {
+      "id": "d5-q05",
+      "type": "mc",
+      "prompt": "An analogy on the LSAT is best described as:",
+      "options": [
+        { "id": "a", "text": "an example of a general principle" },
+        { "id": "b", "text": "a different specific case that's similar in some general way" },
+        { "id": "c", "text": "a counterexample" },
+        { "id": "d", "text": "a synonym swap" }
+      ],
+      "correct": "b",
+      "explanation": "Analogy: a different specific case that's similar in some general way. Distinct from an example, which is one specific case under a general idea."
+    },
+    {
+      "id": "d5-q06",
+      "type": "definition",
+      "prompt": "Distinguish 'general principle' from 'generalization.' Use one sentence each.",
+      "model_answer": "General principle: a guiding rule that applies to multiple scenarios; it prescribes what should be. Generalization: a summary statement derived from cases; it describes what is."
+    },
+    {
+      "id": "d5-q07",
+      "type": "definition",
+      "prompt": "Define 'substantiate' and contrast it with 'establish.'",
+      "model_answer": "Substantiate means support with evidence. Establish is stronger: it means prove. Establishing is closer to proving; substantiating is closer to providing support."
+    },
+    {
+      "id": "d5-q08",
+      "type": "mc",
+      "prompt": "An 'alternate explanation' on the LSAT is:",
+      "options": [
+        { "id": "a", "text": "a synonym for the original explanation" },
+        { "id": "b", "text": "a different proposed cause for the same effect" },
+        { "id": "c", "text": "a way to rephrase the conclusion" },
+        { "id": "d", "text": "a counterexample to the evidence" }
+      ],
+      "correct": "b",
+      "explanation": "Alternate explanation = a different proposed cause for the same effect. Common move to weaken causal arguments."
+    },
+    {
+      "id": "d5-q09",
+      "type": "definition",
+      "prompt": "Define 'phenomenon' as the LSAT uses it.",
+      "model_answer": "Phenomenon: something that happened and needs explaining. The effect side of a cause-effect pair. The LSAT often offers a hypothesis or conclusion as the cause for some described phenomenon."
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "d1-q01",
+      "stimulus": "Many residents believe the new bike lane has reduced car traffic. But traffic counts show car volume is unchanged. So the bike lane has not reduced car traffic.",
+      "clauses": [
+        { "id": "c1", "text": "Many residents believe the new bike lane has reduced car traffic.", "slot": "opposing-conclusion" },
+        { "id": "c2", "text": "But traffic counts show car volume is unchanged.", "slot": "authors-evidence" },
+        { "id": "c3", "text": "So the bike lane has not reduced car traffic.", "slot": "authors-conclusion" }
+      ],
+      "explanation": "Opening tell: 'Many residents believe' flags an opposing view. The 'But' pivots to the author. The 'So' delivers the author's main conclusion."
+    },
+    {
+      "id": "d1-q02",
+      "stimulus": "Some critics have argued that ranked-choice voting confuses voters because ballot complexity rises with each new option. Yet exit polls in three pilot cities show that more than 90% of voters reported the ballot was easy to understand. Ranked-choice voting does not confuse voters.",
+      "clauses": [
+        { "id": "c1", "text": "Some critics have argued that ranked-choice voting confuses voters", "slot": "opposing-conclusion" },
+        { "id": "c2", "text": "because ballot complexity rises with each new option", "slot": "opposing-evidence" },
+        { "id": "c3", "text": "Yet exit polls in three pilot cities show that more than 90% of voters reported the ballot was easy to understand", "slot": "authors-evidence" },
+        { "id": "c4", "text": "Ranked-choice voting does not confuse voters", "slot": "authors-conclusion" }
+      ],
+      "explanation": "'Some critics have argued' marks opposing-view territory. The 'because' clause is opposing evidence supporting that opposing conclusion. The 'Yet' pivots to the author, whose evidence is the exit-poll data."
+    },
+    {
+      "id": "d1-q03",
+      "stimulus": "Although the company posted record revenue last year, its operating margins fell to a five-year low. When margins fall while revenue rises, the underlying business is usually weakening. The company is in trouble.",
+      "clauses": [
+        { "id": "c1", "text": "Although the company posted record revenue last year", "slot": "concession" },
+        { "id": "c2", "text": "its operating margins fell to a five-year low", "slot": "authors-evidence" },
+        { "id": "c3", "text": "When margins fall while revenue rises, the underlying business is usually weakening", "slot": "authors-evidence" },
+        { "id": "c4", "text": "The company is in trouble", "slot": "authors-conclusion" }
+      ],
+      "explanation": "'Although' opens a concession. The author admits the good news, then pivots to their own evidence (the margin decline) plus a general principle. The conclusion comes last."
+    },
+    {
+      "id": "d1-q04",
+      "stimulus": "Coastal wetlands buffer cities from storm surges. Recent zoning changes have permitted residential development in several wetland zones. While developers argue that the new homes generate badly needed property-tax revenue, the long-term flood damage avoided by intact wetlands exceeds any plausible tax gain. The zoning change is a mistake.",
+      "clauses": [
+        { "id": "c1", "text": "Coastal wetlands buffer cities from storm surges", "slot": "background" },
+        { "id": "c2", "text": "Recent zoning changes have permitted residential development in several wetland zones", "slot": "background" },
+        { "id": "c3", "text": "While developers argue that the new homes generate badly needed property-tax revenue", "slot": "opposing-conclusion" },
+        { "id": "c4", "text": "the long-term flood damage avoided by intact wetlands exceeds any plausible tax gain", "slot": "authors-evidence" },
+        { "id": "c5", "text": "The zoning change is a mistake", "slot": "authors-conclusion" }
+      ],
+      "explanation": "First two clauses set neutral background. 'While developers argue' introduces an opposing view. The author's evidence is the cost-benefit comparison, and the last sentence is the main conclusion."
+    },
+    {
+      "id": "d1-q05",
+      "stimulus": "It is widely believed that the average commuter saves money by driving rather than taking transit. However, a recent study calculating fuel, insurance, depreciation, and parking costs found that driving is more expensive than transit in seven of the ten largest U.S. cities. The conventional wisdom is wrong.",
+      "clauses": [
+        { "id": "c1", "text": "It is widely believed that the average commuter saves money by driving rather than taking transit", "slot": "opposing-conclusion" },
+        { "id": "c2", "text": "However, a recent study calculating fuel, insurance, depreciation, and parking costs found that driving is more expensive than transit in seven of the ten largest U.S. cities", "slot": "authors-evidence" },
+        { "id": "c3", "text": "The conventional wisdom is wrong", "slot": "authors-conclusion" }
+      ],
+      "explanation": "'It is widely believed' is the opposing-view flag. 'However' pivots to the author, whose evidence is the study. The author's conclusion arrives last."
+    }
+  ]
+}

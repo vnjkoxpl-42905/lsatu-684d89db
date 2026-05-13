@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "cards": [
+    {
+      "id": "dc-001",
+      "abstract_phrase": "It is used to illustrate the general principle that the argument presupposes.",
+      "plain_english": "It's an example of a rule the argument requires.",
+      "example_stimulus": "Despite a high-paying job, John was stressed and depressed. Money alone doesn't make you happy.",
+      "x_concrete": "John's situation (illustrates)",
+      "y_concrete": "Money alone doesn't make you happy (the required principle)"
+    },
+    {
+      "id": "dc-002",
+      "abstract_phrase": "Concludes X on the basis of Y.",
+      "plain_english": "Y is the support. X is the conclusion. 'On the basis of' points backward to evidence.",
+      "example_stimulus": "We should not approve the merger because it would reduce competition in three markets.",
+      "x_concrete": "We should not approve the merger (conclusion)",
+      "y_concrete": "It would reduce competition in three markets (evidence)"
+    },
+    {
+      "id": "dc-003",
+      "abstract_phrase": "Treats the occurrence of X as corroborating evidence for Y.",
+      "plain_english": "X happened, and the author uses it as a reason to believe Y.",
+      "example_stimulus": "The flu vaccine reduces hospitalizations. Hospitalizations dropped 30% in vaccinated counties last winter.",
+      "x_concrete": "Hospitalizations dropped 30% (support)",
+      "y_concrete": "The flu vaccine reduces hospitalizations (conclusion)"
+    },
+    {
+      "id": "dc-004",
+      "abstract_phrase": "Challenges the plausibility of X by offering Y as an alternative explanation.",
+      "plain_english": "X is a proposed cause. The author attacks X by proposing a different cause Y for the same effect.",
+      "example_stimulus": "The vase didn't break because of the earthquake. It was already cracked, and the cleaner brushed against it.",
+      "x_concrete": "The earthquake broke the vase (the challenged cause)",
+      "y_concrete": "A prior crack plus a brush from the cleaner (alternative cause)"
+    },
+    {
+      "id": "dc-005",
+      "abstract_phrase": "Substantiates the claim that X is false by demonstrating that Y is an inevitable consequence of X.",
+      "plain_english": "If X were true, Y would have to follow. Y is unacceptable, so X is false.",
+      "example_stimulus": "If the suspect were in town that night, his car would have been on the bridge cameras. It wasn't. He wasn't in town.",
+      "x_concrete": "The suspect was in town (the claim shown false)",
+      "y_concrete": "His car on the bridge cameras (the missing consequence)"
+    },
+    {
+      "id": "dc-006",
+      "abstract_phrase": "A phenomenon for which the conclusion is offered as an explanation.",
+      "plain_english": "An effect that the conclusion proposes a cause for.",
+      "example_stimulus": "Sales dropped 12% last quarter. The likely cause is the new return policy.",
+      "x_concrete": "The 12% sales drop (the phenomenon)",
+      "y_concrete": "The new return policy (the proposed explanation/cause)"
+    },
+    {
+      "id": "dc-007",
+      "abstract_phrase": "Infers, on the grounds that X, that Y.",
+      "plain_english": "X is the evidence. Y is the conclusion. 'On the grounds that' points backward.",
+      "example_stimulus": "The fossil bed contains marine shells. This region was once underwater.",
+      "x_concrete": "The fossil bed contains marine shells (evidence)",
+      "y_concrete": "This region was once underwater (conclusion)"
+    },
+    {
+      "id": "dc-008",
+      "abstract_phrase": "Doing X by doing Y.",
+      "plain_english": "X is the broader move. Y is the specific tactic that accomplishes it.",
+      "example_stimulus": "The author defends the policy by citing three case studies in which it worked.",
+      "x_concrete": "Defending the policy (X, the broader move)",
+      "y_concrete": "Citing three case studies (Y, the specific tactic)"
+    },
+    {
+      "id": "dc-009",
+      "abstract_phrase": "Presumes, without providing justification, that a condition necessary for an outcome is also sufficient to produce that outcome.",
+      "plain_english": "Confuses requirement with guarantee.",
+      "example_stimulus": "To win the lottery you need a ticket. I have a ticket. I will win.",
+      "x_concrete": "Buying a ticket (the necessary condition)",
+      "y_concrete": "Winning the lottery (the outcome wrongly presumed guaranteed)"
+    },
+    {
+      "id": "dc-010",
+      "abstract_phrase": "Mistakes a temporal relationship between two events for a causal relationship.",
+      "plain_english": "Y came after X, so the author thinks X caused Y.",
+      "example_stimulus": "The rooster crowed and then the sun came up. The rooster caused the sunrise.",
+      "x_concrete": "The rooster crowing (the prior event)",
+      "y_concrete": "The sun rising (the later event wrongly attributed to it)"
+    },
+    {
+      "id": "dc-011",
+      "abstract_phrase": "Rejects a position on the grounds that the proponents of the position have a vested interest in its acceptance.",
+      "plain_english": "Attacks the motive of the speaker instead of the speaker's argument. Ad hominem.",
+      "example_stimulus": "The mechanic says my brakes need replacing, but he profits from the repair, so my brakes are fine.",
+      "x_concrete": "The mechanic's claim that the brakes need replacing (rejected position)",
+      "y_concrete": "The mechanic's financial interest (the irrelevant attack)"
+    },
+    {
+      "id": "dc-012",
+      "abstract_phrase": "Appeals to a general principle in order to justify a particular case.",
+      "plain_english": "The author cites a broad rule to defend a specific decision.",
+      "example_stimulus": "Public officials must disclose conflicts of interest. The mayor owns shares in the firm bidding on the contract, so she must recuse herself.",
+      "x_concrete": "The disclosure rule (general principle)",
+      "y_concrete": "The mayor's recusal (the particular case justified)"
+    },
+    {
+      "id": "dc-013",
+      "abstract_phrase": "Generalizes from a small or unrepresentative sample.",
+      "plain_english": "The author draws a sweeping conclusion from too few or too narrow a sample.",
+      "example_stimulus": "Two friends quit caffeine and slept better. Quitting caffeine improves sleep for everyone.",
+      "x_concrete": "Two friends slept better (the unrepresentative sample)",
+      "y_concrete": "Quitting caffeine improves sleep universally (the overreach)"
+    },
+    {
+      "id": "dc-014",
+      "abstract_phrase": "Anticipates an objection and addresses it before continuing.",
+      "plain_english": "The author flags a possible counter-argument and shuts it down preemptively.",
+      "example_stimulus": "Some might object that the program is too costly, but the long-term savings exceed the upfront expense.",
+      "x_concrete": "The objection that the program is too costly",
+      "y_concrete": "The long-term savings response that addresses it"
+    },
+    {
+      "id": "dc-015",
+      "abstract_phrase": "Derives a conclusion about what is possible from premises about what is necessary.",
+      "plain_english": "Reasons from a must-be-true premise to a could-be-true conclusion.",
+      "example_stimulus": "Every passing student turned in the final. The student who didn't turn in the final could not have passed.",
+      "x_concrete": "The necessity (passing requires turning in the final)",
+      "y_concrete": "The possibility eliminated (the missing student cannot have passed)"
+    },
+    {
+      "id": "dc-016",
+      "abstract_phrase": "Posits a single cause for a phenomenon that likely has multiple contributing factors.",
+      "plain_english": "The author proposes one cause when the effect probably has many contributors.",
+      "example_stimulus": "Test scores dropped after the curriculum change. The new curriculum caused the drop.",
+      "x_concrete": "The drop in test scores (the phenomenon)",
+      "y_concrete": "The new curriculum (the single posited cause)"
+    },
+    {
+      "id": "dc-017",
+      "abstract_phrase": "Takes for granted that the conditions sufficient for X have actually been met.",
+      "plain_english": "Assumes without proof that the requirements for X are satisfied.",
+      "example_stimulus": "If the bill passes the Senate, it becomes law. The bill will become law.",
+      "x_concrete": "The bill becoming law (the assumed outcome)",
+      "y_concrete": "Passage in the Senate (the assumed-but-unproven condition)"
+    },
+    {
+      "id": "dc-018",
+      "abstract_phrase": "Undermines a claim by calling into question the sufficiency of the evidence offered for it.",
+      "plain_english": "Attacks a claim by showing the support is not enough to prove it.",
+      "example_stimulus": "Two satisfied customers is not enough to conclude the product is reliable.",
+      "x_concrete": "The reliability claim (the undermined claim)",
+      "y_concrete": "Two satisfied customers (the insufficient evidence pointed out)"
+    }
+  ]
+}

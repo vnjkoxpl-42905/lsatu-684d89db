@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "stimuli": [
+    {
+      "id": "ts-tomatoes",
+      "tokens": [
+        { "text": "Tomatoes grow on a vine and are about the size of a baseball. ", "bucket": "neutral" },
+        { "text": "Most people believe", "bucket": "opposing-view" },
+        { "text": " tomatoes are vegetables, ", "bucket": "neutral" },
+        { "text": "since", "bucket": "support" },
+        { "text": " you find them in salads and savory dishes. ", "bucket": "neutral" },
+        { "text": "But", "bucket": "pivot" },
+        { "text": " tomatoes are not vegetables. After all, ", "bucket": "neutral" },
+        { "text": "although", "bucket": "concession" },
+        { "text": " tomatoes are typically savory, they have seeds, ", "bucket": "neutral" },
+        { "text": "and so", "bucket": "conclusion" },
+        { "text": " tomatoes are fruit.", "bucket": "neutral" }
+      ]
+    },
+    {
+      "id": "ts-apatosaurus",
+      "tokens": [
+        { "text": "Some paleontologists have suggested", "bucket": "opposing-view" },
+        { "text": " that Apatosaurus, a huge dinosaur, was able to gallop. This, ", "bucket": "neutral" },
+        { "text": "however", "bucket": "pivot" },
+        { "text": ", is unlikely, ", "bucket": "neutral" },
+        { "text": "because", "bucket": "support" },
+        { "text": " galloping would probably have broken Apatosaurus's legs.", "bucket": "neutral" }
+      ]
+    },
+    {
+      "id": "ts-marketing",
+      "tokens": [
+        { "text": "Although", "bucket": "concession" },
+        { "text": " the marketing department reports an increase in website traffic, the conversion rate of website visitors to paying customers has declined. ", "bucket": "neutral" },
+        { "text": "Clearly, then", "bucket": "conclusion" },
+        { "text": ", the company's recent marketing strategy is ineffective.", "bucket": "neutral" }
+      ]
+    }
+  ]
+}
