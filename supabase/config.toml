@@ -26,3 +26,6 @@ verify_jwt = true
 
 [functions.gmail]
 verify_jwt = true
+
+[functions.gdrive]
+verify_jwt = true
