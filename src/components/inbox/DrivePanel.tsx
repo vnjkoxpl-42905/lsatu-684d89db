@@ -3,9 +3,79 @@ import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Download, ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ChevronDown, Download, ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+
+const NATIVE_EXPORT_FORMATS: Record<string, { format: string; label: string; ext: string }[]> = {
+  'application/vnd.google-apps.document': [
+    { format: 'pdf',  label: 'PDF',       ext: 'pdf' },
+    { format: 'docx', label: 'Word (.docx)', ext: 'docx' },
+    { format: 'odt',  label: 'OpenDocument (.odt)', ext: 'odt' },
+    { format: 'rtf',  label: 'Rich Text (.rtf)', ext: 'rtf' },
+    { format: 'txt',  label: 'Plain text (.txt)', ext: 'txt' },
+    { format: 'html', label: 'HTML', ext: 'html' },
+    { format: 'epub', label: 'EPUB', ext: 'epub' },
+  ],
+  'application/vnd.google-apps.spreadsheet': [
+    { format: 'xlsx', label: 'Excel (.xlsx)', ext: 'xlsx' },
+    { format: 'ods',  label: 'OpenDocument (.ods)', ext: 'ods' },
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'csv',  label: 'CSV (first sheet)', ext: 'csv' },
+    { format: 'tsv',  label: 'TSV (first sheet)', ext: 'tsv' },
+  ],
+  'application/vnd.google-apps.presentation': [
+    { format: 'pptx', label: 'PowerPoint (.pptx)', ext: 'pptx' },
+    { format: 'odp',  label: 'OpenDocument (.odp)', ext: 'odp' },
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'txt',  label: 'Plain text (.txt)', ext: 'txt' },
+  ],
+  'application/vnd.google-apps.drawing': [
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'png',  label: 'PNG image', ext: 'png' },
+    { format: 'jpeg', label: 'JPEG image', ext: 'jpg' },
+    { format: 'svg',  label: 'SVG', ext: 'svg' },
+  ],
+  'application/vnd.google-apps.script': [
+    { format: 'json', label: 'Apps Script JSON', ext: 'json' },
+  ],
+  'application/vnd.google-apps.jam': [
+    { format: 'pdf', label: 'PDF', ext: 'pdf' },
+  ],
+};
+
+async function downloadDriveFile(file: DriveFile, format?: string) {
+  const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
+  url.searchParams.set('action', 'download');
+  url.searchParams.set('id', file.id);
+  if (format) url.searchParams.set('format', format);
+  const session = (await supabase.auth.getSession()).data.session;
+  const res = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${session?.access_token ?? ''}`,
+      apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+  if (!res.ok) {
+    let msg = `Download failed (${res.status})`;
+    try { const j = await res.json(); if (j?.error) msg = j.error; } catch { /* binary */ }
+    throw new Error(msg);
+  }
+  const disposition = res.headers.get('Content-Disposition') ?? '';
+  const m = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposition);
+  const fallbackExt = format ? `.${NATIVE_EXPORT_FORMATS[file.mimeType]?.find(f => f.format === format)?.ext ?? format}` : '';
+  const filename = m?.[1] ? decodeURIComponent(m[1]) : `${file.name}${fallbackExt}`;
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(blobUrl);
+}
 
 type DriveFile = {
   id: string;
@@ -58,44 +128,6 @@ async function fetchPage(q: string, pageToken: string | null) {
   const json = await res.json();
   if (!json?.ok) throw new Error(json?.error ?? 'Failed to load Drive');
   return { files: (json.files ?? []) as DriveFile[], nextPageToken: (json.nextPageToken ?? null) as string | null };
-}
-
-async function downloadFile(file: DriveFile) {
-  const t = toast.loading(`Downloading ${file.name}…`);
-  try {
-    const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
-    url.searchParams.set('action', 'download');
-    url.searchParams.set('id', file.id);
-    const session = (await supabase.auth.getSession()).data.session;
-    const res = await fetch(url.toString(), {
-      headers: {
-        Authorization: `Bearer ${session?.access_token ?? ''}`,
-        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-      },
-    });
-    if (!res.ok) {
-      const errText = await res.text();
-      let msg = `Download failed (${res.status})`;
-      try { const j = JSON.parse(errText); if (j?.error) msg = j.error; } catch { /* ignore */ }
-      throw new Error(msg);
-    }
-    // Filename from Content-Disposition if present
-    const cd = res.headers.get('Content-Disposition') ?? '';
-    const m = cd.match(/filename="?([^"]+)"?/i);
-    const filename = m?.[1] ?? file.name;
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(blobUrl);
-    toast.success(`Downloaded ${filename}`, { id: t });
-  } catch (e: any) {
-    toast.error(e?.message ?? 'Download failed', { id: t });
-  }
 }
 
 export function DrivePanel() {
@@ -188,25 +220,19 @@ export function DrivePanel() {
                         {f.modifiedTime ? ` · ${new Date(f.modifiedTime).toLocaleDateString()}` : ''}
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); downloadFile(f); }}
-                      className="shrink-0 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary"
-                      aria-label={`Download ${f.name}`}
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                    </button>
-                    {f.webViewLink && (
-                      <a
-                        href={f.webViewLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="shrink-0 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline"
-                      >
-                        Open <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
+                    <div className="shrink-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                      <DownloadButton file={f} />
+                      {f.webViewLink && (
+                        <a
+                          href={f.webViewLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline px-1.5"
+                        >
+                          Open <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
                   </li>
                 );
               })}
@@ -230,22 +256,14 @@ export function DrivePanel() {
             <DialogTitle className="flex items-center gap-2 text-sm font-medium pr-8">
               {preview && fileIcon(preview.mimeType)}
               <span className="truncate">{preview?.name}</span>
-              <div className="ml-auto flex items-center gap-3">
-                {preview && (
-                  <button
-                    type="button"
-                    onClick={() => downloadFile(preview)}
-                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary"
-                  >
-                    <Download className="w-3.5 h-3.5" /> Download
-                  </button>
-                )}
+              <div className="ml-auto flex items-center gap-1">
+                {preview && <DownloadButton file={preview} />}
                 {preview?.webViewLink && (
                   <a
                     href={preview.webViewLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline"
+                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline px-1.5"
                   >
                     Open in Drive <ExternalLink className="w-3 h-3" />
                   </a>
@@ -267,5 +285,62 @@ export function DrivePanel() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+function DownloadButton({ file }: { file: DriveFile }) {
+  const [busy, setBusy] = useState<string | null>(null);
+  const formats = NATIVE_EXPORT_FORMATS[file.mimeType];
+
+  const run = async (format?: string) => {
+    setBusy(format ?? 'binary');
+    try {
+      await downloadDriveFile(file, format);
+    } catch (e: any) {
+      toast.error(e?.message ?? 'Download failed');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  if (!formats) {
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-7 px-2 text-[11px]"
+        onClick={() => run()}
+        disabled={busy !== null}
+        aria-label="Download"
+      >
+        <Download className="w-3 h-3 mr-1" />
+        {busy ? '…' : 'Download'}
+      </Button>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-7 px-2 text-[11px]"
+          disabled={busy !== null}
+          aria-label="Download as"
+        >
+          <Download className="w-3 h-3 mr-1" />
+          {busy ? '…' : 'Download'}
+          <ChevronDown className="w-3 h-3 ml-0.5 opacity-60" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        {formats.map((f) => (
+          <DropdownMenuItem key={f.format} onClick={() => run(f.format)} className="text-xs">
+            {f.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

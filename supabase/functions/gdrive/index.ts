@@ -2,10 +2,67 @@
 // Endpoints:
 //   GET  ?action=list&q=<search>&pageToken=<token>
 //   GET  ?action=meta&id=<fileId>
-//   GET  ?action=download&id=<fileId>   -> streams file bytes (Google-native files exported)
+//   GET  ?action=download&id=<fileId>&format=<pdf|docx|xlsx|pptx|odt|ods|odp|rtf|txt|html|epub|csv|tsv|svg|png|jpeg>
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
+
+// Per-Google-native-type export options. First entry is the default.
+// Each entry: [shortFormat, mimeType, fileExtension]
+type ExportOpt = [string, string, string];
+const EXPORTS: Record<string, ExportOpt[]> = {
+  "application/vnd.google-apps.document": [
+    ["pdf",  "application/pdf", "pdf"],
+    ["docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"],
+    ["odt",  "application/vnd.oasis.opendocument.text", "odt"],
+    ["rtf",  "application/rtf", "rtf"],
+    ["txt",  "text/plain", "txt"],
+    ["html", "text/html", "html"],
+    ["epub", "application/epub+zip", "epub"],
+  ],
+  "application/vnd.google-apps.spreadsheet": [
+    ["xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx"],
+    ["ods",  "application/vnd.oasis.opendocument.spreadsheet", "ods"],
+    ["pdf",  "application/pdf", "pdf"],
+    ["csv",  "text/csv", "csv"],
+    ["tsv",  "text/tab-separated-values", "tsv"],
+    ["html", "application/zip", "zip"], // zipped HTML
+  ],
+  "application/vnd.google-apps.presentation": [
+    ["pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx"],
+    ["odp",  "application/vnd.oasis.opendocument.presentation", "odp"],
+    ["pdf",  "application/pdf", "pdf"],
+    ["txt",  "text/plain", "txt"],
+  ],
+  "application/vnd.google-apps.drawing": [
+    ["pdf",  "application/pdf", "pdf"],
+    ["png",  "image/png", "png"],
+    ["jpeg", "image/jpeg", "jpg"],
+    ["svg",  "image/svg+xml", "svg"],
+  ],
+  "application/vnd.google-apps.script": [
+    ["json", "application/vnd.google-apps.script+json", "json"],
+  ],
+  "application/vnd.google-apps.jam": [
+    ["pdf", "application/pdf", "pdf"],
+  ],
+};
+
+function pickExport(googleMime: string, requestedFormat?: string | null): ExportOpt | null {
+  const opts = EXPORTS[googleMime];
+  if (!opts || opts.length === 0) return null;
+  if (requestedFormat) {
+    const match = opts.find(([fmt]) => fmt === requestedFormat.toLowerCase());
+    if (match) return match;
+  }
+  return opts[0];
+}
+
+function safeFilename(name: string, ext: string): string {
+  const base = (name || "file").replace(/[\\/:*?"<>|\r\n]+/g, "_").trim();
+  const hasExt = new RegExp(`\\.${ext}$`, "i").test(base);
+  return hasExt ? base : `${base}.${ext}`;
+}
 
 async function safeFetchJson(url: string, init?: RequestInit) {
   const res = await fetch(url, init);
@@ -60,59 +117,56 @@ Deno.serve(async (req) => {
       });
     }
 
+    if (action === "formats") {
+      // Returns available export formats for a Google-native mimeType.
+      const m = url.searchParams.get("mimeType") ?? "";
+      const opts = EXPORTS[m] ?? [];
+      return new Response(JSON.stringify({ ok: true, formats: opts.map(([fmt, mime, ext]) => ({ format: fmt, mimeType: mime, ext })) }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (action === "download") {
       const id = url.searchParams.get("id");
+      const requestedFormat = url.searchParams.get("format");
       if (!id) throw new Error("id required");
 
-      // Look up mime + name first to decide between alt=media and export
+      // Look up file mimeType + name first.
       const metaFields = "id,name,mimeType";
-      const metaRes = await fetch(
-        `${GATEWAY}/files/${encodeURIComponent(id)}?fields=${encodeURIComponent(metaFields)}`,
-        { headers },
-      );
-      if (!metaRes.ok) {
-        const t = await metaRes.text();
-        throw new Error(`Drive meta ${metaRes.status}: ${t.slice(0, 300)}`);
-      }
-      const meta = await metaRes.json();
-      const mime: string = meta.mimeType ?? "application/octet-stream";
-      let filename: string = meta.name ?? "file";
+      const metaRes = await safeFetchJson(`${GATEWAY}/files/${encodeURIComponent(id)}?fields=${encodeURIComponent(metaFields)}`, { headers });
+      if (!metaRes.res.ok) throw new Error(`Drive meta ${metaRes.res.status}: ${metaRes.txt.slice(0, 300)}`);
+      const meta = metaRes.data ?? {};
+      const fileName: string = meta.name ?? "file";
+      const fileMime: string = meta.mimeType ?? "application/octet-stream";
 
-      // Map Google-native types to export formats
-      const exportMap: Record<string, { mime: string; ext: string }> = {
-        "application/vnd.google-apps.document":     { mime: "application/pdf", ext: ".pdf" },
-        "application/vnd.google-apps.spreadsheet":  { mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ext: ".xlsx" },
-        "application/vnd.google-apps.presentation": { mime: "application/pdf", ext: ".pdf" },
-        "application/vnd.google-apps.drawing":      { mime: "image/png", ext: ".png" },
-        "application/vnd.google-apps.script":       { mime: "application/vnd.google-apps.script+json", ext: ".json" },
-      };
+      let downloadUrl: string;
+      let contentMime: string;
+      let outName: string;
 
-      let upstreamUrl: string;
-      let outMime: string;
-      if (exportMap[mime]) {
-        const ex = exportMap[mime];
-        upstreamUrl = `${GATEWAY}/files/${encodeURIComponent(id)}/export?mimeType=${encodeURIComponent(ex.mime)}`;
-        outMime = ex.mime;
-        if (!/\.[a-z0-9]+$/i.test(filename)) filename += ex.ext;
-      } else if (mime.startsWith("application/vnd.google-apps.")) {
-        throw new Error(`Cannot download Google-native file of type ${mime}`);
+      if (fileMime.startsWith("application/vnd.google-apps.")) {
+        const opt = pickExport(fileMime, requestedFormat);
+        if (!opt) throw new Error(`No export available for ${fileMime}`);
+        const [, exportMime, ext] = opt;
+        downloadUrl = `${GATEWAY}/files/${encodeURIComponent(id)}/export?mimeType=${encodeURIComponent(exportMime)}`;
+        contentMime = exportMime;
+        outName = safeFilename(fileName, ext);
       } else {
-        upstreamUrl = `${GATEWAY}/files/${encodeURIComponent(id)}?alt=media`;
-        outMime = mime;
+        downloadUrl = `${GATEWAY}/files/${encodeURIComponent(id)}?alt=media`;
+        contentMime = fileMime;
+        outName = fileName;
       }
 
-      const fileRes = await fetch(upstreamUrl, { headers });
-      if (!fileRes.ok || !fileRes.body) {
-        const t = await fileRes.text();
-        throw new Error(`Drive download ${fileRes.status}: ${t.slice(0, 300)}`);
+      const fileRes = await fetch(downloadUrl, { headers });
+      if (!fileRes.ok) {
+        const errTxt = await fileRes.text();
+        throw new Error(`Drive download ${fileRes.status}: ${errTxt.slice(0, 300)}`);
       }
 
-      const safeName = filename.replace(/"/g, "");
       return new Response(fileRes.body, {
         headers: {
           ...corsHeaders,
-          "Content-Type": outMime,
-          "Content-Disposition": `attachment; filename="${safeName}"`,
+          "Content-Type": fileRes.headers.get("Content-Type") ?? contentMime,
+          "Content-Disposition": `attachment; filename="${outName.replace(/"/g, '\\"')}"`,
           "Cache-Control": "no-store",
         },
       });
