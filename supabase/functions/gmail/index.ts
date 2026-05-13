@@ -88,20 +88,18 @@ Deno.serve(async (req) => {
       const q = body.q ?? "in:inbox";
       const max = body.max ?? 20;
       const url = `${GATEWAY}/users/me/threads?maxResults=${max}&q=${encodeURIComponent(q)}`;
-      const res = await fetch(url, { headers: gHeaders });
-      const data = await res.json();
-      if (!res.ok) throw new Error(`Gmail list ${res.status}: ${JSON.stringify(data)}`);
+      const { res, data, txt } = await safeFetchJson(url, { headers: gHeaders });
+      if (!res.ok) throw new Error(`Gmail list ${res.status}: ${txt.slice(0, 300)}`);
 
       // For each thread, fetch metadata for the latest message
-      const threads = await Promise.all((data.threads ?? []).map(async (t: any) => {
-        const r = await fetch(
+      const threads = await Promise.all((data?.threads ?? []).map(async (t: any) => {
+        const { data: td } = await safeFetchJson(
           `${GATEWAY}/users/me/threads/${t.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`,
           { headers: gHeaders },
         );
-        const td = await r.json();
-        const last = td.messages?.[td.messages.length - 1];
+        const last = td?.messages?.[td.messages.length - 1];
         const headers = last?.payload?.headers ?? [];
-        const unread = (td.messages ?? []).some((m: any) => (m.labelIds ?? []).includes("UNREAD"));
+        const unread = (td?.messages ?? []).some((m: any) => (m.labelIds ?? []).includes("UNREAD"));
         return {
           id: t.id,
           snippet: t.snippet,
