@@ -340,7 +340,7 @@ export function DrivePanel() {
   // ---------- ZIP flow for selection ----------
   const startBulkZipDownload = useCallback(async () => {
     if (selected.size === 0) return;
-    const entries: FileEntry[] = files.filter((f) => selected.has(f.id)).map((file) => ({ file }));
+    const entries: FileEntry[] = Array.from(selected.values()).map((file) => ({ file }));
     if (entries.length === 0) return;
 
     const defaultZipName = `drive-files-${new Date().toISOString().slice(0, 10)}.zip`;
