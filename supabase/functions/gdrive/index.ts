@@ -117,6 +117,61 @@ Deno.serve(async (req) => {
       });
     }
 
+    if (action === "formats") {
+      // Returns available export formats for a Google-native mimeType.
+      const m = url.searchParams.get("mimeType") ?? "";
+      const opts = EXPORTS[m] ?? [];
+      return new Response(JSON.stringify({ ok: true, formats: opts.map(([fmt, mime, ext]) => ({ format: fmt, mimeType: mime, ext })) }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (action === "download") {
+      const id = url.searchParams.get("id");
+      const requestedFormat = url.searchParams.get("format");
+      if (!id) throw new Error("id required");
+
+      // Look up file mimeType + name first.
+      const metaFields = "id,name,mimeType";
+      const metaRes = await safeFetchJson(`${GATEWAY}/files/${encodeURIComponent(id)}?fields=${encodeURIComponent(metaFields)}`, { headers });
+      if (!metaRes.res.ok) throw new Error(`Drive meta ${metaRes.res.status}: ${metaRes.txt.slice(0, 300)}`);
+      const meta = metaRes.data ?? {};
+      const fileName: string = meta.name ?? "file";
+      const fileMime: string = meta.mimeType ?? "application/octet-stream";
+
+      let downloadUrl: string;
+      let contentMime: string;
+      let outName: string;
+
+      if (fileMime.startsWith("application/vnd.google-apps.")) {
+        const opt = pickExport(fileMime, requestedFormat);
+        if (!opt) throw new Error(`No export available for ${fileMime}`);
+        const [, exportMime, ext] = opt;
+        downloadUrl = `${GATEWAY}/files/${encodeURIComponent(id)}/export?mimeType=${encodeURIComponent(exportMime)}`;
+        contentMime = exportMime;
+        outName = safeFilename(fileName, ext);
+      } else {
+        downloadUrl = `${GATEWAY}/files/${encodeURIComponent(id)}?alt=media`;
+        contentMime = fileMime;
+        outName = fileName;
+      }
+
+      const fileRes = await fetch(downloadUrl, { headers });
+      if (!fileRes.ok) {
+        const errTxt = await fileRes.text();
+        throw new Error(`Drive download ${fileRes.status}: ${errTxt.slice(0, 300)}`);
+      }
+
+      return new Response(fileRes.body, {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": fileRes.headers.get("Content-Type") ?? contentMime,
+          "Content-Disposition": `attachment; filename="${outName.replace(/"/g, '\\"')}"`,
+          "Cache-Control": "no-store",
+        },
+      });
+    }
+
     throw new Error(`unknown action: ${action}`);
   } catch (e) {
     console.error("gdrive error", e);
