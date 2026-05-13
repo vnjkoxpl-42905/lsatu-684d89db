@@ -225,6 +225,10 @@ export default function Inbox() {
         <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
           <GmailPanel />
         </div>
+      ) : is_admin && source === 'messenger' ? (
+        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
+          <MessengerPanel />
+        </div>
       ) : showEmptyStudent ? (
         <div className="max-w-7xl mx-auto">
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
