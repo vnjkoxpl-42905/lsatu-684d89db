@@ -33,7 +33,7 @@ export async function getRecentExposureSet(
   windowSize = 500,
 ): Promise<Set<string>> {
   if (!userId) return new Set();
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("question_exposures")
     .select("question_id")
     .eq("user_id", userId)
