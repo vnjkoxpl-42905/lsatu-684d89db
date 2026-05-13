@@ -43,12 +43,6 @@ export function DrivePanel() {
   const load = useMemo(() => async (q: string) => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('gdrive', {
-        body: null,
-        method: 'GET',
-        headers: {},
-      } as any);
-      // fall back to fetch with query string since invoke doesn't pass query params
       const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
       url.searchParams.set('action', 'list');
       if (q) url.searchParams.set('q', q);

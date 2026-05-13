@@ -9,12 +9,13 @@ import { NewConversationDialog } from '@/components/inbox/NewConversationDialog'
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Inbox as InboxIcon, Mail, Search } from 'lucide-react';
+import { ArrowLeft, HardDrive, Inbox as InboxIcon, Mail, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
 import { GmailPanel } from '@/components/inbox/GmailPanel';
+import { DrivePanel } from '@/components/inbox/DrivePanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -104,7 +105,7 @@ export default function Inbox() {
   const [filter, setFilter] = useState<AdminFilter>('all');
   const [query, setQuery] = useState('');
   const [starting, setStarting] = useState(false);
-  const [source, setSource] = useState<'app' | 'gmail'>('app');
+  const [source, setSource] = useState<'app' | 'gmail' | 'drive'>('app');
 
   const visibleConversations = useMemo(() => {
     if (!user) return conversations;
@@ -199,6 +200,15 @@ export default function Inbox() {
                 >
                   <span className="inline-flex items-center gap-1"><Mail className="w-3 h-3" /> Gmail</span>
                 </button>
+                <button
+                  onClick={() => setSource('drive')}
+                  className={cn(
+                    'px-2.5 py-1 text-[11px] font-medium rounded-md transition-colors',
+                    source === 'drive' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1"><HardDrive className="w-3 h-3" /> Drive</span>
+                </button>
               </div>
             )}
             <NewConversationDialog
@@ -214,6 +224,10 @@ export default function Inbox() {
       {is_admin && source === 'gmail' ? (
         <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
           <GmailPanel />
+        </div>
+      ) : is_admin && source === 'drive' ? (
+        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
+          <DrivePanel />
         </div>
       ) : showEmptyStudent ? (
         <div className="max-w-7xl mx-auto">
