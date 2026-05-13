@@ -224,7 +224,10 @@ export function DrivePanel() {
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
   const [preview, setPreview] = useState<DriveFile | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  // Selection persists across pagination, search, and refresh.
+  // Stored as Map<id, DriveFile> so the file metadata travels with the selection
+  // even if the underlying `files` page no longer contains it.
+  const [selected, setSelected] = useState<Map<string, DriveFile>>(new Map());
   const [manager, setManager] = useState<ManagerState>({ kind: 'idle' });
   const managerRef = useRef<ManagerState>(manager);
   managerRef.current = manager;
@@ -235,10 +238,7 @@ export function DrivePanel() {
       const { files, nextPageToken } = await fetchPage(q, null);
       setFiles(files);
       setNextPageToken(nextPageToken);
-      setSelected(new Set());
-    } catch (e: any) {
-      toast.error(e?.message ?? 'Failed to load Drive');
-      setFiles([]);
+      // Selection intentionally preserved across refresh.
       setNextPageToken(null);
     } finally {
       setLoading(false);
@@ -262,22 +262,33 @@ export function DrivePanel() {
   useEffect(() => { load(submitted); }, [load, submitted]);
 
   // ---------- selection helpers ----------
-  const toggleSelected = useCallback((id: string) => {
+  const toggleSelected = useCallback((file: DriveFile) => {
     setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      const next = new Map(prev);
+      if (next.has(file.id)) next.delete(file.id); else next.set(file.id, file);
       return next;
     });
   }, []);
-  const allVisibleIds = useMemo(() => files.filter((f) => !f.mimeType.includes('folder')).map((f) => f.id), [files]);
-  const allSelected = allVisibleIds.length > 0 && allVisibleIds.every((id) => selected.has(id));
-  const someSelected = selected.size > 0 && !allSelected;
-  const toggleSelectAll = useCallback(() => {
+  const visibleSelectable = useMemo(
+    () => files.filter((f) => !f.mimeType.includes('folder')),
+    [files],
+  );
+  const allVisibleSelected = visibleSelectable.length > 0 && visibleSelectable.every((f) => selected.has(f.id));
+  const someVisibleSelected = visibleSelectable.some((f) => selected.has(f.id)) && !allVisibleSelected;
+  const toggleSelectAllVisible = useCallback(() => {
     setSelected((prev) => {
-      if (allVisibleIds.every((id) => prev.has(id))) return new Set();
-      return new Set(allVisibleIds);
+      const next = new Map(prev);
+      const allOn = visibleSelectable.every((f) => next.has(f.id));
+      if (allOn) {
+        // Deselect only the currently visible ones; preserve off-page selections.
+        for (const f of visibleSelectable) next.delete(f.id);
+      } else {
+        for (const f of visibleSelectable) next.set(f.id, f);
+      }
+      return next;
     });
-  }, [allVisibleIds]);
+  }, [visibleSelectable]);
+  const clearSelection = useCallback(() => setSelected(new Map()), []);
 
   // ---------- name prompt ----------
   const promptForName = useCallback((mode: 'single' | 'zip', entries: FileEntry[], defaultName: string) => {
@@ -329,7 +340,7 @@ export function DrivePanel() {
   // ---------- ZIP flow for selection ----------
   const startBulkZipDownload = useCallback(async () => {
     if (selected.size === 0) return;
-    const entries: FileEntry[] = files.filter((f) => selected.has(f.id)).map((file) => ({ file }));
+    const entries: FileEntry[] = Array.from(selected.values()).map((file) => ({ file }));
     if (entries.length === 0) return;
 
     const defaultZipName = `drive-files-${new Date().toISOString().slice(0, 10)}.zip`;
@@ -396,7 +407,7 @@ export function DrivePanel() {
       if (controller.signal.aborted) throw new DOMException('aborted', 'AbortError');
       triggerBlobDownload(zipBlob, zipName);
       toast.success(`Downloaded ${zipName} (${entries.length} files)`);
-      setSelected(new Set());
+      setSelected(new Map());
     } catch (e: any) {
       if (e?.name === 'AbortError') toast.message('Download cancelled');
       else toast.error(e?.message ?? 'Bulk download failed');
@@ -435,13 +446,24 @@ export function DrivePanel() {
       {files.length > 0 && (
         <div className="border-b border-border px-4 py-2 flex items-center gap-3 shrink-0 bg-muted/20">
           <Checkbox
-            checked={allSelected ? true : someSelected ? 'indeterminate' : false}
-            onCheckedChange={toggleSelectAll}
-            aria-label="Select all"
+            checked={allVisibleSelected ? true : someVisibleSelected ? 'indeterminate' : false}
+            onCheckedChange={toggleSelectAllVisible}
+            aria-label="Select all on this page"
           />
           <span className="text-xs text-muted-foreground">
-            {selected.size > 0 ? `${selected.size} selected` : `${allVisibleIds.length} files`}
+            {selected.size > 0 ? `${selected.size} selected` : `${visibleSelectable.length} files`}
           </span>
+          {selected.size > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-1.5 text-[11px] text-muted-foreground hover:text-foreground"
+              onClick={clearSelection}
+            >
+              <X className="w-3 h-3 mr-0.5" />
+              Clear
+            </Button>
+          )}
           <div className="ml-auto">
             <Button
               size="sm"
@@ -482,7 +504,7 @@ export function DrivePanel() {
                     <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                       <Checkbox
                         checked={isSelected}
-                        onCheckedChange={() => toggleSelected(f.id)}
+                        onCheckedChange={() => toggleSelected(f)}
                         disabled={isFolder}
                         aria-label={`Select ${f.name}`}
                       />
