@@ -3,9 +3,79 @@ import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ChevronDown, Download, ExternalLink, FileText, Folder, Image as ImageIcon, RefreshCw, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+
+const NATIVE_EXPORT_FORMATS: Record<string, { format: string; label: string; ext: string }[]> = {
+  'application/vnd.google-apps.document': [
+    { format: 'pdf',  label: 'PDF',       ext: 'pdf' },
+    { format: 'docx', label: 'Word (.docx)', ext: 'docx' },
+    { format: 'odt',  label: 'OpenDocument (.odt)', ext: 'odt' },
+    { format: 'rtf',  label: 'Rich Text (.rtf)', ext: 'rtf' },
+    { format: 'txt',  label: 'Plain text (.txt)', ext: 'txt' },
+    { format: 'html', label: 'HTML', ext: 'html' },
+    { format: 'epub', label: 'EPUB', ext: 'epub' },
+  ],
+  'application/vnd.google-apps.spreadsheet': [
+    { format: 'xlsx', label: 'Excel (.xlsx)', ext: 'xlsx' },
+    { format: 'ods',  label: 'OpenDocument (.ods)', ext: 'ods' },
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'csv',  label: 'CSV (first sheet)', ext: 'csv' },
+    { format: 'tsv',  label: 'TSV (first sheet)', ext: 'tsv' },
+  ],
+  'application/vnd.google-apps.presentation': [
+    { format: 'pptx', label: 'PowerPoint (.pptx)', ext: 'pptx' },
+    { format: 'odp',  label: 'OpenDocument (.odp)', ext: 'odp' },
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'txt',  label: 'Plain text (.txt)', ext: 'txt' },
+  ],
+  'application/vnd.google-apps.drawing': [
+    { format: 'pdf',  label: 'PDF', ext: 'pdf' },
+    { format: 'png',  label: 'PNG image', ext: 'png' },
+    { format: 'jpeg', label: 'JPEG image', ext: 'jpg' },
+    { format: 'svg',  label: 'SVG', ext: 'svg' },
+  ],
+  'application/vnd.google-apps.script': [
+    { format: 'json', label: 'Apps Script JSON', ext: 'json' },
+  ],
+  'application/vnd.google-apps.jam': [
+    { format: 'pdf', label: 'PDF', ext: 'pdf' },
+  ],
+};
+
+async function downloadDriveFile(file: DriveFile, format?: string) {
+  const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gdrive`);
+  url.searchParams.set('action', 'download');
+  url.searchParams.set('id', file.id);
+  if (format) url.searchParams.set('format', format);
+  const session = (await supabase.auth.getSession()).data.session;
+  const res = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${session?.access_token ?? ''}`,
+      apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+  if (!res.ok) {
+    let msg = `Download failed (${res.status})`;
+    try { const j = await res.json(); if (j?.error) msg = j.error; } catch { /* binary */ }
+    throw new Error(msg);
+  }
+  const disposition = res.headers.get('Content-Disposition') ?? '';
+  const m = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposition);
+  const fallbackExt = format ? `.${NATIVE_EXPORT_FORMATS[file.mimeType]?.find(f => f.format === format)?.ext ?? format}` : '';
+  const filename = m?.[1] ? decodeURIComponent(m[1]) : `${file.name}${fallbackExt}`;
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(blobUrl);
+}
 
 type DriveFile = {
   id: string;
