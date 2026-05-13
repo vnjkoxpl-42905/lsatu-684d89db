@@ -32,7 +32,7 @@ import { format } from "date-fns";
 export default function SavedSets() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { sets, isLoading, save, remove, duplicate, rename } = useSavedSets();
+  const { sets, isLoading, remove, duplicate, rename } = useSavedSets();
   const [renamingId, setRenamingId] = React.useState<string | null>(null);
   const [renameValue, setRenameValue] = React.useState("");
   const [confirmDeleteId, setConfirmDeleteId] = React.useState<string | null>(null);
@@ -253,7 +253,3 @@ export default function SavedSets() {
   );
 }
 
-// Silence unused — `save` is the mutation handle saved-sets pages might
-// use in future; keeping the destructure stable so the hook contract is
-// visible here.
-void save;
