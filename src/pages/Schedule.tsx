@@ -33,6 +33,7 @@ import { LogoutButton } from '@/components/LogoutButton';
 import { cn } from '@/lib/utils';
 import { useClassroomItems, type ClassroomItem, type ClassroomItemType } from '@/hooks/useClassroomItems';
 import { resolveItemRoute } from '@/lib/classroomItems';
+import GoogleCalendarPanel from '@/components/schedule/GoogleCalendarPanel';
 
 type CalView = 'month' | 'week' | 'day';
 
@@ -328,6 +329,10 @@ export default function Schedule() {
                 <h1 className="text-3xl font-semibold tracking-tight">Study Schedule &amp; Agenda</h1>
                 <p className="text-sm text-muted-foreground mt-1.5">Your assigned work, calendared by due date.</p>
               </div>
+            </div>
+
+            <div className="mb-8">
+              <GoogleCalendarPanel />
             </div>
 
             {isLoading ? (
