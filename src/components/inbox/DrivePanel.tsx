@@ -188,6 +188,14 @@ export function DrivePanel() {
                         {f.modifiedTime ? ` · ${new Date(f.modifiedTime).toLocaleDateString()}` : ''}
                       </div>
                     </div>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); downloadFile(f); }}
+                      className="shrink-0 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary"
+                      aria-label={`Download ${f.name}`}
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
                     {f.webViewLink && (
                       <a
                         href={f.webViewLink}
@@ -222,16 +230,27 @@ export function DrivePanel() {
             <DialogTitle className="flex items-center gap-2 text-sm font-medium pr-8">
               {preview && fileIcon(preview.mimeType)}
               <span className="truncate">{preview?.name}</span>
-              {preview?.webViewLink && (
-                <a
-                  href={preview.webViewLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline"
-                >
-                  Open in Drive <ExternalLink className="w-3 h-3" />
-                </a>
-              )}
+              <div className="ml-auto flex items-center gap-3">
+                {preview && (
+                  <button
+                    type="button"
+                    onClick={() => downloadFile(preview)}
+                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary"
+                  >
+                    <Download className="w-3.5 h-3.5" /> Download
+                  </button>
+                )}
+                {preview?.webViewLink && (
+                  <a
+                    href={preview.webViewLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline"
+                  >
+                    Open in Drive <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
             </DialogTitle>
           </DialogHeader>
           <div className="flex-1 min-h-0 bg-muted/20">
