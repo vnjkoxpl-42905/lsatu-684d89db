@@ -2,9 +2,67 @@
 // Endpoints:
 //   GET  ?action=list&q=<search>&pageToken=<token>
 //   GET  ?action=meta&id=<fileId>
+//   GET  ?action=download&id=<fileId>&format=<pdf|docx|xlsx|pptx|odt|ods|odp|rtf|txt|html|epub|csv|tsv|svg|png|jpeg>
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
+
+// Per-Google-native-type export options. First entry is the default.
+// Each entry: [shortFormat, mimeType, fileExtension]
+type ExportOpt = [string, string, string];
+const EXPORTS: Record<string, ExportOpt[]> = {
+  "application/vnd.google-apps.document": [
+    ["pdf",  "application/pdf", "pdf"],
+    ["docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"],
+    ["odt",  "application/vnd.oasis.opendocument.text", "odt"],
+    ["rtf",  "application/rtf", "rtf"],
+    ["txt",  "text/plain", "txt"],
+    ["html", "text/html", "html"],
+    ["epub", "application/epub+zip", "epub"],
+  ],
+  "application/vnd.google-apps.spreadsheet": [
+    ["xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx"],
+    ["ods",  "application/vnd.oasis.opendocument.spreadsheet", "ods"],
+    ["pdf",  "application/pdf", "pdf"],
+    ["csv",  "text/csv", "csv"],
+    ["tsv",  "text/tab-separated-values", "tsv"],
+    ["html", "application/zip", "zip"], // zipped HTML
+  ],
+  "application/vnd.google-apps.presentation": [
+    ["pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx"],
+    ["odp",  "application/vnd.oasis.opendocument.presentation", "odp"],
+    ["pdf",  "application/pdf", "pdf"],
+    ["txt",  "text/plain", "txt"],
+  ],
+  "application/vnd.google-apps.drawing": [
+    ["pdf",  "application/pdf", "pdf"],
+    ["png",  "image/png", "png"],
+    ["jpeg", "image/jpeg", "jpg"],
+    ["svg",  "image/svg+xml", "svg"],
+  ],
+  "application/vnd.google-apps.script": [
+    ["json", "application/vnd.google-apps.script+json", "json"],
+  ],
+  "application/vnd.google-apps.jam": [
+    ["pdf", "application/pdf", "pdf"],
+  ],
+};
+
+function pickExport(googleMime: string, requestedFormat?: string | null): ExportOpt | null {
+  const opts = EXPORTS[googleMime];
+  if (!opts || opts.length === 0) return null;
+  if (requestedFormat) {
+    const match = opts.find(([fmt]) => fmt === requestedFormat.toLowerCase());
+    if (match) return match;
+  }
+  return opts[0];
+}
+
+function safeFilename(name: string, ext: string): string {
+  const base = (name || "file").replace(/[\\/:*?"<>|\r\n]+/g, "_").trim();
+  const hasExt = new RegExp(`\\.${ext}$`, "i").test(base);
+  return hasExt ? base : `${base}.${ext}`;
+}
 
 async function safeFetchJson(url: string, init?: RequestInit) {
   const res = await fetch(url, init);
