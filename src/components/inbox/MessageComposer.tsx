@@ -96,35 +96,51 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         .single();
       if (msgErr || !msg) throw msgErr ?? new Error('Failed to send');
 
+      // Lsat U upload (PDF): Storage object first, then attachments row.
+      // We can't be atomic across Storage and DB; on DB insert failure we
+      // attempt a best-effort storage delete but tolerate orphans.
       if (file) {
         const path = `${conversationId}/${msg.id}/${file.name}`;
         const { error: upErr } = await supabase.storage
           .from('message-attachments')
           .upload(path, file, { contentType: 'application/pdf', upsert: false });
         if (upErr) throw upErr;
-        const { error: attErr } = await supabase.from('message_attachments').insert({
+        const { error: attErr } = await supabase.from('attachments').insert({
+          owner_user_id: user.id,
+          thread_id: conversationId,
           message_id: msg.id,
-          kind: 'storage',
-          storage_path: path,
-          file_name: file.name,
-          file_size: file.size,
+          source: 'lsat_u_upload',
+          source_url: path,
+          display_name: file.name,
           mime_type: 'application/pdf',
+          size_bytes: file.size,
+          sync_status: 'synced',
+          last_synced_at: new Date().toISOString(),
+          visibility: 'thread_scoped',
         });
-        if (attErr) throw attErr;
+        if (attErr) {
+          await supabase.storage.from('message-attachments').remove([path]);
+          throw attErr;
+        }
       }
 
+      // Drive attaches: reference only, no content fetch. needs_linking
+      // until a future phase wires real Drive sync.
       if (driveAttachments.length > 0) {
         const rows = driveAttachments.map((d) => ({
+          owner_user_id: user.id,
+          thread_id: conversationId,
           message_id: msg.id,
-          kind: 'drive',
-          storage_path: null,
-          drive_file_id: d.id,
-          web_view_link: d.web_view_link,
-          file_name: d.file_name,
-          file_size: 0,
+          source: 'google_drive' as const,
+          source_external_id: d.google_file_id,
+          source_url: d.web_view_link,
+          display_name: d.file_name,
           mime_type: d.mime_type ?? 'application/vnd.google-apps.unknown',
+          size_bytes: 0,
+          sync_status: 'needs_linking' as const,
+          visibility: 'thread_scoped' as const,
         }));
-        const { error: dErr } = await supabase.from('message_attachments').insert(rows);
+        const { error: dErr } = await supabase.from('attachments').insert(rows);
         if (dErr) throw dErr;
       }
 

@@ -104,6 +104,87 @@ export type Database = {
         }
         Relationships: []
       }
+      attachments: {
+        Row: {
+          checksum: string | null
+          created_at: string
+          display_name: string
+          id: string
+          last_synced_at: string | null
+          message_id: string | null
+          mime_type: string
+          owner_user_id: string
+          size_bytes: number
+          source: string
+          source_external_id: string | null
+          source_url: string | null
+          student_id: string | null
+          sync_error: string | null
+          sync_status: string
+          thread_id: string | null
+          updated_at: string
+          version_token: string | null
+          visibility: string
+        }
+        Insert: {
+          checksum?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          last_synced_at?: string | null
+          message_id?: string | null
+          mime_type: string
+          owner_user_id: string
+          size_bytes: number
+          source: string
+          source_external_id?: string | null
+          source_url?: string | null
+          student_id?: string | null
+          sync_error?: string | null
+          sync_status?: string
+          thread_id?: string | null
+          updated_at?: string
+          version_token?: string | null
+          visibility?: string
+        }
+        Update: {
+          checksum?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          last_synced_at?: string | null
+          message_id?: string | null
+          mime_type?: string
+          owner_user_id?: string
+          size_bytes?: number
+          source?: string
+          source_external_id?: string | null
+          source_url?: string | null
+          student_id?: string | null
+          sync_error?: string | null
+          sync_status?: string
+          thread_id?: string | null
+          updated_at?: string
+          version_token?: string | null
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attachments_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attachments_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       attempts: {
         Row: {
           app_version: string | null

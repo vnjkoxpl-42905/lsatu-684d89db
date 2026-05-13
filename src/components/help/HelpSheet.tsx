@@ -122,6 +122,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
         .single();
       if (msgErr || !msg) throw msgErr ?? new Error('Failed to send');
 
+      const now = new Date().toISOString();
       if (screenshot) {
         const path = `${conversationId}/${msg.id}/${screenshot.name}`;
         const { error: upErr } = await supabase.storage
@@ -131,15 +132,23 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
             upsert: false,
           });
         if (upErr) throw upErr;
-        const { error: attErr } = await supabase.from('message_attachments').insert({
+        const { error: attErr } = await supabase.from('attachments').insert({
+          owner_user_id: user.id,
+          thread_id: conversationId,
           message_id: msg.id,
-          kind: 'storage',
-          storage_path: path,
-          file_name: screenshot.name,
-          file_size: screenshot.size,
+          source: 'lsat_u_upload',
+          source_url: path,
+          display_name: screenshot.name,
           mime_type: screenshot.type || 'image/png',
+          size_bytes: screenshot.size,
+          sync_status: 'synced',
+          last_synced_at: now,
+          visibility: 'thread_scoped',
         });
-        if (attErr) throw attErr;
+        if (attErr) {
+          await supabase.storage.from('message-attachments').remove([path]);
+          throw attErr;
+        }
       }
 
       // Attach a tiny context.json blob alongside, so the teacher's view can
@@ -153,13 +162,18 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
         .from('message-attachments')
         .upload(ctxPath, ctxFile, { contentType: 'application/json', upsert: false });
       if (!ctxUpErr) {
-        await supabase.from('message_attachments').insert({
+        await supabase.from('attachments').insert({
+          owner_user_id: user.id,
+          thread_id: conversationId,
           message_id: msg.id,
-          kind: 'storage',
-          storage_path: ctxPath,
-          file_name: ctxFile.name,
-          file_size: ctxFile.size,
+          source: 'lsat_u_upload',
+          source_url: ctxPath,
+          display_name: ctxFile.name,
           mime_type: 'application/json',
+          size_bytes: ctxFile.size,
+          sync_status: 'synced',
+          last_synced_at: now,
+          visibility: 'thread_scoped',
         });
       }
 
@@ -224,7 +238,7 @@ export default function HelpSheet({ open, onOpenChange, onReplayTour }: HelpShee
                             key={a.id}
                             className="text-[11px] opacity-80 inline-flex items-center gap-1.5"
                           >
-                            <ImageIcon className="w-3 h-3" /> {a.file_name}
+                            <ImageIcon className="w-3 h-3" /> {a.display_name}
                           </div>
                         ))}
                       </div>

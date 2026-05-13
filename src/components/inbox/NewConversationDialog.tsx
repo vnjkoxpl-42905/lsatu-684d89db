@@ -143,14 +143,23 @@ export function NewConversationDialog({
           .from('message-attachments')
           .upload(path, file, { contentType: 'application/pdf', upsert: false });
         if (upErr) throw upErr;
-        const { error: attErr } = await supabase.from('message_attachments').insert({
+        const { error: attErr } = await supabase.from('attachments').insert({
+          owner_user_id: user.id,
+          thread_id: conv.id,
           message_id: msg.id,
-          storage_path: path,
-          file_name: file.name,
-          file_size: file.size,
+          source: 'lsat_u_upload',
+          source_url: path,
+          display_name: file.name,
           mime_type: 'application/pdf',
+          size_bytes: file.size,
+          sync_status: 'synced',
+          last_synced_at: new Date().toISOString(),
+          visibility: 'thread_scoped',
         });
-        if (attErr) throw attErr;
+        if (attErr) {
+          await supabase.storage.from('message-attachments').remove([path]);
+          throw attErr;
+        }
       }
 
       toast.success('Conversation started');

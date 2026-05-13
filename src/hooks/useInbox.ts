@@ -23,16 +23,31 @@ export interface Conversation {
   hasAttachments: boolean;
 }
 
+// Shape from public.attachments (Phase 1 canonical model). Renderer reads
+// `source` to decide how to open `source_url` (Storage path vs Drive deep
+// link) and `sync_status` to drive badges + disabled states.
+export type AttachmentSource = 'lsat_u_upload' | 'google_drive' | 'gmail_attachment';
+export type AttachmentSyncStatus =
+  | 'pending'
+  | 'synced'
+  | 'syncing'
+  | 'stale'
+  | 'failed'
+  | 'permission_blocked'
+  | 'deleted_externally'
+  | 'needs_linking';
+
 export interface MessageAttachment {
   id: string;
-  message_id: string;
-  storage_path: string | null;
-  file_name: string;
-  file_size: number;
+  message_id: string | null;
+  source: AttachmentSource;
+  source_external_id: string | null;
+  source_url: string | null;
+  display_name: string;
   mime_type: string;
-  kind?: 'storage' | 'drive' | null;
-  web_view_link?: string | null;
-  drive_file_id?: string | null;
+  size_bytes: number;
+  sync_status: AttachmentSyncStatus;
+  sync_error: string | null;
 }
 
 export interface Message {
@@ -110,17 +125,16 @@ export function useInbox() {
       }
     }
 
-    // Per-conversation attachment presence (single query, ids only)
+    // Per-conversation attachment presence (single query, ids only).
+    // Reads from public.attachments (the canonical model from Phase 1).
     const attachmentConvIds = new Set<string>();
-    const allMsgIds = Array.from(msgIdToConv.keys());
-    if (allMsgIds.length) {
+    if (convIds.length) {
       const { data: atts } = await supabase
-        .from('message_attachments')
-        .select('message_id')
-        .in('message_id', allMsgIds);
+        .from('attachments')
+        .select('thread_id')
+        .in('thread_id', convIds);
       for (const a of atts ?? []) {
-        const cid = msgIdToConv.get(a.message_id);
-        if (cid) attachmentConvIds.add(cid);
+        if (a.thread_id) attachmentConvIds.add(a.thread_id);
       }
     }
 
@@ -195,16 +209,21 @@ export function useConversationMessages(conversationId: string | null) {
       .order('created_at', { ascending: true });
 
     const ids = (msgs ?? []).map((m) => m.id);
-    let attMap = new Map<string, MessageAttachment[]>();
+    const attMap = new Map<string, MessageAttachment[]>();
     if (ids.length) {
       const { data: atts } = await supabase
-        .from('message_attachments')
-        .select('*')
-        .in('message_id', ids);
+        .from('attachments')
+        .select(
+          'id, message_id, source, source_external_id, source_url, display_name, mime_type, size_bytes, sync_status, sync_error',
+        )
+        .in('message_id', ids)
+        .order('created_at', { ascending: true });
       for (const a of atts ?? []) {
-        const arr = attMap.get(a.message_id) ?? [];
+        const mid = a.message_id;
+        if (!mid) continue;
+        const arr = attMap.get(mid) ?? [];
         arr.push(a as MessageAttachment);
-        attMap.set(a.message_id, arr);
+        attMap.set(mid, arr);
       }
     }
 
