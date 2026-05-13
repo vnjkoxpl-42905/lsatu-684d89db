@@ -41,6 +41,21 @@ export type Flashcard = {
   tag: string;
 };
 
+// Per-day auto-generation targets for Homework/Practice pulls against the
+// global verified question bank (src/lib/questionLoader.ts). Days without
+// `targets.generates === true` are review-only or full-section days and do
+// not surface the auto-gen CTAs. Canonical qtype values must match
+// CANONICAL_QTYPES.allTypes from questionLoader.
+export type DayTargets = {
+  generates: boolean;
+  qtypes?: string[];
+  questionFeatures?: string[];
+  reasoningTypes?: string[];
+  difficulties?: number[];
+  defaultHomeworkCount?: number;
+  defaultPracticeCount?: number;
+};
+
 export const questionBank: QuestionRef[] = [
   // Flaw Level 1
   {
@@ -817,7 +832,7 @@ export const flashcards: Flashcard[] = [
   { id: "f-9", topic: "Flaw", tag: "Trap", front: "What is a wrong-flaw trap?", back: "Describing a real logical error (like circular reasoning) that simply didn't happen in this specific story." },
   { id: "f-10", topic: "Flaw", tag: "Trap", front: "What is reversed logic?", back: "Using the right facts but flipping the direction of the error (e.g., A confuses for B instead of B for A)." },
   { id: "f-11", topic: "Flaw", tag: "Concepts", front: "What is a causal flaw?", back: "Assuming correlation implies causation, or ignoring alternative causes." },
-  { id: "f-12", topic: "Flaw", tag: "Concepts", front: "What is a necessary vs sufficient flaw?", back: "Treating a requirement as enough to guarantee an outcome." },
+  { id: "f-12", topic: "Flaw", tag: "Concepts", front: "What is a necessary vs sufficient flaw?", back: "Confusing necessary and sufficient conditions — treating a necessary condition as if it guarantees the outcome (mistaking necessary for sufficient), or treating a sufficient condition as if it were required (mistaking sufficient for necessary)." },
   { id: "f-13", topic: "Flaw", tag: "Concepts", front: "What is a part vs whole flaw?", back: "Assuming what’s true of the parts is true of the collective, or vice versa." },
   { id: "f-14", topic: "Flaw", tag: "Concepts", front: "What is unproven vs false?", back: "Thinking that a lack of evidence for X proves that X is false." },
   { id: "f-15", topic: "Flaw", tag: "Concepts", front: "What is a sampling flaw?", back: "Generalizing from an unrepresentative or biased group." },
@@ -847,9 +862,9 @@ export const flashcards: Flashcard[] = [
   { id: "pa-5", topic: "Parallel Flaw", tag: "Concepts", front: "What is logical force matching?", back: "Ensuring the conclusion strength (some vs all) matches the original." },
 
   // Review
-  { id: "r-1", topic: "Review", tag: "Wait", front: "What should you write for a missed Flaw question?", back: "Conclusion, Evidence, Assumption, Plain English Flaw, and why the trap was tempting." },
-  { id: "r-2", topic: "Review", tag: "Wait", front: "What should you write for a missed Principle question?", back: "The Trigger fact I missed, or why the rule was a logical mismatch." },
-  { id: "r-3", topic: "Review", tag: "Wait", front: "What should you write for a missed Parallel Flaw question?", back: "The flawed bridge sentence and why the wrong answer changed that bridge." },
+  { id: "r-1", topic: "Review", tag: "Write", front: "What should you write for a missed Flaw question?", back: "Conclusion, Evidence, Assumption, Plain English Flaw, and why the trap was tempting." },
+  { id: "r-2", topic: "Review", tag: "Write", front: "What should you write for a missed Principle question?", back: "The Trigger fact I missed, or why the rule was a logical mismatch." },
+  { id: "r-3", topic: "Review", tag: "Write", front: "What should you write for a missed Parallel Flaw question?", back: "The flawed bridge sentence and why the wrong answer changed that bridge." },
   { id: "r-4", topic: "Review", tag: "Queue", front: "What belongs in the redo queue?", back: "Any question you missed, guessed on, or felt slow solving." },
   { id: "r-5", topic: "Review", tag: "Lesson", front: "What does 'next time I need to notice' mean?", back: "A specific trigger wording or pattern you missed (e.g., 'only if' reversal)." }
 ];
@@ -1030,7 +1045,8 @@ export const scheduleData = [
     bring: ["2 confusing questions for tutoring"],
     time: "75-100 minutes",
     intensity: "Medium" as const,
-    deliverable: "Worksheet completed and Level 1 misses logged"
+    deliverable: "Worksheet completed and Level 1 misses logged",
+    targets: { generates: true, qtypes: ["Flaw"], difficulties: [1, 2], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 2,
@@ -1048,7 +1064,8 @@ export const scheduleData = [
     bring: ["List of 2-3 specific questions for tutoring"],
     time: "30-45 minutes",
     intensity: "Light" as const,
-    deliverable: "Ready for tutoring session"
+    deliverable: "Ready for tutoring session",
+    targets: { generates: false } as DayTargets,
   },
   {
     day: 3,
@@ -1067,7 +1084,8 @@ export const scheduleData = [
     bring: ["1 Principle question that felt slow"],
     time: "60-90 minutes",
     intensity: "High" as const,
-    deliverable: "Principle mapping completed and Flaw re-dos logged"
+    deliverable: "Principle mapping completed and Flaw re-dos logged",
+    targets: { generates: true, qtypes: ["Principle-Strengthen"], difficulties: [1, 2], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 4,
@@ -1085,7 +1103,8 @@ export const scheduleData = [
     bring: ["A 'too strong' wrong answer you liked"],
     time: "75-100 minutes",
     intensity: "Medium" as const,
-    deliverable: "Level 2 completed with full answer breakdowns"
+    deliverable: "Level 2 completed with full answer breakdowns",
+    targets: { generates: true, qtypes: ["Flaw"], difficulties: [2, 3], questionFeatures: ["Famous Flaws"], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 5,
@@ -1103,7 +1122,8 @@ export const scheduleData = [
     bring: ["1 Application question with a tricky 'if'"],
     time: "60-90 minutes",
     intensity: "Medium" as const,
-    deliverable: "Principle and Application homework completed"
+    deliverable: "Principle and Application homework completed",
+    targets: { generates: true, qtypes: ["Principle-Strengthen"], difficulties: [2, 3], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 6,
@@ -1122,7 +1142,8 @@ export const scheduleData = [
     bring: ["Your worst miss from the timed section"],
     time: "120 minutes",
     intensity: "High" as const,
-    deliverable: "Section score and comprehensive review log"
+    deliverable: "Section score and comprehensive review log",
+    targets: { generates: false } as DayTargets,
   },
   {
     day: 7,
@@ -1140,7 +1161,8 @@ export const scheduleData = [
     bring: ["Top 3 mistake list for next week"],
     time: "45-60 minutes",
     intensity: "Light" as const,
-    deliverable: "Top 3 recurring mistakes list"
+    deliverable: "Top 3 recurring mistakes list",
+    targets: { generates: false } as DayTargets,
   },
   {
     day: 8,
@@ -1158,7 +1180,8 @@ export const scheduleData = [
     bring: ["1 Level 3 question that felt alien"],
     time: "90-120 minutes",
     intensity: "Medium" as const,
-    deliverable: "Level 3 and Application work logged"
+    deliverable: "Level 3 and Application work logged",
+    targets: { generates: true, qtypes: ["Flaw"], difficulties: [3, 4], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 9,
@@ -1176,7 +1199,8 @@ export const scheduleData = [
     bring: ["List of Conform questions to review"],
     time: "75-100 minutes",
     intensity: "Medium" as const,
-    deliverable: "Ready for tutoring session"
+    deliverable: "Ready for tutoring session",
+    targets: { generates: true, qtypes: ["Principle-Conform"], difficulties: [2, 3], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 10,
@@ -1194,7 +1218,8 @@ export const scheduleData = [
     bring: ["1 question where you matched the wrong task"],
     time: "90-120 minutes",
     intensity: "High" as const,
-    deliverable: "Mixed drill completed"
+    deliverable: "Mixed drill completed",
+    targets: { generates: true, qtypes: ["Flaw", "Principle-Strengthen", "Principle-Conform"], difficulties: [2, 3, 4], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 11,
@@ -1212,7 +1237,8 @@ export const scheduleData = [
     bring: ["A Parallel Flaw answer you thought mirrored perfectly"],
     time: "90-120 minutes",
     intensity: "High" as const,
-    deliverable: "Parallel Bridge started"
+    deliverable: "Parallel Bridge started",
+    targets: { generates: true, qtypes: ["Principle-Conform", "Parallel Flaw"], difficulties: [3, 4], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 12,
@@ -1230,7 +1256,8 @@ export const scheduleData = [
     bring: ["A question you flagged but got right"],
     time: "120 minutes",
     intensity: "High" as const,
-    deliverable: "Timed section score and prioritized review"
+    deliverable: "Timed section score and prioritized review",
+    targets: { generates: false } as DayTargets,
   },
   {
     day: 13,
@@ -1248,7 +1275,8 @@ export const scheduleData = [
     bring: ["1 RC question where the proof felt hidden"],
     time: "120 minutes",
     intensity: "Medium" as const,
-    deliverable: "Flaw mastery finished and RC passage logged"
+    deliverable: "Flaw mastery finished and RC passage logged",
+    targets: { generates: true, qtypes: ["Flaw"], difficulties: [4, 5], defaultHomeworkCount: 10, defaultPracticeCount: 25 } as DayTargets,
   },
   {
     day: 14,
@@ -1266,7 +1294,8 @@ export const scheduleData = [
     bring: ["5 key takeaways for your coach"],
     time: "60 minutes",
     intensity: "Light" as const,
-    deliverable: "5 clear takeaways logged"
+    deliverable: "5 clear takeaways logged",
+    targets: { generates: false } as DayTargets,
   }
 ];
 
