@@ -224,7 +224,10 @@ export function DrivePanel() {
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
   const [preview, setPreview] = useState<DriveFile | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  // Selection persists across pagination, search, and refresh.
+  // Stored as Map<id, DriveFile> so the file metadata travels with the selection
+  // even if the underlying `files` page no longer contains it.
+  const [selected, setSelected] = useState<Map<string, DriveFile>>(new Map());
   const [manager, setManager] = useState<ManagerState>({ kind: 'idle' });
   const managerRef = useRef<ManagerState>(manager);
   managerRef.current = manager;
