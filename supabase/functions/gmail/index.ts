@@ -139,7 +139,7 @@ Deno.serve(async (req) => {
         };
       });
       // Mark thread as read
-      const unreadIds = (data.messages ?? []).filter((m: any) => (m.labelIds ?? []).includes("UNREAD")).map((m: any) => m.id);
+      const unreadIds = (data?.messages ?? []).filter((m: any) => (m.labelIds ?? []).includes("UNREAD")).map((m: any) => m.id);
       await Promise.all(unreadIds.map((mid: string) => fetch(
         `${GATEWAY}/users/me/messages/${mid}/modify`,
         { method: "POST", headers: gHeaders, body: JSON.stringify({ removeLabelIds: ["UNREAD"] }) },
