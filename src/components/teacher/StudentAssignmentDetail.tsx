@@ -35,7 +35,7 @@ interface Props {
 const STATE_TONE: Record<AssignmentState, { bg: string; text: string; ring: string; label: string }> = {
   completed: { bg: 'bg-emerald-500/15', text: 'text-emerald-300', ring: 'ring-emerald-400/40', label: 'Completed' },
   in_progress: { bg: 'bg-blue-500/15', text: 'text-blue-300', ring: 'ring-blue-400/40', label: 'In progress' },
-  stuck: { bg: 'bg-amber-500/15', text: 'text-amber-300', ring: 'ring-amber-400/40', label: 'Stuck' },
+  stuck: { bg: 'bg-rose-500/15', text: 'text-rose-300', ring: 'ring-rose-400/40', label: 'Stuck' },
   not_started: { bg: 'bg-zinc-700/40', text: 'text-zinc-300', ring: 'ring-zinc-500/30', label: 'Not started' },
 };
 

@@ -48,6 +48,9 @@ const TYPE_LABELS: Record<ClassroomItem['type'], string> = {
   drill: 'Drill',
 };
 
+// Color discipline: amber stays reserved for *actions* (the New-Assignment
+// CTA, NavLink active state). State colors don't reuse amber. Stuck lands
+// on rose so it reads as friction without colliding with the CTA.
 const STATE_TONE: Record<AssignmentState, { bg: string; ring: string; text: string; label: string }> = {
   completed: {
     bg: 'bg-emerald-500/15',
@@ -62,9 +65,9 @@ const STATE_TONE: Record<AssignmentState, { bg: string; ring: string; text: stri
     label: 'In progress',
   },
   stuck: {
-    bg: 'bg-amber-500/15',
-    ring: 'ring-amber-400/40',
-    text: 'text-amber-300',
+    bg: 'bg-rose-500/15',
+    ring: 'ring-rose-400/40',
+    text: 'text-rose-300',
     label: 'Stuck',
   },
   not_started: {
@@ -152,44 +155,62 @@ function RollupBar({
   stuck: number;
   notStarted: number;
 }) {
-  const total = completed + inProgress + stuck + notStarted;
   return (
-    <div className="shrink-0 px-4 sm:px-6 py-3 border-b border-zinc-800/60 bg-zinc-950/60">
-      <div className="flex items-center gap-5 flex-wrap text-xs">
-        <Stat label="Students" value={students} icon={GraduationCap} />
-        <span className="text-zinc-700">·</span>
-        <Stat label="Items" value={total} />
-        <Stat label="Completed" value={completed} tone="emerald" />
-        <Stat label="In progress" value={inProgress} tone="blue" />
-        <Stat label="Stuck" value={stuck} tone="amber" />
-        <Stat label="Not started" value={notStarted} tone="slate" />
+    <div className="shrink-0 px-4 sm:px-6 py-4 border-b border-zinc-800/60 bg-zinc-950/60">
+      <div className="flex items-center gap-6 flex-wrap">
+        {/* Tier 1 — anchor: students count, larger scale */}
+        <div className="flex items-baseline gap-2">
+          <GraduationCap className="w-4 h-4 text-zinc-500 self-center" aria-hidden />
+          <span className="text-2xl font-semibold tabular-nums text-zinc-100 leading-none">
+            {students}
+          </span>
+          <span className="text-[11px] uppercase tracking-wider text-zinc-500 font-medium">
+            students
+          </span>
+        </div>
+
+        <span className="h-6 w-px bg-zinc-800" aria-hidden />
+
+        {/* Tier 2 — meaningful states. Stuck is the friction signal. */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <StateChip count={completed} label="completed" tone="emerald" />
+          <StateChip count={inProgress} label="in progress" tone="blue" />
+          <StateChip count={stuck} label="stuck" tone="rose" />
+        </div>
+
+        {/* Tier 3 — passive, muted */}
+        <div className="text-xs text-zinc-500 tabular-nums ml-auto">
+          <span className="font-medium text-zinc-400">{notStarted}</span> not started
+        </div>
       </div>
     </div>
   );
 }
 
-function Stat({
+function StateChip({
+  count,
   label,
-  value,
   tone,
-  icon: Icon,
 }: {
+  count: number;
   label: string;
-  value: number;
-  tone?: 'emerald' | 'blue' | 'amber' | 'slate';
-  icon?: React.ComponentType<{ className?: string }>;
+  tone: 'emerald' | 'blue' | 'rose';
 }) {
   const toneClass =
-    tone === 'emerald' ? 'text-emerald-300' :
-    tone === 'blue' ? 'text-blue-300' :
-    tone === 'amber' ? 'text-amber-300' :
-    tone === 'slate' ? 'text-zinc-300' :
-    'text-zinc-100';
+    tone === 'emerald' ? 'text-emerald-300 ring-emerald-400/30 bg-emerald-500/10' :
+    tone === 'blue' ? 'text-blue-300 ring-blue-400/30 bg-blue-500/10' :
+    'text-rose-300 ring-rose-400/30 bg-rose-500/10';
+  const dim = count === 0;
   return (
-    <span className="inline-flex items-baseline gap-1.5">
-      {Icon && <Icon className="w-3.5 h-3.5 text-zinc-500 self-center" />}
-      <span className={cn('font-semibold tabular-nums', toneClass)}>{value}</span>
-      <span className="text-zinc-500">{label}</span>
+    <span
+      className={cn(
+        'inline-flex items-baseline gap-1.5 rounded-full ring-1 px-2.5 py-1 text-[11px]',
+        toneClass,
+        dim && 'opacity-50',
+      )}
+    >
+      <span className="font-semibold tabular-nums">{count}</span>
+      <span className="text-zinc-400">{label}</span>
     </span>
   );
 }
@@ -239,20 +260,24 @@ function GroupCard({
     [group, studentById],
   );
 
+  // Move 3 — single-line header: icon carries the type, no redundant
+  // "Bootcamp" label. Meta drops to one muted line below.
+  void typeLabel;
   return (
-    <div className="rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-3.5">
+    <div className="rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-4">
       <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="min-w-0">
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <Icon className="w-3.5 h-3.5 text-zinc-400 self-center" />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline gap-2 min-w-0">
+            <Icon className="w-3.5 h-3.5 text-zinc-400 self-center shrink-0" aria-hidden />
             <span className="text-sm font-medium text-zinc-100 truncate">{group.title}</span>
             {subtitle && (
-              <span className="text-[11px] text-zinc-400">· {subtitle}</span>
+              <span className="text-[11px] text-zinc-500 shrink-0">· {subtitle}</span>
             )}
           </div>
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500 mt-0.5">
-            {typeLabel} · {group.stats.total} {group.stats.total === 1 ? 'student' : 'students'}
-            {' · '}created {formatRelativeShort(group.latestCreatedAt)}
+          <div className="text-[11px] text-zinc-500 mt-1 tabular-nums">
+            {group.stats.total} {group.stats.total === 1 ? 'student' : 'students'}
+            {' · created '}
+            {formatRelativeShort(group.latestCreatedAt)}
           </div>
         </div>
         <ProgressBar stats={group.stats} />
@@ -318,7 +343,7 @@ function ProgressBar({ stats }: { stats: AssignmentGroup['stats'] }) {
           <div className="bg-blue-400/70" style={{ width: seg(stats.inProgress) }} />
         )}
         {stats.stuck > 0 && (
-          <div className="bg-amber-400/70" style={{ width: seg(stats.stuck) }} />
+          <div className="bg-rose-400/70" style={{ width: seg(stats.stuck) }} />
         )}
       </div>
       <div className="text-[10px] text-zinc-500 tabular-nums">
