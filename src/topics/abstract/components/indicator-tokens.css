@@ -1,0 +1,61 @@
+/* Indicator-bucket color tokens.
+   Wrapped in @media (hover: hover) where appropriate so touch devices do not
+   inherit sticky :hover (audit F5.25). */
+
+:root {
+  --bucket-conclusion: hsl(142 76% 36%);
+  --bucket-conclusion-bg: hsl(142 76% 36% / 0.18);
+  --bucket-pivot: hsl(28 95% 53%);
+  --bucket-pivot-bg: hsl(28 95% 53% / 0.18);
+  --bucket-support: hsl(217 91% 60%);
+  --bucket-support-bg: hsl(217 91% 60% / 0.18);
+  --bucket-opposing-view: hsl(0 84% 60%);
+  --bucket-opposing-view-bg: hsl(0 84% 60% / 0.18);
+  --bucket-concession: hsl(280 67% 60%);
+  --bucket-concession-bg: hsl(280 67% 60% / 0.18);
+}
+
+.indicator-token {
+  border-radius: 0.25rem;
+  padding: 0.05em 0.25em;
+  margin: 0;
+  font-weight: 600;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.indicator-token.mode-reveal,
+.indicator-token.mode-hover:focus,
+.indicator-token.mode-hover:active {
+  background-color: var(--token-bg, transparent);
+  color: var(--token-fg, inherit);
+}
+
+@media (hover: hover) {
+  .indicator-token.mode-hover:hover {
+    background-color: var(--token-bg, transparent);
+    color: var(--token-fg, inherit);
+  }
+}
+
+.indicator-bucket-conclusion {
+  --token-bg: var(--bucket-conclusion-bg);
+  --token-fg: var(--bucket-conclusion);
+}
+.indicator-bucket-pivot {
+  --token-bg: var(--bucket-pivot-bg);
+  --token-fg: var(--bucket-pivot);
+}
+.indicator-bucket-support {
+  --token-bg: var(--bucket-support-bg);
+  --token-fg: var(--bucket-support);
+}
+.indicator-bucket-opposing-view {
+  --token-bg: var(--bucket-opposing-view-bg);
+  --token-fg: var(--bucket-opposing-view);
+}
+.indicator-bucket-concession {
+  --token-bg: var(--bucket-concession-bg);
+  --token-fg: var(--bucket-concession);
+}

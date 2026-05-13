@@ -27,6 +27,12 @@ import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
 import Abstraction from "./pages/Abstraction";
+const AbstractTopicPage = React.lazy(() => import("./topics/abstract/AbstractTopicPage"));
+import { ChapterLanding as AbstractChapterLanding } from "./topics/abstract/ChapterLanding";
+import { SlotFiller as AbstractSlotFiller } from "./topics/abstract/components/SlotFiller";
+import { FlashcardDeck as AbstractFlashcardDeck } from "./topics/abstract/components/FlashcardDeck";
+import { ReferenceCardView as AbstractReferenceCardView } from "./topics/abstract/components/ReferenceCardView";
+import { DrillRouter as AbstractDrillRouter } from "./topics/abstract/drills/DrillRouter";
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
@@ -367,6 +373,19 @@ const App = () => {
                       </BootcampGate>
                     </ProtectedRoute>
                   } />
+                  <Route path="/topics/abstract" element={
+                    <ProtectedRoute flag="has_bootcamp_access">
+                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                        <AbstractTopicPage />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={<AbstractChapterLanding />} />
+                    <Route path="playground" element={<AbstractSlotFiller />} />
+                    <Route path="drills/:drillId" element={<AbstractDrillRouter />} />
+                    <Route path="flashcards" element={<AbstractFlashcardDeck />} />
+                    <Route path="reference/:cardId" element={<AbstractReferenceCardView />} />
+                  </Route>
                   <Route path="/bootcamp/intro-to-lr/*" element={
                     <ProtectedRoute flag="has_bootcamp_access">
                       <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
