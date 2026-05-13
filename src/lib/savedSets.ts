@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export interface SavedSetRow {
   id: string;
@@ -50,7 +51,7 @@ export async function saveSet(userId: string, input: SaveSetInput): Promise<Save
     .insert({
       user_id: userId,
       name: input.name.trim(),
-      filter_state: input.filter_state,
+      filter_state: input.filter_state as unknown as Json,
       question_ids: input.question_ids,
     })
     .select("id, user_id, name, filter_state, question_ids, created_at")
