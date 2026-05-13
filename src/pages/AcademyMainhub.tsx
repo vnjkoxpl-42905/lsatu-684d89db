@@ -24,6 +24,8 @@ import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useInbox } from "@/hooks/useInbox";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useLastActivity } from "@/hooks/useLastActivity";
+import { resolveResumeTarget } from "@/lib/lastActivity";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import {
   DOCK_CATALOG,
@@ -88,6 +90,7 @@ export default function AcademyMainhub() {
   const perms = useUserPermissions();
   const { prefs } = useLayoutPrefs();
   const { data: classroomItems = [] } = useClassroomItems();
+  const { data: lastActivity } = useLastActivity();
   const { setActive: setOrbitalActive } = useOrbitalActive();
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   
@@ -170,9 +173,16 @@ export default function AcademyMainhub() {
       if (itemId === "smart-drill") {
         navigate("/drill", { state: { mode: "adaptive" } });
       } else if (itemId === "resume") {
-        const next = nextActionFor(classroomItems);
-        const route = next ? resolveItemRoute(next) : null;
-        navigate(route ?? "/drill");
+        // Primary source: user_last_activity (true "where I left off").
+        // Fallbacks: next assigned classroom item → Smart Drill.
+        if (lastActivity) {
+          const { path, state } = resolveResumeTarget(lastActivity.state_snapshot);
+          navigate(path, { state });
+        } else {
+          const next = nextActionFor(classroomItems);
+          const route = next ? resolveItemRoute(next) : null;
+          navigate(route ?? "/drill", route ? undefined : { state: { mode: "adaptive" } });
+        }
       } else if (itemId === "mock-lsat") {
         navigate("/practice");
       } else if (itemId === "last-bootcamp") {
@@ -194,7 +204,7 @@ export default function AcademyMainhub() {
         // intentionally a no-op so the overlay doesn't navigate away.
       }
     },
-    [navigate, classroomItems, setOrbitalActive],
+    [navigate, classroomItems, setOrbitalActive, lastActivity],
   );
 
   React.useEffect(() => {

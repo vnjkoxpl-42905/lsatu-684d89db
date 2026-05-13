@@ -39,6 +39,7 @@ import { normalizeText } from '@/lib/utils';
 import { captureTextSelection, replaceOverlappingHighlights, type Highlight, type HighlightColor } from '@/lib/highlightUtils';
 import { Switch } from '@/components/ui/switch';
 import { setActiveDrillQid } from '@/lib/drillNotepadBus';
+import { upsertLastActivity, type DrillSnapshot, type SectionSnapshot } from '@/lib/lastActivity';
 import { ArrowLeft, CheckCircle, X, XCircle, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -420,6 +421,61 @@ function DrillContent() {
     setActiveDrillQid(currentQuestion?.qid ?? null);
     return () => setActiveDrillQid(null);
   }, [currentQuestion?.qid]);
+
+  // Persist "last activity" so the Main Hub Resume CTA can reopen at exact
+  // index. Fires whenever the user lands on a new question OR completes one
+  // (attempts.size grows). The service throws on DB failure; we surface as a
+  // toast (one-shot per failure) rather than silently swallowing.
+  const lastActivityAttemptsRef = React.useRef<number>(-1);
+  const lastActivityIndexRef = React.useRef<number>(-1);
+  React.useEffect(() => {
+    if (!user?.id || !session || !currentQuestion) return;
+    const attemptCount = session.attempts.size;
+    // Skip the very first render of a fresh session (currentIndex 0, no
+    // attempts) — that's not "resumable progress" yet.
+    if (attemptCount === 0 && session.currentIndex === 0) return;
+    if (lastActivityAttemptsRef.current === attemptCount && session.currentIndex === lastActivityIndexRef.current) {
+      return;
+    }
+    lastActivityAttemptsRef.current = attemptCount;
+    lastActivityIndexRef.current = session.currentIndex;
+
+    const isSection = session.mode === 'full-section';
+    const prettyMode = isSection
+      ? 'Section'
+      : session.mode === 'type-drill'
+      ? 'Custom Drill'
+      : session.mode === 'natural-drill'
+      ? 'Smart Drill'
+      : 'Drill';
+    const snapshot: DrillSnapshot | SectionSnapshot = isSection
+      ? {
+          kind: 'section',
+          pt: currentQuestion.pt,
+          section_number: currentQuestion.section,
+          qids: session.questionQueue,
+          current_qid: currentQuestion.qid,
+          current_index: session.currentIndex,
+          label: `PT ${currentQuestion.pt} Section ${currentQuestion.section} Q${currentQuestion.qnum}`,
+        }
+      : {
+          kind: 'drill',
+          mode: session.mode,
+          qids: session.questionQueue,
+          current_index: session.currentIndex,
+          current_qid: currentQuestion.qid,
+          assignment_id: assignmentId ?? undefined,
+          label: `${prettyMode} — PT ${currentQuestion.pt} Q${currentQuestion.qnum}`,
+        };
+    (async () => {
+      try {
+        await upsertLastActivity(user.id, snapshot);
+      } catch (e) {
+        console.error('[Drill] upsertLastActivity failed', e);
+        toast.error("Couldn't save your place. Resume may be out of date.");
+      }
+    })();
+  }, [user?.id, session?.mode, session?.currentIndex, session?.attempts.size, currentQuestion?.qid, currentQuestion?.pt, currentQuestion?.section, currentQuestion?.qnum, assignmentId]);
 
   // Adaptive mode: select next question only when advanceToken changes
   React.useEffect(() => {

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import lessons from '@/bootcamps/main-conclusion/data/lessons.generated.json';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
+import { upsertLastActivity } from '@/lib/lastActivity';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { getPersistence } from '@/bootcamps/main-conclusion/persistence/factory';
 import { TABLES, LessonProgress } from '@/bootcamps/main-conclusion/persistence/records';
@@ -39,6 +42,8 @@ export function Lesson(): JSX.Element {
   const { lessonId: routeId } = useParams<{ lessonId: string }>();
   const data = (lessons as LessonData[]).find((l) => l.number === routeId);
   const user = useUser();
+  const { user: authUser } = useAuth();
+  const [searchParams] = useSearchParams();
   const { progress, markLessonComplete } = useModuleProgress();
   const drawer = useDrawer();
   const [checkpointPicked, setCheckpointPicked] = useState<string | null>(null);
@@ -58,6 +63,28 @@ export function Lesson(): JSX.Element {
       await persist.set(TABLES.lesson_progress, id, rec);
     })();
   }, [data, user]);
+
+  // Resume support: record this bootcamp lesson + phase as the user's last
+  // activity so the Main Hub Resume CTA returns them here.
+  useEffect(() => {
+    if (!data || !authUser?.id) return;
+    const stepRaw = searchParams.get('p');
+    const step_index = Number.isFinite(Number(stepRaw)) ? Number(stepRaw) : 0;
+    (async () => {
+      try {
+        await upsertLastActivity(authUser.id, {
+          kind: 'bootcamp_step',
+          bootcamp_id: 'intro-to-lr',
+          lesson_id: data.number,
+          step_index,
+          label: `Lesson ${data.number} — ${data.title}`,
+        });
+      } catch (e) {
+        console.error('[Lesson] upsertLastActivity failed', e);
+        toast.error("Couldn't save your place. Resume may be out of date.");
+      }
+    })();
+  }, [data, authUser?.id, searchParams]);
 
   if (!data) {
     return (
