@@ -504,7 +504,7 @@ export function DrivePanel() {
                     <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
                       <Checkbox
                         checked={isSelected}
-                        onCheckedChange={() => toggleSelected(f.id)}
+                        onCheckedChange={() => toggleSelected(f)}
                         disabled={isFolder}
                         aria-label={`Select ${f.name}`}
                       />
