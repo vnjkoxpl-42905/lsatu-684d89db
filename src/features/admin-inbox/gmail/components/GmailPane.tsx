@@ -3,7 +3,7 @@
 // see the TODO there about migrating to a granular admin-inbox access flag.
 import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useGmailLabels, useGmailModify, useGmailProfile, useGmailThread, useGmailThreads } from "../hooks";
+import { useGmailContacts, useGmailLabels, useGmailModify, useGmailProfile, useGmailThread, useGmailThreads } from "../hooks";
 import type { ModifyAction } from "../hooks";
 import { categoryToLabelId, folderToLabelIds, useGmailUrlState } from "../hooks/useGmailUrlState";
 import { SYSTEM_LABELS, type GmailCategory, type GmailLabel } from "../api";
@@ -23,6 +23,7 @@ export function GmailPane() {
 
   const labelsQuery = useGmailLabels();
   const profileQuery = useGmailProfile();
+  const contactsQuery = useGmailContacts({ enabled: true });
   const adminEmail = profileQuery.data?.emailAddress ?? null;
 
   const labelsList = useMemo(() => labelsQuery.data ?? [], [labelsQuery.data]);
@@ -192,7 +193,12 @@ export function GmailPane() {
         threadId ? "hidden lg:flex" : "flex",
       )}>
         <div className="px-3 py-2 border-b border-border bg-background">
-          <GmailSearchBar value={query} onChange={handleSearch} />
+          <GmailSearchBar
+            value={query}
+            onChange={handleSearch}
+            isLoading={threadsQuery.isFetching}
+            contacts={contactsQuery.data ?? []}
+          />
         </div>
         {showCategoryTabs ? (
           <GmailCategoryTabs value={category ?? "primary"} onChange={handleCategoryChange} />

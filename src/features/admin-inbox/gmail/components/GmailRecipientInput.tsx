@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { GmailContact } from "../api";
+import { rankContacts } from "../utils/rankContacts";
 
 interface GmailRecipientInputProps {
   value: string;
@@ -12,29 +13,6 @@ interface GmailRecipientInputProps {
 }
 
 const MAX_RESULTS = 8;
-
-// Rank: prefix matches on name OR email rank above midstring matches.
-function rankContacts(query: string, contacts: GmailContact[]): GmailContact[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
-  const scored: Array<{ c: GmailContact; score: number }> = [];
-  for (const c of contacts) {
-    const email = c.email.toLowerCase();
-    const name = (c.name ?? "").toLowerCase();
-    const emailIdx = email.indexOf(q);
-    const nameIdx = name.indexOf(q);
-    if (emailIdx === -1 && nameIdx === -1) continue;
-    let score = 0;
-    if (emailIdx === 0 || nameIdx === 0) score += 1000;
-    else score += 100;
-    score += Math.max(0, 100 - Math.min(emailIdx === -1 ? 999 : emailIdx, nameIdx === -1 ? 999 : nameIdx));
-    scored.push({ c, score });
-  }
-  return scored
-    .sort((a, b) => b.score - a.score)
-    .slice(0, MAX_RESULTS)
-    .map((s) => s.c);
-}
 
 export function GmailRecipientInput({
   value,
@@ -47,7 +25,7 @@ export function GmailRecipientInput({
   const [highlightIndex, setHighlightIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const suggestions = useMemo(() => rankContacts(value, contacts), [value, contacts]);
+  const suggestions = useMemo(() => rankContacts(value, contacts, MAX_RESULTS), [value, contacts]);
   const open = focused && value.trim().length > 0 && suggestions.length > 0;
 
   // Reset highlight when suggestion set changes.
