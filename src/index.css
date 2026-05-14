@@ -48,6 +48,15 @@ All colors MUST be HSL.
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
+    /* Attempt-state semantic tokens.
+       Used by drill / flashcard / playground feedback across topic bootcamps.
+       Hue-distinct from --success / --destructive so attempt feedback never
+       collides visually with system status. */
+    --state-correct: 160 84% 39%;     /* emerald-500 */
+    --state-correct-foreground: 0 0% 98%;
+    --state-incorrect: 350 89% 60%;   /* rose-500 */
+    --state-incorrect-foreground: 0 0% 98%;
+
     --border: 0 0% 14.9%;             /* neutral-800 */
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;               /* neutral-300 */

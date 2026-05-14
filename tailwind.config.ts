@@ -35,6 +35,14 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        "state-correct": {
+          DEFAULT: "hsl(var(--state-correct))",
+          foreground: "hsl(var(--state-correct-foreground))",
+        },
+        "state-incorrect": {
+          DEFAULT: "hsl(var(--state-incorrect))",
+          foreground: "hsl(var(--state-incorrect-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
