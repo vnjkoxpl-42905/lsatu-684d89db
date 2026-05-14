@@ -4,7 +4,7 @@
     {
       "id": "fc-abstract-001",
       "front": "Presuppose",
-      "back": "Means **require**. A necessary condition. If the presupposed thing weren't true, the argument would collapse.",
+      "back": "In daily usage, a presupposition can mean either an assumption or something that is necessary. On the LSAT, presuppose simply means \"require.\" It refers to a necessary condition.",
       "example": "'The argument presupposes the witness is reliable' means 'the argument requires that the witness be reliable.'",
       "concept_tag": "glossary",
       "difficulty_tag": "foundation",
@@ -135,7 +135,7 @@
     {
       "id": "fc-abstract-017",
       "front": "Illustrate",
-      "back": "Give an example of.",
+      "back": "An illustration, as it appears in a Logical Reasoning (LR) question, is simply referring to an example or examples.",
       "concept_tag": "glossary",
       "difficulty_tag": "core",
       "topic_tag": "abstract"
@@ -175,7 +175,7 @@
     {
       "id": "fc-abstract-022",
       "front": "General Principle",
-      "back": "A rule that applies to multiple scenarios. Not just one case.",
+      "back": "A principle is a rule on what we should or shouldn't do. It applies to multiple conditions and scenarios.",
       "concept_tag": "glossary",
       "difficulty_tag": "core",
       "topic_tag": "abstract"
@@ -183,7 +183,7 @@
     {
       "id": "fc-abstract-023",
       "front": "Generalization",
-      "back": "A summary statement derived from cases. Describes what *is*.",
+      "back": "A summary statement derived from smaller findings, like \"All swans are white.\" Generalizations describe more so what is, while principles prescribe what they should or ought to be. They can function as premises or conclusions.",
       "concept_tag": "glossary",
       "difficulty_tag": "core",
       "topic_tag": "abstract"
@@ -191,7 +191,7 @@
     {
       "id": "fc-abstract-024",
       "front": "Principle",
-      "back": "A guiding rule. Prescribes what *should* be.",
+      "back": "A generalizable statement used to guide or justify (similar to a rule) future or past actions or decisions. Example: \"Punishment should be proportional to the crime committed.\" Principles can be premises or conclusions.",
       "concept_tag": "glossary",
       "difficulty_tag": "advanced",
       "topic_tag": "abstract"
@@ -535,15 +535,15 @@
     {
       "id": "fc-abstract-067",
       "front": "Decision",
-      "back": "A choice. Can be premise or conclusion.",
+      "back": "A choice made, like \"I will be taking the train from Canada to USA instead of Bus.\" Decisions can also play roles as premises or conclusions.",
       "concept_tag": "glossary",
       "difficulty_tag": "advanced",
       "topic_tag": "abstract"
     },
     {
       "id": "fc-abstract-068",
-      "front": "Fact",
-      "back": "A statement true regardless of viewpoint. Often premise or background.",
+      "front": "Facts",
+      "back": "Statements such as \"Canada is the largest country in the world\" or \"Water consists of hydrogen and oxygen.\" Not arguments by themselves. Can serve as premises or background information in an argument.",
       "concept_tag": "glossary",
       "difficulty_tag": "advanced",
       "topic_tag": "abstract"
