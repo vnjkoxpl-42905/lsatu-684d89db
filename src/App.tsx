@@ -32,6 +32,7 @@ import { SlotFiller as AbstractSlotFiller } from "./topics/abstract/components/S
 import { FlashcardDeck as AbstractFlashcardDeck } from "./topics/abstract/components/FlashcardDeck";
 import { ReferenceCardView as AbstractReferenceCardView } from "./topics/abstract/components/ReferenceCardView";
 import { DrillRouter as AbstractDrillRouter } from "./topics/abstract/drills/DrillRouter";
+import { MethodsLibrary as AbstractMethodsLibrary } from "./topics/abstract/MethodsLibrary";
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
@@ -402,6 +403,7 @@ const App = () => {
                   }>
                     <Route index element={<AbstractChapterLanding />} />
                     <Route path="playground" element={<AbstractSlotFiller />} />
+                    <Route path="methods" element={<AbstractMethodsLibrary />} />
                     <Route path="drills/:drillId" element={<AbstractDrillRouter />} />
                     <Route path="flashcards" element={<AbstractFlashcardDeck />} />
                     <Route path="reference/:cardId" element={<AbstractReferenceCardView />} />
