@@ -50,6 +50,120 @@ export type Database = {
         }
         Relationships: []
       }
+      abstract_drill_attempts: {
+        Row: {
+          id: string
+          user_id: string
+          drill_id: string
+          drill_type: string
+          selected_index: number
+          correct: boolean
+          confidence: string
+          trap_tag: string | null
+          completed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          drill_id: string
+          drill_type: string
+          selected_index: number
+          correct: boolean
+          confidence: string
+          trap_tag?: string | null
+          completed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          drill_id?: string
+          drill_type?: string
+          selected_index?: number
+          correct?: boolean
+          confidence?: string
+          trap_tag?: string | null
+          completed_at?: string
+        }
+        Relationships: []
+      }
+      abstract_final_set: {
+        Row: {
+          id: string
+          user_id: string
+          score: number
+          total: number
+          completed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          score: number
+          total: number
+          completed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          score?: number
+          total?: number
+          completed_at?: string
+        }
+        Relationships: []
+      }
+      abstract_gauntlet_attempts: {
+        Row: {
+          id: string
+          user_id: string
+          choice_id: number
+          keywords_picked: string[]
+          translation_text: string
+          requirements_checked: number[]
+          correct_count: number
+          completed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          choice_id: number
+          keywords_picked?: string[]
+          translation_text?: string
+          requirements_checked?: number[]
+          correct_count?: number
+          completed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          choice_id?: number
+          keywords_picked?: string[]
+          translation_text?: string
+          requirements_checked?: number[]
+          correct_count?: number
+          completed_at?: string
+        }
+        Relationships: []
+      }
+      abstract_lesson_progress: {
+        Row: {
+          id: string
+          user_id: string
+          lesson_id: string
+          completed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          lesson_id: string
+          completed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          lesson_id?: string
+          completed_at?: string
+        }
+        Relationships: []
+      }
       ai_ta_drafts: {
         Row: {
           approved_at: string | null
