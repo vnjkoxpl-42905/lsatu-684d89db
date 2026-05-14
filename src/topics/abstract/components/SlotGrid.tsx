@@ -140,8 +140,8 @@ export function SlotGrid({
                         r === undefined
                           ? "border-border"
                           : r.correct
-                            ? "border-state-correct/70 bg-state-correct/5"
-                            : "border-state-incorrect/70 bg-state-incorrect/5";
+                            ? "border-state-correct/70 bg-state-correct/10"
+                            : "border-state-incorrect/70 bg-state-incorrect/10";
                       return (
                         <li
                           key={clauseId}

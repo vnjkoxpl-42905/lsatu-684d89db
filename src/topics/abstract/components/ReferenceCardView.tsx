@@ -25,6 +25,8 @@ const CARDS: Record<string, { title: string; body: string }> = {
 };
 
 export const ABSTRACT_REFERENCE_CARD_IDS = Object.keys(CARDS);
+export const ABSTRACT_REFERENCE_CARD_TITLES: Record<string, string> =
+  Object.fromEntries(Object.entries(CARDS).map(([id, c]) => [id, c.title]));
 
 export function ReferenceCardView() {
   const params = useParams<{ cardId?: string }>();

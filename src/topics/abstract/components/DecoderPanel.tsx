@@ -51,7 +51,7 @@ export function DecoderPanel({ autoAdvance = false }: DecoderPanelProps) {
         >
           ← Prev
         </button>
-        <div className="flex items-center gap-1">
+        <div className="hidden items-center gap-1 md:flex">
           {cards.map((c, i) => (
             <button
               key={c.id}

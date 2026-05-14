@@ -59,7 +59,7 @@ export function ChapterLanding() {
                 D1 · Strip-Down Warm-Up
               </Link>{" "}
               <span className="text-muted-foreground">
-                ·label clauses, then reveal.
+                · label clauses, then reveal.
               </span>
             </li>
             <li>
@@ -70,7 +70,7 @@ export function ChapterLanding() {
                 D2 · Indicator Classification
               </Link>{" "}
               <span className="text-muted-foreground">
-                ·bucket the indicator words.
+                · bucket the indicator words.
               </span>
             </li>
             <li>
@@ -81,7 +81,7 @@ export function ChapterLanding() {
                 Flashcards
               </Link>{" "}
               <span className="text-muted-foreground">
-                ·review the master keys + FABS + slots.
+                · review the master keys + FABS + slots.
               </span>
             </li>
             <li>
@@ -92,7 +92,7 @@ export function ChapterLanding() {
                 Playground
               </Link>{" "}
               <span className="text-muted-foreground">
-                ·strip a stimulus into slots.
+                · strip a stimulus into slots.
               </span>
             </li>
           </ul>

@@ -29,14 +29,18 @@ const DATA = methodsData as MethodsFile;
 export function MethodsLibrary() {
   const recordSection = useRecordChapterSection();
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const firedRef = useRef(false);
 
   useEffect(() => {
     if (!rootRef.current) return;
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !firedRef.current) {
+            firedRef.current = true;
             void recordSection("abstract", "methods-library");
+            obs.disconnect();
+            return;
           }
         }
       },

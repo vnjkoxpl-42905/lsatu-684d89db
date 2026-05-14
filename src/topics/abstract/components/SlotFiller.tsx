@@ -64,7 +64,7 @@ export function SlotFiller() {
         <span>{clause.text}</span>
         <button
           type="button"
-          className="text-xs underline text-muted-foreground"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-base leading-none text-muted-foreground hover:text-foreground"
           onClick={(e) => {
             e.stopPropagation();
             session.place(clauseId, null);

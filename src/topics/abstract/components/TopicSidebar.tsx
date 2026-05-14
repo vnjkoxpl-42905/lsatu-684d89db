@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { ABSTRACT_REFERENCE_CARD_IDS } from "./ReferenceCardView";
+import {
+  ABSTRACT_REFERENCE_CARD_IDS,
+  ABSTRACT_REFERENCE_CARD_TITLES,
+} from "./ReferenceCardView";
 
 const NAV = [
   { to: "/topics/abstract", label: "Chapter", exact: true },
@@ -16,14 +19,19 @@ const NAV = [
   { to: "/topics/abstract/flashcards", label: "Flashcards" },
 ];
 
+function resolveReferenceLabel(pathname: string): string | null {
+  const match = pathname.match(/\/topics\/abstract\/reference\/([^/]+)/);
+  if (!match) return null;
+  const id = match[1];
+  return ABSTRACT_REFERENCE_CARD_TITLES[id] ?? null;
+}
+
 export function TopicSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const activeLabel =
-    NAV.find((n) => location.pathname === n.to)?.label ??
-    (location.pathname.startsWith("/topics/abstract/reference")
-      ? `Reference · ${location.pathname.split("/").pop()}`
-      : "Abstract");
+  const navMatch = NAV.find((n) => location.pathname === n.to);
+  const referenceLabel = resolveReferenceLabel(location.pathname);
+  const activeLabel = navMatch?.label ?? referenceLabel ?? "Chapter";
 
   return (
     <aside className="topic-sidebar w-full md:w-64 shrink-0 border-b border-border md:border-b-0 md:border-r md:h-[calc(100vh-3rem)] md:sticky md:top-12 md:overflow-y-auto p-3">
@@ -80,14 +88,19 @@ export function TopicSidebar() {
               to={`/topics/abstract/reference/${id}`}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `flex min-h-11 items-center rounded-md px-2 py-2 font-mono text-xs md:min-h-0 md:py-1.5 ${
+                `flex min-h-11 items-center gap-2 rounded-md px-2 py-2 md:min-h-0 md:py-1.5 ${
                   isActive
                     ? "bg-secondary font-medium text-foreground"
                     : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
                 }`
               }
             >
-              {id}
+              <span aria-hidden="true" className="font-mono text-[10px] text-muted-foreground">
+                {id}
+              </span>
+              <span className="truncate">
+                {ABSTRACT_REFERENCE_CARD_TITLES[id]}
+              </span>
             </NavLink>
           ))}
         </nav>

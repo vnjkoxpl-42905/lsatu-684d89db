@@ -62,9 +62,9 @@ export function D1StripDown() {
                 key={c.id}
                 className={`rounded-md border p-3 ${
                   isCorrect
-                    ? "border-state-correct/70 bg-state-correct/5"
+                    ? "border-state-correct/70 bg-state-correct/10"
                     : isWrong
-                      ? "border-state-incorrect/70 bg-state-incorrect/5"
+                      ? "border-state-incorrect/70 bg-state-incorrect/10"
                       : "border-border"
                 }`}
               >
