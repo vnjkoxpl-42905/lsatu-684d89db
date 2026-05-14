@@ -3,9 +3,9 @@ import { useApp } from '../../store/AppContext';
 import { BookOpen, Target, FileText, ArrowRight, BookMarked, Play, PenTool, Brain, Library } from 'lucide-react';
 import { LESSONS } from '../../data/mockData';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -15,7 +15,7 @@ const container = {
   }
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };

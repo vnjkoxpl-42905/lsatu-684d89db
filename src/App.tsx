@@ -26,24 +26,11 @@ import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
-const AbstractTopicPage = React.lazy(() => import("./topics/abstract/AbstractTopicPage"));
-const AbstractChapterLanding = React.lazy(() =>
-  import("./topics/abstract/ChapterLanding").then((m) => ({ default: m.ChapterLanding })),
-);
-const AbstractFlashcardDeck = React.lazy(() =>
-  import("./topics/abstract/components/FlashcardDeck").then((m) => ({ default: m.FlashcardDeck })),
-);
-const AbstractReferenceCardView = React.lazy(() =>
-  import("./topics/abstract/components/ReferenceCardView").then((m) => ({
-    default: m.ReferenceCardView,
-  })),
-);
-const AbstractDrillRouter = React.lazy(() =>
-  import("./topics/abstract/drills/DrillRouter").then((m) => ({ default: m.DrillRouter })),
-);
-const AbstractMethodsLibrary = React.lazy(() =>
-  import("./topics/abstract/MethodsLibrary").then((m) => ({ default: m.MethodsLibrary })),
-);
+// Abstract v2.0: brutalist bootcamp port. All sub-views (lessons, methods,
+// drills, flashcards, gauntlet, final set) are switched internally by the
+// bootcamp's ViewManager keyed off AppContext.currentView, so the route is
+// a single mount with no nested children.
+const AbstractBootcamp = React.lazy(() => import("./topics/abstract"));
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
@@ -398,7 +385,7 @@ const App = () => {
                   {/* Retired legacy Abstraction slug. New v2 topic lives at /topics/abstract. */}
                   <Route path="/bootcamp/abstraction" element={<Navigate to="/topics/abstract" replace />} />
                   <Route path="/bootcamp/abstraction/*" element={<Navigate to="/topics/abstract" replace />} />
-                  <Route path="/topics/abstract" element={
+                  <Route path="/topics/abstract/*" element={
                     <ProtectedRoute flag="has_bootcamp_access">
                       <BootcampGate
                         routePath="/topics/abstract"
@@ -407,23 +394,11 @@ const App = () => {
                         title="Abstract"
                       >
                         <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                          <AbstractTopicPage />
+                          <AbstractBootcamp />
                         </React.Suspense>
                       </BootcampGate>
                     </ProtectedRoute>
-                  }>
-                    <Route index element={<AbstractChapterLanding />} />
-                    <Route
-                      path="playground"
-                      element={
-                        <Navigate to="/topics/abstract/drills/d1" replace />
-                      }
-                    />
-                    <Route path="methods" element={<AbstractMethodsLibrary />} />
-                    <Route path="drills/:drillId" element={<AbstractDrillRouter />} />
-                    <Route path="flashcards" element={<AbstractFlashcardDeck />} />
-                    <Route path="reference/:cardId" element={<AbstractReferenceCardView />} />
-                  </Route>
+                  } />
                   <Route path="/bootcamp/intro-to-lr/*" element={
                     <ProtectedRoute flag="has_bootcamp_access">
                       <BootcampGate routePath="/bootcamp/intro-to-lr" title="Intro to LR">
