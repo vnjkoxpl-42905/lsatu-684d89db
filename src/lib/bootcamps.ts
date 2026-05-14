@@ -4,10 +4,10 @@
  * (assignment dropdown) import from here so a new bootcamp only needs to
  * be registered in one place.
  *
- * `route` must match a real `<Route path="/bootcamp/...">` registered in
- * src/App.tsx. Retired routes (e.g. /bootcamp/structure) intentionally
- * redirect back to /bootcamps and are NOT listed here — assigning a
- * retired slug would land the student on the index, which would be a lie.
+ * `route` must match a real `<Route path="...">` registered in src/App.tsx.
+ * Retired routes (e.g. /bootcamp/structure) intentionally redirect back to
+ * /bootcamps and are NOT listed here. Assigning a retired slug would land
+ * the student on the index, which would be a lie.
  */
 export interface BootcampDef {
   id: string;
@@ -37,8 +37,9 @@ export const BOOTCAMPS: BootcampDef[] = [
   },
   {
     id: 'abstraction',
-    title: 'Abstraction',
-    description: 'Abstract relationships',
-    route: '/bootcamp/abstraction',
+    title: 'Abstract',
+    description:
+      'Strip-Down + Decode. The bilingual fluency foundation topic that every other LR bootcamp builds on.',
+    route: '/topics/abstract',
   },
 ];
