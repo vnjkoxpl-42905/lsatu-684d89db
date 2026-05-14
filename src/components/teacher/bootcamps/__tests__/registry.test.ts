@@ -23,8 +23,8 @@ describe("bootcamp topic registry", () => {
     const abstract = findTopic("abstract");
     expect(abstract).toBeDefined();
     expect(abstract?.name).toBe("Abstract");
-    expect(abstract?.drills.length).toBe(5);
-    expect(abstract?.chapterSections.length).toBe(3);
+    expect(abstract?.drills.length).toBe(7);
+    expect(abstract?.chapterSections.length).toBe(5);
   });
 
   it("each topic's drill attemptMode strings are unique within the topic", () => {
