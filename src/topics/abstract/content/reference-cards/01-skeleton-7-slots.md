@@ -1,23 +1,18 @@
-# The Skeleton (7 slots)
+# The Decode Workflow
 
 **Synopsis**
-Every LR stimulus is built from some combination of seven slots. Learn the slots and the indicator words that signal them. Read for structure first, content second.
+A four-step routine for translating any abstract LSAT phrase into plain English. Use it on every dense answer choice in Method, Argument Part, Flaw, and Role questions.
 
-**The 7 slots**
-1. **Background.** Neutral facts setting the scene.
-2. **Opposing Conclusion.** What someone *else* thinks.
-3. **Opposing Evidence.** Why the opposing view believes that.
-4. **Concession.** Something the author admits even though it could be used against them.
-5. **Author's Conclusion.** What the author thinks. The main point.
-6. **Intermediate Conclusion.** A sub-claim the author proves on the way to the main conclusion. Both supported by, and supporting, other claims.
-7. **Author's Evidence.** The reasons the author gives.
+**The four steps**
+1. **Find the verb.** Skim past the nouns. The verb is the load-bearing word. *Presupposes, undermines, accounts for, lends support to* are the patterns to recognize.
+2. **Call the bucket.** Which of the five does this verb belong to? Assumption, Causal, Comparison, Evidence, Evaluation. The bucket call decides what kind of plain-English claim you're translating to.
+3. **Map X and Y.** If the phrase uses variables, find the directional word (*from, by, because, on the grounds that, on the basis of* all point backward; *to support, to establish, in order to* all point forward). Whatever's behind the directional word is the launching claim. Whatever's ahead is the destination.
+4. **Translate.** Write the phrase in your own words. If you can't, you haven't decoded it. Go back to the verb.
 
 **How to use**
-1. Read the stimulus once for shape.
-2. Highlight every indicator word.
-3. Assign every clause to one of the seven slots.
-4. Confirm the Author's Conclusion is the one being supported, not supporting anything else.
+Apply this on every abstract answer choice as you read it. Don't read for vibe; read for the verb. The bucket call is usually within five words of where you start.
 
 **Common mistakes**
-- Reading a Concession as an Opposing Conclusion. Concessions are the author admitting something, not someone else asserting it.
-- Confusing an Intermediate Conclusion with the Main Conclusion. The Intermediate one *both* supports something *and* is supported by something. The Main one is only supported.
+- Stopping after step 1. The verb gets you halfway, the bucket call closes the gap.
+- Translating to a stimulus you assume exists. Translate to a generic plain-English claim first, then check whether the actual stimulus matches.
+- Skipping the X/Y check on phrases that don't use literal X and Y. Most abstract answers have an implicit X/Y structure; the directional words are still there.

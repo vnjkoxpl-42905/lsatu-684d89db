@@ -1,75 +1,34 @@
-// Canonical type contracts for the Abstract topic. Schemas align with the
-// build brief §6, §7, §8, §10.
+// Canonical type contracts for the Abstract topic.
+//
+// Abstract is the LSAT-ese to plain-English decoding bootcamp. Argument-part
+// labeling (premise/conclusion, opposing-view, concession, slot tagging) lives
+// in Intro to LR, not here. The types in this file describe translation,
+// keyword decoding, X/Y mapping, and method-pattern recognition only.
 
-export type SlotId =
-  | "background"
-  | "opposing-conclusion"
-  | "opposing-evidence"
-  | "concession"
-  | "authors-conclusion"
-  | "intermediate-conclusion"
-  | "authors-evidence";
-
-export const SLOT_IDS: SlotId[] = [
-  "background",
-  "opposing-conclusion",
-  "opposing-evidence",
-  "concession",
-  "authors-conclusion",
-  "intermediate-conclusion",
-  "authors-evidence",
-];
-
-export const SLOT_LABELS: Record<SlotId, string> = {
-  background: "Background",
-  "opposing-conclusion": "Opposing Conclusion",
-  "opposing-evidence": "Opposing Evidence",
-  concession: "Concession",
-  "authors-conclusion": "Author's Conclusion",
-  "intermediate-conclusion": "Intermediate Conclusion",
-  "authors-evidence": "Author's Evidence",
-};
-
-export type IndicatorBucket =
-  | "conclusion"
-  | "pivot"
-  | "support"
-  | "opposing-view"
-  | "concession"
+// TranslationBucket: the five language categories the bootcamp teaches a
+// student to spot inside an abstract answer choice or stimulus.
+// "neutral" is the no-op bucket for inline text that isn't doing any of
+// the five jobs.
+export type TranslationBucket =
+  | "assumption"
+  | "causal"
+  | "comparison"
+  | "evidence"
+  | "evaluation"
   | "neutral";
 
-export const INDICATOR_BUCKETS: IndicatorBucket[] = [
-  "conclusion",
-  "pivot",
-  "support",
-  "opposing-view",
-  "concession",
+export const TRANSLATION_BUCKETS: TranslationBucket[] = [
+  "assumption",
+  "causal",
+  "comparison",
+  "evidence",
+  "evaluation",
   "neutral",
 ];
 
-export interface PlaygroundClause {
-  id: string;
-  text: string;
-  slot: SlotId;
-  tip_on_mismatch?: Partial<Record<SlotId, string>>;
-}
-
-export interface PlaygroundIndicatorWord {
-  text: string;
-  bucket: IndicatorBucket;
-  start_index: number;
-}
-
-export interface PlaygroundStimulus {
-  id: string;
-  stimulus_text: string;
-  clauses: PlaygroundClause[];
-  indicator_words: PlaygroundIndicatorWord[];
-}
-
 export interface TaggedToken {
   text: string;
-  bucket: IndicatorBucket;
+  bucket: TranslationBucket;
 }
 
 export interface TaggedStimulus {
@@ -91,7 +50,7 @@ export interface FlashcardEntry {
   front: string;
   back: string;
   example?: string;
-  concept_tag: "glossary" | "indicator" | "verb-taxonomy";
+  concept_tag: "glossary" | "translation-language" | "verb-taxonomy";
   difficulty_tag: "foundation" | "core" | "advanced";
   topic_tag: "abstract";
 }
@@ -101,16 +60,18 @@ export interface FlashcardSet {
   cards: FlashcardEntry[];
 }
 
-export interface D1Clause {
+// D1 Abstract Language Warm-Up: MC translation. Show an abstract phrase,
+// pick the plain-English option that matches.
+export interface D1Option {
   id: string;
   text: string;
-  slot: SlotId;
 }
 
 export interface D1Question {
   id: string;
-  stimulus: string;
-  clauses: D1Clause[];
+  phrase: string;
+  options: D1Option[];
+  correct: string;
   explanation: string;
 }
 
@@ -119,6 +80,9 @@ export interface MCOption {
   text: string;
 }
 
+// MCQuestion: shared shape for D2/D3-style auto-graded bucket / option drills.
+// `correct_bucket` is consumed by D2 (Translation Buckets). `correct` is the
+// option id for option-style drills.
 export interface MCQuestion {
   id: string;
   type?: "mc";
@@ -126,9 +90,9 @@ export interface MCQuestion {
   phrase?: string;
   prompt?: string;
   options: MCOption[];
-  buckets?: IndicatorBucket[];
+  buckets?: TranslationBucket[];
   correct: string;
-  correct_bucket?: IndicatorBucket;
+  correct_bucket?: TranslationBucket;
   explanation: string;
 }
 

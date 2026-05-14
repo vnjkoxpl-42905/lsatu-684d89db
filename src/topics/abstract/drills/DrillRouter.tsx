@@ -1,12 +1,12 @@
 import { lazy, Suspense } from "react";
 import { useParams, Navigate } from "react-router-dom";
 
-const D1StripDown = lazy(() =>
-  import("./D1-StripDown").then((m) => ({ default: m.D1StripDown })),
+const D1AbstractLanguage = lazy(() =>
+  import("./D1-AbstractLanguage").then((m) => ({ default: m.D1AbstractLanguage })),
 );
-const D2IndicatorClassification = lazy(() =>
-  import("./D2-IndicatorClassification").then((m) => ({
-    default: m.D2IndicatorClassification,
+const D2TranslationBuckets = lazy(() =>
+  import("./D2-TranslationBuckets").then((m) => ({
+    default: m.D2TranslationBuckets,
   })),
 );
 const D3BasicXY = lazy(() =>
@@ -18,8 +18,8 @@ const D4AdvancedXY = lazy(() =>
 const D5JargonDecoding = lazy(() =>
   import("./D5-JargonDecoding").then((m) => ({ default: m.D5JargonDecoding })),
 );
-const D7KeywordWorksheet = lazy(() =>
-  import("./D7-KeywordWorksheet").then((m) => ({ default: m.D7KeywordWorksheet })),
+const D7KeywordDecoding = lazy(() =>
+  import("./D7-KeywordWorksheet").then((m) => ({ default: m.D7KeywordDecoding })),
 );
 const D8StemTranslation = lazy(() =>
   import("./D8-StemTranslation").then((m) => ({ default: m.D8StemTranslation })),
@@ -41,9 +41,9 @@ export function DrillRouter() {
       {(() => {
         switch (drillId) {
           case "d1":
-            return <D1StripDown />;
+            return <D1AbstractLanguage />;
           case "d2":
-            return <D2IndicatorClassification />;
+            return <D2TranslationBuckets />;
           case "d3":
             return <D3BasicXY />;
           case "d4":
@@ -51,7 +51,7 @@ export function DrillRouter() {
           case "d5":
             return <D5JargonDecoding />;
           case "d7":
-            return <D7KeywordWorksheet />;
+            return <D7KeywordDecoding />;
           case "d8":
             return <D8StemTranslation />;
           default:

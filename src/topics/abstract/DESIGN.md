@@ -1,6 +1,6 @@
 ---
 name: Abstract Bootcamp
-description: The bilingual-fluency surface for translating LSAT-ese into plain English.
+description: The LSAT-ese to plain English translation surface.
 colors:
   bg: "#0a0a0a"
   bg-card: "#121212"
@@ -14,16 +14,16 @@ colors:
   ink-faint: "#737373"
   primary: "#fafafa"
   primary-foreground: "#0a0a0a"
-  bucket-conclusion: "#16a34a"
-  bucket-conclusion-bg: "#16a34a2e"
-  bucket-support: "#3b82f6"
-  bucket-support-bg: "#3b82f62e"
-  bucket-pivot: "#f97316"
-  bucket-pivot-bg: "#f973162e"
-  bucket-opposing-view: "#ef4444"
-  bucket-opposing-view-bg: "#ef44442e"
-  bucket-concession: "#c084fc"
-  bucket-concession-bg: "#c084fc2e"
+  bucket-assumption: "#c084fc"
+  bucket-assumption-bg: "#c084fc2e"
+  bucket-causal: "#f97316"
+  bucket-causal-bg: "#f973162e"
+  bucket-comparison: "#22d3ee"
+  bucket-comparison-bg: "#22d3ee2e"
+  bucket-evidence: "#3b82f6"
+  bucket-evidence-bg: "#3b82f62e"
+  bucket-evaluation: "#ef4444"
+  bucket-evaluation-bg: "#ef44442e"
   state-success: "#22c55e"
   state-warn: "#f59e0b"
   state-error: "#dc2626"
@@ -189,41 +189,41 @@ components:
 
 **Creative North Star: "The Translator's Workbook."**
 
-The Abstract bootcamp's whole purpose is bilingual fluency: take an LR stimulus written in dense academic LSAT-ese and strip it down into plain-English slots, or take an answer choice written in the same dialect and decode it back into a concrete picture. The visual identity is the act of translation. Prose looks like prose, until the student opts in and argument-structure indicators reveal the underlying skeleton inline. The bootcamp does not look like a branded product surface; it looks like a careful, dark-themed annotation notebook. The only color that carries meaning is the locked indicator-bucket vocabulary (conclusion / support / pivot / opposing-view / concession). Everything else is neutral greyscale.
+The Abstract bootcamp's purpose is decoding: read a dense LSAT answer choice or stimulus written in LSAT-ese, and translate it back into a concrete plain-English picture. Argument-structure labeling (premise/conclusion, opposing view, concession, all the parts of an argument and how they assemble) is a different skill and lives in the Intro to LR bootcamp; nothing on this surface duplicates it. The visual identity is the act of translation. Prose looks like prose, until the student opts in and translation-language tokens reveal which kind of LSAT vocabulary is at work, inline. The bootcamp does not look like a branded product surface; it looks like a careful, dark-themed annotation notebook. The only color that carries meaning is the locked translation-bucket vocabulary (assumption / causal / comparison / evidence / evaluation). Everything else is neutral greyscale.
 
 This bootcamp explicitly does not carry the Intro to LR (Main Conclusion) workbook's Aspiring Gold accent. There is no warm brand color on this surface. The act of translation reads as quiet, dense, and academic. Decoration would compete with the chapter prose, so decoration is removed. The student is reading; the system is listening.
 
-The bootcamp explicitly rejects: card-grid hubs (7Sage / Khan Academy LSAT shape), gradient blob backgrounds (SaaS-cream), Duolingo-shaped reward chrome (streak flames, XP bars), hero-metric tiles (big-number "accuracy" displays presented as identity rather than feedback), chip-as-output role labels imported from the Main Conclusion bootcamp (this surface highlights inline tokens inside running prose, not pickable role chips).
+The bootcamp explicitly rejects: card-grid hubs (7Sage / Khan Academy LSAT shape), gradient blob backgrounds (SaaS-cream), Duolingo-shaped reward chrome (streak flames, XP bars), hero-metric tiles (big-number "accuracy" displays presented as identity rather than feedback), and argument-structure labeling drills (those belong in Intro to LR; the Abstract bootcamp never asks a student to label a clause as author conclusion, opposing evidence, concession, or any other slot).
 
 **Key Characteristics:**
 
 - Dark-by-default greyscale neutrals with zero brand-accent warmth on this surface.
-- Color is reserved exclusively for argument-structure indicator buckets and for state feedback (success / error / warn). No decorative color anywhere else.
+- Color is reserved exclusively for translation-language buckets and for state feedback (success / error / warn). No decorative color anywhere else.
 - Prose-first hierarchy: eyebrow + title + body-prose dominates. Cards exist but stay quiet (`bg-card/40` to `bg-card/60` partial opacity over the dark background).
-- Inline argument-structure highlighting is the signature primitive, not chip selection. Indicator tokens use `box-decoration-break: clone` so they wrap correctly across multiple lines inside flowing prose.
+- Inline translation-language highlighting is the signature primitive, not chip selection. Translation tokens use `box-decoration-break: clone` so they wrap correctly across multiple lines inside flowing prose.
 - The `useDrillDarkMode` lifecycle hook forces the entire topic surface into dark theme on mount and restores the prior theme on unmount. Light mode is technically supported by the app-wide system; the Abstract bootcamp explicitly opts out per-route.
 - Motion is minimal: hover/focus transitions on chips and tokens (120-300ms), no scroll choreography, no entrance animations on chapter content.
 - Cards never nest. Layered transparency (`bg-card/40` over `bg`) provides depth, not nested borders.
 
 ## 2. Colors
 
-The palette is pure neutral greyscale plus a locked five-color indicator-bucket vocabulary. No brand accent. Color carries only argument-structure meaning and state.
+The palette is pure neutral greyscale plus a locked five-color translation-bucket vocabulary. No brand accent. Color carries only translation-language meaning and state.
 
 ### Primary
 
-There is no brand-accent primary color on this surface. The "primary" CTA color is `#fafafa` (near-white on dark), used only for the Check / submit affordance and the active decoder pagination dot.
+There is no brand-accent primary color on this surface. The "primary" CTA color is `#fafafa` (near-white on dark), used only for the Submit affordance and the active decoder pagination dot.
 
-- **Primary Surface** (`#fafafa` resolved from `--primary` at HSL `0 0% 98%`): used as the "Check" CTA background, the active decoder pagination dot, and selected drag-and-drop chip border (`border-primary border-2 ring-2 ring-primary/30`). It is the highest-affinity affordance on a screen and should appear at most once per visible viewport.
+- **Primary Surface** (`#fafafa` resolved from `--primary` at HSL `0 0% 98%`): used as the "Submit" CTA background and the active decoder pagination dot. It is the highest-affinity affordance on a screen and should appear at most once per visible viewport.
 
-### Secondary (Argument-Structure Indicator Buckets)
+### Secondary (Translation-Language Buckets)
 
-These five colors carry argument structure meaning and are the only colors used inside chapter prose. Defined in `src/topics/abstract/components/indicator-tokens.css`. Each renders as inline text (foreground color, 18% alpha background, `box-decoration-break: clone`) so highlights wrap across lines without breaking.
+These five colors carry translation-language meaning and are the only colors used inside chapter prose. Defined in `src/topics/abstract/components/indicator-tokens.css` (file name is historical; the class names use `translation-bucket-*`). Each renders as inline text (foreground color, 18% alpha background, `box-decoration-break: clone`) so highlights wrap across lines without breaking.
 
-- **Conclusion Green** (`#16a34a`, HSL `142 76% 36%`): conclusion-indicator words inside running prose (e.g. "therefore", "thus", "hence").
-- **Support Blue** (`#3b82f6`, HSL `217 91% 60%`): support / premise indicators (e.g. "because", "since", "given that"). Note this surface uses "support" as the canonical role label, not "premise" as the Main Conclusion bootcamp does.
-- **Pivot Orange** (`#f97316`, HSL `28 95% 53%`): pivot / direction-change indicators (e.g. "but", "however", "yet").
-- **Opposing-View Red** (`#ef4444`, HSL `0 84% 60%`): opposing-view indicators that flag someone else's argument the author is going to push back against.
-- **Concession Purple** (`#c084fc`, HSL `280 67% 60%`): concession indicators (e.g. "admittedly", "granted", "it is true that").
+- **Assumption Purple** (`#c084fc`, HSL `280 67% 60%`): assumption-language words inside running prose (e.g. "presupposes", "takes for granted", "tacitly assumes").
+- **Causal Orange** (`#f97316`, HSL `28 95% 53%`): causal-language words (e.g. "phenomenon", "hypothesis", "accounts for", "explains").
+- **Comparison Cyan** (`#22d3ee`, HSL `188 95% 53%`): comparison-language words (e.g. "analogous", "similarly", "in contrast", "parallels").
+- **Evidence Blue** (`#3b82f6`, HSL `217 91% 60%`): evidence / relevance language (e.g. "lends support to", "is consistent with", "most strongly supports").
+- **Evaluation Red** (`#ef4444`, HSL `0 84% 60%`): evaluation language (e.g. "undermines", "calls into question", "casts doubt on", "sufficient", "necessary").
 
 ### Neutral
 
@@ -240,9 +240,9 @@ App-wide neutral-dark Tailwind tokens, resolved here as hex. Tinted toward warm-
 
 ### State
 
-- **Success Green** (`#22c55e`, HSL `142 71% 45%`): correct-attempt affirmation. Same hue family as Conclusion Green by design (a correct attempt is a confirmed conclusion).
-- **Warn Amber** (`#f59e0b`, HSL `38 92% 50%`): caution / diagnostic warning. Rarely used on this surface.
-- **Error Red** (`#dc2626`, HSL `0 72% 51%`): wrong-attempt affordance. Distinct from Opposing-View Red (which is brighter, role-coded). Never used as a brand accent.
+- **Success Green** (`#22c55e`, HSL `142 71% 45%`): correct-attempt affirmation.
+- **Warn Amber** (`#f59e0b`, HSL `38 92% 50%`): caution / bonus-stretch / diagnostic warning. Used for D8 "Bonus stretch" pills.
+- **Error Red** (`#dc2626`, HSL `0 72% 51%`): wrong-attempt affordance. Distinct from Evaluation Red (which is brighter, role-coded). Never used as a brand accent.
 - **Again Rose** (`#f43f5e`): the "Again" flashcard rating button border and text. Tailwind `rose-500`. A signal the student needs to revisit, not a punishment.
 - **Easy Emerald** (`#10b981`): the "Easy" flashcard rating button border and text. Tailwind `emerald-500`. Distinct in hue from Success Green so the two affordances do not collide visually.
 
@@ -250,7 +250,7 @@ App-wide neutral-dark Tailwind tokens, resolved here as hex. Tinted toward warm-
 
 **The No-Brand-Accent Rule.** This surface carries no warm brand accent. No Aspiring Gold, no bronze, no amber decoration. The `accent-bronze` / `accent-warm` tokens declared in `tailwind.config.ts` are not consumed here. If the surface looks like it needs a warm accent to feel alive, the answer is more careful typography or better content density, not a brand color.
 
-**The Role-Color-Inside-Prose Rule.** Indicator-bucket colors only render as inline tokens inside running prose, via `HighlightToken` and `indicator-token` class. They are never used as chip backgrounds, card borders, button colors, or status badges. The role color travels with the role concept, exclusively.
+**The Role-Color-Inside-Prose Rule.** Translation-bucket colors only render as inline tokens inside running prose, via `HighlightToken` and the `indicator-token` / `translation-bucket-*` classes. They are never used as chip backgrounds, card borders, button colors, or status badges. The bucket color travels with the language category, exclusively.
 
 **The Layered-Opacity Rule.** Card backgrounds are rendered at 40% or 60% opacity (`bg-card/40`, `bg-card/60`) so the BG bleeds through. Depth comes from translucent layering, not nested borders or graduated shadow ramps. A fully opaque card surface signals an error in the system.
 
@@ -286,7 +286,7 @@ App-wide neutral-dark Tailwind tokens, resolved here as hex. Tinted toward warm-
 
 ## 4. Elevation
 
-The Abstract bootcamp is **mostly flat**. Depth comes primarily from layered card opacity (`bg-card/40` over `bg`), secondarily from a thin hairline border (`border-border`), and only occasionally from a small shadow (`shadow-sm`) on cards that need a tactile lift (flashcard surface, slot grid).
+The Abstract bootcamp is **mostly flat**. Depth comes primarily from layered card opacity (`bg-card/40` over `bg`), secondarily from a thin hairline border (`border-border`), and only occasionally from a small shadow (`shadow-sm`) on cards that need a tactile lift (flashcard surface, decoder card).
 
 There is no glow vocabulary on this surface. The Intro to LR bootcamp's `Glow Accent Soft` / `Glow Accent Strong` warmth-glow shadows do not apply here. Accent glow requires an accent color; this surface has none.
 
@@ -338,13 +338,13 @@ Lead each component with a short character line, then specify shape, color, stat
 
 - **TopicSidebar** (the section sidebar within `/topics/abstract/*`): a thin left-aligned nav rendered in `TopicSidebar.tsx`. App-wide pattern, not Abstract-specific.
 - **DecoderPanel dot pagination** (the signature mini-pattern): five-to-eight `h-2 w-2 rounded-full` dots, `bg-primary` for the active card and `bg-border` for the rest. Click jumps; arrow buttons advance/retreat. The dot strip is centered. No active-dot animation. The compact "Prev / Next" arrow buttons flank the dots.
-- **Mobile:** all chrome reflows to a single column via `flex-wrap` and `md:` breakpoint. The drill shell, slot filler header, and methods grid all collapse cleanly. The grid pattern is always `grid gap-3 md:grid-cols-2` (compact two-up on tablet+), never three- or four-up.
+- **Mobile:** all chrome reflows to a single column via `flex-wrap` and `md:` breakpoint. The drill shell, flashcard deck, and methods grid all collapse cleanly. The grid pattern is always `grid gap-3 md:grid-cols-2` (compact two-up on tablet+), never three- or four-up.
 
 ### Signature Components
 
-- **`IndicatorHighlighter`** (the bilingual-fluency centerpiece): renders a stimulus as an inline `<blockquote>` with each token wrapped in a `HighlightToken` carrying a `bucket` class (`indicator-bucket-conclusion`, `indicator-bucket-support`, etc.). Each bucket maps to a CSS variable pair (`--token-bg`, `--token-fg`) so the highlight is foreground-tinted text with 18%-alpha background fill. `box-decoration-break: clone` ensures highlights wrap across line breaks without splitting. Two modes: `reveal` (always visible) and `hover` (visible only on hover, wrapped in `@media (hover: hover)` to avoid sticky-hover on touch devices).
-- **`DecoderPanel`** (the LSAT-ese → plain-English card deck): `DecoderCard` content area + dot pagination + prev/next arrows. Cards advance via `useDecoderProgression` hook. The pagination dots are the surface's only "tab" semantics.
-- **`SlotFiller`** (the drag-and-drop strip-down playground): clause chips lifted out of an italic blockquote, dropped into a `SlotGrid` of seven labeled slots. Touch detection (`(hover: none) and (pointer: coarse)`) replaces drag with tap-to-select-then-tap-to-drop. The selected clause is identified by a 2px primary border + 30%-alpha primary ring. Session accuracy lives in a status chip in the header. Indicator overlay and skeleton tree views are togglable.
+- **`IndicatorHighlighter`** (the translation-fluency centerpiece): renders a stimulus as an inline `<blockquote>` with each token wrapped in a `HighlightToken` carrying a `bucket` class (`translation-bucket-assumption`, `translation-bucket-causal`, `translation-bucket-comparison`, `translation-bucket-evidence`, `translation-bucket-evaluation`). Each bucket maps to a CSS variable pair (`--token-bg`, `--token-fg`) so the highlight is foreground-tinted text with 18%-alpha background fill. `box-decoration-break: clone` ensures highlights wrap across line breaks without splitting. Two modes: `reveal` (always visible) and `hover` (visible only on hover, wrapped in `@media (hover: hover)` to avoid sticky-hover on touch devices).
+- **`DecoderPanel`** (the LSAT-ese → plain-English card deck): `DecoderCard` content area + dot pagination + prev/next arrows. Cards advance via `useDecoderProgression` hook. The dot pagination strip is hidden on the phone breakpoint; arrows + counter carry mobile.
+- **`SelfRateAfterReveal`** (the canonical self-rate primitive): Again / Good / Easy rating row used by every reveal-after drill (D4 reverse-engineer, D5 definition, D7 free-text, D8 stem translation). Again uses `state-again`, Easy uses `state-easy`, Good stays neutral. The rating drives `recordAttempt` so the accuracy chip reflects honest self-assessment, not a length heuristic.
 - **`ChapterReader`** (the chapter markdown renderer): minimal Obsidian-flavored markdown subset (H1-H3, paragraphs, blockquotes, bullets, ordered lists, tables, italic, bold) plus topic-specific inline tokens `[[indicator:stim-id]]` and `[[decoder]]` that expand to `IndicatorHighlighter` and `DecoderPanel` respectively. Wrapped in `prose prose-invert max-w-none` for prose-tier typography. Tracks H2 occurrences as sections for intersection-observer-driven progress writes.
 - **`FlashcardDeck`** (the SRS-compatible self-review deck): `rounded-2xl bg-card/60 p-6 shadow-sm` card with front/back flip. Three rating buttons (`Again` / `Good` / `Easy`) gated on flipped state, each bordered in the rating's signal color (rose / neutral / emerald). Difficulty and concept filter via native `<select>` dropdowns above the card.
 - **`MethodsLibrary` MethodCard** (the 17-method browser): `rounded-xl border border-border bg-card/40 p-4` cards with collapsed body. Eyebrow displays the method number in mono small-caps; title in semibold sentence case; definition always visible; example revealed on expand. The expand control is a `border border-border px-2 py-1 text-xs` button; never a bare-icon chevron.
@@ -355,11 +355,11 @@ Forceful guardrails. Many of these inherit from `PRODUCT.md`'s app-wide and boot
 
 ### Do:
 
-- **Do** keep this surface fully neutral greyscale outside the locked indicator-bucket palette and state colors. No warm accent of any kind.
-- **Do** route every argument-structure color through `indicator-tokens.css` and `HighlightToken`. The bucket names (`conclusion`, `support`, `pivot`, `opposing-view`, `concession`) are the canonical vocabulary on this surface.
+- **Do** keep this surface fully neutral greyscale outside the locked translation-bucket palette and state colors. No warm accent of any kind.
+- **Do** route every translation-language color through `indicator-tokens.css` (file name is historical) and `HighlightToken`. The bucket names (`assumption`, `causal`, `comparison`, `evidence`, `evaluation`) are the canonical vocabulary on this surface.
 - **Do** render stimulus quotations as italic blockquotes with `border-l-2 border-border pl-4`. The 2px neutral left border is the canonical quotation affordance and does not violate the impeccable side-stripe ban because it is neutral, not a colored accent stripe.
 - **Do** cap card backgrounds at 40 to 60 percent opacity (`bg-card/40`, `bg-card/60`). The base BG must show through.
-- **Do** force dark theme via `useDrillDarkMode()` on every drill, the slot filler, the flashcard deck, and any other interactive surface. The hook is reversible: it restores prior theme on unmount.
+- **Do** force dark theme via `useDrillDarkMode()` on every drill, the flashcard deck, and any other interactive surface. The hook is reversible: it restores prior theme on unmount.
 - **Do** use `box-decoration-break: clone` on every inline highlight that may wrap across lines. Indicator tokens inside chapter prose absolutely require this property.
 - **Do** wrap hover-based reveal behavior in `@media (hover: hover)` so touch devices do not inherit sticky `:hover` states (`indicator-tokens.css` audit F5.25).
 - **Do** keep all interactive elements keyboard-activatable (`Enter` and `Space` handlers on chips, role-button semantics, `aria-pressed` for toggle state, `aria-expanded` for collapsibles).
@@ -369,17 +369,18 @@ Forceful guardrails. Many of these inherit from `PRODUCT.md`'s app-wide and boot
 ### Don't:
 
 - **Don't** use any warm brand accent on this surface. No Aspiring Gold, no bronze, no amber. The `accent-bronze` / `accent-warm` / `glow-bronze` Tailwind colors are not consumed by the Abstract bootcamp; do not introduce them here.
-- **Don't** import role colors from the Intro to LR (Main Conclusion) bootcamp. That surface uses `role-premise` (blue), `role-opposing` (purple), `role-concession` (yellow). The Abstract surface uses `support` (blue), `opposing-view` (red), `concession` (purple). The names and the hues are intentionally different. Do not cross-reference.
-- **Don't** turn indicator-bucket colors into chip selections, card borders, button fills, or status badges. The role color travels with the role concept exclusively, rendered inline inside prose.
+- **Don't** import role colors from the Intro to LR (Main Conclusion) bootcamp. That surface uses argument-structure role colors (`role-premise`, `role-opposing`, `role-concession`) for clause labeling drills. The Abstract surface uses translation-language buckets (`assumption`, `causal`, `comparison`, `evidence`, `evaluation`) for an unrelated decoding task. Do not cross-reference.
+- **Don't** turn translation-bucket colors into chip selections, card borders, button fills, or status badges. The bucket color travels with the language category exclusively, rendered inline inside prose.
+- **Don't** add argument-structure labeling drills to this surface. Premise / conclusion / opposing-view / concession / slot labeling all live in Intro to LR. The Abstract bootcamp's job is decoding LSAT-ese, not labeling argument parts.
 - **Don't** lead a surface with a card grid (the 7Sage / Khan Academy / Manhattan Prep failure mode). Lead with the eyebrow + h1 + body-prose pattern, then deliver a single compute-the-next-step CTA (a "Try this drill" or "Open this reference card" link).
 - **Don't** use `border-left` or `border-right` greater than 1px as a colored accent stripe on cards, list items, callouts, or alerts. (App-wide impeccable rule; enforced by `__tests__/impeccable-bans.test.ts`.) The italic-stimulus blockquote's 2px neutral left border is the canonical exception and is acceptable because the border is neutral, not a colored accent.
 - **Don't** use gradient text (`background-clip: text` + gradient background). Use a single solid color and emphasize via weight or size.
 - **Don't** use glassmorphism (backdrop-blur) decoratively. The Abstract surface is layered transparency, not frosted glass.
-- **Don't** ship the hero-metric template (big number + small label + supporting stats + gradient accent). Use a status chip in the header instead. The flashcard surface, drill shell, and slot filler all follow this rule already.
+- **Don't** ship the hero-metric template (big number + small label + supporting stats + gradient accent). Use a status chip in the header instead. The flashcard surface and drill shell follow this rule already.
 - **Don't** reach for a modal as the first thought. Inline reveal (collapsible method card, togglable indicator/tree overlays) is the canonical pattern.
 - **Don't** use em dashes (`—` or `--`) in any utility, runner, or computed copy on this surface. Use commas, colons, parentheses, or periods. (Joshua's authored chapter prose in `chapter.md` is exempt.)
 - **Don't** use `#000` or `#fff`. Every neutral is the resolved HSL token; honor the app-wide tinted-neutral rule even though this surface uses pure-zero-chroma greyscale.
 - **Don't** invent analytics, "mastery percentages", streaks, score predictions, or XP / trophy treatments. The Abstract bootcamp tracks real progress writes (chapter sections, flashcard reviews, drill accuracy) only.
-- **Don't** render internal IDs (`stim-*`, `method-*`, raw bucket names like `opposing-view-bg`) in student-visible copy. Use them as `data-*` attributes and class names only. Student-visible copy uses natural-language labels ("opposing view", "support", "the argument's pivot").
+- **Don't** render internal IDs (`stim-*`, `method-*`, raw bucket names like `evaluation-bg`) in student-visible copy. Use them as `data-*` attributes and class names only. Student-visible copy uses natural-language labels ("evaluation language", "causal language", etc.).
 - **Don't** ship Duolingo-shaped streak flames, mascot animations, XP bars, or trophy popovers on this surface. The Abstract bootcamp does not reward attendance.
-- **Don't** use industry vocabulary in student copy. "Stimulus" is industry; "the argument" or "the passage" is student-voice. "Premise" is industry; "support" is what this surface uses by design. "Indicator word" is fine; "trigger word" is not.
+- **Don't** use industry vocabulary in student copy. "Stimulus" is industry; "the argument" or "the passage" is student-voice. "Translation bucket" is fine; "indicator bucket" is not (that vocabulary belongs to Intro to LR's argument-structure curriculum).

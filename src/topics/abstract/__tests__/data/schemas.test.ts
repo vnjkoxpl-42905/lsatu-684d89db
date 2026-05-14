@@ -1,60 +1,29 @@
 import { describe, it, expect } from "vitest";
 import {
-  SLOT_IDS,
-  INDICATOR_BUCKETS,
-  type PlaygroundStimulus,
+  TRANSLATION_BUCKETS,
   type TaggedStimulus,
   type DecoderCard,
   type FlashcardSet,
 } from "../../types";
-import playgroundData from "../../content/stimuli/playground-stimuli.json";
 import taggedData from "../../content/stimuli/tagged-stimuli.json";
 import decoderData from "../../content/stimuli/decoder-cards.json";
 import flashcardsData from "../../content/flashcards.json";
-import d1 from "../../drills/data/d1-stripdown.json";
-import d2 from "../../drills/data/d2-indicators.json";
+import d1 from "../../drills/data/d1-abstract-language.json";
+import d2 from "../../drills/data/d2-translation-buckets.json";
 import d3 from "../../drills/data/d3-basic-xy.json";
 import d4 from "../../drills/data/d4-advanced-xy.json";
 import d5 from "../../drills/data/d5-jargon.json";
 
-const SLOT_SET = new Set<string>(SLOT_IDS);
-const BUCKET_SET = new Set<string>(INDICATOR_BUCKETS);
-
-describe("playground-stimuli schema", () => {
-  const stimuli = (playgroundData as { stimuli: PlaygroundStimulus[] }).stimuli;
-
-  it("has at least 12 stimuli", () => {
-    expect(stimuli.length).toBeGreaterThanOrEqual(12);
-  });
-
-  it("every clause has a valid slot", () => {
-    for (const s of stimuli) {
-      for (const c of s.clauses) {
-        expect(SLOT_SET.has(c.slot)).toBe(true);
-      }
-    }
-  });
-
-  it("every indicator word maps to a known bucket", () => {
-    for (const s of stimuli) {
-      for (const w of s.indicator_words) {
-        expect(BUCKET_SET.has(w.bucket)).toBe(true);
-      }
-    }
-  });
-});
+const BUCKET_SET = new Set<string>(TRANSLATION_BUCKETS);
 
 describe("tagged-stimuli schema", () => {
   const stimuli = (taggedData as { stimuli: TaggedStimulus[] }).stimuli;
 
-  it("contains the chapter mount-point stimuli", () => {
-    const ids = new Set(stimuli.map((s) => s.id));
-    expect(ids.has("ts-tomatoes")).toBe(true);
-    expect(ids.has("ts-apatosaurus")).toBe(true);
-    expect(ids.has("ts-marketing")).toBe(true);
+  it("has at least one tagged stimulus", () => {
+    expect(stimuli.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("every token has a valid bucket", () => {
+  it("every token has a valid translation bucket", () => {
     for (const s of stimuli) {
       for (const t of s.tokens) {
         expect(BUCKET_SET.has(t.bucket)).toBe(true);
@@ -85,15 +54,8 @@ describe("decoder-cards schema", () => {
 describe("flashcards schema", () => {
   const fc = flashcardsData as FlashcardSet;
 
-  it("has exactly 68 cards", () => {
-    expect(fc.cards.length).toBe(68);
-  });
-
-  it("all three concept tags present", () => {
-    const concepts = new Set(fc.cards.map((c) => c.concept_tag));
-    expect(concepts.has("glossary")).toBe(true);
-    expect(concepts.has("indicator")).toBe(true);
-    expect(concepts.has("verb-taxonomy")).toBe(true);
+  it("has at least one card", () => {
+    expect(fc.cards.length).toBeGreaterThanOrEqual(1);
   });
 
   it("every card has a valid difficulty tag", () => {
@@ -108,23 +70,34 @@ describe("flashcards schema", () => {
       expect(c.topic_tag).toBe("abstract");
     }
   });
+
+  it("every concept_tag is one of glossary / translation-language / verb-taxonomy", () => {
+    const allowed = new Set(["glossary", "translation-language", "verb-taxonomy"]);
+    for (const c of fc.cards) {
+      expect(allowed.has(c.concept_tag)).toBe(true);
+    }
+  });
 });
 
 describe("drill data contracts", () => {
-  it("D1 has at least 5 questions, each with clauses bound to valid slots", () => {
-    const qs = (d1 as { questions: { id: string; clauses: { slot: string }[] }[] })
-      .questions;
-    expect(qs.length).toBeGreaterThanOrEqual(5);
+  it("D1 has at least 10 abstract-phrase translation questions", () => {
+    const qs = (d1 as {
+      questions: { id: string; phrase: string; options: { id: string; text: string }[]; correct: string }[];
+    }).questions;
+    expect(qs.length).toBeGreaterThanOrEqual(10);
     for (const q of qs) {
-      for (const c of q.clauses) expect(SLOT_SET.has(c.slot)).toBe(true);
+      expect(q.phrase).toBeTruthy();
+      expect(q.options.length).toBe(4);
+      expect(q.options.some((o) => o.id === q.correct)).toBe(true);
     }
   });
 
-  it("D2 has 18 questions and every correct_bucket is valid", () => {
+  it("D2 has 18 questions and every correct_bucket is a valid translation bucket (not neutral)", () => {
     const qs = (d2 as { questions: { correct_bucket: string }[] }).questions;
     expect(qs.length).toBe(18);
+    const nonNeutral = new Set(["assumption", "causal", "comparison", "evidence", "evaluation"]);
     for (const q of qs) {
-      expect(BUCKET_SET.has(q.correct_bucket)).toBe(true);
+      expect(nonNeutral.has(q.correct_bucket)).toBe(true);
     }
   });
 

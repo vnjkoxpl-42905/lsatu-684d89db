@@ -1,18 +1,19 @@
-/* Indicator-bucket color tokens.
-   Wrapped in @media (hover: hover) where appropriate so touch devices do not
-   inherit sticky :hover (audit F5.25). */
+/* Translation-bucket color tokens. The file name keeps the historical
+   `indicator-tokens` slug for class-name continuity; the buckets are now
+   translation-language categories (assumption / causal / comparison /
+   evidence / evaluation), not premise/conclusion indicators. */
 
 :root {
-  --bucket-conclusion: hsl(142 76% 36%);
-  --bucket-conclusion-bg: hsl(142 76% 36% / 0.18);
-  --bucket-pivot: hsl(28 95% 53%);
-  --bucket-pivot-bg: hsl(28 95% 53% / 0.18);
-  --bucket-support: hsl(217 91% 60%);
-  --bucket-support-bg: hsl(217 91% 60% / 0.18);
-  --bucket-opposing-view: hsl(0 84% 60%);
-  --bucket-opposing-view-bg: hsl(0 84% 60% / 0.18);
-  --bucket-concession: hsl(280 67% 60%);
-  --bucket-concession-bg: hsl(280 67% 60% / 0.18);
+  --bucket-assumption: hsl(280 67% 60%);
+  --bucket-assumption-bg: hsl(280 67% 60% / 0.18);
+  --bucket-causal: hsl(28 95% 53%);
+  --bucket-causal-bg: hsl(28 95% 53% / 0.18);
+  --bucket-comparison: hsl(195 95% 55%);
+  --bucket-comparison-bg: hsl(195 95% 55% / 0.18);
+  --bucket-evidence: hsl(217 91% 60%);
+  --bucket-evidence-bg: hsl(217 91% 60% / 0.18);
+  --bucket-evaluation: hsl(0 84% 60%);
+  --bucket-evaluation-bg: hsl(0 84% 60% / 0.18);
 }
 
 .indicator-token {
@@ -39,23 +40,23 @@
   }
 }
 
-.indicator-bucket-conclusion {
-  --token-bg: var(--bucket-conclusion-bg);
-  --token-fg: var(--bucket-conclusion);
+.translation-bucket-assumption {
+  --token-bg: var(--bucket-assumption-bg);
+  --token-fg: var(--bucket-assumption);
 }
-.indicator-bucket-pivot {
-  --token-bg: var(--bucket-pivot-bg);
-  --token-fg: var(--bucket-pivot);
+.translation-bucket-causal {
+  --token-bg: var(--bucket-causal-bg);
+  --token-fg: var(--bucket-causal);
 }
-.indicator-bucket-support {
-  --token-bg: var(--bucket-support-bg);
-  --token-fg: var(--bucket-support);
+.translation-bucket-comparison {
+  --token-bg: var(--bucket-comparison-bg);
+  --token-fg: var(--bucket-comparison);
 }
-.indicator-bucket-opposing-view {
-  --token-bg: var(--bucket-opposing-view-bg);
-  --token-fg: var(--bucket-opposing-view);
+.translation-bucket-evidence {
+  --token-bg: var(--bucket-evidence-bg);
+  --token-fg: var(--bucket-evidence);
 }
-.indicator-bucket-concession {
-  --token-bg: var(--bucket-concession-bg);
-  --token-fg: var(--bucket-concession);
+.translation-bucket-evaluation {
+  --token-bg: var(--bucket-evaluation-bg);
+  --token-fg: var(--bucket-evaluation);
 }

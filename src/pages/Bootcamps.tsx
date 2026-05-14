@@ -23,8 +23,8 @@ const BOOTCAMPS = [
     title: 'Abstract',
     emoji: '🧬',
     description:
-      'The bilingual fluency foundation. Strip-Down turns dense LR stimuli into a clean 7-slot skeleton. Decode translates LSAT-ese answer choices back into plain English. The skill the other 20 bootcamps lean on, taught with 5 drills, 68 flashcards, a drag-and-drop playground, and 8 procedural reference cards.',
-    stats: ['Chapter + 5 Drills', '68 Flashcards', 'Strip-Down Playground'],
+      'The LSAT-ese to plain English translation bootcamp. Decode abstract answer-choice language, classify terms by translation category (assumption / causal / comparison / evidence / evaluation), map X/Y inside method-of-reasoning phrases, and translate LSAT question stems on demand. The decoding skill the other 20 bootcamps lean on, taught with 7 drills, flashcards, decoder cards, a 17-pattern methods library, and procedural reference cards.',
+    stats: ['Chapter + 7 Drills', 'Flashcards + Decoder', 'Methods Library'],
     route: '/topics/abstract',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
   },

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source": "Built fresh for v1.2 content boundary: argument-structure indicators moved back to Intro to LR; D2 now classifies abstract LSAT terms by translation language category.",
+  "buckets": [
+    "assumption",
+    "causal",
+    "comparison",
+    "evidence",
+    "evaluation"
+  ],
+  "questions": [
+    { "id": "d2-q01", "word_or_phrase": "presupposes",            "correct_bucket": "assumption", "explanation": "Presupposes X = the argument requires X. That is unstated assumption language." },
+    { "id": "d2-q02", "word_or_phrase": "takes for granted",      "correct_bucket": "assumption", "explanation": "The LSAT's canonical phrasing for an unstated assumption." },
+    { "id": "d2-q03", "word_or_phrase": "tacitly assumes",        "correct_bucket": "assumption", "explanation": "Tacit = unstated. Pure assumption language." },
+    { "id": "d2-q04", "word_or_phrase": "phenomenon",             "correct_bucket": "causal",     "explanation": "A phenomenon is the observed thing the argument is trying to explain. Causal-vocabulary anchor." },
+    { "id": "d2-q05", "word_or_phrase": "hypothesis",             "correct_bucket": "causal",     "explanation": "A hypothesis is a candidate explanation for a phenomenon. Causal." },
+    { "id": "d2-q06", "word_or_phrase": "accounts for",           "correct_bucket": "causal",     "explanation": "X accounts for Y = X explains Y. Causal-explanation language." },
+    { "id": "d2-q07", "word_or_phrase": "analogous",              "correct_bucket": "comparison", "explanation": "Analogous = parallel in some respect. Comparison language. Not the same as 'example.'" },
+    { "id": "d2-q08", "word_or_phrase": "in contrast",            "correct_bucket": "comparison", "explanation": "Compare-and-contrast language; the argument is being mapped onto another case." },
+    { "id": "d2-q09", "word_or_phrase": "similarly",              "correct_bucket": "comparison", "explanation": "Comparison language. Marks the move from one case to another." },
+    { "id": "d2-q10", "word_or_phrase": "lends support to",       "correct_bucket": "evidence",   "explanation": "Support / evidence vocabulary. The author is offering X as a reason for Y." },
+    { "id": "d2-q11", "word_or_phrase": "is consistent with",     "correct_bucket": "evidence",   "explanation": "Consistent with = not in conflict with. Weak evidence relationship." },
+    { "id": "d2-q12", "word_or_phrase": "most strongly supported","correct_bucket": "evidence",   "explanation": "The classic Must-Be-True / Most-Strongly-Supported stem language. Evidence-relevance vocabulary." },
+    { "id": "d2-q13", "word_or_phrase": "compatible",             "correct_bucket": "evidence",   "explanation": "Compatible with X = does not conflict with X. Evidence-relationship vocabulary." },
+    { "id": "d2-q14", "word_or_phrase": "undermines",             "correct_bucket": "evaluation", "explanation": "Evaluative verb. The author is weakening the claim." },
+    { "id": "d2-q15", "word_or_phrase": "calls into question",    "correct_bucket": "evaluation", "explanation": "Evaluation language. The author is challenging the claim, not proving it." },
+    { "id": "d2-q16", "word_or_phrase": "casts doubt on",         "correct_bucket": "evaluation", "explanation": "Evaluation verb. Soft weakener." },
+    { "id": "d2-q17", "word_or_phrase": "sufficient",             "correct_bucket": "evaluation", "explanation": "Sufficient is a condition strength word. The argument is being evaluated against a logical bar." },
+    { "id": "d2-q18", "word_or_phrase": "necessary",              "correct_bucket": "evaluation", "explanation": "Necessary is the matching condition strength word. Evaluation-against-a-bar language." }
+  ]
+}

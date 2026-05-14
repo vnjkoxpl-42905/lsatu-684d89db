@@ -37,13 +37,6 @@ export function ChapterLanding() {
           >
             Open the Master Keys reference card
           </Link>
-          {" · "}
-          <Link
-            to="/topics/abstract/playground"
-            className="underline text-muted-foreground"
-          >
-            Try the playground
-          </Link>
         </p>
       </section>
       <ChapterReader markdown={chapter} topicTag="abstract" />
@@ -56,10 +49,10 @@ export function ChapterLanding() {
                 className="underline"
                 to="/topics/abstract/drills/d1"
               >
-                D1 · Strip-Down Warm-Up
+                D1 · Abstract Language Warm-Up
               </Link>{" "}
               <span className="text-muted-foreground">
-                · label clauses, then reveal.
+                · translate abstract phrases into plain English.
               </span>
             </li>
             <li>
@@ -67,10 +60,21 @@ export function ChapterLanding() {
                 className="underline"
                 to="/topics/abstract/drills/d2"
               >
-                D2 · Indicator Classification
+                D2 · Translation Buckets
               </Link>{" "}
               <span className="text-muted-foreground">
-                · bucket the indicator words.
+                · sort terms by language category.
+              </span>
+            </li>
+            <li>
+              <Link
+                className="underline"
+                to="/topics/abstract/methods"
+              >
+                Methods Library
+              </Link>{" "}
+              <span className="text-muted-foreground">
+                · 17 method-of-reasoning patterns.
               </span>
             </li>
             <li>
@@ -81,18 +85,7 @@ export function ChapterLanding() {
                 Flashcards
               </Link>{" "}
               <span className="text-muted-foreground">
-                · review the master keys + FABS + slots.
-              </span>
-            </li>
-            <li>
-              <Link
-                className="underline"
-                to="/topics/abstract/playground"
-              >
-                Playground
-              </Link>{" "}
-              <span className="text-muted-foreground">
-                · strip a stimulus into slots.
+                · review master keys, verb taxonomy, decoded glossary.
               </span>
             </li>
           </ul>

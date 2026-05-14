@@ -12,131 +12,71 @@ Read that twice. Notice how your eyes slide off it. Now here's the same sentence
 
 That's it. That's the whole answer choice. Eight academic syllables doing the work of nine plain ones. And every time the LSAT writes "hypothesis" they mean "guess at a cause." Every time they write "presuppose" they mean "require." Every time they write "explanation" they mean "cause." There's a glossary. You just haven't been given it.
 
-This chapter gives it to you. By the end you'll be able to do two things most students cannot. You'll be able to take any LR stimulus, no matter how dense, and strip it down to a clean skeleton of labeled parts. And you'll be able to take any abstract answer choice, no matter how impressive it sounds, and translate it back into a concrete picture of what the stimulus must look like. Stripping and decoding. The same skill running both directions.
+This chapter gives it to you. By the end you'll be able to take any abstract LSAT phrase, no matter how impressive it sounds, and translate it back into a concrete picture of what the stimulus must look like for that phrase to be doing its job. That's the whole skill. Translation. From LSAT-ese to plain English.
 
-This is the foundation. Causation, Method, Role, Flaw, Main Conclusion, Parallel, every other LR topic you'll learn assumes you've already mastered this. So we're going to slow down and actually master it.
+This is the foundation. Causation, Method, Role, Flaw, Main Conclusion, Parallel, every other LR topic you'll learn assumes you've already mastered this. Argument-structure labeling (premise, conclusion, opposing view, all the parts of an argument and how they fit together) is a different skill, and it lives in the Intro to LR bootcamp. Abstract is the decoding bootcamp. It teaches you to read the dialect the LSAT writes its answer choices in.
 
 Cool? Cool. Let's get to work.
 
 ---
 
-## Section 1: The Abstraction Move (Strip-Down)
+## Section 1: Five Translation Buckets
 
-Every Logical Reasoning stimulus, no matter what it's about (tomatoes, dinosaurs, marketing, freeway coverage, halophyte agriculture), is built from the same small set of parts. The topics change. The parts don't.
+Every abstract LSAT phrase is doing one of five jobs. Once you can hear which job a phrase is doing, the rest of the translation falls out almost automatically.
 
-Here are the seven parts. We'll call them slots.
+The five buckets:
 
-1. **Background.** Neutral factual information, scene-setting. Not the argument, just the world the argument lives in.
-2. **Opposing Conclusion.** What someone *else* thinks. The view the author is going to push back against.
-3. **Opposing Evidence.** Why the opposing view thinks they're right.
-4. **Concession.** A thing the author admits is true even though it could be used against them. Granted, while, although, naturally, though it is true.
-5. **Author's Conclusion.** What the author actually thinks. The main point.
-6. **Intermediate Conclusion.** A sub-claim the author proves along the way to proving the main conclusion. Supports the main conclusion, but is also supported by something else.
-7. **Author's Evidence.** The reasons the author gives.
+1. **Assumption language.** *Presupposes, takes for granted, tacitly assumes.* Plain English: the argument *requires* the unstated thing. If the LSAT says an argument "presupposes X," the argument falls apart without X.
 
-That's the universe. Every LR stimulus is some combination of those seven slots. Most stimuli only use four or five. Almost none use all seven. But every word in the stimulus belongs to one of them.
+2. **Causal language.** *Phenomenon, hypothesis, accounts for, explanation.* Plain English: cause-and-effect vocabulary. A "phenomenon" is the effect side. A "hypothesis" is the proposed cause. "X accounts for Y" means "X explains Y" means "X caused Y."
 
-Here's a real example. Tomatoes:
+3. **Comparison language.** *Analogous, similarly, in contrast.* Plain English: the argument is mapping one case onto another. An analogy is a different specific case that resembles the case at hand in some general way.
 
-> *Tomatoes grow on a vine and are about the size of a baseball. Most people believe tomatoes are vegetables, since you find them in salads and savory dishes (you never find them in fruit salads). But tomatoes are not vegetables. After all, although tomatoes are typically savory, they have seeds, and so tomatoes are fruit.*
+4. **Evidence / relevance language.** *Lends support to, is consistent with, most strongly supports, compatible.* Plain English: how strongly one piece of information backs another. "X most strongly supports Y" is the canonical Must-Be-True / MSS stem language. "Consistent with" is weaker than "supports."
 
-Let's strip this. Slot by slot.
+5. **Evaluation language.** *Undermines, calls into question, casts doubt on, sufficient, necessary.* Plain English: the argument is being graded against a logical bar. "Undermines" is a soft attack. "Calls into question" is softer still. "Sufficient" and "necessary" are condition-strength words that get evaluated against the argument's claim.
 
-- **Background:** *Tomatoes grow on a vine and are about the size of a baseball.* Neutral facts. Sets the scene.
-- **Opposing Conclusion:** *Most people believe tomatoes are vegetables.* "Most people believe" is the giveaway. That's a position somebody else holds.
-- **Opposing Evidence:** *You find them in salads and savory dishes.* The reason the opposing view thinks they're right.
-- **Concession:** *Although tomatoes are typically savory* and *you never find them in fruit salads.* The author admits these things even though they kind of help the other side. That's a tell of a confident author.
-- **Author's Conclusion:** *Tomatoes are not vegetables.*
-- **Intermediate Conclusion:** *Tomatoes are fruit.* Supports the main conclusion (if tomatoes are fruit, they're not vegetables). Also supported by the next thing.
-- **Author's Evidence:** *Tomatoes have seeds.*
+That's the universe of jobs an abstract phrase can be doing. Every dense LSAT answer choice you'll read uses at least one of these five categories. Most use two or three at once.
 
-Read the stimulus again now. Doesn't it feel different? You're not reading prose anymore, you're seeing a skeleton with skin pulled over it. That's the move.
+Here are three concrete examples. Read each one, then read the bucket call below.
 
-### The shape of the move
+[[indicator:ts-vaccine]]
 
-The trick to spotting the slots isn't memorizing definitions. It's noticing **indicator words**. The LSAT signals every slot transition with a small word. Once you can hear those words, the skeleton lights up.
+That one is doing one job. **Causal** language. "Caused the decline" is the giveaway. The phrase is asking you to evaluate a cause-and-effect claim.
 
-Four buckets to memorize:
+[[indicator:ts-jaywalking]]
 
-- **Conclusion indicators.** *Therefore, thus, hence, so, it follows that, consequently, clearly, this shows that, then.* These point forward. After one of these, you're reading a conclusion. Could be the main conclusion. Could be an intermediate one.
-- **Support indicators.** **FABS.** That's For, As, Because, Since. These point backward. After one of these, you're reading evidence for whatever came right before. (You'll see FABS again. Memorize it. It's a permanent move.)
-- **Pivot indicators.** *But, yet, however, on the other hand, nevertheless.* These switch sides. After a pivot, you've crossed from one viewpoint to another.
-- **Opposing-view indicators.** *Most people think, some contend, it has been said, some critics have argued.* These flag that what's coming next is what someone *else* believes, not the author.
+That one is doing **assumption** language. "Presupposes" means "requires." The author is flagging an unstated requirement of the ordinance.
 
-And one bonus bucket: **Concession indicators.** *Granted, while, although, naturally, though it is true.* These warn you the author is about to admit something against their own position. Concessions are not opposing views. They're the author being honest about complications. Reading them as opposing views is one of the most common Abstract mistakes students make.
+[[indicator:ts-marketing]]
 
-> **REMEMBER:** Indicators do the work. Don't read for content first, read for *structure first*, then fill in content. The slots are the road. The content is the scenery.
+That one is doing two jobs at once. "Undermines" and "calls into question" are both **evaluation** language. The director is grading the consultant's recommendation against a bar. "Takes for granted" then pivots to **assumption** language: the director is now the one being graded, and the unstated requirement is "the alternative dataset is uncontested."
 
-### Try it on a harder one
+That's the move. Read the abstract phrase, ask which bucket it lives in, and you're already 80% of the way to a translation. We'll drill this in D2.
 
-Take this stimulus:
+> **REMEMBER:** Five buckets. Assumption, Causal, Comparison, Evidence, Evaluation. The bucket call tells you what kind of plain-English claim the abstract phrase maps to.
 
-> *Some paleontologists have suggested that Apatosaurus, a huge dinosaur, was able to gallop. This, however, is unlikely, because galloping would probably have broken Apatosaurus's legs. Experiments with modern bones show how much strain they can withstand before breaking. By taking into account the diameter and density of Apatosaurus leg bones, it is possible to calculate that those bones could not have withstood the strains of galloping.*
+### The verbs that flag each bucket
 
-Indicators visible:
-- *Some paleontologists have suggested* → opposing-view flag
-- *however* → pivot, we're crossing to the author
-- *because* → FABS, evidence is coming
-- The rest is supporting evidence and detail
+The buckets are easier to spot once you know which verbs live in each one.
 
-Slot map:
-- **Opposing Conclusion:** Apatosaurus was able to gallop.
-- **Author's Conclusion:** That's unlikely.
-- **Author's Evidence:** Galloping would have broken its legs. Experiments show how much strain modern bones can take. Calculations show Apatosaurus bones couldn't take the strain.
+- **Assumption bucket verbs:** *presupposes, takes for granted, tacitly assumes, depends on, requires.*
+- **Causal bucket verbs:** *explains, accounts for, is responsible for, gives rise to, posits as the cause of.*
+- **Comparison bucket verbs:** *is analogous to, parallels, resembles, contrasts with, mirrors.*
+- **Evidence bucket verbs:** *supports, lends weight to, is consistent with, is compatible with, most strongly supports.*
+- **Evaluation bucket verbs:** *undermines, calls into question, casts doubt on, weakens, strengthens, refutes, is sufficient for, is necessary for.*
 
-Notice there's no Concession in this one, no Background, no Intermediate Conclusion. Five slots empty, two filled. That's normal. Most stimuli use four or five slots. The point is not to force all seven, the point is to identify which slots are present.
-
-### One more, for the muscle memory
-
-> *Although the marketing department reports an increase in website traffic, the conversion rate of website visitors to paying customers has declined. Clearly, then, the company's recent marketing strategy is ineffective.*
-
-- *Although* → concession flag
-- *Clearly, then* → conclusion flag
-
-Slot map:
-- **Concession:** Marketing reports website traffic is up.
-- **Background / Author's Evidence:** Conversion rate has declined.
-- **Author's Conclusion:** The marketing strategy is ineffective.
-
-Almost the entire stimulus is one author talking. There's no opposing view. The "although" is the author saying "I know this might look bad for my position, but here's the thing." That's a concession, not an opponent.
-
-### The Conclusion-Opinion-Pivot-Support schema
-
-When you're scanning a stimulus, every word is one of four things:
-
-- **Conclusion.** A claim being made.
-- **Opinion.** A value judgment, a recommendation, a prediction. Almost always lives inside a Conclusion slot.
-- **Pivot.** A switch in viewpoint.
-- **Support.** A reason or evidence.
-
-That's it. Every word. If you can label every clause of a stimulus as one of those four, you've already done 80% of the abstraction work. We'll drill this in D2.
-
-### What about word-level signals?
-
-Some words are slot-revealing on their own, no indicator phrase needed.
-
-- *Ought, should, must, need to* → opinion / recommendation. Almost always part of a conclusion.
-- *Likely, probably, will* → prediction. Almost always part of a conclusion.
-- *A study found, researchers showed, evidence suggests* → premise / evidence material. Almost never the conclusion.
-- *Have / has / was / were* (past tense) → factual claim. Often background or premise.
-
-These are tiebreakers when the indicator words are absent or the sentence is ambiguous. They're not as reliable as indicators, but they help.
-
----
-
-That's the Strip-Down move. You read a stimulus, you hear the indicators, you drop every clause into one of seven slots, and the argument becomes visible. Read for structure first. Content second.
-
-Drill 1 will make you do this on five fresh stimuli before you move on. Don't skip it. The next section assumes you can do this in your sleep.
+The verb almost always wears the bucket on its sleeve. When you read an abstract answer, find the verb first. The verb tells you the bucket. The bucket tells you which kind of translation to reach for.
 
 ---
 
 ## Section 2: The Decode Move
 
-Now we go the other direction.
+Now the second move.
 
-When you read an LR answer choice, especially in Role, Method-of-Reasoning, Argument Part, Main Conclusion, or Flaw questions, the LSAT writes the answer in its private dialect. The answer doesn't say "the author is using an example to support their conclusion," it says **"It is used to illustrate the general principle that the argument presupposes."** Same content. Different language. Welcome to LSAT-ese.
+When you read an LR answer choice, especially in Method-of-Reasoning, Argument Part, Flaw, or Main Conclusion questions, the LSAT writes the answer in its private dialect. The answer doesn't say "the author is using an example to support their conclusion," it says **"It is used to illustrate the general principle that the argument presupposes."** Same content. Different language. Welcome to LSAT-ese.
 
-Your job, every time you see one of these abstract answers, is to translate it back into a concrete picture of what the stimulus must look like for that answer to be correct. That's the Decode move. Strip-Down turns concrete into abstract. Decode turns abstract into concrete. Same muscle, opposite direction.
+Your job, every time you see one of these abstract answers, is to translate it back into a concrete picture of what the stimulus must look like for that answer to be correct. That's the Decode move.
 
 ### The three master keys
 
@@ -156,13 +96,13 @@ Look at this abstract phrase:
 
 > *Concludes X on the basis of Y.*
 
-The phrase is using variables, X and Y, to describe an argument structure. Your job is to figure out which variable is the conclusion and which is the evidence. The trick is to find the **directional word** that tells you which way the logic flows.
+The phrase is using variables, X and Y, to describe a logical move. Your job is to figure out which variable is doing the logical work and which is the launching pad. The trick is to find the **directional word** that tells you which way the logic flows.
 
-Here, the directional word is **"on the basis of."** "On the basis of" points backward to evidence. Whatever follows it is the evidence. So Y is the evidence and X is the conclusion.
+Here, the directional word is **"on the basis of."** "On the basis of" points backward to the launching claim. Whatever follows it is what the argument rests on. So Y is the launching claim and X is what the argument arrives at.
 
 Let's run a stack. For each phrase, find the directional word, then map X and Y.
 
-| Abstract Phrase | Directional Word | Conclusion | Evidence |
+| Abstract Phrase | Directional Word | Arrived At | Launching Claim |
 |---|---|---|---|
 | Concludes X on the basis of Y | on the basis of | X | Y |
 | Infers X on the grounds that Y | on the grounds that | X | Y |
@@ -173,13 +113,13 @@ Let's run a stack. For each phrase, find the directional word, then map X and Y.
 | Y is true merely on the basis of X | on the basis of | Y | X |
 | Infers, on the grounds that X, that Y | on the grounds that | Y | X |
 
-Notice the pattern. **"From," "by," "because," "on the grounds that," "on the basis of"** all point backward to evidence. Whatever follows them is the support. Whatever's on the other side is the conclusion.
+Notice the pattern. **"From," "by," "because," "on the grounds that," "on the basis of"** all point backward to the launching claim. Whatever follows them is the launch pad. Whatever's on the other side is what the argument arrives at.
 
-And the reverse direction: **"to support," "to establish," "to demonstrate," "in order to"** all point forward to the conclusion. Whatever follows them is the conclusion. Whatever's behind them is the evidence.
+And the reverse direction: **"to support," "to establish," "to demonstrate," "in order to"** all point forward to what the argument is trying to land on. Whatever follows them is the destination. Whatever's behind them is the launch pad.
 
 Once you've internalized this, the X/Y phrases stop being confusing. They're just sentences with a built-in arrow.
 
-> **REMEMBER:** Find the directional word first. Then ask which side of it is being supported and which is doing the supporting.
+> **REMEMBER:** Find the directional word first. Then ask which side of it is the launch pad and which side is the destination.
 
 ### A harder layer: full-sentence decoding
 
@@ -187,35 +127,35 @@ The X/Y move handles the simple cases. But the LSAT writes harder versions where
 
 **Phrase 1:** *Challenges the plausibility of X by offering Y as an alternative explanation.*
 
-Directional word: "by offering." Points to evidence (the alternative explanation is the evidence). The conclusion is the attack on X. So this answer is describing a stimulus where the author *attacks* a claim X by *proposing a different cause* Y for whatever X was trying to explain.
+Directional word: "by offering." Points to the launching claim (the alternative explanation is the lever). The destination is the attack on X. So this answer is describing a stimulus where the author *attacks* a claim X by *proposing a different cause* Y for whatever X was trying to explain. Causal language plus evaluation language.
 
 **Phrase 2:** *Substantiates the claim that X is false by demonstrating that Y is an inevitable consequence of X.*
 
-"Substantiates" means "supports." Directional word: "by demonstrating." Y is the evidence. The conclusion is "X is false." Translation: the author argues that X must be false because Y would have to follow from X, and Y is unacceptable.
+"Substantiates" means "supports." Directional word: "by demonstrating." Y is the launching claim. The destination is "X is false." Translation: the author argues that X must be false because Y would have to follow from X, and Y is unacceptable. Evidence language plus evaluation language.
 
 **Phrase 3:** *Treats the occurrence of X as corroborating evidence for Y.*
 
-"Corroborating evidence for" tells you X is the support and Y is the conclusion. Translation: the author uses X as a reason to believe Y.
+"Corroborating evidence for" tells you X is the support and Y is the destination. Translation: the author uses X as a reason to believe Y. Pure evidence language.
 
-The pattern is always the same. Find the directional word, identify which side is doing the supporting, label the rest as the conclusion.
+The pattern is always the same. Find the directional word, identify which side is doing the supporting, label the rest as the destination.
 
 ### The verb taxonomy
 
 The LSAT has a small army of verbs it uses to describe what authors do inside arguments. They're not interchangeable. Each one carries a specific structural implication.
 
-- **Concludes / Infers / Reasons / Argues:** the author has a conclusion. The verb itself flags it.
-- **Presupposes / Assumes / Takes for granted:** the author depends on something unstated. Necessary assumption territory.
-- **Appeals to / Cites / Uses:** the author is invoking evidence.
+- **Concludes / Infers / Reasons / Argues:** the author has arrived at a claim. The verb flags it.
+- **Presupposes / Assumes / Takes for granted:** the author depends on something unstated. Assumption-bucket territory.
+- **Appeals to / Cites / Uses:** the author is invoking a launching claim.
 - **Counters / Anticipates / Pre-empts:** the author is shutting down an objection in advance.
 - **Denies / Rejects / Challenges:** the author is arguing against another claim.
-- **Substantiates / Supports / Establishes:** the author is providing evidence for something. ("Establishes" is stronger than "supports," closer to "proves.")
-- **Undermines / Weakens / Calls into question:** the author is attacking another claim.
+- **Substantiates / Supports / Establishes:** the author is providing weight for something. ("Establishes" is stronger than "supports," closer to "proves.")
+- **Undermines / Weakens / Calls into question:** the author is attacking another claim. Evaluation-bucket territory.
 - **Illustrates:** the author is giving an example. (Remember: "illustration" = "example.")
 - **Derives:** the author is concluding something from a constraint or impossibility.
-- **Maintains / Holds / Contends:** the author has a position. Often introduces an opposing view.
+- **Maintains / Holds / Contends:** the author has a position.
 - **Posits:** the author proposes something, usually a causal account.
 
-When you read an abstract answer choice, identify the verb first. The verb tells you what move the author is making. Then check whether the stimulus actually shows that move.
+When you read an abstract answer choice, identify the verb first. The verb tells you the bucket. The bucket tells you what kind of move the author is making. Then check whether the stimulus actually shows that move.
 
 ### The reverse-engineering move
 
@@ -235,7 +175,7 @@ This is an ad hominem move. The author attacks the *motive* of the person making
 
 > *The mechanic says my brakes need replacing, but he's just trying to make money, so my brakes are probably fine.*
 
-Mechanic might be right. Mechanic might be wrong. But the argument doesn't engage with the mechanic's actual reasoning, it just attacks the mechanic. Flaw.
+Mechanic might be right. Mechanic might be wrong. But the argument doesn't engage with the mechanic's actual reasoning, it just attacks the mechanic.
 
 **Phrase:** *Mistakes a temporal relationship between two events for a causal relationship.*
 
@@ -256,8 +196,8 @@ Five Trap Master patterns to watch for:
 1. **Synonym swap.** The answer uses a word that means something close to what the stimulus says, but not quite. "Most" swapped for "all." "Likely" swapped for "must." Watch the quantifier and the modal.
 2. **Scope creep.** The answer describes a structural move that's slightly broader or narrower than what the stimulus actually does. Stimulus shows the author *describing* an example. Answer says the author is *advocating for* that example. Different verb, different move.
 3. **Polarity flip.** The answer reverses what the author is doing. Stimulus *attacks* a view. Answer says the author *defends* a view. Read the verbs every time.
-4. **Premise-conclusion swap.** The answer correctly identifies all the pieces but mislabels which is the conclusion and which is the support. Apply the directional-word check.
-5. **Role mismatch.** The answer correctly describes a piece of the stimulus but assigns it the wrong slot. Says it's evidence when it's actually a concession. Says it's the main conclusion when it's an intermediate conclusion. Apply the 7-slot check.
+4. **Bucket swap.** The answer correctly identifies the abstract phrase but assigns it the wrong translation bucket. Stimulus uses causal language. Answer translates it as comparison. Different bucket, different match.
+5. **X/Y flip.** The answer correctly translates the words but reverses which is the launching claim and which is the destination. Apply the directional-word check.
 
 When you have two answers that both feel right, ask: *which one survives a word-by-word check?* The Trap Master answer falls apart on one specific word. The correct answer holds together on every word.
 
@@ -265,25 +205,24 @@ When you have two answers that both feel right, ask: *which one survives a word-
 
 ---
 
-That's the Decode move. Three master keys (Explanation, Hypothesis, Presuppose), the X/Y directional-word check, the verb taxonomy, the reverse-engineering move, and the Trap Master decoy patterns. Drills 3 through 6 will put you through each one.
+That's the Decode move. Three master keys (Explanation, Hypothesis, Presuppose), the X/Y directional-word check, the verb taxonomy, the reverse-engineering move, and the Trap Master decoy patterns. Drills 3 through 8 will put you through each one.
 
 ---
 
 ## Section 3: Where This Cashes Out
 
-You've now learned a skill the LSAT will charge you for using on roughly 60% of LR questions. Here's the map of where it shows up.
+You've now learned a skill the LSAT will charge you for using on roughly 60% of LR questions. Here's the map of where decoding shows up.
 
-- **Role questions** ("the claim that X plays which one of the following roles in the argument") use the 7-slot system directly. The answer choices describe slots. You match the slot to the right answer.
-- **Method-of-Reasoning questions** ("the argument proceeds by") use the verb taxonomy. The correct answer names the move the author made, in LSAT-ese.
+- **Method-of-Reasoning questions** ("the argument proceeds by") use the verb taxonomy. The correct answer names the move the author made, in LSAT-ese. You translate to know what to match.
 - **Argument Part questions** are Method's cousin, asking about a specific piece instead of the whole. Same verb taxonomy.
-- **Main Conclusion questions** use the indicator-bucket schema and the Conclusion/Opinion/Pivot/Support labeling.
 - **Flaw questions** use reverse-engineering. The answer choices describe abstract errors. You match the error to what the author actually did.
-- **Parallel and Parallel Flaw questions** use everything. You strip down two stimuli to their slots, then check whether the slot structures match.
+- **Role questions** describe how a claim functions inside the argument. The answer choices live in LSAT-ese; you decode them to compare against the stimulus.
+- **Parallel and Parallel Flaw questions** use everything. You decode two abstract structures, then check whether the moves match.
 - **Principle questions** use the verb taxonomy (especially "illustrates" and "presupposes") plus the General Principle definition.
 
-In other words, Abstract is the foundation room. Most LR topics build a wall on top of it. If your Abstract skills are sloppy, your Role accuracy collapses, your Method accuracy collapses, your Flaw accuracy collapses, and you'll spend the rest of the LR curriculum confused about why your scores aren't moving. If your Abstract skills are sharp, the rest of LR clicks faster than students expect.
+In other words, Abstract is the decoding room. Most LR topics use it constantly. If your decoding is sloppy, your Method accuracy collapses, your Flaw accuracy collapses, your Role accuracy collapses, and you'll spend the rest of the LR curriculum confused about why your scores aren't moving. If your decoding is sharp, the rest of LR clicks faster than students expect.
 
-So treat the drills here as foundational practice, not warm-up. The minute you can strip a stimulus into slots in under 30 seconds and decode any abstract answer choice in under 15, you've earned every chapter that comes next.
+So treat the drills here as foundational practice, not warm-up. The minute you can read an abstract LSAT phrase and call the bucket in under five seconds, and translate a full abstract answer choice in under fifteen, you've earned every chapter that comes next.
 
 ---
 
@@ -291,38 +230,36 @@ So treat the drills here as foundational practice, not warm-up. The minute you c
 
 ### Identifying Incorrect Descriptions (Art of Matching the Keywords)
 
-For questions that require identifying features of the stimulus' argument (Role, Method, Flaw), it is crucial to spot answer choices that describe something that did not happen in the argument. Here's how to approach these questions:
+For questions that require identifying features of the stimulus's argument (Role, Method, Flaw), it is crucial to spot answer choices that describe something that did not happen in the argument. Here's how to approach these questions:
 
 - **Watchful Eye:** Carefully read the answer choices to ensure they accurately reflect the argument.
 - **Deviations from the Stimulus:** Eliminate choices that describe events or actions not present in the stimulus.
-- **Question Types:** This strategy is especially useful for Role, Method, and Flaw questions. However, keep in mind that a lot in Strengthen/Weaken questions might have correct answers that introduce new elements not directly stated in the stimulus.
+- **Question Types:** This strategy is especially useful for Role, Method, and Flaw questions. Note that Strengthen / Weaken questions often have correct answers that introduce new elements not directly stated in the stimulus.
 
 ### Two-Step Framework
 
-1. Having a clear grasp of the premises, conclusions, and assumptions within an argument is crucial to success on Method questions. **(S : Structure)**
-2. We also need to have a clear and discrete understanding of the answer choices. Know what each keyword is referring to, and don't choose an answer choice if you can't match it up with the stimulus! **(K : Keywords)**
+1. Decode the structure of the stimulus. Translate the abstract claims into plain English so you know what the author actually said. **(S : Structure)**
+2. Decode the answer choice. Know what each keyword is referring to, and don't choose an answer choice if you can't match each of its keywords to something in the stimulus. **(K : Keywords)**
 
-> **IDENTIFY (S)TRUCTURE → (K)EYWORDS**
+> **DECODE (S)TRUCTURE → (K)EYWORDS**
 
-### How To Guide (use this with additional keywords for the question)
+### How To Guide
 
 1. **Read the Answer Choice Over:** Extract any keywords that stand out to you.
-2. **Analyze Keywords in LSAT Context:** Think about what these keywords mean in a LSAT-specific setting.
+2. **Analyze Keywords in LSAT Context:** Think about what these keywords mean in LSAT-ese. Run them through the five buckets.
 3. **Check Keyword Relevance:**
    - If it's a noun: Ask yourself, does this concept appear in the stimulus?
    - If it's a verb: Ask yourself, does the author do this in the argument?
    - If it's an adjective/adverb: Does it correctly describe the tone or strength of the author's argument?
-4. **Match with Stimulus Structure:** Read the answer choice again and see if you can match up what the answer is describing with the stimulus' structure.
+4. **Match with Stimulus Content:** Read the answer choice again and see if you can match what the answer is describing with what's actually in the stimulus.
 5. **Practical Approach:** Don't be afraid to go back and forth between the answer choice and the stimulus. The more you practice this skill, the easier it will become.
-6. **Beware of Traps:** A common trick employed by the test authors is to provide an almost perfect answer with a glaring error, usually due to one single word. This word is placed right next to the correct answer, which is worded vaguely. This is a trap that you will encounter repeatedly throughout the test preparation.
+6. **Beware of Traps:** A common trick is to provide an almost perfect answer with one glaring error, usually due to a single word. The wrong answer is placed right next to a correctly worded but vaguer answer. This is a trap you will encounter repeatedly throughout the test.
 
-> We need to have a clear and discrete understanding of the answer choices. Know what each keyword is referring to, and don't choose an answer choice if you can't match it up with the stimulus!
+> Know what each keyword is referring to, and don't choose an answer choice if you can't match it up with the stimulus.
 
 ### Definitions of Other Keywords
 
-There is a difference between assumptions and implications. An assumption, as we spoke about in class, is an unstated premise or intermediate conclusion linking the supporting information and the main conclusion of an argument.
-
-**Assumption:** an unstated premise (sometimes answer choices will say sneaky things like IMPLICIT PREMISE, which is another way of saying assumption).
+**Assumption:** an unstated premise. Sometimes answer choices say sneaky things like IMPLICIT PREMISE, which is another way of saying assumption.
 
 **Implication:** something that will follow if you accept the truth of the conclusion. An unstated inference if you accept the truth of the argument.
 

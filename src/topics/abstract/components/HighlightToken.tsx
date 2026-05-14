@@ -1,30 +1,32 @@
 import { type CSSProperties } from "react";
-import type { IndicatorBucket } from "../types";
+import type { TranslationBucket } from "../types";
 
-// HighlightToken: per-word/phrase color-coded token. CSS variables for bucket
-// color. box-decoration-break:clone per architecture rule (zero layout shift).
+// HighlightToken: per-word/phrase color-coded inline token used inside flowing
+// chapter prose to highlight translation-language categories. CSS variables
+// carry bucket color. box-decoration-break:clone keeps multi-line wraps
+// visually intact.
 
-const BUCKET_LABELS: Record<IndicatorBucket, string> = {
-  conclusion: "conclusion indicator",
-  pivot: "pivot indicator",
-  support: "support indicator (FABS)",
-  "opposing-view": "opposing-view indicator",
-  concession: "concession indicator",
+const BUCKET_LABELS: Record<TranslationBucket, string> = {
+  assumption: "assumption language",
+  causal: "causal language",
+  comparison: "comparison language",
+  evidence: "evidence / relevance language",
+  evaluation: "evaluation language",
   neutral: "",
 };
 
-const BUCKET_GLYPH: Record<IndicatorBucket, string> = {
-  conclusion: "▸",
-  pivot: "↺",
-  support: "↩",
-  "opposing-view": "✕",
-  concession: "≈",
+const BUCKET_GLYPH: Record<TranslationBucket, string> = {
+  assumption: "≡",
+  causal: "→",
+  comparison: "↔",
+  evidence: "⊢",
+  evaluation: "Δ",
   neutral: "",
 };
 
 export interface HighlightTokenProps {
   text: string;
-  bucket: IndicatorBucket;
+  bucket: TranslationBucket;
   mode?: "reveal" | "hover";
 }
 
@@ -46,7 +48,7 @@ export function HighlightToken({
   const glyph = BUCKET_GLYPH[bucket];
   return (
     <span
-      className={`indicator-token indicator-bucket-${bucket} mode-${mode}`}
+      className={`indicator-token translation-bucket-${bucket} mode-${mode}`}
       data-bucket={bucket}
       data-mode={mode}
       aria-label={aria}

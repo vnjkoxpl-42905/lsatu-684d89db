@@ -1,35 +1,35 @@
 import { useState } from "react";
-import d2Data from "./data/d2-indicators.json";
-import type { IndicatorBucket } from "../types";
+import d2Data from "./data/d2-translation-buckets.json";
+import type { TranslationBucket } from "../types";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
 
 interface D2Q {
   id: string;
   word_or_phrase: string;
-  correct_bucket: IndicatorBucket;
+  correct_bucket: TranslationBucket;
   explanation: string;
 }
 
 const DATA = d2Data as {
-  buckets: IndicatorBucket[];
+  buckets: TranslationBucket[];
   questions: D2Q[];
 };
 
-const BUCKET_LABEL: Record<IndicatorBucket, string> = {
-  conclusion: "Conclusion",
-  pivot: "Pivot",
-  support: "Support (FABS)",
-  "opposing-view": "Opposing-view",
-  concession: "Concession",
+const BUCKET_LABEL: Record<TranslationBucket, string> = {
+  assumption: "Assumption",
+  causal: "Causal",
+  comparison: "Comparison",
+  evidence: "Evidence / Relevance",
+  evaluation: "Evaluation",
   neutral: "Neutral",
 };
 
-export function D2IndicatorClassification() {
+export function D2TranslationBuckets() {
   const questions = DATA.questions;
   const drill = useAbstractDrill(questions, "d2");
   const q = questions[drill.questionIndex];
-  const [selected, setSelected] = useState<IndicatorBucket | null>(null);
+  const [selected, setSelected] = useState<TranslationBucket | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
 
@@ -55,8 +55,8 @@ export function D2IndicatorClassification() {
 
   return (
     <DrillShell
-      title="D2 · Indicator Classification"
-      subtitle="Which bucket does this indicator belong to?"
+      title="D2 · Translation Buckets"
+      subtitle="Which kind of LSAT-ese language is this?"
       questionIndex={drill.questionIndex}
       total={drill.total}
       correct={drill.correctCount}
@@ -66,7 +66,7 @@ export function D2IndicatorClassification() {
       <article className="space-y-4">
         <div className="rounded-xl border border-border bg-card/50 p-5 text-center">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Indicator
+            Term
           </p>
           <p className="mt-2 text-2xl font-semibold">{q.word_or_phrase}</p>
         </div>

@@ -12,9 +12,9 @@ import card09 from "../content/reference-cards/09-matching-keywords-framework.md
 import card10 from "../content/reference-cards/10-key-terms-lsat-definitions.md?raw";
 
 const CARDS: Record<string, { title: string; body: string }> = {
-  "01": { title: "The Skeleton (7 slots)", body: card01 },
-  "02": { title: "FABS and the Indicator Buckets", body: card02 },
-  "03": { title: "Conclusion-Opinion-Pivot-Support", body: card03 },
+  "01": { title: "The Decode Workflow", body: card01 },
+  "02": { title: "Translation Buckets", body: card02 },
+  "03": { title: "Five-Bucket Decode Pass", body: card03 },
   "04": { title: "The Three Master Keys", body: card04 },
   "05": { title: "Directional Word Cheat Sheet", body: card05 },
   "06": { title: "Verb Taxonomy", body: card06 },

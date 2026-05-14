@@ -30,9 +30,6 @@ const AbstractTopicPage = React.lazy(() => import("./topics/abstract/AbstractTop
 const AbstractChapterLanding = React.lazy(() =>
   import("./topics/abstract/ChapterLanding").then((m) => ({ default: m.ChapterLanding })),
 );
-const AbstractSlotFiller = React.lazy(() =>
-  import("./topics/abstract/components/SlotFiller").then((m) => ({ default: m.SlotFiller })),
-);
 const AbstractFlashcardDeck = React.lazy(() =>
   import("./topics/abstract/components/FlashcardDeck").then((m) => ({ default: m.FlashcardDeck })),
 );
@@ -416,7 +413,12 @@ const App = () => {
                     </ProtectedRoute>
                   }>
                     <Route index element={<AbstractChapterLanding />} />
-                    <Route path="playground" element={<AbstractSlotFiller />} />
+                    <Route
+                      path="playground"
+                      element={
+                        <Navigate to="/topics/abstract/drills/d1" replace />
+                      }
+                    />
                     <Route path="methods" element={<AbstractMethodsLibrary />} />
                     <Route path="drills/:drillId" element={<AbstractDrillRouter />} />
                     <Route path="flashcards" element={<AbstractFlashcardDeck />} />

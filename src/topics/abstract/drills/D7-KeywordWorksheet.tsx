@@ -7,11 +7,6 @@ import {
   type SelfRateChoice,
 } from "../components/SelfRateAfterReveal";
 
-interface XYAnswer {
-  conclusion: "X" | "Y";
-  evidence: "X" | "Y";
-}
-
 interface D7FreeText {
   id: string;
   number: number;
@@ -20,13 +15,19 @@ interface D7FreeText {
   walkthrough: string;
 }
 
+interface D7XYOption {
+  id: "x" | "y";
+  label: string;
+}
+
 interface D7XYMap {
   id: string;
   number: number;
   type: "xy-map";
   prompt: string;
   phrase: string;
-  answer: XYAnswer;
+  options: D7XYOption[];
+  correct: "x" | "y";
   explanation: string;
 }
 
@@ -34,14 +35,12 @@ type D7Q = D7FreeText | D7XYMap;
 
 const DATA = d7Data as { questions: D7Q[] };
 
-export function D7KeywordWorksheet() {
+export function D7KeywordDecoding() {
   const questions = DATA.questions;
   const drill = useAbstractDrill(questions, "d7");
   const q = questions[drill.questionIndex];
   const [textAnswer, setTextAnswer] = useState("");
-  const [xyChoice, setXYChoice] = useState<"x-evidence" | "y-evidence" | null>(
-    null,
-  );
+  const [xyChoice, setXYChoice] = useState<"x" | "y" | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [rated, setRated] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
@@ -62,12 +61,11 @@ export function D7KeywordWorksheet() {
   const handleSubmit = async () => {
     setSubmitted(true);
     if (q.type === "xy-map") {
-      const expected = q.answer.evidence === "X" ? "x-evidence" : "y-evidence";
       await drill.recordAttempt({
         drillId: "d7",
         questionId: q.id,
         questionIndex: drill.questionIndex,
-        correct: xyChoice === expected,
+        correct: xyChoice === q.correct,
         selectedAnswer: xyChoice,
         timeMs: Date.now() - startedAt,
       });
@@ -93,8 +91,8 @@ export function D7KeywordWorksheet() {
 
   return (
     <DrillShell
-      title="D7 · Keyword Abstraction Worksheet"
-      subtitle="Ten questions on Conclusion versus Evidence tagging, key term comparisons, and X/Y mapping."
+      title="D7 · Keyword Decoding Worksheet"
+      subtitle="Decode abstract answer-choice wording into plain English."
       questionIndex={drill.questionIndex}
       total={drill.total}
       correct={drill.correctCount}
@@ -119,25 +117,12 @@ export function D7KeywordWorksheet() {
         {q.type === "xy-map" ? (
           <fieldset className="space-y-2">
             <legend className="text-xs uppercase tracking-wide text-muted-foreground">
-              Which variable is Evidence?
+              How do X and Y line up?
             </legend>
-            {(
-              [
-                {
-                  id: "x-evidence",
-                  label: "X is Evidence, Y is Conclusion",
-                },
-                {
-                  id: "y-evidence",
-                  label: "Y is Evidence, X is Conclusion",
-                },
-              ] as const
-            ).map((opt) => {
+            {q.options.map((opt) => {
               const isPicked = xyChoice === opt.id;
-              const expected =
-                q.answer.evidence === "X" ? "x-evidence" : "y-evidence";
-              const isCorrect = submitted && opt.id === expected;
-              const isWrong = submitted && isPicked && opt.id !== expected;
+              const isCorrect = submitted && opt.id === q.correct;
+              const isWrong = submitted && isPicked && opt.id !== q.correct;
               return (
                 <button
                   key={opt.id}
