@@ -56,6 +56,17 @@ All colors MUST be HSL.
     --state-correct-foreground: 0 0% 98%;
     --state-incorrect: 350 89% 60%;   /* rose-500 */
     --state-incorrect-foreground: 0 0% 98%;
+    /* Spaced-repetition / self-rate tokens.
+       Same hues as state-correct / state-incorrect at the source, but kept
+       under distinct names so future hue shifts to wrong/right cannot
+       silently reframe a self-report as a judgment. */
+    --state-again: 350 89% 60%;       /* rose-500, aliased on purpose */
+    --state-again-foreground: 0 0% 98%;
+    --state-easy: 160 84% 39%;        /* emerald-500, aliased on purpose */
+    --state-easy-foreground: 0 0% 98%;
+    /* Surface-warn semantic — bonus / stretch / non-blocking notice. */
+    --state-warn: 38 92% 50%;         /* amber-500, mirrors --warning */
+    --state-warn-foreground: 0 0% 98%;
 
     --border: 0 0% 14.9%;             /* neutral-800 */
     --input: 0 0% 14.9%;

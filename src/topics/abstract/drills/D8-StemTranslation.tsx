@@ -2,6 +2,10 @@ import { useState } from "react";
 import d8Data from "./data/d8-stems.json";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
+import {
+  SelfRateAfterReveal,
+  type SelfRateChoice,
+} from "../components/SelfRateAfterReveal";
 
 interface D8Stem {
   id: string;
@@ -20,15 +24,20 @@ export function D8StemTranslation() {
   const stem = stems[drill.questionIndex];
   const [draft, setDraft] = useState("");
   const [revealed, setRevealed] = useState(false);
+  const [rated, setRated] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
 
-  const handleReveal = async () => {
+  const handleReveal = () => {
     setRevealed(true);
+  };
+
+  const handleRate = async (rating: SelfRateChoice) => {
+    setRated(true);
     await drill.recordAttempt({
       drillId: "d8",
       questionId: stem.id,
       questionIndex: drill.questionIndex,
-      correct: draft.trim().length >= 20,
+      correct: rating !== "again",
       selectedAnswer: draft,
       timeMs: Date.now() - startedAt,
     });
@@ -37,6 +46,7 @@ export function D8StemTranslation() {
   const handleNext = () => {
     setDraft("");
     setRevealed(false);
+    setRated(false);
     setStartedAt(Date.now());
     drill.next();
   };
@@ -44,7 +54,7 @@ export function D8StemTranslation() {
   return (
     <DrillShell
       title="D8 · Question Stem Translation"
-      subtitle="Translate each abstract LSAT question stem into plain English. Write your own first, then reveal the walkthrough."
+      subtitle="Translate each abstract LSAT question stem into plain English. Write your own first, then reveal the walkthrough and rate yourself."
       questionIndex={drill.questionIndex}
       total={drill.total}
       correct={drill.correctCount}
@@ -53,7 +63,7 @@ export function D8StemTranslation() {
     >
       <article className="space-y-4">
         {stem.bonus ? (
-          <p className="rounded-md border border-warning/40 bg-warning/5 px-3 py-2 text-xs font-medium text-warning">
+          <p className="rounded-md border border-state-warn/40 bg-state-warn/5 px-3 py-2 text-xs font-medium text-state-warn">
             {stem.bonusLabel ?? "Bonus stretch"}
           </p>
         ) : null}
@@ -95,6 +105,8 @@ export function D8StemTranslation() {
           </aside>
         ) : null}
 
+        {revealed && !rated ? <SelfRateAfterReveal onRate={handleRate} /> : null}
+
         <div className="flex justify-end gap-2">
           {!revealed ? (
             <button
@@ -105,7 +117,7 @@ export function D8StemTranslation() {
             >
               Reveal walkthrough
             </button>
-          ) : drill.questionIndex < drill.total - 1 ? (
+          ) : rated && drill.questionIndex < drill.total - 1 ? (
             <button
               type="button"
               onClick={handleNext}
@@ -113,9 +125,9 @@ export function D8StemTranslation() {
             >
               Next stem
             </button>
-          ) : (
+          ) : rated ? (
             <p className="text-sm text-muted-foreground">Drill complete.</p>
-          )}
+          ) : null}
         </div>
       </article>
     </DrillShell>

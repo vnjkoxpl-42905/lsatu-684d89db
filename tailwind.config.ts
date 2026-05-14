@@ -43,9 +43,17 @@ export default {
           DEFAULT: "hsl(var(--state-incorrect))",
           foreground: "hsl(var(--state-incorrect-foreground))",
         },
-        warning: {
-          DEFAULT: "hsl(var(--warning))",
-          foreground: "hsl(var(--warning-foreground))",
+        "state-again": {
+          DEFAULT: "hsl(var(--state-again))",
+          foreground: "hsl(var(--state-again-foreground))",
+        },
+        "state-easy": {
+          DEFAULT: "hsl(var(--state-easy))",
+          foreground: "hsl(var(--state-easy-foreground))",
+        },
+        "state-warn": {
+          DEFAULT: "hsl(var(--state-warn))",
+          foreground: "hsl(var(--state-warn-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

@@ -2,6 +2,10 @@ import { useState } from "react";
 import d5Data from "./data/d5-jargon.json";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
+import {
+  SelfRateAfterReveal,
+  type SelfRateChoice,
+} from "../components/SelfRateAfterReveal";
 
 interface D5MC {
   id: string;
@@ -28,12 +32,14 @@ export function D5JargonDecoding() {
   const [selected, setSelected] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [rated, setRated] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
 
   const handleNext = () => {
     setSelected(null);
     setDraft("");
     setSubmitted(false);
+    setRated(false);
     setStartedAt(Date.now());
     drill.next();
   };
@@ -51,17 +57,26 @@ export function D5JargonDecoding() {
         timeMs: Date.now() - startedAt,
       });
     } else {
+      // Definition (reveal-after): defer recordAttempt to handleRate.
       setSubmitted(true);
-      await drill.recordAttempt({
-        drillId: "d5",
-        questionId: q.id,
-        questionIndex: drill.questionIndex,
-        correct: draft.trim().length >= 20,
-        selectedAnswer: draft,
-        timeMs: Date.now() - startedAt,
-      });
     }
   };
+
+  const handleRate = async (rating: SelfRateChoice) => {
+    if (q.type !== "definition") return;
+    setRated(true);
+    await drill.recordAttempt({
+      drillId: "d5",
+      questionId: q.id,
+      questionIndex: drill.questionIndex,
+      correct: rating !== "again",
+      selectedAnswer: draft,
+      timeMs: Date.now() - startedAt,
+    });
+  };
+
+  const mcDone = q.type === "mc" && submitted;
+  const defDone = q.type === "definition" && rated;
 
   return (
     <DrillShell
@@ -148,6 +163,12 @@ export function D5JargonDecoding() {
             </p>
           </aside>
         ) : null}
+        {q.type === "definition" && submitted && !rated ? (
+          <SelfRateAfterReveal
+            onRate={handleRate}
+            prompt="How did your translation land?"
+          />
+        ) : null}
         <div className="flex justify-end gap-2">
           {!submitted ? (
             <button
@@ -162,7 +183,7 @@ export function D5JargonDecoding() {
             >
               {q.type === "mc" ? "Submit" : "Reveal"}
             </button>
-          ) : drill.questionIndex < drill.total - 1 ? (
+          ) : (mcDone || defDone) && drill.questionIndex < drill.total - 1 ? (
             <button
               type="button"
               onClick={handleNext}
@@ -170,9 +191,9 @@ export function D5JargonDecoding() {
             >
               Next
             </button>
-          ) : (
+          ) : mcDone || defDone ? (
             <p className="text-sm text-muted-foreground">Drill complete.</p>
-          )}
+          ) : null}
         </div>
       </article>
     </DrillShell>

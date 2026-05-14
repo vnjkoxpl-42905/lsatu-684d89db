@@ -2,6 +2,10 @@ import { useState } from "react";
 import d7Data from "./data/d7-worksheet.json";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
+import {
+  SelfRateAfterReveal,
+  type SelfRateChoice,
+} from "../components/SelfRateAfterReveal";
 
 interface XYAnswer {
   conclusion: "X" | "Y";
@@ -39,12 +43,14 @@ export function D7KeywordWorksheet() {
     null,
   );
   const [submitted, setSubmitted] = useState(false);
+  const [rated, setRated] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
 
   const reset = () => {
     setTextAnswer("");
     setXYChoice(null);
     setSubmitted(false);
+    setRated(false);
     setStartedAt(Date.now());
   };
 
@@ -55,25 +61,35 @@ export function D7KeywordWorksheet() {
 
   const handleSubmit = async () => {
     setSubmitted(true);
-    let correct = false;
-    let selected: string | null = null;
     if (q.type === "xy-map") {
       const expected = q.answer.evidence === "X" ? "x-evidence" : "y-evidence";
-      correct = xyChoice === expected;
-      selected = xyChoice;
-    } else {
-      correct = textAnswer.trim().length >= 10;
-      selected = textAnswer;
+      await drill.recordAttempt({
+        drillId: "d7",
+        questionId: q.id,
+        questionIndex: drill.questionIndex,
+        correct: xyChoice === expected,
+        selectedAnswer: xyChoice,
+        timeMs: Date.now() - startedAt,
+      });
     }
+    // Free-text: defer recordAttempt to handleRate (self-rate after reveal).
+  };
+
+  const handleRate = async (rating: SelfRateChoice) => {
+    if (q.type !== "free-text") return;
+    setRated(true);
     await drill.recordAttempt({
       drillId: "d7",
       questionId: q.id,
       questionIndex: drill.questionIndex,
-      correct,
-      selectedAnswer: selected,
+      correct: rating !== "again",
+      selectedAnswer: textAnswer,
       timeMs: Date.now() - startedAt,
     });
   };
+
+  const xyDone = q.type === "xy-map" && submitted;
+  const freeDone = q.type === "free-text" && rated;
 
   return (
     <DrillShell
@@ -179,6 +195,13 @@ export function D7KeywordWorksheet() {
           </aside>
         ) : null}
 
+        {q.type === "free-text" && submitted && !rated ? (
+          <SelfRateAfterReveal
+            onRate={handleRate}
+            prompt="How did your answer land?"
+          />
+        ) : null}
+
         <div className="flex justify-end gap-2">
           {!submitted ? (
             <button
@@ -193,7 +216,7 @@ export function D7KeywordWorksheet() {
             >
               {q.type === "xy-map" ? "Submit" : "Reveal walkthrough"}
             </button>
-          ) : drill.questionIndex < drill.total - 1 ? (
+          ) : (xyDone || freeDone) && drill.questionIndex < drill.total - 1 ? (
             <button
               type="button"
               onClick={handleNext}
@@ -201,9 +224,9 @@ export function D7KeywordWorksheet() {
             >
               Next
             </button>
-          ) : (
+          ) : xyDone || freeDone ? (
             <p className="text-sm text-muted-foreground">Drill complete.</p>
-          )}
+          ) : null}
         </div>
       </article>
     </DrillShell>

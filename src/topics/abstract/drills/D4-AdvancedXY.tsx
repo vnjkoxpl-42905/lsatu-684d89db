@@ -2,6 +2,10 @@ import { useState } from "react";
 import d4Data from "./data/d4-advanced-xy.json";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
+import {
+  SelfRateAfterReveal,
+  type SelfRateChoice,
+} from "../components/SelfRateAfterReveal";
 
 interface D4MC {
   id: string;
@@ -28,12 +32,14 @@ export function D4AdvancedXY() {
   const [selected, setSelected] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [rated, setRated] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
 
   const reset = () => {
     setSelected(null);
     setDraft("");
     setSubmitted(false);
+    setRated(false);
     setStartedAt(Date.now());
   };
 
@@ -55,17 +61,22 @@ export function D4AdvancedXY() {
         timeMs: Date.now() - startedAt,
       });
     } else {
+      // Reverse-engineer: defer recordAttempt to handleRate (self-rate after reveal).
       setSubmitted(true);
-      // Reverse-engineer questions are reveal-after; counted attempted, not graded.
-      await drill.recordAttempt({
-        drillId: "d4",
-        questionId: q.id,
-        questionIndex: drill.questionIndex,
-        correct: draft.trim().length >= 20,
-        selectedAnswer: draft,
-        timeMs: Date.now() - startedAt,
-      });
     }
+  };
+
+  const handleRate = async (rating: SelfRateChoice) => {
+    if (q.type !== "reverse-engineer") return;
+    setRated(true);
+    await drill.recordAttempt({
+      drillId: "d4",
+      questionId: q.id,
+      questionIndex: drill.questionIndex,
+      correct: rating !== "again",
+      selectedAnswer: draft,
+      timeMs: Date.now() - startedAt,
+    });
   };
 
   return (
@@ -192,6 +203,12 @@ export function D4AdvancedXY() {
               </p>
             </aside>
           ) : null}
+          {submitted && !rated ? (
+            <SelfRateAfterReveal
+              onRate={handleRate}
+              prompt="How did your example land?"
+            />
+          ) : null}
           <div className="flex justify-end gap-2">
             {!submitted ? (
               <button
@@ -202,7 +219,7 @@ export function D4AdvancedXY() {
               >
                 Reveal model answer
               </button>
-            ) : drill.questionIndex < drill.total - 1 ? (
+            ) : rated && drill.questionIndex < drill.total - 1 ? (
               <button
                 type="button"
                 onClick={handleNext}
@@ -210,9 +227,9 @@ export function D4AdvancedXY() {
               >
                 Next
               </button>
-            ) : (
+            ) : rated ? (
               <p className="text-sm text-muted-foreground">Drill complete.</p>
-            )}
+            ) : null}
           </div>
         </article>
       )}

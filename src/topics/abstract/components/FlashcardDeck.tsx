@@ -193,7 +193,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("again")}
                 disabled={!flipped}
-                className="min-h-11 min-w-11 rounded-md border border-state-incorrect/60 px-3 py-1 text-sm text-state-incorrect disabled:opacity-40"
+                className="min-h-11 min-w-11 rounded-md border border-state-again/60 px-3 py-1 text-sm text-state-again disabled:opacity-40"
               >
                 Again
               </button>
@@ -209,7 +209,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("easy")}
                 disabled={!flipped}
-                className="min-h-11 min-w-11 rounded-md border border-state-correct/60 px-3 py-1 text-sm text-state-correct disabled:opacity-40"
+                className="min-h-11 min-w-11 rounded-md border border-state-easy/60 px-3 py-1 text-sm text-state-easy disabled:opacity-40"
               >
                 Easy
               </button>
