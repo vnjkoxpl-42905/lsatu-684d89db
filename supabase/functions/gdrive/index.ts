@@ -3,9 +3,38 @@
 //   GET  ?action=list&q=<search>&pageToken=<token>
 //   GET  ?action=meta&id=<fileId>
 //   GET  ?action=download&id=<fileId>&format=<pdf|docx|xlsx|pptx|odt|ods|odp|rtf|txt|html|epub|csv|tsv|svg|png|jpeg>
+import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
+
+async function requireAdmin(req: Request): Promise<Response | null> {
+  const authHeader = req.headers.get("Authorization") ?? "";
+  if (!authHeader.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  const { data: userRes } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+  const user = userRes?.user;
+  if (!user) {
+    return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  const { data: roleRow } = await supabase.from("user_roles")
+    .select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+  if (!roleRow) {
+    return new Response(JSON.stringify({ ok: false, error: "forbidden" }), {
+      status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  return null;
+}
 
 // Per-Google-native-type export options. First entry is the default.
 // Each entry: [shortFormat, mimeType, fileExtension]
@@ -74,6 +103,8 @@ async function safeFetchJson(url: string, init?: RequestInit) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const authFail = await requireAdmin(req);
+  if (authFail) return authFail;
   try {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
