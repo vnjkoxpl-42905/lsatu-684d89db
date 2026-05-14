@@ -285,4 +285,49 @@ In other words, Abstract is the foundation room. Most LR topics build a wall on 
 
 So treat the drills here as foundational practice, not warm-up. The minute you can strip a stimulus into slots in under 30 seconds and decode any abstract answer choice in under 15, you've earned every chapter that comes next.
 
+---
+
+## Section 4: The Art of Matching Keywords
+
+### Identifying Incorrect Descriptions (Art of Matching the Keywords)
+
+For questions that require identifying features of the stimulus' argument (Role, Method, Flaw), it is crucial to spot answer choices that describe something that did not happen in the argument. Here's how to approach these questions:
+
+- **Watchful Eye:** Carefully read the answer choices to ensure they accurately reflect the argument.
+- **Deviations from the Stimulus:** Eliminate choices that describe events or actions not present in the stimulus.
+- **Question Types:** This strategy is especially useful for Role, Method, and Flaw questions. However, keep in mind that a lot in Strengthen/Weaken questions might have correct answers that introduce new elements not directly stated in the stimulus.
+
+### Two-Step Framework
+
+1. Having a clear grasp of the premises, conclusions, and assumptions within an argument is crucial to success on Method questions. **(S : Structure)**
+2. We also need to have a clear and discrete understanding of the answer choices. Know what each keyword is referring to, and don't choose an answer choice if you can't match it up with the stimulus! **(K : Keywords)**
+
+> **IDENTIFY (S)TRUCTURE → (K)EYWORDS**
+
+### How To Guide (use this with additional keywords for the question)
+
+1. **Read the Answer Choice Over:** Extract any keywords that stand out to you.
+2. **Analyze Keywords in LSAT Context:** Think about what these keywords mean in a LSAT-specific setting.
+3. **Check Keyword Relevance:**
+   - If it's a noun: Ask yourself, does this concept appear in the stimulus?
+   - If it's a verb: Ask yourself, does the author do this in the argument?
+   - If it's an adjective/adverb: Does it correctly describe the tone or strength of the author's argument?
+4. **Match with Stimulus Structure:** Read the answer choice again and see if you can match up what the answer is describing with the stimulus' structure.
+5. **Practical Approach:** Don't be afraid to go back and forth between the answer choice and the stimulus. The more you practice this skill, the easier it will become.
+6. **Beware of Traps:** A common trick employed by the test authors is to provide an almost perfect answer with a glaring error, usually due to one single word. This word is placed right next to the correct answer, which is worded vaguely. This is a trap that you will encounter repeatedly throughout the test preparation.
+
+> We need to have a clear and discrete understanding of the answer choices. Know what each keyword is referring to, and don't choose an answer choice if you can't match it up with the stimulus!
+
+### Definitions of Other Keywords
+
+There is a difference between assumptions and implications. An assumption, as we spoke about in class, is an unstated premise or intermediate conclusion linking the supporting information and the main conclusion of an argument.
+
+**Assumption:** an unstated premise (sometimes answer choices will say sneaky things like IMPLICIT PREMISE, which is another way of saying assumption).
+
+**Implication:** something that will follow if you accept the truth of the conclusion. An unstated inference if you accept the truth of the argument.
+
+Inferences and implications play a big role in MBT and MSS questions.
+
+**Logical Contradiction:** a state and its denial existing simultaneously.
+
 Onward.
