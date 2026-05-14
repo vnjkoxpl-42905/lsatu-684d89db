@@ -27,12 +27,26 @@ import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
 const AbstractTopicPage = React.lazy(() => import("./topics/abstract/AbstractTopicPage"));
-import { ChapterLanding as AbstractChapterLanding } from "./topics/abstract/ChapterLanding";
-import { SlotFiller as AbstractSlotFiller } from "./topics/abstract/components/SlotFiller";
-import { FlashcardDeck as AbstractFlashcardDeck } from "./topics/abstract/components/FlashcardDeck";
-import { ReferenceCardView as AbstractReferenceCardView } from "./topics/abstract/components/ReferenceCardView";
-import { DrillRouter as AbstractDrillRouter } from "./topics/abstract/drills/DrillRouter";
-import { MethodsLibrary as AbstractMethodsLibrary } from "./topics/abstract/MethodsLibrary";
+const AbstractChapterLanding = React.lazy(() =>
+  import("./topics/abstract/ChapterLanding").then((m) => ({ default: m.ChapterLanding })),
+);
+const AbstractSlotFiller = React.lazy(() =>
+  import("./topics/abstract/components/SlotFiller").then((m) => ({ default: m.SlotFiller })),
+);
+const AbstractFlashcardDeck = React.lazy(() =>
+  import("./topics/abstract/components/FlashcardDeck").then((m) => ({ default: m.FlashcardDeck })),
+);
+const AbstractReferenceCardView = React.lazy(() =>
+  import("./topics/abstract/components/ReferenceCardView").then((m) => ({
+    default: m.ReferenceCardView,
+  })),
+);
+const AbstractDrillRouter = React.lazy(() =>
+  import("./topics/abstract/drills/DrillRouter").then((m) => ({ default: m.DrillRouter })),
+);
+const AbstractMethodsLibrary = React.lazy(() =>
+  import("./topics/abstract/MethodsLibrary").then((m) => ({ default: m.MethodsLibrary })),
+);
 
 import Schedule from "./pages/Schedule";
 import Bootcamps from "./pages/Bootcamps";
