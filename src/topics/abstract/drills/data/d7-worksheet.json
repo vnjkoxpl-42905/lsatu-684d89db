@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "source": "a28bfb8e-4531-471b-b3ab-a85e48ea4d8e__Keyword_Abstraction__Worksheet.pdf",
+  "questions": [
+    {
+      "id": "d7-q01",
+      "number": 1,
+      "type": "free-text",
+      "prompt": "What is the difference between an Analogy and an Example?",
+      "walkthrough": "Both are specific cases used to illuminate a more general idea, but they work in opposite directions. An Example is a specific case that falls under a general idea: tomatoes are an example of fruit. An Analogy is a different specific case that resembles the case at hand in some general way: comparing a particle of radiation to a bullet shot from a gun lets you visualise one process through another. Examples sit inside the category; analogies sit alongside it. On the LSAT, illustrations are examples; analogies are cross-domain comparisons used to clarify."
+    },
+    {
+      "id": "d7-q02",
+      "number": 2,
+      "type": "xy-map",
+      "prompt": "Which part of this answer refers to the Conclusion, which part refers to the Evidence?",
+      "phrase": "using X to support Y",
+      "answer": {
+        "conclusion": "Y",
+        "evidence": "X"
+      },
+      "explanation": "The directional word is \"to support.\" Forward-pointing, so it points at the conclusion. Whatever follows \"to support\" is the conclusion (Y). Whatever sits before it is the evidence (X)."
+    },
+    {
+      "id": "d7-q03",
+      "number": 3,
+      "type": "xy-map",
+      "prompt": "Which part of this answer refers to the Conclusion, which part refers to the Evidence?",
+      "phrase": "appeals to X in order to Y",
+      "answer": {
+        "conclusion": "Y",
+        "evidence": "X"
+      },
+      "explanation": "\"In order to\" is forward-pointing, so whatever follows it is the conclusion (Y). The thing appealed to (X) is the evidence."
+    },
+    {
+      "id": "d7-q04",
+      "number": 4,
+      "type": "xy-map",
+      "prompt": "Which part of this answer refers to the Conclusion, which part refers to the Evidence?",
+      "phrase": "infers that X on the grounds that Y",
+      "answer": {
+        "conclusion": "X",
+        "evidence": "Y"
+      },
+      "explanation": "\"On the grounds that\" is backward-pointing to evidence, so whatever follows it (Y) is the evidence. X is the inferred conclusion."
+    },
+    {
+      "id": "d7-q05",
+      "number": 5,
+      "type": "xy-map",
+      "prompt": "Which part of this answer refers to the Conclusion, which part refers to the Evidence?",
+      "phrase": "doing X by doing Y",
+      "answer": {
+        "conclusion": "X",
+        "evidence": "Y"
+      },
+      "explanation": "\"By\" is backward-pointing to the tactic that accomplishes the move. Y is the specific tactic (evidence). X is the broader move being accomplished (conclusion)."
+    },
+    {
+      "id": "d7-q06",
+      "number": 6,
+      "type": "free-text",
+      "prompt": "What is another name for a Supported Premise?",
+      "walkthrough": "Intermediate Conclusion (also called Subsidiary Conclusion). A Supported Premise functions as both a premise (it supports the main conclusion) and a sub-conclusion (it is supported by something else inside the argument). Two labels, same slot."
+    },
+    {
+      "id": "d7-q07",
+      "number": 7,
+      "type": "free-text",
+      "prompt": "What is a 'claim'?",
+      "walkthrough": "A claim is a statement being asserted. Typically a claim is a conclusion (the author asserts it as the point of the argument), but it can also be the conclusion attributed to an opposing view, or in some cases a premise being put forward for acceptance. The defining feature is the act of asserting, not the slot. If a sentence is putting a position on the table, it is a claim."
+    },
+    {
+      "id": "d7-q08",
+      "number": 8,
+      "type": "xy-map",
+      "prompt": "Which part of this answer refers to the Conclusion, which part refers to the Evidence?",
+      "phrase": "concludes, from the claim that X, that Y",
+      "answer": {
+        "conclusion": "Y",
+        "evidence": "X"
+      },
+      "explanation": "\"From\" is backward-pointing to the starting claim, so X (the claim concluded from) is the evidence. Y is the conclusion drawn from it."
+    },
+    {
+      "id": "d7-q09",
+      "number": 9,
+      "type": "free-text",
+      "prompt": "How are these terms related?\n\nExplanation for a Phenomenon : Hypothesis",
+      "walkthrough": "They are the same kind of thing pitched at different confidence levels. A Phenomenon is the effect side of a cause-effect pair, the thing that needs explaining. An Explanation for that Phenomenon is the proposed cause. A Hypothesis is also a proposed cause, but the LSAT uses \"hypothesis\" specifically to flag a tentative or testable causal account. Every hypothesis on the LSAT is an explanation for some phenomenon. The hypothesis label adds the connotation of a guess waiting on evidence."
+    },
+    {
+      "id": "d7-q10",
+      "number": 10,
+      "type": "free-text",
+      "prompt": "What is the difference between a Counterexample and an Alternate Explanation?",
+      "walkthrough": "They attack different things. A Counterexample attacks a general claim by producing one specific case that does not fit it: if someone says all swans are white and you show them a black swan, that is a counterexample. An Alternate Explanation attacks a causal claim by proposing a different cause for the same effect: if someone says X caused Y and you say maybe Z caused Y instead, that is an alternate explanation. Counterexamples target generalisations. Alternate explanations target causal arguments."
+    }
+  ]
+}

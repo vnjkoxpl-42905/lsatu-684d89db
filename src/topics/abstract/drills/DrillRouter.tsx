@@ -4,6 +4,7 @@ import { D2IndicatorClassification } from "./D2-IndicatorClassification";
 import { D3BasicXY } from "./D3-BasicXY";
 import { D4AdvancedXY } from "./D4-AdvancedXY";
 import { D5JargonDecoding } from "./D5-JargonDecoding";
+import { D7KeywordWorksheet } from "./D7-KeywordWorksheet";
 
 export function DrillRouter() {
   const { drillId } = useParams<{ drillId: string }>();
@@ -18,6 +19,8 @@ export function DrillRouter() {
       return <D4AdvancedXY />;
     case "d5":
       return <D5JargonDecoding />;
+    case "d7":
+      return <D7KeywordWorksheet />;
     default:
       return <Navigate to="/topics/abstract/drills/d1" replace />;
   }

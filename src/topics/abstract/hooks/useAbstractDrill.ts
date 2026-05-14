@@ -5,12 +5,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useClassId } from "@/hooks/useClassId";
 import type { AttemptResult } from "../types";
 
-// useAbstractDrill: lightweight session + persistence wrapper for D1-D5.
-// Inlines the { ok, error } pattern from audit F2.2 since the shared
-// useAttemptPersistence hook does not yet exist (audit F2.5).
+// useAbstractDrill: lightweight session + persistence wrapper for D1-D5
+// (v1.0) and D7-D8 (v1.1). Inlines the { ok, error } pattern from audit F2.2
+// since the shared useAttemptPersistence hook does not yet exist (audit F2.5).
+
+export type AbstractDrillId = "d1" | "d2" | "d3" | "d4" | "d5" | "d7" | "d8";
 
 export interface AbstractDrillAttempt {
-  drillId: "d1" | "d2" | "d3" | "d4" | "d5";
+  drillId: AbstractDrillId;
   questionId: string;
   questionIndex: number;
   correct: boolean;
