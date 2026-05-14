@@ -103,6 +103,8 @@ async function safeFetchJson(url: string, init?: RequestInit) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const authFail = await requireAdmin(req);
+  if (authFail) return authFail;
   try {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
