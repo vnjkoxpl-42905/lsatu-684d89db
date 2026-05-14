@@ -1,0 +1,21 @@
+/* Topic-scoped focus-visible ring for the Abstract bootcamp surface.
+   Applies a single, consistent focus indicator to every interactive
+   element rendered inside `.topic-abstract`, so per-component fixes
+   no longer need bespoke focus-visible: classes. WCAG 2.4.7 (AA). */
+
+.topic-abstract :is(button, a, [role="button"], summary):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px hsl(var(--background)),
+    0 0 0 4px hsl(var(--ring));
+  border-radius: inherit;
+}
+
+/* Form fields and the NavLink anchors should keep the same ring even
+   when their parent uses a different border-radius. */
+.topic-abstract :is(input, textarea, select):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px hsl(var(--background)),
+    0 0 0 4px hsl(var(--ring));
+}

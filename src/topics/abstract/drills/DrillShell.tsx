@@ -39,17 +39,20 @@ export function DrillShell({
             <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
-        <div
-          className="flex items-center gap-2"
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-          aria-label={`Question ${Math.min(questionIndex + 1, total)} of ${total}, accuracy ${accPct} percent`}
-        >
-          <span className="rounded-full bg-secondary px-3 py-1 text-xs">
+        <div className="flex items-center gap-2">
+          <span
+            className="rounded-full bg-secondary px-3 py-1 text-xs"
+            aria-label={`Question ${Math.min(questionIndex + 1, total)} of ${total}`}
+          >
             {Math.min(questionIndex + 1, total)} / {total}
           </span>
-          <span className="rounded-full bg-secondary px-3 py-1 text-xs">
+          <span
+            className="rounded-full bg-secondary px-3 py-1 text-xs"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-label={`Accuracy ${accPct} percent, ${correct} of ${attempted} correct`}
+          >
             {accPct}% ({correct}/{attempted})
           </span>
         </div>
