@@ -3,12 +3,15 @@ import { ABSTRACT_REFERENCE_CARD_IDS } from "./ReferenceCardView";
 
 const NAV = [
   { to: "/topics/abstract", label: "Chapter", exact: true },
+  { to: "/topics/abstract/methods", label: "Methods Library" },
   { to: "/topics/abstract/playground", label: "Playground" },
   { to: "/topics/abstract/drills/d1", label: "D1 · Strip-Down" },
   { to: "/topics/abstract/drills/d2", label: "D2 · Indicators" },
   { to: "/topics/abstract/drills/d3", label: "D3 · Basic X/Y" },
   { to: "/topics/abstract/drills/d4", label: "D4 · Advanced X/Y" },
   { to: "/topics/abstract/drills/d5", label: "D5 · Jargon" },
+  { to: "/topics/abstract/drills/d7", label: "D7 · Keyword Worksheet" },
+  { to: "/topics/abstract/drills/d8", label: "D8 · Stem Translation" },
   { to: "/topics/abstract/flashcards", label: "Flashcards" },
 ];
 
