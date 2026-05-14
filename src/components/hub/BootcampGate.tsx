@@ -9,11 +9,27 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
   /**
-   * The route prefix for this bootcamp, e.g. "/bootcamp/principle-flaw".
-   * Matched against either `metadata_json.bootcamp_id` (last segment) or
-   * `source_id` on a classroom_items row of type bootcamp_module.
+   * The route prefix for this bootcamp, e.g. "/bootcamp/principle-flaw" or
+   * "/topics/abstract". Matched against either `metadata_json.bootcamp_id`
+   * (slug, see `bootcampIdOverride`) or `source_id` on a classroom_items
+   * row of type bootcamp_module.
    */
   routePath: string;
+  /**
+   * Override the slug extracted from `routePath`. Default behavior strips a
+   * leading "/bootcamp/" and trailing path segments, which works for the
+   * /bootcamp/* family. New surfaces under /topics/* should pass this
+   * explicitly (e.g. routePath "/topics/abstract", bootcampIdOverride
+   * "abstraction") so classroom_items rows assigned with the legacy slug
+   * still resolve to the same gate.
+   */
+  bootcampIdOverride?: string;
+  /**
+   * Additional route paths to accept as `source_id` matches. Used when a
+   * topic has moved (legacy /bootcamp/abstraction → /topics/abstract). The
+   * current `routePath` is always matched.
+   */
+  legacyRoutePaths?: string[];
   /**
    * The student-facing display name, used only by the locked state.
    */
@@ -29,14 +45,23 @@ interface Props {
  * Direct URL hits go through this gate, so a student typing
  * /bootcamp/principle-flaw won't see anything they weren't assigned.
  */
-export default function BootcampGate({ routePath, title, children }: Props) {
+export default function BootcampGate({
+  routePath,
+  bootcampIdOverride,
+  legacyRoutePaths,
+  title,
+  children,
+}: Props) {
   const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
   const navigate = useNavigate();
-  const bootcampId = routePath.replace(/^\/bootcamp\//, '').replace(/\/.*$/, '');
+  const bootcampId =
+    bootcampIdOverride ??
+    routePath.replace(/^\/bootcamp\//, '').replace(/\/.*$/, '');
+  const acceptedRoutePaths = [routePath, ...(legacyRoutePaths ?? [])];
 
   const { data: assigned, isLoading } = useQuery<boolean>({
-    queryKey: ['bootcamp-gate', user?.id, routePath],
+    queryKey: ['bootcamp-gate', user?.id, routePath, bootcampId],
     enabled: !!user && !is_admin && !permsLoading,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -51,7 +76,7 @@ export default function BootcampGate({ routePath, title, children }: Props) {
         metadata_json: Record<string, unknown> | null;
       }>;
       return rows.some((r) => {
-        if (r.source_id === routePath) return true;
+        if (r.source_id && acceptedRoutePaths.includes(r.source_id)) return true;
         const mid = r.metadata_json?.bootcamp_id;
         return mid === bootcampId;
       });

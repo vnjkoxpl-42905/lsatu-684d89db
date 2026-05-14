@@ -19,24 +19,24 @@ function IL({ children }: { children: React.ReactNode }) {
 
 const BOOTCAMPS = [
   {
-    id: 'causation-station',
-    title: 'Causation Station',
-    emoji: '⚗️',
-    description:
-      'A focused bootcamp to master causal reasoning — one of the most frequently tested skills on the LSAT. Train across 4 progressive modules: spot causation vs. correlation, identify alternate explanations, test relationships, and apply skills to real LSAT questions.',
-    stats: ['4 Modules', '76 Questions', 'Flashcards + Journal'],
-    route: '/bootcamp/causation-station',
-    accentClass: 'bg-sky-500/10 border-sky-500/20',
-  },
-  {
     id: 'abstraction',
     title: 'Abstract',
     emoji: '🧬',
     description:
-      'Master the abstract language of LSAT Role questions. Module 1 breaks down 15 dense answer-choice stems into plain English with keyword coaching. Module 2 walks you through 6 of the hardest PT Role questions with full structural maps and answer-choice analysis.',
-    stats: ['2 Modules', '15 Exercises', '7 Questions'],
-    route: '/bootcamp/abstraction',
+      'The bilingual fluency foundation. Strip-Down turns dense LR stimuli into a clean 7-slot skeleton. Decode translates LSAT-ese answer choices back into plain English. The skill the other 20 bootcamps lean on, taught with 5 drills, 68 flashcards, a drag-and-drop playground, and 8 procedural reference cards.',
+    stats: ['Chapter + 5 Drills', '68 Flashcards', 'Strip-Down Playground'],
+    route: '/topics/abstract',
     accentClass: 'bg-amber-500/10 border-amber-500/20',
+  },
+  {
+    id: 'causation-station',
+    title: 'Causation Station',
+    emoji: '⚗️',
+    description:
+      'A focused bootcamp to master causal reasoning, one of the most frequently tested skills on the LSAT. Train across 4 progressive modules: spot causation vs. correlation, identify alternate explanations, test relationships, and apply skills to real LSAT questions.',
+    stats: ['4 Modules', '76 Questions', 'Flashcards + Journal'],
+    route: '/bootcamp/causation-station',
+    accentClass: 'bg-sky-500/10 border-sky-500/20',
   },
   {
     id: 'intro-to-lr',
@@ -53,7 +53,7 @@ const BOOTCAMPS = [
     title: 'Principle & Flaw',
     emoji: '⚖️',
     description:
-      'A 14-day, voice-led program covering Flaw (Levels 1–4), Principle Strengthen, Strengthen Application, Principle Conform, and Parallel Flaw bridging — with daily question sets pulled live from the LSAT U question bank, a Learn hub, flashcards with SRS, and a structured Review Log.',
+      'A 14-day, voice-led program covering Flaw (Levels 1 through 4), Principle Strengthen, Strengthen Application, Principle Conform, and Parallel Flaw bridging, with daily question sets pulled live from the LSAT U question bank, a Learn hub, flashcards with SRS, and a structured Review Log.',
     stats: ['14-Day Plan', '47 PT Questions', 'Flashcards + Review Log'],
     route: '/bootcamp/principle-flaw',
     accentClass: 'bg-emerald-500/10 border-emerald-500/20',
@@ -63,7 +63,7 @@ const BOOTCAMPS = [
     title: 'Flaw & Famous Flaws',
     emoji: '🎭',
     description:
-      'A focused bootcamp on identifying and naming logical flaws. Six days of flashcards, flaw-stack drills, mindmaps, language protocols, and spaced-repetition review — covering 18 canonical flaw types with real LSAT question practice.',
+      'A focused bootcamp on identifying and naming logical flaws. Six days of flashcards, flaw-stack drills, mindmaps, language protocols, and spaced-repetition review covering 18 canonical flaw types with real LSAT question practice.',
     stats: ['6 Days', '18 Flaw Types', 'Flashcards + SRS'],
     route: '/bootcamp/fallacy-flaw',
     accentClass: 'bg-teal-500/10 border-teal-500/20',

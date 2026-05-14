@@ -26,7 +26,6 @@ import SettingsLayout from "./pages/SettingsLayout";
 import Classroom from "./pages/Classroom";
 import CausationStation from "./pages/CausationStation";
 
-import Abstraction from "./pages/Abstraction";
 const AbstractTopicPage = React.lazy(() => import("./topics/abstract/AbstractTopicPage"));
 import { ChapterLanding as AbstractChapterLanding } from "./topics/abstract/ChapterLanding";
 import { SlotFiller as AbstractSlotFiller } from "./topics/abstract/components/SlotFiller";
@@ -115,17 +114,17 @@ const App = () => {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unsubscribe" element={<React.Suspense fallback={null}><Unsubscribe /></React.Suspense>} />
 
-            {/* Onboarding — username setup for new users */}
+            {/* Onboarding. Username setup for new users. */}
             <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Mainhub — needs QuestionBankProvider for the FIND node's picker */}
+            {/* Mainhub. Needs QuestionBankProvider for the FIND node's picker. */}
             <Route path="/mainhub" element={
               <QuestionBankProvider><AcademyMainhub /></QuestionBankProvider>
             } />
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
             <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
 
-            {/* Admin Dashboard — no question bank needed */}
+            {/* Admin Dashboard. No question bank needed. */}
             <Route path="/admin" element={
               <AdminErrorBoundary routeLabel="/admin"><AdminDashboard /></AdminErrorBoundary>
             } />
@@ -205,7 +204,7 @@ const App = () => {
               </React.Suspense>
             } />
 
-            {/* Inbox — messaging, no question bank needed */}
+            {/* Inbox. Messaging, no question bank needed. */}
             <Route path="/inbox" element={
               <ProtectedRoute flag="has_chat_access"><Inbox /></ProtectedRoute>
             } />
@@ -378,24 +377,27 @@ const App = () => {
                       </BootcampGate>
                     </ProtectedRoute>
                   } />
-                  {/* Retired bootcamp slugs — bounce back to the bootcamp index so the
+                  {/* Retired bootcamp slugs. Bounce back to the bootcamp index so the
                       old "Structure" name can never be confused with the active bootcamp. */}
                   <Route path="/bootcamp/structure" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure/*" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure-v2" element={<Navigate to="/bootcamps" replace />} />
                   <Route path="/bootcamp/structure-v2/*" element={<Navigate to="/bootcamps" replace />} />
-                  <Route path="/bootcamp/abstraction" element={
-                    <ProtectedRoute flag="has_bootcamp_access">
-                      <BootcampGate routePath="/bootcamp/abstraction" title="Abstract">
-                        <Abstraction />
-                      </BootcampGate>
-                    </ProtectedRoute>
-                  } />
+                  {/* Retired legacy Abstraction slug. New v2 topic lives at /topics/abstract. */}
+                  <Route path="/bootcamp/abstraction" element={<Navigate to="/topics/abstract" replace />} />
+                  <Route path="/bootcamp/abstraction/*" element={<Navigate to="/topics/abstract" replace />} />
                   <Route path="/topics/abstract" element={
                     <ProtectedRoute flag="has_bootcamp_access">
-                      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
-                        <AbstractTopicPage />
-                      </React.Suspense>
+                      <BootcampGate
+                        routePath="/topics/abstract"
+                        bootcampIdOverride="abstraction"
+                        legacyRoutePaths={["/bootcamp/abstraction"]}
+                        title="Abstract"
+                      >
+                        <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                          <AbstractTopicPage />
+                        </React.Suspense>
+                      </BootcampGate>
                     </ProtectedRoute>
                   }>
                     <Route index element={<AbstractChapterLanding />} />
