@@ -81,6 +81,17 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
         </p>
       </div>
 
+      <div className="px-3 md:px-4 pt-3 md:pt-4">
+        <Link
+          to="/foyer"
+          onClick={() => onNavigate?.()}
+          className="w-full min-h-[44px] flex items-center gap-2 px-4 py-2.5 border-2 border-brutal-ink bg-brutal-paper text-xs font-black uppercase tracking-tight hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)] transition-shadow"
+        >
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          <span>Return to Main Menu</span>
+        </Link>
+      </div>
+
       <ul className="flex-1 p-3 md:p-4 space-y-2 md:space-y-3 overflow-y-auto custom-scrollbar list-none m-0">
         {NAV_ITEMS.map((item) => {
           const isActive = currentView === item.id;
