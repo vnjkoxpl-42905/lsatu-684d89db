@@ -1,0 +1,106 @@
+/* Brutalist tokens and utilities for the Abstract bootcamp.
+ *
+ * Scoped under `.topic-abstract` so the cream paper background, hard
+ * 4px borders, and color blocks live only inside /topics/abstract and do
+ * not leak into other LSATU surfaces (which remain dark mode).
+ *
+ * Architecture exception per _BUILD_SPEC_v2.0.md: drill mode is dark by
+ * default; Abstract is light brutalist.
+ */
+
+.topic-abstract {
+  /* Neo-brutalist palette. Mirrors the new-bootcamp Tailwind 4 @theme block
+   * but expressed as plain custom properties so we can compile with
+   * Tailwind 3.4 and reference via bg-[var(--brutal-yellow)] or the
+   * brutal-* color classes defined in tailwind.config.js theme.extend.
+   */
+  --brutal-yellow: #FEFF00;
+  --brutal-cyan: #00F0FF;
+  --brutal-pink: #FF00F5;
+  --brutal-green: #00FF00;
+  --brutal-red: #FF3131;
+  --brutal-bg: #F3F3F3;
+  --brutal-ink: #000000;
+
+  /* Color-mirrors keyed to the names the new-bootcamp source uses
+   * (`--color-brutal-*`) so we don't have to rewrite every inline style
+   * during the port. */
+  --color-brutal-yellow: var(--brutal-yellow);
+  --color-brutal-cyan: var(--brutal-cyan);
+  --color-brutal-pink: var(--brutal-pink);
+  --color-brutal-green: var(--brutal-green);
+  --color-brutal-red: var(--brutal-red);
+  --color-brutal-bg: var(--brutal-bg);
+  --color-brutal-ink: var(--brutal-ink);
+
+  background-color: var(--brutal-bg);
+  color: var(--brutal-ink);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+.topic-abstract h1,
+.topic-abstract h2,
+.topic-abstract h3,
+.topic-abstract h4,
+.topic-abstract h5,
+.topic-abstract h6 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+.topic-abstract ::selection {
+  background: var(--brutal-ink);
+  color: var(--brutal-yellow);
+}
+
+/* Utility replacements for the new-bootcamp Tailwind 4 @utility blocks. */
+.topic-abstract .brutal-shadow,
+.topic-abstract\:brutal-shadow {
+  box-shadow: 4px 4px 0px 0px #000;
+}
+
+.topic-abstract .brutal-shadow-lg {
+  box-shadow: 8px 8px 0px 0px #000;
+}
+
+.topic-abstract .brutal-shadow-sm {
+  box-shadow: 2px 2px 0px 0px #000;
+}
+
+.topic-abstract .brutal-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000;
+}
+
+.topic-abstract .brutal-shadow-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #000;
+}
+
+.topic-abstract .brutal-grid {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.topic-abstract .brutal-dotted {
+  background-image: radial-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-track {
+  background-color: var(--brutal-bg);
+  border-left: 2px solid var(--brutal-ink);
+}
+
+.topic-abstract .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--brutal-ink);
+  border: 2px solid var(--brutal-bg);
+}
