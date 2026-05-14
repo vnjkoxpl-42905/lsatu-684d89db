@@ -368,6 +368,33 @@ export type Database = {
         }
         Relationships: []
       }
+      chapter_progress: {
+        Row: {
+          first_viewed_at: string
+          last_viewed_at: string
+          section_id: string
+          topic_tag: string
+          user_id: string
+          view_count: number
+        }
+        Insert: {
+          first_viewed_at?: string
+          last_viewed_at?: string
+          section_id: string
+          topic_tag: string
+          user_id: string
+          view_count?: number
+        }
+        Update: {
+          first_viewed_at?: string
+          last_viewed_at?: string
+          section_id?: string
+          topic_tag?: string
+          user_id?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
       classroom_items: {
         Row: {
           class_id: string | null
@@ -823,6 +850,42 @@ export type Database = {
           qtype?: string
           section?: number
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      flashcard_reviews: {
+        Row: {
+          card_id: string
+          due_at: string
+          id: string
+          interval_days: number
+          rating: string
+          review_count: number
+          reviewed_at: string
+          topic_tag: string
+          user_id: string
+        }
+        Insert: {
+          card_id: string
+          due_at: string
+          id?: string
+          interval_days: number
+          rating: string
+          review_count?: number
+          reviewed_at?: string
+          topic_tag: string
+          user_id: string
+        }
+        Update: {
+          card_id?: string
+          due_at?: string
+          id?: string
+          interval_days?: number
+          rating?: string
+          review_count?: number
+          reviewed_at?: string
+          topic_tag?: string
+          user_id?: string
         }
         Relationships: []
       }
