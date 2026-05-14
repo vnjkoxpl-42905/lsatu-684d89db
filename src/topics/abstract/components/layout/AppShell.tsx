@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Sidebar from "./Sidebar";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useApp } from "../../store/AppContext";
 
@@ -90,22 +90,15 @@ export default function AppShell({ children }: { children: ReactNode }) {
           <span className="w-11" aria-hidden="true" />
         </div>
 
-        <div className="mx-auto w-full h-full max-w-6xl px-4 sm:px-6 md:px-8 py-6 sm:py-8 pb-32">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentView}
-              initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: prefersReducedMotion ? 0 : -20 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.28,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="h-full"
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+        {/* View transition: keep it cheap. A keyed div lets React swap subtrees
+         * cleanly. Animating the wrapper with framer-motion would risk a
+         * stuck-opacity render path on slow networks and adds nothing to the
+         * brutalist aesthetic. */}
+        <div
+          key={currentView}
+          className="mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-8 py-6 sm:py-8 pb-32"
+        >
+          {children}
         </div>
       </main>
     </div>

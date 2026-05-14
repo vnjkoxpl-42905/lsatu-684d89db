@@ -929,13 +929,7 @@ export default function LessonReader() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="max-w-[720px] mx-auto z-10 relative"
-    >
+    <div className="max-w-[720px] mx-auto z-10 relative">
       <div className="flex items-center justify-between mb-12">
         <div className="flex flex-col">
           <span className="text-[10px] font-black text-white bg-brutal-ink px-2 py-0.5 rotate-[-2deg] brutal-shadow-sm uppercase tracking-widest w-fit">In Progress</span>
@@ -1006,7 +1000,7 @@ export default function LessonReader() {
           )}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
