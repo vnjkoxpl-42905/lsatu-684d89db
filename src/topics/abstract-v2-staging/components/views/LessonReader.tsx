@@ -803,7 +803,7 @@ export default function LessonReader() {
             <div className="max-w-[760px] mx-auto flex flex-col items-center text-center gap-4">
               <p className="opacity-50 text-xs font-black uppercase tracking-[0.2em]">BOOTCAMP DECODE CHALLENGE</p>
               <h2 className="text-5xl font-black uppercase italic tracking-tighter leading-none">The Decoding Gauntlet</h2>
-              <p className="max-w-xl">You must decode all 15 abstract choices to continue. Break them apart. Translate them. Force them to prove themselves.</p>
+              <p className="max-w-xl">You must decode all 18 abstract choices to continue. Break them apart. Translate them. Force them to prove themselves.</p>
             </div>
             
             <div className="max-w-[760px] mx-auto bg-white border-4 border-brutal-ink p-10 brutal-shadow relative group">
@@ -840,11 +840,11 @@ export default function LessonReader() {
               <h2 className="text-5xl font-black uppercase italic tracking-tighter leading-none">De-abstractifying Drill</h2>
               <p className="opacity-70">Apply the method to a real abstract choice. No guessing. Just matching.</p>
             </div>
-            
+
             <div className="bg-white border-4 border-brutal-ink p-12 brutal-shadow-lg relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-12 h-12 bg-brutal-ink flex items-center justify-center text-white font-black italic">!</div>
               <h3 className="text-[12px] text-brutal-ink font-black uppercase tracking-widest mb-6 bg-brutal-yellow inline-block px-2 border-2 border-brutal-ink">Stimulus Segment</h3>
-              
+
               <div className="bg-brutal-ink/5 border-l-8 border-brutal-ink p-8 mb-8 group-hover:bg-brutal-cyan/10 transition-colors">
                 <p className="text-[26px] text-brutal-ink font-black uppercase tracking-tighter leading-none italic">
                   "It is a hypothesis that the argument attempts to undermine by calling into question the sufficiency of the evidence."
@@ -853,6 +853,73 @@ export default function LessonReader() {
 
               <DecodePracticeCard />
             </div>
+          </div>
+        );
+
+      case 'master_keys':
+        return (
+          <div className="space-y-10 text-brutal-ink font-bold text-[18px] leading-tight max-w-[760px] mx-auto">
+            <Callout title="Three Master Keys">
+              Three words appear over and over inside abstract LR answer choices. Strip them out and the choice usually decodes itself.
+            </Callout>
+            <RuleCard>
+              EXPLANATION = CAUSE. HYPOTHESIS = POTENTIAL CAUSE. PRESUPPOSE = REQUIRE.
+            </RuleCard>
+            <MethodStep step={1} title="Explanation = cause" explanation="On the LSAT, the word explanation has one meaning: the cause that produced the effect. It does not mean clarifying or elaborating." action="Whenever you see explanation, scan the stimulus for cause-effect language. If there is no cause-effect, the choice is wrong." />
+            <MethodStep step={2} title="Hypothesis = potential cause" explanation="A hypothesis is a posited causal explanation: WHY something is the way it is. Darwin's hypothesis was that species change over time. It is a causal guess, not a prediction." action="When you see hypothesis, look for a proposed causal story. Strengthen / Weaken questions live here." />
+            <MethodStep step={3} title="Presuppose = require" explanation="In everyday English, presupposes can mean assumes. On the LSAT, presuppose simply means: the argument requires this to be true. Necessary condition territory." action="When you see presupposes, ask: if this were false, would the argument fall apart? If yes, you've matched the keyword." />
+            <Callout title="The other four key terms" variant="plain">
+              Facts, Decision, Principle, and Generalization round out the seven keyword set. They are tested less directly but appear inside argument structures (premise vs background, prescription vs description).
+            </Callout>
+            <Checklist items={[
+              "Spot the master key word in the answer choice.",
+              "Translate it into its LSAT meaning before re-reading the stimulus.",
+              "Check whether the stimulus actually has that structure.",
+            ]} />
+          </div>
+        );
+
+      case 'five_bucket_indicators':
+        return (
+          <div className="space-y-10 text-brutal-ink font-bold text-[18px] leading-tight max-w-[760px] mx-auto">
+            <Callout title="Five Buckets, Five Indicator Sets">
+              Every LR stimulus uses words that signal what kind of reasoning is happening. Sort each phrase you see into one of five buckets and the structural shape of the argument falls out.
+            </Callout>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <MethodStep step={1} title="Assumption" explanation="Unstated premise. The argument needs it but does not say it." action="Indicators: presupposes, takes for granted, requires, on the assumption that, implicit premise." />
+              <MethodStep step={2} title="Causal" explanation="A cause is doing work in the argument." action="Indicators: explanation, hypothesis, causes, results in, due to, account for, leads to, responsible for." />
+              <MethodStep step={3} title="Comparison" explanation="Two things are being lined up against each other." action="Indicators: analogous to, similar to, parallel to, compared with, contrasted with, just as, like." />
+              <MethodStep step={4} title="Evidence" explanation="What is being offered as support, and how strong is it." action="Indicators: evidence, grounds, supports, justifies, demonstrates, establishes, substantiates, on the basis of." />
+              <MethodStep step={5} title="Evaluation" explanation="The author is judging or assessing something." action="Indicators: undermines, calls into question, casts doubt on, vindicates, refutes, criticizes, defends." />
+            </div>
+            <RuleCard>
+              EVERY ABSTRACT ANSWER CHOICE WORD BELONGS IN ONE OF FIVE BUCKETS. SORT FIRST, MATCH SECOND.
+            </RuleCard>
+          </div>
+        );
+
+      case 'art_of_matching':
+        return (
+          <div className="space-y-10 text-brutal-ink font-bold text-[18px] leading-tight max-w-[760px] mx-auto">
+            <Callout title="The Art of Matching Keywords">
+              For Role, Method, and Flaw questions, eliminate any answer choice that describes something that did not happen in the argument. The keywords are your lie detector.
+            </Callout>
+            <RuleCard>
+              IDENTIFY (S)TRUCTURE → (K)EYWORDS. NEVER PICK AN ANSWER YOU CAN'T MATCH UP WITH THE STIMULUS.
+            </RuleCard>
+            <MethodStep step={1} title="Read the answer over and extract keywords" explanation="Strip down each abstract answer choice to its load-bearing words. Highlight or jot them." action="Skip filler verbs (used, is, makes). Keep nouns, action verbs, and qualifiers." />
+            <MethodStep step={2} title="Analyze keywords in LSAT context" explanation="A word on the LSAT often means something different from its daily usage. Translate each keyword into its LSAT meaning." action="Cross-check with the seven key terms (presuppose, illustrate, general principle, explanation, hypothesis, facts, generalization)." />
+            <MethodStep step={3} title="Check keyword relevance" explanation="For each keyword, decide what role it should play if the choice is correct." action="Noun: does the concept appear in the stimulus? Verb: does the author do this? Adjective/adverb: does it correctly describe tone or strength?" />
+            <MethodStep step={4} title="Match each keyword back to the structure" explanation="Re-read the choice and try to align each keyword with a piece of the stimulus. Anything that doesn't match disqualifies the choice." action="Don't choose an answer if you can't match it up with the stimulus." />
+            <Callout title="Beware of the one-word trap" variant="plain">
+              A common LSAT trick: an almost perfect answer with a glaring error, usually due to one single word. Often placed right next to the correct answer, which is worded vaguely. You will encounter this repeatedly.
+            </Callout>
+            <Checklist items={[
+              "Extract keywords first.",
+              "Translate into LSAT meanings second.",
+              "Match each keyword to the stimulus third.",
+              "If one keyword fails to match, eliminate the whole choice.",
+            ]} />
           </div>
         );
 

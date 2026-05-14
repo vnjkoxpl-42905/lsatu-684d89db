@@ -39,9 +39,34 @@ export interface MethodPattern {
   };
 }
 
+// DrillAttempt: per-attempt record retained client-side for the Drill view
+// and CompletionReport. Mirrors the abstract_drill_attempts row written to
+// Supabase, minus the server-side id/user_id columns.
+export interface DrillAttempt {
+  drillId: string;
+  drillType: DrillType;
+  selectedIndex: number;
+  correct: boolean;
+  confidence: ConfidenceLevel;
+  trapTag?: string;
+  completedAt: string;
+}
+
+// GauntletAttempt: client-side snapshot of an abstract_gauntlet_attempts row.
+export interface GauntletAttempt {
+  choiceId: number;
+  keywordsPicked: string[];
+  translationText: string;
+  requirementsChecked: number[];
+  correctCount: number;
+  completedAt: string;
+}
+
 export interface BootcampState {
   completedLessons: string[];
   completedDrills: string[];
+  drillAttempts: DrillAttempt[];
+  gauntletAttempts: GauntletAttempt[];
   cards: Record<string, CardReview>;
   finalSetScore?: {
     score: number;
@@ -109,6 +134,36 @@ export interface DrillItem {
   explanation: string;
   trapTag?: string;
 }
+
+export interface AbstractChoice {
+  id: number;
+  original: string;
+  correctKeywords: string[];
+  distractorKeywords: string[];
+  plainEnglish: string;
+  stimulusRequirements: string[];
+  trapRequirements: string[];
+  coachNote: string;
+  example?: string;
+  structureType?: string;
+}
+
+export interface FinalSetQuestion {
+  id: string;
+  ptRef: string;
+  stimulus: string;
+  questionStem: string;
+  choices: { letter: 'A' | 'B' | 'C' | 'D' | 'E'; text: string }[];
+  correctLetter: 'A' | 'B' | 'C' | 'D' | 'E';
+  explanation: string;
+}
+
+// BootcampMutationResult: standard LSATU {ok}|{ok:false,error} contract.
+// Mirrors the AttemptResult shape used by hooks like useRecordChapterSection
+// so callers can branch on .ok without learning a new pattern.
+export type BootcampMutationResult =
+  | { ok: true }
+  | { ok: false; error: unknown };
 
 export interface QuestionStem {
   id: string;

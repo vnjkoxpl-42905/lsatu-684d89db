@@ -61,12 +61,12 @@ export default function Sidebar() {
       <div className="p-6 border-t-4 border-brutal-ink bg-white">
         <div className="flex justify-between items-center mb-2">
           <span className="text-[10px] font-black uppercase tracking-widest">Progress</span>
-          <span className="text-xs font-black">{bootcampState.completedLessons.length}/5</span>
+          <span className="text-xs font-black">{bootcampState.completedLessons.length}/8</span>
         </div>
         <div className="w-full h-4 bg-brutal-bg border-2 border-brutal-ink p-1">
-          <div 
-            className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-all duration-500" 
-            style={{ width: `${(bootcampState.completedLessons.length / 5) * 100}%`}}
+          <div
+            className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-all duration-500"
+            style={{ width: `${(bootcampState.completedLessons.length / 8) * 100}%` }}
           />
         </div>
       </div>
