@@ -1,11 +1,12 @@
 import * as React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   GraduationCap,
   Dumbbell,
   CalendarDays,
   MessagesSquare,
   Play,
+  Flame,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -23,12 +24,25 @@ type NavItem = {
   Icon: React.ComponentType<{ className?: string }>;
   flag?: PermissionFlag;
   adminOnly?: boolean;
+  /**
+   * Additional pathname prefixes that should light up this nav entry.
+   * Useful when the destination route has cousins under a different prefix
+   * (Bootcamps owns both /bootcamps and /bootcamp/* and /topics/*).
+   */
+  activePrefixes?: readonly string[];
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
   { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
+  {
+    to: "/bootcamps",
+    label: "Bootcamps",
+    Icon: Flame,
+    flag: "has_bootcamp_access",
+    activePrefixes: ["/bootcamps", "/bootcamp/", "/topics/"],
+  },
   { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
   { to: "/admin/homework", label: "Homework", Icon: GraduationCap, adminOnly: true },
 ] as const;
@@ -37,6 +51,7 @@ const today = format(new Date(), "EEEE, MMMM d");
 
 export default function MainhubSidebar(_props: MainhubSidebarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const permissions = useUserPermissions();
   const { prefs } = useLayoutPrefs();
   const { data: lastActivity } = useLastActivity();
@@ -116,23 +131,30 @@ export default function MainhubSidebar(_props: MainhubSidebarProps) {
         {orderedNav.filter((item) => {
           if (item.adminOnly) return permissions.is_admin;
           return permissions.is_admin || (item.flag ? permissions[item.flag] : false);
-        }).map(({ to, label, Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              [
-                "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors active:opacity-75",
-                isActive
-                  ? "border-primary bg-accent/60 text-foreground"
-                  : "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
-              ].join(" ")
-            }
-          >
-            <Icon className="h-4 w-4" />
-            <span>{label}</span>
-          </NavLink>
-        ))}
+        }).map(({ to, label, Icon, activePrefixes }) => {
+          const prefixActive = activePrefixes?.some((p) =>
+            location.pathname === p.replace(/\/$/, "") ||
+            location.pathname.startsWith(p),
+          );
+          return (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) => {
+                const active = isActive || prefixActive;
+                return [
+                  "flex items-center gap-3 border-l-2 px-6 py-3 text-sm transition-colors active:opacity-75",
+                  active
+                    ? "border-primary bg-accent/60 text-foreground"
+                    : "border-transparent text-muted-foreground hover:bg-accent/40 hover:text-foreground",
+                ].join(" ");
+              }}
+            >
+              <Icon className="h-4 w-4" />
+              <span>{label}</span>
+            </NavLink>
+          );
+        })}
       </nav>
 
       <div className="flex-1" />
