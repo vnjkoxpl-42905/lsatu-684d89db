@@ -14,6 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      abstract_drill_attempts: {
+        Row: {
+          completed_at: string
+          confidence: string
+          correct: boolean
+          drill_id: string
+          drill_type: string
+          id: string
+          selected_index: number
+          trap_tag: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          confidence: string
+          correct: boolean
+          drill_id: string
+          drill_type: string
+          id?: string
+          selected_index: number
+          trap_tag?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          confidence?: string
+          correct?: boolean
+          drill_id?: string
+          drill_type?: string
+          id?: string
+          selected_index?: number
+          trap_tag?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      abstract_final_set: {
+        Row: {
+          completed_at: string
+          id: string
+          score: number
+          total: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          score: number
+          total: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          score?: number
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      abstract_gauntlet_attempts: {
+        Row: {
+          choice_id: number
+          completed_at: string
+          correct_count: number
+          id: string
+          keywords_picked: string[]
+          requirements_checked: number[]
+          translation_text: string
+          user_id: string
+        }
+        Insert: {
+          choice_id: number
+          completed_at?: string
+          correct_count?: number
+          id?: string
+          keywords_picked?: string[]
+          requirements_checked?: number[]
+          translation_text?: string
+          user_id: string
+        }
+        Update: {
+          choice_id?: number
+          completed_at?: string
+          correct_count?: number
+          id?: string
+          keywords_picked?: string[]
+          requirements_checked?: number[]
+          translation_text?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      abstract_lesson_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       achievements: {
         Row: {
           achievement_id: string | null
@@ -47,120 +161,6 @@ export type Database = {
           progress?: Json | null
           requirement?: string | null
           unlocked_at?: string | null
-        }
-        Relationships: []
-      }
-      abstract_drill_attempts: {
-        Row: {
-          id: string
-          user_id: string
-          drill_id: string
-          drill_type: string
-          selected_index: number
-          correct: boolean
-          confidence: string
-          trap_tag: string | null
-          completed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          drill_id: string
-          drill_type: string
-          selected_index: number
-          correct: boolean
-          confidence: string
-          trap_tag?: string | null
-          completed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          drill_id?: string
-          drill_type?: string
-          selected_index?: number
-          correct?: boolean
-          confidence?: string
-          trap_tag?: string | null
-          completed_at?: string
-        }
-        Relationships: []
-      }
-      abstract_final_set: {
-        Row: {
-          id: string
-          user_id: string
-          score: number
-          total: number
-          completed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          score: number
-          total: number
-          completed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          score?: number
-          total?: number
-          completed_at?: string
-        }
-        Relationships: []
-      }
-      abstract_gauntlet_attempts: {
-        Row: {
-          id: string
-          user_id: string
-          choice_id: number
-          keywords_picked: string[]
-          translation_text: string
-          requirements_checked: number[]
-          correct_count: number
-          completed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          choice_id: number
-          keywords_picked?: string[]
-          translation_text?: string
-          requirements_checked?: number[]
-          correct_count?: number
-          completed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          choice_id?: number
-          keywords_picked?: string[]
-          translation_text?: string
-          requirements_checked?: number[]
-          correct_count?: number
-          completed_at?: string
-        }
-        Relationships: []
-      }
-      abstract_lesson_progress: {
-        Row: {
-          id: string
-          user_id: string
-          lesson_id: string
-          completed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          lesson_id: string
-          completed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          lesson_id?: string
-          completed_at?: string
         }
         Relationships: []
       }
@@ -434,33 +434,6 @@ export type Database = {
           unlock_at?: string | null
           updated_at?: string
           visible_to_student?: boolean
-        }
-        Relationships: []
-      }
-      chapter_progress: {
-        Row: {
-          user_id: string
-          topic_tag: string
-          section_id: string
-          first_viewed_at: string
-          last_viewed_at: string
-          view_count: number
-        }
-        Insert: {
-          user_id: string
-          topic_tag: string
-          section_id: string
-          first_viewed_at?: string
-          last_viewed_at?: string
-          view_count?: number
-        }
-        Update: {
-          user_id?: string
-          topic_tag?: string
-          section_id?: string
-          first_viewed_at?: string
-          last_viewed_at?: string
-          view_count?: number
         }
         Relationships: []
       }
@@ -850,42 +823,6 @@ export type Database = {
           qtype?: string
           section?: number
           user_id?: string | null
-        }
-        Relationships: []
-      }
-      flashcard_reviews: {
-        Row: {
-          id: string
-          user_id: string
-          topic_tag: string
-          card_id: string
-          rating: string
-          interval_days: number
-          due_at: string
-          review_count: number
-          reviewed_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          topic_tag: string
-          card_id: string
-          rating: string
-          interval_days: number
-          due_at: string
-          review_count?: number
-          reviewed_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          topic_tag?: string
-          card_id?: string
-          rating?: string
-          interval_days?: number
-          due_at?: string
-          review_count?: number
-          reviewed_at?: string
         }
         Relationships: []
       }
