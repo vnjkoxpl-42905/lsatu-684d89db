@@ -55,9 +55,11 @@
   color: var(--brutal-yellow);
 }
 
-/* Utility replacements for the new-bootcamp Tailwind 4 @utility blocks. */
-.topic-abstract .brutal-shadow,
-.topic-abstract\:brutal-shadow {
+/* Utility replacements for the new-bootcamp Tailwind 4 @utility blocks.
+ * Source uses bare class names like brutal-shadow, brutal-shadow-sm, etc.
+ * Tailwind passes unknown classes through; we match them via descendant
+ * selectors so they only apply inside .topic-abstract. */
+.topic-abstract .brutal-shadow {
   box-shadow: 4px 4px 0px 0px #000;
 }
 

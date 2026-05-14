@@ -143,6 +143,19 @@ export default {
         "g3-tint": "var(--g3-tint)",
         strike: "var(--strike)",
         "strike-tint": "var(--strike-tint)",
+
+        /* Abstract bootcamp brutalist tokens (scoped to .topic-abstract)
+         * These resolve only inside .topic-abstract ancestors, where the
+         * matching CSS custom properties are defined
+         * (src/topics/abstract/styles/brutal.css). Hex via var() because the
+         * brutalist palette is intentionally non-themed. */
+        "brutal-yellow": "var(--brutal-yellow)",
+        "brutal-cyan": "var(--brutal-cyan)",
+        "brutal-pink": "var(--brutal-pink)",
+        "brutal-green": "var(--brutal-green)",
+        "brutal-red": "var(--brutal-red)",
+        "brutal-ink": "var(--brutal-ink)",
+        "brutal-bg": "var(--brutal-bg)",
       },
       backdropBlur: {
         glass: "12px",
@@ -154,6 +167,13 @@ export default {
         lg: "var(--shadow-lg)",
         glow: "var(--shadow-glow)",
         "glow-sm": "0 0 12px 0 rgba(176, 106, 62, 0.2)",
+        /* Abstract bootcamp brutalist hard-offset shadows. Cosmetic-only;
+         * not gated to .topic-abstract because they are static box-shadow
+         * declarations with no theming dependency. The wrapper class controls
+         * which surfaces opt in. */
+        "brutal-sm": "2px 2px 0px 0px #000",
+        "brutal": "4px 4px 0px 0px #000",
+        "brutal-lg": "8px 8px 0px 0px #000",
       },
       borderRadius: {
         lg: "var(--radius)",
