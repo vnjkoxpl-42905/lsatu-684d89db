@@ -23,7 +23,7 @@ export function DecoderCard({ card }: DecoderCardProps) {
 
   return (
     <article
-      className="decoder-card rounded-2xl border border-border bg-card/70 p-5 shadow-sm"
+      className="decoder-card rounded-2xl border border-border bg-card/60 p-5 shadow-sm"
       data-card-id={card.id}
     >
       <header className="grid gap-4 md:grid-cols-2">
@@ -32,7 +32,7 @@ export function DecoderCard({ card }: DecoderCardProps) {
             Abstract phrase
           </p>
           <p
-            className="italic leading-relaxed transition-all duration-500"
+            className="italic leading-relaxed motion-safe:transition-[opacity,transform] motion-safe:duration-500"
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? "translateY(0)" : "translateY(6px)",
@@ -46,7 +46,7 @@ export function DecoderCard({ card }: DecoderCardProps) {
             Plain English
           </p>
           <p
-            className="leading-relaxed transition-all duration-500"
+            className="leading-relaxed motion-safe:transition-[opacity,transform] motion-safe:duration-500"
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? "translateY(0)" : "translateY(6px)",

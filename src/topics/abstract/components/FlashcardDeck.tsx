@@ -120,7 +120,7 @@ export function FlashcardDeck() {
             onChange={(e) =>
               setDifficulty(e.target.value as DifficultyFilter)
             }
-            className="rounded-md border border-border bg-background px-2 py-1"
+            className="min-h-11 rounded-md border border-border bg-background px-2 py-1"
           >
             <option value="all">all</option>
             <option value="foundation">foundation</option>
@@ -133,7 +133,7 @@ export function FlashcardDeck() {
           <select
             value={concept}
             onChange={(e) => setConcept(e.target.value as ConceptFilter)}
-            className="rounded-md border border-border bg-background px-2 py-1"
+            className="min-h-11 rounded-md border border-border bg-background px-2 py-1"
           >
             <option value="all">all</option>
             <option value="glossary">glossary</option>
@@ -193,7 +193,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("again")}
                 disabled={!flipped}
-                className="rounded-md border border-rose-500/60 px-3 py-1 text-sm text-rose-500 disabled:opacity-40"
+                className="min-h-11 min-w-11 rounded-md border border-state-incorrect/60 px-3 py-1 text-sm text-state-incorrect disabled:opacity-40"
               >
                 Again
               </button>
@@ -201,7 +201,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("good")}
                 disabled={!flipped}
-                className="rounded-md border border-border px-3 py-1 text-sm disabled:opacity-40"
+                className="min-h-11 min-w-11 rounded-md border border-border px-3 py-1 text-sm disabled:opacity-40"
               >
                 Good
               </button>
@@ -209,7 +209,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("easy")}
                 disabled={!flipped}
-                className="rounded-md border border-emerald-500/60 px-3 py-1 text-sm text-emerald-500 disabled:opacity-40"
+                className="min-h-11 min-w-11 rounded-md border border-state-correct/60 px-3 py-1 text-sm text-state-correct disabled:opacity-40"
               >
                 Easy
               </button>

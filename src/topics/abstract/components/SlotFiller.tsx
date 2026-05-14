@@ -93,14 +93,17 @@ export function SlotFiller() {
         <div className="flex items-center gap-2">
           <span
             className="rounded-full bg-secondary px-3 py-1 text-xs"
-            aria-label={`Session accuracy ${accPct} percent`}
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-label={`Session accuracy ${accPct} percent, ${acc.correct} of ${acc.total} correct`}
           >
             Session: {accPct}% ({acc.correct}/{acc.total})
           </span>
           <button
             type="button"
             onClick={session.toggleIndicators}
-            className="rounded-md border border-border px-3 py-1 text-sm"
+            className="min-h-11 rounded-md border border-border px-3 py-1 text-sm"
             aria-pressed={session.showIndicators}
           >
             {session.showIndicators ? "Hide" : "Show"} indicators
@@ -108,7 +111,7 @@ export function SlotFiller() {
           <button
             type="button"
             onClick={session.toggleTree}
-            className="rounded-md border border-border px-3 py-1 text-sm"
+            className="min-h-11 rounded-md border border-border px-3 py-1 text-sm"
             aria-pressed={session.showTree}
           >
             {session.showTree ? "Hide" : "Show"} tree
@@ -151,7 +154,7 @@ export function SlotFiller() {
                       session.selectClause(selected ? null : c.id);
                     }
                   }}
-                  className={`cursor-pointer rounded-md border px-3 py-1.5 text-sm shadow-sm transition-all ${
+                  className={`min-h-11 cursor-pointer rounded-md border px-3 py-2 text-sm shadow-sm transition-[box-shadow,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     selected
                       ? "border-primary border-2 ring-2 ring-primary/30"
                       : "border-border hover:border-primary/50 hover:shadow"
@@ -187,21 +190,21 @@ export function SlotFiller() {
           type="button"
           onClick={() => session.check()}
           disabled={unplacedClauses.length > 0}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+          className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
           Check
         </button>
         <button
           type="button"
           onClick={session.next}
-          className="rounded-md border border-border px-4 py-2 text-sm"
+          className="min-h-11 rounded-md border border-border px-4 py-2 text-sm"
         >
           Next stimulus
         </button>
         <button
           type="button"
           onClick={session.reset}
-          className="rounded-md border border-border px-3 py-2 text-xs text-muted-foreground"
+          className="min-h-11 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground"
         >
           Reset session
         </button>

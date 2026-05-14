@@ -49,7 +49,6 @@ export function HighlightToken({
       className={`indicator-token indicator-bucket-${bucket} mode-${mode}`}
       data-bucket={bucket}
       data-mode={mode}
-      title={label}
       aria-label={aria}
       style={tokenStyle}
     >

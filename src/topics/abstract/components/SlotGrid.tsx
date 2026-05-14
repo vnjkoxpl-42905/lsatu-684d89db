@@ -18,7 +18,8 @@ export interface SlotGridProps {
 // SlotGrid: 7 drop zones split into Author / Opposing / Background lanes.
 // Reads placements (clauseId -> slot) and groups clauses under their slot.
 // Each zone accepts drops via the HTML5 drag-drop API and tap-to-place via
-// onClick when a clauseId is currently selected.
+// onClick when a clauseId is currently selected. Keyboard users tab into a
+// drop zone and press Enter/Space to land the currently-selected clause.
 
 const LANES: Array<{ title: string; slots: SlotId[] }> = [
   {
@@ -40,14 +41,14 @@ const LANES: Array<{ title: string; slots: SlotId[] }> = [
   },
 ];
 
-// Sanity check: every slot must appear in exactly one lane.
-const flatLaneSlots = LANES.flatMap((l) => l.slots);
-if (
-  flatLaneSlots.length !== SLOT_IDS.length ||
-  new Set(flatLaneSlots).size !== SLOT_IDS.length
-) {
-  // Dev-only diagnostic; lane partition is a static invariant.
-  console.warn("[SlotGrid] lane partition does not cover SLOT_IDS exactly");
+if (import.meta.env?.DEV) {
+  const flatLaneSlots = LANES.flatMap((l) => l.slots);
+  if (
+    flatLaneSlots.length !== SLOT_IDS.length ||
+    new Set(flatLaneSlots).size !== SLOT_IDS.length
+  ) {
+    console.warn("[SlotGrid] lane partition does not cover SLOT_IDS exactly");
+  }
 }
 
 export function SlotGrid({
@@ -82,11 +83,20 @@ export function SlotGrid({
           {lane.slots.map((slot) => {
             const placed = clausesInSlot(slot);
             const isTapActive = Boolean(selectedClauseId);
+            const placementLabel =
+              placed.length === 0
+                ? "empty"
+                : `${placed.length} clause${placed.length === 1 ? "" : "s"} placed`;
+            const dropZoneLabel = isTapActive
+              ? `Drop selected clause into ${SLOT_LABELS[slot]} (${placementLabel})`
+              : `${SLOT_LABELS[slot]} drop zone (${placementLabel})`;
             return (
               <div
                 key={slot}
-                role="region"
-                aria-label={`${SLOT_LABELS[slot]} drop zone`}
+                role="button"
+                tabIndex={0}
+                aria-label={dropZoneLabel}
+                aria-disabled={isTapActive ? undefined : true}
                 onDragOver={(e) => {
                   e.preventDefault();
                   e.dataTransfer.dropEffect = "move";
@@ -99,9 +109,18 @@ export function SlotGrid({
                 onClick={() => {
                   if (selectedClauseId) onDropClause(selectedClauseId, slot);
                 }}
-                className={`slot-zone rounded-lg border-2 border-dashed border-border bg-background/40 p-3 transition-colors ${
+                onKeyDown={(e) => {
+                  if (
+                    selectedClauseId &&
+                    (e.key === "Enter" || e.key === " ")
+                  ) {
+                    e.preventDefault();
+                    onDropClause(selectedClauseId, slot);
+                  }
+                }}
+                className={`slot-zone rounded-lg border-2 border-dashed border-border bg-background/40 p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                   isTapActive
-                    ? "border-primary/70 animate-pulse"
+                    ? "border-primary/70 motion-safe:animate-pulse cursor-pointer"
                     : "hover:border-primary/40"
                 }`}
                 data-slot={slot}
@@ -121,8 +140,8 @@ export function SlotGrid({
                         r === undefined
                           ? "border-border"
                           : r.correct
-                            ? "border-emerald-500/70 bg-emerald-500/5"
-                            : "border-rose-500/70 bg-rose-500/5";
+                            ? "border-state-correct/70 bg-state-correct/5"
+                            : "border-state-incorrect/70 bg-state-incorrect/5";
                       return (
                         <li
                           key={clauseId}
@@ -130,7 +149,7 @@ export function SlotGrid({
                         >
                           {renderPlacedClause(clauseId, slot)}
                           {r && !r.correct && r.tip ? (
-                            <p className="mt-2 text-xs text-rose-500">
+                            <p className="mt-2 text-xs text-state-incorrect">
                               {r.tip}
                             </p>
                           ) : null}

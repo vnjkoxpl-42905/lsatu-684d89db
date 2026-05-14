@@ -70,11 +70,11 @@ export function D3BasicXY() {
                   onClick={() => !submitted && setSelected(opt.id)}
                   disabled={submitted}
                   aria-pressed={isPicked}
-                  className={`w-full rounded-md border p-3 text-left text-sm ${
+                  className={`min-h-11 w-full rounded-md border p-3 text-left text-sm ${
                     isCorrect
-                      ? "border-emerald-500/80 bg-emerald-500/10"
+                      ? "border-state-correct/80 bg-state-correct/10"
                       : isWrong
-                        ? "border-rose-500/80 bg-rose-500/10"
+                        ? "border-state-incorrect/80 bg-state-incorrect/10"
                         : isPicked
                           ? "border-primary"
                           : "border-border hover:border-primary/50"
@@ -90,7 +90,11 @@ export function D3BasicXY() {
           })}
         </ul>
         {submitted ? (
-          <aside className="rounded-md border border-border bg-card/50 p-3 text-sm">
+          <aside
+            role="status"
+            aria-live="polite"
+            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+          >
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {selected === q.correct ? "Correct" : "Not quite"}
             </p>
@@ -103,7 +107,7 @@ export function D3BasicXY() {
               type="button"
               onClick={handleSubmit}
               disabled={!selected}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
             >
               Submit
             </button>
@@ -111,7 +115,7 @@ export function D3BasicXY() {
             <button
               type="button"
               onClick={handleNext}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               Next
             </button>

@@ -34,19 +34,22 @@ export function DrillShell({
     <div className="drill-shell mx-auto max-w-3xl space-y-5 p-4 md:p-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold">{title}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
           {subtitle ? (
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-label={`Question ${Math.min(questionIndex + 1, total)} of ${total}, accuracy ${accPct} percent`}
+        >
           <span className="rounded-full bg-secondary px-3 py-1 text-xs">
             {Math.min(questionIndex + 1, total)} / {total}
           </span>
-          <span
-            className="rounded-full bg-secondary px-3 py-1 text-xs"
-            aria-label={`Accuracy ${accPct} percent`}
-          >
+          <span className="rounded-full bg-secondary px-3 py-1 text-xs">
             {accPct}% ({correct}/{attempted})
           </span>
         </div>

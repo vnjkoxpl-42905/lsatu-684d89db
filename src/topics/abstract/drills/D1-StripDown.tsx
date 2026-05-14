@@ -62,9 +62,9 @@ export function D1StripDown() {
                 key={c.id}
                 className={`rounded-md border p-3 ${
                   isCorrect
-                    ? "border-emerald-500/70 bg-emerald-500/5"
+                    ? "border-state-correct/70 bg-state-correct/5"
                     : isWrong
-                      ? "border-rose-500/70 bg-rose-500/5"
+                      ? "border-state-incorrect/70 bg-state-incorrect/5"
                       : "border-border"
                 }`}
               >
@@ -85,7 +85,7 @@ export function D1StripDown() {
                       setLabel(c.id, e.target.value as SlotId | "")
                     }
                     disabled={revealed}
-                    className="rounded-md border border-border bg-background px-2 py-1 text-sm"
+                    className="min-h-11 rounded-md border border-border bg-background px-2 py-1 text-sm"
                   >
                     <option value="">Pick a slot</option>
                     {SLOT_IDS.map((s) => (
@@ -106,7 +106,11 @@ export function D1StripDown() {
           })}
         </ol>
         {revealed ? (
-          <aside className="rounded-md border border-border bg-card/50 p-3 text-sm">
+          <aside
+            role="status"
+            aria-live="polite"
+            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+          >
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Explanation
             </p>
@@ -119,7 +123,7 @@ export function D1StripDown() {
               type="button"
               onClick={handleReveal}
               disabled={q.clauses.some((c) => !labels[c.id])}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
             >
               Reveal
             </button>
@@ -127,7 +131,7 @@ export function D1StripDown() {
             <button
               type="button"
               onClick={handleNext}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               Next question
             </button>

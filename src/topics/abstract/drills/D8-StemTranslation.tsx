@@ -81,13 +81,17 @@ export function D8StemTranslation() {
         </label>
 
         {revealed ? (
-          <aside className="rounded-md border border-border bg-card/50 p-3 text-sm">
+          <aside
+            role="status"
+            aria-live="polite"
+            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+          >
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Walkthrough
             </p>
-            <pre className="whitespace-pre-wrap font-sans leading-relaxed">
+            <p className="whitespace-pre-wrap leading-relaxed">
               {stem.walkthrough}
-            </pre>
+            </p>
           </aside>
         ) : null}
 
@@ -97,7 +101,7 @@ export function D8StemTranslation() {
               type="button"
               onClick={handleReveal}
               disabled={draft.trim().length < 4}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
             >
               Reveal walkthrough
             </button>
@@ -105,7 +109,7 @@ export function D8StemTranslation() {
             <button
               type="button"
               onClick={handleNext}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               Next stem
             </button>

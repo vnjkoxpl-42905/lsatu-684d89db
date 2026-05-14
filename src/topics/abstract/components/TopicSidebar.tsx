@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { ABSTRACT_REFERENCE_CARD_IDS } from "./ReferenceCardView";
 
 const NAV = [
@@ -16,49 +17,81 @@ const NAV = [
 ];
 
 export function TopicSidebar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const activeLabel =
+    NAV.find((n) => location.pathname === n.to)?.label ??
+    (location.pathname.startsWith("/topics/abstract/reference")
+      ? `Reference · ${location.pathname.split("/").pop()}`
+      : "Abstract");
+
   return (
-    <aside className="topic-sidebar w-full md:w-64 shrink-0 border-r border-border md:h-[calc(100vh-3rem)] md:sticky md:top-12 overflow-y-auto p-3">
-      <h2 className="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Abstract
-      </h2>
-      <nav className="mt-2 space-y-0.5 text-sm">
-        {NAV.map((n) => (
-          <NavLink
-            key={n.to}
-            to={n.to}
-            end={n.exact}
-            className={({ isActive }) =>
-              `block rounded-md px-2 py-1.5 ${
-                isActive
-                  ? "bg-secondary font-medium text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-              }`
-            }
-          >
-            {n.label}
-          </NavLink>
-        ))}
-      </nav>
-      <h3 className="mt-4 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Reference
-      </h3>
-      <nav className="mt-1 space-y-0.5 text-sm">
-        {ABSTRACT_REFERENCE_CARD_IDS.map((id) => (
-          <NavLink
-            key={id}
-            to={`/topics/abstract/reference/${id}`}
-            className={({ isActive }) =>
-              `block rounded-md px-2 py-1.5 font-mono text-xs ${
-                isActive
-                  ? "bg-secondary font-medium text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-              }`
-            }
-          >
-            {id}
-          </NavLink>
-        ))}
-      </nav>
+    <aside className="topic-sidebar w-full md:w-64 shrink-0 border-b border-border md:border-b-0 md:border-r md:h-[calc(100vh-3rem)] md:sticky md:top-12 md:overflow-y-auto p-3">
+      <button
+        type="button"
+        onClick={() => setMobileOpen((v) => !v)}
+        aria-expanded={mobileOpen}
+        aria-controls="topic-sidebar-nav"
+        className="flex min-h-11 w-full items-center justify-between gap-2 rounded-md border border-border px-3 py-2 text-sm md:hidden"
+      >
+        <span className="flex flex-col items-start gap-0.5">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+            Abstract
+          </span>
+          <span className="font-medium">{activeLabel}</span>
+        </span>
+        <span aria-hidden="true" className="text-xs text-muted-foreground">
+          {mobileOpen ? "Close" : "Menu"}
+        </span>
+      </button>
+      <div
+        id="topic-sidebar-nav"
+        className={`${mobileOpen ? "block" : "hidden"} md:block`}
+      >
+        <h2 className="mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground md:mt-0">
+          Abstract
+        </h2>
+        <nav className="mt-2 space-y-0.5 text-sm">
+          {NAV.map((n) => (
+            <NavLink
+              key={n.to}
+              to={n.to}
+              end={n.exact}
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `flex min-h-11 items-center rounded-md px-2 py-2 md:min-h-0 md:py-1.5 ${
+                  isActive
+                    ? "bg-secondary font-medium text-foreground"
+                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                }`
+              }
+            >
+              {n.label}
+            </NavLink>
+          ))}
+        </nav>
+        <h3 className="mt-4 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Reference
+        </h3>
+        <nav className="mt-1 space-y-0.5 text-sm">
+          {ABSTRACT_REFERENCE_CARD_IDS.map((id) => (
+            <NavLink
+              key={id}
+              to={`/topics/abstract/reference/${id}`}
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `flex min-h-11 items-center rounded-md px-2 py-2 font-mono text-xs md:min-h-0 md:py-1.5 ${
+                  isActive
+                    ? "bg-secondary font-medium text-foreground"
+                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                }`
+              }
+            >
+              {id}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
     </aside>
   );
 }

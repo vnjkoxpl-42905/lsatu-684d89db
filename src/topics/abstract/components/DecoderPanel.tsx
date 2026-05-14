@@ -46,30 +46,34 @@ export function DecoderPanel({ autoAdvance = false }: DecoderPanelProps) {
         <button
           type="button"
           onClick={prev}
-          className="rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
+          className="min-h-11 rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
           aria-label="Previous decoder card"
         >
           ← Prev
         </button>
-        <div className="flex items-center gap-1" role="tablist">
+        <div className="flex items-center gap-1">
           {cards.map((c, i) => (
             <button
               key={c.id}
               type="button"
-              role="tab"
-              aria-selected={i === cardIndex}
-              aria-label={`Decoder card ${i + 1} of ${total}`}
+              aria-label={`Go to decoder card ${i + 1} of ${total}`}
+              aria-current={i === cardIndex ? "true" : undefined}
               onClick={() => jumpTo(i)}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                i === cardIndex ? "bg-primary" : "bg-border"
-              }`}
-            />
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <span
+                aria-hidden="true"
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  i === cardIndex ? "bg-primary" : "bg-border"
+                }`}
+              />
+            </button>
           ))}
         </div>
         <button
           type="button"
           onClick={next}
-          className="rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
+          className="min-h-11 rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
           aria-label="Next decoder card"
         >
           Next →

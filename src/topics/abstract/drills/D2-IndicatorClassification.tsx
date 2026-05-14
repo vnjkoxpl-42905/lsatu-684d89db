@@ -82,11 +82,11 @@ export function D2IndicatorClassification() {
                   onClick={() => !submitted && setSelected(b)}
                   disabled={submitted}
                   aria-pressed={isPicked}
-                  className={`w-full rounded-md border p-3 text-left text-sm transition-colors ${
+                  className={`min-h-11 w-full rounded-md border p-3 text-left text-sm transition-colors ${
                     isCorrect
-                      ? "border-emerald-500/80 bg-emerald-500/10"
+                      ? "border-state-correct/80 bg-state-correct/10"
                       : isWrongPick
-                        ? "border-rose-500/80 bg-rose-500/10"
+                        ? "border-state-incorrect/80 bg-state-incorrect/10"
                         : isPicked
                           ? "border-primary"
                           : "border-border hover:border-primary/50"
@@ -99,7 +99,11 @@ export function D2IndicatorClassification() {
           })}
         </ul>
         {submitted ? (
-          <aside className="rounded-md border border-border bg-card/50 p-3 text-sm">
+          <aside
+            role="status"
+            aria-live="polite"
+            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+          >
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {selected === q.correct_bucket ? "Correct" : "Not quite"}
             </p>
@@ -112,7 +116,7 @@ export function D2IndicatorClassification() {
               type="button"
               onClick={handleSubmit}
               disabled={!selected}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
             >
               Submit
             </button>
@@ -120,7 +124,7 @@ export function D2IndicatorClassification() {
             <button
               type="button"
               onClick={handleNext}
-              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               Next
             </button>

@@ -129,7 +129,7 @@ function MethodCard({ method }: { method: MethodEntry }) {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls={`${method.id}-body`}
-          className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:bg-secondary/60"
+          className="min-h-11 rounded-md border border-border px-3 py-1 text-xs text-muted-foreground hover:bg-secondary/60"
         >
           {open ? "Collapse" : "Expand"}
         </button>
@@ -143,9 +143,9 @@ function MethodCard({ method }: { method: MethodEntry }) {
           <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Example
           </p>
-          <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
+          <p className="whitespace-pre-wrap text-sm leading-relaxed">
             {method.example}
-          </pre>
+          </p>
         </div>
       ) : null}
     </article>
