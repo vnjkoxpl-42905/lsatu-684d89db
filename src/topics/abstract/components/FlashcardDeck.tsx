@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import flashcardsData from "../content/flashcards.json";
 import type { FlashcardSet, FlashcardEntry } from "../types";
 import { useDrillDarkMode } from "../hooks/useAbstractDrill";
+import {
+  useRecordFlashcardReview,
+  type FlashcardRating,
+} from "@/components/teacher/bootcamps/hooks/useFlashcardReviews";
 
 const DATA = flashcardsData as FlashcardSet;
 
@@ -67,9 +71,12 @@ export function FlashcardDeck() {
   }, [difficulty, concept]);
 
   const card = filtered[index];
+  const recordReview = useRecordFlashcardReview();
 
-  const rate = (multiplier: number) => {
+  const rate = (rating: FlashcardRating) => {
     if (!card) return;
+    const multiplier =
+      rating === "again" ? 0.5 : rating === "good" ? 2 : 2.5;
     const existing = reviews[card.id];
     const prev = existing?.intervalDays ?? 1;
     const nextInterval = Math.max(1, Math.round(prev * multiplier));
@@ -85,6 +92,14 @@ export function FlashcardDeck() {
     };
     setReviews(next);
     saveReviews(next);
+    void recordReview({
+      topicTag: "abstract",
+      cardId: card.id,
+      rating,
+      intervalDays: nextInterval,
+      dueAtIso: due.toISOString(),
+      reviewCount: (existing ? 1 : 0) + 1,
+    });
     setFlipped(false);
     setIndex((i) => (filtered.length === 0 ? 0 : (i + 1) % filtered.length));
   };
@@ -176,7 +191,7 @@ export function FlashcardDeck() {
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => rate(0.5)}
+                onClick={() => rate("again")}
                 disabled={!flipped}
                 className="rounded-md border border-rose-500/60 px-3 py-1 text-sm text-rose-500 disabled:opacity-40"
               >
@@ -184,7 +199,7 @@ export function FlashcardDeck() {
               </button>
               <button
                 type="button"
-                onClick={() => rate(2)}
+                onClick={() => rate("good")}
                 disabled={!flipped}
                 className="rounded-md border border-border px-3 py-1 text-sm disabled:opacity-40"
               >
@@ -192,7 +207,7 @@ export function FlashcardDeck() {
               </button>
               <button
                 type="button"
-                onClick={() => rate(2.5)}
+                onClick={() => rate("easy")}
                 disabled={!flipped}
                 className="rounded-md border border-emerald-500/60 px-3 py-1 text-sm text-emerald-500 disabled:opacity-40"
               >

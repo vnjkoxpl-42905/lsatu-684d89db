@@ -46,7 +46,7 @@ export function ChapterLanding() {
           </Link>
         </p>
       </section>
-      <ChapterReader markdown={chapter} />
+      <ChapterReader markdown={chapter} topicTag="abstract" />
       <footer className="px-4 md:px-6 pb-10">
         <div className="rounded-xl border border-border bg-card/40 p-4">
           <p className="text-sm font-semibold">Next up</p>

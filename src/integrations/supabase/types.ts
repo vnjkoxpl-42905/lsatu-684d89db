@@ -323,6 +323,33 @@ export type Database = {
         }
         Relationships: []
       }
+      chapter_progress: {
+        Row: {
+          user_id: string
+          topic_tag: string
+          section_id: string
+          first_viewed_at: string
+          last_viewed_at: string
+          view_count: number
+        }
+        Insert: {
+          user_id: string
+          topic_tag: string
+          section_id: string
+          first_viewed_at?: string
+          last_viewed_at?: string
+          view_count?: number
+        }
+        Update: {
+          user_id?: string
+          topic_tag?: string
+          section_id?: string
+          first_viewed_at?: string
+          last_viewed_at?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
       concept_library: {
         Row: {
           application: string | null
@@ -709,6 +736,42 @@ export type Database = {
           qtype?: string
           section?: number
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      flashcard_reviews: {
+        Row: {
+          id: string
+          user_id: string
+          topic_tag: string
+          card_id: string
+          rating: string
+          interval_days: number
+          due_at: string
+          review_count: number
+          reviewed_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          topic_tag: string
+          card_id: string
+          rating: string
+          interval_days: number
+          due_at: string
+          review_count?: number
+          reviewed_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          topic_tag?: string
+          card_id?: string
+          rating?: string
+          interval_days?: number
+          due_at?: string
+          review_count?: number
+          reviewed_at?: string
         }
         Relationships: []
       }

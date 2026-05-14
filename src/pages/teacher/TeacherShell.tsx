@@ -6,22 +6,27 @@ import {
   MessageSquare,
   CalendarDays,
   Library,
+  Flame,
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { BOOTCAMPS_DASHBOARD_ENABLED } from '@/components/teacher/bootcamps/topicRegistry';
 
 const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: string }>; end?: boolean }[] = [
   { to: '/teacher', label: 'Assistant', Icon: Sparkles, end: true },
   { to: '/teacher/students', label: 'Students', Icon: Users },
   { to: '/teacher/conversations', label: 'Conversations', Icon: MessageSquare },
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
+  { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-];
+].filter((item) =>
+  item.to === '/teacher/bootcamps' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
+);
 
 /**
  * Teacher Workspace shell. Premium operator hub for admins.
- * Five ranked tabs — Assistant is the default surface.
+ * Six ranked tabs. Assistant is the default surface.
  */
 export default function TeacherShell() {
   const navigate = useNavigate();
@@ -56,7 +61,7 @@ export default function TeacherShell() {
       </header>
 
       <div className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto flex flex-col md:flex-row">
-        {/* Desktop sidebar / mobile bottom-tab — five ranked items */}
+        {/* Desktop sidebar / mobile bottom-tab. Six ranked items. */}
         <aside className="hidden md:flex md:w-[200px] shrink-0 border-r border-zinc-800/60 flex-col">
           <nav className="py-4 flex flex-col gap-0.5" aria-label="Teacher workspace">
             {NAV.map(({ to, label, Icon, end }) => (

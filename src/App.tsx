@@ -74,6 +74,9 @@ const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
 const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
 const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherConversations"));
 const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary"));
+const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
+const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
+const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
@@ -298,6 +301,21 @@ const App = () => {
                       </React.Suspense>
                     } />
                     <Route path="weekly-plans" element={<Navigate to="/teacher/schedule" replace />} />
+                    <Route path="bootcamps" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherBootcampsHub />
+                      </React.Suspense>
+                    } />
+                    <Route path="bootcamps/:topicId" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherBootcampDetail />
+                      </React.Suspense>
+                    } />
+                    <Route path="bootcamps/:topicId/students/:studentId" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherStudentBootcampDetail />
+                      </React.Suspense>
+                    } />
                     <Route path="library" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherLibrary />

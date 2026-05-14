@@ -1,9 +1,16 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
 import { IndicatorHighlighter } from "./IndicatorHighlighter";
 import { DecoderPanel } from "./DecoderPanel";
+import { useRecordChapterSection } from "@/components/teacher/bootcamps/hooks/useChapterProgress";
 
 export interface ChapterReaderProps {
   markdown: string;
+  /**
+   * If set, scrolling each H2 into view fires a chapter_progress write keyed
+   * by `${topicTag}:section-${index+1}`. Used by the Bootcamps dashboard to
+   * track per-student section coverage.
+   */
+  topicTag?: string;
 }
 
 // Minimal Obsidian-flavored markdown -> JSX renderer scoped to the chapter's
@@ -173,11 +180,40 @@ function injectEmbeds(blocks: Block[]): Block[] {
   return out;
 }
 
-export function ChapterReader({ markdown }: ChapterReaderProps) {
+export function ChapterReader({ markdown, topicTag }: ChapterReaderProps) {
   const [blocks, setBlocks] = useState<Block[]>([]);
+  const recordSection = useRecordChapterSection();
+  const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+
   useEffect(() => {
     setBlocks(injectEmbeds(parseBlocks(markdown)));
   }, [markdown]);
+
+  // Fire chapter_progress writes when each H2-anchored section scrolls into
+  // view. Only one write per (topicTag, sectionId) per session is sent
+  // because useRecordChapterSection caches keys internally.
+  useEffect(() => {
+    if (!topicTag) return;
+    const observers: IntersectionObserver[] = [];
+    sectionRefs.current.forEach((el, sectionId) => {
+      const obs = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              void recordSection(topicTag, sectionId);
+            }
+          }
+        },
+        { threshold: 0.3 },
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, [blocks, topicTag, recordSection]);
+
+  // Track H2 occurrences as sections. The Abstract chapter has 3 sections.
+  let h2Counter = 0;
 
   return (
     <article className="chapter-reader prose prose-invert max-w-none px-4 md:px-6 py-6">
@@ -189,12 +225,23 @@ export function ChapterReader({ markdown }: ChapterReaderProps) {
                 {parseInline(b.text)}
               </h1>
             );
-          case "h2":
+          case "h2": {
+            h2Counter += 1;
+            const sectionId = `section-${h2Counter}`;
             return (
-              <h2 key={i} className="text-2xl font-semibold mt-8 mb-3">
+              <h2
+                key={i}
+                ref={(el) => {
+                  if (el) sectionRefs.current.set(sectionId, el);
+                  else sectionRefs.current.delete(sectionId);
+                }}
+                data-section-id={sectionId}
+                className="text-2xl font-semibold mt-8 mb-3"
+              >
                 {parseInline(b.text)}
               </h2>
             );
+          }
           case "h3":
             return (
               <h3 key={i} className="text-xl font-semibold mt-6 mb-2">
