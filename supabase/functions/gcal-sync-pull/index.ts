@@ -19,6 +19,29 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Auth: allow admin users OR service-role callers (e.g. cron).
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+    let authorized = false;
+    if (token && token === serviceRoleKey) {
+      authorized = true;
+    } else if (token) {
+      const { data: userRes } = await supabase.auth.getUser(token);
+      const user = userRes?.user;
+      if (user) {
+        const { data: roleRow } = await supabase.from("user_roles")
+          .select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+        if (roleRow) authorized = true;
+      }
+    }
+    if (!authorized) {
+      return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+
     const { data: stateRow } = await supabase
       .from("gcal_sync_state").select("*").eq("id", 1).maybeSingle();
     const calendarId = stateRow?.calendar_id || "primary";
