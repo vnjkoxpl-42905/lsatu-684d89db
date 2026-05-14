@@ -92,8 +92,8 @@ const DecodePracticeCard = () => {
                 { t: 'undermine', m: 'weaken or attack' },
                 { t: 'sufficiency of the evidence', m: 'whether the evidence is enough' }
               ].map((item, i) => (
-                <div key={i} className="border-l-4 border-brutal-green pl-4">
-                  <span className="text-[10px] font-black uppercase text-brutal-ink opacity-40 block">{item.t}</span>
+                <div key={i} className="bg-brutal-green/20 border-2 border-brutal-ink p-4">
+                  <span className="text-[10px] font-black uppercase text-brutal-ink-soft tracking-[0.15em] block">{item.t}</span>
                   <p className="text-brutal-ink font-bold">{item.m}</p>
                 </div>
               ))}
@@ -355,7 +355,7 @@ const DecodeGauntlet = ({ onComplete }: { onComplete: () => void }) => {
                   {item.example && (
                     <div className="bg-brutal-yellow p-6 border-2 border-brutal-ink brutal-shadow-sm">
                       <span className="text-[10px] font-black text-brutal-ink uppercase tracking-widest block mb-2">Concrete Example</span>
-                      <p className="text-md text-brutal-ink font-bold italic leading-tight uppercase tracking-tighter border-l-4 border-brutal-ink pl-4">{item.example}</p>
+                      <p className="text-md text-brutal-ink font-bold italic leading-snug">{item.example}</p>
                     </div>
                   )}
                 </div>
@@ -455,7 +455,7 @@ export default function LessonReader() {
       case 'why_hard':
         return (
           <div className="space-y-12 text-brutal-ink font-bold text-[18px] leading-tight">
-            <p className="max-w-[760px] mx-auto border-l-4 border-brutal-ink pl-6 italic">The LSAT is not written in English.</p>
+            <p className="max-w-[760px] mx-auto text-2xl font-black uppercase italic tracking-tight text-brutal-ink">The LSAT is not written in English.</p>
             <p className="max-w-[760px] mx-auto">It looks like English. The words are English. But answer choices often use normal words in a very specific LSAT way.</p>
             <p className="max-w-[760px] mx-auto">The hard part is not always understanding the stimulus. The hard part is understanding what the answer choice is <span className="underline decoration-brutal-red decoration-4">actually describing</span>.</p>
             
@@ -600,8 +600,8 @@ export default function LessonReader() {
                         </div>
                         
                         <div className="space-y-12">
-                          <div className="border-l-8 border-brutal-green pl-8">
-                            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink opacity-40 mb-2 block">LSAT Meaning</span>
+                          <div className="bg-brutal-green/20 border-4 border-brutal-ink p-6">
+                            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft mb-2 block">LSAT Meaning</span>
                             <p className="text-[32px] text-brutal-ink font-black leading-[1.1] uppercase tracking-tighter italic">{decodeData[activeKeyword].meaning}</p>
                           </div>
 
@@ -719,7 +719,7 @@ export default function LessonReader() {
                 <span className="text-xs font-black text-brutal-yellow uppercase tracking-[0.2em] block mb-6">TAKEAWAY</span>
                 <div className="space-y-6">
                   <p className="text-4xl font-black uppercase italic leading-tight tracking-tighter text-brutal-cyan">Do not pick an answer because it sounds related.</p>
-                  <p className="text-2xl font-bold uppercase tracking-tight opacity-80 border-l-8 border-brutal-cyan pl-8 leading-tight">
+                  <p className="text-2xl font-bold leading-snug bg-brutal-cyan/20 border-4 border-brutal-cyan p-6">
                     Extract the keywords. Translate them. Then make every meaningful part prove itself in the stimulus.
                   </p>
                 </div>
@@ -731,7 +731,7 @@ export default function LessonReader() {
       case 'deabstractifying_method':
         return (
           <div className="space-y-8 text-brutal-ink font-bold text-[18px] leading-tight">
-            <p className="max-w-[760px] mx-auto italic border-l-4 border-brutal-ink pl-6">Since the answer choices use vague language, you have to master a skill called <span className="uppercase text-brutal-red italic tracking-tighter">de-abstractifying</span>.</p>
+            <p className="max-w-[760px] mx-auto text-xl font-bold italic leading-snug">Since the answer choices use vague language, you have to master a skill called <span className="uppercase text-brutal-red italic tracking-tighter">de-abstractifying</span>.</p>
             
             <div className="max-w-[760px] mx-auto">
               <RuleCard>
@@ -845,7 +845,7 @@ export default function LessonReader() {
               <div className="absolute top-0 right-0 w-12 h-12 bg-brutal-ink flex items-center justify-center text-white font-black italic">!</div>
               <h3 className="text-[12px] text-brutal-ink font-black uppercase tracking-widest mb-6 bg-brutal-yellow inline-block px-2 border-2 border-brutal-ink">Stimulus Segment</h3>
 
-              <div className="bg-brutal-ink/5 border-l-8 border-brutal-ink p-8 mb-8 group-hover:bg-brutal-cyan/10 transition-colors">
+              <div className="bg-brutal-ink/5 border-4 border-brutal-ink p-8 mb-8 group-hover:bg-brutal-cyan/10 transition-colors">
                 <p className="text-[26px] text-brutal-ink font-black uppercase tracking-tighter leading-none italic">
                   "It is a hypothesis that the argument attempts to undermine by calling into question the sufficiency of the evidence."
                 </p>

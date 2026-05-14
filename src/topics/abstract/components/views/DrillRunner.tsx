@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
-import { useApp } from '../../store/AppContext';
-import { DRILLS } from '../../data/mockData';
-import { ConfidenceLevel, DrillType } from '../../types';
-import { cn } from '../../lib/utils';
-import { ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import { useApp } from "../../store/AppContext";
+import { DRILLS } from "../../data/mockData";
+import { ConfidenceLevel } from "../../types";
+import { cn } from "../../lib/utils";
+import { ChevronRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+
+const CONFIDENCE_LEVELS: ConfidenceLevel[] = [
+  "Guessing",
+  "Unsure",
+  "Pretty sure",
+  "Confident",
+];
+
+const TRAP_LABEL: Record<string, string> = {
+  wrong_role: "Wrong role attribution",
+  wrong_method: "Wrong method of reasoning",
+  structural_mismatch: "Structural mismatch",
+  attractive_language: "One-word trap",
+};
 
 export default function DrillRunner() {
   const { markDrillComplete } = useApp();
-  
+  const prefersReducedMotion = useReducedMotion();
+
   const [currentDrillIndex, setCurrentDrillIndex] = useState(0);
   const currentDrill = DRILLS[currentDrillIndex];
 
@@ -16,16 +31,24 @@ export default function DrillRunner() {
   const [confidence, setConfidence] = useState<ConfidenceLevel | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const isCorrect = selectedOption === currentDrill.correctOptionIndex;
+  const isCorrect = selectedOption === currentDrill?.correctOptionIndex;
 
   const handleSubmit = () => {
+    if (selectedOption === null || !confidence) return;
     setIsSubmitted(true);
-    markDrillComplete(currentDrill.id, currentDrill.type, isCorrect);
+    void markDrillComplete(
+      currentDrill.id,
+      currentDrill.type,
+      isCorrect,
+      selectedOption,
+      confidence,
+      isCorrect ? undefined : currentDrill.trapTag,
+    );
   };
 
   const handleNext = () => {
     if (currentDrillIndex < DRILLS.length - 1) {
-      setCurrentDrillIndex(prev => prev + 1);
+      setCurrentDrillIndex((prev) => prev + 1);
       setSelectedOption(null);
       setConfidence(null);
       setIsSubmitted(false);
@@ -35,144 +58,198 @@ export default function DrillRunner() {
   if (!currentDrill) return null;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
+    <motion.div
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="max-w-4xl mx-auto py-12 z-10 relative px-6"
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+      className="max-w-4xl mx-auto py-6 sm:py-10 z-10 relative px-1 sm:px-2"
     >
-      <header className="mb-12">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-          <h1 className="text-5xl font-black tracking-tighter text-brutal-ink leading-none uppercase italic border-b-4 border-brutal-pink pb-2 inline-block">Targeted Drills</h1>
-          <span className="text-sm font-black px-4 py-2 bg-brutal-cyan text-brutal-ink border-4 border-brutal-ink brutal-shadow-sm uppercase tracking-widest rotate-[2deg]">
-            {currentDrill.type.replace('_', ' ')}
+      <header className="mb-8 sm:mb-12 space-y-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-[11px] font-black px-2 py-1 bg-brutal-cyan text-brutal-ink border-2 border-brutal-ink uppercase tracking-[0.2em]">
+            {currentDrill.type.replace("_", " ")}
+          </span>
+          <span className="text-[11px] font-black text-brutal-ink-soft uppercase tracking-[0.2em]">
+            Drill {currentDrillIndex + 1} of {DRILLS.length}
           </span>
         </div>
-        <p className="text-brutal-ink font-black text-xl uppercase tracking-tight opacity-40">Drill {currentDrillIndex + 1} of {DRILLS.length}</p>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-brutal-ink leading-tight uppercase italic">
+          Targeted drills
+        </h1>
       </header>
 
-      <div className="bg-white border-4 border-brutal-ink brutal-shadow-lg mb-12 overflow-hidden">
-        <div className="p-10 bg-brutal-cyan/10 border-b-4 border-brutal-ink">
-          <p className="text-2xl font-black text-brutal-ink leading-tight uppercase tracking-tight italic">
+      <article className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow-lg mb-10 overflow-hidden">
+        <section
+          aria-label="Stimulus"
+          className="p-6 sm:p-8 md:p-10 border-b-4 border-brutal-ink"
+        >
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft block mb-3">
+            Stimulus
+          </span>
+          <p className="text-lg sm:text-xl font-bold text-brutal-ink leading-snug whitespace-pre-line">
             {currentDrill.stimulus}
           </p>
-        </div>
-        
-        <div className="p-10">
-          <p className="text-3xl font-black text-brutal-ink mb-10 uppercase leading-none tracking-tighter italic border-l-[8px] border-brutal-ink pl-8 underline decoration-brutal-cyan decoration-4 underline-offset-8">{currentDrill.question}</p>
-          
-          <div className="space-y-6">
+        </section>
+
+        <section className="p-6 sm:p-8 md:p-10" aria-label="Question and choices">
+          <h2 className="text-xl sm:text-2xl font-black text-brutal-ink mb-8 leading-snug tracking-tight italic">
+            {currentDrill.question}
+          </h2>
+
+          <ul className="space-y-4 list-none m-0 p-0" role="radiogroup" aria-label="Answer choices">
             {currentDrill.options.map((option, idx) => {
               const isSelected = selectedOption === idx;
-              let btnClass = "border-brutal-ink bg-white text-brutal-ink hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#000]";
-              
+              let btnClass =
+                "border-brutal-ink bg-brutal-paper text-brutal-ink hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_var(--brutal-ink)]";
+
               if (isSelected && !isSubmitted) {
-                btnClass = "bg-brutal-ink text-white border-brutal-ink translate-x-[2px] translate-y-[2px] shadow-none";
+                btnClass =
+                  "bg-brutal-ink text-brutal-paper border-brutal-ink translate-x-[2px] translate-y-[2px] shadow-none";
               } else if (isSubmitted) {
                 if (idx === currentDrill.correctOptionIndex) {
-                  btnClass = "bg-brutal-green border-brutal-ink brutal-shadow-sm text-brutal-ink scale-[1.01] z-10";
+                  btnClass =
+                    "bg-brutal-green border-brutal-ink brutal-shadow-sm text-brutal-ink";
                 } else if (isSelected) {
-                  btnClass = "bg-brutal-red text-white border-brutal-ink brutal-shadow-sm";
+                  btnClass =
+                    "bg-brutal-red text-brutal-paper border-brutal-ink brutal-shadow-sm";
                 } else {
-                  btnClass = "border-brutal-ink opacity-30 bg-white/50 grayscale";
+                  btnClass = "border-brutal-ink opacity-60 bg-brutal-paper text-brutal-ink-soft";
                 }
               }
 
               return (
-                <div key={idx} className="space-y-4">
+                <li key={idx}>
                   <button
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
                     disabled={isSubmitted}
                     onClick={() => setSelectedOption(idx)}
                     className={cn(
-                      "w-full text-left p-8 border-4 transition-all duration-100 relative group flex items-start gap-6",
-                      btnClass
+                      "w-full text-left p-5 sm:p-6 border-4 transition-transform duration-150 flex items-start gap-4 sm:gap-5 min-h-[44px]",
+                      btnClass,
                     )}
                   >
-                    <div className={cn(
-                      "w-12 h-12 flex items-center justify-center border-4 font-black text-xl shrink-0 transition-colors shadow-none",
-                      isSelected && !isSubmitted ? "bg-white text-brutal-ink border-white" : "bg-brutal-ink text-white border-brutal-ink"
-                    )}>
-                      {String.fromCharCode(65 + idx)}
-                    </div>
-                    <span className="block font-black text-xl leading-none uppercase tracking-tight italic py-2">{option.text}</span>
-                  </button>
-                  {isSubmitted && (
-                    <motion.div 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
+                    <span
+                      aria-hidden="true"
                       className={cn(
-                        "text-lg pl-10 font-bold uppercase tracking-tight italic leading-tight border-l-4 py-2",
-                        idx === currentDrill.correctOptionIndex ? "text-brutal-green border-brutal-green" : "text-brutal-ink/40 border-brutal-ink/20"
+                        "w-10 h-10 flex items-center justify-center border-2 font-black text-base shrink-0",
+                        isSelected && !isSubmitted
+                          ? "bg-brutal-paper text-brutal-ink border-brutal-paper"
+                          : "bg-brutal-ink text-brutal-paper border-brutal-ink",
+                      )}
+                    >
+                      {String.fromCharCode(65 + idx)}
+                    </span>
+                    <span className="block font-bold text-base sm:text-lg leading-snug py-1.5">
+                      <span className="sr-only">Choice {String.fromCharCode(65 + idx)}: </span>
+                      {option.text}
+                    </span>
+                  </button>
+                  {isSubmitted ? (
+                    <motion.p
+                      initial={prefersReducedMotion ? false : { opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.2 }}
+                      className={cn(
+                        "text-sm sm:text-base mt-3 pl-14 pr-2 font-bold leading-snug",
+                        idx === currentDrill.correctOptionIndex
+                          ? "text-brutal-ink"
+                          : "text-brutal-ink-soft",
                       )}
                     >
                       {option.explanation}
-                    </motion.div>
+                    </motion.p>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      </article>
+
+      {!isSubmitted ? (
+        <section
+          aria-labelledby="confidence-heading"
+          className="bg-brutal-paper border-4 border-brutal-ink p-6 sm:p-8 brutal-shadow-lg mb-10"
+        >
+          <h2
+            id="confidence-heading"
+            className="text-[11px] font-black text-brutal-ink uppercase tracking-[0.2em] mb-5"
+          >
+            How confident are you?
+          </h2>
+          <div
+            role="radiogroup"
+            aria-labelledby="confidence-heading"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-7"
+          >
+            {CONFIDENCE_LEVELS.map((level) => {
+              const selected = confidence === level;
+              return (
+                <button
+                  key={level}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setConfidence(level)}
+                  className={cn(
+                    "min-h-[48px] py-3 px-3 text-xs sm:text-sm font-black border-4 uppercase tracking-tight transition-transform",
+                    selected
+                      ? "bg-brutal-ink border-brutal-ink text-brutal-paper brutal-shadow-sm"
+                      : "bg-brutal-paper border-brutal-ink text-brutal-ink hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_var(--brutal-ink)]",
                   )}
-                </div>
+                >
+                  {level}
+                </button>
               );
             })}
           </div>
-        </div>
-      </div>
-
-      {!isSubmitted ? (
-        <div className="bg-white border-4 border-brutal-ink p-10 brutal-shadow-lg mb-16">
-          <p className="text-xs font-black text-brutal-ink uppercase tracking-[0.3em] mb-8 bg-brutal-yellow px-3 py-1 border-2 border-brutal-ink inline-block">How confident are you?</p>
-          <div className="flex flex-wrap gap-4 mb-10">
-            {(['Guessing', 'Unsure', 'Pretty sure', 'Confident'] as ConfidenceLevel[]).map(level => (
-              <button
-                key={level}
-                onClick={() => setConfidence(level)}
-                className={cn(level === 'Guessing' ? 'rotate-[-1deg]' : level === 'Unsure' ? 'rotate-[1deg]' : level === 'Pretty sure' ? 'rotate-[-2deg]' : 'rotate-[2deg]',
-                  "flex-1 py-4 text-xs font-black border-4 transition-all uppercase tracking-widest",
-                  confidence === level
-                    ? "bg-brutal-ink border-brutal-ink text-white brutal-shadow-sm scale-105"
-                    : "bg-white border-brutal-ink text-brutal-ink hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#000]"
-                )}
-              >
-                {level}
-              </button>
-            ))}
-          </div>
           <button
+            type="button"
             disabled={selectedOption === null || !confidence}
             onClick={handleSubmit}
-            className="w-full bg-brutal-ink text-white font-black py-6 border-4 border-brutal-ink text-2xl uppercase tracking-widest hover:bg-brutal-ink/90 transition-all brutal-shadow disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full min-h-[56px] bg-brutal-ink text-brutal-paper font-black py-4 border-4 border-brutal-ink text-base sm:text-lg uppercase tracking-widest hover:bg-brutal-ink/90 transition-colors brutal-shadow disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            SUBMIT ANSWER
+            Submit answer
           </button>
-        </div>
+        </section>
       ) : (
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
+        <motion.section
+          aria-live="polite"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border-4 border-brutal-ink p-10 brutal-shadow-lg mb-16 relative"
+          transition={{ duration: 0.24 }}
+          className="bg-brutal-paper border-4 border-brutal-ink p-6 sm:p-8 brutal-shadow-lg mb-10"
         >
-          <div className="mb-10">
-            <h3 className={cn(
-              "text-5xl font-black mb-6 uppercase tracking-tighter italic border-b-8 pb-4 inline-block",
-              isCorrect ? "text-brutal-green border-brutal-green" : "text-brutal-red border-brutal-red"
-            )}>
-              {isCorrect ? 'Correct Mismatch' : 'Incorrect Match'}
-            </h3>
-            <p className="text-2xl font-black text-brutal-ink leading-tight uppercase tracking-tighter italic mb-8">{currentDrill.explanation}</p>
-            {!isCorrect && currentDrill.trapTag && (
-              <div className="mt-8 inline-flex items-center px-6 py-3 bg-brutal-red text-white border-4 border-brutal-ink font-black uppercase tracking-widest rotate-[-1deg] brutal-shadow-sm">
-                TRAP FALLEN FOR: {currentDrill.trapTag.replace('_', ' ')}
-              </div>
+          <h2
+            className={cn(
+              "text-3xl sm:text-4xl font-black mb-5 uppercase italic tracking-tight",
+              isCorrect ? "text-brutal-green" : "text-brutal-red",
             )}
-          </div>
-          
+          >
+            {isCorrect ? "Correct" : "Incorrect"}
+          </h2>
+          <p className="text-base sm:text-lg font-bold text-brutal-ink leading-snug mb-6">
+            {currentDrill.explanation}
+          </p>
+          {!isCorrect && currentDrill.trapTag ? (
+            <p className="inline-flex items-center px-3 py-2 bg-brutal-red text-brutal-paper border-2 border-brutal-ink text-xs font-black uppercase tracking-[0.15em]">
+              Trap fallen for: {TRAP_LABEL[currentDrill.trapTag] ?? currentDrill.trapTag.replace("_", " ")}
+            </p>
+          ) : null}
+
           <button
+            type="button"
             onClick={handleNext}
             disabled={currentDrillIndex === DRILLS.length - 1}
-            className="w-full bg-brutal-pink text-brutal-ink font-black py-6 border-4 border-brutal-ink text-2xl uppercase tracking-widest hover:bg-brutal-pink/90 transition-all brutal-shadow flex justify-center items-center gap-4 disabled:opacity-30"
+            className="mt-8 w-full min-h-[56px] bg-brutal-pink text-brutal-ink font-black py-4 border-4 border-brutal-ink text-base sm:text-lg uppercase tracking-widest brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-transform disabled:opacity-40 disabled:cursor-not-allowed flex justify-center items-center gap-3"
           >
-            {currentDrillIndex === DRILLS.length - 1 ? 'END OF DRILLS' : 'NEXT DRILL'} <ChevronRight className="w-8 h-8"/>
+            {currentDrillIndex === DRILLS.length - 1 ? "End of drills" : "Next drill"}
+            <ChevronRight className="w-5 h-5" aria-hidden="true" />
           </button>
-        </motion.div>
+        </motion.section>
       )}
-
     </motion.div>
   );
 }

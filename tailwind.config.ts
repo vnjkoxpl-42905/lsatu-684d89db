@@ -155,7 +155,11 @@ export default {
         "brutal-green": "var(--brutal-green)",
         "brutal-red": "var(--brutal-red)",
         "brutal-ink": "var(--brutal-ink)",
+        "brutal-ink-soft": "var(--brutal-ink-soft)",
+        "brutal-ink-faint": "var(--brutal-ink-faint)",
+        "brutal-ink-trace": "var(--brutal-ink-trace)",
         "brutal-bg": "var(--brutal-bg)",
+        "brutal-paper": "var(--brutal-paper)",
       },
       backdropBlur: {
         glass: "12px",
@@ -167,13 +171,14 @@ export default {
         lg: "var(--shadow-lg)",
         glow: "var(--shadow-glow)",
         "glow-sm": "0 0 12px 0 rgba(176, 106, 62, 0.2)",
-        /* Abstract bootcamp brutalist hard-offset shadows. Cosmetic-only;
-         * not gated to .topic-abstract because they are static box-shadow
-         * declarations with no theming dependency. The wrapper class controls
-         * which surfaces opt in. */
-        "brutal-sm": "2px 2px 0px 0px #000",
-        "brutal": "4px 4px 0px 0px #000",
-        "brutal-lg": "8px 8px 0px 0px #000",
+        /* Abstract bootcamp brutalist hard-offset shadows. Reference
+         * --brutal-ink so the tinted-neutral rule holds; --brutal-ink is
+         * defined inside .topic-abstract. Outside the wrapper these tokens
+         * fall back to the closest defined value (or transparent), which is
+         * desired since shadow-brutal-* classes never appear outside it. */
+        "brutal-sm": "2px 2px 0px 0px var(--brutal-ink, currentColor)",
+        "brutal": "4px 4px 0px 0px var(--brutal-ink, currentColor)",
+        "brutal-lg": "8px 8px 0px 0px var(--brutal-ink, currentColor)",
       },
       borderRadius: {
         lg: "var(--radius)",

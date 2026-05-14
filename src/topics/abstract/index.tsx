@@ -49,7 +49,7 @@ function ViewManager() {
 // and does not leak into other LSATU dark-mode pages.
 export default function AbstractBootcamp() {
   return (
-    <div className="topic-abstract">
+    <div className="topic-abstract h-screen w-full">
       <AppProvider>
         <AppShell>
           <ViewManager />

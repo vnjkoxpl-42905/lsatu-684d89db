@@ -1,7 +1,7 @@
 /* Brutalist tokens and utilities for the Abstract bootcamp.
  *
  * Scoped under `.topic-abstract` so the cream paper background, hard
- * 4px borders, and color blocks live only inside /topics/abstract and do
+ * borders, and color blocks live only inside /topics/abstract and do
  * not leak into other LSATU surfaces (which remain dark mode).
  *
  * Architecture exception per _BUILD_SPEC_v2.0.md: drill mode is dark by
@@ -9,22 +9,25 @@
  */
 
 .topic-abstract {
-  /* Neo-brutalist palette. Mirrors the new-bootcamp Tailwind 4 @theme block
-   * but expressed as plain custom properties so we can compile with
-   * Tailwind 3.4 and reference via bg-[var(--brutal-yellow)] or the
-   * brutal-* color classes defined in tailwind.config.js theme.extend.
-   */
-  --brutal-yellow: #FEFF00;
-  --brutal-cyan: #00F0FF;
-  --brutal-pink: #FF00F5;
-  --brutal-green: #00FF00;
-  --brutal-red: #FF3131;
-  --brutal-bg: #F3F3F3;
-  --brutal-ink: #000000;
+  /* Neo-brutalist palette in OKLCH. Every neutral is tinted toward a warm
+   * 80deg hue, never pure black or pure white, per the project-wide
+   * tinted-neutral rule. Accent colors keep their saturated brutalist
+   * character but tighten chroma at the lightness extremes. */
+  --brutal-yellow: oklch(0.94 0.20 100);
+  --brutal-cyan: oklch(0.90 0.16 200);
+  --brutal-pink: oklch(0.72 0.30 340);
+  --brutal-green: oklch(0.88 0.27 145);
+  --brutal-red: oklch(0.65 0.24 25);
+  --brutal-bg: oklch(0.96 0.005 80);
+  --brutal-paper: oklch(0.99 0.003 80);
+  --brutal-ink: oklch(0.14 0.012 80);
+  --brutal-ink-soft: oklch(0.40 0.010 80);
+  --brutal-ink-faint: oklch(0.55 0.008 80);
+  --brutal-ink-trace: oklch(0.78 0.005 80);
 
-  /* Color-mirrors keyed to the names the new-bootcamp source uses
-   * (`--color-brutal-*`) so we don't have to rewrite every inline style
-   * during the port. */
+  /* Source-compat aliases so the new-bootcamp inline styles
+   * (style={{ backgroundColor: 'var(--color-brutal-yellow)' }}) keep
+   * compiling without a rewrite. */
   --color-brutal-yellow: var(--brutal-yellow);
   --color-brutal-cyan: var(--brutal-cyan);
   --color-brutal-pink: var(--brutal-pink);
@@ -46,7 +49,6 @@
 .topic-abstract h6 {
   font-family: "Space Grotesk", "Inter", sans-serif;
   font-weight: 900;
-  text-transform: uppercase;
   letter-spacing: -0.025em;
 }
 
@@ -55,41 +57,55 @@
   color: var(--brutal-yellow);
 }
 
+/* Visible focus ring on every interactive element. WCAG 2.4.7. Brutalist
+ * idiom: a thick yellow ring with offset, framed by the ink color so it
+ * reads on any background. */
+.topic-abstract :focus {
+  outline: none;
+}
+
+.topic-abstract :focus-visible {
+  outline: 3px solid var(--brutal-yellow);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--brutal-ink);
+}
+
 /* Utility replacements for the new-bootcamp Tailwind 4 @utility blocks.
  * Source uses bare class names like brutal-shadow, brutal-shadow-sm, etc.
  * Tailwind passes unknown classes through; we match them via descendant
- * selectors so they only apply inside .topic-abstract. */
+ * selectors so they only apply inside .topic-abstract. Shadows now read
+ * from --brutal-ink so the tinted-neutral rule holds end-to-end. */
 .topic-abstract .brutal-shadow {
-  box-shadow: 4px 4px 0px 0px #000;
+  box-shadow: 4px 4px 0px 0px var(--brutal-ink);
 }
 
 .topic-abstract .brutal-shadow-lg {
-  box-shadow: 8px 8px 0px 0px #000;
+  box-shadow: 8px 8px 0px 0px var(--brutal-ink);
 }
 
 .topic-abstract .brutal-shadow-sm {
-  box-shadow: 2px 2px 0px 0px #000;
+  box-shadow: 2px 2px 0px 0px var(--brutal-ink);
 }
 
 .topic-abstract .brutal-shadow-hover:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #000;
+  box-shadow: 6px 6px 0px 0px var(--brutal-ink);
 }
 
 .topic-abstract .brutal-shadow-active:active {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #000;
+  box-shadow: 2px 2px 0px 0px var(--brutal-ink);
 }
 
 .topic-abstract .brutal-grid {
   background-image:
-    linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    linear-gradient(to right, oklch(0.14 0.012 80 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.14 0.012 80 / 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 .topic-abstract .brutal-dotted {
-  background-image: radial-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-image: radial-gradient(oklch(0.14 0.012 80 / 0.1) 1px, transparent 1px);
   background-size: 15px 15px;
 }
 
@@ -105,4 +121,50 @@
 .topic-abstract .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: var(--brutal-ink);
   border: 2px solid var(--brutal-bg);
+}
+
+/* Honor prefers-reduced-motion at the scope level. Any descendant motion
+ * with a transition or framer-motion variant collapses to near-instant. */
+@media (prefers-reduced-motion: reduce) {
+  .topic-abstract *,
+  .topic-abstract *::before,
+  .topic-abstract *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visually-hidden helper for skip links and screen-reader-only labels. */
+.topic-abstract .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.topic-abstract .skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 12px 16px;
+  background: var(--brutal-yellow);
+  color: var(--brutal-ink);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 4px solid var(--brutal-ink);
+  transform: translateY(-110%);
+  transition: transform 150ms ease-out;
+  z-index: 100;
+}
+
+.topic-abstract .skip-link:focus-visible {
+  transform: translateY(0);
 }

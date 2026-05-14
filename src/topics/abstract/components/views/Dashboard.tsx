@@ -1,159 +1,244 @@
-import React from 'react';
-import { useApp } from '../../store/AppContext';
-import { BookOpen, Target, FileText, ArrowRight, BookMarked, Play, PenTool, Brain, Library } from 'lucide-react';
-import { LESSONS } from '../../data/mockData';
-
-import { motion, type Variants } from 'framer-motion';
+import { useApp } from "../../store/AppContext";
+import { BookOpen, Target, ArrowRight, Play, PenTool, Brain, Library, FileText, Flag } from "lucide-react";
+import { LESSONS } from "../../data/mockData";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { ViewState, CardReview } from "../../types";
 
 const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
+    transition: { staggerChildren: 0.06 },
+  },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } },
 };
+
+// Asymmetric tile sizing escapes the identical-card-grid trap. The primary
+// next-step claims one wide row, secondary tools sit at half width below.
+type DashTile = {
+  id: ViewState;
+  label: string;
+  description: string;
+  icon: typeof PenTool;
+  span: "wide" | "half";
+  // Tile background. Yellow is reserved for the active resume tile per the
+  // One-Voice rule mirrored from the Intro to LR DESIGN.md.
+  surface: string;
+};
+
+const SECONDARY_TILES: DashTile[] = [
+  {
+    id: "extraction_workspace",
+    label: "Extraction Workspace",
+    description: "Take an abstract answer choice apart, match its parts to the stimulus.",
+    icon: PenTool,
+    span: "half",
+    surface: "bg-brutal-paper",
+  },
+  {
+    id: "translator_workspace",
+    label: "Translator",
+    description: "Plain-English an abstract phrase, get coach feedback.",
+    icon: FileText,
+    span: "half",
+    surface: "bg-brutal-paper",
+  },
+  {
+    id: "methods_library",
+    label: "Methods Library",
+    description: "Reference all 17 reasoning patterns and 14 question stems.",
+    icon: Library,
+    span: "half",
+    surface: "bg-brutal-paper",
+  },
+  {
+    id: "flashcards",
+    label: "Flashcards",
+    description: "Self-test on key terms, stems, and distinctions.",
+    icon: Brain,
+    span: "half",
+    surface: "bg-brutal-paper",
+  },
+];
 
 export default function Dashboard() {
   const { bootcampState, setCurrentView } = useApp();
+  const prefersReducedMotion = useReducedMotion();
+  const lessonsDone = bootcampState.completedLessons.length;
+  const drillsDone = bootcampState.completedDrills.length;
+  const cardsReviewed = Object.values(bootcampState.cards as Record<string, CardReview>)
+    .filter((c) => c.status !== "unseen").length;
+  const totalLessons = LESSONS.length;
+  const isReturning = lessonsDone > 0;
+  const nextLessonId = LESSONS.find((l) => !bootcampState.completedLessons.includes(l.id))?.id;
+  const nextLessonTitle = LESSONS.find((l) => l.id === nextLessonId)?.title ?? "Continue training";
+
+  const motionProps = prefersReducedMotion
+    ? { initial: false }
+    : { initial: "hidden", animate: "show", variants: container };
 
   return (
-    <motion.div 
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="space-y-12 z-10 relative pb-20"
-    >
-      <motion.header variants={item} className="space-y-4">
-        <div className="inline-block bg-brutal-yellow px-4 py-1 border-2 border-brutal-ink brutal-shadow-sm rotate-[-1deg] mb-2">
-          <span className="text-xs font-black uppercase tracking-widest">Training Module v1.0</span>
-        </div>
-        <h1 className="text-6xl font-black tracking-tighter text-brutal-ink leading-[0.9] uppercase bg-brutal-bg">
-          Abstract <br />
+    <motion.div {...motionProps} className="space-y-10 sm:space-y-14 z-10 relative pb-16">
+      <motion.header variants={prefersReducedMotion ? undefined : item} className="space-y-5">
+        <span className="inline-block bg-brutal-yellow px-3 py-1 border-2 border-brutal-ink brutal-shadow-sm text-[11px] font-black uppercase tracking-[0.2em]">
+          {isReturning ? "Pick up where you left off" : "Bootcamp"}
+        </span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-brutal-ink leading-[0.95] uppercase">
+          Abstract <br className="hidden sm:block" />
           Reasoning <span className="text-brutal-red italic">Bootcamp</span>
         </h1>
-        <p className="text-lg font-bold text-brutal-ink max-w-2xl leading-tight border-l-4 border-brutal-ink pl-4 mt-6">
-          DECODE ABSTRACT LSAT ANSWER CHOICES BY EXTRACTING KEYWORDS, TRANSLATING THEM INTO PLAIN ENGLISH, AND MATCHING EACH DESCRIPTION AGAINST THE ARGUMENT.
+        <p className="text-base sm:text-lg font-bold text-brutal-ink max-w-2xl leading-snug">
+          Decode abstract LSAT answer choices by extracting keywords, translating them into plain English, and matching each description against the argument.
         </p>
       </motion.header>
 
-      <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-brutal-cyan p-6 border-4 border-brutal-ink brutal-shadow transition-transform hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000] duration-200 cursor-default">
-          <div className="flex items-center gap-3 text-brutal-ink mb-4">
-            <BookOpen className="w-6 h-6" />
-            <h3 className="font-black text-sm tracking-widest uppercase">LESSONS</h3>
+      <motion.section
+        variants={prefersReducedMotion ? undefined : item}
+        aria-labelledby="dash-resume-heading"
+        className="bg-brutal-yellow border-4 border-brutal-ink brutal-shadow-lg p-6 sm:p-10 relative overflow-hidden"
+      >
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-10 relative z-10">
+          <div className="space-y-3 max-w-2xl">
+            <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+              {isReturning ? "Next lesson" : "Start here"}
+            </span>
+            <h2 id="dash-resume-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-brutal-ink leading-tight uppercase italic">
+              {isReturning ? nextLessonTitle : "Why Abstract Answer Choices Feel Hard"}
+            </h2>
+            <p className="text-base font-bold text-brutal-ink/85 leading-snug">
+              {isReturning
+                ? "Keep building the S + K method. Translate abstract language into concrete claims."
+                : "Start with the fundamentals. Learn why abstract answer choices break down even the best test-takers."}
+            </p>
           </div>
-          <p className="text-5xl font-black leading-none">{bootcampState.completedLessons.length}<span className="text-brutal-ink/30 text-2xl font-black">/{LESSONS.length}</span></p>
-        </div>
-        
-        <div className="bg-brutal-pink p-6 border-4 border-brutal-ink brutal-shadow transition-transform hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000] duration-200 cursor-default">
-          <div className="flex items-center gap-3 text-brutal-ink mb-4">
-            <Target className="w-6 h-6" />
-            <h3 className="font-black text-sm tracking-widest uppercase">DRILLS</h3>
-          </div>
-          <p className="text-5xl font-black leading-none">{bootcampState.completedDrills.length}</p>
-        </div>
-
-        <div className="bg-brutal-green p-6 border-4 border-brutal-ink brutal-shadow transition-transform hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#000] duration-200 cursor-default">
-          <div className="flex items-center gap-3 text-brutal-ink mb-4">
-            <BookMarked className="w-6 h-6" />
-            <h3 className="font-black text-sm tracking-widest uppercase">CARDS</h3>
-          </div>
-          <p className="text-5xl font-black leading-none">{Object.values(bootcampState.cards as Record<string, import('../../types').CardReview>).filter(c => c.status !== 'unseen').length}</p>
-        </div>
-      </motion.div>
-
-      <motion.div variants={item} className="bg-white border-4 border-brutal-ink brutal-shadow-lg p-10 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-brutal-yellow border-l-4 border-b-4 border-brutal-ink translate-x-12 translate-y-[-12px] rotate-12 group-hover:rotate-6 transition-transform"></div>
-        
-        <div className="relative z-10 max-w-2xl space-y-6">
-          <h2 className="text-4xl font-black text-brutal-ink leading-none uppercase italic">Continue your training</h2>
-          <p className="text-brutal-ink text-lg font-bold leading-tight">
-            {bootcampState.completedLessons.length === 0 
-              ? "Start with the fundamentals. Learn why abstract answer choices break down even the best test-takers."
-              : "Keep building the S + K method. Translate abstract language into concrete claims."}
-          </p>
-          <button 
-            onClick={() => setCurrentView('lesson')}
-            className="px-8 py-4 bg-brutal-ink text-white border-4 border-brutal-ink font-black text-lg inline-flex items-center gap-3 brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase tracking-tighter"
+          <button
+            type="button"
+            onClick={() => setCurrentView("lesson")}
+            className="self-start md:self-end inline-flex items-center gap-3 px-6 sm:px-8 py-4 sm:py-5 bg-brutal-ink text-brutal-paper border-4 border-brutal-ink font-black text-base sm:text-lg uppercase tracking-widest brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-transform min-h-[44px]"
           >
-            <Play className="w-6 h-6 fill-white" />
-            {bootcampState.completedLessons.length === 0 ? 'START BOOTCAMP' : 'CONTINUE TRAINING'}
+            <Play className="w-5 h-5 fill-current" aria-hidden="true" />
+            {isReturning ? "Continue training" : "Start bootcamp"}
           </button>
         </div>
-      </motion.div>
+      </motion.section>
 
-      <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-        <button 
-          onClick={() => setCurrentView('extraction_workspace')}
-          className="group text-left bg-white p-8 border-4 border-brutal-ink brutal-shadow hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_#000] transition-all flex flex-col items-start gap-6"
-        >
-          <div className="w-16 h-16 bg-brutal-yellow border-4 border-brutal-ink flex items-center justify-center group-hover:rotate-6 transition-transform brutal-shadow-sm">
-            <PenTool className="w-8 h-8 text-brutal-ink" />
+      <motion.section
+        variants={prefersReducedMotion ? undefined : item}
+        aria-labelledby="dash-progress-heading"
+        className="border-t-4 border-brutal-ink pt-8"
+      >
+        <h2 id="dash-progress-heading" className="sr-only">
+          Your progress so far
+        </h2>
+        <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 text-brutal-ink">
+          <div>
+            <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Lessons
+            </dt>
+            <dd className="text-3xl sm:text-4xl font-black tracking-tighter">
+              {lessonsDone}
+              <span className="text-brutal-ink-faint text-xl">/{totalLessons}</span>
+            </dd>
           </div>
-          <div className="space-y-2">
-            <h3 className="font-black text-2xl text-brutal-ink uppercase tracking-tighter">Extraction Workspace</h3>
-            <p className="text-brutal-ink font-bold text-sm leading-snug">Practice taking abstract answer choices apart and matching them to the stimulus.</p>
-            <div className="pt-4 flex items-center text-xs font-black text-brutal-ink uppercase tracking-widest bg-brutal-cyan px-3 py-1 border-2 border-brutal-ink group-hover:bg-brutal-green transition-colors">
-              Enter Workspace <ArrowRight className="w-4 h-4 ml-2" />
-            </div>
+          <div>
+            <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Drills logged
+            </dt>
+            <dd className="text-3xl sm:text-4xl font-black tracking-tighter">{drillsDone}</dd>
           </div>
-        </button>
+          <div>
+            <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Cards reviewed
+            </dt>
+            <dd className="text-3xl sm:text-4xl font-black tracking-tighter">{cardsReviewed}</dd>
+          </div>
+          <div>
+            <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Final set
+            </dt>
+            <dd className="text-3xl sm:text-4xl font-black tracking-tighter">
+              {bootcampState.finalSetScore
+                ? `${bootcampState.finalSetScore.score}/${bootcampState.finalSetScore.total}`
+                : "··"}
+            </dd>
+          </div>
+        </dl>
+      </motion.section>
 
-        <button 
-          onClick={() => setCurrentView('flashcards')}
-          className="group text-left bg-white p-8 border-4 border-brutal-ink brutal-shadow hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_#000] transition-all flex flex-col items-start gap-6"
-        >
-          <div className="w-16 h-16 bg-brutal-pink border-4 border-brutal-ink flex items-center justify-center group-hover:rotate-6 transition-transform brutal-shadow-sm">
-            <Brain className="w-8 h-8 text-brutal-ink" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="font-black text-2xl text-brutal-ink uppercase tracking-tighter">Review Flashcards</h3>
-            <p className="text-brutal-ink font-bold text-sm leading-snug">Active recall on key terms, question stems, and logical distinctions.</p>
-            <div className="pt-4 flex items-center text-xs font-black text-brutal-ink uppercase tracking-widest bg-brutal-cyan px-3 py-1 border-2 border-brutal-ink group-hover:bg-brutal-green transition-colors">
-              Start Session <ArrowRight className="w-4 h-4 ml-2" />
-            </div>
-          </div>
-        </button>
+      <motion.section
+        variants={prefersReducedMotion ? undefined : item}
+        aria-labelledby="dash-secondary-heading"
+        className="space-y-5"
+      >
+        <div className="flex items-end justify-between gap-6">
+          <h2 id="dash-secondary-heading" className="text-xl sm:text-2xl font-black uppercase italic tracking-tight">
+            Tools at hand
+          </h2>
+          <button
+            type="button"
+            onClick={() => setCurrentView("drill")}
+            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-brutal-ink hover:underline underline-offset-4 min-h-[44px] px-1"
+          >
+            <Target className="w-4 h-4" aria-hidden="true" />
+            Jump to drills
+          </button>
+        </div>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5 list-none m-0 p-0">
+          {SECONDARY_TILES.map((tile) => {
+            const Icon = tile.icon;
+            return (
+              <li key={tile.id}>
+                <button
+                  type="button"
+                  onClick={() => setCurrentView(tile.id)}
+                  className={`${tile.surface} group w-full h-full min-h-[44px] text-left p-6 sm:p-7 border-4 border-brutal-ink brutal-shadow hover:translate-x-[-3px] hover:translate-y-[-3px] hover:shadow-[10px_10px_0px_0px_var(--brutal-ink)] transition-transform flex flex-col gap-5`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-11 h-11 bg-brutal-ink text-brutal-paper border-2 border-brutal-ink flex items-center justify-center"
+                      aria-hidden="true"
+                    >
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight">
+                      {tile.label}
+                    </h3>
+                  </div>
+                  <p className="text-sm font-bold text-brutal-ink-soft leading-snug">
+                    {tile.description}
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink mt-auto pt-2">
+                    Open
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </motion.section>
 
-        <button 
-          onClick={() => setCurrentView('methods_library')}
-          className="group text-left bg-white p-8 border-4 border-brutal-ink brutal-shadow hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_#000] transition-all flex flex-col items-start gap-6"
+      <motion.section
+        variants={prefersReducedMotion ? undefined : item}
+        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 border-t-4 border-brutal-ink pt-6"
+      >
+        <BookOpen className="w-6 h-6 text-brutal-ink-soft hidden sm:block" aria-hidden="true" />
+        <p className="text-sm sm:text-base font-bold text-brutal-ink-soft leading-snug flex-1">
+          When you finish all eight lessons, the Final Timed Set unlocks a five-question simulation that mirrors a real LSAT section.
+        </p>
+        <button
+          type="button"
+          onClick={() => setCurrentView("timed_set")}
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brutal-paper border-4 border-brutal-ink text-sm font-black uppercase tracking-[0.15em] brutal-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_var(--brutal-ink)] transition-transform min-h-[44px]"
         >
-          <div className="w-16 h-16 bg-brutal-green border-4 border-brutal-ink flex items-center justify-center group-hover:rotate-6 transition-transform brutal-shadow-sm">
-            <Library className="w-8 h-8 text-brutal-ink" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="font-black text-2xl text-brutal-ink uppercase tracking-tighter">Methods Library</h3>
-            <p className="text-brutal-ink font-bold text-sm leading-snug">Reference center for S+K patterns, term definitions, and trap answer types.</p>
-            <div className="pt-4 flex items-center text-xs font-black text-brutal-ink uppercase tracking-widest bg-brutal-cyan px-3 py-1 border-2 border-brutal-ink group-hover:bg-brutal-green transition-colors">
-              Browse Library <ArrowRight className="w-4 h-4 ml-2" />
-            </div>
-          </div>
+          <Flag className="w-4 h-4" aria-hidden="true" />
+          Preview final set
         </button>
-
-        <button 
-          onClick={() => setCurrentView('drill')}
-          className="group text-left bg-white p-8 border-4 border-brutal-ink brutal-shadow hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_#000] transition-all flex flex-col items-start gap-6"
-        >
-          <div className="w-16 h-16 bg-brutal-red border-4 border-brutal-ink flex items-center justify-center group-hover:rotate-6 transition-transform brutal-shadow-sm text-white">
-            <Target className="w-8 h-8" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="font-black text-2xl text-brutal-ink uppercase tracking-tighter">Targeted Drills</h3>
-            <p className="text-brutal-ink font-bold text-sm leading-snug">Focus on specific failure points like one-word traps and structural mismatches.</p>
-            <div className="pt-4 flex items-center text-xs font-black text-brutal-ink uppercase tracking-widest bg-brutal-cyan px-3 py-1 border-2 border-brutal-ink group-hover:bg-brutal-green transition-colors">
-              View Drills <ArrowRight className="w-4 h-4 ml-2" />
-            </div>
-          </div>
-        </button>
-      </motion.div>
+      </motion.section>
     </motion.div>
   );
 }

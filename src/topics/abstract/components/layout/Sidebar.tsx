@@ -1,75 +1,138 @@
-import React from 'react';
-import { useApp } from '../../store/AppContext';
-import { BookOpen, CheckCircle, FileText, Target, Brain, PenTool, LayoutDashboard, Flag } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { ViewState } from '../../types';
+import { useApp } from "../../store/AppContext";
+import {
+  BookOpen,
+  CheckCircle,
+  FileText,
+  Target,
+  Brain,
+  PenTool,
+  LayoutDashboard,
+  Flag,
+} from "lucide-react";
+import { cn } from "../../lib/utils";
+import { ViewState } from "../../types";
+import { motion, useReducedMotion } from "framer-motion";
 
-import { motion } from 'framer-motion';
+interface SidebarProps {
+  // Called after a nav item is selected. Used by AppShell's mobile drawer
+  // to close itself once the student picks a section.
+  onNavigate?: () => void;
+}
 
-export default function Sidebar() {
+const NAV_ITEMS: {
+  id: ViewState;
+  label: string;
+  icon: typeof BookOpen;
+  accent: "yellow" | "cyan" | "green" | "pink" | "red";
+}[] = [
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, accent: "yellow" },
+  { id: "lesson", label: "Guided Lessons", icon: BookOpen, accent: "cyan" },
+  { id: "extraction_workspace", label: "Extraction", icon: PenTool, accent: "green" },
+  { id: "translator_workspace", label: "Translator", icon: FileText, accent: "pink" },
+  { id: "drill", label: "Targeted Drills", icon: Target, accent: "red" },
+  { id: "flashcards", label: "Flashcards", icon: Brain, accent: "cyan" },
+  { id: "methods_library", label: "Methods Library", icon: BookOpen, accent: "yellow" },
+  { id: "timed_set", label: "Final Timed Set", icon: Flag, accent: "green" },
+  { id: "completion_report", label: "Completion Report", icon: CheckCircle, accent: "pink" },
+];
+
+const ACCENT_BG: Record<typeof NAV_ITEMS[number]["accent"], string> = {
+  yellow: "bg-brutal-yellow",
+  cyan: "bg-brutal-cyan",
+  green: "bg-brutal-green",
+  pink: "bg-brutal-pink",
+  red: "bg-brutal-red",
+};
+
+export default function Sidebar({ onNavigate }: SidebarProps = {}) {
   const { currentView, setCurrentView, bootcampState } = useApp();
+  const prefersReducedMotion = useReducedMotion();
+  const TOTAL_LESSONS = 8;
+  const completed = bootcampState.completedLessons.length;
+  const progressPct = Math.round((completed / TOTAL_LESSONS) * 100);
 
-  const navItems: { id: ViewState; label: string; icon: React.ElementType; color: string }[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'var(--color-brutal-yellow)' },
-    { id: 'lesson', label: 'Guided Lessons', icon: BookOpen, color: 'var(--color-brutal-cyan)' },
-    { id: 'extraction_workspace', label: 'Extraction Workspace', icon: PenTool, color: 'var(--color-brutal-green)' },
-    { id: 'translator_workspace', label: 'Translator', icon: FileText, color: 'var(--color-brutal-pink)' },
-    { id: 'drill', label: 'Targeted Drills', icon: Target, color: 'var(--color-brutal-red)' },
-    { id: 'flashcards', label: 'Flashcards', icon: Brain, color: 'var(--color-brutal-cyan)' },
-    { id: 'methods_library', label: 'Methods Library', icon: BookOpen, color: 'var(--color-brutal-yellow)' },
-    { id: 'timed_set', label: 'Final Timed Set', icon: Flag, color: 'var(--color-brutal-green)' },
-    { id: 'completion_report', label: 'Completion Report', icon: CheckCircle, color: 'var(--color-brutal-pink)' },
-  ];
+  const handleNavigate = (id: ViewState) => {
+    setCurrentView(id);
+    onNavigate?.();
+  };
 
   return (
-    <aside className="w-64 bg-brutal-bg border-r-4 border-brutal-ink flex flex-col h-full shrink-0 z-20">
-      <div className="p-6 border-b-4 border-brutal-ink bg-brutal-yellow">
+    <nav
+      aria-label="Bootcamp sections"
+      id="abstract-mobile-nav"
+      className="w-64 bg-brutal-bg border-r-4 border-brutal-ink flex flex-col h-full shrink-0 z-20"
+    >
+      <div className="p-5 md:p-6 border-b-4 border-brutal-ink bg-brutal-yellow">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-brutal-ink border-2 border-brutal-ink flex items-center justify-center brutal-shadow-sm">
-            <span className="text-sm font-black text-white">LU</span>
+          <div
+            aria-hidden="true"
+            className="w-10 h-10 bg-brutal-ink border-2 border-brutal-ink flex items-center justify-center brutal-shadow-sm"
+          >
+            <span className="text-sm font-black text-brutal-paper">LU</span>
           </div>
-          <span className="font-display font-black text-xl text-brutal-ink tracking-tight uppercase">LSAT U</span>
+          <span className="font-display font-black text-xl text-brutal-ink tracking-tight uppercase">
+            LSAT U
+          </span>
         </div>
-        <p className="text-[10px] text-brutal-ink font-black mt-2 uppercase tracking-[0.2em]">Abstract Bootcamp</p>
+        <p className="text-[10px] text-brutal-ink font-black mt-2 uppercase tracking-[0.2em]">
+          Abstract Bootcamp
+        </p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-3 overflow-y-auto custom-scrollbar">
-        {navItems.map((item) => {
+      <ul className="flex-1 p-3 md:p-4 space-y-2 md:space-y-3 overflow-y-auto custom-scrollbar list-none m-0">
+        {NAV_ITEMS.map((item) => {
           const isActive = currentView === item.id;
           const Icon = item.icon;
           return (
-            <motion.button
-              key={item.id}
-              onClick={() => setCurrentView(item.id)}
-              whileHover={{ x: 4 }}
-              whileTap={{ scale: 0.96 }}
-              className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 border-2 border-brutal-ink text-sm font-black transition-all outline-none uppercase tracking-tight",
-                isActive 
-                  ? "brutal-shadow translate-x-[-2px] translate-y-[-2px]" 
-                  : "bg-white hover:bg-brutal-bg hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_#000]"
-              )}
-              style={{ backgroundColor: isActive ? item.color : undefined }}
-            >
-              <Icon className="w-5 h-5" />
-              {item.label}
-            </motion.button>
+            <li key={item.id}>
+              <motion.button
+                type="button"
+                onClick={() => handleNavigate(item.id)}
+                aria-current={isActive ? "page" : undefined}
+                whileHover={prefersReducedMotion ? undefined : { x: 4 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                className={cn(
+                  "w-full min-h-[44px] flex items-center gap-3 px-4 py-3 border-2 border-brutal-ink text-sm font-black uppercase tracking-tight transition-shadow",
+                  isActive
+                    ? `${ACCENT_BG[item.accent]} brutal-shadow translate-x-[-2px] translate-y-[-2px]`
+                    : "bg-brutal-paper hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)]",
+                )}
+              >
+                <Icon className="w-5 h-5" aria-hidden="true" />
+                <span>{item.label}</span>
+              </motion.button>
+            </li>
           );
         })}
-      </nav>
+      </ul>
 
-      <div className="p-6 border-t-4 border-brutal-ink bg-white">
+      <div
+        className="p-5 md:p-6 border-t-4 border-brutal-ink bg-brutal-paper"
+        aria-live="polite"
+      >
         <div className="flex justify-between items-center mb-2">
-          <span className="text-[10px] font-black uppercase tracking-widest">Progress</span>
-          <span className="text-xs font-black">{bootcampState.completedLessons.length}/8</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">
+            Progress
+          </span>
+          <span className="text-xs font-black">
+            {completed}/{TOTAL_LESSONS}
+          </span>
         </div>
-        <div className="w-full h-4 bg-brutal-bg border-2 border-brutal-ink p-1">
+        <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={TOTAL_LESSONS}
+          aria-valuenow={completed}
+          aria-label={`Lessons completed: ${completed} of ${TOTAL_LESSONS}`}
+          className="w-full h-4 bg-brutal-bg border-2 border-brutal-ink p-1"
+        >
           <div
-            className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-all duration-500"
-            style={{ width: `${(bootcampState.completedLessons.length / 8) * 100}%` }}
+            className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-[width] duration-500"
+            style={{ width: `${progressPct}%` }}
           />
         </div>
       </div>
-    </aside>
+    </nav>
   );
 }
