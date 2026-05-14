@@ -8,6 +8,8 @@ import card05 from "../content/reference-cards/05-directional-words.md?raw";
 import card06 from "../content/reference-cards/06-verb-taxonomy.md?raw";
 import card07 from "../content/reference-cards/07-decoded-glossary.md?raw";
 import card08 from "../content/reference-cards/08-trap-master-catalog.md?raw";
+import card09 from "../content/reference-cards/09-matching-keywords-framework.md?raw";
+import card10 from "../content/reference-cards/10-key-terms-lsat-definitions.md?raw";
 
 const CARDS: Record<string, { title: string; body: string }> = {
   "01": { title: "The Skeleton (7 slots)", body: card01 },
@@ -18,6 +20,8 @@ const CARDS: Record<string, { title: string; body: string }> = {
   "06": { title: "Verb Taxonomy", body: card06 },
   "07": { title: "Decoded Glossary", body: card07 },
   "08": { title: "Trap Master Decoy Catalog", body: card08 },
+  "09": { title: "Matching Keywords Framework", body: card09 },
+  "10": { title: "Key Terms (LSAT Definitions)", body: card10 },
 };
 
 export const ABSTRACT_REFERENCE_CARD_IDS = Object.keys(CARDS);
