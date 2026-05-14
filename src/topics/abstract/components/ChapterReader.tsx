@@ -216,7 +216,7 @@ export function ChapterReader({ markdown, topicTag }: ChapterReaderProps) {
   let h2Counter = 0;
 
   return (
-    <article className="chapter-reader prose prose-invert max-w-none px-4 md:px-6 py-6">
+    <article className="chapter-reader max-w-prose">
       {blocks.map((b, i) => {
         switch (b.kind) {
           case "h1":
@@ -258,7 +258,7 @@ export function ChapterReader({ markdown, topicTag }: ChapterReaderProps) {
             return (
               <blockquote
                 key={i}
-                className="italic border-l-2 border-border pl-4 my-3 leading-relaxed"
+                className="my-3"
               >
                 {b.lines.map((l, j) => (
                   <p key={j} className="my-1">

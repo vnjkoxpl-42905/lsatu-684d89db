@@ -1,0 +1,10 @@
+/* Translation Codex font cascade.
+   Three families load on first visit to /topics/abstract/* and are scoped
+   for use only inside `.topic-abstract`. Other surfaces in the app are
+   untouched.
+   - Newsreader: editorial serif (display + body prose). Distinctive italic.
+   - Hanken Grotesk: humanist sans for UI and metadata.
+   - JetBrains Mono: code-shaped contrast for LSAT-ese callouts and
+     identifier chips. */
+
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");

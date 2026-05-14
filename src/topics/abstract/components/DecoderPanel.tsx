@@ -15,11 +15,11 @@ export function DecoderPanel({ autoAdvance = false }: DecoderPanelProps) {
 
   if (!cards.length) {
     return (
-      <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-        Decoder cards loading.
+      <div className="codex-card-soft p-6 text-center">
+        <p className="codex-marginalia">Decoder cards loading.</p>
         <button
           type="button"
-          className="ml-2 underline"
+          className="codex-btn-ghost mt-2 min-h-11"
           onClick={() => window.location.reload()}
         >
           Retry
@@ -46,7 +46,7 @@ export function DecoderPanel({ autoAdvance = false }: DecoderPanelProps) {
         <button
           type="button"
           onClick={prev}
-          className="min-h-11 rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
+          className="codex-btn-ghost min-h-11"
           aria-label="Previous decoder card"
         >
           ← Prev
@@ -73,13 +73,13 @@ export function DecoderPanel({ autoAdvance = false }: DecoderPanelProps) {
         <button
           type="button"
           onClick={next}
-          className="min-h-11 rounded-md border border-border px-3 py-1 text-sm hover:bg-secondary"
+          className="codex-btn-ghost min-h-11"
           aria-label="Next decoder card"
         >
           Next →
         </button>
       </nav>
-      <p className="text-center text-xs text-muted-foreground">
+      <p className="codex-marginalia text-center">
         Card {cardIndex + 1} of {total}
       </p>
     </section>

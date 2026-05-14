@@ -5,9 +5,6 @@ export interface DecoderCardProps {
   card: DecoderCardData;
 }
 
-// DecoderCard: single side-by-side abstract/plain card with an SVG morph
-// animation on enter (audit-compliant: SVG, not Canvas; pure CSS transforms).
-
 export function DecoderCard({ card }: DecoderCardProps) {
   const [entered, setEntered] = useState(false);
   const idRef = useRef(card.id);
@@ -22,17 +19,12 @@ export function DecoderCard({ card }: DecoderCardProps) {
   }, [card.id]);
 
   return (
-    <article
-      className="decoder-card rounded-2xl border border-border bg-card/60 p-5 shadow-sm"
-      data-card-id={card.id}
-    >
-      <header className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-1">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Abstract phrase
-          </p>
+    <article className="codex-card decoder-card" data-card-id={card.id}>
+      <header className="grid gap-5 md:grid-cols-2">
+        <div className="space-y-2">
+          <p className="codex-eyebrow">Abstract phrase</p>
           <p
-            className="italic leading-relaxed motion-safe:transition-[opacity,transform] motion-safe:duration-500"
+            className="codex-prose italic motion-safe:transition-[opacity,transform] motion-safe:duration-500"
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? "translateY(0)" : "translateY(6px)",
@@ -41,12 +33,10 @@ export function DecoderCard({ card }: DecoderCardProps) {
             {card.abstract_phrase}
           </p>
         </div>
-        <div className="space-y-1">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Plain English
-          </p>
+        <div className="space-y-2">
+          <p className="codex-eyebrow">Plain English</p>
           <p
-            className="leading-relaxed motion-safe:transition-[opacity,transform] motion-safe:duration-500"
+            className="codex-prose motion-safe:transition-[opacity,transform] motion-safe:duration-500"
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? "translateY(0)" : "translateY(6px)",
@@ -61,7 +51,7 @@ export function DecoderCard({ card }: DecoderCardProps) {
       <svg
         viewBox="0 0 200 8"
         aria-hidden
-        className="my-4 w-full text-border"
+        className="my-5 w-full text-border"
         preserveAspectRatio="none"
       >
         <line
@@ -84,17 +74,17 @@ export function DecoderCard({ card }: DecoderCardProps) {
       </svg>
 
       <section className="space-y-3">
-        <blockquote className="italic border-l-2 border-border pl-3 text-sm leading-relaxed text-foreground/90">
+        <blockquote className="codex-prose italic">
           {card.example_stimulus}
         </blockquote>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-1">
-            <span className="font-mono font-semibold">X:</span>
-            <span>{card.x_concrete}</span>
+        <div className="flex flex-wrap gap-2">
+          <span className="codex-chip">
+            <span className="codex-mono font-semibold">X:</span>
+            <span className="ml-1">{card.x_concrete}</span>
           </span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-1">
-            <span className="font-mono font-semibold">Y:</span>
-            <span>{card.y_concrete}</span>
+          <span className="codex-chip">
+            <span className="codex-mono font-semibold">Y:</span>
+            <span className="ml-1">{card.y_concrete}</span>
           </span>
         </div>
       </section>

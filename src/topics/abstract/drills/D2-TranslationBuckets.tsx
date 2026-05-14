@@ -3,6 +3,7 @@ import d2Data from "./data/d2-translation-buckets.json";
 import type { TranslationBucket } from "../types";
 import { useAbstractDrill } from "../hooks/useAbstractDrill";
 import { DrillShell } from "./DrillShell";
+import { CodexStamp } from "../components/CodexStamp";
 
 interface D2Q {
   id: string;
@@ -63,18 +64,25 @@ export function D2TranslationBuckets() {
       attempted={drill.attemptedCount}
       referenceCardId="02"
     >
-      <article className="space-y-4">
-        <div className="rounded-xl border border-border bg-card/50 p-5 text-center">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Term
+      <article className="space-y-6">
+        <figure className="codex-card text-center">
+          <figcaption className="codex-eyebrow">Term</figcaption>
+          <p className="codex-display mt-3 text-3xl md:text-4xl">
+            {q.word_or_phrase}
           </p>
-          <p className="mt-2 text-2xl font-semibold">{q.word_or_phrase}</p>
-        </div>
+        </figure>
         <ul className="grid gap-2 sm:grid-cols-2">
           {DATA.buckets.map((b) => {
             const isPicked = selected === b;
             const isCorrect = submitted && b === q.correct_bucket;
             const isWrongPick = submitted && isPicked && b !== q.correct_bucket;
+            const stateClass = isCorrect
+              ? "codex-answer-correct"
+              : isWrongPick
+                ? "codex-answer-incorrect"
+                : isPicked
+                  ? "border-primary"
+                  : "border-border hover:border-primary/50";
             return (
               <li key={b}>
                 <button
@@ -82,17 +90,9 @@ export function D2TranslationBuckets() {
                   onClick={() => !submitted && setSelected(b)}
                   disabled={submitted}
                   aria-pressed={isPicked}
-                  className={`min-h-11 w-full rounded-md border p-3 text-left text-sm transition-colors ${
-                    isCorrect
-                      ? "border-state-correct/80 bg-state-correct/10"
-                      : isWrongPick
-                        ? "border-state-incorrect/80 bg-state-incorrect/10"
-                        : isPicked
-                          ? "border-primary"
-                          : "border-border hover:border-primary/50"
-                  }`}
+                  className={`min-h-11 w-full rounded-sm border bg-card/30 p-4 text-left transition-colors ${stateClass}`}
                 >
-                  {BUCKET_LABEL[b]}
+                  <span className="codex-prose text-base">{BUCKET_LABEL[b]}</span>
                 </button>
               </li>
             );
@@ -102,12 +102,10 @@ export function D2TranslationBuckets() {
           <aside
             role="status"
             aria-live="polite"
-            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+            className="codex-card-soft p-5"
           >
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {selected === q.correct_bucket ? "Correct" : "Not quite"}
-            </p>
-            <p className="leading-relaxed">{q.explanation}</p>
+            <CodexStamp variant={selected === q.correct_bucket ? "correct" : "incorrect"} />
+            <p className="codex-prose mt-3">{q.explanation}</p>
           </aside>
         ) : null}
         <div className="flex justify-end gap-2">
@@ -116,7 +114,7 @@ export function D2TranslationBuckets() {
               type="button"
               onClick={handleSubmit}
               disabled={!selected}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="codex-btn-primary min-h-11"
             >
               Submit
             </button>
@@ -124,12 +122,12 @@ export function D2TranslationBuckets() {
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="codex-btn-primary min-h-11"
             >
               Next
             </button>
           ) : (
-            <p className="text-sm text-muted-foreground">Drill complete.</p>
+            <p className="codex-eyebrow">Drill complete.</p>
           )}
         </div>
       </article>

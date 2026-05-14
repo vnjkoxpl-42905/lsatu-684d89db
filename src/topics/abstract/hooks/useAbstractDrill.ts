@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -126,15 +126,13 @@ export function useAbstractDrill<Q>(
   );
 }
 
-// Helper: apply the dark-mode drill lifecycle from Drill.tsx:112-120.
-// Removes the `light` class on mount, restores it on unmount if it was present.
+// Retired in the v1.3 Codex redesign: the topic surface now lives on a
+// cream paper canvas via CSS variables scoped to `.topic-abstract`, so
+// app-level theme classes (`.light` / `.dark`) no longer affect rendering.
+// Components used to call `useDrillDarkMode()` here; remove those calls.
+//
+// Re-exported as a no-op so any straggling caller stays compile-safe; new
+// code should not import it.
 export function useDrillDarkMode(): void {
-  useEffect(() => {
-    const root = document.documentElement;
-    const wasLight = root.classList.contains("light");
-    if (wasLight) root.classList.remove("light");
-    return () => {
-      if (wasLight) root.classList.add("light");
-    };
-  }, []);
+  // intentionally empty
 }

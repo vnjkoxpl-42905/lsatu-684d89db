@@ -5,17 +5,24 @@ import {
   ABSTRACT_REFERENCE_CARD_TITLES,
 } from "./ReferenceCardView";
 
-const NAV = [
-  { to: "/topics/abstract", label: "Chapter", exact: true },
-  { to: "/topics/abstract/methods", label: "Methods Library" },
-  { to: "/topics/abstract/drills/d1", label: "D1 · Abstract Language" },
-  { to: "/topics/abstract/drills/d2", label: "D2 · Translation Buckets" },
-  { to: "/topics/abstract/drills/d3", label: "D3 · Basic X/Y" },
-  { to: "/topics/abstract/drills/d4", label: "D4 · Advanced X/Y" },
-  { to: "/topics/abstract/drills/d5", label: "D5 · Jargon" },
-  { to: "/topics/abstract/drills/d7", label: "D7 · Keyword Worksheet" },
-  { to: "/topics/abstract/drills/d8", label: "D8 · Stem Translation" },
-  { to: "/topics/abstract/flashcards", label: "Flashcards" },
+interface NavItem {
+  to: string;
+  label: string;
+  num: string;
+  exact?: boolean;
+}
+
+const NAV: NavItem[] = [
+  { to: "/topics/abstract", label: "Chapter", num: "00", exact: true },
+  { to: "/topics/abstract/methods", label: "Methods Library", num: "—" },
+  { to: "/topics/abstract/drills/d1", label: "Abstract Language", num: "D1" },
+  { to: "/topics/abstract/drills/d2", label: "Translation Buckets", num: "D2" },
+  { to: "/topics/abstract/drills/d3", label: "Basic X/Y", num: "D3" },
+  { to: "/topics/abstract/drills/d4", label: "Advanced X/Y", num: "D4" },
+  { to: "/topics/abstract/drills/d5", label: "Jargon", num: "D5" },
+  { to: "/topics/abstract/drills/d7", label: "Keyword Worksheet", num: "D7" },
+  { to: "/topics/abstract/drills/d8", label: "Stem Translation", num: "D8" },
+  { to: "/topics/abstract/flashcards", label: "Flashcards", num: "—" },
 ];
 
 function resolveReferenceLabel(pathname: string): string | null {
@@ -33,21 +40,19 @@ export function TopicSidebar() {
   const activeLabel = navMatch?.label ?? referenceLabel ?? "Chapter";
 
   return (
-    <aside className="topic-sidebar w-full md:w-64 shrink-0 border-b border-border md:border-b-0 md:border-r md:h-[calc(100vh-3rem)] md:sticky md:top-12 md:overflow-y-auto p-3">
+    <aside className="topic-sidebar w-full md:w-72 shrink-0 border-b border-border md:border-b-0 md:border-r md:h-[calc(100vh-3rem)] md:sticky md:top-12 md:overflow-y-auto p-4 md:p-6">
       <button
         type="button"
         onClick={() => setMobileOpen((v) => !v)}
         aria-expanded={mobileOpen}
         aria-controls="topic-sidebar-nav"
-        className="flex min-h-11 w-full items-center justify-between gap-2 rounded-md border border-border px-3 py-2 text-sm md:hidden"
+        className="codex-btn-ghost flex min-h-11 w-full items-center justify-between gap-2 md:hidden"
       >
         <span className="flex flex-col items-start gap-0.5">
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-            Abstract
-          </span>
-          <span className="font-medium">{activeLabel}</span>
+          <span className="codex-eyebrow">Abstract · Codex</span>
+          <span className="codex-display text-base">{activeLabel}</span>
         </span>
-        <span aria-hidden="true" className="text-xs text-muted-foreground">
+        <span aria-hidden="true" className="codex-eyebrow">
           {mobileOpen ? "Close" : "Menu"}
         </span>
       </button>
@@ -55,10 +60,21 @@ export function TopicSidebar() {
         id="topic-sidebar-nav"
         className={`${mobileOpen ? "block" : "hidden"} md:block`}
       >
-        <h2 className="mt-3 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground md:mt-0">
-          Abstract
-        </h2>
-        <nav className="mt-2 space-y-0.5 text-sm">
+        <header className="mt-4 md:mt-0">
+          <p className="codex-eyebrow">Bootcamp</p>
+          <h2 className="codex-display mt-1 text-2xl leading-tight">Abstract</h2>
+          <p
+            className="codex-marginalia mt-2"
+            style={{ fontStyle: "normal" }}
+          >
+            The translation codex.
+          </p>
+        </header>
+
+        <hr className="codex-rule" />
+
+        <p className="codex-eyebrow mb-2">Topics</p>
+        <nav className="codex-toc space-y-0.5">
           {NAV.map((n) => (
             <NavLink
               key={n.to}
@@ -66,37 +82,29 @@ export function TopicSidebar() {
               end={n.exact}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `flex min-h-11 items-center rounded-md px-2 py-2 md:min-h-0 md:py-1.5 ${
-                  isActive
-                    ? "bg-secondary font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-                }`
+                `codex-toc-item ${isActive ? "active" : ""} min-h-11 md:min-h-0`
               }
             >
-              {n.label}
+              <span className="codex-toc-num">{n.num}</span>
+              <span>{n.label}</span>
             </NavLink>
           ))}
         </nav>
-        <h3 className="mt-4 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Reference
-        </h3>
-        <nav className="mt-1 space-y-0.5 text-sm">
+
+        <hr className="codex-rule" />
+
+        <p className="codex-eyebrow mb-2">Reference</p>
+        <nav className="codex-toc space-y-0.5">
           {ABSTRACT_REFERENCE_CARD_IDS.map((id) => (
             <NavLink
               key={id}
               to={`/topics/abstract/reference/${id}`}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `flex min-h-11 items-center gap-2 rounded-md px-2 py-2 md:min-h-0 md:py-1.5 ${
-                  isActive
-                    ? "bg-secondary font-medium text-foreground"
-                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-                }`
+                `codex-toc-item ${isActive ? "active" : ""} min-h-11 md:min-h-0`
               }
             >
-              <span aria-hidden="true" className="font-mono text-[10px] text-muted-foreground">
-                {id}
-              </span>
+              <span className="codex-toc-num">{id}</span>
               <span className="truncate">
                 {ABSTRACT_REFERENCE_CARD_TITLES[id]}
               </span>

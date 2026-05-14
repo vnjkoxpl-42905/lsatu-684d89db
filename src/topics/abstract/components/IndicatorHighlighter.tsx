@@ -37,7 +37,7 @@ export function IndicatorHighlighter({
 
   return (
     <blockquote
-      className="indicator-highlighter italic border-l-2 border-border pl-4 my-3 leading-relaxed"
+      className="indicator-highlighter my-3"
       data-mode={mode}
     >
       {stim.tokens.map((t, i) => (

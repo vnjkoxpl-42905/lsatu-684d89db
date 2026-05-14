@@ -6,6 +6,7 @@ import {
   SelfRateAfterReveal,
   type SelfRateChoice,
 } from "../components/SelfRateAfterReveal";
+import { CodexStamp } from "../components/CodexStamp";
 
 interface D7FreeText {
   id: string;
@@ -100,19 +101,15 @@ export function D7KeywordDecoding() {
       referenceCardId="05"
     >
       <article className="space-y-4">
-        <div className="rounded-xl border border-border bg-card/50 p-5">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Question {q.number}
-          </p>
-          <p className="mt-2 whitespace-pre-line leading-relaxed">
-            {q.prompt}
-          </p>
+        <figure className="codex-card">
+          <figcaption className="codex-eyebrow">Question {q.number}</figcaption>
+          <p className="codex-prose mt-3 whitespace-pre-line">{q.prompt}</p>
           {q.type === "xy-map" ? (
-            <p className="mt-3 rounded-md border border-border bg-background/60 p-3 font-mono text-sm">
+            <p className="codex-mono mt-4 rounded-sm border border-primary/30 bg-paper-deep/30 p-3 text-sm">
               (A) {q.phrase}
             </p>
           ) : null}
-        </div>
+        </figure>
 
         {q.type === "xy-map" ? (
           <fieldset className="space-y-2">
@@ -130,11 +127,11 @@ export function D7KeywordDecoding() {
                   onClick={() => !submitted && setXYChoice(opt.id)}
                   disabled={submitted}
                   aria-pressed={isPicked}
-                  className={`min-h-11 w-full rounded-md border p-3 text-left text-sm ${
+                  className={`min-h-11 w-full rounded-sm border bg-card/30 p-4 text-left ${
                     isCorrect
-                      ? "border-state-correct/80 bg-state-correct/10"
+                      ? "codex-answer-correct"
                       : isWrong
-                        ? "border-state-incorrect/80 bg-state-incorrect/10"
+                        ? "codex-answer-incorrect"
                         : isPicked
                           ? "border-primary"
                           : "border-border hover:border-primary/50"
@@ -146,35 +143,37 @@ export function D7KeywordDecoding() {
             })}
           </fieldset>
         ) : (
-          <label
-            className="block space-y-2"
-            htmlFor={`d7-text-${q.id}`}
-          >
-            <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <div className="space-y-2">
+            <label
+              className="codex-eyebrow block"
+              htmlFor={`d7-text-${q.id}`}
+            >
               Your answer
-            </span>
+            </label>
             <textarea
               id={`d7-text-${q.id}`}
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
               disabled={submitted}
               rows={4}
-              className="w-full rounded-md border border-border bg-background p-3 text-sm"
+              className="codex-prose w-full rounded-sm border border-border bg-card/40 p-4 text-base"
               placeholder="Take your best shot before revealing the walkthrough."
             />
-          </label>
+          </div>
         )}
 
         {submitted ? (
           <aside
             role="status"
             aria-live="polite"
-            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+            className="codex-card-soft p-5"
           >
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {q.type === "xy-map" ? "Answer key" : "Walkthrough"}
-            </p>
-            <p className="whitespace-pre-line leading-relaxed">
+            {q.type === "xy-map" ? (
+              <CodexStamp variant={xyChoice === q.correct ? "correct" : "incorrect"} />
+            ) : (
+              <p className="codex-eyebrow">Walkthrough</p>
+            )}
+            <p className="codex-prose mt-3 whitespace-pre-line">
               {q.type === "xy-map" ? q.explanation : q.walkthrough}
             </p>
           </aside>
@@ -197,7 +196,7 @@ export function D7KeywordDecoding() {
                   ? !xyChoice
                   : textAnswer.trim().length < 4
               }
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="codex-btn-primary min-h-11"
             >
               {q.type === "xy-map" ? "Submit" : "Reveal walkthrough"}
             </button>
@@ -205,12 +204,12 @@ export function D7KeywordDecoding() {
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="codex-btn-primary min-h-11"
             >
               Next
             </button>
           ) : xyDone || freeDone ? (
-            <p className="text-sm text-muted-foreground">Drill complete.</p>
+            <p className="codex-eyebrow">Drill complete.</p>
           ) : null}
         </div>
       </article>

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import flashcardsData from "../content/flashcards.json";
 import type { FlashcardSet, FlashcardEntry } from "../types";
-import { useDrillDarkMode } from "../hooks/useAbstractDrill";
 import {
   useRecordFlashcardReview,
   type FlashcardRating,
@@ -11,11 +10,6 @@ const DATA = flashcardsData as FlashcardSet;
 
 type DifficultyFilter = "all" | "foundation" | "core" | "advanced";
 type ConceptFilter = "all" | "glossary" | "indicator" | "verb-taxonomy";
-
-// FlashcardDeck: SRS-compatible self-review deck. Front/back flip; the student
-// rates Again / Good / Easy. Intervals double on Good, halve on Again, x2.5 on
-// Easy. Persisted to localStorage only for now since the brief permits an
-// SRS-compatible schema without yet wiring flashcard_reviews.
 
 interface ReviewState {
   cardId: string;
@@ -46,7 +40,6 @@ function saveReviews(reviews: Record<string, ReviewState>) {
 }
 
 export function FlashcardDeck() {
-  useDrillDarkMode();
   const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
   const [concept, setConcept] = useState<ConceptFilter>("all");
   const [reviews, setReviews] = useState<Record<string, ReviewState>>({});
@@ -105,22 +98,24 @@ export function FlashcardDeck() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4 p-4 md:p-6">
-      <header>
-        <h1 className="text-lg font-semibold">Flashcards · Abstract</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="mx-auto max-w-2xl space-y-6 p-4 md:p-8">
+      <header className="space-y-2">
+        <p className="codex-eyebrow">Appendix · Translation Cards</p>
+        <h1 className="codex-display text-3xl md:text-4xl">Flashcards</h1>
+        <p className="codex-marginalia">
           {filtered.length} cards in this slice · {DATA.cards.length} total
         </p>
       </header>
-      <div className="flex flex-wrap gap-2 text-sm">
-        <label className="flex items-center gap-1">
-          <span className="text-muted-foreground">Difficulty:</span>
+
+      <div className="flex flex-wrap gap-3 text-sm">
+        <label className="flex items-center gap-2">
+          <span className="codex-eyebrow">Difficulty</span>
           <select
             value={difficulty}
             onChange={(e) =>
               setDifficulty(e.target.value as DifficultyFilter)
             }
-            className="min-h-11 rounded-md border border-border bg-background px-2 py-1"
+            className="codex-mono min-h-11 rounded-sm border border-border bg-card/40 px-3 py-1 text-sm"
           >
             <option value="all">all</option>
             <option value="foundation">foundation</option>
@@ -128,12 +123,12 @@ export function FlashcardDeck() {
             <option value="advanced">advanced</option>
           </select>
         </label>
-        <label className="flex items-center gap-1">
-          <span className="text-muted-foreground">Type:</span>
+        <label className="flex items-center gap-2">
+          <span className="codex-eyebrow">Type</span>
           <select
             value={concept}
             onChange={(e) => setConcept(e.target.value as ConceptFilter)}
-            className="min-h-11 rounded-md border border-border bg-background px-2 py-1"
+            className="codex-mono min-h-11 rounded-sm border border-border bg-card/40 px-3 py-1 text-sm"
           >
             <option value="all">all</option>
             <option value="glossary">glossary</option>
@@ -142,20 +137,19 @@ export function FlashcardDeck() {
           </select>
         </label>
       </div>
+
       {!card ? (
-        <p className="text-sm italic text-muted-foreground">
-          No cards in this slice.
-        </p>
+        <p className="codex-marginalia italic">No cards in this slice.</p>
       ) : (
         <article
-          className="rounded-2xl border border-border bg-card/60 p-6 shadow-sm"
+          className="codex-card"
           data-card-id={card.id}
         >
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="codex-eyebrow">
             {card.concept_tag} · {card.difficulty_tag}
           </p>
           <div
-            className="mt-3 cursor-pointer rounded-md p-2 transition-colors hover:bg-secondary/40"
+            className="mt-4 cursor-pointer rounded-sm p-2 transition-colors hover:bg-paper-deep/40"
             onClick={() => setFlipped((f) => !f)}
             role="button"
             tabIndex={0}
@@ -168,24 +162,24 @@ export function FlashcardDeck() {
               }
             }}
           >
-            <h2 className="text-2xl font-semibold">{card.front}</h2>
+            <h2 className="codex-display text-3xl md:text-4xl">{card.front}</h2>
             {flipped ? (
-              <div className="mt-3 space-y-2 text-sm leading-relaxed">
-                <p>{card.back.replace(/\*\*/g, "")}</p>
+              <div className="mt-4 space-y-3">
+                <p className="codex-prose text-base">{card.back.replace(/\*\*/g, "")}</p>
                 {card.example ? (
-                  <p className="text-xs italic text-muted-foreground">
+                  <p className="codex-marginalia italic">
                     Example: {card.example}
                   </p>
                 ) : null}
               </div>
             ) : (
-              <p className="mt-3 text-xs text-muted-foreground">
+              <p className="codex-marginalia mt-3">
                 Tap or press space to flip.
               </p>
             )}
           </div>
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs text-muted-foreground">
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <p className="codex-marginalia">
               Card {index + 1} of {filtered.length}
             </p>
             <div className="flex gap-2">
@@ -193,7 +187,8 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("again")}
                 disabled={!flipped}
-                className="min-h-11 min-w-11 rounded-md border border-state-again/60 px-3 py-1 text-sm text-state-again disabled:opacity-40"
+                className="codex-stamp-btn min-h-11 min-w-11"
+                style={{ borderColor: "hsl(var(--state-again) / 0.5)", color: "hsl(var(--state-again))" }}
               >
                 Again
               </button>
@@ -201,7 +196,7 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("good")}
                 disabled={!flipped}
-                className="min-h-11 min-w-11 rounded-md border border-border px-3 py-1 text-sm disabled:opacity-40"
+                className="codex-stamp-btn min-h-11 min-w-11"
               >
                 Good
               </button>
@@ -209,7 +204,8 @@ export function FlashcardDeck() {
                 type="button"
                 onClick={() => rate("easy")}
                 disabled={!flipped}
-                className="min-h-11 min-w-11 rounded-md border border-state-easy/60 px-3 py-1 text-sm text-state-easy disabled:opacity-40"
+                className="codex-stamp-btn min-h-11 min-w-11"
+                style={{ borderColor: "hsl(var(--state-easy) / 0.5)", color: "hsl(var(--state-easy))" }}
               >
                 Easy
               </button>

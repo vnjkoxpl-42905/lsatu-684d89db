@@ -34,19 +34,69 @@ export function ReferenceCardView() {
   const card = CARDS[id];
   if (!card) {
     return (
-      <div className="p-6 text-sm text-muted-foreground">
-        Reference card not found.{" "}
-        <Link className="underline" to="/topics/abstract">
-          Back to Abstract
-        </Link>
-        .
+      <div className="mx-auto max-w-3xl px-5 py-10 md:px-12 md:py-16">
+        <p className="codex-eyebrow">Reference</p>
+        <h1 className="codex-display mt-2 text-3xl">Card not found.</h1>
+        <p className="codex-marginalia mt-3" style={{ fontStyle: "normal" }}>
+          <Link to="/topics/abstract" className="underline decoration-primary/40 underline-offset-4 hover:decoration-primary">
+            Back to the chapter
+          </Link>
+        </p>
       </div>
     );
   }
   return (
-    <div className="mx-auto max-w-3xl">
-      <ChapterReader markdown={card.body} />
+    <div className="mx-auto max-w-3xl px-5 py-10 md:px-12 md:py-16">
+      <header className="codex-reveal-stack">
+        <p className="codex-eyebrow">
+          Reference · {id} / {ABSTRACT_REFERENCE_CARD_IDS.length}
+        </p>
+        <h1 className="codex-display mt-2 text-3xl md:text-4xl leading-tight">
+          {card.title}
+        </h1>
+      </header>
+      <hr className="codex-rule" />
+      <div className="codex-reveal-stack">
+        <ChapterReader markdown={card.body} />
+      </div>
+      <hr className="codex-rule" />
+      <footer className="flex items-center justify-between">
+        <Link
+          to="/topics/abstract"
+          className="codex-eyebrow underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+        >
+          ← Back to chapter
+        </Link>
+        <ReferenceCardSiblings currentId={id} />
+      </footer>
     </div>
+  );
+}
+
+function ReferenceCardSiblings({ currentId }: { currentId: string }) {
+  const ids = ABSTRACT_REFERENCE_CARD_IDS;
+  const idx = ids.indexOf(currentId);
+  const prev = idx > 0 ? ids[idx - 1] : null;
+  const next = idx < ids.length - 1 ? ids[idx + 1] : null;
+  return (
+    <span className="flex items-center gap-3 text-sm">
+      {prev ? (
+        <Link
+          to={`/topics/abstract/reference/${prev}`}
+          className="codex-eyebrow underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+        >
+          ← {prev}
+        </Link>
+      ) : null}
+      {next ? (
+        <Link
+          to={`/topics/abstract/reference/${next}`}
+          className="codex-eyebrow underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+        >
+          {next} →
+        </Link>
+      ) : null}
+    </span>
   );
 }
 

@@ -9,9 +9,9 @@
 //   - "good"  → correct: true  (self-report: I got it)
 //   - "easy"  → correct: true  (self-report: I got it cleanly)
 //
-// Rating buttons use --state-again / --state-easy so they read as a
-// self-report, not a wrong-vs-right verdict. Matches the FlashcardDeck
-// rating semantics.
+// Rendered in the Codex idiom: italic serif stamp buttons in oxblood (Again)
+// and ink-forest (Easy) with neutral ink for Good. Hover inverts to a filled
+// stamp with a -1deg rotation.
 
 export type SelfRateChoice = "again" | "good" | "easy";
 
@@ -28,18 +28,17 @@ export function SelfRateAfterReveal({
 }: SelfRateAfterRevealProps) {
   return (
     <div
-      className="rounded-md border border-border bg-card/40 p-3"
+      className="codex-card-soft p-4 md:p-5"
       aria-label="Self-rate your attempt"
     >
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        {prompt}
-      </p>
-      <div className="flex flex-wrap gap-2">
+      <p className="codex-eyebrow">{prompt}</p>
+      <div className="mt-3 flex flex-wrap gap-3">
         <button
           type="button"
           onClick={() => onRate("again")}
           disabled={disabled}
-          className="min-h-11 min-w-11 rounded-md border border-state-again/60 px-3 py-1 text-sm text-state-again disabled:opacity-40"
+          className="codex-stamp-btn min-h-11 min-w-11 text-state-incorrect"
+          style={{ color: "hsl(var(--primary))" }}
         >
           Again
         </button>
@@ -47,7 +46,8 @@ export function SelfRateAfterReveal({
           type="button"
           onClick={() => onRate("good")}
           disabled={disabled}
-          className="min-h-11 min-w-11 rounded-md border border-border px-3 py-1 text-sm disabled:opacity-40"
+          className="codex-stamp-btn min-h-11 min-w-11"
+          style={{ color: "hsl(var(--foreground))" }}
         >
           Good
         </button>
@@ -55,7 +55,8 @@ export function SelfRateAfterReveal({
           type="button"
           onClick={() => onRate("easy")}
           disabled={disabled}
-          className="min-h-11 min-w-11 rounded-md border border-state-easy/60 px-3 py-1 text-sm text-state-easy disabled:opacity-40"
+          className="codex-stamp-btn min-h-11 min-w-11"
+          style={{ color: "hsl(150 36% 28%)" }}
         >
           Easy
         </button>

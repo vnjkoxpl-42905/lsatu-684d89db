@@ -1,29 +1,22 @@
 ---
 name: Abstract Bootcamp
-description: The LSAT-ese to plain English translation surface.
+description: The Translation Codex — a cream-paper editorial surface for decoding LSAT-ese into plain English.
 colors:
-  bg: "#0a0a0a"
-  bg-card: "#121212"
-  surface-elevated: "#1a1a1a"
-  surface-muted: "#262626"
-  border: "#262626"
-  border-soft: "#262626"
-  ring: "#d4d4d4"
-  ink-bright: "#fafafa"
-  ink-soft: "#a3a3a3"
-  ink-faint: "#737373"
-  primary: "#fafafa"
-  primary-foreground: "#0a0a0a"
-  bucket-assumption: "#c084fc"
-  bucket-assumption-bg: "#c084fc2e"
-  bucket-causal: "#f97316"
-  bucket-causal-bg: "#f973162e"
-  bucket-comparison: "#22d3ee"
-  bucket-comparison-bg: "#22d3ee2e"
-  bucket-evidence: "#3b82f6"
-  bucket-evidence-bg: "#3b82f62e"
-  bucket-evaluation: "#ef4444"
-  bucket-evaluation-bg: "#ef44442e"
+  paper: "#F4EDE0"
+  paper-lift: "#FAF6EE"
+  paper-deep: "#EBE3D2"
+  ink: "#181612"
+  ink-soft: "#605850"
+  ink-faint: "#8B8378"
+  rule: "#C8B999"
+  oxblood: "#8B2C1F"
+  oxblood-deep: "#6B1F15"
+  ink-forest: "#274939"
+  bucket-assumption: "#6B2F66"
+  bucket-causal: "#B14F1E"
+  bucket-comparison: "#1F6680"
+  bucket-evidence: "#2A3E7A"
+  bucket-evaluation: "#8B2C1F"
   state-success: "#22c55e"
   state-warn: "#f59e0b"
   state-error: "#dc2626"
@@ -31,62 +24,64 @@ colors:
   state-easy: "#10b981"
 typography:
   display:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1.5rem"
+    fontFamily: "Newsreader, ui-serif, Georgia, serif"
+    fontSize: "clamp(2rem, 4vw, 2.75rem)"
     fontWeight: 600
-    lineHeight: 1.25
-  h1:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1.875rem"
-    fontWeight: 700
-    lineHeight: 1.2
+    lineHeight: 1.08
+    letterSpacing: "-0.015em"
+  display-italic:
+    fontFamily: "Newsreader, ui-serif, Georgia, serif"
+    fontStyle: "italic"
+    fontWeight: 500
+    fontSize: "clamp(1.5rem, 2.6vw, 1.85rem)"
+    lineHeight: 1.18
   h2:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1.5rem"
+    fontFamily: "Newsreader, ui-serif, Georgia, serif"
+    fontSize: "clamp(1.5rem, 2.6vw, 1.85rem)"
     fontWeight: 600
-    lineHeight: 1.25
+    lineHeight: 1.18
+    letterSpacing: "-0.008em"
   h3:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1.25rem"
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.05rem"
     fontWeight: 600
     lineHeight: 1.3
-  title:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1rem"
-    fontWeight: 600
-    lineHeight: 1.4
   body:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "0.875rem"
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.9375rem"
     fontWeight: 400
-    lineHeight: 1.625
+    lineHeight: 1.6
   body-prose:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "1rem"
+    fontFamily: "Newsreader, ui-serif, Georgia, serif"
+    fontSize: "1.0625rem"
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.72
   small:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "0.75rem"
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.8125rem"
     fontWeight: 400
     lineHeight: 1.55
   eyebrow:
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 600
-    letterSpacing: "0.05em"
-  mono:
-    fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    fontFamily: "JetBrains Mono, ui-monospace, monospace"
     fontSize: "0.6875rem"
     fontWeight: 500
-    letterSpacing: "0.05em"
+    letterSpacing: "0.16em"
+  mono:
+    fontFamily: "JetBrains Mono, ui-monospace, monospace"
+    fontSize: "0.75rem"
+    fontWeight: 500
+    letterSpacing: "0.04em"
+  marginalia:
+    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.8125rem"
+    fontStyle: "italic"
+    lineHeight: 1.55
 rounded:
-  sm: "0.25rem"
-  md: "0.375rem"
-  lg: "0.5rem"
-  xl: "0.75rem"
-  "2xl": "1rem"
-  full: "9999px"
+  sharp: "0"
+  sm: "0.125rem"
+  md: "0.25rem"
+  lg: "0.4rem"
+  pill: "999px"
 spacing:
   "1": "0.25rem"
   "2": "0.5rem"
@@ -96,291 +91,274 @@ spacing:
   "6": "1.5rem"
   "8": "2rem"
   "10": "2.5rem"
+  "12": "3rem"
+  "16": "4rem"
 components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.primary-foreground}"
+  codex-btn-primary:
+    backgroundColor: "{colors.oxblood}"
+    textColor: "{colors.paper-lift}"
     rounded: "{rounded.md}"
-    padding: "0.5rem 1rem"
+    padding: "0.6rem 1.2rem"
     typography: "{typography.body}"
-  button-primary-disabled:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.primary-foreground}"
-    rounded: "{rounded.md}"
-    padding: "0.5rem 1rem"
-  button-ghost:
+  codex-btn-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.ink-bright}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
-    padding: "0.25rem 0.75rem"
+    padding: "0.55rem 1rem"
     typography: "{typography.body}"
-  button-ghost-hover:
-    backgroundColor: "{colors.surface-muted}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.md}"
-    padding: "0.25rem 0.75rem"
-  chip-status:
-    backgroundColor: "{colors.surface-muted}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.full}"
-    padding: "0.25rem 0.75rem"
-    typography: "{typography.small}"
-  chip-clause:
+  codex-stamp-btn:
     backgroundColor: "transparent"
-    textColor: "{colors.ink-bright}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "0.4rem 1rem"
+    typography: "{typography.display-italic}"
+  codex-chip:
+    backgroundColor: "{colors.paper-lift}"
+    textColor: "{colors.ink-soft}"
     rounded: "{rounded.md}"
-    padding: "0.375rem 0.75rem"
-    typography: "{typography.body}"
-  chip-clause-selected:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.md}"
-    padding: "0.375rem 0.75rem"
-  chip-pt-mono:
-    backgroundColor: "{colors.bg}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.full}"
-    padding: "0.25rem 0.75rem"
+    padding: "0.3rem 0.6rem"
     typography: "{typography.mono}"
-  card:
-    backgroundColor: "{colors.bg-card}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.2xl}"
-    padding: "1.5rem"
-    typography: "{typography.body}"
-  card-soft:
-    backgroundColor: "{colors.bg-card}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.xl}"
-    padding: "1rem"
-  flashcard:
-    backgroundColor: "{colors.bg-card}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.2xl}"
-    padding: "1.5rem"
-  method-card:
-    backgroundColor: "{colors.bg-card}"
-    textColor: "{colors.ink-bright}"
-    rounded: "{rounded.xl}"
-    padding: "1rem"
-  input-select:
-    backgroundColor: "{colors.bg}"
-    textColor: "{colors.ink-bright}"
+  codex-card:
+    backgroundColor: "{colors.paper-lift}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.md}"
-    padding: "0.25rem 0.5rem"
+    padding: "1.5rem"
     typography: "{typography.body}"
-  decoder-dot:
-    backgroundColor: "{colors.surface-muted}"
-    rounded: "{rounded.full}"
-    size: "0.5rem"
-  decoder-dot-active:
-    backgroundColor: "{colors.primary}"
-    rounded: "{rounded.full}"
-    size: "0.5rem"
+  codex-card-soft:
+    backgroundColor: "{colors.paper-lift}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "1rem"
+  drill-answer:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sm}"
+    padding: "0.85rem 1rem"
+    typography: "{typography.body}"
 ---
 
-# Design System: Abstract Bootcamp
+# Design System: Abstract Bootcamp · The Translation Codex
 
 > Scope: this DESIGN.md governs only the Abstract topic surfaces (`/topics/abstract/*`, `src/topics/abstract/`). Strategy lives in the root `PRODUCT.md`. App-wide app-shell surfaces (foyer, messenger, admin, drills outside this topic) are out of scope. The frontmatter is normative; prose contextualizes how to apply it.
 >
-> The bootcamp uses the app-wide neutral-dark Tailwind tokens (`bg-card`, `border-border`, `bg-secondary`, etc.) defined in `tailwind.config.ts` and `src/index.css`. Hex values in the frontmatter are the resolved equivalents of those HSL tokens. Indicator-bucket hex values resolve `src/topics/abstract/components/indicator-tokens.css`.
+> All cream-paper styling is scoped to the `.topic-abstract` wrapper class (set on `AbstractTopicPage`) and lives in `topic-styles.css` + `topic-fonts.css`. The app's `.light` / `.dark` theme classes do not affect the topic; the topic always renders cream.
 
 ## 1. Overview
 
-**Creative North Star: "The Translator's Workbook."**
+**Creative North Star: "The Translation Codex."**
 
-The Abstract bootcamp's purpose is decoding: read a dense LSAT answer choice or stimulus written in LSAT-ese, and translate it back into a concrete plain-English picture. Argument-structure labeling (premise/conclusion, opposing view, concession, all the parts of an argument and how they assemble) is a different skill and lives in the Intro to LR bootcamp; nothing on this surface duplicates it. The visual identity is the act of translation. Prose looks like prose, until the student opts in and translation-language tokens reveal which kind of LSAT vocabulary is at work, inline. The bootcamp does not look like a branded product surface; it looks like a careful, dark-themed annotation notebook. The only color that carries meaning is the locked translation-bucket vocabulary (assumption / causal / comparison / evidence / evaluation). Everything else is neutral greyscale.
+The Abstract bootcamp is a reading-and-decoding surface, not a dashboard. Its job is to teach a student to take a dense LSAT answer choice or stimulus written in LSAT-ese and translate it into a plain-English picture. The visual language honors that act: warm cream paper, editorial serif type, scholarly oxblood accent, marginalia-style annotations, ink-stamp result feedback. It reads less like a SaaS surface and more like a critical edition of a difficult text.
 
-This bootcamp explicitly does not carry the Intro to LR (Main Conclusion) workbook's Aspiring Gold accent. There is no warm brand color on this surface. The act of translation reads as quiet, dense, and academic. Decoration would compete with the chapter prose, so decoration is removed. The student is reading; the system is listening.
+This bootcamp explicitly does not look like Intro to LR (which lives in a dark Aspiring Gold workbook idiom). Where Intro to LR is a workshop, Abstract is a library. Where Intro to LR uses Fraunces and Outfit, Abstract uses Newsreader and Hanken Grotesk. Where Intro to LR runs on a near-black surface, Abstract runs on warm cream paper. The bootcamps share a parent app and a parent product but speak in distinct dialects.
 
-The bootcamp explicitly rejects: card-grid hubs (7Sage / Khan Academy LSAT shape), gradient blob backgrounds (SaaS-cream), Duolingo-shaped reward chrome (streak flames, XP bars), hero-metric tiles (big-number "accuracy" displays presented as identity rather than feedback), and argument-structure labeling drills (those belong in Intro to LR; the Abstract bootcamp never asks a student to label a clause as author conclusion, opposing evidence, concession, or any other slot).
+The bootcamp explicitly rejects: card-grid dashboards (7Sage / Khan Academy LSAT shape), SaaS-cream startup aesthetic with pastel gradient blobs and rounded-pill buttons (this surface uses real editorial cream, ink hairlines, and oxblood stamp shapes), Duolingo-shaped reward chrome (streak flames, XP bars, mascot animations), hero-metric tiles, generic AI dark-mode dashboards, and any treatment that asks a student to feel rewarded rather than read.
 
 **Key Characteristics:**
 
-- Dark-by-default greyscale neutrals with zero brand-accent warmth on this surface.
-- Color is reserved exclusively for translation-language buckets and for state feedback (success / error / warn). No decorative color anywhere else.
-- Prose-first hierarchy: eyebrow + title + body-prose dominates. Cards exist but stay quiet (`bg-card/40` to `bg-card/60` partial opacity over the dark background).
-- Inline translation-language highlighting is the signature primitive, not chip selection. Translation tokens use `box-decoration-break: clone` so they wrap correctly across multiple lines inside flowing prose.
-- The `useDrillDarkMode` lifecycle hook forces the entire topic surface into dark theme on mount and restores the prior theme on unmount. Light mode is technically supported by the app-wide system; the Abstract bootcamp explicitly opts out per-route.
-- Motion is minimal: hover/focus transitions on chips and tokens (120-300ms), no scroll choreography, no entrance animations on chapter content.
-- Cards never nest. Layered transparency (`bg-card/40` over `bg`) provides depth, not nested borders.
+- Warm cream paper canvas (`#F4EDE0`) with subtle SVG noise grain. No flat backgrounds anywhere.
+- Editorial serif display + body prose (Newsreader). Humanist sans for UI (Hanken Grotesk). Mono for identifiers and LSAT-ese callouts (JetBrains Mono).
+- Single bold accent: oxblood (`#8B2C1F`). Used for the focus ring, primary CTA, drop caps, the `§` section glyph, and the evaluation translation bucket (which it shares semantically).
+- Translation-bucket tokens render as muted watercolor washes on cream paper, not saturated digital fills.
+- Drop caps on the first paragraph of every chapter section. Editorial-magazine layout, not blog-post layout.
+- Asymmetric two-column spread on desktop (`.codex-chapter-spread`): body prose plus marginalia rail. Single column on mobile.
+- Drill correct/incorrect feedback rendered as ink-stamp typography (italic serif, soft rotation, hairline border in oxblood or forest), not as flat green/red fills.
+- Motion is one well-orchestrated page-load reveal per route (`.codex-reveal-stack`), staggered 80 ms between siblings, transform + opacity only, respects `prefers-reduced-motion`.
+- Tightened radii. Card corners drop to `0.25rem` from `1rem`. Stamp buttons stay full-pill. Most rules are hairline.
 
 ## 2. Colors
 
-The palette is pure neutral greyscale plus a locked five-color translation-bucket vocabulary. No brand accent. Color carries only translation-language meaning and state.
+The palette is warm cream paper, two ink tones, one bold scholarly accent (oxblood), and five muted translation-bucket washes.
 
 ### Primary
 
-There is no brand-accent primary color on this surface. The "primary" CTA color is `#fafafa` (near-white on dark), used only for the Submit affordance and the active decoder pagination dot.
+- **Oxblood** (`#8B2C1F`, HSL `8 64% 33%`): the single bold accent in the system. Used on the primary CTA, the focus-visible ring, the section-mark glyph `§`, drop caps, the cleared-state stamp border, and the evaluation translation bucket. Reserved territory; never decorative.
+- **Oxblood Deep** (`#6B1F15`): pressed-state inset on primary CTA. Inset stroke under the ink-stamp shape.
 
-- **Primary Surface** (`#fafafa` resolved from `--primary` at HSL `0 0% 98%`): used as the "Submit" CTA background and the active decoder pagination dot. It is the highest-affinity affordance on a screen and should appear at most once per visible viewport.
+### Paper
 
-### Secondary (Translation-Language Buckets)
+- **Paper** (`#F4EDE0`, HSL `38 46% 92%`): the topic surface background. Warm cream with intentional yellow-brown tint. Never `#fff`, never `#fafaf9`.
+- **Paper Lift** (`#FAF6EE`, HSL `36 38% 96%`): card and elevated-panel surface. Reads as paper-on-paper.
+- **Paper Deep** (`#EBE3D2`, HSL `34 26% 86%`): hover-surface fill and secondary chip background.
 
-These five colors carry translation-language meaning and are the only colors used inside chapter prose. Defined in `src/topics/abstract/components/indicator-tokens.css` (file name is historical; the class names use `translation-bucket-*`). Each renders as inline text (foreground color, 18% alpha background, `box-decoration-break: clone`) so highlights wrap across lines without breaking.
+### Ink
 
-- **Assumption Purple** (`#c084fc`, HSL `280 67% 60%`): assumption-language words inside running prose (e.g. "presupposes", "takes for granted", "tacitly assumes").
-- **Causal Orange** (`#f97316`, HSL `28 95% 53%`): causal-language words (e.g. "phenomenon", "hypothesis", "accounts for", "explains").
-- **Comparison Cyan** (`#22d3ee`, HSL `188 95% 53%`): comparison-language words (e.g. "analogous", "similarly", "in contrast", "parallels").
-- **Evidence Blue** (`#3b82f6`, HSL `217 91% 60%`): evidence / relevance language (e.g. "lends support to", "is consistent with", "most strongly supports").
-- **Evaluation Red** (`#ef4444`, HSL `0 84% 60%`): evaluation language (e.g. "undermines", "calls into question", "casts doubt on", "sufficient", "necessary").
+- **Ink** (`#181612`, HSL `30 16% 9%`): primary text. Off-black with a warm tint; never pure black.
+- **Ink Soft** (`#605850`, HSL `30 8% 35%`): secondary text, eyebrows, meta copy.
+- **Ink Faint** (`#8B8378`, HSL `30 6% 50%`): tertiary text, footnotes, attribution.
+- **Rule** (`#C8B999`, HSL `34 22% 72%`): warm tan hairline borders.
 
-### Neutral
+### Translation Buckets (cream-paper watercolor)
 
-App-wide neutral-dark Tailwind tokens, resolved here as hex. Tinted toward warm-neutral only by the design system's `hsl(0 0% X%)` formulation (pure greyscale; no warm-cool drift).
+These five colors are the only colors used inside chapter prose. Defined in `topic-styles.css`. Each renders as inline text (foreground color + ~16% alpha wash, `box-decoration-break: clone`).
 
-- **BG** (`#0a0a0a`, HSL `0 0% 3.9%`): topic surface background.
-- **Card BG** (`#121212`, HSL `0 0% 7%`): card and elevated-panel surface. Almost always rendered at partial opacity (`bg-card/40` or `bg-card/60`) so the underlying BG bleeds through and produces a layered, semi-translucent feel.
-- **Surface Elevated** (`#1a1a1a`, HSL `0 0% 10%`): the next step up from card BG. Used for nested surfaces inside method cards.
-- **Surface Muted** (`#262626`, HSL `0 0% 14.9%`): the unified value for `--secondary`, `--border`, `--accent`, and `--muted`. Used as chip background, border color, and hover-surface fill.
-- **Ink Bright** (`#fafafa`, HSL `0 0% 98%`): primary text. AAA contrast on BG.
-- **Ink Soft** (`#a3a3a3`, HSL `0 0% 63.9%`): `text-muted-foreground`. Secondary text, eyebrow labels, helper copy, links.
-- **Ink Faint** (`#737373`, HSL `0 0% 45%`): `text-tertiary`. Footnotes, attribution, lowest-tier captions.
-- **Ring** (`#d4d4d4`, HSL `0 0% 83.1%`): focus ring color (`focus-visible` on interactive elements via shadcn primitives).
+- **Assumption Mulberry** (`#6B2F66`, HSL `304 38% 30%`): assumption-language words (e.g. "presupposes", "takes for granted").
+- **Causal Sienna** (`#B14F1E`, HSL `22 75% 40%`): causal-language words (e.g. "phenomenon", "hypothesis", "accounts for").
+- **Comparison Teal** (`#1F6680`, HSL `197 60% 32%`): comparison-language words (e.g. "analogous", "similarly", "parallels").
+- **Evidence Ink Blue** (`#2A3E7A`, HSL `223 49% 32%`): evidence / relevance language (e.g. "lends support to", "most strongly supports").
+- **Evaluation Oxblood** (`#8B2C1F`, HSL `8 64% 33%`): evaluation language (e.g. "undermines", "sufficient", "necessary"). Shares hue with the primary accent; this is intentional. Evaluation is the move the accent symbolizes.
 
 ### State
 
-- **Success Green** (`#22c55e`, HSL `142 71% 45%`): correct-attempt affirmation.
-- **Warn Amber** (`#f59e0b`, HSL `38 92% 50%`): caution / bonus-stretch / diagnostic warning. Used for D8 "Bonus stretch" pills.
-- **Error Red** (`#dc2626`, HSL `0 72% 51%`): wrong-attempt affordance. Distinct from Evaluation Red (which is brighter, role-coded). Never used as a brand accent.
-- **Again Rose** (`#f43f5e`): the "Again" flashcard rating button border and text. Tailwind `rose-500`. A signal the student needs to revisit, not a punishment.
-- **Easy Emerald** (`#10b981`): the "Easy" flashcard rating button border and text. Tailwind `emerald-500`. Distinct in hue from Success Green so the two affordances do not collide visually.
+- **Ink Forest** (`#274939`, HSL `150 36% 22%`): correct-attempt ink-stamp text. Used only on the `.codex-stamp-correct` element.
+- **State Success** (`#22c55e`): legacy success token, app-wide. Rarely surfaced on this surface; ink-forest stamp carries the affordance.
+- **State Warn** (`#f59e0b`): bonus / stretch indicator (D8 "Bonus stretch" pill).
+- **Again** (`#f43f5e`) / **Easy** (`#10b981`): legacy flashcard rating tokens. Recolored to oxblood / ink-forest stamp shapes in the Codex idiom.
 
 ### Named Rules
 
-**The No-Brand-Accent Rule.** This surface carries no warm brand accent. No Aspiring Gold, no bronze, no amber decoration. The `accent-bronze` / `accent-warm` tokens declared in `tailwind.config.ts` are not consumed here. If the surface looks like it needs a warm accent to feel alive, the answer is more careful typography or better content density, not a brand color.
+**The One-Accent Rule.** Oxblood is the only bold color on the page. It appears on at most three elements per visible viewport: the primary CTA, the focus ring (when something is focused), and the `§` glyph or drop cap. If a fourth oxblood element appears, redesign.
 
-**The Role-Color-Inside-Prose Rule.** Translation-bucket colors only render as inline tokens inside running prose, via `HighlightToken` and the `indicator-token` / `translation-bucket-*` classes. They are never used as chip backgrounds, card borders, button colors, or status badges. The bucket color travels with the language category, exclusively.
+**The Watercolor-Token Rule.** Translation-bucket colors render as inline tokens inside running prose only, via `HighlightToken` and the `translation-bucket-*` classes. Never as chip backgrounds, card borders, button fills, or status badges. The bucket color travels with the language category, exclusively.
 
-**The Layered-Opacity Rule.** Card backgrounds are rendered at 40% or 60% opacity (`bg-card/40`, `bg-card/60`) so the BG bleeds through. Depth comes from translucent layering, not nested borders or graduated shadow ramps. A fully opaque card surface signals an error in the system.
+**The Paper-on-Paper Rule.** Lifted surfaces use `paper-lift` (`#FAF6EE`) on the cream `paper` (`#F4EDE0`) background. The contrast is intentional and subtle. No drop shadows on cards by default; depth comes from tonal layering plus a single hairline border in `rule` (`#C8B999`).
 
-**The Tinted-Neutral Rule (inherited).** No `#000`, no `#fff`. The app-wide tokens already enforce this (HSL `0 0% 3.9%` is `#0a0a0a`, not pure black; HSL `0 0% 98%` is `#fafafa`, not pure white). Honor it.
+**The Tinted-Neutral Rule.** No `#000`, no `#fff`, no pure-greyscale neutrals. Every neutral on this surface is warm-tinted. The ink is off-black with a warm cast; the paper is cream with a yellow-brown cast; the rule color is warm tan. The whole palette sits inside a narrow warm-neutral band.
 
 ## 3. Typography
 
-**Display Font:** system-ui font stack (`system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`).
-**Body Font:** same system-ui stack.
-**Mono Font:** `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`.
+**Display Font:** Newsreader (with `ui-serif`, Georgia fallbacks). Distinctive optical-size axis; italic with character.
+**Body Font:** Newsreader for chapter prose; Hanken Grotesk (with `ui-sans-serif`, `system-ui` fallbacks) for UI sans.
+**Mono Font:** JetBrains Mono (with `ui-monospace`, `SFMono-Regular` fallbacks). Used for identifiers, LSAT-ese callouts, and eyebrow labels.
 
-**Character:** the Abstract bootcamp is intentionally typeface-neutral. There is no custom display serif (no Fraunces), no humanist sans (no Outfit), no display mono (no JetBrains Mono). It reads as a careful, dense academic notebook using the OS's native sans, with mono reserved for content-identifier tokens (PT-question pills, method numbers, ID chips). The visual identity comes from rhythm, weight, and hierarchy, not from a font choice. This is a deliberate departure from the Intro to LR bootcamp's editorial-typographic pairing.
+**Character:** the Codex is editorial. Newsreader's optical-size axis lets the display variant feel like a magazine masthead while the body variant reads like serious long-form prose. Hanken Grotesk is the UI voice: humanist, distinct from Inter, friendly without being soft. JetBrains Mono carries the LSAT-ese-as-code metaphor: identifier chips, mono eyebrow labels, the `(A)` / `(B)` answer prefixes all live in mono.
 
 ### Hierarchy
 
-- **H1** (700, `1.875rem` / 30px, `1.2`): chapter-level title rendered by `ChapterReader` (`text-3xl font-bold`). Used once per chapter.
-- **H2** (600, `1.5rem` / 24px, `1.25`): section titles inside the chapter. Tracked by `ChapterReader` for intersection-observer-driven `chapter_progress` writes.
-- **H3** (600, `1.25rem` / 20px, `1.3`): subsection titles.
-- **Title** (600, `1rem` / 16px, `1.4`): card titles inside method cards, flashcard front text, drill shell titles.
-- **Body** (400, `0.875rem` / 14px, `1.625`): UI prose, drill prompts, button labels, footer copy. The default voice.
-- **Body Prose** (400, `1rem` / 16px, `1.7`): chapter prose inside `ChapterReader`. Capped by `prose prose-invert max-w-none` Tailwind Typography defaults (~65ch).
-- **Small** (400, `0.75rem` / 12px, `1.55`): metadata, "Card N of M" pagination, caption text, secondary navigation hints.
-- **Eyebrow** (600, `0.75rem` / 12px, uppercase, tracking `0.05em`): section-prefix labels above titles (`MASTER KEYS`, `METHODS OF REASONING LIBRARY`, `EXAMPLE`). The single all-caps treatment in the system; never used in running prose.
-- **Mono** (500, `0.6875rem` / 11px, tracking `0.05em`): PT-question chips, method numbering (`METHOD 17`), card-identifier callouts. Always all-caps when used as an eyebrow, sentence case when used as an inline identifier.
+- **Chapter H1** (Newsreader 600, `clamp(2rem, 4vw, 2.75rem)`, `1.08`): once per chapter. Inside the `chapter-reader` prose.
+- **Section H2** (Newsreader 600, `clamp(1.5rem, 2.6vw, 1.85rem)`, `1.18`): section titles. Prefixed automatically with an italic oxblood `§` glyph via `::before`.
+- **Subsection H3** (Hanken Grotesk 600, `1.05rem`, `1.3`): subsections inside a chapter section.
+- **Drill H1** (`.codex-display`, Newsreader 500, `1.5rem` typical, optical-size axis): drill page titles.
+- **Body** (Hanken Grotesk 400, `0.9375rem`, `1.6`): UI prose, drill prompts, button labels.
+- **Body Prose** (Newsreader 400, `1.0625rem`, `1.72`): chapter prose only. Capped at `prose-* max-w-prose` (~65ch).
+- **Small** (Hanken Grotesk 400, `0.8125rem`, `1.55`): metadata, captions.
+- **Eyebrow** (`.codex-eyebrow`, JetBrains Mono 500, `0.6875rem`, tracking `0.16em`, uppercase): section-prefix labels above titles.
+- **Mono** (JetBrains Mono 500, `0.75rem`, tracking `0.04em`): identifier chips, method numbers, option-letter prefixes `(A)`, `(B)`.
+- **Marginalia** (`.codex-marginalia`, Hanken Grotesk 400 italic, `0.8125rem`, `1.55`): right-rail footnotes and gloss notes on chapter sections.
 
 ### Named Rules
 
-**The Italic-Stimulus Rule.** Stimulus quotations and reading passages always render as `italic`. The `blockquote` element with `border-l-2 border-border pl-4 leading-relaxed` is the canonical pattern. The italic is a typographic cue that the prose belongs to a question, not to Joshua. Authored coaching prose stays roman.
+**The Drop-Cap Rule.** The first paragraph after every `<h2>` in the chapter reader receives a 3.6rem Newsreader drop cap in oxblood (via CSS `:first-letter`). One drop cap per section. Adds editorial gravity to section openings.
 
-**The Eyebrow-Then-Title Rule.** Every page-level surface leads with `eyebrow + h1 + supportive subtitle`. Eyebrow is short, all-caps, tracked, ink-soft-colored. Title carries the actual destination name. Subtitle is body-weight, ink-soft, and explains the surface in one sentence. Never lead with the h1 alone.
+**The Section-Mark Rule.** Every `<h2>` in the chapter reader is prefixed with an italic oxblood `§` glyph (via CSS `::before`). The mark carries the surface's scholarly identity without requiring a manual character in the markdown source.
 
-**The System-Sans Rule.** Use the OS sans stack for everything. Do not import custom fonts on this surface. If a future Abstract surface needs a typographic accent, reach for weight contrast or italic before reaching for a different font family.
+**The 65ch Rule.** Chapter prose caps at 65 characters per line via Tailwind `prose` defaults. Reading column over content density.
+
+**The Eyebrow-Display-Marginalia Rule.** Every page-level surface leads with `eyebrow (mono) + display title (serif) + supportive paragraph (sans)`. Marginalia, where present, sits in the right rail on desktop, inline below on mobile.
 
 ## 4. Elevation
 
-The Abstract bootcamp is **mostly flat**. Depth comes primarily from layered card opacity (`bg-card/40` over `bg`), secondarily from a thin hairline border (`border-border`), and only occasionally from a small shadow (`shadow-sm`) on cards that need a tactile lift (flashcard surface, decoder card).
+The Codex is **mostly flat with hairline rules**. Depth comes from:
 
-There is no glow vocabulary on this surface. The Intro to LR bootcamp's `Glow Accent Soft` / `Glow Accent Strong` warmth-glow shadows do not apply here. Accent glow requires an accent color; this surface has none.
+1. **Tonal layering.** Paper-on-paper: `paper-lift` (`#FAF6EE`) on `paper` (`#F4EDE0`) is enough to lift a card.
+2. **Hairlines.** A single 1px `rule` border (`#C8B999`) defines edges.
+3. **Subtle shadow on cards only.** A 12px-blur 16px-offset 18%-alpha warm shadow lifts cards when they need genuine elevation (flashcard, drill spread). Never on inline elements.
+4. **Inset stroke on the primary CTA.** A 2px `oxblood-deep` inset stroke at the bottom of the primary button gives it a pressed-stamp feel.
+
+There are no harsh shadows. There is no glow. There is no glassmorphism.
 
 ### Shadow Vocabulary
 
-- **Shadow Sm** (`var(--shadow-sm)` → `0 1px 3px 0 rgba(0, 0, 0, 0.4)`): the flashcard surface, the method-card on hover. Used to lift a single card from the surrounding prose.
-- **Hover Shadow** (`hover:shadow`, the Tailwind default): only applied to interactive chip elements (`SlotFiller` clause chips, `MethodCard` expand control). Communicates "this is grabbable / pressable."
+- **Shadow Soft** (`0 1px 0 hsl(var(--border)), 0 12px 24px -16px hsl(30 16% 9% / 0.18)`): default card lift. Warm shadow, low offset, soft blur.
+- **Stamp Inset** (`inset 0 -2px 0 hsl(8 64% 22%), 0 1px 0 hsl(30 16% 9% / 0.08)`): primary CTA ink-stamp shape.
+- **Hover Lift** (`inset 0 -2px 0 oxblood-deep, 0 2px 0 ink/0.12, 0 6px 12px -4px oxblood/0.3`): primary CTA hover state.
 
 ### Named Rules
 
-**The Flat-By-Default Rule.** Surfaces are flat at rest. Shadow appears only on the flashcard (because flipping it is a tactile action) and on hover for chips and cards. Static cards have no shadow.
+**The Flat-By-Default Rule.** Surfaces are flat at rest. Hover and focus introduce subtle elevation via shadow or `translateY(-1px)`. Pressed state collapses the stamp.
 
-**The Layered-Opacity-Before-Shadow Rule.** When you need a card to feel separate from the BG, reach for partial-opacity card fill (`bg-card/40`, `bg-card/60`) before reaching for a shadow. Layered translucence is the system's first answer to "this needs to feel like a container."
+**The Hairline-First Rule.** When in doubt, reach for a 1px `rule` border before reaching for a shadow. Editorial surfaces define edges with line, not depth.
 
 ## 5. Components
 
-Lead each component with a short character line, then specify shape, color, states, and distinctive behavior.
+### Primary Button (`.codex-btn-primary`)
 
-### Buttons
+- **Shape:** rectangular, 0.2rem radius. Not pill-shaped.
+- **Surface:** oxblood fill on cream paper. The inset bottom-stroke and tiny offset shadow give it a pressed-stamp feel.
+- **States:** hover lifts 1px and adds a warm oxblood glow. Active collapses the stamp. Disabled drops to 0.45 opacity.
+- **Used for:** Submit, Reveal walkthrough, Check. Once per visible viewport.
 
-- **Shape:** rounded-md (`0.375rem`).
-- **Primary** (the Check / submit CTA): `bg-primary text-primary-foreground px-4 py-2 text-sm font-medium`. Disabled state drops to `opacity-50`. Used once per surface, on the highest-affinity action. Hover/focus uses shadcn defaults (no custom treatment in the Abstract surface).
-- **Ghost** (Reset, Next, Hide/Show controls): `rounded-md border border-border px-3 py-1 text-sm`. Hover lifts to `hover:bg-secondary/60` or `hover:bg-secondary`. Always neutral, always secondary in weight.
-- **Tertiary** (icon-only / ultra-quiet, e.g. "Reset session"): `border border-border px-3 py-2 text-xs text-muted-foreground`. Body weight reduced one tier. Reserved for actions the student rarely needs.
-- **Focus:** inherits the shadcn `focus-visible` ring (`ring-2 ring-ring`, app-wide). Never disabled.
+### Ghost Button (`.codex-btn-ghost`)
 
-### Chips
+- **Shape:** rectangular, hairline border, transparent fill.
+- **Hover:** background becomes `paper-deep`; border shifts toward oxblood.
+- **Used for:** Next, Reset, secondary actions, toggle controls.
 
-- **Status chip** (session accuracy, question counter): `rounded-full bg-secondary px-3 py-1 text-xs`. Always neutral grey background. Never role-colored. Never carries success/error fill — those signals belong elsewhere.
-- **Clause chip** (the draggable / tappable clause inside SlotFiller): `rounded-md border px-3 py-1.5 text-sm shadow-sm`. Default state uses `border-border hover:border-primary/50 hover:shadow`. Selected state uses `border-primary border-2 ring-2 ring-primary/30`. The selection ring is the chip's only color affordance.
-- **PT-question pill** (the practice-question references in `MethodsLibrary`): `rounded-full border border-border bg-background px-3 py-1 font-mono text-xs`. The only place the mono font appears as a content-identifier chip on this surface.
-- **Filter dropdown chip** (flashcard difficulty / concept selectors): `rounded-md border border-border bg-background px-2 py-1`. Native `<select>` styled minimally — no shadcn `Select` Radix wrapper used here.
+### Stamp Button (`.codex-stamp-btn`)
 
-### Cards / Containers
+- **Shape:** full-pill, italic serif label, 1.5px border in `currentColor`.
+- **Used by:** SelfRateAfterReveal (Again / Good / Easy buttons). Color comes from `state-again` (oxblood family), neutral ink, or `state-easy` (ink-forest family) via inline `text-*` Tailwind classes.
+- **Hover:** background fills to `currentColor`, text inverts to paper. Slight rotation (-1deg) for an ink-stamp tactile effect.
 
-- **Corner Style:** card surfaces use `rounded-2xl` (`1rem`) at large width and `rounded-xl` (`0.75rem`) at compact width. Soft-but-not-pillowy.
-- **Background:** always `bg-card/40` (default) or `bg-card/60` (lifted, e.g. flashcard). The base BG must show through. Fully opaque card backgrounds are forbidden on this surface.
-- **Border:** `border border-border` (1px hairline at the unified Surface Muted color).
-- **Shadow Strategy:** none by default. `shadow-sm` only on the flashcard primitive. Nesting is forbidden.
-- **Internal Padding:** `p-4` (16px) on compact cards, `p-6` (24px) on signature cards (flashcard, hero containers, full-bleed sections).
+### Identifier Chip (`.codex-chip`)
 
-### Inputs / Fields
+- **Shape:** rectangular, mono small-caps, hairline border, soft paper-lift fill.
+- **Used for:** PT-question pills, method numbers, drill counter, accuracy display, option prefixes.
 
-- **Style:** `rounded-md border border-border bg-background px-2 py-1` for native selects. Text fields, when added, follow the same rule.
-- **Focus:** the app-wide shadcn focus ring (`ring-2 ring-ring`). Border itself does not change color on focus.
-- **Error:** when introduced, use `state-error` (`#dc2626`) on the border with error copy below the field in small typography. The Abstract bootcamp does not currently render input-error states; this is the canonical pattern when it does.
+### Cards
 
-### Navigation
+- **`.codex-card`** (primary): paper-lift surface, hairline border, soft shadow. Default content container.
+- **`.codex-card-soft`** (secondary): paper-lift surface at 70% opacity, faint border, no shadow. Quieter container for inline asides and panels.
+- **Corner radius:** 0.25rem (`rounded.md`). Never `rounded-2xl`. The Codex is editorial; rounded corners belong to SaaS.
 
-- **TopicSidebar** (the section sidebar within `/topics/abstract/*`): a thin left-aligned nav rendered in `TopicSidebar.tsx`. App-wide pattern, not Abstract-specific.
-- **DecoderPanel dot pagination** (the signature mini-pattern): five-to-eight `h-2 w-2 rounded-full` dots, `bg-primary` for the active card and `bg-border` for the rest. Click jumps; arrow buttons advance/retreat. The dot strip is centered. No active-dot animation. The compact "Prev / Next" arrow buttons flank the dots.
-- **Mobile:** all chrome reflows to a single column via `flex-wrap` and `md:` breakpoint. The drill shell, flashcard deck, and methods grid all collapse cleanly. The grid pattern is always `grid gap-3 md:grid-cols-2` (compact two-up on tablet+), never three- or four-up.
+### Drill Answer Choice (`.codex-answer`)
 
-### Signature Components
+- **Shape:** rectangular, hairline border, transparent fill at rest. Padding 0.85 / 1rem.
+- **States:**
+  - Picked (pre-submit): hairline border shifts to oxblood.
+  - Correct (post-submit): adds `.codex-answer-correct` class — forest border 55% alpha, forest fill 8%.
+  - Incorrect (post-submit): adds `.codex-answer-incorrect` class — oxblood border 55% alpha, oxblood fill 8%.
+- **Used by:** D1 MC, D2 bucket choices, D3 / D4 / D5 / D7 MC.
 
-- **`IndicatorHighlighter`** (the translation-fluency centerpiece): renders a stimulus as an inline `<blockquote>` with each token wrapped in a `HighlightToken` carrying a `bucket` class (`translation-bucket-assumption`, `translation-bucket-causal`, `translation-bucket-comparison`, `translation-bucket-evidence`, `translation-bucket-evaluation`). Each bucket maps to a CSS variable pair (`--token-bg`, `--token-fg`) so the highlight is foreground-tinted text with 18%-alpha background fill. `box-decoration-break: clone` ensures highlights wrap across line breaks without splitting. Two modes: `reveal` (always visible) and `hover` (visible only on hover, wrapped in `@media (hover: hover)` to avoid sticky-hover on touch devices).
-- **`DecoderPanel`** (the LSAT-ese → plain-English card deck): `DecoderCard` content area + dot pagination + prev/next arrows. Cards advance via `useDecoderProgression` hook. The dot pagination strip is hidden on the phone breakpoint; arrows + counter carry mobile.
-- **`SelfRateAfterReveal`** (the canonical self-rate primitive): Again / Good / Easy rating row used by every reveal-after drill (D4 reverse-engineer, D5 definition, D7 free-text, D8 stem translation). Again uses `state-again`, Easy uses `state-easy`, Good stays neutral. The rating drives `recordAttempt` so the accuracy chip reflects honest self-assessment, not a length heuristic.
-- **`ChapterReader`** (the chapter markdown renderer): minimal Obsidian-flavored markdown subset (H1-H3, paragraphs, blockquotes, bullets, ordered lists, tables, italic, bold) plus topic-specific inline tokens `[[indicator:stim-id]]` and `[[decoder]]` that expand to `IndicatorHighlighter` and `DecoderPanel` respectively. Wrapped in `prose prose-invert max-w-none` for prose-tier typography. Tracks H2 occurrences as sections for intersection-observer-driven progress writes.
-- **`FlashcardDeck`** (the SRS-compatible self-review deck): `rounded-2xl bg-card/60 p-6 shadow-sm` card with front/back flip. Three rating buttons (`Again` / `Good` / `Easy`) gated on flipped state, each bordered in the rating's signal color (rose / neutral / emerald). Difficulty and concept filter via native `<select>` dropdowns above the card.
-- **`MethodsLibrary` MethodCard** (the 17-method browser): `rounded-xl border border-border bg-card/40 p-4` cards with collapsed body. Eyebrow displays the method number in mono small-caps; title in semibold sentence case; definition always visible; example revealed on expand. The expand control is a `border border-border px-2 py-1 text-xs` button; never a bare-icon chevron.
+### Result Stamp (`.codex-stamp-correct` / `.codex-stamp-incorrect`)
+
+- **Shape:** italic serif label, pill border, slight rotation (-1.5deg), warm cream fill behind for legibility.
+- **Used by:** the verdict aside on every auto-graded drill. Replaces the flat "Correct" / "Not quite" header.
+
+### Sidebar TOC (`.codex-toc`, `.codex-toc-item`, `.codex-toc-num`)
+
+- **Shape:** vertical stack of TOC items. Each item is `<mono number> <sans label>`.
+- **States:** active item gets oxblood text, soft oxblood-tinted background.
+- **Used by:** TopicSidebar.
+
+### Translation Token (`.indicator-token` + `.translation-bucket-*`)
+
+- **Shape:** inline serif italic, ~16% alpha colored wash, `box-decoration-break: clone` for multi-line wraps.
+- **Bucket colors:** mulberry / sienna / teal / ink-blue / oxblood per category.
+- **Modes:** `reveal` (always visible) and `hover` (visible only on hover, wrapped in `@media (hover: hover)` to avoid sticky-hover on touch).
+
+### Signature Layouts
+
+- **`.codex-chapter-spread`** (chapter pages on desktop): asymmetric grid, `1fr 18rem` with `3rem` gap. Body prose left, marginalia rail right. Collapses to single column under `lg`.
+- **`.codex-decoder-spread`** (DecoderPanel): `1fr auto 1fr` three-column grid on desktop with an oxblood italic `→` glyph in the center. Abstract phrase left, plain English right. Collapses to single column on mobile.
+- **`.codex-reveal-stack`** (page-load reveal): direct children fade-in with staggered 80 ms delays. CSS `@keyframes`; respects `prefers-reduced-motion`.
 
 ## 6. Do's and Don'ts
 
-Forceful guardrails. Many of these inherit from `PRODUCT.md`'s app-wide and bootcamp-specific principles. The Abstract surface adds its own.
-
 ### Do:
 
-- **Do** keep this surface fully neutral greyscale outside the locked translation-bucket palette and state colors. No warm accent of any kind.
-- **Do** route every translation-language color through `indicator-tokens.css` (file name is historical) and `HighlightToken`. The bucket names (`assumption`, `causal`, `comparison`, `evidence`, `evaluation`) are the canonical vocabulary on this surface.
-- **Do** render stimulus quotations as italic blockquotes with `border-l-2 border-border pl-4`. The 2px neutral left border is the canonical quotation affordance and does not violate the impeccable side-stripe ban because it is neutral, not a colored accent stripe.
-- **Do** cap card backgrounds at 40 to 60 percent opacity (`bg-card/40`, `bg-card/60`). The base BG must show through.
-- **Do** force dark theme via `useDrillDarkMode()` on every drill, the flashcard deck, and any other interactive surface. The hook is reversible: it restores prior theme on unmount.
-- **Do** use `box-decoration-break: clone` on every inline highlight that may wrap across lines. Indicator tokens inside chapter prose absolutely require this property.
-- **Do** wrap hover-based reveal behavior in `@media (hover: hover)` so touch devices do not inherit sticky `:hover` states (`indicator-tokens.css` audit F5.25).
-- **Do** keep all interactive elements keyboard-activatable (`Enter` and `Space` handlers on chips, role-button semantics, `aria-pressed` for toggle state, `aria-expanded` for collapsibles).
-- **Do** prefer `font-mono` only for content-identifier surfaces (PT IDs, method numbers, card IDs). Mono in running prose is forbidden.
-- **Do** trace every accuracy number, progress percentage, and "next step" link to real persistence via the bootcamp's hooks (`useSlotFillerSession`, `useDecoderProgression`, `useRecordChapterSection`, `useRecordFlashcardReview`) or a static registry. Honest empty states beat fabricated data.
+- **Do** keep this surface fully cream-paper and ink. The only bold color is oxblood, used on ≤3 elements per visible viewport.
+- **Do** route every translation-language color through `topic-styles.css` and `HighlightToken`. The bucket names (`assumption`, `causal`, `comparison`, `evidence`, `evaluation`) are the canonical vocabulary on this surface.
+- **Do** render the chapter prose in Newsreader at `1.0625rem` / `1.72` line-height, capped at `max-w-prose`. Drop caps on the first paragraph of every section; `§` mark on every `<h2>`.
+- **Do** prefer hairline `rule` borders over drop shadows. When elevation is needed, reach for `paper-lift` on `paper` first.
+- **Do** stamp drill verdicts as italic serif typography in oxblood (incorrect) or ink-forest (correct). Use `<CodexStamp variant="correct" />` or `<CodexStamp variant="incorrect" />` patterns.
+- **Do** use Hanken Grotesk for UI controls and JetBrains Mono for identifier chips. Never reach for the OS sans for UI on this surface; Hanken Grotesk is loaded.
+- **Do** keep the page-load reveal stack to one choreographed sequence per route. No scroll choreography. No entrance animations on chapter content beyond the load-in.
+- **Do** trace every persistence write to `useAbstractDrill.recordAttempt`, `useDecoderProgression`, `useRecordChapterSection`, or `useRecordFlashcardReview`. Honest analytics only.
 
 ### Don't:
 
-- **Don't** use any warm brand accent on this surface. No Aspiring Gold, no bronze, no amber. The `accent-bronze` / `accent-warm` / `glow-bronze` Tailwind colors are not consumed by the Abstract bootcamp; do not introduce them here.
-- **Don't** import role colors from the Intro to LR (Main Conclusion) bootcamp. That surface uses argument-structure role colors (`role-premise`, `role-opposing`, `role-concession`) for clause labeling drills. The Abstract surface uses translation-language buckets (`assumption`, `causal`, `comparison`, `evidence`, `evaluation`) for an unrelated decoding task. Do not cross-reference.
-- **Don't** turn translation-bucket colors into chip selections, card borders, button fills, or status badges. The bucket color travels with the language category exclusively, rendered inline inside prose.
+- **Don't** use `#000`, `#fff`, or any pure-greyscale neutral. The Codex sits inside a warm-neutral band.
+- **Don't** use Inter, Roboto, Arial, or the OS sans for chapter or UI text. Hanken Grotesk, Newsreader, JetBrains Mono are the only families.
+- **Don't** import Fraunces or Outfit from the Intro to LR bootcamp. The bootcamps speak distinct dialects.
+- **Don't** reach for `rounded-2xl` or any `rounded-lg+` radius. Card corners are 0.25rem. The Codex is editorial, not pillowy.
+- **Don't** use drop shadows decoratively. Shadows on hover or for genuine elevation only.
+- **Don't** introduce a second bold accent. Oxblood is the only one. Adding teal, gold, or any other saturated hue collapses the system.
+- **Don't** render drill correct/incorrect feedback as solid green/red fills. Use the stamp pattern.
+- **Don't** ship the hero-metric template (big number, small label). The drill chip in the header is a status chip, not a hero.
+- **Don't** reach for a modal as a first thought. Inline reveal (collapsible method card, in-place flashcard flip) is the canonical pattern.
+- **Don't** use em dashes (`—` or `--`) in any utility, computed, or runner copy on this surface. Use commas, colons, parentheses, periods. Joshua's authored chapter prose is exempt.
 - **Don't** add argument-structure labeling drills to this surface. Premise / conclusion / opposing-view / concession / slot labeling all live in Intro to LR. The Abstract bootcamp's job is decoding LSAT-ese, not labeling argument parts.
-- **Don't** lead a surface with a card grid (the 7Sage / Khan Academy / Manhattan Prep failure mode). Lead with the eyebrow + h1 + body-prose pattern, then deliver a single compute-the-next-step CTA (a "Try this drill" or "Open this reference card" link).
-- **Don't** use `border-left` or `border-right` greater than 1px as a colored accent stripe on cards, list items, callouts, or alerts. (App-wide impeccable rule; enforced by `__tests__/impeccable-bans.test.ts`.) The italic-stimulus blockquote's 2px neutral left border is the canonical exception and is acceptable because the border is neutral, not a colored accent.
-- **Don't** use gradient text (`background-clip: text` + gradient background). Use a single solid color and emphasize via weight or size.
-- **Don't** use glassmorphism (backdrop-blur) decoratively. The Abstract surface is layered transparency, not frosted glass.
-- **Don't** ship the hero-metric template (big number + small label + supporting stats + gradient accent). Use a status chip in the header instead. The flashcard surface and drill shell follow this rule already.
-- **Don't** reach for a modal as the first thought. Inline reveal (collapsible method card, togglable indicator/tree overlays) is the canonical pattern.
-- **Don't** use em dashes (`—` or `--`) in any utility, runner, or computed copy on this surface. Use commas, colons, parentheses, or periods. (Joshua's authored chapter prose in `chapter.md` is exempt.)
-- **Don't** use `#000` or `#fff`. Every neutral is the resolved HSL token; honor the app-wide tinted-neutral rule even though this surface uses pure-zero-chroma greyscale.
-- **Don't** invent analytics, "mastery percentages", streaks, score predictions, or XP / trophy treatments. The Abstract bootcamp tracks real progress writes (chapter sections, flashcard reviews, drill accuracy) only.
-- **Don't** render internal IDs (`stim-*`, `method-*`, raw bucket names like `evaluation-bg`) in student-visible copy. Use them as `data-*` attributes and class names only. Student-visible copy uses natural-language labels ("evaluation language", "causal language", etc.).
-- **Don't** ship Duolingo-shaped streak flames, mascot animations, XP bars, or trophy popovers on this surface. The Abstract bootcamp does not reward attendance.
-- **Don't** use industry vocabulary in student copy. "Stimulus" is industry; "the argument" or "the passage" is student-voice. "Translation bucket" is fine; "indicator bucket" is not (that vocabulary belongs to Intro to LR's argument-structure curriculum).
+- **Don't** invent analytics, mastery scores, streaks, score predictions, XP, trophies, or progress badges.
+- **Don't** render internal IDs (`stim-*`, `method-*`, raw bucket names like `evaluation-bg`) in student-visible copy.
+- **Don't** ship Duolingo-shaped streak flames, mascot animations, XP bars, or trophy popovers.
+- **Don't** use industry vocabulary in student copy. "Stimulus" is industry; "the argument" or "the passage" is student-voice.

@@ -63,49 +63,52 @@ export function D8StemTranslation() {
     >
       <article className="space-y-4">
         {stem.bonus ? (
-          <p className="rounded-md border border-state-warn/40 bg-state-warn/5 px-3 py-2 text-xs font-medium text-state-warn">
+          <p className="codex-chip" style={{ borderColor: "hsl(var(--state-warn) / 0.4)", color: "hsl(var(--state-warn))" }}>
             {stem.bonusLabel ?? "Bonus stretch"}
           </p>
         ) : null}
-        <div className="rounded-xl border border-border bg-card/50 p-5">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        <figure className="codex-card">
+          <figcaption className="codex-eyebrow">
             Stem {stem.number}
             {stem.bonus ? " (bonus)" : ""}
-          </p>
-          <p className="mt-2 italic leading-relaxed">{stem.stem}</p>
-        </div>
+          </figcaption>
+          <p className="codex-prose mt-3 italic">{stem.stem}</p>
+        </figure>
 
-        <label className="block space-y-2" htmlFor={`d8-draft-${stem.id}`}>
-          <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <div className="space-y-2">
+          <label className="codex-eyebrow block" htmlFor={`d8-draft-${stem.id}`}>
             Your translation
-          </span>
+          </label>
           <textarea
             id={`d8-draft-${stem.id}`}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             disabled={revealed}
             rows={5}
-            className="w-full rounded-md border border-border bg-background p-3 text-sm"
+            className="codex-prose w-full rounded-sm border border-border bg-card/40 p-4 text-base"
             placeholder="Translate the stem into plain English before revealing the walkthrough."
           />
-        </label>
+        </div>
 
         {revealed ? (
           <aside
             role="status"
             aria-live="polite"
-            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+            className="codex-card-soft p-5"
           >
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Walkthrough
-            </p>
-            <p className="whitespace-pre-wrap leading-relaxed">
+            <p className="codex-eyebrow">Walkthrough</p>
+            <p className="codex-prose mt-3 whitespace-pre-wrap">
               {stem.walkthrough}
             </p>
           </aside>
         ) : null}
 
-        {revealed && !rated ? <SelfRateAfterReveal onRate={handleRate} /> : null}
+        {revealed && !rated ? (
+          <SelfRateAfterReveal
+            onRate={handleRate}
+            prompt="How did your translation land?"
+          />
+        ) : null}
 
         <div className="flex justify-end gap-2">
           {!revealed ? (
@@ -113,7 +116,7 @@ export function D8StemTranslation() {
               type="button"
               onClick={handleReveal}
               disabled={draft.trim().length < 4}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="codex-btn-primary min-h-11"
             >
               Reveal walkthrough
             </button>
@@ -121,12 +124,12 @@ export function D8StemTranslation() {
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="codex-btn-primary min-h-11"
             >
               Next stem
             </button>
           ) : rated ? (
-            <p className="text-sm text-muted-foreground">Drill complete.</p>
+            <p className="codex-eyebrow">Drill complete.</p>
           ) : null}
         </div>
       </article>

@@ -6,6 +6,7 @@ import {
   SelfRateAfterReveal,
   type SelfRateChoice,
 } from "../components/SelfRateAfterReveal";
+import { CodexStamp } from "../components/CodexStamp";
 
 interface D5MC {
   id: string;
@@ -89,12 +90,10 @@ export function D5JargonDecoding() {
       referenceCardId="07"
     >
       <article className="space-y-4">
-        <div className="rounded-xl border border-border bg-card/50 p-5">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Prompt
-          </p>
-          <p className="mt-2 leading-relaxed">{q.prompt}</p>
-        </div>
+        <figure className="codex-card">
+          <figcaption className="codex-eyebrow">Prompt</figcaption>
+          <p className="codex-prose mt-3">{q.prompt}</p>
+        </figure>
         {q.type === "mc" ? (
           <ul className="grid gap-2">
             {q.options.map((opt) => {
@@ -108,20 +107,20 @@ export function D5JargonDecoding() {
                     onClick={() => !submitted && setSelected(opt.id)}
                     disabled={submitted}
                     aria-pressed={isPicked}
-                    className={`min-h-11 w-full rounded-md border p-3 text-left text-sm ${
+                    className={`min-h-11 w-full rounded-sm border bg-card/30 p-4 text-left ${
                       isCorrect
-                        ? "border-state-correct/80 bg-state-correct/10"
+                        ? "codex-answer-correct"
                         : isWrong
-                          ? "border-state-incorrect/80 bg-state-incorrect/10"
+                          ? "codex-answer-incorrect"
                           : isPicked
                             ? "border-primary"
                             : "border-border hover:border-primary/50"
                     }`}
                   >
-                    <span className="mr-2 font-mono text-xs">
+                    <span className="codex-mono mr-2 text-xs text-muted-foreground">
                       ({opt.id.toUpperCase()})
                     </span>
-                    {opt.text}
+                    <span className="codex-prose">{opt.text}</span>
                   </button>
                 </li>
               );
@@ -130,7 +129,7 @@ export function D5JargonDecoding() {
         ) : (
           <>
             <label
-              className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+              className="codex-eyebrow block"
               htmlFor="d5-draft"
             >
               Your answer
@@ -141,7 +140,7 @@ export function D5JargonDecoding() {
               onChange={(e) => setDraft(e.target.value)}
               disabled={submitted}
               rows={4}
-              className="w-full rounded-md border border-border bg-background p-3 text-sm"
+              className="codex-prose w-full rounded-sm border border-border bg-card/40 p-4 text-base"
             />
           </>
         )}
@@ -149,16 +148,14 @@ export function D5JargonDecoding() {
           <aside
             role="status"
             aria-live="polite"
-            className="rounded-md border border-border bg-card/50 p-3 text-sm"
+            className="codex-card-soft p-5"
           >
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {q.type === "mc"
-                ? selected === q.correct
-                  ? "Correct"
-                  : "Not quite"
-                : "Model answer"}
-            </p>
-            <p className="leading-relaxed">
+            {q.type === "mc" ? (
+              <CodexStamp variant={selected === q.correct ? "correct" : "incorrect"} />
+            ) : (
+              <p className="codex-eyebrow">Model answer</p>
+            )}
+            <p className="codex-prose mt-3">
               {q.type === "mc" ? q.explanation : q.model_answer}
             </p>
           </aside>
@@ -179,7 +176,7 @@ export function D5JargonDecoding() {
                   ? !selected
                   : draft.trim().length < 4
               }
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              className="codex-btn-primary min-h-11"
             >
               {q.type === "mc" ? "Submit" : "Reveal"}
             </button>
@@ -187,12 +184,12 @@ export function D5JargonDecoding() {
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-11 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              className="codex-btn-primary min-h-11"
             >
               Next
             </button>
           ) : mcDone || defDone ? (
-            <p className="text-sm text-muted-foreground">Drill complete.</p>
+            <p className="codex-eyebrow">Drill complete.</p>
           ) : null}
         </div>
       </article>

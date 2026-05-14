@@ -1,21 +1,541 @@
-/* Topic-scoped focus-visible ring for the Abstract bootcamp surface.
-   Applies a single, consistent focus indicator to every interactive
-   element rendered inside `.topic-abstract`, so per-component fixes
-   no longer need bespoke focus-visible: classes. WCAG 2.4.7 (AA). */
+/* Translation Codex aesthetic.
+   Scoped overrides for the Abstract topic surface (`.topic-abstract`).
+   Pivots the topic from the app-wide dark neutral palette to a light,
+   warm cream paper canvas with oxblood scholarly accent. Independent of
+   the app's `.light` / `.dark` theme classes; the topic always renders
+   cream regardless of app theme state. */
 
+@import "./topic-fonts.css";
+
+.topic-abstract {
+  /* ── Palette overrides (CSS vars) ──────────────────────────────────── */
+  /* Paper canvas */
+  --background: 38 46% 92%;          /* warm cream paper, ~#F4EDE0 */
+  --foreground: 30 16% 9%;           /* near-black ink with warm tint */
+  --card: 36 38% 96%;                /* lifted paper, ~#FAF6EE */
+  --card-foreground: 30 16% 9%;
+  --popover: 36 38% 96%;
+  --popover-foreground: 30 16% 9%;
+  /* Primary now serves as the oxblood scholarly accent (used sparingly) */
+  --primary: 8 64% 33%;              /* oxblood ~#8B2C1F */
+  --primary-foreground: 36 38% 96%;
+  /* Secondary surfaces ride a deeper cream */
+  --secondary: 34 26% 86%;           /* ~#E2D9C5, hover surface fill */
+  --secondary-foreground: 30 16% 9%;
+  --muted: 34 26% 86%;
+  --muted-foreground: 30 8% 35%;     /* secondary ink ~#605850 */
+  --accent: 34 26% 86%;
+  --accent-foreground: 30 16% 9%;
+  --border: 34 22% 72%;              /* warm tan hairline ~#C8B999 */
+  --input: 34 22% 72%;
+  --ring: 8 64% 33%;                 /* focus ring rides oxblood */
+  /* Tertiary ink (footnotes, captions) */
+  --text-tertiary: 30 6% 50%;
+  /* Translation buckets: muted on cream */
+  --bucket-assumption: 304 38% 30%;       /* deep mulberry ~#6B2F66 */
+  --bucket-causal: 22 75% 40%;            /* burnt sienna ~#B14F1E */
+  --bucket-comparison: 197 60% 32%;       /* deep teal ~#1F6680 */
+  --bucket-evidence: 223 49% 32%;         /* ink blue ~#2A3E7A */
+  --bucket-evaluation: 8 64% 33%;         /* oxblood, aligns with accent */
+  /* Radius tightens for a more editorial feel */
+  --radius: 0.25rem;
+}
+
+/* Reset app-theme classes from polluting the topic surface: when the app's
+   .light or .dark class is set on <html>, the topic still resolves cream. */
+.topic-abstract,
+.light .topic-abstract,
+.dark .topic-abstract {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* ── Typography ───────────────────────────────────────────────────────── */
+.topic-abstract {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "ss02";
+}
+
+.topic-abstract .codex-display,
+.topic-abstract h1.codex-display {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  letter-spacing: -0.012em;
+}
+
+.topic-abstract .codex-prose,
+.topic-abstract .chapter-reader,
+.topic-abstract .chapter-reader p {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  font-optical-sizing: auto;
+}
+
+.topic-abstract .codex-mono,
+.topic-abstract .font-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  font-feature-settings: "ss01", "cv01";
+}
+
+.topic-abstract .codex-eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Chapter prose: drop cap on the first paragraph after each h2. */
+.topic-abstract .chapter-reader > h2 + p::first-letter {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-weight: 600;
+  font-size: 3.6rem;
+  line-height: 0.85;
+  float: left;
+  margin: 0.05em 0.08em 0 0;
+  color: hsl(var(--primary));
+}
+
+/* Headings get a serif treatment inside chapter prose. */
+.topic-abstract .chapter-reader h1 {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.08;
+  margin-top: 0.25em;
+  margin-bottom: 0.6em;
+  color: hsl(var(--foreground));
+}
+
+.topic-abstract .chapter-reader h2 {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.6vw, 1.85rem);
+  line-height: 1.18;
+  margin-top: 2.4em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.008em;
+}
+
+.topic-abstract .chapter-reader h2::before {
+  content: "§";
+  display: inline-block;
+  margin-right: 0.45em;
+  color: hsl(var(--primary));
+  font-weight: 400;
+  font-style: italic;
+}
+
+.topic-abstract .chapter-reader h3 {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.005em;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+  color: hsl(var(--foreground));
+}
+
+.topic-abstract .chapter-reader blockquote {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  border-left: none;
+  padding-left: 0;
+  margin: 1.5em 0;
+  position: relative;
+  padding-block: 0.25em;
+  padding-inline: 1.5rem;
+  background:
+    linear-gradient(to right, hsl(var(--primary) / 0.06), transparent 60%);
+}
+
+.topic-abstract .chapter-reader blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  bottom: 0.5em;
+  width: 2px;
+  background: hsl(var(--primary) / 0.55);
+}
+
+.topic-abstract .chapter-reader strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.topic-abstract .chapter-reader em {
+  font-style: italic;
+  color: hsl(var(--foreground));
+}
+
+.topic-abstract .chapter-reader table {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+}
+
+.topic-abstract .chapter-reader table th {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 1px solid hsl(var(--primary) / 0.4);
+  padding-bottom: 0.6em;
+}
+
+.topic-abstract .chapter-reader table td {
+  border-bottom: 1px solid hsl(var(--border) / 0.55);
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+/* ── Paper grain background ───────────────────────────────────────────── */
+.topic-abstract {
+  background-image:
+    radial-gradient(
+      ellipse at 20% 0%,
+      hsl(8 50% 50% / 0.04),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 100%,
+      hsl(34 50% 40% / 0.04),
+      transparent 55%
+    ),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:
+    auto,
+    auto,
+    180px 180px;
+  background-attachment: fixed, fixed, scroll;
+}
+
+/* ── Topic-scoped focus-visible ring (overrides app-level rule) ───────── */
 .topic-abstract :is(button, a, [role="button"], summary):focus-visible {
   outline: none;
   box-shadow:
     0 0 0 2px hsl(var(--background)),
-    0 0 0 4px hsl(var(--ring));
+    0 0 0 4px hsl(var(--primary) / 0.7);
   border-radius: inherit;
 }
 
-/* Form fields and the NavLink anchors should keep the same ring even
-   when their parent uses a different border-radius. */
 .topic-abstract :is(input, textarea, select):focus-visible {
   outline: none;
   box-shadow:
     0 0 0 2px hsl(var(--background)),
-    0 0 0 4px hsl(var(--ring));
+    0 0 0 4px hsl(var(--primary) / 0.7);
+}
+
+/* ── Ink-stamp result feedback (replaces solid green/red fills) ───────── */
+.topic-abstract .codex-stamp-correct,
+.topic-abstract .codex-stamp-incorrect {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.35em 0.7em;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  background: hsl(var(--background) / 0.55);
+  transform: rotate(-1.5deg);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.topic-abstract .codex-stamp-correct {
+  color: hsl(150 36% 28%);  /* deep ink-forest */
+}
+
+.topic-abstract .codex-stamp-incorrect {
+  color: hsl(var(--primary));  /* oxblood */
+}
+
+.topic-abstract .codex-stamp-correct svg,
+.topic-abstract .codex-stamp-incorrect svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+/* Drill answer feedback container: replace flat fills with marker border + faint wash. */
+.topic-abstract .codex-answer-correct {
+  border-color: hsl(150 36% 35% / 0.55) !important;
+  background-color: hsl(150 36% 35% / 0.08) !important;
+}
+
+.topic-abstract .codex-answer-incorrect {
+  border-color: hsl(var(--primary) / 0.55) !important;
+  background-color: hsl(var(--primary) / 0.08) !important;
+}
+
+/* ── Translation token recolor (cream-paper watercolor wash) ──────────── */
+.topic-abstract .indicator-token {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.topic-abstract .translation-bucket-assumption {
+  --token-bg: hsl(var(--bucket-assumption) / 0.16);
+  --token-fg: hsl(var(--bucket-assumption));
+}
+.topic-abstract .translation-bucket-causal {
+  --token-bg: hsl(var(--bucket-causal) / 0.18);
+  --token-fg: hsl(var(--bucket-causal));
+}
+.topic-abstract .translation-bucket-comparison {
+  --token-bg: hsl(var(--bucket-comparison) / 0.16);
+  --token-fg: hsl(var(--bucket-comparison));
+}
+.topic-abstract .translation-bucket-evidence {
+  --token-bg: hsl(var(--bucket-evidence) / 0.16);
+  --token-fg: hsl(var(--bucket-evidence));
+}
+.topic-abstract .translation-bucket-evaluation {
+  --token-bg: hsl(var(--bucket-evaluation) / 0.18);
+  --token-fg: hsl(var(--bucket-evaluation));
+}
+
+/* ── Page-load motion: staggered prose reveal ─────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .topic-abstract .codex-reveal-stack > * {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: codex-reveal 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .topic-abstract .codex-reveal-stack > *:nth-child(1) { animation-delay: 40ms; }
+  .topic-abstract .codex-reveal-stack > *:nth-child(2) { animation-delay: 120ms; }
+  .topic-abstract .codex-reveal-stack > *:nth-child(3) { animation-delay: 200ms; }
+  .topic-abstract .codex-reveal-stack > *:nth-child(4) { animation-delay: 280ms; }
+  .topic-abstract .codex-reveal-stack > *:nth-child(5) { animation-delay: 360ms; }
+  .topic-abstract .codex-reveal-stack > *:nth-child(n+6) { animation-delay: 440ms; }
+}
+
+@keyframes codex-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Stamp ribbon: a thin scholarly rule used as a section divider ────── */
+.topic-abstract .codex-rule {
+  display: block;
+  height: 1px;
+  border: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    hsl(var(--primary) / 0.55) 30%,
+    hsl(var(--primary) / 0.55) 70%,
+    transparent
+  );
+  margin: 2.5rem 0;
+}
+
+/* ── Marginalia rail: a right-side column for footnotes / gloss notes ─── */
+.topic-abstract .codex-marginalia {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* ── Codex card primitive (paper-on-paper lift) ───────────────────────── */
+.topic-abstract .codex-card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow:
+    0 1px 0 hsl(var(--border)),
+    0 12px 24px -16px hsl(30 16% 9% / 0.18);
+}
+
+.topic-abstract .codex-card-soft {
+  background-color: hsl(var(--card) / 0.7);
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-radius: var(--radius);
+}
+
+/* ── Primary button (oxblood ink stamp shape) ─────────────────────────── */
+.topic-abstract .codex-btn-primary {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.6rem 1.2rem;
+  box-shadow:
+    inset 0 -2px 0 hsl(8 64% 22%),
+    0 1px 0 hsl(30 16% 9% / 0.08);
+  transition:
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.topic-abstract .codex-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 -2px 0 hsl(8 64% 22%),
+    0 2px 0 hsl(30 16% 9% / 0.12),
+    0 6px 12px -4px hsl(8 64% 33% / 0.3);
+}
+
+.topic-abstract .codex-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 2px 0 hsl(8 64% 22%),
+    0 0 0 hsl(30 16% 9% / 0.08);
+}
+
+.topic-abstract .codex-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Ghost button (outlined ink) ──────────────────────────────────────── */
+.topic-abstract .codex-btn-ghost {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  background: transparent;
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.2rem;
+  padding: 0.55rem 1rem;
+  transition: background-color 180ms, border-color 180ms;
+}
+
+.topic-abstract .codex-btn-ghost:hover:not(:disabled) {
+  background: hsl(var(--secondary) / 0.7);
+  border-color: hsl(var(--primary) / 0.4);
+}
+
+/* ── Stamp button (used by SelfRateAfterReveal) ───────────────────────── */
+.topic-abstract .codex-stamp-btn {
+  font-family: "Newsreader", ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  background: transparent;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  transition: background-color 180ms, transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.topic-abstract .codex-stamp-btn:hover:not(:disabled) {
+  background: currentColor;
+  color: hsl(var(--background));
+  transform: rotate(-1deg);
+}
+
+.topic-abstract .codex-stamp-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Chip: identifier / metadata ──────────────────────────────────────── */
+.topic-abstract .codex-chip {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.2rem;
+  background: hsl(var(--card) / 0.6);
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+}
+
+/* ── Sidebar TOC styling ──────────────────────────────────────────────── */
+.topic-abstract .codex-toc {
+  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+.topic-abstract .codex-toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.2rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  transition: background-color 160ms, color 160ms;
+}
+
+.topic-abstract .codex-toc-item:hover {
+  color: hsl(var(--foreground));
+  background: hsl(var(--secondary) / 0.5);
+}
+
+.topic-abstract .codex-toc-item[aria-current="page"],
+.topic-abstract .codex-toc-item.active {
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.06);
+  font-weight: 600;
+}
+
+.topic-abstract .codex-toc-num {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground));
+  min-width: 1.5rem;
+}
+
+.topic-abstract .codex-toc-item[aria-current="page"] .codex-toc-num,
+.topic-abstract .codex-toc-item.active .codex-toc-num {
+  color: hsl(var(--primary));
+}
+
+/* ── Asymmetric chapter spread on desktop ─────────────────────────────── */
+@media (min-width: 1024px) {
+  .topic-abstract .codex-chapter-spread {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 18rem);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+/* ── Decoder spread (two-column abstract / plain) ─────────────────────── */
+.topic-abstract .codex-decoder-spread {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .topic-abstract .codex-decoder-spread {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .topic-abstract .codex-decoder-spread::after {
+    content: "→";
+    grid-column: 2;
+    grid-row: 1;
+    font-family: "Newsreader", serif;
+    font-style: italic;
+    color: hsl(var(--primary));
+    font-size: 1.8rem;
+    align-self: center;
+    margin-top: 1.4rem;
+  }
+}
+
+/* ── Selection color ──────────────────────────────────────────────────── */
+.topic-abstract ::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
 }
