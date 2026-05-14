@@ -5,6 +5,7 @@ import { D3BasicXY } from "./D3-BasicXY";
 import { D4AdvancedXY } from "./D4-AdvancedXY";
 import { D5JargonDecoding } from "./D5-JargonDecoding";
 import { D7KeywordWorksheet } from "./D7-KeywordWorksheet";
+import { D8StemTranslation } from "./D8-StemTranslation";
 
 export function DrillRouter() {
   const { drillId } = useParams<{ drillId: string }>();
@@ -21,6 +22,8 @@ export function DrillRouter() {
       return <D5JargonDecoding />;
     case "d7":
       return <D7KeywordWorksheet />;
+    case "d8":
+      return <D8StemTranslation />;
     default:
       return <Navigate to="/topics/abstract/drills/d1" replace />;
   }
