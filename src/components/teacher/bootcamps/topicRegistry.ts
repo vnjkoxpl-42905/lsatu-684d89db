@@ -43,18 +43,22 @@ export const BOOTCAMP_TOPICS: BootcampTopicDef[] = [
     topicPath: "/topics/abstract",
     topicTag: "abstract",
     flashcardTotal: 68,
-    chapterSectionCount: 3,
+    chapterSectionCount: 5,
     drills: [
       { attemptMode: "abstract:d1", label: "D1 Strip-Down" },
       { attemptMode: "abstract:d2", label: "D2 Indicators" },
       { attemptMode: "abstract:d3", label: "D3 Basic X/Y" },
       { attemptMode: "abstract:d4", label: "D4 Advanced X/Y" },
       { attemptMode: "abstract:d5", label: "D5 Jargon" },
+      { attemptMode: "abstract:d7", label: "D7 Keyword Worksheet" },
+      { attemptMode: "abstract:d8", label: "D8 Stem Translation" },
     ],
     chapterSections: [
       { id: "section-1", title: "The Abstraction Move (Strip-Down)" },
       { id: "section-2", title: "The Decode Move" },
       { id: "section-3", title: "Where This Cashes Out" },
+      { id: "section-4", title: "The Art of Matching Keywords" },
+      { id: "methods-library", title: "Methods of Reasoning Library" },
     ],
   },
 ];
