@@ -1,13 +1,12 @@
 /**
- * ToolCard — single Tool Lab entry. Practiced, not listed.
+ * ToolCard. Single Tool Lab entry. Reads as a lesson section, not a dashboard card.
  *
- * Renders: name, what / when / prevents, optional example, try-it interaction
- * (pick or tag-or-not), reveal.
+ * Renders: name, what / when / prevents (vertical study-note stack),
+ * optional example, try-it interaction (pick or tag-or-not), reveal.
  */
 
 import { useState } from 'react';
-import { Check, X as XIcon, Wrench } from 'lucide-react';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { Check, X as XIcon } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import type { ToolCard as ToolCardData } from '@/bootcamps/main-conclusion/content/tool-lab.source';
@@ -18,59 +17,44 @@ interface Props {
 
 export function ToolCard({ tool }: Props): JSX.Element {
   return (
-    <Card variant="surface" className="space-y-5">
-      <header className="flex items-start gap-3">
-        <span
-          className={cn(
-            'shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-3',
-            'bg-[image:var(--grad-accent-soft)]',
-            'border border-[color:var(--border-accent-soft)]',
-            'text-mc-accent shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]',
-          )}
-          aria-hidden="true"
-        >
-          <Wrench className="h-4 w-4" strokeWidth={2} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-            Training tool
-          </div>
-          <h3 className="font-mc-serif text-h2 font-semibold mt-1 text-ink leading-tight">
-            {tool.name}
-          </h3>
+    <section className="space-y-6">
+      <header>
+        <div className="font-mc-mono text-label uppercase tracking-[0.16em] text-mc-accent inline-flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))]"
+          />
+          Training tool
         </div>
+        <h3 className="font-mc-serif text-h2 font-semibold mt-2 text-ink leading-tight">
+          {tool.name}
+        </h3>
       </header>
 
-      <div className="grid sm:grid-cols-3 gap-3">
+      <div className="space-y-4">
         <ToolBlurb label="What it does" body={tool.what_it_does} />
         <ToolBlurb label="When to use" body={tool.when_to_use} />
         <ToolBlurb label="What it prevents" body={tool.prevents} />
       </div>
 
       {tool.example ? (
-        <p className="font-mc-serif text-body text-ink-soft italic border-l border-l-[color:var(--border-accent-strong)] pl-3 leading-relaxed">
+        <p className="font-mc-serif text-body text-ink-soft italic border-l border-l-[color:var(--border-accent-soft)] pl-3 leading-relaxed">
           {tool.example}
         </p>
       ) : null}
 
       <TryIt tool={tool} />
-    </Card>
+    </section>
   );
 }
 
 function ToolBlurb({ label, body }: { label: string; body: string }): JSX.Element {
   return (
-    <div
-      className={cn(
-        'rounded-3 px-4 py-3',
-        'bg-[image:var(--grad-surface-soft)]',
-        'border border-[rgb(var(--border)/0.08)]',
-      )}
-    >
-      <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint">
+    <div>
+      <div className="font-mc-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint">
         {label}
       </div>
-      <p className="mt-2 font-mc-serif text-body text-ink leading-relaxed">{body}</p>
+      <p className="mt-2 font-mc-serif text-[15.5px] text-ink leading-[1.65]">{body}</p>
     </div>
   );
 }
@@ -79,16 +63,15 @@ function TryIt({ tool }: { tool: ToolCardData }): JSX.Element {
   return (
     <div
       className={cn(
-        'rounded-3 p-4',
-        'bg-[image:var(--grad-surface-elev)]',
-        'border border-[color:var(--border-accent-soft)]',
-        'shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]',
+        'mt-6 rounded-3 px-4 py-4 sm:px-5',
+        'bg-[rgb(var(--surface-elev)/0.45)]',
+        'border border-[rgb(var(--border)/0.08)]',
       )}
     >
-      <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent mb-3">
+      <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.16em] text-mc-accent mb-3">
         <span
           aria-hidden="true"
-          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
+          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))]"
         />
         Try it
       </div>
@@ -123,7 +106,7 @@ function TryPick({ item }: { item: Extract<ToolCardData['try_it'], { kind: 'pick
                   'transition-[border-color,background] duration-150 ease-eased',
                   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                   !isPicked &&
-                    'bg-[image:var(--grad-surface-soft)] border-[rgb(var(--border)/0.10)] hover:border-[color:var(--border-accent-soft)]',
+                    'bg-transparent border-[rgb(var(--border)/0.10)] hover:border-[color:var(--border-accent-soft)]',
                   isPicked && o.correct &&
                     'bg-[rgb(var(--success)/0.08)] border-[rgb(var(--success)/0.50)]',
                   isPicked && !o.correct &&
@@ -190,7 +173,6 @@ function TryTagOrNot({
   const submitted = answer !== null;
   const correct = answer === item.expected;
 
-  // Highlight the target inside the sentence.
   const targetIdx = item.sentence.indexOf(item.target);
   const before = targetIdx >= 0 ? item.sentence.slice(0, targetIdx) : item.sentence;
   const tgt = targetIdx >= 0 ? item.target : '';

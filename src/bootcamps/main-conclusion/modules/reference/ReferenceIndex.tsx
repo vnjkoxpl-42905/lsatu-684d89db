@@ -1,5 +1,5 @@
 /**
- * Module 2: Reference — Tool Lab + lookup surfaces.
+ * Module 2: Reference. Tool Lab + lookup surfaces.
  * Tools are practiced in the Tool Lab (interactive try-its). Lookup surfaces are
  * the secondary surface for static notes.
  */
@@ -26,7 +26,7 @@ interface RefSection {
 const REF_LABEL: Record<string, string> = {
   'MC-REF-2.A': 'Indicator Vault',
   'MC-REF-2.B': '2-Part Conclusion Check',
-  'MC-REF-2.C': 'FABS — premise indicators',
+  'MC-REF-2.C': 'FABS premise indicators',
   'MC-REF-2.D': 'Stimulus tendencies',
   'MC-REF-2.E': 'Conclusion types',
   'MC-REF-2.F': 'Rebuttal structure',
@@ -59,28 +59,33 @@ export function ReferenceIndex() {
             Tools you practice
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            Each tool below trains itself in under a minute — what it does, when to reach for it, and
+            Each tool below trains itself in under a minute: what it does, when to reach for it, and
             a try-it that proves you can use it.
           </p>
         </div>
       </header>
 
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent inline-flex items-center gap-2">
-            <Wrench className="h-3 w-3" strokeWidth={2.4} aria-hidden="true" />
+      <section className="max-w-[800px] mx-auto">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="font-mc-mono text-label uppercase tracking-[0.16em] text-ink-faint inline-flex items-center gap-2">
+            <Wrench className="h-3 w-3 text-mc-accent" strokeWidth={2.2} aria-hidden="true" />
             Tool Lab
           </h2>
           <span className="font-mc-mono text-mono text-ink-faint">
             {TOOL_LAB.length} tools
           </span>
         </div>
-        <p className="font-mc-serif text-body-prose text-ink-soft mb-6 max-w-[60ch] leading-relaxed">
+        <p className="font-mc-serif text-body-prose text-ink-soft mb-10 max-w-[60ch] leading-relaxed">
           Run the try-it. The reveal will not show up until you have made a call.
         </p>
-        <ul className="space-y-4">
-          {TOOL_LAB.map((tool) => (
-            <li key={tool.slug}>
+        <ul>
+          {TOOL_LAB.map((tool, i) => (
+            <li
+              key={tool.slug}
+              className={cn(
+                i > 0 && 'border-t border-[rgb(var(--border)/0.08)] pt-12 mt-12',
+              )}
+            >
               <ToolCard tool={tool} />
             </li>
           ))}
