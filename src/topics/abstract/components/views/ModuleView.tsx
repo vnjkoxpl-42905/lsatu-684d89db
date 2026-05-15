@@ -438,24 +438,27 @@ function ModuleNote({
 
 // ============ Quiz ============
 
+type QuizVerdict = "correct" | "partial" | "incorrect";
+
 function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
   const { recordQuizScore, addXp } = useApp();
   const mod = getModule(moduleId)!;
   const items = useMemo(() => loadQuizItems(mod.quizSource), [mod.quizSource]);
   const [index, setIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(0); // can be fractional via partial credit
   const [streak, setStreak] = useState(0);
   const [streakHigh, setStreakHigh] = useState(0);
   const [finished, setFinished] = useState(false);
 
   if (finished) {
     const passed = items.length > 0 && score / items.length >= mod.quizPassThreshold;
+    const displayScore = Number.isInteger(score) ? score : score.toFixed(1);
     return (
       <div className="text-center">
         <h2 className="text-3xl font-black uppercase tracking-tight mb-4">Quiz complete</h2>
         <div className="inline-block bg-brutal-yellow border-4 border-brutal-ink p-6 brutal-shadow mb-6">
           <p className="text-6xl font-black">
-            {score} / {items.length}
+            {displayScore} / {items.length}
           </p>
           <p className="text-xs font-black uppercase tracking-widest mt-2">Correct</p>
         </div>
@@ -478,8 +481,14 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
     );
   }
 
-  const onAnswer = (correct: boolean) => {
-    if (correct) {
+  const onAnswer = (verdictOrCorrect: boolean | QuizVerdict) => {
+    const verdict: QuizVerdict =
+      typeof verdictOrCorrect === "boolean"
+        ? verdictOrCorrect
+          ? "correct"
+          : "incorrect"
+        : verdictOrCorrect;
+    if (verdict === "correct") {
       setScore((s) => s + 1);
       setStreak((s) => {
         const next = s + 1;
@@ -487,6 +496,9 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
         return next;
       });
       addXp(1);
+    } else if (verdict === "partial") {
+      setScore((s) => s + 0.5);
+      setStreak(0);
     } else {
       setStreak(0);
     }
@@ -495,7 +507,7 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
   const onNext = () => {
     if (index + 1 >= items.length) {
       setFinished(true);
-      void recordQuizScore(moduleId, score, items.length, streakHigh);
+      void recordQuizScore(moduleId, Math.round(score), items.length, streakHigh);
     } else {
       setIndex((i) => i + 1);
     }
@@ -551,7 +563,7 @@ function QuizItemRenderer({
 }: {
   source: QuizSource;
   item: unknown;
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   switch (source) {
@@ -587,7 +599,7 @@ function MultipleChoiceCard({
   options: string[];
   correctIndex: number;
   explanation: string;
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const [picked, setPicked] = useState<number | null>(null);
@@ -650,7 +662,7 @@ function WhyHardRenderer({
   onNext,
 }: {
   item: typeof WHY_HARD_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const correctIdx = item.options.findIndex((o) => o.correct);
@@ -682,7 +694,7 @@ function TermQuizRenderer({
   onNext,
 }: {
   item: typeof TERM_QUIZ_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   return (
@@ -703,7 +715,7 @@ function MethodPickerRenderer({
   onNext,
 }: {
   item: typeof METHOD_QUIZ_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   return (
@@ -729,7 +741,7 @@ function TrapSpotterRenderer({
   onNext,
 }: {
   item: typeof TRAP_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   return (
@@ -761,7 +773,7 @@ function KeywordExtractionRenderer({
   onNext,
 }: {
   item: typeof TRANSLATOR_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const { markTranslatorComplete } = useApp();
@@ -784,13 +796,20 @@ function KeywordExtractionRenderer({
 
   const canSubmit = picked.size > 0 && translation.trim().length >= 10;
 
+  const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
+  const matched = pickedWords.filter((w) => correctLower.includes(w));
+  const wrong = pickedWords.filter((w) => !correctLower.includes(w));
+  const pctCorrect = correctLower.length > 0 ? matched.length / correctLower.length : 0;
+  const verdict: QuizVerdict =
+    pctCorrect >= 0.75 && wrong.length === 0
+      ? "correct"
+      : pctCorrect >= 0.75 && wrong.length <= 2
+        ? "partial"
+        : "incorrect";
+
   const submit = () => {
     setSubmitted(true);
-    const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
-    const matched = pickedWords.filter((w) => correctLower.includes(w));
-    // "Correct" for quiz scoring: matched at least half of correct keywords
-    const correct = matched.length >= Math.ceil(correctLower.length / 2);
-    onAnswer(correct);
+    onAnswer(verdict);
     void markTranslatorComplete(
       item.stemNumber,
       Array.from(picked).map((i) => tokens[i]),
@@ -851,6 +870,26 @@ function KeywordExtractionRenderer({
       )}
       {submitted && (
         <div className="mt-5 space-y-4">
+          <VerdictHeader verdict={verdict} />
+          <p className="text-sm font-bold">
+            You picked {matched.length} correct keyword{matched.length === 1 ? "" : "s"} out of {correctLower.length}.{" "}
+            {wrong.length > 0
+              ? `You also picked ${wrong.length} word${wrong.length === 1 ? "" : "s"} that ${wrong.length === 1 ? "is" : "are"} not load-bearing.`
+              : "No off-target picks."}
+          </p>
+          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+            <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal keywords</p>
+            <p className="font-bold">
+              {item.correctKeywords.map((k, i) => (
+                <span
+                  key={i}
+                  className="inline-block bg-brutal-green border-2 border-brutal-ink px-2 py-0.5 mr-2 mb-1"
+                >
+                  {k}
+                </span>
+              ))}
+            </p>
+          </div>
           <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal translation</p>
             <p className="font-bold italic">{item.idealTranslation}</p>
@@ -900,6 +939,27 @@ function KeywordExtractionRenderer({
   );
 }
 
+function VerdictHeader({ verdict }: { verdict: QuizVerdict }) {
+  const tone =
+    verdict === "correct"
+      ? "bg-brutal-green"
+      : verdict === "partial"
+        ? "bg-brutal-yellow"
+        : "bg-brutal-red text-brutal-paper";
+  const label =
+    verdict === "correct" ? "Correct" : verdict === "partial" ? "Partial" : "Try again";
+  return (
+    <div
+      className={cn(
+        "inline-block border-4 border-brutal-ink px-4 py-2 text-sm font-black uppercase tracking-wider",
+        tone,
+      )}
+    >
+      {label}
+    </div>
+  );
+}
+
 function splitTokens(text: string): string[] {
   return text.split(/(\s+|[.,;:?!"()])/).filter((t) => t.length > 0);
 }
@@ -915,7 +975,7 @@ function MatchToStimulusRenderer({
   onNext,
 }: {
   item: typeof MATCHING_ITEMS[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const [partIndex, setPartIndex] = useState(0);
@@ -1010,7 +1070,7 @@ function DecodingGauntletRenderer({
   onNext,
 }: {
   item: typeof ABSTRACT_CHOICES[number];
-  onAnswer: (correct: boolean) => void;
+  onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
   const { recordGauntletItem } = useApp();
@@ -1021,14 +1081,28 @@ function DecodingGauntletRenderer({
   const [reqChecked, setReqChecked] = useState<Set<number>>(new Set());
   const [submitted, setSubmitted] = useState(false);
 
+  const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
+  const matched = pickedWords.filter((w) =>
+    correctLower.some((k) => k.split(/\s+/).includes(w)),
+  );
+  const wrong = pickedWords.filter(
+    (w) => !correctLower.some((k) => k.split(/\s+/).includes(w)),
+  );
+  // Count distinct correct keyword phrases hit (one count per ideal phrase).
+  const phrasesHit = correctLower.filter((k) =>
+    k.split(/\s+/).some((part) => pickedWords.includes(part)),
+  ).length;
+  const pctCorrect = correctLower.length > 0 ? phrasesHit / correctLower.length : 0;
+  const verdict: QuizVerdict =
+    pctCorrect >= 0.75 && wrong.length === 0
+      ? "correct"
+      : pctCorrect >= 0.75 && wrong.length <= 2
+        ? "partial"
+        : "incorrect";
+
   const submit = () => {
     setSubmitted(true);
-    const pickedWords = Array.from(picked).map((i) => stripPunc(tokens[i]).toLowerCase());
-    const matched = pickedWords.filter((w) =>
-      correctLower.some((k) => k.split(/\s+/).includes(w)),
-    );
-    const correct = matched.length >= Math.ceil(correctLower.length / 2);
-    onAnswer(correct);
+    onAnswer(verdict);
     void recordGauntletItem({
       choiceId: item.id,
       keywordsPicked: Array.from(picked).map((i) => tokens[i]),
@@ -1089,6 +1163,26 @@ function DecodingGauntletRenderer({
         </button>
       ) : (
         <div className="space-y-3">
+          <VerdictHeader verdict={verdict} />
+          <p className="text-sm font-bold">
+            You picked {phrasesHit} correct keyword{phrasesHit === 1 ? "" : "s"} out of {correctLower.length}.{" "}
+            {wrong.length > 0
+              ? `You also picked ${wrong.length} word${wrong.length === 1 ? "" : "s"} that ${wrong.length === 1 ? "is" : "are"} not load-bearing.`
+              : "No off-target picks."}
+          </p>
+          <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
+            <p className="text-xs font-black uppercase tracking-widest mb-2">Ideal keywords</p>
+            <p className="font-bold">
+              {item.correctKeywords.map((k, i) => (
+                <span
+                  key={i}
+                  className="inline-block bg-brutal-green border-2 border-brutal-ink px-2 py-0.5 mr-2 mb-1"
+                >
+                  {k}
+                </span>
+              ))}
+            </p>
+          </div>
           <div className="bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Plain English</p>
             <p className="font-bold italic">{item.plainEnglish}</p>
