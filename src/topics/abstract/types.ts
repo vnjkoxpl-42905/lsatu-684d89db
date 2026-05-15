@@ -4,6 +4,8 @@ export type ViewState = 'dashboard' | 'drill' | 'completion_report' | 'lesson' |
 
 export type ModulePartName = 'note' | 'quiz' | 'drill';
 
+export type MasteryLevel = 'none' | 'practicing' | 'solid' | 'mastered';
+
 export interface ModuleProgressRow {
   moduleId: string;
   noteComplete: boolean;
@@ -11,7 +13,10 @@ export interface ModuleProgressRow {
   quizTotal: number;
   quizStreakHigh: number;
   drillComplete: boolean;
+  drillCorrect?: number;
+  drillTotal?: number;
   aced: boolean;
+  masteryLevel: MasteryLevel;
   completedAt?: string;
 }
 

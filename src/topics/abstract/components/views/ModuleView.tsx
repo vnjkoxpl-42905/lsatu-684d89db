@@ -11,7 +11,12 @@ import {
   Flame,
   Star,
   Trophy,
+  Award,
+  Medal,
 } from "lucide-react";
+import confetti from "canvas-confetti";
+import { computeMastery } from "../../lib/mastery";
+import type { MasteryLevel } from "../../types";
 import { useApp } from "../../store/AppContext";
 import { cn } from "../../lib/utils";
 import {
@@ -172,6 +177,7 @@ function ModuleOverview({
   const noteDone = Boolean(row?.noteComplete);
   const quizDone = row?.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
   const drillDone = Boolean(row?.drillComplete);
+  const mastery: MasteryLevel = row?.masteryLevel ?? "none";
 
   return (
     <>
@@ -183,6 +189,11 @@ function ModuleOverview({
           {mod.name}
         </h1>
         <p className="font-bold text-brutal-ink-soft mt-3">{mod.subtitle}</p>
+        {mastery !== "none" && (
+          <div className="mt-3">
+            <MasteryBadge level={mastery} />
+          </div>
+        )}
       </div>
 
       <div className="space-y-4">
@@ -1227,13 +1238,33 @@ function ModuleDrill({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => v
 function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContinue: () => void }) {
   const { bootcampState, openModule } = useApp();
   const mod = getModule(moduleId)!;
+  const row = bootcampState.moduleProgress[moduleId];
   const aced = bootcampState.aceBadges.includes(moduleId);
+  const mastery: MasteryLevel = row?.masteryLevel ?? computeMastery(row);
   const nextModule = MODULES[MODULES.findIndex((m) => m.id === moduleId) + 1];
   const prefersReducedMotion = useReducedMotion();
 
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const timeout = setTimeout(() => {
+      confetti({
+        particleCount: 90,
+        spread: 70,
+        startVelocity: 35,
+        origin: { y: 0.3 },
+        ticks: 200,
+      });
+    }, 50);
+    return () => clearTimeout(timeout);
+  }, [prefersReducedMotion]);
+
   return (
     <div className="text-center py-8">
-      {!prefersReducedMotion && (
+      {prefersReducedMotion ? (
+        <div className="inline-block bg-brutal-yellow border-4 border-brutal-ink px-6 py-3 mb-4 font-black uppercase tracking-widest text-sm">
+          Done
+        </div>
+      ) : (
         <motion.div
           aria-hidden="true"
           initial={{ scale: 0.5, opacity: 0 }}
@@ -1247,30 +1278,72 @@ function ModuleComplete({ moduleId, onContinue }: { moduleId: ModuleId; onContin
       <p className="text-xs font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
         Module {mod.number}
       </p>
-      <h2 className="text-4xl font-black uppercase tracking-tight mb-4">Done.</h2>
+      <h2 className="text-4xl font-black uppercase tracking-tight mb-2">Done.</h2>
+      <MasteryBadge level={mastery} />
       {aced && (
-        <p className="inline-flex items-center gap-2 font-black uppercase tracking-wider text-sm bg-brutal-yellow border-2 border-brutal-ink px-4 py-2 mb-4">
+        <p className="inline-flex items-center gap-2 font-black uppercase tracking-wider text-sm bg-brutal-yellow border-2 border-brutal-ink px-4 py-2 mt-3">
           <Star className="w-4 h-4" /> Aced It
         </p>
       )}
-      <p className="font-bold mb-6">Nice. Next.</p>
+
+      <div className="mt-6 inline-flex flex-wrap items-center gap-3 justify-center">
+        {row && row.quizTotal > 0 && (
+          <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
+            Quiz {row.quizScore} / {row.quizTotal}
+          </span>
+        )}
+        {row && row.drillTotal && (
+          <span className="bg-brutal-paper border-2 border-brutal-ink px-3 py-2 text-xs font-black uppercase tracking-wider">
+            Drill {row.drillCorrect ?? 0} / {row.drillTotal}
+          </span>
+        )}
+      </div>
+
+      <p className="font-bold mt-6 mb-6">Nice. Next.</p>
       {nextModule ? (
-        <button
-          type="button"
-          onClick={() => openModule(nextModule.id)}
-          className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
-        >
-          Module {nextModule.number}: {nextModule.name} <ArrowRight className="w-4 h-4" />
-        </button>
+        <div>
+          <p className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft mb-3">
+            Next module: Module {nextModule.number}: {nextModule.name}
+          </p>
+          <button
+            type="button"
+            onClick={() => openModule(nextModule.id)}
+            className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
+          >
+            Continue <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       ) : (
         <button
           type="button"
           onClick={onContinue}
-          className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
+          className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
         >
           Back to Dashboard <ArrowRight className="w-4 h-4" />
         </button>
       )}
     </div>
+  );
+}
+
+export function MasteryBadge({ level }: { level: MasteryLevel }) {
+  if (level === "none") return null;
+  const tone =
+    level === "mastered"
+      ? "bg-brutal-yellow"
+      : level === "solid"
+        ? "bg-brutal-cyan"
+        : "bg-brutal-paper";
+  const label =
+    level === "mastered" ? "Mastered" : level === "solid" ? "Solid" : "Practicing";
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-2 border-2 border-brutal-ink px-3 py-1 text-[10px] font-black uppercase tracking-widest",
+        tone,
+      )}
+    >
+      <Medal className="w-3.5 h-3.5" /> {label}
+    </span>
   );
 }

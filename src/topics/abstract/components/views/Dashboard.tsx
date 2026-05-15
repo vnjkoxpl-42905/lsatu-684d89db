@@ -1,8 +1,9 @@
 import { useApp } from "../../store/AppContext";
-import { ArrowRight, CheckCircle2, Lock, Star, Flame } from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock, Star, Flame, Medal } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { cn } from "../../lib/utils";
 import { MODULES } from "../../data/modules";
+import type { MasteryLevel } from "../../types";
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -97,6 +98,15 @@ export default function Dashboard() {
             const drillDone = Boolean(row?.drillComplete);
             const unlocked = isModuleUnlocked(m.id);
             const aced = bootcampState.aceBadges.includes(m.id);
+            const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+            const medalColor =
+              mastery === "mastered"
+                ? "text-brutal-yellow"
+                : mastery === "solid"
+                  ? "text-brutal-cyan"
+                  : mastery === "practicing"
+                    ? "text-brutal-pink"
+                    : "text-brutal-ink-trace";
             const pct = (noteDone ? 33 : 0) + (quizPassed ? 33 : 0) + (drillDone ? 34 : 0);
             return (
               <li key={m.id}>
@@ -135,6 +145,12 @@ export default function Dashboard() {
                       />
                     </div>
                   </div>
+                  {mastery !== "none" && (
+                    <Medal
+                      className={cn("w-5 h-5 shrink-0", medalColor)}
+                      aria-label={`Mastery: ${mastery}`}
+                    />
+                  )}
                   {aced && (
                     <span
                       className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-brutal-yellow border-2 border-brutal-ink px-2 py-1 shrink-0"

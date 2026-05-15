@@ -13,7 +13,9 @@ import {
   Flame,
   Flag,
   LayoutDashboard,
+  Medal,
 } from "lucide-react";
+import type { MasteryLevel } from "../../types";
 import { cn } from "../../lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { MODULES, type ModuleId } from "../../data/modules";
@@ -143,6 +145,15 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
           const done = isModuleComplete(m.id);
           const active = currentView === "module" && currentModuleId === m.id;
           const aced = bootcampState.aceBadges.includes(m.id);
+          const mastery: MasteryLevel = row?.masteryLevel ?? "none";
+          const medalColor =
+            mastery === "mastered"
+              ? "text-brutal-yellow"
+              : mastery === "solid"
+                ? "text-brutal-cyan"
+                : mastery === "practicing"
+                  ? "text-brutal-pink"
+                  : "text-brutal-ink-trace";
           return (
             <li key={m.id}>
               <motion.button
@@ -176,6 +187,12 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
                 <span className="flex-1 text-left truncate">
                   M{m.number}. {m.name}
                 </span>
+                {mastery !== "none" && (
+                  <Medal
+                    className={cn("w-3.5 h-3.5 shrink-0", medalColor)}
+                    aria-label={`Mastery: ${mastery}`}
+                  />
+                )}
                 {aced && <Star className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
               </motion.button>
             </li>

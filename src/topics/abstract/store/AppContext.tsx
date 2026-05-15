@@ -22,6 +22,7 @@ import type {
   ViewState,
 } from "../types";
 import { MODULES, type ModuleId, getModule } from "../data/modules";
+import { computeMastery } from "../lib/mastery";
 import {
   fetchDrillAttempts,
   fetchGauntletAttempts,
@@ -560,8 +561,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
           quizStreakHigh: 0,
           drillComplete: false,
           aced: false,
+          masteryLevel: "none",
         };
-        const merged: ModuleProgressRow = { ...existing, ...patch, moduleId };
+        const candidate: ModuleProgressRow = { ...existing, ...patch, moduleId };
+        const merged: ModuleProgressRow = {
+          ...candidate,
+          masteryLevel: computeMastery(candidate),
+        };
         const nextProgress = { ...prev.moduleProgress, [moduleId]: merged };
         const nextState: BootcampState = { ...prev, moduleProgress: nextProgress };
         persistModuleCache(nextState);
@@ -651,6 +657,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           quizStreakHigh: 0,
           drillComplete: false,
           aced: false,
+          masteryLevel: "none",
         };
         const quizPerfect = existing.quizTotal > 0 && existing.quizScore === existing.quizTotal;
         const drillStats = mod.drillIds.map((id) =>
@@ -659,12 +666,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const lastAttemptCorrect = drillStats.every(
           (attempts) => attempts.length > 0 && attempts[attempts.length - 1].correct,
         );
+        const drillCorrect = drillStats.reduce(
+          (n, attempts) =>
+            n + (attempts.length > 0 && attempts[attempts.length - 1].correct ? 1 : 0),
+          0,
+        );
         const aced = quizPerfect && lastAttemptCorrect;
-        const merged: ModuleProgressRow = {
+        const candidate: ModuleProgressRow = {
           ...existing,
           drillComplete: true,
+          drillCorrect,
+          drillTotal: mod.drillIds.length,
           aced,
           completedAt: new Date().toISOString(),
+        };
+        const merged: ModuleProgressRow = {
+          ...candidate,
+          masteryLevel: computeMastery(candidate),
         };
         const nextProgress = { ...prev.moduleProgress, [moduleId]: merged };
         const nextAceBadges = aced && !prev.aceBadges.includes(moduleId)
