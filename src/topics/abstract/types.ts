@@ -62,11 +62,42 @@ export interface GauntletAttempt {
   completedAt: string;
 }
 
+// TranslatorAttempt: client-side snapshot of an abstract_translator_attempts row.
+// Used by the 14-stem question-stem translation drill.
+export interface TranslatorAttempt {
+  stemNumber: number;
+  keywordsPicked: string[];
+  translationText: string;
+  completedAt: string;
+}
+
+export interface TranslatorVocabCallout {
+  term: string;
+  meaning: string;
+  note?: string;
+}
+
+export interface TranslatorWalkthrough {
+  reasoning: string[];
+  vocab: TranslatorVocabCallout[];
+  requirements: string[];
+  example: { stimulus: string; explanation: string };
+}
+
+export interface TranslatorDrillItem {
+  stemNumber: number;
+  stemText: string;
+  correctKeywords: string[];
+  idealTranslation: string;
+  walkthrough: TranslatorWalkthrough;
+}
+
 export interface BootcampState {
   completedLessons: string[];
   completedDrills: string[];
   drillAttempts: DrillAttempt[];
   gauntletAttempts: GauntletAttempt[];
+  translatorAttempts: TranslatorAttempt[];
   cards: Record<string, CardReview>;
   finalSetScore?: {
     score: number;

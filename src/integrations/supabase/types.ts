@@ -128,6 +128,33 @@ export type Database = {
         }
         Relationships: []
       }
+      abstract_translator_attempts: {
+        Row: {
+          completed_at: string
+          id: string
+          keywords_picked: string[]
+          stem_number: number
+          translation_text: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          keywords_picked?: string[]
+          stem_number: number
+          translation_text?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          keywords_picked?: string[]
+          stem_number?: number
+          translation_text?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       achievements: {
         Row: {
           achievement_id: string | null

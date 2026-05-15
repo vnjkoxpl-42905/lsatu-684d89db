@@ -97,6 +97,38 @@ export async function fetchDrillAttempts(userId: string) {
   return data ?? [];
 }
 
+// ---------- abstract_translator_attempts ----------
+
+export interface TranslatorAttemptInput {
+  stemNumber: number;
+  keywordsPicked: string[];
+  translationText: string;
+}
+
+export async function insertTranslatorAttempt(
+  userId: string,
+  attempt: TranslatorAttemptInput,
+): Promise<BootcampMutationResult> {
+  const { error } = await supabase.from("abstract_translator_attempts").insert({
+    user_id: userId,
+    stem_number: attempt.stemNumber,
+    keywords_picked: attempt.keywordsPicked,
+    translation_text: attempt.translationText,
+  });
+  if (error) return { ok: false, error };
+  return { ok: true };
+}
+
+export async function fetchTranslatorAttempts(userId: string) {
+  const { data, error } = await supabase
+    .from("abstract_translator_attempts")
+    .select("stem_number, keywords_picked, translation_text, completed_at")
+    .eq("user_id", userId)
+    .order("completed_at", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
 // ---------- abstract_gauntlet_attempts ----------
 
 export interface GauntletAttemptInput {

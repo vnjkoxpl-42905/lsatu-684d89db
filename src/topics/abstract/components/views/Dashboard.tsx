@@ -158,6 +158,15 @@ export default function Dashboard() {
           </div>
           <div>
             <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Translator
+            </dt>
+            <dd className="text-3xl sm:text-4xl font-black tracking-tighter">
+              {new Set(bootcampState.translatorAttempts.map((a) => a.stemNumber)).size}
+              <span className="text-brutal-ink-faint text-xl">/14</span>
+            </dd>
+          </div>
+          <div>
+            <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
               Final set
             </dt>
             <dd className="text-3xl sm:text-4xl font-black tracking-tighter">

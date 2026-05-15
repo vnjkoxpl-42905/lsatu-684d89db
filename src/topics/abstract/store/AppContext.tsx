@@ -16,6 +16,7 @@ import type {
   ConfidenceLevel,
   DrillType,
   GauntletAttempt,
+  TranslatorAttempt,
   ViewState,
 } from "../types";
 import {
@@ -23,8 +24,10 @@ import {
   fetchGauntletAttempts,
   fetchLatestFinalSetScore,
   fetchLessonProgress,
+  fetchTranslatorAttempts,
   insertDrillAttempt,
   insertGauntletAttempt,
+  insertTranslatorAttempt,
   isSessionDeadError,
   recordChapterProgress,
   upsertFinalSetScore,
@@ -48,6 +51,11 @@ interface AppContextType {
   recordGauntletItem: (
     attempt: Omit<GauntletAttempt, "completedAt">,
   ) => Promise<BootcampMutationResult>;
+  markTranslatorComplete: (
+    stemNumber: number,
+    keywordsPicked: string[],
+    translationText: string,
+  ) => Promise<BootcampMutationResult>;
   updateCardReview: (cardId: string, status: CardReview["status"]) => void;
   setFinalScore: (score: number, total: number) => Promise<BootcampMutationResult>;
 }
@@ -59,6 +67,7 @@ const defaultState: BootcampState = {
   completedDrills: [],
   drillAttempts: [],
   gauntletAttempts: [],
+  translatorAttempts: [],
   cards: {},
   drillsStats: {},
 };
@@ -116,10 +125,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     (async () => {
       try {
-        const [lessons, drills, gauntlets, finalSet] = await Promise.all([
+        const [lessons, drills, gauntlets, translators, finalSet] = await Promise.all([
           fetchLessonProgress(user.id),
           fetchDrillAttempts(user.id),
           fetchGauntletAttempts(user.id),
+          fetchTranslatorAttempts(user.id),
           fetchLatestFinalSetScore(user.id),
         ]);
         if (cancelled) return;
@@ -152,6 +162,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
             translationText: r.translation_text ?? "",
             requirementsChecked: r.requirements_checked ?? [],
             correctCount: r.correct_count ?? 0,
+            completedAt: r.completed_at,
+          })),
+          translatorAttempts: translators.map((r) => ({
+            stemNumber: r.stem_number,
+            keywordsPicked: r.keywords_picked ?? [],
+            translationText: r.translation_text ?? "",
             completedAt: r.completed_at,
           })),
           drillsStats,
@@ -268,6 +284,55 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [user],
   );
 
+  const markTranslatorComplete = useCallback(
+    async (
+      stemNumber: number,
+      keywordsPicked: string[],
+      translationText: string,
+    ): Promise<BootcampMutationResult> => {
+      const completedAt = new Date().toISOString();
+      setBootcampState((prev) => ({
+        ...prev,
+        translatorAttempts: [
+          ...prev.translatorAttempts,
+          { stemNumber, keywordsPicked, translationText, completedAt },
+        ],
+      }));
+
+      if (!user) return { ok: true };
+
+      const res = await insertTranslatorAttempt(user.id, {
+        stemNumber,
+        keywordsPicked,
+        translationText,
+      });
+      if (!res.ok) {
+        if (isSessionDeadError(res.error)) {
+          toast.error("Session expired. Please sign in again.");
+        } else {
+          toast.error("Could not save translator attempt.", {
+            description: describeError(res.error),
+          });
+        }
+        return res;
+      }
+
+      // Mirror to chapter_progress so the teacher Bootcamps dashboard sees
+      // per-stem translator activity. Chapter id namespace mirrors the
+      // pattern used for lesson completion.
+      const mirror = await recordChapterProgress(
+        user.id,
+        TOPIC_TAG,
+        `translator_stem_${stemNumber}`,
+      );
+      if (!mirror.ok) {
+        console.error("chapter_progress mirror failed for translator stem", stemNumber, mirror.error);
+      }
+      return { ok: true };
+    },
+    [user],
+  );
+
   const recordGauntletItem = useCallback(
     async (
       attempt: Omit<GauntletAttempt, "completedAt">,
@@ -348,6 +413,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,
+      markTranslatorComplete,
       updateCardReview,
       setFinalScore,
     }),
@@ -358,6 +424,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,
+      markTranslatorComplete,
       updateCardReview,
       setFinalScore,
     ],
