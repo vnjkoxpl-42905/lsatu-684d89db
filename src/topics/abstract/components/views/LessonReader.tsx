@@ -388,6 +388,9 @@ interface LessonReaderProps {
   lockedLessonId?: string;
   hideNav?: boolean;
   hideComplete?: boolean;
+  hideTitle?: boolean;
+  hideCard?: boolean;
+  casedBody?: boolean;
   onComplete?: () => void;
 }
 
@@ -395,6 +398,9 @@ export default function LessonReader({
   lockedLessonId,
   hideNav,
   hideComplete,
+  hideTitle,
+  hideCard,
+  casedBody,
   onComplete,
 }: LessonReaderProps = {}) {
   const { bootcampState, markLessonComplete, setCurrentView } = useApp();
@@ -982,11 +988,23 @@ export default function LessonReader({
       </div>
       )}
 
-      <article className="mb-12 bg-white p-8 md:p-14 rounded-xl border-4 border-brutal-ink brutal-shadow-lg z-10 relative">
-        <div className="inline-block bg-brutal-pink px-3 py-1 border-2 border-brutal-ink mb-6 rotate-[-1deg] brutal-shadow-sm">
-          <span className="text-[10px] font-black uppercase tracking-widest text-white">Interactive Lesson</span>
-        </div>
-        <h1 className="text-5xl font-black tracking-tighter text-brutal-ink mb-12 uppercase italic leading-none">{lesson.title}</h1>
+      <article
+        className={cn(
+          "z-10 relative",
+          casedBody && "lesson-cased",
+          hideCard
+            ? "mb-0 px-6 md:px-10 py-8 md:py-12"
+            : "mb-12 bg-white p-8 md:p-14 rounded-xl border-4 border-brutal-ink brutal-shadow-lg",
+        )}
+      >
+        {lesson.hasInteractiveContent && (
+          <div className="inline-block bg-brutal-pink px-3 py-1 border-2 border-brutal-ink mb-6 rotate-[-1deg] brutal-shadow-sm">
+            <span className="text-[10px] font-black uppercase tracking-widest text-white">Interactive Lesson</span>
+          </div>
+        )}
+        {!hideTitle && (
+          <h1 className="text-5xl font-black tracking-tighter text-brutal-ink mb-12 uppercase italic leading-none">{lesson.title}</h1>
+        )}
         {renderContent()}
       </article>
 

@@ -1,11 +1,12 @@
 import LessonReader from "./LessonReader";
 
-// LessonBody: shared lesson body renderer.
+// LessonBody: shared lesson body renderer for ModuleNote.
 //
-// Both LessonReader (the standalone view) and ModuleNote (inside ModuleView)
-// render lesson content via this component. LessonReader internally renders
-// the per-lesson switch; LessonBody locks it to a single lesson and hides
-// the standalone nav + completion CTA so the host (ModuleNote) owns those.
+// Strips the standalone reader chrome (nav, hero title, outer card border,
+// completion CTA) and applies the cased-body CSS scope so prose reads in
+// regular weight at 1.7 line-height instead of the standalone view's
+// uppercase italic. The hosting ModuleNote owns the scrollable container,
+// the read-this button, and the quiz CTA.
 
 export default function LessonBody({ lessonId }: { lessonId: string }) {
   return (
@@ -13,6 +14,9 @@ export default function LessonBody({ lessonId }: { lessonId: string }) {
       lockedLessonId={lessonId}
       hideNav
       hideComplete
+      hideTitle
+      hideCard
+      casedBody
     />
   );
 }

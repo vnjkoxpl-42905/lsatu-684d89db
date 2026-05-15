@@ -148,6 +148,7 @@ export interface Lesson {
   title: string;
   content: string; // Markdown or plain text
   type: 'concept' | 'interactive';
+  hasInteractiveContent?: boolean;
 }
 
 export interface KeywordExtractionItem {
