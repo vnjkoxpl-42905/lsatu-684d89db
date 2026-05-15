@@ -16,6 +16,7 @@ export { MATCHING_ITEMS } from "./matchingItems";
 export { DRILLS } from "./drills";
 export { FLASHCARDS } from "./flashcards";
 export { FINAL_SET } from "./finalSet";
+export { TRANSLATOR_ITEMS } from "./translatorItems";
 
 // Re-export AbstractChoice type which was defined inline in the original
 // mockData.ts; it now lives in `../types`.

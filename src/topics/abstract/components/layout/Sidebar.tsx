@@ -15,6 +15,7 @@ import {
 import { cn } from "../../lib/utils";
 import { ViewState } from "../../types";
 import { motion, useReducedMotion } from "framer-motion";
+import { computeProgress, type ProgressBreakdown } from "../../lib/progress";
 
 interface SidebarProps {
   // Called after a nav item is selected. Used by AppShell's mobile drawer
@@ -22,22 +23,25 @@ interface SidebarProps {
   onNavigate?: () => void;
 }
 
+type ProgressKey = keyof Omit<ProgressBreakdown, "overallPct">;
+
 const NAV_ITEMS: {
   id: ViewState;
   label: string;
   icon: typeof BookOpen;
   accent: "yellow" | "cyan" | "green" | "pink" | "red";
+  progressKey: ProgressKey | null;
 }[] = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, accent: "yellow" },
-  { id: "lesson", label: "Guided Lessons", icon: BookOpen, accent: "cyan" },
-  { id: "extraction_workspace", label: "Extraction", icon: PenTool, accent: "green" },
-  { id: "translator_workspace", label: "Translator", icon: FileText, accent: "pink" },
-  { id: "decoding_gauntlet", label: "Decoding Gauntlet", icon: Layers, accent: "pink" },
-  { id: "drill", label: "Targeted Drills", icon: Target, accent: "red" },
-  { id: "flashcards", label: "Flashcards", icon: Brain, accent: "cyan" },
-  { id: "methods_library", label: "Methods Library", icon: BookOpen, accent: "yellow" },
-  { id: "timed_set", label: "Final Timed Set", icon: Flag, accent: "green" },
-  { id: "completion_report", label: "Completion Report", icon: CheckCircle, accent: "pink" },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, accent: "yellow", progressKey: null },
+  { id: "lesson", label: "Guided Lessons", icon: BookOpen, accent: "cyan", progressKey: "lessons" },
+  { id: "extraction_workspace", label: "Extraction", icon: PenTool, accent: "green", progressKey: null },
+  { id: "translator_workspace", label: "Translator", icon: FileText, accent: "pink", progressKey: "translator" },
+  { id: "decoding_gauntlet", label: "Decoding Gauntlet", icon: Layers, accent: "pink", progressKey: "gauntlet" },
+  { id: "drill", label: "Targeted Drills", icon: Target, accent: "red", progressKey: "drills" },
+  { id: "flashcards", label: "Flashcards", icon: Brain, accent: "cyan", progressKey: "flashcards" },
+  { id: "methods_library", label: "Methods Library", icon: BookOpen, accent: "yellow", progressKey: null },
+  { id: "timed_set", label: "Final Timed Set", icon: Flag, accent: "green", progressKey: "finalSet" },
+  { id: "completion_report", label: "Completion Report", icon: CheckCircle, accent: "pink", progressKey: null },
 ];
 
 const ACCENT_BG: Record<typeof NAV_ITEMS[number]["accent"], string> = {
@@ -51,9 +55,7 @@ const ACCENT_BG: Record<typeof NAV_ITEMS[number]["accent"], string> = {
 export default function Sidebar({ onNavigate }: SidebarProps = {}) {
   const { currentView, setCurrentView, bootcampState } = useApp();
   const prefersReducedMotion = useReducedMotion();
-  const TOTAL_LESSONS = 8;
-  const completed = bootcampState.completedLessons.length;
-  const progressPct = Math.round((completed / TOTAL_LESSONS) * 100);
+  const progress = computeProgress(bootcampState);
 
   const handleNavigate = (id: ViewState) => {
     setCurrentView(id);
@@ -95,14 +97,16 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
       </div>
 
       <ul className="flex-1 p-3 md:p-4 space-y-2 md:space-y-3 overflow-y-auto custom-scrollbar list-none m-0">
-        {NAV_ITEMS.map((item) => {
-          const isActive = currentView === item.id;
-          const Icon = item.icon;
+        {NAV_ITEMS.map((navItem) => {
+          const isActive = currentView === navItem.id;
+          const Icon = navItem.icon;
+          const itemProgress = navItem.progressKey ? progress[navItem.progressKey] : null;
+          const isDone = itemProgress ? itemProgress.pct === 100 : false;
           return (
-            <li key={item.id}>
+            <li key={navItem.id}>
               <motion.button
                 type="button"
-                onClick={() => handleNavigate(item.id)}
+                onClick={() => handleNavigate(navItem.id)}
                 aria-current={isActive ? "page" : undefined}
                 whileHover={prefersReducedMotion ? undefined : { x: 4 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
@@ -110,12 +114,22 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
                 className={cn(
                   "w-full min-h-[44px] flex items-center gap-3 px-4 py-3 border-2 border-brutal-ink text-sm font-black uppercase tracking-tight transition-shadow",
                   isActive
-                    ? `${ACCENT_BG[item.accent]} brutal-shadow translate-x-[-2px] translate-y-[-2px]`
+                    ? `${ACCENT_BG[navItem.accent]} brutal-shadow translate-x-[-2px] translate-y-[-2px]`
                     : "bg-brutal-paper hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)]",
                 )}
               >
-                <Icon className="w-5 h-5" aria-hidden="true" />
-                <span>{item.label}</span>
+                <Icon className="w-5 h-5 shrink-0" aria-hidden="true" />
+                <span className="flex-1 text-left truncate">{navItem.label}</span>
+                {itemProgress ? (
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "w-2.5 h-2.5 border-2 border-brutal-ink rounded-full shrink-0",
+                      isDone ? "bg-brutal-green" : itemProgress.pct > 0 ? "bg-brutal-yellow" : "bg-brutal-paper",
+                    )}
+                    title={`${itemProgress.pct}% complete`}
+                  />
+                ) : null}
               </motion.button>
             </li>
           );
@@ -128,23 +142,21 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
       >
         <div className="flex justify-between items-center mb-2">
           <span className="text-[10px] font-black uppercase tracking-widest">
-            Progress
+            Overall
           </span>
-          <span className="text-xs font-black">
-            {completed}/{TOTAL_LESSONS}
-          </span>
+          <span className="text-xs font-black">{progress.overallPct}%</span>
         </div>
         <div
           role="progressbar"
           aria-valuemin={0}
-          aria-valuemax={TOTAL_LESSONS}
-          aria-valuenow={completed}
-          aria-label={`Lessons completed: ${completed} of ${TOTAL_LESSONS}`}
+          aria-valuemax={100}
+          aria-valuenow={progress.overallPct}
+          aria-label={`Bootcamp progress: ${progress.overallPct}%`}
           className="w-full h-4 bg-brutal-bg border-2 border-brutal-ink p-1"
         >
           <div
             className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-[width] duration-500"
-            style={{ width: `${progressPct}%` }}
+            style={{ width: `${progress.overallPct}%` }}
           />
         </div>
       </div>
