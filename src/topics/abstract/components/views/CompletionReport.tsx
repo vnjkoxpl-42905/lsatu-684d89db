@@ -1,8 +1,9 @@
+import { useMemo } from "react";
 import { useApp } from "../../store/AppContext";
-import { LESSONS } from "../../data/mockData";
-import { CheckCircle2, ArrowRight, BookOpen, Target, Brain, Flag } from "lucide-react";
+import { LESSONS, FLASHCARDS, TRANSLATOR_ITEMS, ABSTRACT_CHOICES } from "../../data/mockData";
+import { CheckCircle2, ArrowRight, BookOpen, Target, Brain, Flag, Timer, Layers, FileText } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { CardReview, DrillAttempt, DrillType } from "../../types";
+import { CardReview, ConfidenceLevel, DrillAttempt, DrillType } from "../../types";
 
 const TRAP_LABEL: Record<string, string> = {
   wrong_role: "Wrong role attribution",
@@ -78,6 +79,57 @@ export default function CompletionReport() {
   const strongest = pickStrongestType(bootcampState.drillsStats);
   const hasData = drillsCompleted > 0 || lessonsCompleted > 0 || cardsReviewed > 0;
 
+  const totalTimeMs = useMemo(
+    () => bootcampState.drillAttempts.reduce((sum, a) => sum + (a.timeMs ?? 0), 0),
+    [bootcampState.drillAttempts],
+  );
+  const totalTimeMinutes = Math.round(totalTimeMs / 60_000);
+
+  const perTypeBreakdown = useMemo(() => {
+    const out: { type: DrillType; correct: number; total: number; pct: number }[] = [];
+    for (const [type, stats] of Object.entries(bootcampState.drillsStats)) {
+      if (!stats || stats.total === 0) continue;
+      out.push({
+        type: type as DrillType,
+        correct: stats.correct,
+        total: stats.total,
+        pct: Math.round((stats.correct / stats.total) * 100),
+      });
+    }
+    return out.sort((a, b) => b.total - a.total);
+  }, [bootcampState.drillsStats]);
+
+  const confidenceCalibration = useMemo(() => {
+    const buckets: Record<ConfidenceLevel, { correct: number; total: number }> = {
+      Guessing: { correct: 0, total: 0 },
+      Unsure: { correct: 0, total: 0 },
+      "Pretty sure": { correct: 0, total: 0 },
+      Confident: { correct: 0, total: 0 },
+    };
+    for (const a of bootcampState.drillAttempts) {
+      const b = buckets[a.confidence];
+      if (!b) continue;
+      b.total += 1;
+      if (a.correct) b.correct += 1;
+    }
+    return buckets;
+  }, [bootcampState.drillAttempts]);
+
+  const trapFrequency = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const a of bootcampState.drillAttempts) {
+      if (a.correct || !a.trapTag) continue;
+      counts.set(a.trapTag, (counts.get(a.trapTag) ?? 0) + 1);
+    }
+    return Array.from(counts.entries())
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [bootcampState.drillAttempts]);
+
+  const gauntletDone = new Set(bootcampState.gauntletAttempts.map((a) => a.choiceId)).size;
+  const translatorDone = new Set(bootcampState.translatorAttempts.map((a) => a.stemNumber)).size;
+  const mastered = Object.values(bootcampState.cards).filter((c) => c.status === "mastered").length;
+
   return (
     <motion.div
       initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
@@ -134,6 +186,124 @@ export default function CompletionReport() {
             <dd>{cardsReviewed} cards seen</dd>
           </div>
         </dl>
+      </section>
+
+      <section
+        aria-labelledby="metrics-heading"
+        className="space-y-6 border-t-4 border-brutal-ink pt-8"
+      >
+        <h2
+          id="metrics-heading"
+          className="text-xl sm:text-2xl font-black uppercase italic tracking-tight"
+        >
+          Practice metrics
+        </h2>
+        <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 text-brutal-ink">
+          <MetricCard label="Total practice" icon={Timer} value={totalTimeMinutes > 0 ? `${totalTimeMinutes} min` : "··"} hint="Sum of drill response time" />
+          <MetricCard label="Translator" icon={FileText} value={`${translatorDone}/${TRANSLATOR_ITEMS.length}`} hint="Stems with submissions" />
+          <MetricCard label="Decoding Gauntlet" icon={Layers} value={`${gauntletDone}/${ABSTRACT_CHOICES.length}`} hint="Items completed" />
+          <MetricCard label="Mastered cards" icon={Brain} value={`${mastered}/${FLASHCARDS.length}`} hint="Rated easy twice or more" />
+        </dl>
+
+        {perTypeBreakdown.length > 0 && (
+          <div className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow p-5 sm:p-6 space-y-3">
+            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Accuracy by drill type
+            </h3>
+            <dl className="space-y-2">
+              {perTypeBreakdown.map((row) => (
+                <div key={row.type} className="flex items-center gap-3">
+                  <dt className="w-28 sm:w-36 text-xs sm:text-sm font-black uppercase tracking-tight">
+                    {TYPE_LABEL[row.type] ?? row.type}
+                  </dt>
+                  <div className="flex-1 h-3 bg-brutal-bg border-2 border-brutal-ink overflow-hidden">
+                    <div className="h-full bg-brutal-ink" style={{ width: `${row.pct}%` }} />
+                  </div>
+                  <dd className="text-xs sm:text-sm font-black text-brutal-ink shrink-0 tabular-nums">
+                    {row.correct}/{row.total} · {row.pct}%
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow p-5 sm:p-6 space-y-3">
+            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Confidence calibration
+            </h3>
+            <dl className="space-y-2">
+              {(Object.keys(confidenceCalibration) as ConfidenceLevel[]).map((level) => {
+                const c = confidenceCalibration[level];
+                const pct = c.total > 0 ? Math.round((c.correct / c.total) * 100) : null;
+                return (
+                  <div key={level} className="flex items-center gap-3">
+                    <dt className="w-24 text-xs font-black uppercase tracking-tight">{level}</dt>
+                    <div className="flex-1 h-2.5 bg-brutal-bg border-2 border-brutal-ink overflow-hidden">
+                      <div
+                        className="h-full bg-brutal-cyan"
+                        style={{ width: pct === null ? "0%" : `${pct}%` }}
+                      />
+                    </div>
+                    <dd className="text-xs font-black text-brutal-ink shrink-0 tabular-nums">
+                      {pct === null ? "··" : `${pct}% · n=${c.total}`}
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
+            <p className="text-[11px] font-bold text-brutal-ink-soft leading-snug">
+              Healthy: rising accuracy from Guessing to Confident. Flat or inverted means you trust the wrong instincts.
+            </p>
+          </div>
+
+          <div className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow p-5 sm:p-6 space-y-3">
+            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+              Trap frequency
+            </h3>
+            {trapFrequency.length === 0 ? (
+              <p className="text-sm font-bold text-brutal-ink-soft">
+                No trap data yet. Wrong drills with tagged traps surface here.
+              </p>
+            ) : (
+              <ul className="space-y-2 list-none m-0 p-0">
+                {trapFrequency.map((row) => (
+                  <li key={row.tag} className="flex items-center justify-between gap-3">
+                    <span className="text-xs sm:text-sm font-black uppercase tracking-tight">
+                      {TRAP_LABEL[row.tag] ?? row.tag}
+                    </span>
+                    <span className="text-xs font-black text-brutal-ink shrink-0 inline-flex items-center gap-2">
+                      <span
+                        aria-hidden="true"
+                        className="inline-block px-2 py-0.5 bg-brutal-red text-brutal-paper border-2 border-brutal-ink"
+                      >
+                        {row.count}
+                      </span>
+                      wrong
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {bootcampState.finalSetScore && (
+          <div className="bg-brutal-green border-4 border-brutal-ink brutal-shadow p-5 sm:p-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft">
+                Final timed set
+              </h3>
+              <p className="text-3xl sm:text-4xl font-black text-brutal-ink uppercase italic tracking-tighter">
+                {bootcampState.finalSetScore.score}/{bootcampState.finalSetScore.total}
+              </p>
+            </div>
+            <p className="text-xs font-bold text-brutal-ink-soft">
+              Logged {new Date(bootcampState.finalSetScore.completedAt).toLocaleDateString()}
+            </p>
+          </div>
+        )}
       </section>
 
       <section aria-labelledby="diagnosis-heading" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -245,5 +415,27 @@ export default function CompletionReport() {
         </div>
       </section>
     </motion.div>
+  );
+}
+
+interface MetricCardProps {
+  label: string;
+  icon: typeof BookOpen;
+  value: string;
+  hint: string;
+}
+
+function MetricCard({ label, icon: Icon, value, hint }: MetricCardProps) {
+  return (
+    <div className="space-y-1.5">
+      <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft inline-flex items-center gap-2">
+        <Icon className="w-3.5 h-3.5" aria-hidden="true" />
+        {label}
+      </dt>
+      <dd className="text-2xl sm:text-3xl font-black tracking-tighter text-brutal-ink">{value}</dd>
+      <p className="text-[10px] font-bold text-brutal-ink-soft leading-snug uppercase tracking-[0.1em]">
+        {hint}
+      </p>
+    </div>
   );
 }

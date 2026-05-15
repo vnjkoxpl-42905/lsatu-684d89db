@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Sidebar from "./Sidebar";
+import AskJoshuaFab from "./AskJoshuaFab";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useApp } from "../../store/AppContext";
@@ -101,6 +102,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
+      <AskJoshuaFab />
     </div>
   );
 }
