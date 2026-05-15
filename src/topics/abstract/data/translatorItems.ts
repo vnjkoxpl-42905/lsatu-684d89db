@@ -290,7 +290,7 @@ export const TRANSLATOR_ITEMS: TranslatorDrillItem[] = [
   {
     stemNumber: 10,
     stemText: "It is what the author's argument purports to explain:",
-    correctKeywords: ["purports", "explain"],
+    correctKeywords: ["author's", "argument", "purports", "explain"],
     idealTranslation:
       "The statement is the phenomenon the argument is trying to explain. The conclusion proposes its cause.",
     walkthrough: {
