@@ -15,6 +15,7 @@ export const LESSONS: Lesson[] = [
     title: "Why Abstract Answer Choices Feel Hard",
     type: "concept",
     content: "",
+    hasInteractiveContent: true,
   },
   {
     id: "deabstractifying_method",
@@ -51,6 +52,7 @@ export const LESSONS: Lesson[] = [
     title: "Decode the 18 Abstract Answer Choices",
     type: "concept",
     content: "",
+    hasInteractiveContent: true,
   },
   {
     id: "decode_practice",
