@@ -1,6 +1,6 @@
 export type ConfidenceLevel = 'Guessing' | 'Unsure' | 'Pretty sure' | 'Confident';
 
-export type ViewState = 'dashboard' | 'drill' | 'completion_report' | 'lesson' | 'flashcards' | 'methods_library' | 'mixed_practice' | 'timed_final_set' | 'extraction_workspace' | 'translator_workspace' | 'timed_set';
+export type ViewState = 'dashboard' | 'drill' | 'completion_report' | 'lesson' | 'flashcards' | 'methods_library' | 'mixed_practice' | 'timed_final_set' | 'extraction_workspace' | 'translator_workspace' | 'decoding_gauntlet' | 'timed_set';
 
 export type DrillType = 
   | 'keyword_extraction'

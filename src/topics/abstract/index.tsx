@@ -5,6 +5,7 @@ import LessonReader from "./components/views/LessonReader";
 import ExtractionWorkspace from "./components/views/ExtractionWorkspace";
 import DrillRunner from "./components/views/DrillRunner";
 import TranslatorWorkspace from "./components/views/TranslatorWorkspace";
+import DecodingGauntlet from "./components/views/DecodingGauntlet";
 import { Flashcards } from "./components/views/Flashcards";
 import { MethodsLibrary } from "./components/views/MethodsLibrary";
 import TimedFinalSet from "./components/views/TimedFinalSet";
@@ -23,6 +24,8 @@ function ViewManager() {
       return <ExtractionWorkspace />;
     case "translator_workspace":
       return <TranslatorWorkspace />;
+    case "decoding_gauntlet":
+      return <DecodingGauntlet />;
     case "drill":
       return <DrillRunner />;
     case "flashcards":

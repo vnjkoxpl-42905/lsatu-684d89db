@@ -9,6 +9,7 @@ import {
   Brain,
   PenTool,
   LayoutDashboard,
+  Layers,
   Flag,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
@@ -31,6 +32,7 @@ const NAV_ITEMS: {
   { id: "lesson", label: "Guided Lessons", icon: BookOpen, accent: "cyan" },
   { id: "extraction_workspace", label: "Extraction", icon: PenTool, accent: "green" },
   { id: "translator_workspace", label: "Translator", icon: FileText, accent: "pink" },
+  { id: "decoding_gauntlet", label: "Decoding Gauntlet", icon: Layers, accent: "pink" },
   { id: "drill", label: "Targeted Drills", icon: Target, accent: "red" },
   { id: "flashcards", label: "Flashcards", icon: Brain, accent: "cyan" },
   { id: "methods_library", label: "Methods Library", icon: BookOpen, accent: "yellow" },

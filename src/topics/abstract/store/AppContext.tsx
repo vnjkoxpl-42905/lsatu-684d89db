@@ -357,8 +357,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
             description: describeError(res.error),
           });
         }
+        return res;
       }
-      return res;
+
+      // Mirror to chapter_progress so the teacher Bootcamps dashboard sees
+      // per-item gauntlet activity. Namespace mirrors the translator pattern.
+      const mirror = await recordChapterProgress(
+        user.id,
+        TOPIC_TAG,
+        `gauntlet_${attempt.choiceId}`,
+      );
+      if (!mirror.ok) {
+        console.error("chapter_progress mirror failed for gauntlet item", attempt.choiceId, mirror.error);
+      }
+      return { ok: true };
     },
     [user],
   );
