@@ -993,7 +993,7 @@ export default function LessonReader({
           "z-10 relative",
           casedBody && "lesson-cased",
           hideCard
-            ? "mb-0 px-6 md:px-10 py-8 md:py-12"
+            ? "mb-0 p-0"
             : "mb-12 bg-white p-8 md:p-14 rounded-xl border-4 border-brutal-ink brutal-shadow-lg",
         )}
       >

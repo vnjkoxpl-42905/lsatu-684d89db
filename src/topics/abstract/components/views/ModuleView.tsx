@@ -389,9 +389,9 @@ function ModuleNote({
 
       <div
         ref={scrollRef}
-        className="bg-brutal-paper border-4 border-brutal-ink mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar"
+        className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar"
       >
-        <div className="p-6 md:p-8">
+        <div className="px-6 md:px-10 py-8 md:py-12">
           <LessonBody lessonId={mod.noteLessonId} />
         </div>
       </div>
