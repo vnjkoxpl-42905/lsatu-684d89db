@@ -1,6 +1,7 @@
 import { AppProvider, useApp } from "./store/AppContext";
 import AppShell from "./components/layout/AppShell";
 import Dashboard from "./components/views/Dashboard";
+import ModuleView from "./components/views/ModuleView";
 import LessonReader from "./components/views/LessonReader";
 import ExtractionWorkspace from "./components/views/ExtractionWorkspace";
 import DrillRunner from "./components/views/DrillRunner";
@@ -18,6 +19,8 @@ function ViewManager() {
   switch (currentView) {
     case "dashboard":
       return <Dashboard />;
+    case "module":
+      return <ModuleView />;
     case "lesson":
       return <LessonReader />;
     case "extraction_workspace":

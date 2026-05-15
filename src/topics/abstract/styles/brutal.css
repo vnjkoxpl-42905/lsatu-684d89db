@@ -168,3 +168,33 @@
 .topic-abstract .skip-link:focus-visible {
   transform: translateY(0);
 }
+
+/* Brutal button utility used by ModuleView. Min 44px touch target,
+ * uppercase, hard border, brutal shadow on press. */
+.topic-abstract .brutal-btn {
+  min-height: 44px;
+  padding: 0.625rem 1.25rem;
+  border: 3px solid var(--brutal-ink);
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--brutal-paper);
+  box-shadow: 4px 4px 0 0 var(--brutal-ink);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.topic-abstract .brutal-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 var(--brutal-ink);
+}
+
+.topic-abstract .brutal-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 var(--brutal-ink);
+}
+
+.topic-abstract .brutal-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

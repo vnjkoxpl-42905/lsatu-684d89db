@@ -1,64 +1,74 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../../store/AppContext";
 import {
   ArrowLeft,
-  BookOpen,
-  CheckCircle,
-  FileText,
-  Target,
+  CheckCircle2,
+  Lock,
+  ChevronDown,
+  ChevronRight,
+  Star,
   Brain,
-  PenTool,
-  LayoutDashboard,
-  Layers,
+  Library,
+  Flame,
   Flag,
+  LayoutDashboard,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
-import { ViewState } from "../../types";
 import { motion, useReducedMotion } from "framer-motion";
-import { computeProgress, type ProgressBreakdown } from "../../lib/progress";
+import { MODULES, type ModuleId } from "../../data/modules";
 
 interface SidebarProps {
-  // Called after a nav item is selected. Used by AppShell's mobile drawer
-  // to close itself once the student picks a section.
   onNavigate?: () => void;
 }
 
-type ProgressKey = keyof Omit<ProgressBreakdown, "overallPct">;
+// Small SVG progress ring for module rows.
+function ProgressRing({ pct }: { pct: number }) {
+  const radius = 9;
+  const circ = 2 * Math.PI * radius;
+  const offset = circ - (pct / 100) * circ;
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0">
+      <circle cx="12" cy="12" r={radius} fill="none" stroke="var(--brutal-ink-trace)" strokeWidth="3" />
+      <circle
+        cx="12"
+        cy="12"
+        r={radius}
+        fill="none"
+        stroke="var(--brutal-ink)"
+        strokeWidth="3"
+        strokeDasharray={circ}
+        strokeDashoffset={offset}
+        strokeLinecap="butt"
+        transform="rotate(-90 12 12)"
+      />
+    </svg>
+  );
+}
 
-const NAV_ITEMS: {
-  id: ViewState;
-  label: string;
-  icon: typeof BookOpen;
-  accent: "yellow" | "cyan" | "green" | "pink" | "red";
-  progressKey: ProgressKey | null;
-}[] = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, accent: "yellow", progressKey: null },
-  { id: "lesson", label: "Guided Lessons", icon: BookOpen, accent: "cyan", progressKey: "lessons" },
-  { id: "extraction_workspace", label: "Extraction", icon: PenTool, accent: "green", progressKey: null },
-  { id: "translator_workspace", label: "Translator", icon: FileText, accent: "pink", progressKey: "translator" },
-  { id: "decoding_gauntlet", label: "Decoding Gauntlet", icon: Layers, accent: "pink", progressKey: "gauntlet" },
-  { id: "drill", label: "Targeted Drills", icon: Target, accent: "red", progressKey: "drills" },
-  { id: "flashcards", label: "Flashcards", icon: Brain, accent: "cyan", progressKey: "flashcards" },
-  { id: "methods_library", label: "Methods Library", icon: BookOpen, accent: "yellow", progressKey: null },
-  { id: "timed_set", label: "Final Timed Set", icon: Flag, accent: "green", progressKey: "finalSet" },
-  { id: "completion_report", label: "Completion Report", icon: CheckCircle, accent: "pink", progressKey: null },
-];
-
-const ACCENT_BG: Record<typeof NAV_ITEMS[number]["accent"], string> = {
-  yellow: "bg-brutal-yellow",
-  cyan: "bg-brutal-cyan",
-  green: "bg-brutal-green",
-  pink: "bg-brutal-pink",
-  red: "bg-brutal-red",
-};
+function modulePct(noteDone: boolean, quizPassed: boolean, drillDone: boolean): number {
+  let p = 0;
+  if (noteDone) p += 33;
+  if (quizPassed) p += 33;
+  if (drillDone) p += 34;
+  return p;
+}
 
 export default function Sidebar({ onNavigate }: SidebarProps = {}) {
-  const { currentView, setCurrentView, bootcampState } = useApp();
+  const {
+    currentView,
+    setCurrentView,
+    bootcampState,
+    openModule,
+    isModuleUnlocked,
+    isModuleComplete,
+    currentModuleId,
+  } = useApp();
   const prefersReducedMotion = useReducedMotion();
-  const progress = computeProgress(bootcampState);
+  const [refOpen, setRefOpen] = useState(false);
 
-  const handleNavigate = (id: ViewState) => {
-    setCurrentView(id);
+  const goDashboard = () => {
+    setCurrentView("dashboard");
     onNavigate?.();
   };
 
@@ -83,6 +93,18 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
         <p className="text-[10px] text-brutal-ink font-black mt-2 uppercase tracking-[0.2em]">
           Abstract Bootcamp
         </p>
+        <div className="mt-3 flex items-center gap-4 text-xs font-black">
+          <span className="inline-flex items-center gap-1" title="Total XP">
+            <Star className="w-3.5 h-3.5" />
+            {bootcampState.xpTotal} XP
+          </span>
+          {bootcampState.dailyStreak > 0 && (
+            <span className="inline-flex items-center gap-1" title="Daily streak">
+              <Flame className="w-3.5 h-3.5" />
+              {bootcampState.dailyStreak}d
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="px-3 md:px-4 pt-3 md:pt-4">
@@ -96,70 +118,165 @@ export default function Sidebar({ onNavigate }: SidebarProps = {}) {
         </Link>
       </div>
 
-      <ul className="flex-1 p-3 md:p-4 space-y-2 md:space-y-3 overflow-y-auto custom-scrollbar list-none m-0">
-        {NAV_ITEMS.map((navItem) => {
-          const isActive = currentView === navItem.id;
-          const Icon = navItem.icon;
-          const itemProgress = navItem.progressKey ? progress[navItem.progressKey] : null;
-          const isDone = itemProgress ? itemProgress.pct === 100 : false;
+      <ul className="flex-1 p-3 md:p-4 space-y-2 overflow-y-auto custom-scrollbar list-none m-0">
+        <li>
+          <NavButton
+            label="Dashboard"
+            icon={LayoutDashboard}
+            active={currentView === "dashboard"}
+            onClick={goDashboard}
+          />
+        </li>
+        <li className="pt-2">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft px-3 mb-1">
+            Modules
+          </div>
+        </li>
+        {MODULES.map((m) => {
+          const row = bootcampState.moduleProgress[m.id];
+          const noteDone = Boolean(row?.noteComplete);
+          const quizPassed =
+            row?.quizTotal > 0 && row.quizScore / row.quizTotal >= m.quizPassThreshold;
+          const drillDone = Boolean(row?.drillComplete);
+          const pct = modulePct(noteDone, quizPassed, drillDone);
+          const unlocked = isModuleUnlocked(m.id);
+          const done = isModuleComplete(m.id);
+          const active = currentView === "module" && currentModuleId === m.id;
+          const aced = bootcampState.aceBadges.includes(m.id);
           return (
-            <li key={navItem.id}>
+            <li key={m.id}>
               <motion.button
                 type="button"
-                onClick={() => handleNavigate(navItem.id)}
-                aria-current={isActive ? "page" : undefined}
-                whileHover={prefersReducedMotion ? undefined : { x: 4 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+                onClick={() => {
+                  if (unlocked) {
+                    openModule(m.id);
+                    onNavigate?.();
+                  }
+                }}
+                disabled={!unlocked}
+                aria-current={active ? "page" : undefined}
+                whileHover={prefersReducedMotion || !unlocked ? undefined : { x: 4 }}
+                whileTap={prefersReducedMotion || !unlocked ? undefined : { scale: 0.96 }}
                 transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                 className={cn(
-                  "w-full min-h-[44px] flex items-center gap-3 px-4 py-3 border-2 border-brutal-ink text-sm font-black uppercase tracking-tight transition-shadow",
-                  isActive
-                    ? `${ACCENT_BG[navItem.accent]} brutal-shadow translate-x-[-2px] translate-y-[-2px]`
-                    : "bg-brutal-paper hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)]",
+                  "w-full min-h-[44px] flex items-center gap-3 px-3 py-2.5 border-2 border-brutal-ink text-xs font-black uppercase tracking-tight transition-shadow",
+                  !unlocked && "opacity-60 cursor-not-allowed",
+                  active
+                    ? "bg-brutal-yellow brutal-shadow translate-x-[-2px] translate-y-[-2px]"
+                    : "bg-brutal-paper hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)]",
                 )}
               >
-                <Icon className="w-5 h-5 shrink-0" aria-hidden="true" />
-                <span className="flex-1 text-left truncate">{navItem.label}</span>
-                {itemProgress ? (
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "w-2.5 h-2.5 border-2 border-brutal-ink rounded-full shrink-0",
-                      isDone ? "bg-brutal-green" : itemProgress.pct > 0 ? "bg-brutal-yellow" : "bg-brutal-paper",
-                    )}
-                    title={`${itemProgress.pct}% complete`}
-                  />
-                ) : null}
+                {!unlocked ? (
+                  <Lock className="w-4 h-4 shrink-0" aria-hidden="true" />
+                ) : done ? (
+                  <CheckCircle2 className="w-4 h-4 shrink-0" aria-hidden="true" />
+                ) : (
+                  <ProgressRing pct={pct} />
+                )}
+                <span className="flex-1 text-left truncate">
+                  M{m.number}. {m.name}
+                </span>
+                {aced && <Star className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
               </motion.button>
             </li>
           );
         })}
-      </ul>
 
-      <div
-        className="p-5 md:p-6 border-t-4 border-brutal-ink bg-brutal-paper"
-        aria-live="polite"
-      >
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-[10px] font-black uppercase tracking-widest">
-            Overall
-          </span>
-          <span className="text-xs font-black">{progress.overallPct}%</span>
-        </div>
-        <div
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={progress.overallPct}
-          aria-label={`Bootcamp progress: ${progress.overallPct}%`}
-          className="w-full h-4 bg-brutal-bg border-2 border-brutal-ink p-1"
-        >
-          <div
-            className="h-full bg-brutal-green border-r-2 border-brutal-ink transition-[width] duration-500"
-            style={{ width: `${progress.overallPct}%` }}
+        <li className="pt-2">
+          <NavButton
+            label="Final Set"
+            icon={Flag}
+            active={currentView === "timed_set"}
+            onClick={() => {
+              setCurrentView("timed_set");
+              onNavigate?.();
+            }}
           />
-        </div>
-      </div>
+        </li>
+
+        <li className="pt-3">
+          <button
+            type="button"
+            onClick={() => setRefOpen((o) => !o)}
+            className="w-full flex items-center gap-2 px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-brutal-ink-soft"
+          >
+            {refOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+            Reference
+          </button>
+          {refOpen && (
+            <ul className="space-y-1 pl-2 list-none m-0">
+              <li>
+                <NavButton
+                  small
+                  label="Flashcards"
+                  icon={Brain}
+                  active={currentView === "flashcards"}
+                  onClick={() => {
+                    setCurrentView("flashcards");
+                    onNavigate?.();
+                  }}
+                />
+              </li>
+              <li>
+                <NavButton
+                  small
+                  label="Methods Library"
+                  icon={Library}
+                  active={currentView === "methods_library"}
+                  onClick={() => {
+                    setCurrentView("methods_library");
+                    onNavigate?.();
+                  }}
+                />
+              </li>
+              <li>
+                <NavButton
+                  small
+                  label="Completion Report"
+                  icon={CheckCircle2}
+                  active={currentView === "completion_report"}
+                  onClick={() => {
+                    setCurrentView("completion_report");
+                    onNavigate?.();
+                  }}
+                />
+              </li>
+            </ul>
+          )}
+        </li>
+      </ul>
     </nav>
+  );
+}
+
+function NavButton({
+  label,
+  icon: Icon,
+  active,
+  onClick,
+  small,
+}: {
+  label: string;
+  icon: typeof LayoutDashboard;
+  active: boolean;
+  onClick: () => void;
+  small?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "w-full flex items-center gap-3 border-2 border-brutal-ink font-black uppercase tracking-tight transition-shadow",
+        small ? "min-h-[40px] px-3 py-2 text-[10px]" : "min-h-[44px] px-3 py-2.5 text-xs",
+        active
+          ? "bg-brutal-yellow brutal-shadow translate-x-[-2px] translate-y-[-2px]"
+          : "bg-brutal-paper hover:shadow-[2px_2px_0px_0px_var(--brutal-ink)]",
+      )}
+    >
+      <Icon className={cn(small ? "w-3.5 h-3.5" : "w-4 h-4", "shrink-0")} aria-hidden="true" />
+      <span className="flex-1 text-left truncate">{label}</span>
+    </button>
   );
 }
