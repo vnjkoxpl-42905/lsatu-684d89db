@@ -74,6 +74,23 @@ function jsonResp(body: any, status = 200) {
   });
 }
 
+interface OutgoingAttachment {
+  filename: string;
+  mimeType: string;
+  /** standard base64 (not url-safe) of file bytes */
+  dataBase64: string;
+}
+
+function chunkBase64(b64: string, len = 76): string {
+  // RFC 2045 requires base64 lines no longer than 76 chars.
+  return b64.replace(/\s+/g, "").replace(new RegExp(`(.{${len}})`, "g"), "$1\r\n").trim();
+}
+
+function sanitizeHeaderName(s: string): string {
+  // Strip CR/LF and quote special chars for filename param.
+  return s.replace(/[\r\n"]/g, "_");
+}
+
 function buildRawMessage(args: {
   to: string;
   cc?: string;
@@ -82,16 +99,51 @@ function buildRawMessage(args: {
   text: string;
   inReplyTo?: string;
   references?: string;
+  attachments?: OutgoingAttachment[];
 }): string {
-  const lines = [`To: ${args.to}`];
-  if (args.cc) lines.push(`Cc: ${args.cc}`);
-  if (args.bcc) lines.push(`Bcc: ${args.bcc}`);
-  lines.push(`Subject: ${args.subject ?? ""}`);
-  lines.push('Content-Type: text/plain; charset="UTF-8"');
-  lines.push("MIME-Version: 1.0");
-  if (args.inReplyTo) lines.push(`In-Reply-To: ${args.inReplyTo}`);
-  if (args.references || args.inReplyTo) lines.push(`References: ${args.references ?? args.inReplyTo}`);
-  lines.push("", args.text);
+  const headers = [`To: ${args.to}`];
+  if (args.cc) headers.push(`Cc: ${args.cc}`);
+  if (args.bcc) headers.push(`Bcc: ${args.bcc}`);
+  headers.push(`Subject: ${args.subject ?? ""}`);
+  if (args.inReplyTo) headers.push(`In-Reply-To: ${args.inReplyTo}`);
+  if (args.references || args.inReplyTo) headers.push(`References: ${args.references ?? args.inReplyTo}`);
+  headers.push("MIME-Version: 1.0");
+
+  const atts = (args.attachments ?? []).filter((a) => a && a.dataBase64);
+  if (atts.length === 0) {
+    const lines = [
+      ...headers,
+      'Content-Type: text/plain; charset="UTF-8"',
+      "",
+      args.text,
+    ];
+    return b64urlEncode(lines.join("\r\n"));
+  }
+
+  const boundary = `----lovableMixed_${crypto.randomUUID().replace(/-/g, "")}`;
+  const lines: string[] = [
+    ...headers,
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+    "",
+    `--${boundary}`,
+    'Content-Type: text/plain; charset="UTF-8"',
+    "Content-Transfer-Encoding: 7bit",
+    "",
+    args.text,
+  ];
+  for (const att of atts) {
+    const fname = sanitizeHeaderName(att.filename || "attachment");
+    const mime = sanitizeHeaderName(att.mimeType || "application/octet-stream");
+    lines.push(
+      `--${boundary}`,
+      `Content-Type: ${mime}; name="${fname}"`,
+      `Content-Disposition: attachment; filename="${fname}"`,
+      "Content-Transfer-Encoding: base64",
+      "",
+      chunkBase64(att.dataBase64),
+    );
+  }
+  lines.push(`--${boundary}--`, "");
   return b64urlEncode(lines.join("\r\n"));
 }
 
@@ -427,9 +479,18 @@ Deno.serve(async (req) => {
     }
 
     if (action === "send") {
-      const { to, cc, bcc, subject, text, threadId, inReplyTo, references } = body;
+      const { to, cc, bcc, subject, text, threadId, inReplyTo, references, attachments } = body;
       if (!to || !text) throw new Error("to and text required");
-      const raw = buildRawMessage({ to, cc, bcc, subject, text, inReplyTo, references });
+      const safeAtts: OutgoingAttachment[] = Array.isArray(attachments)
+        ? attachments
+            .filter((a: any) => a && typeof a.dataBase64 === "string" && a.dataBase64.length > 0)
+            .map((a: any) => ({
+              filename: String(a.filename ?? "attachment"),
+              mimeType: String(a.mimeType ?? "application/octet-stream"),
+              dataBase64: String(a.dataBase64),
+            }))
+        : [];
+      const raw = buildRawMessage({ to, cc, bcc, subject, text, inReplyTo, references, attachments: safeAtts });
       const payload: any = { raw };
       if (threadId) payload.threadId = threadId;
       const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/messages/send`, {

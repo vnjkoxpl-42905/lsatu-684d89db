@@ -89,6 +89,13 @@ export interface BatchModifyParams {
   removeLabelIds?: GmailLabelId[];
 }
 
+export interface GmailOutgoingAttachment {
+  filename: string;
+  mimeType: string;
+  /** Base64-encoded file contents (standard base64, not base64url, no data: prefix). */
+  dataBase64: string;
+}
+
 export interface SendMessageParams {
   to: string;
   cc?: string;
@@ -101,6 +108,8 @@ export interface SendMessageParams {
   inReplyTo?: string;
   /** Existing References header from the parent, if any. */
   references?: string;
+  /** Optional file attachments (encoded client-side, max ~25MB total per Gmail limits). */
+  attachments?: GmailOutgoingAttachment[];
 }
 
 export interface SendMessageResult {
