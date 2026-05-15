@@ -431,6 +431,7 @@ const App = () => {
             } />
           </Routes>
           <FloatingMessenger />
+          <AdminChatHub />
           <FloatingWhiteboard />
           <FloatingHelpButton />
           <GuidedTour />
