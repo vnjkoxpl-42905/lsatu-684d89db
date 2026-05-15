@@ -20,6 +20,7 @@ export function sendMessage(params: SendMessageParams): Promise<SendMessageResul
     threadId: params.threadId,
     inReplyTo: params.inReplyTo,
     references: params.references,
+    attachments: params.attachments,
   }).then((r) => r.message);
 }
 
