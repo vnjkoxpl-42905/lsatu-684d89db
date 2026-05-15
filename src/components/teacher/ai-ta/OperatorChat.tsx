@@ -125,7 +125,15 @@ export default function OperatorChat() {
           )}
           <PromptInputBox
             isLoading={isLoading}
-            onSend={(msg) => sendMessage(msg)}
+            onSend={async (msg, files) => {
+              if (files && files.length > 0) {
+                const { buildAttachmentBlock } = await import('./extractFileText');
+                const block = await buildAttachmentBlock(files);
+                sendMessage(`${msg}${block}`);
+              } else {
+                sendMessage(msg);
+              }
+            }}
             placeholder="Tell me what to do…"
           />
           <div className="mt-2 text-[10px] text-zinc-600 text-center">

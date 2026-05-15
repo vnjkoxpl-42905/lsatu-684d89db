@@ -471,18 +471,17 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   const isImageFile = (file: File) => file.type.startsWith("image/");
 
   const processFile = (file: File) => {
-    if (!isImageFile(file)) {
-      console.log("Only image files are allowed");
+    if (file.size > 25 * 1024 * 1024) {
+      console.log("File too large (max 25MB)");
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      console.log("File too large (max 10MB)");
-      return;
+    setFiles((prev) => [...prev, file]);
+    if (isImageFile(file)) {
+      const reader = new FileReader();
+      reader.onload = (e) =>
+        setFilePreviews((prev) => ({ ...prev, [file.name]: e.target?.result as string }));
+      reader.readAsDataURL(file);
     }
-    setFiles([file]);
-    const reader = new FileReader();
-    reader.onload = (e) => setFilePreviews({ [file.name]: e.target?.result as string });
-    reader.readAsDataURL(file);
   };
 
   const handleDragOver = React.useCallback((e: React.DragEvent) => {
@@ -499,14 +498,19 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
     e.preventDefault();
     e.stopPropagation();
     const dropped = Array.from(e.dataTransfer.files);
-    const imageFiles = dropped.filter((file) => isImageFile(file));
-    if (imageFiles.length > 0) processFile(imageFiles[0]);
+    dropped.forEach(processFile);
   }, []);
 
   const handleRemoveFile = (index: number) => {
     const fileToRemove = files[index];
-    if (fileToRemove && filePreviews[fileToRemove.name]) setFilePreviews({});
-    setFiles([]);
+    if (fileToRemove && filePreviews[fileToRemove.name]) {
+      setFilePreviews((prev) => {
+        const next = { ...prev };
+        delete next[fileToRemove.name];
+        return next;
+      });
+    }
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const openImageModal = (imageUrl: string) => setSelectedImage(imageUrl);
@@ -577,7 +581,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
           <div className="flex flex-wrap gap-2 p-0 pb-1 transition-all duration-300">
             {files.map((file, index) => (
               <div key={index} className="relative group">
-                {file.type.startsWith("image/") && filePreviews[file.name] && (
+                {file.type.startsWith("image/") && filePreviews[file.name] ? (
                   <div
                     className="w-16 h-16 rounded-xl overflow-hidden cursor-pointer transition-all duration-300"
                     onClick={() => openImageModal(filePreviews[file.name])}
@@ -593,6 +597,17 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
                         handleRemoveFile(index);
                       }}
                       className="absolute top-1 right-1 rounded-full bg-black/70 p-0.5 opacity-100 transition-opacity"
+                    >
+                      <X className="h-3 w-3 text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 pl-2.5 pr-1 py-1.5 rounded-xl bg-zinc-800/80 border border-zinc-700 text-xs text-zinc-200 max-w-[220px]">
+                    <Paperclip className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+                    <span className="truncate" title={file.name}>{file.name}</span>
+                    <button
+                      onClick={() => handleRemoveFile(index)}
+                      className="rounded-full bg-black/40 hover:bg-black/60 p-0.5 shrink-0"
                     >
                       <X className="h-3 w-3 text-white" />
                     </button>
@@ -638,7 +653,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
               isRecording ? "opacity-0 invisible h-0" : "opacity-100 visible"
             )}
           >
-            <PromptInputAction tooltip="Upload image">
+            <PromptInputAction tooltip="Attach file">
               <button
                 onClick={() => uploadInputRef.current?.click()}
                 className="flex h-8 w-8 text-[#9CA3AF] cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-600/30 hover:text-[#D1D5DB]"
@@ -648,12 +663,14 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
                 <input
                   ref={uploadInputRef}
                   type="file"
+                  multiple
                   className="hidden"
                   onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) processFile(e.target.files[0]);
+                    if (e.target.files && e.target.files.length > 0) {
+                      Array.from(e.target.files).forEach(processFile);
+                    }
                     if (e.target) e.target.value = "";
                   }}
-                  accept="image/*"
                 />
               </button>
             </PromptInputAction>
