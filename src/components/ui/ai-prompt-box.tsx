@@ -653,7 +653,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
               isRecording ? "opacity-0 invisible h-0" : "opacity-100 visible"
             )}
           >
-            <PromptInputAction tooltip="Upload image">
+            <PromptInputAction tooltip="Attach file">
               <button
                 onClick={() => uploadInputRef.current?.click()}
                 className="flex h-8 w-8 text-[#9CA3AF] cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-600/30 hover:text-[#D1D5DB]"
@@ -663,12 +663,14 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
                 <input
                   ref={uploadInputRef}
                   type="file"
+                  multiple
                   className="hidden"
                   onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) processFile(e.target.files[0]);
+                    if (e.target.files && e.target.files.length > 0) {
+                      Array.from(e.target.files).forEach(processFile);
+                    }
                     if (e.target) e.target.value = "";
                   }}
-                  accept="image/*"
                 />
               </button>
             </PromptInputAction>
