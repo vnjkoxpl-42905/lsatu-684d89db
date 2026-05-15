@@ -7,9 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface CalloutProps { title: string; children: React.ReactNode; variant?: 'default' | 'plain'; }
 const Callout = ({ title, children, variant = 'default' }: CalloutProps) => (
-  <div className={cn("p-6 rounded-xl border-4 border-brutal-ink mb-6 brutal-shadow-sm", variant === 'default' ? "bg-brutal-yellow" : "bg-white")}>
+  <div className={cn("p-6 md:p-7 border-2 border-brutal-ink mb-6", variant === 'default' ? "bg-brutal-yellow" : "bg-white")}>
     <h4 className="text-xs font-black uppercase tracking-widest mb-3 text-brutal-ink">{title}</h4>
-    <div className="font-bold text-brutal-ink">{children}</div>
+    <div className="text-brutal-ink">{children}</div>
   </div>
 );
 
@@ -477,21 +477,21 @@ export default function LessonReader({
     switch (lesson.id) {
       case 'why_hard':
         return (
-          <div className="space-y-12 text-brutal-ink font-bold text-[18px] leading-tight">
-            <p className="max-w-[760px] mx-auto text-2xl font-black uppercase italic tracking-tight text-brutal-ink">The LSAT is not written in English.</p>
-            <p className="max-w-[760px] mx-auto">It looks like English. The words are English. But answer choices often use normal words in a very specific LSAT way.</p>
-            <p className="max-w-[760px] mx-auto">The hard part is not always understanding the stimulus. The hard part is understanding what the answer choice is <span className="underline decoration-brutal-red decoration-4">actually describing</span>.</p>
-            
-            <div className="max-w-[760px] mx-auto">
+          <div className="space-y-8 text-brutal-ink max-w-[720px] mx-auto">
+            <p className="text-2xl font-black tracking-tight text-brutal-ink">The LSAT is not written in English.</p>
+            <p>It looks like English. The words are English. But answer choices often use normal words in a very specific LSAT way.</p>
+            <p>The hard part is not always understanding the stimulus. The hard part is understanding what the answer choice is <span className="font-semibold bg-brutal-yellow/60 px-1">actually describing</span>.</p>
+
+            <div>
               <Callout title="THE CHALLENGE">
-                <p className="text-xl">Abstract answer choices are hard because they describe simple ideas in abstract language.</p>
-                <p className="mt-4 text-brutal-ink bg-brutal-cyan px-2 py-1 inline-block">Your job is to translate that language into the exact thing it refers to in the stimulus.</p>
+                <p className="text-lg leading-relaxed">Abstract answer choices are hard because they describe simple ideas in abstract language.</p>
+                <p className="mt-4 leading-relaxed">Your job is to translate that language into <span className="font-semibold bg-brutal-paper/80 px-1">the exact thing it refers to in the stimulus</span>.</p>
               </Callout>
             </div>
 
-            <div className="space-y-6 max-w-[760px] mx-auto">
-              <p className="text-xs uppercase font-black tracking-widest opacity-50">Example answer choice</p>
-              <div className="bg-white p-12 border-4 border-brutal-ink brutal-shadow-lg relative">
+            <div className="space-y-4">
+              <p className="text-xs uppercase font-black tracking-widest text-brutal-ink-soft">Example answer choice</p>
+              <div className="bg-white p-7 md:p-8 border-4 border-brutal-ink brutal-shadow relative">
                 <div className="absolute top-0 right-0 w-8 h-8 bg-brutal-red border-l-4 border-b-4 border-brutal-ink"></div>
                 <p className="text-[24px] leading-tight text-brutal-ink font-black tracking-tighter uppercase italic text-center">
                   “It is a <span className={cn("transition-colors duration-300 rounded px-1 border-2 border-transparent", activeKeyword === 'hypothesis' ? "bg-brutal-yellow border-brutal-ink" : "")}>hypothesis</span> that the argument attempts to <span className={cn("transition-colors duration-300 rounded px-1 border-2 border-transparent", activeKeyword === 'undermine' ? "bg-brutal-pink border-brutal-ink" : "")}>undermine</span> by calling into question the <span className={cn("transition-colors duration-300 rounded px-1 border-2 border-transparent", activeKeyword === 'sufficiency' ? "bg-brutal-cyan border-brutal-ink" : "")}>sufficiency of the evidence</span>.”
@@ -787,7 +787,7 @@ export default function LessonReader({
               </Callout>
             </div>
             
-            <p className="max-w-[760px] mx-auto text-brutal-red font-black uppercase italic tracking-tighter underline decoration-4 underline-offset-4">If one meaningful part does not match, the answer is dead on arrival.</p>
+            <p className="max-w-[760px] mx-auto text-brutal-ink font-black tracking-tight"><span className="bg-brutal-yellow/70 px-1">If one meaningful part does not match, the answer is dead on arrival.</span></p>
           </div>
         );
 
