@@ -347,33 +347,52 @@ function ModuleNote({
   const { markNoteRead, bootcampState } = useApp();
   const mod = getModule(moduleId)!;
   const lesson = LESSONS.find((l) => l.id === mod.noteLessonId);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const [reachedEnd, setReachedEnd] = useState(false);
   const [marked, setMarked] = useState(
     Boolean(bootcampState.moduleProgress[moduleId]?.noteComplete),
   );
   const [pulse, setPulse] = useState(false);
 
-  // Scroll-aware enable: button activates once the student scrolls within
-  // 200px of the bottom of the note container.
+  // Read-aware enable: watch a sentinel placed right after the lesson
+  // body. The button activates once the sentinel comes into view inside
+  // the scrolling ancestor (AppShell's main area). Walking up the DOM to
+  // find the scroll container lets us use IntersectionObserver with that
+  // ancestor as root, which behaves correctly when the page itself
+  // scrolls rather than the lesson card.
   useEffect(() => {
-    const el = scrollRef.current;
+    const el = sentinelRef.current;
     if (!el) return;
-    const onScroll = () => {
-      const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
-      if (remaining <= 200 && !reachedEnd) {
-        setReachedEnd(true);
-        setPulse(true);
-        setTimeout(() => setPulse(false), 800);
+    let parent: HTMLElement | null = el.parentElement;
+    let root: HTMLElement | null = null;
+    while (parent) {
+      const style = window.getComputedStyle(parent);
+      const overflowY = style.overflowY;
+      if (overflowY === "auto" || overflowY === "scroll") {
+        root = parent;
+        break;
       }
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    // If the note is short enough to fit without scrolling, enable immediately.
-    if (el.scrollHeight <= el.clientHeight + 4) {
-      setReachedEnd(true);
+      parent = parent.parentElement;
     }
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [reachedEnd]);
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setReachedEnd((prev) => {
+              if (!prev) {
+                setPulse(true);
+                setTimeout(() => setPulse(false), 800);
+              }
+              return true;
+            });
+          }
+        }
+      },
+      { root, rootMargin: "0px 0px -120px 0px", threshold: 0 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const onMark = async () => {
     await markNoteRead(moduleId);
@@ -387,14 +406,12 @@ function ModuleNote({
       </h2>
       <p className="font-bold text-brutal-ink-soft mb-6">{mod.subtitle}</p>
 
-      <div
-        ref={scrollRef}
-        className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar"
-      >
+      <div className="bg-brutal-paper border-4 border-brutal-ink brutal-shadow mb-6">
         <div className="px-6 md:px-10 py-8 md:py-12">
           <LessonBody lessonId={mod.noteLessonId} />
         </div>
       </div>
+      <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
 
       <AnimatePresence mode="wait">
         {!marked ? (
