@@ -16,9 +16,12 @@ import type {
   ConfidenceLevel,
   DrillType,
   GauntletAttempt,
+  ModulePartName,
+  ModuleProgressRow,
   TranslatorAttempt,
   ViewState,
 } from "../types";
+import { MODULES, type ModuleId, getModule } from "../data/modules";
 import {
   fetchDrillAttempts,
   fetchGauntletAttempts,
@@ -40,8 +43,24 @@ import type { FlashcardRating } from "@/components/teacher/bootcamps/hooks/useFl
 interface AppContextType {
   currentView: ViewState;
   setCurrentView: (view: ViewState) => void;
+  currentModuleId: ModuleId | null;
+  setCurrentModuleId: (id: ModuleId | null) => void;
+  openModule: (id: ModuleId) => void;
   bootcampState: BootcampState;
   loading: boolean;
+  markNoteRead: (moduleId: ModuleId) => Promise<BootcampMutationResult>;
+  recordQuizScore: (
+    moduleId: ModuleId,
+    score: number,
+    total: number,
+    streakHigh: number,
+  ) => Promise<BootcampMutationResult>;
+  markModuleDrillComplete: (moduleId: ModuleId) => Promise<BootcampMutationResult>;
+  isModuleUnlocked: (moduleId: ModuleId) => boolean;
+  isPartUnlocked: (moduleId: ModuleId, part: ModulePartName) => boolean;
+  isModuleComplete: (moduleId: ModuleId) => boolean;
+  addXp: (amount: number) => void;
+  bumpStreakActivity: () => void;
   markLessonComplete: (lessonId: string) => Promise<BootcampMutationResult>;
   markDrillComplete: (
     drillId: string,
@@ -74,8 +93,47 @@ const defaultState: BootcampState = {
   gauntletAttempts: [],
   translatorAttempts: [],
   cards: {},
+  moduleProgress: {},
+  xpTotal: 0,
+  dailyStreak: 0,
+  aceBadges: [],
   drillsStats: {},
 };
+
+const MODULE_LOCAL_KEY = "lsatu_abstract_v3_modules";
+
+function loadModuleCache(): {
+  moduleProgress: Record<string, ModuleProgressRow>;
+  xpTotal: number;
+  dailyStreak: number;
+  dailyStreakLastActive?: string;
+  aceBadges: string[];
+} {
+  try {
+    const raw = localStorage.getItem(MODULE_LOCAL_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {
+    console.error("Failed to load Abstract v3 module cache", e);
+  }
+  return { moduleProgress: {}, xpTotal: 0, dailyStreak: 0, aceBadges: [] };
+}
+
+function persistModuleCache(state: BootcampState) {
+  try {
+    localStorage.setItem(
+      MODULE_LOCAL_KEY,
+      JSON.stringify({
+        moduleProgress: state.moduleProgress,
+        xpTotal: state.xpTotal,
+        dailyStreak: state.dailyStreak,
+        dailyStreakLastActive: state.dailyStreakLastActive,
+        aceBadges: state.aceBadges,
+      }),
+    );
+  } catch (e) {
+    console.error("Failed to persist Abstract v3 module cache", e);
+  }
+}
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -114,10 +172,19 @@ function describeError(error: unknown): string | undefined {
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user, authReady } = useAuth();
   const [currentView, setCurrentView] = useState<ViewState>("dashboard");
-  const [bootcampState, setBootcampState] = useState<BootcampState>(() => ({
-    ...defaultState,
-    cards: loadCardsCache(),
-  }));
+  const [currentModuleId, setCurrentModuleId] = useState<ModuleId | null>(null);
+  const [bootcampState, setBootcampState] = useState<BootcampState>(() => {
+    const moduleCache = loadModuleCache();
+    return {
+      ...defaultState,
+      cards: loadCardsCache(),
+      moduleProgress: moduleCache.moduleProgress,
+      xpTotal: moduleCache.xpTotal,
+      dailyStreak: moduleCache.dailyStreak,
+      dailyStreakLastActive: moduleCache.dailyStreakLastActive,
+      aceBadges: moduleCache.aceBadges,
+    };
+  });
   const [loading, setLoading] = useState(true);
 
   // Hydrate from Supabase on mount whenever we have an authed user.
@@ -480,12 +547,208 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [user],
   );
 
+  // --- Module gating + gamification ---
+
+  const writeModuleRow = useCallback(
+    (moduleId: ModuleId, patch: Partial<ModuleProgressRow>) => {
+      setBootcampState((prev) => {
+        const existing: ModuleProgressRow = prev.moduleProgress[moduleId] || {
+          moduleId,
+          noteComplete: false,
+          quizScore: 0,
+          quizTotal: 0,
+          quizStreakHigh: 0,
+          drillComplete: false,
+          aced: false,
+        };
+        const merged: ModuleProgressRow = { ...existing, ...patch, moduleId };
+        const nextProgress = { ...prev.moduleProgress, [moduleId]: merged };
+        const nextState: BootcampState = { ...prev, moduleProgress: nextProgress };
+        persistModuleCache(nextState);
+        return nextState;
+      });
+    },
+    [],
+  );
+
+  const addXp = useCallback((amount: number) => {
+    if (!amount) return;
+    setBootcampState((prev) => {
+      const next: BootcampState = { ...prev, xpTotal: prev.xpTotal + amount };
+      persistModuleCache(next);
+      return next;
+    });
+  }, []);
+
+  const bumpStreakActivity = useCallback(() => {
+    setBootcampState((prev) => {
+      const today = new Date().toISOString().slice(0, 10);
+      if (prev.dailyStreakLastActive === today) return prev;
+      const yesterday = new Date(Date.now() - 86400_000).toISOString().slice(0, 10);
+      const next: BootcampState = {
+        ...prev,
+        dailyStreak:
+          prev.dailyStreakLastActive === yesterday ? prev.dailyStreak + 1 : 1,
+        dailyStreakLastActive: today,
+      };
+      persistModuleCache(next);
+      return next;
+    });
+  }, []);
+
+  const markNoteRead = useCallback(
+    async (moduleId: ModuleId): Promise<BootcampMutationResult> => {
+      const mod = getModule(moduleId);
+      if (!mod) return { ok: false, error: new Error("unknown module") };
+      writeModuleRow(moduleId, { noteComplete: true });
+      addXp(10);
+      bumpStreakActivity();
+      // Persist via existing lesson-complete pathway so chapter_progress
+      // mirror stays consistent. {ok,error} returned upstream.
+      return await markLessonComplete(mod.noteLessonId);
+    },
+    [writeModuleRow, addXp, bumpStreakActivity, markLessonComplete],
+  );
+
+  const recordQuizScore = useCallback(
+    async (
+      moduleId: ModuleId,
+      score: number,
+      total: number,
+      streakHigh: number,
+    ): Promise<BootcampMutationResult> => {
+      writeModuleRow(moduleId, {
+        quizScore: score,
+        quizTotal: total,
+        quizStreakHigh: streakHigh,
+      });
+      addXp(score);
+      bumpStreakActivity();
+      if (!user) return { ok: true };
+      const mirror = await recordChapterProgress(
+        user.id,
+        TOPIC_TAG,
+        `module_${moduleId}_quiz`,
+      );
+      if (!mirror.ok) {
+        console.error("chapter_progress mirror failed for module quiz", moduleId, mirror.error);
+      }
+      return { ok: true };
+    },
+    [writeModuleRow, addXp, bumpStreakActivity, user],
+  );
+
+  const markModuleDrillComplete = useCallback(
+    async (moduleId: ModuleId): Promise<BootcampMutationResult> => {
+      const mod = getModule(moduleId);
+      if (!mod) return { ok: false, error: new Error("unknown module") };
+      setBootcampState((prev) => {
+        const existing: ModuleProgressRow = prev.moduleProgress[moduleId] || {
+          moduleId,
+          noteComplete: false,
+          quizScore: 0,
+          quizTotal: 0,
+          quizStreakHigh: 0,
+          drillComplete: false,
+          aced: false,
+        };
+        const quizPerfect = existing.quizTotal > 0 && existing.quizScore === existing.quizTotal;
+        const drillStats = mod.drillIds.map((id) =>
+          prev.drillAttempts.filter((a) => a.drillId === id),
+        );
+        const lastAttemptCorrect = drillStats.every(
+          (attempts) => attempts.length > 0 && attempts[attempts.length - 1].correct,
+        );
+        const aced = quizPerfect && lastAttemptCorrect;
+        const merged: ModuleProgressRow = {
+          ...existing,
+          drillComplete: true,
+          aced,
+          completedAt: new Date().toISOString(),
+        };
+        const nextProgress = { ...prev.moduleProgress, [moduleId]: merged };
+        const nextAceBadges = aced && !prev.aceBadges.includes(moduleId)
+          ? [...prev.aceBadges, moduleId]
+          : prev.aceBadges;
+        const next: BootcampState = {
+          ...prev,
+          moduleProgress: nextProgress,
+          aceBadges: nextAceBadges,
+        };
+        persistModuleCache(next);
+        return next;
+      });
+      bumpStreakActivity();
+      if (!user) return { ok: true };
+      const mirror = await recordChapterProgress(
+        user.id,
+        TOPIC_TAG,
+        `module_${moduleId}`,
+      );
+      if (!mirror.ok) {
+        console.error("chapter_progress mirror failed for module", moduleId, mirror.error);
+      }
+      return { ok: true };
+    },
+    [bumpStreakActivity, user],
+  );
+
+  const isModuleUnlocked = useCallback(
+    (moduleId: ModuleId): boolean => {
+      if (moduleId === "m1") return true;
+      const idx = MODULES.findIndex((m) => m.id === moduleId);
+      if (idx <= 0) return true;
+      const prevModule = MODULES[idx - 1];
+      const prevRow = bootcampState.moduleProgress[prevModule.id];
+      return Boolean(prevRow?.drillComplete);
+    },
+    [bootcampState.moduleProgress],
+  );
+
+  const isPartUnlocked = useCallback(
+    (moduleId: ModuleId, part: ModulePartName): boolean => {
+      if (!isModuleUnlocked(moduleId)) return false;
+      const row = bootcampState.moduleProgress[moduleId];
+      if (part === "note") return true;
+      if (part === "quiz") return Boolean(row?.noteComplete);
+      // drill
+      if (!row?.noteComplete) return false;
+      const mod = getModule(moduleId);
+      if (!mod) return false;
+      const passed =
+        row.quizTotal > 0 && row.quizScore / row.quizTotal >= mod.quizPassThreshold;
+      return passed;
+    },
+    [bootcampState.moduleProgress, isModuleUnlocked],
+  );
+
+  const isModuleComplete = useCallback(
+    (moduleId: ModuleId): boolean => Boolean(bootcampState.moduleProgress[moduleId]?.drillComplete),
+    [bootcampState.moduleProgress],
+  );
+
+  const openModule = useCallback((id: ModuleId) => {
+    setCurrentModuleId(id);
+    setCurrentView("module");
+  }, []);
+
   const value = useMemo<AppContextType>(
     () => ({
       currentView,
       setCurrentView,
+      currentModuleId,
+      setCurrentModuleId,
+      openModule,
       bootcampState,
       loading,
+      markNoteRead,
+      recordQuizScore,
+      markModuleDrillComplete,
+      isModuleUnlocked,
+      isPartUnlocked,
+      isModuleComplete,
+      addXp,
+      bumpStreakActivity,
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,
@@ -496,8 +759,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }),
     [
       currentView,
+      currentModuleId,
+      openModule,
       bootcampState,
       loading,
+      markNoteRead,
+      recordQuizScore,
+      markModuleDrillComplete,
+      isModuleUnlocked,
+      isPartUnlocked,
+      isModuleComplete,
+      addXp,
+      bumpStreakActivity,
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,

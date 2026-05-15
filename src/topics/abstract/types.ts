@@ -1,6 +1,19 @@
 export type ConfidenceLevel = 'Guessing' | 'Unsure' | 'Pretty sure' | 'Confident';
 
-export type ViewState = 'dashboard' | 'drill' | 'completion_report' | 'lesson' | 'flashcards' | 'methods_library' | 'mixed_practice' | 'timed_final_set' | 'extraction_workspace' | 'translator_workspace' | 'decoding_gauntlet' | 'timed_set';
+export type ViewState = 'dashboard' | 'drill' | 'completion_report' | 'lesson' | 'flashcards' | 'methods_library' | 'mixed_practice' | 'timed_final_set' | 'extraction_workspace' | 'translator_workspace' | 'decoding_gauntlet' | 'timed_set' | 'module';
+
+export type ModulePartName = 'note' | 'quiz' | 'drill';
+
+export interface ModuleProgressRow {
+  moduleId: string;
+  noteComplete: boolean;
+  quizScore: number;
+  quizTotal: number;
+  quizStreakHigh: number;
+  drillComplete: boolean;
+  aced: boolean;
+  completedAt?: string;
+}
 
 export type DrillType = 
   | 'keyword_extraction'
@@ -107,6 +120,11 @@ export interface BootcampState {
   gauntletAttempts: GauntletAttempt[];
   translatorAttempts: TranslatorAttempt[];
   cards: Record<string, CardReview>;
+  moduleProgress: Record<string, ModuleProgressRow>;
+  xpTotal: number;
+  dailyStreak: number;
+  dailyStreakLastActive?: string;
+  aceBadges: string[];
   finalSetScore?: {
     score: number;
     total: number;
