@@ -198,3 +198,33 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+/* Step 6 typography + focus polish.
+ *
+ * Visible 3px brutal-yellow outline on every interactive element when
+ * focused via keyboard. Uses :focus-visible so mouse clicks do not
+ * trigger the ring; only keyboard navigation does.
+ *
+ * Locked rows lose the brutal-shadow per spec: applied where the
+ * .brutal-locked utility is used on a tile.
+ */
+.topic-abstract :focus-visible {
+  outline: 3px solid var(--brutal-yellow);
+  outline-offset: 2px;
+}
+
+.topic-abstract .brutal-locked {
+  box-shadow: none !important;
+}
+
+/* Body text rhythm: 16px / 1.6 inside .brutal-prose blocks. Card headers
+ * stay at the size set by the component; this only affects opt-in prose
+ * containers so legacy LessonReader headlines are untouched. */
+.topic-abstract .brutal-prose {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.topic-abstract .brutal-prose p + p {
+  margin-top: 16px;
+}
