@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   CheckCircle2,
@@ -22,6 +22,7 @@ import {
   getModule,
 } from "../../data/modules";
 import { LESSONS } from "../../data/lessons";
+import LessonBody from "./LessonBody";
 import { DRILLS } from "../../data/drills";
 import { TRANSLATOR_ITEMS } from "../../data/translatorItems";
 import { MATCHING_ITEMS } from "../../data/matchingItems";
@@ -111,7 +112,11 @@ export default function ModuleView() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ModuleNote moduleId={currentModuleId} onDone={() => setStage("overview")} />
+            <ModuleNote
+              moduleId={currentModuleId}
+              onDone={() => setStage("overview")}
+              onStartQuiz={() => setStage("quiz")}
+            />
           </motion.div>
         )}
         {stage === "quiz" && (
@@ -314,46 +319,108 @@ function quizItemCount(source: QuizSource): number {
 
 // ============ Note ============
 
-function ModuleNote({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => void }) {
-  const { markNoteRead, setCurrentView } = useApp();
+function ModuleNote({
+  moduleId,
+  onDone,
+  onStartQuiz,
+}: {
+  moduleId: ModuleId;
+  onDone: () => void;
+  onStartQuiz: () => void;
+}) {
+  const { markNoteRead, bootcampState } = useApp();
   const mod = getModule(moduleId)!;
   const lesson = LESSONS.find((l) => l.id === mod.noteLessonId);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [reachedEnd, setReachedEnd] = useState(false);
+  const [marked, setMarked] = useState(
+    Boolean(bootcampState.moduleProgress[moduleId]?.noteComplete),
+  );
+  const [pulse, setPulse] = useState(false);
+
+  // Scroll-aware enable: button activates once the student scrolls within
+  // 200px of the bottom of the note container.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
+      if (remaining <= 200 && !reachedEnd) {
+        setReachedEnd(true);
+        setPulse(true);
+        setTimeout(() => setPulse(false), 800);
+      }
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    // If the note is short enough to fit without scrolling, enable immediately.
+    if (el.scrollHeight <= el.clientHeight + 4) {
+      setReachedEnd(true);
+    }
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [reachedEnd]);
+
+  const onMark = async () => {
+    await markNoteRead(moduleId);
+    setMarked(true);
+  };
 
   return (
     <div>
-      <h2 className="text-2xl font-black uppercase tracking-tight mb-4">
+      <h2 className="text-2xl font-black uppercase tracking-tight mb-2">
         Note: {lesson?.title ?? mod.name}
       </h2>
-      <p className="font-bold text-brutal-ink-soft mb-6">
-        {mod.subtitle}
-      </p>
-      <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow mb-6">
-        <p className="font-bold mb-4">
-          The full lesson opens in the dedicated reader so the formatting, callouts, and worked examples render as designed.
-        </p>
-        <button
-          type="button"
-          onClick={() => setCurrentView("lesson")}
-          className="brutal-btn bg-brutal-cyan inline-flex items-center gap-2"
-        >
-          <BookOpen className="w-4 h-4" /> Open lesson reader
-        </button>
+      <p className="font-bold text-brutal-ink-soft mb-6">{mod.subtitle}</p>
+
+      <div
+        ref={scrollRef}
+        className="bg-brutal-paper border-4 border-brutal-ink mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar"
+      >
+        <div className="p-6 md:p-8">
+          <LessonBody lessonId={mod.noteLessonId} />
+        </div>
       </div>
-      <div className="flex items-center justify-between gap-4">
-        <button
-          type="button"
-          onClick={async () => {
-            await markNoteRead(moduleId);
-            onDone();
-          }}
-          className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
+
+      {!marked ? (
+        <div className="flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={onMark}
+            disabled={!reachedEnd}
+            className={cn(
+              "brutal-btn inline-flex items-center gap-2",
+              reachedEnd ? "bg-brutal-green" : "bg-brutal-paper",
+              pulse && "animate-pulse",
+            )}
+            title={reachedEnd ? "Mark this note as read" : "Scroll to the bottom to enable"}
+          >
+            <CheckCircle2 className="w-4 h-4" /> I read this
+          </button>
+          <span className="text-xs font-black uppercase tracking-wider text-brutal-ink-soft">
+            {reachedEnd ? "+10 XP" : "Scroll to enable"}
+          </span>
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          className="bg-brutal-cyan border-4 border-brutal-ink p-5 flex items-center justify-between gap-4"
         >
-          <CheckCircle2 className="w-4 h-4" /> I read this
-        </button>
-        <span className="text-xs font-black uppercase tracking-wider text-brutal-ink-soft">
-          +10 XP
-        </span>
-      </div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-widest mb-1">
+              Note complete
+            </p>
+            <p className="font-bold">Ready for the quiz.</p>
+          </div>
+          <button
+            type="button"
+            onClick={onStartQuiz}
+            className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
+          >
+            Start quiz <ArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
+      )}
     </div>
   );
 }

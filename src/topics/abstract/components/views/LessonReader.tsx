@@ -384,11 +384,24 @@ const DecodeGauntlet = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-export default function LessonReader() {
+interface LessonReaderProps {
+  lockedLessonId?: string;
+  hideNav?: boolean;
+  hideComplete?: boolean;
+  onComplete?: () => void;
+}
+
+export default function LessonReader({
+  lockedLessonId,
+  hideNav,
+  hideComplete,
+  onComplete,
+}: LessonReaderProps = {}) {
   const { bootcampState, markLessonComplete, setCurrentView } = useApp();
-  
+
   const firstUncompletedId = LESSONS.find(l => !bootcampState.completedLessons.includes(l.id))?.id || LESSONS[0].id;
-  const [currentLessonId, setCurrentLessonId] = useState(firstUncompletedId);
+  const [internalLessonId, setCurrentLessonId] = useState(firstUncompletedId);
+  const currentLessonId = lockedLessonId ?? internalLessonId;
   const [openCardId, setOpenCardId] = useState<number | null>(null);
   const [activeKeyword, setActiveKeyword] = useState<'hypothesis' | 'undermine' | 'sufficiency'>('hypothesis');
   const [hoveredKeyword, setHoveredKeyword] = useState<string | null>(null);
@@ -437,6 +450,10 @@ export default function LessonReader() {
 
   const handleComplete = () => {
     markLessonComplete(lesson.id);
+    if (onComplete) {
+      onComplete();
+      return;
+    }
     if (currentIndex < LESSONS.length - 1) {
       setCurrentLessonId(LESSONS[currentIndex + 1].id);
       setOpenCardId(null);
@@ -930,6 +947,7 @@ export default function LessonReader() {
 
   return (
     <div className="max-w-[720px] mx-auto z-10 relative">
+      {!hideNav && (
       <div className="flex items-center justify-between mb-12">
         <div className="flex flex-col">
           <span className="text-[10px] font-black text-white bg-brutal-ink px-2 py-0.5 rotate-[-2deg] brutal-shadow-sm uppercase tracking-widest w-fit">In Progress</span>
@@ -962,6 +980,7 @@ export default function LessonReader() {
           )}
         </div>
       </div>
+      )}
 
       <article className="mb-12 bg-white p-8 md:p-14 rounded-xl border-4 border-brutal-ink brutal-shadow-lg z-10 relative">
         <div className="inline-block bg-brutal-pink px-3 py-1 border-2 border-brutal-ink mb-6 rotate-[-1deg] brutal-shadow-sm">
@@ -971,6 +990,7 @@ export default function LessonReader() {
         {renderContent()}
       </article>
 
+      {!hideComplete && (
       <div className="bg-brutal-yellow border-4 border-brutal-ink rounded-xl p-10 flex flex-col sm:flex-row items-center justify-between gap-8 relative overflow-hidden brutal-shadow-lg mb-12">
         <div className="relative z-10">
           <h4 className="font-black text-2xl text-brutal-ink uppercase tracking-tighter leading-none mb-2">Ready to move on?</h4>
@@ -1000,6 +1020,7 @@ export default function LessonReader() {
           )}
         </button>
       </div>
+      )}
     </div>
   );
 }
