@@ -50,6 +50,7 @@ interface AppContextType {
     selectedIndex?: number,
     confidence?: ConfidenceLevel,
     trapTag?: string,
+    timeMs?: number,
   ) => Promise<BootcampMutationResult>;
   recordGauntletItem: (
     attempt: Omit<GauntletAttempt, "completedAt">,
@@ -158,6 +159,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             correct: r.correct,
             confidence: r.confidence as ConfidenceLevel,
             trapTag: r.trap_tag ?? undefined,
+            timeMs: r.time_ms ?? undefined,
             completedAt: r.completed_at,
           })),
           gauntletAttempts: gauntlets.map((r) => ({
@@ -241,6 +243,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       selectedIndex: number = -1,
       confidence: ConfidenceLevel = "Pretty sure",
       trapTag?: string,
+      timeMs?: number,
     ): Promise<BootcampMutationResult> => {
       const completedAt = new Date().toISOString();
       setBootcampState((prev) => {
@@ -252,7 +255,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             : [...prev.completedDrills, drillId],
           drillAttempts: [
             ...prev.drillAttempts,
-            { drillId, drillType, selectedIndex, correct, confidence, trapTag, completedAt },
+            { drillId, drillType, selectedIndex, correct, confidence, trapTag, timeMs, completedAt },
           ],
           drillsStats: {
             ...prev.drillsStats,
@@ -273,6 +276,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         correct,
         confidence,
         trapTag,
+        timeMs,
       });
       if (!res.ok) {
         if (isSessionDeadError(res.error)) {

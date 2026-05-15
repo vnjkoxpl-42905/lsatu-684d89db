@@ -54,6 +54,9 @@ export interface DrillAttempt {
   correct: boolean;
   confidence: ConfidenceLevel;
   trapTag?: string;
+  // Response time in ms (from stimulus visible to Submit click). Optional
+  // so legacy attempts without instrumentation can hydrate without backfill.
+  timeMs?: number;
   completedAt: string;
 }
 

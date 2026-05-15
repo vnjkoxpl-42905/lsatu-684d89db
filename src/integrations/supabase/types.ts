@@ -23,6 +23,7 @@ export type Database = {
           drill_type: string
           id: string
           selected_index: number
+          time_ms: number | null
           trap_tag: string | null
           user_id: string
         }
@@ -34,6 +35,7 @@ export type Database = {
           drill_type: string
           id?: string
           selected_index: number
+          time_ms?: number | null
           trap_tag?: string | null
           user_id: string
         }
@@ -45,6 +47,7 @@ export type Database = {
           drill_type?: string
           id?: string
           selected_index?: number
+          time_ms?: number | null
           trap_tag?: string | null
           user_id?: string
         }

@@ -68,6 +68,7 @@ export interface DrillAttemptInput {
   correct: boolean;
   confidence: ConfidenceLevel;
   trapTag?: string;
+  timeMs?: number;
 }
 
 export async function insertDrillAttempt(
@@ -82,6 +83,7 @@ export async function insertDrillAttempt(
     correct: attempt.correct,
     confidence: attempt.confidence,
     trap_tag: attempt.trapTag ?? null,
+    time_ms: attempt.timeMs ?? null,
   });
   if (error) return { ok: false, error };
   return { ok: true };
@@ -90,7 +92,7 @@ export async function insertDrillAttempt(
 export async function fetchDrillAttempts(userId: string) {
   const { data, error } = await supabase
     .from("abstract_drill_attempts")
-    .select("drill_id, drill_type, selected_index, correct, confidence, trap_tag, completed_at")
+    .select("drill_id, drill_type, selected_index, correct, confidence, trap_tag, time_ms, completed_at")
     .eq("user_id", userId)
     .order("completed_at", { ascending: false });
   if (error) throw error;
