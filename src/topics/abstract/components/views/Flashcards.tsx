@@ -250,28 +250,34 @@ export const Flashcards: React.FC = () => {
           {isFlipped ? (
             <section
               aria-label="Rate this card"
-              className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3"
+              className="mt-8 grid grid-cols-2 gap-3"
             >
-              {RATING_BUTTONS.map((btn) => (
-                <button
-                  key={btn.rating}
-                  type="button"
-                  onClick={() => handleRate(btn.rating)}
-                  disabled={submitting}
-                  className={cn(
-                    "flex flex-col items-start gap-1 px-4 py-3 border-4 border-brutal-ink font-black uppercase tracking-[0.15em] text-left transition-transform brutal-shadow",
-                    btn.bg,
-                    btn.text,
-                    "hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--brutal-ink)]",
-                    "disabled:opacity-60 disabled:cursor-not-allowed",
-                  )}
-                >
-                  <span className="text-sm sm:text-base">{btn.label}</span>
-                  <span className="text-[10px] font-bold tracking-[0.1em] opacity-80 normal-case">
-                    {btn.hint}
-                  </span>
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={() => handleRate("again")}
+                disabled={submitting}
+                className={cn(
+                  "px-4 py-4 border-4 border-brutal-ink font-black uppercase tracking-[0.15em] text-left brutal-shadow",
+                  "bg-brutal-pink text-brutal-ink",
+                  "hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--brutal-ink)]",
+                  "disabled:opacity-60 disabled:cursor-not-allowed",
+                )}
+              >
+                <span className="text-base">Need review</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleRate("good")}
+                disabled={submitting}
+                className={cn(
+                  "px-4 py-4 border-4 border-brutal-ink font-black uppercase tracking-[0.15em] text-left brutal-shadow",
+                  "bg-brutal-green text-brutal-ink",
+                  "hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_var(--brutal-ink)]",
+                  "disabled:opacity-60 disabled:cursor-not-allowed",
+                )}
+              >
+                <span className="text-base">Got it</span>
+              </button>
             </section>
           ) : (
             <section
