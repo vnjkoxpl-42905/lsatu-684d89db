@@ -62,6 +62,8 @@ interface AppContextType {
   isModuleComplete: (moduleId: ModuleId) => boolean;
   addXp: (amount: number) => void;
   bumpStreakActivity: () => void;
+  autoAdvance: boolean;
+  setAutoAdvance: (v: boolean) => void;
   markLessonComplete: (lessonId: string) => Promise<BootcampMutationResult>;
   markDrillComplete: (
     drillId: string,
@@ -174,6 +176,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const { user, authReady } = useAuth();
   const [currentView, setCurrentView] = useState<ViewState>("dashboard");
   const [currentModuleId, setCurrentModuleId] = useState<ModuleId | null>(null);
+  const [autoAdvance, setAutoAdvance] = useState<boolean>(() => {
+    try {
+      const v = localStorage.getItem("lsatu_abstract_auto_advance");
+      return v == null ? true : v === "1";
+    } catch {
+      return true;
+    }
+  });
+  const handleSetAutoAdvance = useCallback((v: boolean) => {
+    setAutoAdvance(v);
+    try {
+      localStorage.setItem("lsatu_abstract_auto_advance", v ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, []);
   const [bootcampState, setBootcampState] = useState<BootcampState>(() => {
     const moduleCache = loadModuleCache();
     return {
@@ -767,6 +785,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isModuleComplete,
       addXp,
       bumpStreakActivity,
+      autoAdvance,
+      setAutoAdvance: handleSetAutoAdvance,
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,
@@ -789,6 +809,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isModuleComplete,
       addXp,
       bumpStreakActivity,
+      autoAdvance,
+      handleSetAutoAdvance,
       markLessonComplete,
       markDrillComplete,
       recordGauntletItem,

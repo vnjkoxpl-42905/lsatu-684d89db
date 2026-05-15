@@ -13,6 +13,10 @@ import {
   Trophy,
   Award,
   Medal,
+  Lightbulb,
+  HelpCircle,
+  Pause,
+  Play,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { computeMastery } from "../../lib/mastery";
@@ -514,15 +518,27 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
     }
   };
 
+  const progressPct = ((index) / items.length) * 100;
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
-          Item {index + 1} of {items.length}
-        </p>
+      <div className="flex items-center justify-between mb-3 gap-3">
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="text-[10px] font-black uppercase tracking-widest text-brutal-ink-soft">
+              Item {index + 1} of {items.length}
+            </p>
+            <KeyboardHelp />
+          </div>
+          <div className="h-2 bg-brutal-ink-trace border border-brutal-ink">
+            <div
+              className="h-full bg-brutal-ink transition-[width] duration-300"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+        </div>
         {streak >= 3 && (
-          <p className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider">
-            <Flame className="w-4 h-4" /> {streak} in a row
+          <p className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider shrink-0">
+            <Flame className="w-4 h-4" /> {streak}
           </p>
         )}
       </div>
@@ -534,6 +550,35 @@ function ModuleQuiz({ moduleId, onDone }: { moduleId: ModuleId; onDone: () => vo
         onNext={onNext}
       />
     </div>
+  );
+}
+
+function KeyboardHelp() {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="relative">
+      <button
+        type="button"
+        aria-label="Keyboard shortcuts"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        className="text-brutal-ink-soft hover:text-brutal-ink"
+      >
+        <HelpCircle className="w-4 h-4" />
+      </button>
+      {open && (
+        <span className="absolute right-0 top-full mt-1 w-60 bg-brutal-paper border-2 border-brutal-ink p-3 z-50 text-left text-xs font-bold normal-case tracking-normal pointer-events-none">
+          <span className="block text-[10px] font-black uppercase tracking-widest mb-1.5">
+            Keyboard
+          </span>
+          <span className="block">1 - 5: pick option</span>
+          <span className="block">Enter: submit</span>
+          <span className="block">Space: next</span>
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -603,8 +648,68 @@ function MultipleChoiceCard({
   onAnswer: (verdict: boolean | QuizVerdict) => void;
   onNext: () => void;
 }) {
+  const { autoAdvance } = useApp();
   const [picked, setPicked] = useState<number | null>(null);
+  const [eliminated, setEliminated] = useState<Set<number>>(new Set());
+  const [showHint, setShowHint] = useState(false);
+  const [hintUsed, setHintUsed] = useState(false);
+  const [paused, setPaused] = useState(false);
   const submitted = picked !== null;
+  const wasCorrect = picked === correctIndex;
+
+  useEffect(() => {
+    if (submitted) return;
+    const t = setTimeout(() => setShowHint(true), 30000);
+    return () => clearTimeout(t);
+  }, [submitted]);
+
+  const pick = (i: number) => {
+    if (submitted) return;
+    if (eliminated.has(i)) return;
+    setPicked(i);
+    const isCorrect = i === correctIndex;
+    const verdict: QuizVerdict = hintUsed
+      ? (isCorrect ? "partial" : "incorrect")
+      : (isCorrect ? "correct" : "incorrect");
+    onAnswer(verdict);
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (!submitted) {
+        const n = parseInt(e.key, 10);
+        if (!Number.isNaN(n) && n >= 1 && n <= options.length) {
+          e.preventDefault();
+          pick(n - 1);
+        }
+      } else if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        onNext();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitted, options.length]);
+
+  useEffect(() => {
+    if (!submitted || !wasCorrect || !autoAdvance || paused) return;
+    const t = setTimeout(onNext, 1200);
+    return () => clearTimeout(t);
+  }, [submitted, wasCorrect, autoAdvance, paused, onNext]);
+
+  const useHint = () => {
+    setHintUsed(true);
+    setShowHint(false);
+    for (let i = 0; i < options.length; i++) {
+      if (i !== correctIndex && !eliminated.has(i)) {
+        setEliminated(new Set([...eliminated, i]));
+        break;
+      }
+    }
+  };
+
   return (
     <div className="bg-brutal-paper border-4 border-brutal-ink p-6 brutal-shadow">
       {context && <div className="mb-5">{context}</div>}
@@ -613,8 +718,11 @@ function MultipleChoiceCard({
         {options.map((opt, i) => {
           const isCorrect = i === correctIndex;
           const isPicked = picked === i;
+          const isEliminated = eliminated.has(i);
           const tone = !submitted
-            ? "bg-white hover:bg-brutal-yellow/30"
+            ? isEliminated
+              ? "bg-white opacity-30 line-through"
+              : "bg-white hover:bg-brutal-yellow/30"
             : isCorrect
               ? "bg-brutal-green"
               : isPicked
@@ -624,33 +732,68 @@ function MultipleChoiceCard({
             <li key={i}>
               <button
                 type="button"
-                disabled={submitted}
-                onClick={() => {
-                  setPicked(i);
-                  onAnswer(isCorrect);
-                }}
+                disabled={submitted || isEliminated}
+                onClick={() => pick(i)}
                 className={cn(
                   "w-full text-left p-4 border-2 border-brutal-ink font-bold transition-colors",
                   tone,
                 )}
               >
+                <span className="text-brutal-ink-soft mr-2 text-xs">{i + 1}.</span>
                 {opt}
               </button>
             </li>
           );
         })}
       </ul>
+      {!submitted && showHint && (
+        <button
+          type="button"
+          onClick={useHint}
+          className="mt-4 inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider bg-brutal-yellow border-2 border-brutal-ink px-3 py-2"
+        >
+          <Lightbulb className="w-3.5 h-3.5" /> Need a hint?
+        </button>
+      )}
       {submitted && (
         <div className="mt-5 bg-brutal-cyan/30 border-2 border-brutal-ink p-4">
           <p className="text-xs font-black uppercase tracking-widest mb-2">Why</p>
           <p className="font-bold">{explanation}</p>
-          <button
-            type="button"
-            onClick={onNext}
-            className="mt-4 brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
-          >
-            Next <ArrowRight className="w-4 h-4" />
-          </button>
+          {hintUsed && (
+            <p className="text-xs italic mt-2 text-brutal-ink-soft">
+              Hint used: counted as partial credit.
+            </p>
+          )}
+          <div className="mt-4 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onNext}
+              className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
+            >
+              Next <ArrowRight className="w-4 h-4" />
+            </button>
+            {wasCorrect && autoAdvance && (
+              <button
+                type="button"
+                onClick={() => setPaused((p) => !p)}
+                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider"
+                aria-label={paused ? "Resume auto-advance" : "Pause auto-advance"}
+              >
+                {paused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                {paused ? "Resume" : "Pause"}
+              </button>
+            )}
+          </div>
+          {wasCorrect && autoAdvance && !paused && (
+            <div className="mt-3 h-1 bg-brutal-ink-trace border border-brutal-ink overflow-hidden">
+              <motion.div
+                className="h-full bg-brutal-ink"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.2, ease: "linear" }}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
