@@ -28,6 +28,7 @@ import {
 } from "../../data/modules";
 import { LESSONS } from "../../data/lessons";
 import LessonBody from "./LessonBody";
+import { TermText } from "./LSATTermCard";
 import { DRILLS } from "../../data/drills";
 import { TRANSLATOR_ITEMS } from "../../data/translatorItems";
 import { MATCHING_ITEMS } from "../../data/matchingItems";
@@ -897,7 +898,7 @@ function KeywordExtractionRenderer({
           <div className="bg-white border-2 border-brutal-ink p-4">
             <p className="text-xs font-black uppercase tracking-widest mb-2">Walkthrough</p>
             {item.walkthrough.reasoning.map((p, i) => (
-              <p key={i} className="font-bold mb-2">{p}</p>
+              <p key={i} className="font-bold mb-2"><TermText>{p}</TermText></p>
             ))}
           </div>
           {item.walkthrough.vocab.length > 0 && (
