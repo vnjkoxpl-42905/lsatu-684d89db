@@ -396,47 +396,64 @@ function ModuleNote({
         </div>
       </div>
 
-      {!marked ? (
-        <div className="flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={onMark}
-            disabled={!reachedEnd}
-            className={cn(
-              "brutal-btn inline-flex items-center gap-2",
-              reachedEnd ? "bg-brutal-green" : "bg-brutal-paper",
-              pulse && "animate-pulse",
+      <AnimatePresence mode="wait">
+        {!marked ? (
+          <motion.div
+            key="read-row"
+            initial={false}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 flex-wrap"
+          >
+            <button
+              type="button"
+              onClick={onMark}
+              disabled={!reachedEnd}
+              className={cn(
+                "brutal-btn inline-flex items-center gap-2",
+                reachedEnd ? "bg-brutal-green" : "bg-brutal-paper",
+                pulse && "animate-pulse",
+              )}
+              title={reachedEnd ? "Mark this note as read" : "Scroll to the bottom to enable"}
+            >
+              <CheckCircle2 className="w-4 h-4" /> I read this
+            </button>
+            {reachedEnd ? (
+              <motion.span
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest bg-brutal-yellow border-2 border-brutal-ink px-3 py-1.5"
+              >
+                Ready
+              </motion.span>
+            ) : (
+              <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
+                Scroll to enable
+              </span>
             )}
-            title={reachedEnd ? "Mark this note as read" : "Scroll to the bottom to enable"}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="quiz-cta"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 flex-wrap"
           >
-            <CheckCircle2 className="w-4 h-4" /> I read this
-          </button>
-          <span className="text-xs font-black uppercase tracking-wider text-brutal-ink-soft">
-            {reachedEnd ? "+10 XP" : "Scroll to enable"}
-          </span>
-        </div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-brutal-cyan border-4 border-brutal-ink p-5 flex items-center justify-between gap-4"
-        >
-          <div>
-            <p className="text-xs font-black uppercase tracking-widest mb-1">
-              Note complete
-            </p>
-            <p className="font-bold">Ready for the quiz.</p>
-          </div>
-          <button
-            type="button"
-            onClick={onStartQuiz}
-            className="brutal-btn bg-brutal-yellow inline-flex items-center gap-2"
-          >
-            Start quiz <ArrowRight className="w-4 h-4" />
-          </button>
-        </motion.div>
-      )}
+            <button
+              type="button"
+              onClick={onStartQuiz}
+              className="brutal-btn bg-brutal-green inline-flex items-center gap-2"
+            >
+              Start quiz <ArrowRight className="w-4 h-4" />
+            </button>
+            <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
+              Quiz unlocked
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
