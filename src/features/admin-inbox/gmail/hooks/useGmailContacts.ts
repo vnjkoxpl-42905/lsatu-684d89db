@@ -18,7 +18,7 @@ export const gmailContactsQueryKey = () => ["gmail", "contacts"] as const;
  *   `supabase functions deploy gmail --project-ref qodidbkoqrmqhdfwvcmk`
  * and verifying the action responds.
  */
-const GMAIL_CONTACTS_ENABLED = false;
+const GMAIL_CONTACTS_ENABLED = true;
 
 export function useGmailContacts(opts?: { enabled?: boolean }) {
   return useQuery<GmailContact[]>({
