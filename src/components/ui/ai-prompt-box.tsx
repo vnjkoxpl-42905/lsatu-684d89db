@@ -471,18 +471,17 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   const isImageFile = (file: File) => file.type.startsWith("image/");
 
   const processFile = (file: File) => {
-    if (!isImageFile(file)) {
-      console.log("Only image files are allowed");
+    if (file.size > 25 * 1024 * 1024) {
+      console.log("File too large (max 25MB)");
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      console.log("File too large (max 10MB)");
-      return;
+    setFiles((prev) => [...prev, file]);
+    if (isImageFile(file)) {
+      const reader = new FileReader();
+      reader.onload = (e) =>
+        setFilePreviews((prev) => ({ ...prev, [file.name]: e.target?.result as string }));
+      reader.readAsDataURL(file);
     }
-    setFiles([file]);
-    const reader = new FileReader();
-    reader.onload = (e) => setFilePreviews({ [file.name]: e.target?.result as string });
-    reader.readAsDataURL(file);
   };
 
   const handleDragOver = React.useCallback((e: React.DragEvent) => {
@@ -499,14 +498,19 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
     e.preventDefault();
     e.stopPropagation();
     const dropped = Array.from(e.dataTransfer.files);
-    const imageFiles = dropped.filter((file) => isImageFile(file));
-    if (imageFiles.length > 0) processFile(imageFiles[0]);
+    dropped.forEach(processFile);
   }, []);
 
   const handleRemoveFile = (index: number) => {
     const fileToRemove = files[index];
-    if (fileToRemove && filePreviews[fileToRemove.name]) setFilePreviews({});
-    setFiles([]);
+    if (fileToRemove && filePreviews[fileToRemove.name]) {
+      setFilePreviews((prev) => {
+        const next = { ...prev };
+        delete next[fileToRemove.name];
+        return next;
+      });
+    }
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const openImageModal = (imageUrl: string) => setSelectedImage(imageUrl);
