@@ -165,6 +165,38 @@ export async function fetchGauntletAttempts(userId: string) {
   return data ?? [];
 }
 
+// ---------- flashcard_reviews ----------
+//
+// Append-only review log shared with `useRecordFlashcardReview`. Mirrored
+// here so AppContext (not a hook) can write through after a rating.
+
+export interface FlashcardReviewInput {
+  topicTag: string;
+  cardId: string;
+  rating: "again" | "hard" | "good" | "easy";
+  intervalDays: number;
+  dueAtIso: string;
+  reviewCount: number;
+}
+
+export async function insertFlashcardReview(
+  userId: string,
+  input: FlashcardReviewInput,
+): Promise<BootcampMutationResult> {
+  const { error } = await supabase.from("flashcard_reviews").insert({
+    user_id: userId,
+    topic_tag: input.topicTag,
+    card_id: input.cardId,
+    rating: input.rating,
+    interval_days: input.intervalDays,
+    due_at: input.dueAtIso,
+    review_count: input.reviewCount,
+    reviewed_at: new Date().toISOString(),
+  });
+  if (error) return { ok: false, error };
+  return { ok: true };
+}
+
 // ---------- abstract_final_set ----------
 
 export async function upsertFinalSetScore(

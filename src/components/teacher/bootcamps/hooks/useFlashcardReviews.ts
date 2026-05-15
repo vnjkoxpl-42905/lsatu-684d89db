@@ -7,7 +7,7 @@ export type AttemptResult =
   | { ok: true }
   | { ok: false; error: unknown };
 
-export type FlashcardRating = "again" | "good" | "easy";
+export type FlashcardRating = "again" | "hard" | "good" | "easy";
 
 export interface RecordFlashcardReviewInput {
   topicTag: string;

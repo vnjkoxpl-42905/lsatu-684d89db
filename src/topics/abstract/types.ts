@@ -18,6 +18,11 @@ export interface CardReview {
   status: 'unseen' | 'seen' | 'reviewing' | 'mastered';
   lastReviewedAt?: string;
   reviewCount: number;
+  // SRS bookkeeping. Optional so legacy localStorage records stay readable;
+  // missing fields imply a brand-new card scheduled to be due immediately.
+  rating?: 'again' | 'hard' | 'good' | 'easy';
+  intervalDays?: number;
+  dueAtIso?: string;
 }
 
 export interface Flashcard {

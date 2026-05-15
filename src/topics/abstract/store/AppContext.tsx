@@ -26,6 +26,7 @@ import {
   fetchLessonProgress,
   fetchTranslatorAttempts,
   insertDrillAttempt,
+  insertFlashcardReview,
   insertGauntletAttempt,
   insertTranslatorAttempt,
   isSessionDeadError,
@@ -33,6 +34,8 @@ import {
   upsertFinalSetScore,
   upsertLessonProgress,
 } from "../lib/supabase-progress";
+import { computeNextReview } from "../lib/srs";
+import type { FlashcardRating } from "@/components/teacher/bootcamps/hooks/useFlashcardReviews";
 
 interface AppContextType {
   currentView: ViewState;
@@ -57,6 +60,7 @@ interface AppContextType {
     translationText: string,
   ) => Promise<BootcampMutationResult>;
   updateCardReview: (cardId: string, status: CardReview["status"]) => void;
+  rateCard: (cardId: string, rating: FlashcardRating) => Promise<BootcampMutationResult>;
   setFinalScore: (score: number, total: number) => Promise<BootcampMutationResult>;
 }
 
@@ -376,6 +380,62 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const rateCard = useCallback(
+    async (cardId: string, rating: FlashcardRating): Promise<BootcampMutationResult> => {
+      const reviewedAt = new Date().toISOString();
+      let next: ReturnType<typeof computeNextReview> | null = null;
+      let nextReviewCount = 1;
+
+      setBootcampState((prev) => {
+        const currentCard = prev.cards[cardId] || { cardId, status: "unseen" as const, reviewCount: 0 };
+        next = computeNextReview(rating, currentCard.intervalDays ?? 0, currentCard.reviewCount);
+        nextReviewCount = currentCard.reviewCount + 1;
+        // Status policy: "again" walks back to "reviewing", "easy" promotes
+        // a card to "mastered" once it's been seen at least twice, every
+        // other rating settles the card at "reviewing".
+        let nextStatus: CardReview["status"] = "reviewing";
+        if (rating === "again") nextStatus = "reviewing";
+        else if (rating === "easy" && nextReviewCount >= 2) nextStatus = "mastered";
+        const nextCards = {
+          ...prev.cards,
+          [cardId]: {
+            ...currentCard,
+            status: nextStatus,
+            lastReviewedAt: reviewedAt,
+            reviewCount: nextReviewCount,
+            rating,
+            intervalDays: next.intervalDays,
+            dueAtIso: next.dueAtIso,
+          },
+        };
+        persistCardsCache(nextCards);
+        return { ...prev, cards: nextCards };
+      });
+
+      if (!user || !next) return { ok: true };
+
+      const res = await insertFlashcardReview(user.id, {
+        topicTag: TOPIC_TAG,
+        cardId,
+        rating,
+        intervalDays: next.intervalDays,
+        dueAtIso: next.dueAtIso,
+        reviewCount: nextReviewCount,
+      });
+      if (!res.ok) {
+        if (isSessionDeadError(res.error)) {
+          toast.error("Session expired. Please sign in again.");
+        } else {
+          toast.error("Could not save flashcard review.", {
+            description: describeError(res.error),
+          });
+        }
+      }
+      return res;
+    },
+    [user],
+  );
+
   const setFinalScore = useCallback(
     async (score: number, total: number): Promise<BootcampMutationResult> => {
       setBootcampState((prev) => ({
@@ -415,6 +475,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       recordGauntletItem,
       markTranslatorComplete,
       updateCardReview,
+      rateCard,
       setFinalScore,
     }),
     [
@@ -426,6 +487,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       recordGauntletItem,
       markTranslatorComplete,
       updateCardReview,
+      rateCard,
       setFinalScore,
     ],
   );
