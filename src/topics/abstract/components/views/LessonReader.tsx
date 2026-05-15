@@ -442,7 +442,7 @@ export default function LessonReader() {
       setOpenCardId(null);
       setGauntletFinished(false);
     } else {
-      setCurrentView('extraction_workspace');
+      setCurrentView('dashboard');
     }
   };
 

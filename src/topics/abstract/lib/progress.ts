@@ -99,13 +99,13 @@ export function recommendNext(p: ProgressBreakdown): {
     {
       key: "translator",
       label: "Translator",
-      view: "translator_workspace",
+      view: "lesson",
       blurb: "Translate the next abstract question stem and see the walkthrough.",
     },
     {
       key: "gauntlet",
       label: "Decoding Gauntlet",
-      view: "decoding_gauntlet",
+      view: "lesson",
       blurb: "Decode one more abstract answer choice and stress-test your translations.",
     },
     {

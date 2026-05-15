@@ -1,11 +1,10 @@
 import { useId, useState } from "react";
 import { METHOD_PATTERNS, QUESTION_STEMS } from "../../data/mockData";
-import { BookOpen, Search, Info, Terminal, HelpCircle, ChevronRight, Target } from "lucide-react";
+import { BookOpen, Search, Info, Terminal, HelpCircle, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "../../lib/utils";
-import MethodsDrill from "./MethodsDrill";
 
-type TabType = "patterns" | "stems" | "drill";
+type TabType = "patterns" | "stems";
 
 export const MethodsLibrary: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
@@ -56,7 +55,7 @@ export const MethodsLibrary: React.FC = () => {
           <div
             role="tablist"
             aria-label="Library section"
-            className="grid grid-cols-3 bg-brutal-paper border-4 border-brutal-ink p-1 mb-5 brutal-shadow-sm"
+            className="grid grid-cols-2 bg-brutal-paper border-4 border-brutal-ink p-1 mb-5 brutal-shadow-sm"
           >
             <button
               type="button"
@@ -88,25 +87,9 @@ export const MethodsLibrary: React.FC = () => {
             >
               Stems
             </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeTab === "drill"}
-              aria-controls="library-content"
-              onClick={() => handleTabChange("drill")}
-              className={cn(
-                "min-h-[44px] py-2.5 px-2 text-[11px] font-black uppercase tracking-[0.15em] transition-colors inline-flex items-center justify-center gap-1.5",
-                activeTab === "drill"
-                  ? "bg-brutal-ink text-brutal-paper"
-                  : "text-brutal-ink-soft hover:bg-brutal-ink/5",
-              )}
-            >
-              <Target className="w-3.5 h-3.5" aria-hidden="true" />
-              Drill
-            </button>
           </div>
 
-          {activeTab !== "drill" && (
+          {(
             <>
               <label htmlFor={searchInputId} className="sr-only">
                 Search {activeTab === "patterns" ? "patterns" : "stems"}
@@ -127,18 +110,10 @@ export const MethodsLibrary: React.FC = () => {
               </div>
             </>
           )}
-          {activeTab === "drill" && (
-            <p className="text-xs font-bold text-brutal-ink-soft leading-snug">
-              Identify the matching plain-English translation. Ten randomly picked patterns per set.
-            </p>
-          )}
         </div>
 
         <ul
-          className={cn(
-            "flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 custom-scrollbar list-none m-0",
-            activeTab === "drill" && "hidden",
-          )}
+          className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 custom-scrollbar list-none m-0"
           aria-label={activeTab === "patterns" ? "Patterns" : "Stems"}
         >
           {activeTab === "patterns" ? (
@@ -206,17 +181,7 @@ export const MethodsLibrary: React.FC = () => {
         className="flex-1 overflow-y-auto p-6 sm:p-10 md:p-14 bg-brutal-paper custom-scrollbar"
       >
         <AnimatePresence mode="wait">
-          {activeTab === "drill" ? (
-            <motion.div
-              key="drill"
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: transitionDuration, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <MethodsDrill />
-            </motion.div>
-          ) : activeTab === "patterns" && selectedPattern ? (
+          {activeTab === "patterns" && selectedPattern ? (
             <motion.div
               key={selectedPattern.id}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
