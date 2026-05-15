@@ -479,9 +479,18 @@ Deno.serve(async (req) => {
     }
 
     if (action === "send") {
-      const { to, cc, bcc, subject, text, threadId, inReplyTo, references } = body;
+      const { to, cc, bcc, subject, text, threadId, inReplyTo, references, attachments } = body;
       if (!to || !text) throw new Error("to and text required");
-      const raw = buildRawMessage({ to, cc, bcc, subject, text, inReplyTo, references });
+      const safeAtts: OutgoingAttachment[] = Array.isArray(attachments)
+        ? attachments
+            .filter((a: any) => a && typeof a.dataBase64 === "string" && a.dataBase64.length > 0)
+            .map((a: any) => ({
+              filename: String(a.filename ?? "attachment"),
+              mimeType: String(a.mimeType ?? "application/octet-stream"),
+              dataBase64: String(a.dataBase64),
+            }))
+        : [];
+      const raw = buildRawMessage({ to, cc, bcc, subject, text, inReplyTo, references, attachments: safeAtts });
       const payload: any = { raw };
       if (threadId) payload.threadId = threadId;
       const { res, data, txt } = await safeFetchJson(`${GATEWAY}/users/me/messages/send`, {
