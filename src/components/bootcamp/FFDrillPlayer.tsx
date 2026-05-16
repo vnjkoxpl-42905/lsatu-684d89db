@@ -37,6 +37,7 @@ const FFDrillPlayer: React.FC<FFDrillPlayerProps> = ({ module, onEndDrill }) => 
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [bankExhausted, setBankExhausted] = useState(false);
+  const [moduleUnderConstruction, setModuleUnderConstruction] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   // M4 stopwatch
   const [questionTime, setQuestionTime] = useState(0);
@@ -78,6 +79,7 @@ const FFDrillPlayer: React.FC<FFDrillPlayerProps> = ({ module, onEndDrill }) => 
   const loadQuestions = useCallback(async () => {
     setIsLoadingQuestions(true);
     setBankExhausted(false);
+    setModuleUnderConstruction(false);
 
     const savedProgressRaw = localStorage.getItem('ff:drillProgress');
     if (savedProgressRaw) {
@@ -96,7 +98,14 @@ const FFDrillPlayer: React.FC<FFDrillPlayerProps> = ({ module, onEndDrill }) => 
       }
     }
 
-    const moduleQuestionBank = ALL_QUESTIONS[module.id];
+    // Filter out placeholder items — they have no drillable content.
+    const moduleQuestionBank = ALL_QUESTIONS[module.id].filter(q => !q.placeholder);
+
+    if (moduleQuestionBank.length < 3) {
+      setModuleUnderConstruction(true);
+      setIsLoadingQuestions(false);
+      return;
+    }
 
     if (module.id === 'famous-flaws-capstone') {
       setQuestions(shuffleArray(moduleQuestionBank));
@@ -213,6 +222,23 @@ const FFDrillPlayer: React.FC<FFDrillPlayerProps> = ({ module, onEndDrill }) => 
           <div className="w-6 h-6 border border-t-foreground/30 rounded-full animate-spin" />
         </div>
         <p className="text-sm text-muted-foreground">Loading drill...</p>
+      </div>
+    );
+  }
+
+  if (moduleUnderConstruction) {
+    return (
+      <div className="rounded-xl bg-card border border-border shadow-sm p-6 text-center">
+        <h2 className="text-lg font-semibold text-foreground mb-2">This module is being built</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Joshua is still authoring the question bank for "{module.name}". Check back soon. In the meantime, drill the Capstone module or review Flashcards.
+        </p>
+        <button
+          onClick={onEndDrill}
+          className="inline-flex items-center rounded-lg bg-foreground text-background text-sm font-medium px-4 py-2 hover:bg-foreground/90 transition-colors duration-150"
+        >
+          Back to Dashboard
+        </button>
       </div>
     );
   }

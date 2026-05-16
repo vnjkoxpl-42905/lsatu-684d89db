@@ -40,6 +40,8 @@ export interface Question {
   primaryConcept?: string;
   breakdown?: QuestionBreakdown;
   deconstruction?: Deconstruction;
+  placeholder?: boolean;
+  sourceId?: string;
 }
 
 export interface Attempt {
