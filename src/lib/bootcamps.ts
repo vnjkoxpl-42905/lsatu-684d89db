@@ -36,6 +36,12 @@ export const BOOTCAMPS: BootcampDef[] = [
     route: '/bootcamp/causation-station',
   },
   {
+    id: 'fallacy-flaw',
+    title: 'Flaw & Famous Flaws',
+    description: '18 canonical logical flaws',
+    route: '/bootcamp/fallacy-flaw',
+  },
+  {
     id: 'abstraction',
     title: 'Abstract',
     description:

@@ -63,8 +63,8 @@ const BOOTCAMPS = [
     title: 'Flaw & Famous Flaws',
     emoji: '🎭',
     description:
-      'A focused bootcamp on identifying and naming logical flaws. Six days of flashcards, flaw-stack drills, mindmaps, language protocols, and spaced-repetition review covering 18 canonical flaw types with real LSAT question practice.',
-    stats: ['6 Days', '18 Flaw Types', 'Flashcards + SRS'],
+      'Four modules covering 18 canonical logical flaws: causal, conditional, sampling/comparison/scope, plus a famous-flaws capstone with real LSAT timing. Drill, flashcards, and mistake journal.',
+    stats: ['4 Modules', '18 Flaw Types', 'Flashcards + Journal'],
     route: '/bootcamp/fallacy-flaw',
     accentClass: 'bg-teal-500/10 border-teal-500/20',
   },
