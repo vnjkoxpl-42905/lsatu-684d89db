@@ -14,12 +14,8 @@ export async function redirectAfterAuth(
   navigate: NavigateFunction,
   options?: { replace?: boolean },
 ): Promise<void> {
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("display_name")
-    .eq("class_id", userId)
-    .maybeSingle();
-
-  const target = profile?.display_name ? "/mainhub" : "/onboarding";
-  navigate(target, { replace: options?.replace ?? false });
+  // Default landing is the homepage. Feature access is gated per-flag on
+  // profiles (locked by default), so new signups land on /mainhub and see
+  // LockedModule on anything an admin hasn't enabled yet.
+  navigate("/mainhub", { replace: options?.replace ?? false });
 }
