@@ -23,6 +23,7 @@ export type Database = {
           drill_type: string
           id: string
           selected_index: number
+          time_ms: number | null
           trap_tag: string | null
           user_id: string
         }
@@ -34,6 +35,7 @@ export type Database = {
           drill_type: string
           id?: string
           selected_index: number
+          time_ms?: number | null
           trap_tag?: string | null
           user_id: string
         }
@@ -45,6 +47,7 @@ export type Database = {
           drill_type?: string
           id?: string
           selected_index?: number
+          time_ms?: number | null
           trap_tag?: string | null
           user_id?: string
         }
@@ -124,6 +127,33 @@ export type Database = {
           completed_at?: string
           id?: string
           lesson_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      abstract_translator_attempts: {
+        Row: {
+          completed_at: string
+          id: string
+          keywords_picked: string[]
+          stem_number: number
+          translation_text: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          keywords_picked?: string[]
+          stem_number: number
+          translation_text?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          keywords_picked?: string[]
+          stem_number?: number
+          translation_text?: string
           user_id?: string
         }
         Relationships: []
