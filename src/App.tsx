@@ -72,6 +72,7 @@ const TeacherRecaps = React.lazy(() => import("./pages/teacher/TeacherRecaps"));
 const TeacherAnalyticsBridge = React.lazy(() => import("./pages/teacher/TeacherAnalyticsBridge"));
 const TeacherConversations = React.lazy(() => import("./pages/teacher/TeacherConversations"));
 const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary"));
+const AdminGuidedDrills = React.lazy(() => import("./pages/admin/GuidedDrills"));
 const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
