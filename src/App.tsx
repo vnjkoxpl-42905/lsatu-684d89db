@@ -338,6 +338,9 @@ const App = () => {
                       <Route path="smartboard" element={
                         <React.Suspense fallback={<div />}><TeacherSmartboard /></React.Suspense>
                       } />
+                      <Route path="guided-drills" element={
+                        <React.Suspense fallback={<div />}><AdminGuidedDrills /></React.Suspense>
+                      } />
                       <Route path="analytics" element={
                         <React.Suspense fallback={<div />}><TeacherAnalyticsBridge /></React.Suspense>
                       } />

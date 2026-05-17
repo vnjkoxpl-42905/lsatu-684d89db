@@ -1,9 +1,10 @@
 import { NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
-import { ClipboardList, BookOpen, UploadCloud, Flame, PencilRuler, LineChart } from 'lucide-react';
+import { ClipboardList, BookOpen, UploadCloud, Flame, PencilRuler, LineChart, Target } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const SUB: { to: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
   { to: '/teacher/library/assignments', label: 'Assignments', Icon: ClipboardList },
+  { to: '/teacher/library/guided-drills', label: 'Guided Drills', Icon: Target },
   { to: '/teacher/library/recaps', label: 'Recaps', Icon: BookOpen },
   { to: '/teacher/library/uploads', label: 'Uploads', Icon: UploadCloud },
   { to: '/teacher/library/bootcamps', label: 'Bootcamps', Icon: Flame },
