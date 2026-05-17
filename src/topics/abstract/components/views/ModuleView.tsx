@@ -425,30 +425,22 @@ function ModuleNote({
             <button
               type="button"
               onClick={onMark}
-              disabled={!reachedEnd}
               className={cn(
-                "brutal-btn inline-flex items-center gap-2",
-                reachedEnd ? "bg-brutal-green" : "bg-brutal-paper",
+                "brutal-btn inline-flex items-center gap-2 bg-brutal-green",
                 pulse && "animate-pulse",
               )}
-              title={reachedEnd ? "Mark this note as read" : "Scroll to the bottom to enable"}
+              title="Mark this note as read"
             >
               <CheckCircle2 className="w-4 h-4" /> I read this
             </button>
-            {reachedEnd ? (
-              <motion.span
-                initial={{ opacity: 0, x: -4 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest bg-brutal-yellow border-2 border-brutal-ink px-3 py-1.5"
-              >
-                Ready
-              </motion.span>
-            ) : (
-              <span className="text-xs font-black uppercase tracking-widest text-brutal-ink-soft">
-                Scroll to enable
-              </span>
-            )}
+            <motion.span
+              initial={{ opacity: 0, x: -4 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest bg-brutal-yellow border-2 border-brutal-ink px-3 py-1.5"
+            >
+              {reachedEnd ? "Ready" : "Click when done"}
+            </motion.span>
           </motion.div>
         ) : (
           <motion.div
