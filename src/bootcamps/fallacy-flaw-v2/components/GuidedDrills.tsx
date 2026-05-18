@@ -752,8 +752,28 @@ export function GuidedDrills({ initialDrillId, onClearInitialDrill }: { initialD
                     <span className="text-xl">📊</span>
                   </button>
                 </div>
-                
+
+                {/* Real LSAT Bank Drills — woven into the bootcamp */}
+                <div className="border-2 border-[#1a1a1a] bg-white rounded-sm p-6 space-y-4">
+                  <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/50">Real LSAT Drill</div>
+                      <h3 className="text-2xl font-serif italic tracking-tight">Drill any flaw on official LSAT questions</h3>
+                      <p className="text-xs text-[#1a1a1a]/60 mt-1">Pick a flaw — we'll pull matching Flaw-type questions from the LSAT U bank and open them in the Smart Drill interface.</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {FLAW_CATALOG.map((flaw) => (
+                      <div key={flaw.id} className="flex items-center justify-between gap-2 border border-[#1a1a1a]/10 px-3 py-2 rounded-sm">
+                        <span className="text-[11px] font-medium text-[#1a1a1a] truncate">{flaw.name}</span>
+                        <FlawDrillLauncher flawId={flaw.id} flawName={flaw.name} variant="compact" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="space-y-4">
+
                   {/* Saved Session Resume */}
                   {hasSavedProgress && (
                     <div className="flex flex-col p-6 border-2 border-[#1a1a1a] bg-white rounded-sm shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] overflow-hidden relative">
