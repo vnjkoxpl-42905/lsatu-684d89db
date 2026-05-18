@@ -139,6 +139,12 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
                   →
                 </motion.span>
               </button>
+              <FlawDrillLauncher
+                flawId="causal-flaw"
+                flawName="Causal Flaw"
+                variant="ghost"
+                className="px-10 py-5"
+              />
             </div>
           </motion.div>
 
