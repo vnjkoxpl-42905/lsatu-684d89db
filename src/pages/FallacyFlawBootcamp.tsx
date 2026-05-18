@@ -1,93 +1,60 @@
+/**
+ * /bootcamp/fallacy-flaw — Flaw & Famous Flaws bootcamp host page.
+ *
+ * Wraps the ported standalone "Fallacy Bootcamp" sub-app
+ * (src/bootcamps/fallacy-flaw-v2/FallacyApp.tsx) in the standard LSAT U
+ * chrome: auth gate + Return-to-Bootcamps header.
+ */
+
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, Layers, StickyNote, Zap } from 'lucide-react';
-import { Module } from '@/data/fallacyFlaw/constants';
-import FFDashboard from '@/components/bootcamp/FFDashboard';
-import FFDrillPlayer from '@/components/bootcamp/FFDrillPlayer';
-import FFFlashcards from '@/components/bootcamp/FFFlashcards';
-import FFJournal from '@/components/bootcamp/FFJournal';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LogoutButton } from '@/components/LogoutButton';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
-type FFView = 'dashboard' | 'drill' | 'flashcards' | 'journal';
+const FallacyApp = React.lazy(
+  () => import('@/bootcamps/fallacy-flaw-v2/FallacyApp'),
+);
 
 const FallacyFlawBootcamp: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [view, setView] = React.useState<FFView>('dashboard');
-  const [selectedModule, setSelectedModule] = React.useState<Module | null>(null);
+  const { user, loading } = useAuth();
 
   React.useEffect(() => {
-    if (!user) navigate('/auth');
-  }, [user, navigate]);
+    if (!loading && !user) navigate('/auth');
+  }, [user, loading, navigate]);
 
-  if (!user) return null;
-
-  const handleStartDrill = (module: Module) => {
-    setSelectedModule(module);
-    setView('drill');
-  };
-
-  const handleEndDrill = () => {
-    setSelectedModule(null);
-    setView('dashboard');
-  };
-
-  const NavBtn: React.FC<{ target: FFView; icon: React.ReactNode; label: string }> = ({ target, icon, label }) => (
-    <button
-      onClick={() => { setSelectedModule(null); setView(target); }}
-      className={cn(
-        'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150',
-        view === target
-          ? 'bg-accent text-foreground'
-          : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-      )}
-    >
-      {icon}
-      {label}
-    </button>
-  );
+  if (loading || !user) return null;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3 flex items-center justify-between">
-          <button
+    <div className="min-h-screen bg-[#f5f2ed]">
+      <header className="sticky top-0 z-40 border-b border-black/10 bg-[#f5f2ed]/85 backdrop-blur-xl">
+        <div className="px-4 lg:px-8 py-3 flex items-center justify-between max-w-7xl mx-auto">
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => navigate('/bootcamps')}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="gap-2 text-[#1a1a1a]/70 hover:text-[#1a1a1a] hover:bg-black/5 -ml-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="h-3.5 w-3.5" />
             Back to Bootcamps
-          </button>
-
-          <div className="flex items-center gap-1">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-medium mr-3">Flaw &amp; Famous Flaws</span>
-            {view !== 'drill' && (
-              <nav className="flex items-center gap-1">
-                <NavBtn target="dashboard" icon={<Zap className="w-3.5 h-3.5" />} label="Drills" />
-                <NavBtn target="flashcards" icon={<Layers className="w-3.5 h-3.5" />} label="Flashcards" />
-                <NavBtn target="journal" icon={<StickyNote className="w-3.5 h-3.5" />} label="Journal" />
-              </nav>
-            )}
-          </div>
-
-          <LogoutButton />
-          <ThemeToggle />
+          </Button>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/60">
+            Flaw &amp; Famous Flaws
+          </span>
+          <div className="w-[120px]" aria-hidden="true" />
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {view === 'dashboard' && (
-          <FFDashboard onStartDrill={handleStartDrill} />
-        )}
-        {view === 'drill' && selectedModule && (
-          <FFDrillPlayer module={selectedModule} onEndDrill={handleEndDrill} />
-        )}
-        {view === 'flashcards' && <FFFlashcards />}
-        {view === 'journal' && <FFJournal />}
-      </main>
+      <React.Suspense
+        fallback={
+          <div className="py-24 text-center text-xs uppercase tracking-widest text-[#1a1a1a]/40">
+            Loading bootcamp…
+          </div>
+        }
+      >
+        <FallacyApp />
+      </React.Suspense>
     </div>
   );
 };
