@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Cell, PieChart, Pie } from 'recharts';
 import { FLAW_CATALOG } from '../data/flaws';
 import { DRILLS, Drill } from '../data/drills';
+import { FlawDrillLauncher } from './FlawDrillLauncher';
 
 type Step = 'list' | 'dashboard' | 'start' | 'conclusion' | 'support' | 'identify' | 'gap' | 'answer' | 'finish';
 type Difficulty = 'easy' | 'medium' | 'hard' | null;
