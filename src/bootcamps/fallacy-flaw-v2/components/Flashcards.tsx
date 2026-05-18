@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FLAW_CATALOG, FlawCard } from '../data/flaws';
 import { ANSWER_CHOICE_FLASHCARDS, AnswerChoiceFlashcard } from '../data/flawAnswerChoiceFlashcards';
 import { VIDEO_ASSETS } from '../data/videoAssets';

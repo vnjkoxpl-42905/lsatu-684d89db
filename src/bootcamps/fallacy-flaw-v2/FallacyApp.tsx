@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Home } from './components/Home';
 import { FlawCatalog } from './components/FlawCatalog';
 import { IntroLesson } from './components/IntroLesson';

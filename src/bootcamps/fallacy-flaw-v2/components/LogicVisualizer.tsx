@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { ArrowRight, Plus, X, Zap } from 'lucide-react';
 
 interface LogicVisualizerProps {
