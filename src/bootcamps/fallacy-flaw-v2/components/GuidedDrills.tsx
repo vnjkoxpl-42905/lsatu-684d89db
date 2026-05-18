@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Cell, PieChart, Pie } from 'recharts';
 import { FLAW_CATALOG } from '../data/flaws';
 import { DRILLS, Drill } from '../data/drills';
 
-type Step = 'list' | 'start' | 'conclusion' | 'support' | 'identify' | 'gap' | 'answer' | 'finish';
+type Step = 'list' | 'dashboard' | 'start' | 'conclusion' | 'support' | 'identify' | 'gap' | 'answer' | 'finish';
 type Difficulty = 'easy' | 'medium' | 'hard' | null;
 
-function VideoExplanation({ stimulus, flawName, explanation }: { stimulus: string, flawName: string, explanation: string }) {
+function VideoExplanation({ stimulus, flawName, explanation, correctAnswer, incorrectAnswer }: { stimulus: string, flawName: string, explanation: string, correctAnswer?: string, incorrectAnswer?: string }) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +22,9 @@ function VideoExplanation({ stimulus, flawName, explanation }: { stimulus: strin
       const prompt = `A clean, educational motion graphics animation explaining an LSAT logical flaw. 
 Stimulus: "${stimulus}"
 Flaw: ${flawName}
-Focus: Visually highlight the relationship between the premises and the conclusion. 
+${correctAnswer ? `Correct Answer: "${correctAnswer}"` : ''}
+${incorrectAnswer ? `Incorrect Answer Chosen: "${incorrectAnswer}"` : ''}
+Focus: ${incorrectAnswer ? 'Visually highlight why the chosen answer is incorrect, specifically contrasting it with the actual logical gap, and then demonstrate why the correct answer is superior.' : correctAnswer ? 'Visually demonstrate exactly how the correct answer maps textually back to specific parts of the stimulus, explicitly contrasting the flawed reasoning.' : 'Visually highlight the relationship between the premises and the conclusion.'} 
 The animation should use elegant, minimalist icons and text overlays in a high-end academic style. 
 Explain: ${explanation}`;
 
@@ -137,7 +140,182 @@ Explain: ${explanation}`;
   );
 }
 
-export function GuidedDrills() {
+function PerformanceDashboard({ onBack }: { onBack: () => void }) {
+  const [stats, setStats] = useState<any>(null);
+
+  useEffect(() => {
+    try {
+      const savedStats = JSON.parse(localStorage.getItem('lsat_flaw_performance') || '{}');
+      const data = Object.entries(savedStats).map(([name, val]: [string, any]) => ({
+        name,
+        accuracy: Math.round((val.correct / val.attempts) * 100),
+        avgTime: Math.round(val.totalTime / val.attempts),
+        attempts: val.attempts
+      })).sort((a, b) => b.accuracy - a.accuracy);
+      setStats(data);
+    } catch (e) {
+      setStats([]);
+    }
+  }, []);
+
+  if (!stats || stats.length === 0) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center py-20 text-center space-y-6"
+      >
+        <div className="w-20 h-20 bg-[#1a1a1a]/5 rounded-full flex items-center justify-center text-3xl">📊</div>
+        <div className="space-y-2">
+          <h3 className="text-2xl font-serif italic">No performance data yet</h3>
+          <p className="text-sm text-[#1a1a1a]/50 max-w-sm">Complete a few drills to see your strengths and weaknesses visualized here.</p>
+        </div>
+        <button 
+          onClick={onBack}
+          className="px-8 py-3 border border-[#1a1a1a] text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] hover:text-white transition-all rounded-sm"
+        >
+          Back to Drills
+        </button>
+      </motion.div>
+    );
+  }
+
+  const chartData = stats.map((s: any) => ({
+    subject: s.name.length > 15 ? s.name.substring(0, 12) + '...' : s.name,
+    A: s.accuracy,
+    fullMark: 100,
+  }));
+
+  const bestFlaw = stats[0];
+  const worstFlaw = stats[stats.length - 1];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }} 
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-12 pb-10"
+    >
+      <div className="flex justify-between items-end">
+        <div className="space-y-2">
+          <button 
+            onClick={onBack}
+            className="text-[10px] uppercase font-bold tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors mb-2 block"
+          >
+            ← Back to drills
+          </button>
+          <h2 className="text-4xl font-serif tracking-tighter italic">Performance Dashboard</h2>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Radar Chart for Strengths */}
+        <div className="p-6 border border-[#1a1a1a]/10 bg-[#f5f2ed]/30 rounded-sm space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/60">Mastery Distribution</h3>
+          <div className="h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+                <PolarGrid stroke="#1a1a1a" strokeOpacity={0.1} />
+                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fill: '#1a1a1a', fillOpacity: 0.5 }} />
+                <Radar
+                  name="Accuracy %"
+                  dataKey="A"
+                  stroke="#1a1a1a"
+                  fill="#1a1a1a"
+                  fillOpacity={0.1}
+                />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Accuracy Bar Chart */}
+        <div className="p-6 border border-[#1a1a1a]/10 bg-white rounded-sm space-y-4">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/60">Accuracy per Flaw Type</h3>
+          <div className="h-[250px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats} layout="vertical" margin={{ left: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} strokeOpacity={0.1} />
+                <XAxis type="number" domain={[0, 100]} hide />
+                <YAxis 
+                  dataKey="name" 
+                  type="category" 
+                  width={100} 
+                  tick={{ fontSize: 9, fill: '#1a1a1a', fillOpacity: 0.6 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip cursor={{ fill: '#f5f2ed' }} />
+                <Bar dataKey="accuracy" radius={[0, 2, 2, 0]}>
+                  {stats.map((entry: any, index: number) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.accuracy >= 80 ? '#1a1a1a' : entry.accuracy >= 50 ? '#1a1a1a' : '#1a1a1a'} 
+                      fillOpacity={entry.accuracy >= 80 ? 1 : entry.accuracy >= 50 ? 0.6 : 0.3} 
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="p-6 bg-[#1a1a1a] text-white rounded-sm space-y-1">
+          <span className="text-[9px] uppercase tracking-widest text-white/40 font-bold">Top Strength</span>
+          <div className="text-xl font-serif italic">{bestFlaw.name}</div>
+          <div className="text-2xl font-bold">{bestFlaw.accuracy}%</div>
+        </div>
+        <div className="p-6 border border-[#1a1a1a]/10 rounded-sm space-y-1">
+          <span className="text-[9px] uppercase tracking-widest text-[#1a1a1a]/40 font-bold">Growth Area</span>
+          <div className="text-xl font-serif italic text-red-800">{worstFlaw.name}</div>
+          <div className="text-2xl font-bold">{worstFlaw.accuracy}%</div>
+        </div>
+        <div className="p-6 border border-[#1a1a1a]/10 rounded-sm space-y-1">
+          <span className="text-[9px] uppercase tracking-widest text-[#1a1a1a]/40 font-bold">Avg Response Time</span>
+          <div className="text-xl font-serif italic">{Math.round(stats.reduce((acc: number, curr: any) => acc + curr.avgTime, 0) / stats.length)}s</div>
+          <p className="text-[10px] text-[#1a1a1a]/40">Cumulative average across all flaw types</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/60">Detailed Metrics</h3>
+        <div className="w-full border border-[#1a1a1a]/10 overflow-hidden rounded-sm">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-[#f5f2ed] border-b border-[#1a1a1a]/10">
+              <tr>
+                <th className="p-3 font-bold uppercase tracking-widest text-[9px] text-[#1a1a1a]/50">Flaw Type</th>
+                <th className="p-3 font-bold uppercase tracking-widest text-[9px] text-[#1a1a1a]/50">Accuracy</th>
+                <th className="p-3 font-bold uppercase tracking-widest text-[9px] text-[#1a1a1a]/50">Avg Time</th>
+                <th className="p-3 font-bold uppercase tracking-widest text-[9px] text-[#1a1a1a]/50">Attempts</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1a1a1a]/5">
+              {stats.map((s: any) => (
+                <tr key={s.name} className="hover:bg-[#f5f2ed]/20 transition-colors">
+                  <td className="p-3 font-medium">{s.name}</td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-16 h-1 bg-[#1a1a1a]/5 overflow-hidden rounded-full">
+                        <div className="h-full bg-[#1a1a1a]" style={{ width: `${s.accuracy}%` }} />
+                      </div>
+                      {s.accuracy}%
+                    </div>
+                  </td>
+                  <td className="p-3">{s.avgTime}s</td>
+                  <td className="p-3 text-[#1a1a1a]/40">{s.attempts}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+export function GuidedDrills({ initialDrillId, onClearInitialDrill }: { initialDrillId?: string, onClearInitialDrill?: () => void }) {
   const [step, setStep] = useState<Step>('list');
   const [activeDrill, setActiveDrill] = useState<Drill | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -150,9 +328,21 @@ export function GuidedDrills() {
   const [activeDifficulty, setActiveDifficulty] = useState<Difficulty>(null);
   const [isTimerEnabled, setIsTimerEnabled] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [questionStartTime, setQuestionStartTime] = useState<number | null>(null);
 
   const [hasSavedProgress, setHasSavedProgress] = useState(false);
-  const SAVE_KEY = 'lsat-flaw-drills-progress';
+  const SAVE_KEY = 'lsat-fallacy-drills-progress';
+
+  // Check for initial drill selection from parent
+  useEffect(() => {
+    if (initialDrillId) {
+      const drill = DRILLS.find(d => d.id === initialDrillId);
+      if (drill) {
+        startDrill(drill);
+        if (onClearInitialDrill) onClearInitialDrill();
+      }
+    }
+  }, [initialDrillId, onClearInitialDrill]);
 
   useEffect(() => {
     const saved = localStorage.getItem(SAVE_KEY);
@@ -185,6 +375,7 @@ export function GuidedDrills() {
       elapsedTime
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(stateToSave));
+    setHasSavedProgress(true);
   }, [step, activeDrill, drillQueue, currentQueueIndex, selectedAnswer, showFeedback, sessionCorrectCount, sessionTotalCount, hasScoredCurrentQuestion, activeDifficulty, isTimerEnabled, elapsedTime]);
 
   const resumeSession = () => {
@@ -204,12 +395,33 @@ export function GuidedDrills() {
         setActiveDifficulty(state.activeDifficulty);
         setIsTimerEnabled(state.isTimerEnabled);
         setElapsedTime(state.elapsedTime);
+        setQuestionStartTime(Date.now());
       }
     } catch (e) {
       console.error("Failed to resume session:", e);
       localStorage.removeItem(SAVE_KEY);
       setHasSavedProgress(false);
     }
+  };
+
+  const saveAndExit = () => {
+    const stateToSave = {
+      step,
+      activeDrillId: activeDrill?.id,
+      drillQueueIds: drillQueue.map(d => d.id),
+      currentQueueIndex,
+      selectedAnswer,
+      showFeedback,
+      sessionCorrectCount,
+      sessionTotalCount,
+      hasScoredCurrentQuestion,
+      activeDifficulty,
+      isTimerEnabled,
+      elapsedTime
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(stateToSave));
+    setHasSavedProgress(true);
+    setStep('list');
   };
 
   useEffect(() => {
@@ -238,26 +450,49 @@ export function GuidedDrills() {
     setHasScoredCurrentQuestion(false);
     setActiveDifficulty(null);
     setElapsedTime(0);
+    setQuestionStartTime(Date.now());
   };
 
   const startMixedDrill = (difficulty: Difficulty) => {
-    let shuffled = [...DRILLS].sort(() => 0.5 - Math.random());
+    let rawStats: Record<string, { attempts: number; correct: number }> = {};
+    try {
+      rawStats = JSON.parse(localStorage.getItem('lsat_flaw_performance') || '{}');
+    } catch(e) {}
     
+    // Calculate weakness score: higher score = weaker
+    // Default score for unattempted is 0.7 (slightly prioritized over 50/50 but less than totally wrong)
+    const scoredDrills = DRILLS.map(drill => {
+      const stats = rawStats[drill.name];
+      let weakness = 0.7; // Unattempted priority
+      if (stats && stats.attempts > 0) {
+        weakness = 1 - (stats.correct / stats.attempts);
+      }
+      return { drill, weakness, r: Math.random() };
+    });
+
+    // Sort by weakness descending, then random as tie-breaker
+    const shuffled = scoredDrills.sort((a, b) => b.weakness - a.weakness || b.r - a.r).map(s => s.drill);
+
+    let selectedDrills = shuffled;
     if (difficulty === 'easy') {
-      shuffled = shuffled.slice(0, 2);
+      selectedDrills = shuffled.slice(0, 2);
     } else if (difficulty === 'medium') {
-      shuffled = shuffled.slice(0, 5);
-    }
+      selectedDrills = shuffled.slice(0, 5);
+    } // 'hard' takes all
     
-    setDrillQueue(shuffled);
+    // Sort selected back to random order so they don't immediately know the first is their absolute weakest
+    selectedDrills = selectedDrills.sort(() => 0.5 - Math.random());
+
+    setDrillQueue(selectedDrills);
     setCurrentQueueIndex(0);
-    setActiveDrill(shuffled[0]);
+    setActiveDrill(selectedDrills[0]);
     setStep('start');
     setSessionCorrectCount(0);
     setSessionTotalCount(0);
     setHasScoredCurrentQuestion(false);
     setActiveDifficulty(difficulty);
     setElapsedTime(0);
+    setQuestionStartTime(Date.now());
   };
 
   const handleNext = (nextStep: Step) => {
@@ -265,6 +500,7 @@ export function GuidedDrills() {
     setSelectedAnswer(null);
     setShowFeedback(false);
     setHasScoredCurrentQuestion(false);
+    setQuestionStartTime(Date.now());
   };
 
   const identifyOptions = useMemo(() => {
@@ -287,11 +523,6 @@ export function GuidedDrills() {
         const others = [...FLAW_CATALOG].filter(f => f.name !== correctName && !queueNames.includes(f.name));
         availableDistractors = [...availableDistractors, ...others];
       }
-    } else if (activeDifficulty === 'hard' && correctFlaw) {
-      // Prioritize distractors from the same group for subtlety
-      const sameGroup = availableDistractors.filter(f => f.group === correctFlaw.group).sort(() => 0.5 - Math.random());
-      const otherGroup = availableDistractors.filter(f => f.group !== correctFlaw.group).sort(() => 0.5 - Math.random());
-      availableDistractors = [...sameGroup, ...otherGroup];
     } else {
       availableDistractors = availableDistractors.sort(() => 0.5 - Math.random());
     }
@@ -316,6 +547,7 @@ export function GuidedDrills() {
 
   const checkAnswer = (answer: string, isCorrect: boolean) => {
     if (showFeedback) return;
+    const timeSpent = questionStartTime ? (Date.now() - questionStartTime) / 1000 : 0;
     setSelectedAnswer(answer);
     setShowFeedback(true);
     if (!hasScoredCurrentQuestion) {
@@ -323,6 +555,21 @@ export function GuidedDrills() {
       setSessionTotalCount(t => t + 1);
       if (isCorrect) {
         setSessionCorrectCount(c => c + 1);
+      }
+      
+      if (activeDrill) {
+        try {
+          const stats = JSON.parse(localStorage.getItem('lsat_flaw_performance') || '{}');
+          if (!stats[activeDrill.name]) {
+            stats[activeDrill.name] = { correct: 0, attempts: 0, totalTime: 0 };
+          }
+          stats[activeDrill.name].attempts += 1;
+          stats[activeDrill.name].totalTime = (stats[activeDrill.name].totalTime || 0) + timeSpent;
+          if (isCorrect) {
+            stats[activeDrill.name].correct += 1;
+          }
+          localStorage.setItem('lsat_flaw_performance', JSON.stringify(stats));
+        } catch (e) {}
       }
     }
   };
@@ -371,15 +618,25 @@ export function GuidedDrills() {
     const definition = FLAW_CATALOG.find(f => f.name === activeDrill.name)?.definition;
     
     if (isCorrect) {
+      const isAnswerStep = stepType === 'answer choice description';
+      const textExplanation = isAnswerStep
+        ? `This correctly maps the abstract language in the answer choice back to the specific parts of the stimulus. It perfectly describes a ${activeDrill.name} flaw.`
+        : `This correctly isolates the ${stepType} in the stimulus. Understanding this part of the argument is essential for diagnosing a ${activeDrill.name} flaw, which happens when ${definition?.charAt(0).toLowerCase()}${definition?.slice(1)}`;
+      
+      const videoExplanationText = isAnswerStep
+        ? `Explain how the correct answer "${correct}" functionally maps to the stimulus text and exposes the ${activeDrill.name} flaw.`
+        : `This correctly isolates the ${stepType} ("${correct}") in the stimulus. Visually demonstrate how this maps textually back to specific parts of the stimulus and explicitly contrasts the flawed reasoning. A ${activeDrill.name} flaw happens when ${definition}.`;
+
       return (
         <div className="mt-3 text-green-900/80 text-xs border-t border-green-200/50 pt-3">
           <strong className="block text-green-900 mb-1">Why this fits the stimulus:</strong>
-          This correctly isolates the <strong>{stepType}</strong> in the stimulus. Understanding this part of the argument is essential for diagnosing a <strong>{activeDrill.name}</strong> flaw, which happens when {definition?.charAt(0).toLowerCase()}{definition?.slice(1)}
+          {textExplanation}
           
           <VideoExplanation 
             stimulus={activeDrill.stimulus}
             flawName={activeDrill.name}
-            explanation={`This correctly isolates the ${stepType} in the stimulus. A ${activeDrill.name} flaw happens when ${definition}.`}
+            correctAnswer={correct}
+            explanation={videoExplanationText}
           />
         </div>
       );
@@ -422,6 +679,14 @@ export function GuidedDrills() {
           <div>
             Your choice misses the mark because it doesn't accurately reflect the stimulus. A <strong>{activeDrill.name}</strong> flaw occurs when {definition?.charAt(0).toLowerCase()}{definition?.slice(1)}. The correct answer precisely highlights the {stepType} that demonstrates this breakdown in logic.
           </div>
+          
+          <VideoExplanation 
+            stimulus={activeDrill.stimulus}
+            flawName={activeDrill.name}
+            correctAnswer={correct}
+            incorrectAnswer={selected}
+            explanation={`Visually highlight why the chosen answer "${selected}" is incorrect, specifically contrasting it with the actual logical gap. Then demonstrate why the correct answer "${correct}" is superior and accurately describes the ${activeDrill.name} flaw in the stimulus.`}
+          />
         </div>
       );
     }
@@ -430,7 +695,7 @@ export function GuidedDrills() {
   return (
     <div className="flex-1 flex justify-center items-center h-full overflow-hidden">
       <div className="w-full max-w-2xl bg-white border border-[#1a1a1a]/10 shadow-sm relative overflow-y-auto max-h-full custom-scrollbar flex flex-col">
-        {step !== 'list' && drillQueue.length > 0 && (
+        {step !== 'list' && step !== 'dashboard' && drillQueue.length > 0 && (
           <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-[#1a1a1a]/10 shadow-sm">
             <div className="h-1.5 w-full bg-[#1a1a1a]/5">
               <motion.div 
@@ -452,7 +717,7 @@ export function GuidedDrills() {
                   </span>
                 )}
                 <button 
-                  onClick={() => setStep('list')}
+                  onClick={saveAndExit}
                   className="px-2 py-1 border border-[#1a1a1a]/20 hover:bg-[#1a1a1a]/5 transition-colors text-[#1a1a1a]/60 flex gap-1 items-center rounded-sm"
                 >
                   <span className="text-[8px]">⏸</span> Save & Exit
@@ -466,7 +731,7 @@ export function GuidedDrills() {
           </div>
         )}
 
-        <div className="p-10 md:p-16 relative flex-1 flex flex-col">
+        <div className="p-6 sm:p-10 md:p-16 relative flex-1 flex flex-col">
           <AnimatePresence mode="wait">
             {step === 'list' && (
               <motion.div
@@ -476,25 +741,85 @@ export function GuidedDrills() {
                 exit={{ opacity: 0, y: -10 }}
                 className="space-y-8"
               >
-                <h2 className="text-4xl font-serif tracking-tighter italic mb-8">Guided Drills</h2>
+                <div className="flex justify-between items-start">
+                  <h2 className="text-4xl font-serif tracking-tighter italic">Practice Drills</h2>
+                  <button 
+                    onClick={() => setStep('dashboard')}
+                    className="flex flex-col items-end group"
+                  >
+                    <span className="text-[9px] uppercase tracking-widest font-bold text-[#1a1a1a]/40 group-hover:text-[#1a1a1a] transition-colors">Progress</span>
+                    <span className="text-xl">📊</span>
+                  </button>
+                </div>
                 
                 <div className="space-y-4">
                   {/* Saved Session Resume */}
                   {hasSavedProgress && (
-                    <div className="flex items-center justify-between p-4 border border-[#1a1a1a] bg-[#1a1a1a] text-white rounded-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-sm">▶</div>
-                        <div>
-                          <div className="text-xs font-bold uppercase tracking-widest text-white">Saved Session found</div>
-                          <div className="text-[10px] text-white/60">Pick up right where you left off</div>
+                    <div className="flex flex-col p-6 border-2 border-[#1a1a1a] bg-white rounded-sm shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] overflow-hidden relative">
+                      <div className="absolute top-0 right-0 p-4 opacity-5 text-4xl font-serif italic">Resume</div>
+                      <div className="space-y-4 relative z-10">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-[#1a1a1a] flex items-center justify-center text-white text-sm shadow-[4px_4px_0px_0px_rgba(26,26,26,0.2)]">▶</div>
+                          <div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">Active Session Detected</div>
+                            <h4 className="text-xl font-serif italic text-[#1a1a1a]">
+                              {(() => {
+                                const saved = localStorage.getItem(SAVE_KEY);
+                                if (saved) {
+                                  const state = JSON.parse(saved);
+                                  const drill = DRILLS.find(d => d.id === state.activeDrillId);
+                                  if (drill) {
+                                    if (state.drillQueueIds.length > 1) {
+                                      return `Mixed Practice: ${drill.name} (+${state.drillQueueIds.length - 1} more)`;
+                                    }
+                                    return `Drill: ${drill.name}`;
+                                  }
+                                }
+                                return 'In-progress Drill Session';
+                              })()}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[10px] uppercase tracking-widest font-bold">
+                          <div className="flex gap-4">
+                            <span className="text-[#1a1a1a]/40">Progress: <span className="text-[#1a1a1a]">{(() => {
+                              const saved = localStorage.getItem(SAVE_KEY);
+                              if (saved) {
+                                const state = JSON.parse(saved);
+                                return `${state.currentQueueIndex + 1} / ${state.drillQueueIds.length}`;
+                              }
+                              return '0/0';
+                            })()} Drills</span></span>
+                            <span className="text-[#1a1a1a]/40">Accuracy: <span className="text-[#1a1a1a]">{(() => {
+                              const saved = localStorage.getItem(SAVE_KEY);
+                              if (saved) {
+                                const state = JSON.parse(saved);
+                                return state.sessionTotalCount > 0 ? Math.round((state.sessionCorrectCount / state.sessionTotalCount) * 100) : 0;
+                              }
+                              return 0;
+                            })()}%</span></span>
+                          </div>
+                   
+                          <div className="flex gap-2">
+                             <button 
+                              onClick={() => {
+                                localStorage.removeItem(SAVE_KEY);
+                                setHasSavedProgress(false);
+                              }}
+                              className="px-3 py-2 text-[#1a1a1a]/40 hover:text-red-600 transition-colors"
+                            >
+                              Discard
+                            </button>
+                            <button 
+                              onClick={resumeSession}
+                              className="px-6 py-2 bg-[#1a1a1a] text-white rounded-sm hover:bg-[#1a1a1a]/90 transition-colors shadow-lg"
+                            >
+                              Resume →
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <button 
-                        onClick={resumeSession}
-                        className="px-4 py-2 bg-white text-[#1a1a1a] text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-white/90 transition-colors"
-                      >
-                        Resume
-                      </button>
                     </div>
                   )}
 
@@ -516,52 +841,38 @@ export function GuidedDrills() {
                   </div>
 
                   {/* Difficulty Selection for Mixed Drills */}
-                  <div className="bg-[#1a1a1a] text-white p-6 relative overflow-hidden">
+                  <div className="bg-[#1a1a1a] text-white p-6 relative overflow-hidden rounded-sm">
                     <div className="absolute top-0 right-0 p-4 opacity-10 text-6xl">✦</div>
                     <h3 className="text-2xl font-serif mb-2 italic relative z-10">Mixed Practice Session</h3>
-                    <p className="text-sm text-white/60 mb-6 relative z-10">Test your recognition skills with a randomized set of flaws.</p>
+                    <p className="text-sm text-white/60 mb-6 relative z-10">Adaptive practice targeting your weak spots. Choose your intensity.</p>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
+                    <div className="flex flex-col sm:flex-row gap-3 relative z-10 w-full mt-4">
                       <button
-                        onClick={() => startMixedDrill('easy')}
-                        className="p-4 border border-white/20 hover:bg-white/10 transition-colors text-left"
+                        onClick={() => startMixedDrill('hard')}
+                        className="flex-1 p-4 border border-white/20 hover:bg-white/10 transition-colors text-center font-bold text-sm uppercase tracking-widest whitespace-nowrap rounded-sm"
                       >
-                        <div className="font-bold text-sm uppercase tracking-widest mb-1">Easy</div>
-                        <div className="text-xs text-white/60">2 Flaws • 2 Options</div>
+                        Hard
                       </button>
                       <button
                         onClick={() => startMixedDrill('medium')}
-                        className="p-4 border border-white/20 hover:bg-white/10 transition-colors text-left"
+                        className="flex-1 p-4 border border-white/20 hover:bg-white/10 transition-colors text-center font-bold text-sm uppercase tracking-widest whitespace-nowrap rounded-sm"
                       >
-                        <div className="font-bold text-sm uppercase tracking-widest mb-1">Medium</div>
-                        <div className="text-xs text-white/60">5 Flaws • 3 Options</div>
+                        Medium
                       </button>
                       <button
-                        onClick={() => startMixedDrill('hard')}
-                        className="p-4 border border-white/20 hover:bg-white/10 transition-colors text-left"
+                        onClick={() => startMixedDrill('easy')}
+                        className="flex-1 p-4 border border-white/20 hover:bg-white/10 transition-colors text-center font-bold text-sm uppercase tracking-widest whitespace-nowrap rounded-sm"
                       >
-                        <div className="font-bold text-sm uppercase tracking-widest mb-1">Hard</div>
-                        <div className="text-xs text-white/60">All Flaws • 5 Options</div>
+                        Easy
                       </button>
                     </div>
                   </div>
-
-                  <div className="pt-4 pb-2 border-b border-[#1a1a1a]/10">
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-[#1a1a1a]/40">Individual Flaw Focus</span>
-                  </div>
-
-                  {DRILLS.map((drill, index) => (
-                    <button
-                      key={drill.id}
-                      onClick={() => startDrill(drill)}
-                      className="w-full text-left p-6 border border-[#1a1a1a]/10 hover:border-[#1a1a1a]/40 transition-colors group"
-                    >
-                      <h3 className="text-xl font-serif mb-2 group-hover:italic">Scenario {index + 1}</h3>
-                      <p className="text-sm text-[#1a1a1a]/60 line-clamp-2">"{drill.stimulus}"</p>
-                    </button>
-                  ))}
                 </div>
               </motion.div>
+            )}
+
+            {step === 'dashboard' && (
+              <PerformanceDashboard onBack={() => setStep('list')} />
             )}
 
             {step === 'start' && activeDrill && (
@@ -575,10 +886,10 @@ export function GuidedDrills() {
               
               <div className="flex flex-col items-center">
                 <h2 className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1a1a1a]/50 pt-4">
-                  {drillQueue.length > 0 ? 'Mixed Session' : 'Guided Drill'}
+                  {drillQueue.length > 1 ? 'Mixed Session' : 'Coached Drill'}
                 </h2>
                 <h3 className="text-4xl font-serif tracking-tighter italic">
-                  {drillQueue.length > 0 ? 'Logical Diagnosis' : 'Argument Analysis'}
+                  Analyze the Fallacy
                 </h3>
               </div>
 
@@ -823,8 +1134,8 @@ export function GuidedDrills() {
                         const selectedFlaw = FLAW_CATALOG.find(f => f.name === selectedAnswer);
                         const correctFlaw = FLAW_CATALOG.find(f => f.name === activeDrill.name);
                         
-                        if (selectedFlaw && correctFlaw && selectedFlaw.group === correctFlaw.group) {
-                          return `You're in the right ballpark! '${selectedAnswer}' is also a ${selectedFlaw.group} flaw, which means you've correctly identified the general category of logical breakdown occurring here.`;
+                        if (selectedFlaw && correctFlaw) {
+                          return `While '${selectedAnswer}' might sound plausible, it doesn't quite match the specific mechanism in this stimulus.`;
                         }
                         
                         return `It's easy to see why '${selectedAnswer}' was tempting—LSAT arguments are designed to mix elements of different flaws, often using background details to trick you into picking a familiar-sounding fallacy.`;
@@ -859,7 +1170,7 @@ export function GuidedDrills() {
                     <VideoExplanation 
                       stimulus={activeDrill.stimulus}
                       flawName={activeDrill.name}
-                      explanation={`Correct diagnosis of the ${activeDrill.name} flaw. This flaw occurs because the argument fails to bridge the gap between its evidence and its conclusion.`}
+                      explanation={`Correct diagnosis of the ${activeDrill.name} flaw. Visually show how the evidence fails to prove the conclusion, leaving an exposed logical gap.`}
                     />
                   </div>
                   <div className="flex justify-end">
