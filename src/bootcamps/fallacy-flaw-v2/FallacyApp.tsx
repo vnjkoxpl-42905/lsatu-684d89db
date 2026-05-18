@@ -15,7 +15,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<View>('intro');
 
   return (
-    <div className="h-screen bg-[#f5f2ed] text-[#1a1a1a] font-sans flex flex-col p-8 md:p-12 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-60px)] bg-[#f5f2ed] text-[#1a1a1a] font-sans flex flex-col p-6 md:p-12 relative">
       {/* Header Navigation */}
       <header className="flex justify-between items-start z-10 shrink-0 mb-12">
         <div className="space-y-1">
