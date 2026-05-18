@@ -9,9 +9,11 @@ import {
   Tooltip,
 } from 'recharts';
 import { DRILLS } from '../data/drills';
+import { FLAW_CATALOG } from '../data/flaws';
 import { FluidExpandingGrid } from './ui/fluid-expanding-grid';
 import { VIDEO_ASSETS } from '../data/videoAssets';
 import { VideoCard } from './VideoCard';
+import { FlawDrillLauncher } from './FlawDrillLauncher';
 
 interface HomeProps {
   onStartLesson: () => void;
