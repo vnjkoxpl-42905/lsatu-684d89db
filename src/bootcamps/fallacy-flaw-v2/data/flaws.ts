@@ -1,9 +1,6 @@
-export type FlawGroup = 'Group 1' | 'Group 2' | 'Practical LSAT Tricks';
-
 export interface FlawCard {
   id: string;
   name: string;
-  group: FlawGroup;
   definition: string;
   doingWrong: string;
   counterQuestion: string;
@@ -13,6 +10,8 @@ export interface FlawCard {
   lsatWording: string;
   dontConfuseWith: string;
   answerChoicePhrasing: string[];
+  infographicUrl?: string;
+  videoId?: string;
 }
 
 export const FLAW_CATALOG: FlawCard[] = [
@@ -20,7 +19,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'necessary-vs-sufficient',
     name: 'Necessary vs. Sufficient',
-    group: 'Group 1',
     definition: 'The argument mistakes something that is required for an outcome for something that guarantees the outcome, or vice versa.',
     doingWrong: 'Reading conditional premises backwards (without negating) or negating and reading them forwards.',
     counterQuestion: 'What if [the necessary condition] happens, but [the sufficient condition] does not?',
@@ -29,6 +27,8 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Confuses a condition necessary for the truth of a claim with a condition sufficient for the truth of that claim.',
     lsatWording: 'Treats a sufficient condition as a necessary condition.',
     dontConfuseWith: 'Causal Flaw. Conditional statements are about guarantees, not one thing literally causing another.',
+    infographicUrl: '/infographics/conditional-trap.png',
+    videoId: 'necessary-vs-sufficient-video',
     answerChoicePhrasing: [
       'takes a necessary condition for a sufficient condition',
       'mistakes a condition that is required for an outcome for one that guarantees it',
@@ -38,7 +38,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'causal-flaw',
     name: 'Causal Flaw',
-    group: 'Group 1',
     definition: 'Concluding that one thing caused another just because they happened together or one preceded the other.',
     doingWrong: 'Assuming correlation implies causation, or ignoring alternate causes.',
     counterQuestion: 'What if something else caused it? What if the cause and effect are reversed?',
@@ -47,6 +46,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Infers a causal connection from a mere correlation.',
     lsatWording: 'Takes for granted that because two phenomena are correlated, the first must have caused the second.',
     dontConfuseWith: 'Necessary vs. Sufficient condition. "Causes" implies making something happen; "requires" is just a logical guarantee.',
+    infographicUrl: '/infographics/causal-flaw.png',
     answerChoicePhrasing: [
       'fails to consider that a third factor may be responsible for both phenomena',
       'confuses a correlation with a causal connection',
@@ -56,7 +56,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'sampling-fallacy',
     name: 'Sampling Fallacy',
-    group: 'Group 1',
     definition: 'Making a broad generalization based on a small, unrepresentative, or biased sample.',
     doingWrong: 'Assuming a small group perfectly represents the entire population.',
     counterQuestion: 'What if the group surveyed is totally different from the general population?',
@@ -65,6 +64,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Draws a general conclusion from an unrepresentative sample.',
     lsatWording: 'Relies on a sample that is too small or unrepresentative to support the broad conclusion.',
     dontConfuseWith: 'Part vs. Whole. Sampling goes from a subset of individuals to the whole population of individuals. Part vs. Whole goes from the physical parts of an object to the whole object.',
+    infographicUrl: '/infographics/sampling-fallacy.png',
     answerChoicePhrasing: [
       'bases a generalization on an unrepresentative sample',
       'relies on a sample that is too small to yield reliable results',
@@ -74,7 +74,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'part-vs-whole',
     name: 'Part vs. Whole',
-    group: 'Group 1',
     definition: 'Assuming that what is true of the parts must be true of the whole, or vice versa.',
     doingWrong: 'Assigning characteristics to a group based on individuals, or to individuals based on the group.',
     counterQuestion: 'What if the pieces act differently when they are put together?',
@@ -83,6 +82,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Infers that a whole has a certain property merely from the fact that all of its parts have that property.',
     lsatWording: 'Assumes that what is true of a whole must be true of its parts individually.',
     dontConfuseWith: 'Sampling. Part vs. Whole is about physical or structural parts of a single entity. Sampling is about taking a few members of a group and concluding about the other members.',
+    infographicUrl: '/infographics/part-vs-whole.png',
     answerChoicePhrasing: [
       'unjustifiably infers that a whole possesses a property simply because each of its parts possesses that property',
       'assumes without warrant that what is true of a group as a whole must be true of each member'
@@ -91,7 +91,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'unproven-vs-proven-false',
     name: 'Unproven vs. Proven False',
-    group: 'Group 1',
     definition: 'Concluding that a claim is false just because the argument for it was flawed, or concluding it is true because it hasn\'t been proven false.',
     doingWrong: 'Confusing a lack of evidence with evidence of absence.',
     counterQuestion: 'What if the claim is still true, even if their argument for it is terrible?',
@@ -100,6 +99,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Treats the failure to establish that a claim is true as conclusive evidence that the claim is false.',
     lsatWording: 'Concludes that a proposition is false simply because an argument given in its favor is flawed.',
     dontConfuseWith: 'Ad Hominem. Unproven/Proven False attacks the lack of proof; Ad Hominem attacks the person giving the proof.',
+    videoId: 'unproven-vs-proven-false-video',
     answerChoicePhrasing: [
       'takes a lack of evidence for a claim as evidence that the claim is false',
       'confuses inadequate evidence for a conclusion with evidence that the conclusion is false',
@@ -109,7 +109,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'ad-hominem',
     name: 'Ad Hominem',
-    group: 'Group 1',
     definition: 'Attacking the person making the argument rather than the argument itself.',
     doingWrong: 'Criticizing the opponent\'s character or motives instead of their reasoning.',
     counterQuestion: 'What if the person is a hypocrite or has bad motives, but their actual argument is still logically valid?',
@@ -128,7 +127,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'circular-reasoning',
     name: 'Circular Reasoning',
-    group: 'Group 2',
     definition: 'The argument\'s conclusion is just a restatement of its premises.',
     doingWrong: 'Using the conclusion itself as evidence to support the conclusion.',
     counterQuestion: 'Is the author actually providing evidence, or just repeating their claim using different words?',
@@ -137,6 +135,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Presupposes what it sets out to prove.',
     lsatWording: 'The conclusion is essentially the same as the premise, offering no real support.',
     dontConfuseWith: 'Equivocation. Circular reasoning uses the same meaning to prove the same meaning. Equivocation switches the meaning of a word.',
+    videoId: 'rarely-correct-video',
     answerChoicePhrasing: [
       'presupposes what it sets out to establish',
       'assumes what it is attempting to prove',
@@ -146,7 +145,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'internal-contradiction',
     name: 'Internal Contradiction',
-    group: 'Group 2',
     definition: 'The argument makes claims that cannot both be true at the same time.',
     doingWrong: 'Providing premises that logically conflict with each other.',
     counterQuestion: 'Wait, didn\'t the author just say the exact opposite of that a second ago?',
@@ -155,6 +153,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Bases its conclusion on claims that are logically incompatible with each other.',
     lsatWording: 'Relies on assertions that cannot simultaneously be true.',
     dontConfuseWith: 'Equivocation. In internal contradiction, the claims genuinely conflict. In equivocation, a word shifts meaning to hide a conflict.',
+    videoId: 'rarely-correct-video',
     answerChoicePhrasing: [
       'bases its conclusion on premises that cannot all be true',
       'draws a conclusion that is logically incompatible with the premises offered in its support',
@@ -164,7 +163,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'equivocation',
     name: 'Equivocation',
-    group: 'Group 2',
     definition: 'Using a word with multiple meanings inconsistently throughout the argument.',
     doingWrong: 'Exploiting the ambiguity of a word by shifting its meaning halfway through to make the logic seem sound.',
     counterQuestion: 'Is the author using this word to mean the exact same thing in the premise as in the conclusion?',
@@ -173,6 +171,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Fails to distinguish between two distinct senses of a key term.',
     lsatWording: 'Exploits an ambiguity in a crucial term, using it to mean one thing in a premise and another in the conclusion.',
     dontConfuseWith: 'Internal Contradiction. Equivocation tries to hide the contradiction by using the same word for two different concepts.',
+    videoId: 'rarely-correct-video',
     answerChoicePhrasing: [
       'relies on two different uses of the same term',
       'allows the meaning of a crucial term to shift over the course of the argument',
@@ -182,7 +181,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'inappropriate-appeal',
     name: 'Inappropriate Appeal',
-    group: 'Group 2',
     definition: 'Appealing to authority, emotion, or popularity rather than logic.',
     doingWrong: 'Relying on external factors like an unqualified expert or public consensus to prove a factual claim.',
     counterQuestion: 'What if the expert is wrong, or the majority of people believe something false?',
@@ -191,6 +189,7 @@ export const FLAW_CATALOG: FlawCard[] = [
     abstractWording: 'Accepts a claim merely on the authority of an individual who lacks expertise in the relevant area.',
     lsatWording: 'Appeals to popular opinion, authority, or emotion to support its argument instead of logical reasoning.',
     dontConfuseWith: 'Ad Hominem (which attacks a person). Inappropriate appeal relies on a person or public opinion to *support* a claim.',
+    videoId: 'rarely-correct-video',
     answerChoicePhrasing: [
       'relies on the authority of an expert in a field irrelevant to the issue at hand',
       'bases a conclusion about a factual matter on the popularity of the belief',
@@ -202,7 +201,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'sleight-of-hand',
     name: 'Sleight of Hand',
-    group: 'Practical LSAT Tricks',
     definition: 'Sneaking a brand new concept into the conclusion that was never mentioned in the premises.',
     doingWrong: 'Pretending two different things are identical to force the logic to work.',
     counterQuestion: 'Wait, what if [New Concept in Conclusion] is NOT the same thing as [Concept in the Premises]?',
@@ -220,7 +218,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'value-assumption',
     name: 'Value Assumption',
-    group: 'Practical LSAT Tricks',
     definition: 'Making a judgment in the conclusion (e.g., "good," "bad," "should," "demeaning") that has no factual support in the premises.',
     doingWrong: 'Jumping from descriptive facts (what IS) to normative judgments (what OUGHT to be).',
     counterQuestion: 'What if [the factual premise] doesn\'t actually mean it is [judgment word]?',
@@ -238,7 +235,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'sleazy-sales-pitch',
     name: 'Sleazy Sales Pitch',
-    group: 'Practical LSAT Tricks',
     definition: 'Presenting only one side of a comparison, ignoring potential drawbacks or the other side\'s benefits.',
     doingWrong: 'Trying to convince you to choose Option A by only listing Option A\'s good qualities and ignoring Option B.',
     counterQuestion: 'What if Option A has some major downside we aren\'t accounting for, or Option B is even better?',
@@ -256,7 +252,6 @@ export const FLAW_CATALOG: FlawCard[] = [
   {
     id: 'universal-desires-assumption',
     name: 'Universal Desires Assumption',
-    group: 'Practical LSAT Tricks',
     definition: 'Assuming that common desires or values apply universally to everyone without questioning the underlying assumptions.',
     doingWrong: 'Taking for granted that everyone wants the same thing (e.g., to save money, to be healthy).',
     counterQuestion: 'What if some people in this group actively DO NOT want this "obviously good" thing?',

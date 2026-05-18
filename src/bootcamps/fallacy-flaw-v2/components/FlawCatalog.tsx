@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FLAW_CATALOG, FlawCard as FlawCardType } from '../data/flaws';
+import { VIDEO_ASSETS } from '../data/videoAssets';
+import { VideoCard } from './VideoCard';
+import { LogicVisualizer } from './LogicVisualizer';
 
 export function FlawCatalog() {
   const [selectedFlawId, setSelectedFlawId] = useState<string | null>(null);
-
-  const groups = ['Group 1', 'Group 2', 'Practical LSAT Tricks'];
 
   const selectedFlaw = selectedFlawId 
     ? FLAW_CATALOG.find(f => f.id === selectedFlawId) 
@@ -15,29 +16,22 @@ export function FlawCatalog() {
       {/* Left Navigation / List */}
       <div className="w-full md:w-1/3 flex flex-col gap-8 h-full overflow-y-auto pr-4 pb-12 custom-scrollbar">
         <div>
-          <h2 className="text-4xl font-serif tracking-tighter italic mb-8">Famous Flaws</h2>
+          <h2 className="text-4xl font-serif tracking-tighter italic mb-8">Major Fallacies</h2>
           
           <div className="space-y-12">
-            {groups.map(group => (
-              <div key={group}>
-                <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#1a1a1a]/50 font-bold mb-4">
-                  {group}
-                </h3>
-                <div className="flex flex-col gap-2">
-                  {FLAW_CATALOG.filter(f => f.group === group).map(flaw => (
-                    <button
-                      key={flaw.id}
-                      onClick={() => setSelectedFlawId(flaw.id)}
-                      className={`text-left text-lg font-serif transition-colors py-1 border-b border-[#1a1a1a]/10 hover:border-[#1a1a1a]/50 ${
-                        selectedFlawId === flaw.id ? 'text-[#1a1a1a] font-medium italic' : 'text-[#1a1a1a]/60'
-                      }`}
-                    >
-                      {flaw.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
+            <div className="flex flex-col gap-2">
+              {FLAW_CATALOG.map(flaw => (
+                <button
+                  key={flaw.id}
+                  onClick={() => setSelectedFlawId(flaw.id)}
+                  className={`text-left text-lg font-serif transition-colors py-1 border-b border-[#1a1a1a]/10 hover:border-[#1a1a1a]/50 ${
+                    selectedFlawId === flaw.id ? 'text-[#1a1a1a] font-medium italic' : 'text-[#1a1a1a]/60'
+                  }`}
+                >
+                  {flaw.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -47,17 +41,50 @@ export function FlawCatalog() {
         {selectedFlaw ? (
           <div className="bg-white border border-[#1a1a1a]/10 p-8 md:p-12 shadow-sm w-full max-w-3xl flex flex-col gap-8">
             <div className="border-b border-[#1a1a1a]/10 pb-6">
-              <div className="flex justify-between items-start mb-4">
-                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1a1a1a]/50">{selectedFlaw.group}</span>
-              </div>
               <h1 className="text-4xl md:text-5xl font-serif tracking-tighter italic">{selectedFlaw.name}</h1>
             </div>
+
+            {/* Video Support */}
+            {(() => {
+              const video = VIDEO_ASSETS.find(v => v.id === selectedFlaw.videoId) ||
+                            VIDEO_ASSETS.find(v => v.flawId === selectedFlaw.id) || 
+                            VIDEO_ASSETS.find(v => v.type === 'comparison' && v.relatedFlawIds?.includes(selectedFlaw.id));
+              
+              if (video) {
+                return (
+                  <section className="mb-0">
+                    <VideoCard 
+                      title={video.title}
+                      description={video.description}
+                      url={video.url}
+                      poster={video.poster}
+                      label={video.type === 'comparison' ? 'Comparison Video' : 'Mastery Video'}
+                    />
+                  </section>
+                );
+              }
+              return null;
+            })()}
 
             <div className="space-y-8 text-sm md:text-base text-[#1a1a1a]/80 font-light leading-relaxed">
               
               <section>
                 <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1a1a1a] mb-2">Definition</h4>
                 <p className="text-lg text-[#1a1a1a]">{selectedFlaw.definition}</p>
+              </section>
+
+              {/* Infographic Section */}
+              <section className="my-8 border border-[#1a1a1a]/10 overflow-hidden bg-[#f5f2ed]/30 p-6 rounded-sm shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]"></div>
+                  <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1a1a1a]">Visual Logic Guide</h4>
+                </div>
+                
+                <div className="bg-white rounded border border-[#1a1a1a]/5 shadow-sm">
+                  <LogicVisualizer flawId={selectedFlaw.id} />
+                </div>
+                
+                <p className="text-[10px] text-[#1a1a1a]/40 italic mt-6 text-center">Interactive visual breakdown of the logical foul.</p>
               </section>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -105,7 +132,7 @@ export function FlawCatalog() {
         ) : (
           <div className="flex-1 flex flex-col justify-center items-center text-center p-8 border border-[#1a1a1a]/10 border-dashed">
              <div className="w-16 h-16 rounded-full border border-[#1a1a1a]/20 flex items-center justify-center text-2xl mb-4 font-serif italic text-[#1a1a1a]/30">✦</div>
-             <p className="text-xl font-serif italic text-[#1a1a1a]/50 tracking-tight">Select a flaw keycard from the catalog to begin.</p>
+             <p className="text-xl font-serif italic text-[#1a1a1a]/50 tracking-tight">Select a fallacy from the catalog to begin.</p>
           </div>
         )}
       </div>

@@ -943,4 +943,137 @@ export const DRILLS: Drill[] = [
       }
     }
   }
+
+  ,
+  {
+    id: 'value-assumption-2',
+    name: 'Value Assumption',
+    stimulus: "The mayor recently decided to allocate funds to fixing potholes rather than building a new public library. Since libraries provide educational resources for the entire community, the mayor clearly made the wrong choice.",
+    conclusionText: "the mayor clearly made the wrong choice.",
+    supportText: "libraries provide educational resources for the entire community.",
+    questions: {
+      conclusion: {
+        prompt: "What is the author's final claim?",
+        options: [
+          'The mayor allocated funds to potholes instead of libraries.',
+          'the mayor clearly made the wrong choice.',
+          'Libraries are more important than potholes.'
+        ],
+        correctAnswer: 'the mayor clearly made the wrong choice.',
+        feedback: {
+          'The mayor allocated funds to potholes instead of libraries.': "Incorrect. This is the background fact.",
+          'the mayor clearly made the wrong choice.': "Correct! The author makes a definitive value judgment about the mayor's decision.",
+          'Libraries are more important than potholes.': "Incorrect. This is the assumption, not the stated conclusion."
+        }
+      },
+      support: {
+        prompt: "What evidence goes into supporting that conclusion?",
+        options: [
+          'libraries provide educational resources for the entire community.',
+          'Potholes only affect drivers.',
+          'The mayor clearly made the wrong choice.'
+        ],
+        correctAnswer: 'libraries provide educational resources for the entire community.',
+        feedback: {
+          'libraries provide educational resources for the entire community.': "Correct! This is the only evidence given to show *why* the choice was wrong.",
+          'Potholes only affect drivers.': "Incorrect. This is not stated in the text.",
+          'The mayor clearly made the wrong choice.': "Incorrect. This is the conclusion."
+        }
+      },
+      gap: {
+        prompt: "Which 'What-if' counter-question breaks this logic?",
+        options: [
+          'What if the potholes were causing fatal accidents and saving lives is a higher priority than educational resources?',
+          'What if the community already has several libraries?',
+          'What if the mayor doesn\'t read books?'
+        ],
+        correctAnswer: 'What if the potholes were causing fatal accidents and saving lives is a higher priority than educational resources?',
+        feedback: {
+          'What if the potholes were causing fatal accidents and saving lives is a higher priority than educational resources?': "Correct! The author assumes that educational value automatically trumps the unspecified value of fixing the potholes.",
+          'What if the community already has several libraries?': "Incorrect. While relevant, it doesn't attack the core value assumption that education > potholes.",
+          'What if the mayor doesn\'t read books?': "Incorrect. This is ad hominem and irrelevant."
+        }
+      },
+      answer: {
+        prompt: "Which answer choice correctly identifies the flaw?",
+        options: [
+          'Bases a moral judgement on a purely factual premise.',
+          'Fails to consider that fixing potholes might provide a benefit that outweighs the educational value of a library.',
+          'Confuses a condition that is sufficient to guarantee an outcome with one that is necessary.'
+        ],
+        correctAnswer: 'Fails to consider that fixing potholes might provide a benefit that outweighs the educational value of a library.',
+        feedback: {
+          'Bases a moral judgement on a purely factual premise.': "Incorrect. This describes an Is/Ought fallacy.",
+          'Fails to consider that fixing potholes might provide a benefit that outweighs the educational value of a library.': "Correct! The author made a value judgment (wrong choice) without weighing the benefits of the alternative.",
+          'Confuses a condition that is sufficient to guarantee an outcome with one that is necessary.': "Incorrect. This is a Necessary vs. Sufficient flaw."
+        }
+      }
+    }
+  },
+  {
+    id: 'sleazy-sales-pitch-2',
+    name: 'Sleazy Sales Pitch',
+    stimulus: "Our competitor\'s vacuum cleaner frequently loses suction and breaks down within a year. Our new vacuum cleaner uses a completely different motor design. Therefore, our vacuum is the most reliable option on the market.",
+    conclusionText: "our vacuum is the most reliable option on the market.",
+    supportText: "our competitor\'s vacuum frequently breaks down, and ours uses a different design.",
+    questions: {
+      conclusion: {
+        prompt: "What is the author's final claim?",
+        options: [
+          'Our competitor\'s vacuum is terrible.',
+          'our vacuum is the most reliable option on the market.',
+          'Our vacuum uses a different motor design.'
+        ],
+        correctAnswer: 'our vacuum is the most reliable option on the market.',
+        feedback: {
+          'Our competitor\'s vacuum is terrible.': "Incorrect. This is a premise used to set up the comparison.",
+          'our vacuum is the most reliable option on the market.': "Correct! The author pivots from critiquing a competitor to claiming absolute superiority.",
+          'Our vacuum uses a different motor design.': "Incorrect. This is the premise explaining why they are different."
+        }
+      },
+      support: {
+        prompt: "What evidence goes into supporting that conclusion?",
+        options: [
+          'Our competitor\'s vacuum frequently breaks down, and ours uses a different design.',
+          'Reliability is the most important trait of a vacuum.',
+          'Our vacuum is the most reliable option.'
+        ],
+        correctAnswer: 'Our competitor\'s vacuum frequently breaks down, and ours uses a different design.',
+        feedback: {
+          'Our competitor\'s vacuum frequently breaks down, and ours uses a different design.': "Correct! The argument relies entirely on tearing down one alternative and claiming 'difference'.",
+          'Reliability is the most important trait of a vacuum.': "Incorrect. Not stated in the text.",
+          'Our vacuum is the most reliable option.': "Incorrect. That is the conclusion."
+        }
+      },
+      gap: {
+        prompt: "Which 'What-if' counter-question breaks this logic?",
+        options: [
+          'What if the new motor design is actually worse and catching on fire?',
+          'What if the competitor lowers their price to compensate for the bad motor?',
+          'What if there is a third, unnamed competitor that makes a flawless vacuum?'
+        ],
+        correctAnswer: 'What if there is a third, unnamed competitor that makes a flawless vacuum?',
+        feedback: {
+          'What if the new motor design is actually worse and catching on fire?': "Incorrect. While this attacks the conclusion, the flaw here is ignoring *other* options when claiming 'most reliable'.",
+          'What if the competitor lowers their price to compensate for the bad motor?': "Incorrect. Irrelevant to the claim.",
+          'What if there is a third, unnamed competitor that makes a flawless vacuum?': "Correct! You can't claim to be the BEST just because you proved you're better than the WORST."
+        }
+      },
+      answer: {
+        prompt: "Which answer choice correctly identifies the flaw?",
+        options: [
+          'Assumes without warrant that there are only two options available.',
+          'Infers that a product is superior overall from the fact that it excels in one specific area.',
+          'Fails to establish that a new design is functionally superior to an old one.'
+        ],
+        correctAnswer: 'Assumes without warrant that there are only two options available.',
+        feedback: {
+          'Assumes without warrant that there are only two options available.': "Correct! The argument falsely forces a choice between only two vacuums to claim the title of 'most reliable'.",
+          'Infers that a product is superior overall from the fact that it excels in one specific area.': "Incorrect. The argument didn't claim it excelled in one area.",
+          'Fails to establish that a new design is functionally superior to an old one.': "Incorrect. While true, it misses the larger flaw."
+        }
+      }
+    }
+  }
+
 ];
