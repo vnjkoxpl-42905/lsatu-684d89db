@@ -41,8 +41,9 @@ export function FlawCatalog() {
       <div className="w-full md:w-2/3 h-full overflow-y-auto pb-12 relative flex">
         {selectedFlaw ? (
           <div className="bg-white border border-[#1a1a1a]/10 p-8 md:p-12 shadow-sm w-full max-w-3xl flex flex-col gap-8">
-            <div className="border-b border-[#1a1a1a]/10 pb-6">
+            <div className="border-b border-[#1a1a1a]/10 pb-6 flex items-start justify-between gap-6 flex-wrap">
               <h1 className="text-4xl md:text-5xl font-serif tracking-tighter italic">{selectedFlaw.name}</h1>
+              <FlawDrillLauncher flawId={selectedFlaw.id} flawName={selectedFlaw.name} />
             </div>
 
             {/* Video Support */}
