@@ -3,6 +3,7 @@ import { FLAW_CATALOG, FlawCard as FlawCardType } from '../data/flaws';
 import { VIDEO_ASSETS } from '../data/videoAssets';
 import { VideoCard } from './VideoCard';
 import { LogicVisualizer } from './LogicVisualizer';
+import { FlawDrillLauncher } from './FlawDrillLauncher';
 
 export function FlawCatalog() {
   const [selectedFlawId, setSelectedFlawId] = useState<string | null>(null);
