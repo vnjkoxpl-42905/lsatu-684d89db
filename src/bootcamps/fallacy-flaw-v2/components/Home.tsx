@@ -9,9 +9,11 @@ import {
   Tooltip,
 } from 'recharts';
 import { DRILLS } from '../data/drills';
+import { FLAW_CATALOG } from '../data/flaws';
 import { FluidExpandingGrid } from './ui/fluid-expanding-grid';
 import { VIDEO_ASSETS } from '../data/videoAssets';
 import { VideoCard } from './VideoCard';
+import { FlawDrillLauncher } from './FlawDrillLauncher';
 
 interface HomeProps {
   onStartLesson: () => void;
@@ -137,6 +139,12 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
                   →
                 </motion.span>
               </button>
+              <FlawDrillLauncher
+                flawId="causal-flaw"
+                flawName="Causal Flaw"
+                variant="ghost"
+                className="px-10 py-5"
+              />
             </div>
           </motion.div>
 
@@ -285,6 +293,27 @@ export function Home({ onStartLesson, onGoToDrills }: HomeProps) {
             ))}
           </div>
         </motion.section>
+
+        {/* Real LSAT Bank Drill grid */}
+        <motion.section variants={itemVariants} className="space-y-8">
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-[#1a1a1a]/50">LSAT Bank · Woven In</h3>
+            <h2 className="text-4xl md:text-5xl font-serif italic tracking-tighter">Drill the flaws on real LSAT questions.</h2>
+            <p className="text-sm text-[#1a1a1a]/60 max-w-2xl">Every flaw in the catalog is wired to matching Flaw-type questions from the LSAT U bank. Open any one in the same Smart Drill interface used across the platform.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {FLAW_CATALOG.map((flaw) => (
+              <div key={flaw.id} className="flex items-center justify-between gap-3 border border-[#1a1a1a]/10 bg-white px-4 py-3 rounded-sm hover:border-[#1a1a1a]/40 transition-colors">
+                <div className="min-w-0">
+                  <div className="text-sm font-serif italic truncate">{flaw.name}</div>
+                </div>
+                <FlawDrillLauncher flawId={flaw.id} flawName={flaw.name} variant="compact" />
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+
 
         {/* Footer Methodology */}
         <motion.section variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-[#1a1a1a]/10 pt-16 pb-20">
