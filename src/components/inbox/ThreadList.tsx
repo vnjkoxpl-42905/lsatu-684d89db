@@ -56,86 +56,114 @@ export function ThreadList({
   const isAdmin = variant === 'admin';
 
   return (
-    <div role="list" className={cn(!isAdmin && 'p-3 space-y-2')}>
+    <div role="list" className={cn(isAdmin && "bg-[#05070A]")}>
       {conversations.map((c) => {
         const fallback = isAdmin ? 'Conversation' : 'Joshua';
         const name = otherParticipantName(c, user.id, fallback);
         const initial = name.charAt(0).toUpperCase();
         const isActive = c.id === activeId;
         const reply = isAdmin && needsReply(c, user.id);
+        
         return (
           <button
             key={c.id}
             role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
-              'group w-full flex items-start gap-3 text-left transition-colors duration-150',
-              'focus-visible:outline-none focus-visible:bg-accent/40',
-              isAdmin
-                ? 'px-4 py-3.5 border-b border-border/50'
-                : 'px-3.5 py-3.5 rounded-lg border border-border/70 bg-background shadow-sm',
-              isActive && isAdmin && 'bg-accent/70',
-              !isActive && isAdmin && 'hover:bg-accent/30',
-              isActive && !isAdmin && 'border-primary/35 bg-primary/[0.04] ring-1 ring-primary/15',
-              !isActive && !isAdmin && 'hover:bg-muted/40 hover:border-border',
+              'group w-full flex items-start gap-4 text-left transition-all relative',
+              isAdmin 
+                ? [
+                    'px-4 py-5 border-b border-white/5',
+                    isActive 
+                      ? 'bg-white/[0.03]' 
+                      : 'hover:bg-white/[0.02]'
+                  ]
+                : [
+                    'px-3.5 py-3.5 rounded-lg border border-border/70 bg-background shadow-sm mt-2 first:mt-0',
+                    isActive
+                      ? 'border-primary/35 bg-primary/[0.04] ring-1 ring-primary/15'
+                      : 'hover:bg-muted/40 hover:border-border'
+                  ]
             )}
           >
+            {/* Active Indicator (Admin only) */}
+            {isAdmin && isActive && (
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)]" />
+            )}
+
             <div
               className={cn(
-                'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-shadow',
-                isActive && isAdmin && 'bg-foreground/10 text-foreground ring-1 ring-foreground/20',
-                !isActive && isAdmin && 'bg-muted text-foreground/70',
-                isActive && !isAdmin && 'bg-primary text-primary-foreground shadow-sm',
-                !isActive && !isAdmin && 'bg-primary/10 text-primary ring-1 ring-primary/20',
+                'w-10 h-10 flex items-center justify-center text-xs font-bold shrink-0',
+                isAdmin
+                  ? [
+                      'rounded-none border border-white/10',
+                      isActive ? 'bg-white text-black border-white' : 'bg-black text-white/40'
+                    ]
+                  : [
+                      'rounded-full',
+                      isActive ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-primary/10 text-primary ring-1 ring-primary/20'
+                    ],
               )}
               aria-hidden="true"
             >
               {isAdmin ? initial : <MessageCircle className="w-4 h-4" />}
             </div>
+            
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
                 <div
                   className={cn(
-                    'truncate text-sm',
-                    c.unread ? 'font-semibold text-foreground' : 'font-medium text-foreground/90',
+                    'truncate text-[13px] tracking-wide',
+                    isAdmin
+                      ? c.unread ? 'font-bold text-white' : 'font-medium text-white/50'
+                      : c.unread ? 'font-semibold text-foreground' : 'font-medium text-foreground/90',
                   )}
                 >
                   {name}
                 </div>
                 <div
                   className={cn(
-                    'shrink-0 text-[10px] tabular-nums leading-none',
-                    c.unread ? 'text-foreground font-medium' : 'text-muted-foreground',
+                    'shrink-0 text-[9px] font-mono tabular-nums tracking-[0.1em]',
+                    isAdmin
+                      ? c.unread ? 'text-white' : 'text-white/20'
+                      : c.unread ? 'text-foreground font-medium' : 'text-muted-foreground',
                   )}
                 >
-                  {compactTime(c.last_message_at)}
+                  {compactTime(c.last_message_at).toUpperCase()}
                 </div>
               </div>
+              
               <div className="flex items-center gap-2 mt-1">
                 <div
                   className={cn(
-                    'text-xs flex-1 line-clamp-1 break-words',
-                    c.unread ? 'text-foreground/90' : 'text-muted-foreground',
+                    'text-[12px] flex-1 line-clamp-1 break-words leading-relaxed',
+                    isAdmin
+                      ? c.unread ? 'text-white/70' : 'text-white/25'
+                      : c.unread ? 'text-foreground/90' : 'text-muted-foreground',
                   )}
                 >
-                  {c.last_message?.body || c.subject || 'New conversation'}
+                  {c.last_message?.body || c.subject || 'NEW CONVERSATION'}
                 </div>
                 {isAdmin && c.hasAttachments && (
                   <Paperclip
-                    className="w-3 h-3 text-muted-foreground shrink-0"
+                    className="w-3 h-3 text-white/20 shrink-0"
                     aria-label="Has attachments"
                   />
                 )}
                 {c.unread && (
                   <div
-                    className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"
+                    className={cn(
+                      "w-1.5 h-1.5 shrink-0",
+                      isAdmin ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "bg-primary rounded-full"
+                    )}
                     aria-label="Unread"
                   />
                 )}
               </div>
+              
               {reply && (
-                <div className="mt-1.5 inline-flex items-center px-1.5 py-px text-[9px] uppercase tracking-[0.12em] font-semibold rounded text-amber-700 dark:text-amber-300/90 bg-amber-500/10">
-                  Needs reply
+                <div className="mt-2.5 inline-flex items-center px-1.5 py-0.5 text-[8px] uppercase tracking-[0.25em] font-black bg-white text-black">
+                  REPLY REQUIRED
                 </div>
               )}
               {!isAdmin && (

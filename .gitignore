@@ -37,3 +37,6 @@ design-extract-output/
 .playwright-mcp/
 audit-*.png
 audit-*.jpeg
+
+.gemini/
+gha-creds-*.json

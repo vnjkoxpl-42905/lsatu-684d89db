@@ -129,9 +129,12 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={cn("flex flex-col h-full", is_admin ? "bg-[#020408]" : "bg-background")}>
       {!hideHeader && (
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-background/90 backdrop-blur shrink-0">
+        <div className={cn(
+          "flex items-center gap-4 px-8 py-8 shrink-0",
+          is_admin ? "border-b border-white/10 bg-black" : "border-b border-border bg-background/90 backdrop-blur"
+        )}>
           {onBack && (
             <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden -ml-2" aria-label="Back">
               <ArrowLeft className="w-4 h-4" />
@@ -139,54 +142,73 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
           )}
           <div
             className={cn(
-              'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
-              !is_admin
-                ? 'bg-primary/10 text-primary ring-1 ring-primary/25'
-                : 'bg-muted text-foreground/70',
+              'w-14 h-14 flex items-center justify-center text-sm font-black shrink-0',
+              is_admin
+                ? 'bg-white text-black rounded-none shadow-[6px_6px_0_rgba(255,255,255,0.05)] border border-white'
+                : !is_admin
+                  ? 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full'
+                  : 'bg-muted text-foreground/70 rounded-full',
             )}
             aria-hidden="true"
           >
-            {!is_admin ? <MessageCircle className="w-4 h-4" /> : headerInitial}
+            {is_admin ? headerInitial : <MessageCircle className="w-5 h-5" />}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="font-semibold text-base truncate leading-tight">{headerName}</div>
-              {!is_admin && (
-                <span className="hidden sm:inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                  1:1 coaching
-                </span>
-              )}
+            <div className={cn(
+              "font-bold text-xl truncate leading-tight tracking-tight",
+              is_admin ? "text-white uppercase tracking-[0.05em]" : "text-foreground"
+            )}>
+              {headerName}
             </div>
-            <div className="text-[11px] text-muted-foreground truncate mt-0.5">
+            <div className={cn(
+              "text-[10px] truncate mt-1 font-mono uppercase tracking-[0.25em]",
+              is_admin ? "text-white/30" : "text-muted-foreground"
+            )}>
               {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
             </div>
           </div>
+          
+          {is_admin && (
+            <div className="hidden lg:flex items-center gap-10 border-l border-white/10 pl-10 ml-10 font-mono text-[9px] uppercase tracking-[0.2em]">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-white/10 font-bold">Status</span>
+                <span className="text-emerald-500 font-bold">Active</span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-white/10 font-bold">Current Point</span>
+                <span className="text-white/60 font-bold">PT120 · S1</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       <div
         ref={scrollRef}
         className={cn(
-          'flex-1 overflow-y-auto px-4 py-5',
-          is_admin ? 'bg-background' : 'bg-muted/20',
+          'flex-1 overflow-y-auto px-8 py-10 scrollbar-thin scrollbar-thumb-white/10',
+          is_admin ? 'bg-[#020408]' : 'bg-muted/20',
         )}
       >
         {loading ? (
           <ConversationSkeleton />
         ) : messages.length === 0 ? (
-          <div className="text-center text-sm text-muted-foreground py-12">
-            No messages yet. Start the conversation below.
+          <div className="text-center text-[10px] uppercase tracking-[0.4em] font-black text-white/5 py-32">
+            NO COMMUNICATION LOGGED
           </div>
         ) : (
-          <div className="mx-auto max-w-3xl space-y-4">
+          <div className="mx-auto max-w-4xl space-y-12">
             {sections.map((section) => (
-              <div key={section.key} className="space-y-1.5">
-                <div className="flex items-center gap-2 my-3">
-                  <div className="flex-1 h-px bg-border/60" />
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              <div key={section.key} className="space-y-6">
+                <div className="flex items-center gap-6 my-10">
+                  <div className={cn("flex-1 h-px", is_admin ? "bg-white/5" : "bg-border/60")} />
+                  <div className={cn(
+                    "text-[9px] uppercase tracking-[0.4em] font-black",
+                    is_admin ? "text-white/15" : "text-muted-foreground"
+                  )}>
                     {section.label}
                   </div>
-                  <div className="flex-1 h-px bg-border/60" />
+                  <div className={cn("flex-1 h-px", is_admin ? "bg-white/5" : "bg-border/60")} />
                 </div>
                 {section.items.map(({ msg, showSenderName, isLastInGroup }) => (
                   <MessageBubble
@@ -203,7 +225,9 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         )}
       </div>
 
-      <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
+      <div className={cn(is_admin && "bg-black p-6 border-t border-white/10")}>
+        <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
+      </div>
     </div>
   );
 }
