@@ -61,13 +61,13 @@ export default function OfficialQuestionPane({
   const answerSize = 16 * fontScale;
   // Reading-optimized leading scales with Aa so size + line-height move together.
   const stimLeading =
-    fontScale <= 0.95 ? 1.6 : fontScale <= 1.05 ? 1.75 : fontScale <= 1.2 ? 1.85 : 1.9;
+    fontScale <= 0.95 ? 1.5 : fontScale <= 1.05 ? 1.6 : fontScale <= 1.2 ? 1.7 : 1.8;
   const stimStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: stimLeading };
   const stemStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.14fr_0.96fr] flex-1">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.85fr] flex-1">
       {/* Stimulus column */}
       <div
         className={cn(
