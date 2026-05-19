@@ -992,9 +992,12 @@ function DrillContent() {
     // (Removed auto-advance)
   };
 
-  const handleSubmitNonAdaptive = async (answerOverride?: string) => {
+  const handleSubmitNonAdaptive = async (
+    answerOverride?: string,
+    options?: { advanceAfterSubmit?: boolean },
+  ) => {
     const ans = answerOverride ?? selectedAnswer;
-    if (!currentQuestion || !ans || !session) return;
+    if (!currentQuestion || !ans || !session) return null;
 
     const correct = ans === currentQuestion.correctAnswer;
     const timeMs = Math.floor(performance.now() - questionStartTime);
@@ -1045,10 +1048,13 @@ function DrillContent() {
     }
 
     setSession({ ...session, attempts: newAttempts });
-    setShowSolution(true);
+    if (!options?.advanceAfterSubmit) {
+      setShowSolution(true);
+    }
+    return newAttempts;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (options?: { advanceAfterSubmit?: boolean }) => {
     if (!currentQuestion || !selectedAnswer || !session) return;
 
     const correct = selectedAnswer === currentQuestion.correctAnswer;
@@ -1104,6 +1110,8 @@ function DrillContent() {
       }
 
       setSession({ ...session, attempts: newAttempts });
+
+      if (options?.advanceAfterSubmit) return;
 
       if (tutorMode) {
         // Lock answer so the selected row shows red feedback while tutor is open
@@ -1199,6 +1207,8 @@ function DrillContent() {
       }
 
       setSession({ ...session, attempts: newAttempts });
+
+      if (options?.advanceAfterSubmit) return;
       
       
       // If this is a retry after wrong answer, generate explanation
@@ -1288,10 +1298,10 @@ function DrillContent() {
     
     // Move to next
     if (session.currentIndex < session.questionQueue.length - 1) {
-      setSession({
-        ...session,
-        currentIndex: session.currentIndex + 1,
-      });
+      setSession(prev => prev ? {
+        ...prev,
+        currentIndex: prev.currentIndex + 1,
+      } : prev);
     } else {
       // Finished
       handleFinishPracticeSet();
@@ -1394,10 +1404,10 @@ function DrillContent() {
     } else {
       // Move to next in queue
       if (session.currentIndex < session.questionQueue.length - 1) {
-        setSession({
-          ...session,
-          currentIndex: session.currentIndex + 1,
-        });
+        setSession(prev => prev ? {
+          ...prev,
+          currentIndex: prev.currentIndex + 1,
+        } : prev);
       } else {
         // Reached the end - show results
         handleFinishSection();
@@ -1417,7 +1427,7 @@ function DrillContent() {
     }
   };
 
-  const handleFinishSection = async () => {
+  const handleFinishSection = async (attemptsOverride?: DrillSession['attempts']) => {
     if (!session) return;
 
     // Stop the section timer so it does not keep ticking through
@@ -1428,7 +1438,7 @@ function DrillContent() {
     if (currentQuestion) await flushReplay(currentQuestion.qid, session.mode);
 
     // Evaluate correctness for all attempted questions
-    const updatedAttempts = new Map(session.attempts);
+    const updatedAttempts = new Map(attemptsOverride ?? session.attempts);
     for (const [qid, attempt] of updatedAttempts) {
       const question = questionBank.getQuestion(qid);
       if (question) {
@@ -2180,10 +2190,8 @@ function DrillContent() {
   const isOfficialLayout = layoutParam !== 'classic';
   if (isOfficialLayout && session && currentQuestion) {
     const isFullSection = session.mode === 'full-section';
-    // Show navigator only for full sections and build-a-set (practice-set).
-    // Smart Drill (adaptive) feeds questions one at a time — a per-question
-    // navigator would be misleading there.
-    const showOfficialAnswerNavigator = isFullSection || isPracticeSetMode;
+    const isAdaptiveMode = session.mode === 'adaptive';
+    const showQuestionList = !isAdaptiveMode;
     const sectionTimer = session.fullSectionConfig?.timer;
     let totalMs: number | undefined;
     if (sectionTimer) {
@@ -2215,8 +2223,37 @@ function DrillContent() {
           else timer.pause();
         }
       : undefined;
-    const officialPrev = isPracticeSetMode ? handlePracticeSetPrevious : handlePrevious;
-    const officialNext = isPracticeSetMode ? handlePracticeSetNext : handleNext;
+    const currentAttempted = attemptedQids.has(currentQuestion.qid);
+    const requiresAnswerBeforeNext = !isFullSection && !isPracticeSetMode;
+    const officialNextDisabled =
+      !!timer?.isPaused || (requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted);
+    const officialPrev = isAdaptiveMode
+      ? () => {}
+      : isPracticeSetMode
+      ? handlePracticeSetPrevious
+      : handlePrevious;
+    const officialNext = async () => {
+      if (timer?.isPaused) return;
+      let committedAttempts: DrillSession['attempts'] | null = null;
+      if (requiresAnswerBeforeNext && !currentAttempted) {
+        if (!selectedAnswer) {
+          toast.error('Select an answer before moving to the next question.');
+          return;
+        }
+        if (isAdaptiveMode) {
+          await handleSubmit({ advanceAfterSubmit: true });
+        } else {
+          committedAttempts = await handleSubmitNonAdaptive(selectedAnswer, { advanceAfterSubmit: true });
+        }
+      }
+      if (isPracticeSetMode) {
+        handlePracticeSetNext();
+      } else if (!isAdaptiveMode && session.currentIndex >= session.questionQueue.length - 1) {
+        await handleFinishSection(committedAttempts ?? session.attempts);
+      } else {
+        handleNext();
+      }
+    };
     const qnumNum = Number(currentQuestion.qnum);
     const displayNum = Number.isFinite(qnumNum) && qnumNum > 0
       ? qnumNum
@@ -2329,18 +2366,26 @@ function DrillContent() {
             onTextSelection={handleTextSelection}
             onHighlightClick={handleHighlightClick}
           />
-          {showOfficialAnswerNavigator && (
-            <OfficialAnswerNavigator
-              questionQueue={session.questionQueue}
-              currentIndex={session.currentIndex}
-              attemptedQids={attemptedQids}
-              jumpEnabled={jumpEnabled}
-              jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
-              onJumpTo={handleJumpTo}
-              onPrev={officialPrev}
-              onNext={officialNext}
-            />
-          )}
+          <OfficialAnswerNavigator
+            questionQueue={session.questionQueue}
+            currentIndex={session.currentIndex}
+            attemptedQids={attemptedQids}
+            jumpEnabled={jumpEnabled}
+            jumpDisabledReason={timer?.isPaused ? 'Paused — resume to navigate' : undefined}
+            showQuestionList={showQuestionList}
+            prevDisabled={isAdaptiveMode || session.currentIndex <= 0 || !!timer?.isPaused}
+            nextDisabled={officialNextDisabled}
+            nextDisabledReason={
+              timer?.isPaused
+                ? 'Paused — resume to navigate'
+                : requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted
+                ? 'Select an answer before moving on'
+                : undefined
+            }
+            onJumpTo={handleJumpTo}
+            onPrev={officialPrev}
+            onNext={officialNext}
+          />
         </OfficialDrillFrame>
       </>
     );
@@ -2876,4 +2921,3 @@ export default function Drill() {
 
   return <DrillContent />;
 }
-
