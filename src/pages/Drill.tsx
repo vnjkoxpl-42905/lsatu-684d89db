@@ -106,7 +106,13 @@ function DrillContent() {
     };
   }, [searchParams, location.state]);
 
-  const practicingLabel = (location.state as { practicingLabel?: string } | null)?.practicingLabel;
+  const practicingLabel = searchParams.get('focus') || (location.state as { practicingLabel?: string } | null)?.practicingLabel;
+
+  // Context params for header/breadcrumbs (survive refresh)
+  const origin = searchParams.get('origin');
+  const returnTo = searchParams.get('returnTo');
+  const contextLabel = searchParams.get('label');
+  const contextFocus = searchParams.get('focus');
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -2294,7 +2300,23 @@ function DrillContent() {
           }}
           header={
             <OfficialSessionStrip
-              breadcrumbs={[
+              breadcrumbs={origin === 'fallacy-flaw' ? [
+                {
+                  label: contextLabel || 'Flaw Bootcamp',
+                  onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
+                },
+                {
+                  label: contextFocus || 'LSAT Questions',
+                  onClick: () => navigate(returnTo || '/bootcamp/fallacy-flaw')
+                },
+                {
+                  label: [
+                    currentQuestion.pt ? `PT${currentQuestion.pt}` : null,
+                    currentQuestion.section ? `Section ${currentQuestion.section}` : null,
+                    `Question ${displayNum}`
+                  ].filter(Boolean).join(' · ')
+                }
+              ] : [
                 { label: 'Library', onClick: () => navigate('/practice') },
                 ...(currentQuestion.pt
                   ? [{

@@ -105,7 +105,8 @@ export function GuidedDrills({
       qfeatures: ["Famous Flaws", pick.feature],
     };
     const qidsParam = encodeURIComponent(queue.join(","));
-    navigate(`/drill?mode=type-drill&qids=${qidsParam}`, {
+    const contextParams = `&origin=fallacy-flaw&returnTo=${encodeURIComponent("/bootcamp/fallacy-flaw")}&label=${encodeURIComponent("Flaw Bootcamp")}&focus=${encodeURIComponent(pick.feature)}`;
+    navigate(`/drill?mode=type-drill&qids=${qidsParam}${contextParams}`, {
       state: {
         mode: "type-drill",
         config,
