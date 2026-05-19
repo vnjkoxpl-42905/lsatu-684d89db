@@ -73,7 +73,7 @@ export default function OfficialQuestionPane({
         className={cn(
           "px-9 pt-5 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
-          "antialiased text-pretty",
+          "antialiased",
           "selection:bg-transparent selection:text-foreground",
           // HighlightedText already splits on \n\n and emits <p data-para-start=…>
           // so selection capture and highlight offsets stay paragraph-aware.
