@@ -2264,6 +2264,12 @@ function DrillContent() {
     const displayNum = Number.isFinite(qnumNum) && qnumNum > 0
       ? qnumNum
       : session.currentIndex + 1;
+    const questionLabel = `Question ${displayNum}`;
+    const sectionLabel = currentQuestion.section
+      ? `Section ${currentQuestion.section}`
+      : isFullSection
+      ? 'Section'
+      : 'Practice Drill';
 
     return (
       <>
@@ -2313,7 +2319,7 @@ function DrillContent() {
                   label: [
                     currentQuestion.pt ? `PT${currentQuestion.pt}` : null,
                     currentQuestion.section ? `Section ${currentQuestion.section}` : null,
-                    currentQuestion.qnum ? `Question ${currentQuestion.qnum}` : null
+                    questionLabel
                   ].filter(Boolean).join(' · ')
                 }
               ] : [
@@ -2325,10 +2331,7 @@ function DrillContent() {
                     }]
                   : []),
                 {
-                  label: [
-                    currentQuestion.section ? `Section ${currentQuestion.section}` : isFullSection ? 'Section' : 'Practice Drill',
-                    currentQuestion.qnum ? `Question ${currentQuestion.qnum}` : null
-                  ].filter(Boolean).join(' · ')
+                  label: [sectionLabel, questionLabel].filter(Boolean).join(' · ')
                 },
               ]}
               isPaused={!!timer?.isPaused}
