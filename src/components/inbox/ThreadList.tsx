@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { Paperclip } from 'lucide-react';
+import { MessageCircle, Paperclip } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { formatParticipantName } from '@/lib/displayName';
 
@@ -56,7 +56,7 @@ export function ThreadList({
   const isAdmin = variant === 'admin';
 
   return (
-    <div role="list">
+    <div role="list" className={cn(!isAdmin && 'p-3 space-y-2')}>
       {conversations.map((c) => {
         const fallback = isAdmin ? 'Conversation' : 'Joshua';
         const name = otherParticipantName(c, user.id, fallback);
@@ -69,25 +69,28 @@ export function ThreadList({
             role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
-              'group w-full px-4 py-3.5 flex items-start gap-3 text-left',
-              'border-l-2 border-b border-border/50',
-              'transition-colors duration-150',
+              'group w-full flex items-start gap-3 text-left transition-colors duration-150',
               'focus-visible:outline-none focus-visible:bg-accent/40',
-              isActive
-                ? 'bg-accent/70 border-l-primary'
-                : 'border-l-transparent hover:bg-accent/30',
+              isAdmin
+                ? 'px-4 py-3.5 border-b border-border/50'
+                : 'px-3.5 py-3.5 rounded-lg border border-border/70 bg-background shadow-sm',
+              isActive && isAdmin && 'bg-accent/70',
+              !isActive && isAdmin && 'hover:bg-accent/30',
+              isActive && !isAdmin && 'border-primary/35 bg-primary/[0.04] ring-1 ring-primary/15',
+              !isActive && !isAdmin && 'hover:bg-muted/40 hover:border-border',
             )}
           >
             <div
               className={cn(
                 'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-shadow',
-                isActive
-                  ? 'bg-foreground/10 text-foreground ring-1 ring-foreground/20'
-                  : 'bg-muted text-foreground/70',
+                isActive && isAdmin && 'bg-foreground/10 text-foreground ring-1 ring-foreground/20',
+                !isActive && isAdmin && 'bg-muted text-foreground/70',
+                isActive && !isAdmin && 'bg-primary text-primary-foreground shadow-sm',
+                !isActive && !isAdmin && 'bg-primary/10 text-primary ring-1 ring-primary/20',
               )}
               aria-hidden="true"
             >
-              {initial}
+              {isAdmin ? initial : <MessageCircle className="w-4 h-4" />}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
@@ -101,7 +104,7 @@ export function ThreadList({
                 </div>
                 <div
                   className={cn(
-                    'shrink-0 text-[10px] tabular-nums',
+                    'shrink-0 text-[10px] tabular-nums leading-none',
                     c.unread ? 'text-foreground font-medium' : 'text-muted-foreground',
                   )}
                 >
@@ -133,6 +136,11 @@ export function ThreadList({
               {reply && (
                 <div className="mt-1.5 inline-flex items-center px-1.5 py-px text-[9px] uppercase tracking-[0.12em] font-semibold rounded text-amber-700 dark:text-amber-300/90 bg-amber-500/10">
                   Needs reply
+                </div>
+              )}
+              {!isAdmin && (
+                <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                  1:1 coaching
                 </div>
               )}
             </div>

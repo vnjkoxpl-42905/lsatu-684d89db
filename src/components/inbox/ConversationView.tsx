@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
@@ -131,7 +131,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   return (
     <div className="flex flex-col h-full">
       {!hideHeader && (
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-background/80 backdrop-blur shrink-0">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-background/90 backdrop-blur shrink-0">
           {onBack && (
             <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden -ml-2" aria-label="Back">
               <ArrowLeft className="w-4 h-4" />
@@ -141,23 +141,36 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             className={cn(
               'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
               !is_admin
-                ? 'bg-emerald-500/15 text-emerald-500 ring-1 ring-emerald-500/30'
+                ? 'bg-primary/10 text-primary ring-1 ring-primary/25'
                 : 'bg-muted text-foreground/70',
             )}
             aria-hidden="true"
           >
-            {headerInitial}
+            {!is_admin ? <MessageCircle className="w-4 h-4" /> : headerInitial}
           </div>
-          <div className="min-w-0">
-            <div className="font-semibold text-base truncate leading-tight">{headerName}</div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="font-semibold text-base truncate leading-tight">{headerName}</div>
+              {!is_admin && (
+                <span className="hidden sm:inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                  1:1 coaching
+                </span>
+              )}
+            </div>
             <div className="text-[11px] text-muted-foreground truncate mt-0.5">
-              {headerSubtitle}
+              {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
             </div>
           </div>
         </div>
       )}
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-5 bg-background">
+      <div
+        ref={scrollRef}
+        className={cn(
+          'flex-1 overflow-y-auto px-4 py-5',
+          is_admin ? 'bg-background' : 'bg-muted/20',
+        )}
+      >
         {loading ? (
           <ConversationSkeleton />
         ) : messages.length === 0 ? (
@@ -165,7 +178,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             No messages yet. Start the conversation below.
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="mx-auto max-w-3xl space-y-4">
             {sections.map((section) => (
               <div key={section.key} className="space-y-1.5">
                 <div className="flex items-center gap-2 my-3">

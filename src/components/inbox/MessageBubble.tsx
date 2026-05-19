@@ -21,23 +21,23 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
   const hasAttachments = message.attachments.length > 0;
 
   return (
-    <div className={cn('flex flex-col gap-1', isOwn ? 'items-end' : 'items-start')}>
+    <div className={cn('flex flex-col gap-1.5', isOwn ? 'items-end' : 'items-start')}>
       {!isOwn && senderName && (
-        <div className="text-[11px] text-muted-foreground px-1 mt-1">{senderName}</div>
+        <div className="text-[11px] font-medium text-muted-foreground px-1 mt-1">{senderName}</div>
       )}
       <div
         className={cn(
-          'flex flex-col gap-1.5 max-w-[85%] md:max-w-[70%]',
+          'flex flex-col gap-1.5 max-w-[88%] md:max-w-[72%]',
           isOwn ? 'items-end' : 'items-start',
         )}
       >
         {hasBody && (
           <div
             className={cn(
-              'rounded-2xl px-3.5 py-2 text-sm whitespace-pre-wrap break-words leading-relaxed',
+              'rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap break-words leading-relaxed shadow-sm',
               isOwn
                 ? 'bg-primary text-primary-foreground rounded-br-md'
-                : 'bg-muted/50 text-foreground rounded-bl-md',
+                : 'bg-background text-foreground border border-border/70 rounded-bl-md',
             )}
           >
             {message.body}
@@ -57,7 +57,7 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
         )}
       </div>
       {showTimestamp && (
-        <div className="text-[10px] text-muted-foreground/80 px-1">{shortTime(created)}</div>
+        <div className="text-[10px] text-muted-foreground/70 px-1">{shortTime(created)}</div>
       )}
     </div>
   );

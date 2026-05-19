@@ -148,7 +148,8 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
 
   return (
-    <div className="border-t border-border bg-background/95 backdrop-blur px-3 py-2.5 space-y-2 shrink-0">
+    <div className="border-t border-border bg-background/95 backdrop-blur px-3 py-3 shrink-0">
+      <div className="mx-auto max-w-3xl space-y-2">
       {file && (
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/40 text-sm">
           <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -228,56 +229,62 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
-      <Textarea
-        ref={textareaRef}
-        value={body}
-        onChange={(e) => { setBody(e.target.value); adjustHeight(); }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-            e.preventDefault();
-            send();
-          }
-        }}
-        placeholder="Write a message…"
-        className="w-full resize-none min-h-0"
-        style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}
-      />
-      <div className="flex items-center gap-1">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => fileRef.current?.click()}
-          disabled={sending}
-          aria-label="Attach PDF"
-        >
-          <Paperclip className="w-4 h-4" />
-        </Button>
-        {showDrive && (
-          <DriveAttachmentPicker onAttach={addDriveFiles} disabled={sending} />
-        )}
-        {showPolish && (
+      <div className="rounded-xl border border-border bg-background shadow-sm focus-within:ring-2 focus-within:ring-ring/35">
+        <Textarea
+          ref={textareaRef}
+          value={body}
+          onChange={(e) => { setBody(e.target.value); adjustHeight(); }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+              e.preventDefault();
+              send();
+            }
+          }}
+          placeholder="Ask Joshua a question or send study context"
+          className="w-full resize-none min-h-0 border-0 bg-transparent px-3.5 py-3 text-sm shadow-none focus-visible:ring-0"
+          style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}
+        />
+        <div className="flex items-center gap-1 border-t border-border/70 px-2 py-1.5">
           <Button
             variant="ghost"
             size="icon"
-            onClick={polish}
-            disabled={sending || polishing || body.trim().length < 3}
-            aria-label="Polish with AI"
-            title="Polish with AI"
+            onClick={() => fileRef.current?.click()}
+            disabled={sending}
+            aria-label="Attach PDF"
+            className="h-8 w-8"
           >
-            <Sparkles className={`w-4 h-4 ${polishing ? 'animate-pulse' : ''}`} />
+            <Paperclip className="w-4 h-4" />
           </Button>
-        )}
-        <div className="flex-1" />
-        <span className="text-[10px] text-muted-foreground/60 mr-1.5 select-none">⌘↵</span>
-        <Button
-          onClick={send}
-          disabled={sending || !canSend}
-          size="icon"
-          variant={canSend ? 'default' : 'ghost'}
-          aria-label="Send"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
+          {showDrive && (
+            <DriveAttachmentPicker onAttach={addDriveFiles} disabled={sending} />
+          )}
+          {showPolish && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={polish}
+              disabled={sending || polishing || body.trim().length < 3}
+              aria-label="Polish with AI"
+              title="Polish with AI"
+              className="h-8 w-8"
+            >
+              <Sparkles className={`w-4 h-4 ${polishing ? 'animate-pulse' : ''}`} />
+            </Button>
+          )}
+          <div className="flex-1" />
+          <span className="hidden sm:inline text-[10px] text-muted-foreground/60 mr-1.5 select-none">⌘↵</span>
+          <Button
+            onClick={send}
+            disabled={sending || !canSend}
+            size="icon"
+            variant={canSend ? 'default' : 'ghost'}
+            aria-label="Send"
+            className="h-8 w-8"
+          >
+            <Send className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
       </div>
     </div>
   );

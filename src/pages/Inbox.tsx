@@ -9,7 +9,7 @@ import { NewConversationDialog } from '@/components/inbox/NewConversationDialog'
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, HardDrive, Inbox as InboxIcon, Mail, Search } from 'lucide-react';
+import { ArrowLeft, HardDrive, Inbox as InboxIcon, Mail, MessageCircle, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
@@ -160,18 +160,35 @@ export default function Inbox() {
       : FILTER_EMPTY_LABEL[filter];
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-background/80 backdrop-blur sticky top-0 z-10">
+    <div className={cn('min-h-screen bg-background', !is_admin && 'bg-muted/20')}>
+      <header className="border-b border-border bg-background/90 backdrop-blur sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => navigate('/mainhub')} aria-label="Back to Main Hub">
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-2">
-              <InboxIcon className="w-4 h-4 text-muted-foreground" />
-              <h1 className="text-base font-semibold">
-                {is_admin ? 'Inbox' : 'Joshua'}
-              </h1>
+              <div
+                className={cn(
+                  'h-8 w-8 rounded-full flex items-center justify-center border',
+                  is_admin
+                    ? 'bg-muted text-muted-foreground border-border'
+                    : 'bg-primary/10 text-primary border-primary/20',
+                )}
+                aria-hidden="true"
+              >
+                {is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
+              </div>
+              <div className="min-w-0">
+                <h1 className="text-sm font-semibold leading-tight">
+                  {is_admin ? 'Inbox' : 'Joshua'}
+                </h1>
+                {!is_admin && (
+                  <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                    Direct coaching thread
+                  </p>
+                )}
+              </div>
               {is_admin && unreadCount > 0 && (
                 <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -236,13 +253,26 @@ export default function Inbox() {
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto md:grid md:grid-cols-[360px_1fr] md:h-[calc(100vh-57px)]">
+        <div className={cn(
+          'max-w-7xl mx-auto md:grid md:h-[calc(100vh-57px)]',
+          is_admin ? 'md:grid-cols-[360px_1fr]' : 'md:grid-cols-[320px_1fr]',
+        )}>
           <aside
             className={cn(
-              'border-r border-border md:overflow-y-auto md:flex md:flex-col',
+              'border-r border-border md:overflow-y-auto md:flex md:flex-col bg-background/70',
               active ? 'hidden md:flex' : 'block',
             )}
           >
+            {!is_admin && (
+              <div className="px-4 py-4 border-b border-border bg-background">
+                <div className="text-[11px] font-semibold uppercase text-muted-foreground">
+                  Coaching
+                </div>
+                <div className="mt-1 text-sm font-medium text-foreground">
+                  One thread with Joshua
+                </div>
+              </div>
+            )}
             {is_admin && (
               <div className="px-3 py-3 border-b border-border space-y-2.5 shrink-0">
                 <div className="relative">
@@ -303,7 +333,7 @@ export default function Inbox() {
               />
             ) : (
               <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground">
-                {is_admin ? 'Pick a thread to open' : 'Loading conversation…'}
+                {is_admin ? 'Pick a thread to open' : 'Loading conversation'}
               </div>
             )}
           </main>
