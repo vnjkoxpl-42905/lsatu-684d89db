@@ -18,9 +18,9 @@ interface Props {
   className?: string;
 }
 
-// Bootcamp flaw ids → canonical questionFeatures tag(s) in the LSAT U bank.
+// Bootcamp flaw ids -> canonical questionFeatures tag(s) in the LSAT U bank.
 // Only flaws that have a real Famous-Flaws-tagged feature are mapped.
-const FLAW_ID_TO_FEATURES: Record<string, string[]> = {
+export const FLAW_ID_TO_FEATURES: Record<string, string[]> = {
   "necessary-vs-sufficient": ["Sufficient vs. Necessary Flaw"],
   "nec-suff": ["Sufficient vs. Necessary Flaw"],
   "causal-flaw": ["Anti-Causal", "Causal Chains"],
@@ -98,7 +98,7 @@ export const FlawDrillLauncher: React.FC<Props> = ({
           ? "Loading question bank…"
           : count === 0
           ? "No LSAT bank questions tagged for this flaw yet"
-          : `Drill ${count} LSAT bank questions in Smart Drill`
+          : `Apply ${flawName} to ${count} LSAT questions`
       }
     >
       {isLoading ? (
@@ -110,7 +110,9 @@ export const FlawDrillLauncher: React.FC<Props> = ({
         ? "Loading…"
         : count === 0
         ? "Not yet available"
-        : "Start Smart Drill"}
+        : variant === "compact"
+        ? "Apply"
+        : "Start LSAT Questions"}
     </button>
   );
 };
