@@ -2,7 +2,7 @@
  * GuidedDrills — Practice Drills surface for the Fallacy & Famous Flaws
  * bootcamp. Replaced the legacy in-bootcamp drill UI with a single CTA
  * that routes students into the existing LR Smart Drill experience,
- * filtered to a randomly-picked Famous Flaws feature, easier-first.
+ * filtered to a randomly-picked Famous Flaws category, easier-first.
  */
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,50 +10,14 @@ import { motion } from "framer-motion";
 import { ArrowRight, Loader2, Target } from "lucide-react";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { isRenderableLRQuestion, questionBank, type LRQuestion } from "@/lib/questionLoader";
 import type { TypeDrillConfig } from "@/types/drill";
 import { DRILLS } from "../data/drills";
-import { FLAW_ID_TO_FEATURES } from "./FlawDrillLauncher";
 import { toast } from "sonner";
-
-// Specific flaw-feature tags that co-occur with "Famous Flaws" in the
-// LSAT U bank. Source of truth for routing into Smart Drill. We never
-// keyword-match — we filter strictly on these tags.
-const FAMOUS_FLAW_FEATURES: string[] = [
-  "Sufficient vs. Necessary Flaw",
-  "Sampling",
-  "Part vs. Whole",
-  "Anti-Causal",
-  "Causal Chains",
-  "Assumes Similarity",
-  "Assumes Difference",
-];
-
-interface MatchedFeature {
-  feature: string;
-  questions: LRQuestion[];
-}
-
-function getMatchedFeatures(): MatchedFeature[] {
-  if (!questionBank.isReady()) return [];
-  const all = questionBank.getAllQuestions();
-  const out: MatchedFeature[] = [];
-  for (const feature of FAMOUS_FLAW_FEATURES) {
-    const qs = all.filter(
-      (q) =>
-        q.qtype === "Flaw" &&
-        isRenderableLRQuestion(q) &&
-        (q.questionFeatures || []).includes("Famous Flaws") &&
-        (q.questionFeatures || []).includes(feature),
-    );
-    if (qs.length > 0) {
-      // Easier-first ordering.
-      qs.sort((a, b) => (a.difficulty ?? 3) - (b.difficulty ?? 3));
-      out.push({ feature, questions: qs });
-    }
-  }
-  return out;
-}
+import {
+  getFeaturesForFlaw,
+  getFlawQuestionGroups,
+  getQuestionsForFlaw,
+} from "../lib/flawQuestionMapping";
 
 export function GuidedDrills({
   initialDrillId,
@@ -66,14 +30,17 @@ export function GuidedDrills({
   const { isLoading } = useQuestionBank();
   const permissions = useUserPermissions();
 
-  const matches = useMemo(() => (isLoading ? [] : getMatchedFeatures()), [isLoading]);
+  const matches = useMemo(() => (isLoading ? [] : getFlawQuestionGroups()), [isLoading]);
   const selectedDrill = useMemo(
     () => DRILLS.find((drill) => drill.id === initialDrillId),
     [initialDrillId],
   );
-  const targetedFeatures = selectedDrill ? FLAW_ID_TO_FEATURES[selectedDrill.id] ?? [] : [];
-  const targetedMatches = targetedFeatures.length > 0
-    ? matches.filter((match) => targetedFeatures.includes(match.feature))
+  const targetedQuestions = useMemo(
+    () => (selectedDrill ? getQuestionsForFlaw(selectedDrill.id) : []),
+    [selectedDrill],
+  );
+  const targetedMatches = selectedDrill && targetedQuestions.length > 0
+    ? [{ flawId: selectedDrill.id, label: selectedDrill.name, questions: targetedQuestions }]
     : [];
   const activeMatches = targetedMatches.length > 0 ? targetedMatches : matches;
   const totalAvailable = matches.reduce((n, m) => n + m.questions.length, 0);
@@ -96,21 +63,22 @@ export function GuidedDrills({
     const pick = activeMatches[Math.floor(Math.random() * activeMatches.length)];
     // Already sorted easier-first.
     const queue = pick.questions.map((q) => q.qid);
+    const features = getFeaturesForFlaw(pick.flawId);
     const config: TypeDrillConfig = {
       qtypes: ["Flaw"],
       difficulties: [],
       pts: [],
       count: queue.length,
       selectedQids: queue,
-      qfeatures: ["Famous Flaws", pick.feature],
+      qfeatures: ["Famous Flaws", ...features],
     };
     const qidsParam = encodeURIComponent(queue.join(","));
-    const contextParams = `&origin=fallacy-flaw&returnTo=${encodeURIComponent("/bootcamp/fallacy-flaw")}&label=${encodeURIComponent("Flaw Bootcamp")}&focus=${encodeURIComponent(pick.feature)}`;
+    const contextParams = `&origin=fallacy-flaw&returnTo=${encodeURIComponent("/bootcamp/fallacy-flaw")}&label=${encodeURIComponent("Flaw Bootcamp")}&focus=${encodeURIComponent(pick.label)}`;
     navigate(`/drill?mode=type-drill&qids=${qidsParam}${contextParams}`, {
       state: {
         mode: "type-drill",
         config,
-        practicingLabel: pick.feature,
+        practicingLabel: pick.label,
       },
     });
     onClearInitialDrill?.();

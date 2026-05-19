@@ -1,50 +1,26 @@
 /**
  * FlawDrillLauncher — routes the student into the real Smart Drill page
- * (/drill) with a queue of LSAT bank questions tagged with both
- * "Famous Flaws" and the specific flaw feature. No custom modal — uses
- * the exact same drill UI as Smart Drill / Adaptive Drill.
+ * (/drill) with a queue of LSAT bank questions tagged "Famous Flaws"
+ * and matched to the selected flaw. No custom modal — uses the exact
+ * same drill UI as Smart Drill / Adaptive Drill.
  */
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Loader2 } from "lucide-react";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import { isRenderableLRQuestion, questionBank, type LRQuestion } from "@/lib/questionLoader";
 import type { TypeDrillConfig } from "@/types/drill";
 import { toast } from "sonner";
+import {
+  getFeaturesForFlaw,
+  getQuestionsForFlaw,
+} from "../lib/flawQuestionMapping";
 
 interface Props {
   flawId: string;
   flawName: string;
   variant?: "primary" | "ghost" | "compact";
   className?: string;
-}
-
-// Bootcamp flaw ids -> canonical questionFeatures tag(s) in the LSAT U bank.
-// Only flaws that have a real Famous-Flaws-tagged feature are mapped.
-export const FLAW_ID_TO_FEATURES: Record<string, string[]> = {
-  "necessary-vs-sufficient": ["Sufficient vs. Necessary Flaw"],
-  "nec-suff": ["Sufficient vs. Necessary Flaw"],
-  "causal-flaw": ["Anti-Causal", "Causal Chains"],
-  causal: ["Anti-Causal", "Causal Chains"],
-  "sampling-fallacy": ["Sampling"],
-  "part-vs-whole": ["Part vs. Whole"],
-};
-
-function getQuestionsForFlaw(flawId: string): LRQuestion[] {
-  if (!questionBank.isReady()) return [];
-  const features = FLAW_ID_TO_FEATURES[flawId];
-  if (!features || features.length === 0) return [];
-  return questionBank
-    .getAllQuestions()
-    .filter(
-      (q) =>
-        q.qtype === "Flaw" &&
-        isRenderableLRQuestion(q) &&
-        (q.questionFeatures || []).includes("Famous Flaws") &&
-        (q.questionFeatures || []).some((f) => features.includes(f)),
-    )
-    .sort((a, b) => (a.difficulty ?? 3) - (b.difficulty ?? 3));
 }
 
 export const FlawDrillLauncher: React.FC<Props> = ({
@@ -77,7 +53,7 @@ export const FlawDrillLauncher: React.FC<Props> = ({
       return;
     }
     const queue = questions.map((q) => q.qid);
-    const features = FLAW_ID_TO_FEATURES[flawId] ?? [];
+    const features = getFeaturesForFlaw(flawId);
     const config: TypeDrillConfig = {
       qtypes: ["Flaw"],
       difficulties: [],
