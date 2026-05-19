@@ -67,13 +67,13 @@ export default function OfficialQuestionPane({
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] flex-1">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.14fr_0.96fr] flex-1">
       {/* Stimulus column */}
       <div
         className={cn(
-          "px-9 pt-6 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          "px-9 pt-5 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
-          "max-w-[65ch] antialiased text-pretty",
+          "antialiased text-pretty",
           "selection:bg-transparent selection:text-foreground",
           // HighlightedText already splits on \n\n and emits <p data-para-start=…>
           // so selection capture and highlight offsets stay paragraph-aware.
@@ -95,8 +95,8 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-9 pt-6 pb-8 text-black" style={stemStyle}>
-        <div className="flex items-start justify-between gap-3 mb-3">
+      <div className="px-9 pt-5 pb-8 text-black" style={stemStyle}>
+        <div className="flex items-start justify-between gap-3 mb-2">
           <div
             className="flex-1 flex items-start gap-2"
             onMouseUp={(e) => onTextSelection(e, "stem")}
@@ -135,7 +135,7 @@ export default function OfficialQuestionPane({
           </button>
         </div>
 
-        <ul className="space-y-5 mt-5">
+        <ul className="space-y-4 mt-4">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
@@ -148,7 +148,7 @@ export default function OfficialQuestionPane({
                   "flex items-start gap-3 group rounded-md transition-colors",
                   // Reserve consistent padding so revealing answers (which adds a
                   // ring) does not shift the row position.
-                  "px-2 py-1.5 ring-2 ring-transparent",
+                  "px-1 py-1 ring-2 ring-transparent",
                   isEliminated && !answerRevealed && "opacity-50",
                   isCorrect && "bg-green-50 ring-green-500",
                   isWrongSelected && "ring-red-500",
@@ -162,7 +162,7 @@ export default function OfficialQuestionPane({
                   aria-label={`Choice ${key}`}
                   className={cn(
                     "shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
-                    "w-9 h-9",
+                    "w-[34px] h-[34px] text-[13px]",
                     isCorrect
                       ? "border-green-700 bg-green-600 text-white"
                       : isSelected
@@ -178,7 +178,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                   disabled={isEliminated || answerRevealed}
                   className={cn(
-                    "flex-1 text-left pt-1",
+                    "flex-1 text-left pt-0.5",
                     isEliminated && !answerRevealed && "line-through cursor-not-allowed",
                     isCorrect && "font-semibold text-green-900",
                   )}
