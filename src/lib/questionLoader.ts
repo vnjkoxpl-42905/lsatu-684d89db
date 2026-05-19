@@ -37,6 +37,97 @@ export interface LRQuestion {
   };
 }
 
+type RenderableLRQuestionInput = {
+  stimulus?: unknown;
+  questionStem?: unknown;
+  answerChoices?: Partial<Record<'A' | 'B' | 'C' | 'D' | 'E', unknown>>;
+};
+
+export function isRenderableLRQuestion(q: RenderableLRQuestionInput): boolean {
+  return (
+    typeof q.stimulus === 'string' &&
+    q.stimulus.trim().length > 0 &&
+    typeof q.questionStem === 'string' &&
+    q.questionStem.trim().length > 0 &&
+    ['A', 'B', 'C', 'D', 'E'].every((key) => {
+      const answer = q.answerChoices?.[key as 'A' | 'B' | 'C' | 'D' | 'E'];
+      return typeof answer === 'string' && answer.trim().length > 0;
+    })
+  );
+}
+
+function normalizeQuestionTextFields<T extends {
+  questionNumber?: number;
+  stimulus?: string;
+  questionStem?: string;
+  answerChoices?: Record<string, string>;
+}>(raw: T[]): T[] {
+  const normalized = raw.map((item) => ({
+    ...item,
+    answerChoices: item.answerChoices ? { ...item.answerChoices } : item.answerChoices,
+  }));
+
+  const byQuestionNumber = new Map<number, T>();
+  for (const item of normalized) {
+    if (typeof item.questionNumber === 'number') {
+      byQuestionNumber.set(item.questionNumber, item);
+    }
+  }
+
+  // Some imports placed shared two-question passages at the end of the
+  // previous answer choice. Move that local text back into the affected
+  // question stimulus fields and clean the contaminated answer choice.
+  const sharedPassagePattern =
+    /\s*The following passage is used for Section\s+\d+,\s+questions\s+(\d+)\s+through\s+(\d+)\.\s*/i;
+
+  for (const item of normalized) {
+    if (!item.answerChoices) continue;
+
+    for (const key of Object.keys(item.answerChoices)) {
+      const text = item.answerChoices[key];
+      if (typeof text !== 'string') continue;
+      const match = text.match(sharedPassagePattern);
+      if (!match || match.index === undefined) continue;
+
+      const start = Number(match[1]);
+      const end = Number(match[2]);
+      const passage = text.slice(match.index + match[0].length).trim();
+      if (!Number.isFinite(start) || !Number.isFinite(end) || !passage) continue;
+
+      item.answerChoices[key] = text.slice(0, match.index).trim();
+      for (let qnum = start; qnum <= end; qnum++) {
+        const target = byQuestionNumber.get(qnum);
+        if (target && !target.stimulus?.trim()) {
+          target.stimulus = passage;
+        }
+      }
+    }
+  }
+
+  // A small number of records have the first words of the question prompt
+  // attached to the end of the stimulus. Move only obvious prompt tails.
+  const promptTailPattern =
+    /(?:^|\s)((?:[A-Z][A-Za-z’' -]+ and [A-Z][A-Za-z’' -]+ disagree over the truth of which)|(?:The [A-Z][A-Za-z’' -]+’s statements, if true, most support which)|(?:Which)|(?:If all of)|(?:Aisha’s conclusion follows logically if which))$/;
+
+  for (const item of normalized) {
+    const stimulus = item.stimulus?.trim() ?? '';
+    const questionStem = item.questionStem?.trim() ?? '';
+    if (!stimulus || !questionStem || !/^[a-z]/.test(questionStem)) continue;
+
+    const match = stimulus.match(promptTailPattern);
+    if (!match || match.index === undefined) continue;
+
+    const promptStart = stimulus.slice(match.index).trim();
+    const cleanStimulus = stimulus.slice(0, match.index).trim();
+    if (!cleanStimulus || !promptStart) continue;
+
+    item.stimulus = cleanStimulus;
+    item.questionStem = `${promptStart} ${questionStem}`.replace(/\s+/g, ' ').trim();
+  }
+
+  return normalized;
+}
+
 export interface QuestionManifest {
   totalQuestions: number;
   byPT: Record<string, number>;
@@ -545,8 +636,9 @@ export class QuestionBank {
       const pt = parseInt(filename.match(/PT(\d+)/)?.[1] || '0');
       const section = parseInt(filename.match(/S(\d+)/)?.[1] || '0');
       let count = 0;
+      const normalizedRaw = normalizeQuestionTextFields(raw);
 
-      for (const item of raw) {
+      for (const item of normalizedRaw) {
         const qnum = item.questionNumber || 0;
         const qid = hashQid(pt, section, qnum);
 

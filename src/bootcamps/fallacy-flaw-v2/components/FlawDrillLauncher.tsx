@@ -8,8 +8,10 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Loader2 } from "lucide-react";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
-import { questionBank, type LRQuestion } from "@/lib/questionLoader";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { isRenderableLRQuestion, questionBank, type LRQuestion } from "@/lib/questionLoader";
 import type { TypeDrillConfig } from "@/types/drill";
+import { toast } from "sonner";
 
 interface Props {
   flawId: string;
@@ -38,6 +40,7 @@ function getQuestionsForFlaw(flawId: string): LRQuestion[] {
     .filter(
       (q) =>
         q.qtype === "Flaw" &&
+        isRenderableLRQuestion(q) &&
         (q.questionFeatures || []).includes("Famous Flaws") &&
         (q.questionFeatures || []).some((f) => features.includes(f)),
     )
@@ -52,16 +55,27 @@ export const FlawDrillLauncher: React.FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const { isLoading } = useQuestionBank();
+  const permissions = useUserPermissions();
 
   const questions = React.useMemo(
     () => (isLoading ? [] : getQuestionsForFlaw(flawId)),
     [flawId, isLoading],
   );
 
-  const disabled = isLoading || questions.length === 0;
+  const drillLocked =
+    !permissions.loading && !permissions.is_admin && !permissions.has_drill_access;
+  const disabled = isLoading || permissions.loading || questions.length === 0;
 
   const handleClick = () => {
-    if (questions.length === 0) return;
+    if (permissions.loading) return;
+    if (drillLocked) {
+      toast.error("LSAT question drills are not enabled for your account yet.");
+      return;
+    }
+    if (questions.length === 0) {
+      toast.error("No renderable LSAT questions are available for this flaw yet.");
+      return;
+    }
     const queue = questions.map((q) => q.qid);
     const features = FLAW_ID_TO_FEATURES[flawId] ?? [];
     const config: TypeDrillConfig = {
@@ -72,7 +86,8 @@ export const FlawDrillLauncher: React.FC<Props> = ({
       selectedQids: queue,
       qfeatures: ["Famous Flaws", ...features],
     };
-    navigate("/drill", {
+    const qidsParam = encodeURIComponent(queue.join(","));
+    navigate(`/drill?mode=type-drill&qids=${qidsParam}`, {
       state: { mode: "type-drill", config, practicingLabel: flawName },
     });
   };
@@ -96,6 +111,10 @@ export const FlawDrillLauncher: React.FC<Props> = ({
       title={
         isLoading
           ? "Loading question bank…"
+          : permissions.loading
+          ? "Checking drill access…"
+          : drillLocked
+          ? "LSAT question drills are not enabled for your account yet"
           : count === 0
           ? "No LSAT bank questions tagged for this flaw yet"
           : `Apply ${flawName} to ${count} LSAT questions`
@@ -108,6 +127,10 @@ export const FlawDrillLauncher: React.FC<Props> = ({
       )}
       {isLoading
         ? "Loading…"
+        : permissions.loading
+        ? "Checking…"
+        : drillLocked
+        ? "Drill locked"
         : count === 0
         ? "Not yet available"
         : variant === "compact"

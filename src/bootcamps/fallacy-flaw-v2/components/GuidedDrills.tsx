@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Loader2, Target } from "lucide-react";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
-import { questionBank, type LRQuestion } from "@/lib/questionLoader";
+import { useUserPermissions } from "@/hooks/useUserPermissions";
+import { isRenderableLRQuestion, questionBank, type LRQuestion } from "@/lib/questionLoader";
 import type { TypeDrillConfig } from "@/types/drill";
 import { DRILLS } from "../data/drills";
 import { FLAW_ID_TO_FEATURES } from "./FlawDrillLauncher";
+import { toast } from "sonner";
 
 // Specific flaw-feature tags that co-occur with "Famous Flaws" in the
 // LSAT U bank. Source of truth for routing into Smart Drill. We never
@@ -40,6 +42,7 @@ function getMatchedFeatures(): MatchedFeature[] {
     const qs = all.filter(
       (q) =>
         q.qtype === "Flaw" &&
+        isRenderableLRQuestion(q) &&
         (q.questionFeatures || []).includes("Famous Flaws") &&
         (q.questionFeatures || []).includes(feature),
     );
@@ -61,6 +64,7 @@ export function GuidedDrills({
 }) {
   const navigate = useNavigate();
   const { isLoading } = useQuestionBank();
+  const permissions = useUserPermissions();
 
   const matches = useMemo(() => (isLoading ? [] : getMatchedFeatures()), [isLoading]);
   const selectedDrill = useMemo(
@@ -74,11 +78,21 @@ export function GuidedDrills({
   const activeMatches = targetedMatches.length > 0 ? targetedMatches : matches;
   const totalAvailable = matches.reduce((n, m) => n + m.questions.length, 0);
   const activeAvailable = activeMatches.reduce((n, m) => n + m.questions.length, 0);
-  const disabled = isLoading || activeMatches.length === 0;
+  const drillLocked =
+    !permissions.loading && !permissions.is_admin && !permissions.has_drill_access;
+  const disabled = isLoading || permissions.loading || drillLocked || activeMatches.length === 0;
   const focusLabel = selectedDrill?.name ?? "Famous Flaws";
 
   const startFlawPractice = () => {
-    if (activeMatches.length === 0) return;
+    if (permissions.loading) return;
+    if (drillLocked) {
+      toast.error("LSAT question drills are not enabled for your account yet.");
+      return;
+    }
+    if (activeMatches.length === 0) {
+      toast.error("No renderable LSAT questions are available for this flaw yet.");
+      return;
+    }
     const pick = activeMatches[Math.floor(Math.random() * activeMatches.length)];
     // Already sorted easier-first.
     const queue = pick.questions.map((q) => q.qid);
@@ -90,7 +104,8 @@ export function GuidedDrills({
       selectedQids: queue,
       qfeatures: ["Famous Flaws", pick.feature],
     };
-    navigate("/drill", {
+    const qidsParam = encodeURIComponent(queue.join(","));
+    navigate(`/drill?mode=type-drill&qids=${qidsParam}`, {
       state: {
         mode: "type-drill",
         config,
@@ -148,6 +163,8 @@ export function GuidedDrills({
               <p className="text-xs leading-relaxed text-[#1a1a1a]/55">
                 {activeAvailable > 0
                   ? `${activeAvailable} matched questions are ready for this start flow.`
+                  : drillLocked
+                  ? "LSAT question drills are not enabled for your account yet."
                   : "Matched questions will appear here once the question bank finishes loading."}
               </p>
             </div>
@@ -168,6 +185,13 @@ export function GuidedDrills({
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   Loading questions...
                 </>
+              ) : permissions.loading ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  Checking access...
+                </>
+              ) : drillLocked ? (
+                "Drill Access Locked"
               ) : (
                 <>
                   <Target className="h-3.5 w-3.5" />
@@ -185,6 +209,11 @@ export function GuidedDrills({
           {!isLoading && totalAvailable > 0 && activeAvailable === 0 && (
             <p className="mt-6 text-xs text-[#1a1a1a]/40">
               No LSAT bank questions are tagged for this exact fallacy yet, so choose another fallacy from the catalog.
+            </p>
+          )}
+          {drillLocked && (
+            <p className="mt-6 text-xs text-[#1a1a1a]/50">
+              You can view this bootcamp, but LSAT question drills need to be enabled for your account before this handoff can open.
             </p>
           )}
         </motion.section>
