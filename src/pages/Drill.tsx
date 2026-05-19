@@ -2313,7 +2313,7 @@ function DrillContent() {
                   label: [
                     currentQuestion.pt ? `PT${currentQuestion.pt}` : null,
                     currentQuestion.section ? `Section ${currentQuestion.section}` : null,
-                    `Question ${displayNum}`
+                    currentQuestion.qnum ? `Question ${currentQuestion.qnum}` : null
                   ].filter(Boolean).join(' · ')
                 }
               ] : [
@@ -2325,11 +2325,10 @@ function DrillContent() {
                     }]
                   : []),
                 {
-                  label: currentQuestion.section
-                    ? `Section ${currentQuestion.section}`
-                    : isFullSection
-                    ? 'Section'
-                    : 'Practice Drill',
+                  label: [
+                    currentQuestion.section ? `Section ${currentQuestion.section}` : isFullSection ? 'Section' : 'Practice Drill',
+                    currentQuestion.qnum ? `Question ${currentQuestion.qnum}` : null
+                  ].filter(Boolean).join(' · ')
                 },
               ]}
               isPaused={!!timer?.isPaused}
