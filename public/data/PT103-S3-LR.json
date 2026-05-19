@@ -6,7 +6,7 @@
     "questionType": "Paradox Resolve / explain",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 1.",
+    "stimulus": "",
     "questionStem": "Which one of the following, if true, most helps explain why the Norse settlements in Greenland disappeared while the Inuit settlements survived?",
     "answerChoices": {
       "A": "The drop in average yearly temperature was smaller in Greenland than it was in the world as a whole.",
@@ -26,7 +26,7 @@
       "Causation"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 2.",
+    "stimulus": "",
     "questionStem": "Which one of the following is a technique of reasoning used in the argument?",
     "answerChoices": {
       "A": "denying the relevance of an analogy",
@@ -50,7 +50,7 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 3. Even though trading in ivory has been outlawed by international agreement, some piano makers still use ivory, often obtained illegally, to cover piano keys. Recently, experts have devised a synthetic ivory that, unlike earlier ivory substitutes, has found favor with concert pianists throughout the world. But because piano makers have never been major consumers of ivory, the development of the synthetic ivory will therefore probably do little to help curb the killing of elephants, from whose tusks most natural ivory is obtained.",
+    "stimulus": "Even though trading in ivory has been outlawed by international agreement, some piano makers still use ivory, often obtained illegally, to cover piano keys. Recently, experts have devised a synthetic ivory that, unlike earlier ivory substitutes, has found favor with concert pianists throughout the world. But because piano makers have never been major consumers of ivory, the development of the synthetic ivory will therefore probably do little to help curb the killing of elephants, from whose tusks most natural ivory is obtained.",
     "questionStem": "Which one of the following, if true, most helps to strengthen the argument?",
     "answerChoices": {
       "A": "Most people who play the piano but are not concert pianists can nonetheless easily distinguish between the new synthetic ivory and inferior ivory substitutes.",
@@ -72,7 +72,7 @@
     "questionType": "Role",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 4. The government has spent heavily to clean groundwater contaminated by toxic chemical spills. Yet not even one spill site has been completely cleaned, and industrial accidents are spilling more toxic chemicals annually than are being cleaned up. More of the government’s budget should be redirected to preventing spills. Since prevention is far more effective than cleanup, it makes little sense that the entire annual budget for prevention is less than the amount spent annually on one typical cleanup site.",
+    "stimulus": "The government has spent heavily to clean groundwater contaminated by toxic chemical spills. Yet not even one spill site has been completely cleaned, and industrial accidents are spilling more toxic chemicals annually than are being cleaned up. More of the government’s budget should be redirected to preventing spills. Since prevention is far more effective than cleanup, it makes little sense that the entire annual budget for prevention is less than the amount spent annually on one typical cleanup site.",
     "questionStem": "The proposal about how the government’s budget should be redirected plays which one of the following roles in the argument?",
     "answerChoices": {
       "A": "It represents an unsupported speculation.",
@@ -92,7 +92,7 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 5. Consumer: I would like to have the features contained in the latest upgrade to your computer software package, but I am leery of installing the upgrade because a friend has told me he had a problem with it. Company representative: We have distributed nearly 3,000 copies of the upgrade and we have received fewer than 100 calls saying that it has caused problems. So it is very unlikely that you will experience any problems with the upgrade.",
+    "stimulus": "Consumer: I would like to have the features contained in the latest upgrade to your computer software package, but I am leery of installing the upgrade because a friend has told me he had a problem with it. Company representative: We have distributed nearly 3,000 copies of the upgrade and we have received fewer than 100 calls saying that it has caused problems. So it is very unlikely that you will experience any problems with the upgrade.",
     "questionStem": "The reasoning in the company representative’s argument is most vulnerable to criticism because it fails to consider the possibility that",
     "answerChoices": {
       "A": "the company will issue another upgrade that corrects the problems with the current upgrade",
@@ -117,7 +117,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 6. First legislator: Medical research is predominantly done on groups of patients that include only men. For example, the effects of coffee drinking on health are evaluated only for men, and studies are lacking on hormone treatments for older women. Government-sponsored medical research should be required to include studies of women. Second legislator: Considerations of male/female balance such as this are inappropriate with respect to research; they have no place in science.",
+    "stimulus": "First legislator: Medical research is predominantly done on groups of patients that include only men. For example, the effects of coffee drinking on health are evaluated only for men, and studies are lacking on hormone treatments for older women. Government-sponsored medical research should be required to include studies of women. Second legislator: Considerations of male/female balance such as this are inappropriate with respect to research; they have no place in science.",
     "questionStem": "Which one of the following rejoinders, if true, most directly counters the second legislator’s objection?",
     "answerChoices": {
       "A": "Government-sponsored research is supported by all taxpayers, both male and female.",
@@ -142,7 +142,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 7. Lack of exercise produces the same or similar bodily effects as aging. In fact, the physical changes that accompany aging can often be slowed down by appropriate exercise. No drug, however, holds any promise for slowing down the changes associated with aging. Therefore, _______.",
+    "stimulus": "Lack of exercise produces the same or similar bodily effects as aging. In fact, the physical changes that accompany aging can often be slowed down by appropriate exercise. No drug, however, holds any promise for slowing down the changes associated with aging. Therefore, _______.",
     "questionStem": "Which one of the following provides a logical completion to the passage above?",
     "answerChoices": {
       "A": "taking drugs has the same effect on aging as does a lack of exercise",
@@ -164,7 +164,7 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 8. Grasses and woody plants are planted on dirt embankments to keep the embankments from eroding. The embankments are mowed to keep the grasses from growing too tall; as a result, clippings pile up. These piles of clippings smother the woody plants, causing their roots, which serve to keep the embankments from eroding, to rot; they also attract rodents that burrow into the dirt and damage the woody plants’ roots. Therefore, bringing in predators to eradicate the rodents will prevent erosion of the embankments.",
+    "stimulus": "Grasses and woody plants are planted on dirt embankments to keep the embankments from eroding. The embankments are mowed to keep the grasses from growing too tall; as a result, clippings pile up. These piles of clippings smother the woody plants, causing their roots, which serve to keep the embankments from eroding, to rot; they also attract rodents that burrow into the dirt and damage the woody plants’ roots. Therefore, bringing in predators to eradicate the rodents will prevent erosion of the embankments.",
     "questionStem": "Which one of the following is an error of reasoning in the argument?",
     "answerChoices": {
       "A": "Two events that merely co-occur are treated as if one caused the other.",
@@ -188,7 +188,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 9. Scientific and technological discoveries have considerable effects on the development of any society. It follows that predictions of the future condition of societies in which scientific and technological discovery is particularly frequent are particularly untrustworthy.",
+    "stimulus": "Scientific and technological discoveries have considerable effects on the development of any society. It follows that predictions of the future condition of societies in which scientific and technological discovery is particularly frequent are particularly untrustworthy.",
     "questionStem": "The argument depends on assuming which one of the following?",
     "answerChoices": {
       "A": "Predictions of scientific and technological discoveries, or predictions of their effects, have harmful consequences in some societies.",
@@ -212,7 +212,7 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 10. Tires may be either underinflated, overinflated, or neither. We are pretty safe in assuming that underinflation or overinflation of tires harms their tread. After all, no one has been able to show that these do not harm tire tread.",
+    "stimulus": "Tires may be either underinflated, overinflated, or neither. We are pretty safe in assuming that underinflation or overinflation of tires harms their tread. After all, no one has been able to show that these do not harm tire tread.",
     "questionStem": "Which one of the following most accurately describes a flaw in the argument’s reasoning?",
     "answerChoices": {
       "A": "The argument assumes what it is attempting to demonstrate.",
@@ -235,7 +235,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 11. Linsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective and yet these novelists are widely held to be good writers.",
+    "stimulus": "Linsey has been judged to be a bad songwriter simply because her lyrics typically are disjointed and subjective. This judgment is ill founded, however, since the writings of many modern novelists typically are disjointed and subjective and yet these novelists are widely held to be good writers.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
       "A": "Disjointed and subjective writing has a comparable effect in modern novels and in songs.",
@@ -262,7 +262,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 12. The Levant—the area that borders the eastern Mediterranean—was heavily populated in prehistoric times. The southern Levant was abandoned about 6,000 years ago, although the northern Levant, which shared the same climate, remained heavily populated. Recently archaeologists have hypothesized that the sudden depopulation in the southern Levant was due to an economic collapse resulting from deforestation.",
+    "stimulus": "The Levant—the area that borders the eastern Mediterranean—was heavily populated in prehistoric times. The southern Levant was abandoned about 6,000 years ago, although the northern Levant, which shared the same climate, remained heavily populated. Recently archaeologists have hypothesized that the sudden depopulation in the southern Levant was due to an economic collapse resulting from deforestation.",
     "questionStem": "If the statements above are true and the archaeologists’ hypothesis is correct, which one of the following cannot be true?",
     "answerChoices": {
       "A": "The sheep and goats herded by the peoples of the southern Levant until 6,000 years ago grazed extensively on the seedlings and saplings of indigenous tree species.",
@@ -285,7 +285,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 13. Using rational argument in advertisements does not persuade people to buy the products being advertised. Therefore, advertisers who replace rational argument with nonrational appeals to emotion in advertisements will persuade people to buy the products being advertised.",
+    "stimulus": "Using rational argument in advertisements does not persuade people to buy the products being advertised. Therefore, advertisers who replace rational argument with nonrational appeals to emotion in advertisements will persuade people to buy the products being advertised.",
     "questionStem": "Which one of the following contains flawed reasoning most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
       "A": "People who ask others for favors are refused. Therefore, anyone who has not had the experience of being refused has never asked for a favor.",
@@ -308,7 +308,7 @@
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 14. A commercial insect trap consists of a small box containing pesticide mixed with glucose, a sweet substance known to attract insect pests. Yet in households where this type of trap has been used regularly for the past several years, recently installed traps are far less effective in eliminating insect pests than were traps of that type installed several years ago. Research scientists have hypothesized that traps in those households decreased in effectiveness because successive generations of the pests developed a resistance to the pesticide in the traps.",
+    "stimulus": "A commercial insect trap consists of a small box containing pesticide mixed with glucose, a sweet substance known to attract insect pests. Yet in households where this type of trap has been used regularly for the past several years, recently installed traps are far less effective in eliminating insect pests than were traps of that type installed several years ago. Research scientists have hypothesized that traps in those households decreased in effectiveness because successive generations of the pests developed a resistance to the pesticide in the traps.",
     "questionStem": "Which one of the following, if true, most seriously undermines the hypothesis?",
     "answerChoices": {
       "A": "In households where the traps have been used regularly, the proportion of insect pests that have a natural aversion to eating glucose has increased with each successive generation.",
@@ -329,7 +329,7 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 15. A person’s dietary consumption of cholesterol and fat is one of the most important factors determining the level of cholesterol in the person’s blood (serum cholesterol). Serum cholesterol levels rise proportionally to increased cholesterol and fat consumption until that consumption reaches a threshold, but once consumption of these substances exceeds that threshold, serum cholesterol levels rise only gradually, even with dramatic increases in consumption. The threshold is one fourth the consumption level of cholesterol and fat in today’s average North American diet.",
+    "stimulus": "A person’s dietary consumption of cholesterol and fat is one of the most important factors determining the level of cholesterol in the person’s blood (serum cholesterol). Serum cholesterol levels rise proportionally to increased cholesterol and fat consumption until that consumption reaches a threshold, but once consumption of these substances exceeds that threshold, serum cholesterol levels rise only gradually, even with dramatic increases in consumption. The threshold is one fourth the consumption level of cholesterol and fat in today’s average North American diet.",
     "questionStem": "The statements above, if true, most strongly support which one of the following?",
     "answerChoices": {
       "A": "The threshold can be lowered by lowering the dietary consumption of cholesterol and fat.",
@@ -351,7 +351,7 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 16. The recently negotiated North American Free Trade Agreement among Canada, Mexico, and the United States is misnamed, because it would not result in truly free trade. Adam Smith, the economist who first articulated the principles of free trade, held that any obstacle placed in the way of the free movement of goods, investment, or labor would defeat free trade. So since under the agreement workers would be restricted by national boundaries from seeking the best conditions they could find, the resulting obstruction of the flow of trade would, from a free-trade perspective, be harmful.",
+    "stimulus": "The recently negotiated North American Free Trade Agreement among Canada, Mexico, and the United States is misnamed, because it would not result in truly free trade. Adam Smith, the economist who first articulated the principles of free trade, held that any obstacle placed in the way of the free movement of goods, investment, or labor would defeat free trade. So since under the agreement workers would be restricted by national boundaries from seeking the best conditions they could find, the resulting obstruction of the flow of trade would, from a free-trade perspective, be harmful.",
     "questionStem": "The argument proceeds by",
     "answerChoices": {
       "A": "ruling out alternatives",
@@ -374,7 +374,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 17. Parents who wish to provide a strong foundation for the musical ability of their children should provide them with a good musical education. Since formal instruction is often a part of a good musical education, parents who wish to provide this strong foundation need to ensure that their children receive formal instruction.",
+    "stimulus": "Parents who wish to provide a strong foundation for the musical ability of their children should provide them with a good musical education. Since formal instruction is often a part of a good musical education, parents who wish to provide this strong foundation need to ensure that their children receive formal instruction.",
     "questionStem": "The reasoning is most vulnerable to criticism on the grounds that it fails to consider that",
     "answerChoices": {
       "A": "parents might not be the only source of a child’s musical education",
@@ -395,7 +395,7 @@
     "questionType": "Paradox Resolve / explain discrepancy",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 18. A stingray without parasites is healthier than it would be if it had parasites. Nevertheless, the lack of parasites in stingrays is an indicator that the ecosystem in which the stingrays live is under environmental stress such as pollution.",
+    "stimulus": "A stingray without parasites is healthier than it would be if it had parasites. Nevertheless, the lack of parasites in stingrays is an indicator that the ecosystem in which the stingrays live is under environmental stress such as pollution.",
     "questionStem": "Which one of the following, if true, most helps to reconcile the discrepancy indicated above?",
     "answerChoices": {
       "A": "During part of their life cycles, the parasites of stingrays require as hosts shrimp or oysters, which are environmentally vulnerable organisms.",
@@ -415,7 +415,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 19. Over the past 20 years, skiing has become a relatively safe sport due to improvements in ski equipment. There has been a 50 percent drop in the number of ski injuries over the last 20 years. Clearly, however, there have not been decreases in the number of injuries in all categories, as statistical data readily show, for although broken legs and ankle injuries have decreased by an astounding 90 percent, knee injuries now represent 16 percent of all ski injuries, up significantly from the 11 percent of 20 years ago.",
+    "stimulus": "Over the past 20 years, skiing has become a relatively safe sport due to improvements in ski equipment. There has been a 50 percent drop in the number of ski injuries over the last 20 years. Clearly, however, there have not been decreases in the number of injuries in all categories, as statistical data readily show, for although broken legs and ankle injuries have decreased by an astounding 90 percent, knee injuries now represent 16 percent of all ski injuries, up significantly from the 11 percent of 20 years ago.",
     "questionStem": "The reasoning in the argument is flawed because the argument does which one of the following?",
     "answerChoices": {
       "A": "It fails to allow for there being ski injuries other than broken legs, ankle injuries, and knee injuries.",
@@ -442,7 +442,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 20. Only poetry cannot be translated well, and therefore it is poets who preserve languages, for we would not bother to learn a language if we could get everything written in it from translation. So, since we cannot witness the beauty of poetry except in the language in which it is composed, we have motivation to learn the language.",
+    "stimulus": "Only poetry cannot be translated well, and therefore it is poets who preserve languages, for we would not bother to learn a language if we could get everything written in it from translation. So, since we cannot witness the beauty of poetry except in the language in which it is composed, we have motivation to learn the language.",
     "questionStem": "The information above provides the least support for which one of the following?",
     "answerChoices": {
       "A": "All nonpoetic literature can be translated well.",
@@ -465,7 +465,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 21. The companies that are the prime purchasers of computer software will not buy a software package if the costs of training staff to use it are high, and we know that it is expensive to teach people a software package that demands the memorization of unfamiliar commands. As a result, to be successful, commercial computer software cannot require users to memorize unfamiliar commands.",
+    "stimulus": "The companies that are the prime purchasers of computer software will not buy a software package if the costs of training staff to use it are high, and we know that it is expensive to teach people a software package that demands the memorization of unfamiliar commands. As a result, to be successful, commercial computer software cannot require users to memorize unfamiliar commands.",
     "questionStem": "The conclusion above follows logically if which one of the following is assumed?",
     "answerChoices": {
       "A": "If most prime purchasers of computer software buy a software product, that product will be successful.",
@@ -486,7 +486,7 @@
     "questionType": "Must Be True",
     "reasoningType": [],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 22.",
+    "stimulus": "",
     "questionStem": "If the statements in the passage are true, which one of the following must also be true about Kay’s course of action in any election to select one candidate for a position?",
     "answerChoices": {
       "A": "If there are no issues important to her, it is unacceptable for her to vote for any candidate in the election.",
@@ -507,7 +507,7 @@
     "questionType": "Principle Conform Application",
     "reasoningType": [],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 23.",
+    "stimulus": "",
     "questionStem": "According to the principle stated in the passage, in the upcoming mayoral election",
     "answerChoices": {
       "A": "it is acceptable for Kay to vote for either Medina or Legrand, but it is unacceptable for her to vote for Norton",
@@ -532,7 +532,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 24. Over the last 25 years, the average price paid for a new car has steadily increased in relation to average individual income. This increase indicates that individuals who buy new cars today spend, on average, a larger amount relative to their incomes buying a car than their counterparts did 25 years ago.",
+    "stimulus": "Over the last 25 years, the average price paid for a new car has steadily increased in relation to average individual income. This increase indicates that individuals who buy new cars today spend, on average, a larger amount relative to their incomes buying a car than their counterparts did 25 years ago.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
     "answerChoices": {
       "A": "There has been a significant increase over the last 25 years in the proportion of individuals in households with more than one wage earner.",
@@ -555,7 +555,7 @@
     "questionType": "Principle Application / analogous argument",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** Medium 25. Credit card companies justify charging cardholders additional fees for late payments by asserting the principle that those who expose other individuals, companies, or institutions to financial risk should pay for that risk, and by pointing out that late-paying cardholders present a greater risk of default than other cardholders. Without late fees, the companies argue, they would have to spread the cost of the risk over all cardholders.",
+    "stimulus": "Credit card companies justify charging cardholders additional fees for late payments by asserting the principle that those who expose other individuals, companies, or institutions to financial risk should pay for that risk, and by pointing out that late-paying cardholders present a greater risk of default than other cardholders. Without late fees, the companies argue, they would have to spread the cost of the risk over all cardholders.",
     "questionStem": "The principle invoked by the credit card companies would, if established, be most usefully invoked in which one of the following arguments?",
     "answerChoices": {
       "A": "School authorities should use student activity funds to pay for student-caused damages to school property since, even though only a few students cause any significant damage, authorities cannot in most instances determine which students caused the damage.",
