@@ -67,11 +67,11 @@ export default function OfficialQuestionPane({
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.85fr] flex-1">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_0.8fr] flex-1">
       {/* Stimulus column */}
       <div
         className={cn(
-          "px-9 pt-5 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          "pl-0 pr-10 pt-5 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
           "antialiased",
           "selection:bg-transparent selection:text-foreground",
@@ -95,7 +95,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-9 pt-5 pb-8 text-black" style={stemStyle}>
+      <div className="px-5 pt-5 pb-8 text-black" style={stemStyle}>
         <div className="flex items-start justify-between gap-3 mb-2">
           <div
             className="flex-1 flex items-start gap-2"
