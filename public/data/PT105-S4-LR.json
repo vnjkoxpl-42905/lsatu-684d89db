@@ -6,7 +6,7 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 1. Shortly after Isaac Newton circulated some of his theories of light in 1672, his colleague Robert Hooke claimed that most of those theories were based on Hooke’s own work. A modern reader might interpret Newton’s famous comment, “if I have seen further it is by standing on the shoulders of giants,” as a conciliatory gesture acknowledging indebtedness to Hooke and other contemporary scientists for some of his theories. Conciliatory gestures acknowledging indebtedness were uncharacteristic of Newton, however, and in his day such allusions to “giants” typically referred to the ancient Greeks, not to contemporary scientists.",
+    "stimulus": "Shortly after Isaac Newton circulated some of his theories of light in 1672, his colleague Robert Hooke claimed that most of those theories were based on Hooke’s own work. A modern reader might interpret Newton’s famous comment, “if I have seen further it is by standing on the shoulders of giants,” as a conciliatory gesture acknowledging indebtedness to Hooke and other contemporary scientists for some of his theories. Conciliatory gestures acknowledging indebtedness were uncharacteristic of Newton, however, and in his day such allusions to “giants” typically referred to the ancient Greeks, not to contemporary scientists.",
     "questionStem": "The statements in the passage, if true, most strongly support which one of the following?",
     "answerChoices": {
       "A": "Newton did not intend the quoted comment to be an acknowledgment that his theories of light were largely derived from Hooke’s.",
@@ -29,7 +29,7 @@
     "questionType": "Paradox EXCEPT",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 2. The blues is a modern musical form whose lyrics usually address such topics as frustration, anger, oppression, and restlessness. Yet blues musicians claim to find joy in performing, and the musicians and fans alike say that the blues’ overall effect is an affirmation of life, love, and hope.",
+    "stimulus": "The blues is a modern musical form whose lyrics usually address such topics as frustration, anger, oppression, and restlessness. Yet blues musicians claim to find joy in performing, and the musicians and fans alike say that the blues’ overall effect is an affirmation of life, love, and hope.",
     "questionStem": "Each of the following, if true, helps to resolve the apparent conflict in the passage except:",
     "answerChoices": {
       "A": "The sharing of blues music serves to create a cohesive, sympathetic social network.",
@@ -52,7 +52,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 3. Nutritionist: A study revealed that although most adults estimated their diets to correspond closely with the recommendations of standard nutritional guidelines, most of their diets did not come close to those recommendations. Both women and men underestimated the amount of fat in their diets and overestimated their intake of most other foods. In most food categories, especially fruits and vegetables, women’s diets did not meet the recommendations. Men underestimated their fat intake by half, and though they met the recommendations for breads, they fell short in all other categories.",
+    "stimulus": "Nutritionist: A study revealed that although most adults estimated their diets to correspond closely with the recommendations of standard nutritional guidelines, most of their diets did not come close to those recommendations. Both women and men underestimated the amount of fat in their diets and overestimated their intake of most other foods. In most food categories, especially fruits and vegetables, women’s diets did not meet the recommendations. Men underestimated their fat intake by half, and though they met the recommendations for breads, they fell short in all other categories.",
     "questionStem": "Which one of the following is most strongly supported by the information offered by the nutritionist?",
     "answerChoices": {
       "A": "Both men and women in the study misjudged their compliance with the nutritional guidelines in every food category.",
@@ -75,7 +75,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 4. Maude is incessantly engaging in diatribes against people who are materialistic. But her hypocrisy is evinced by the sentimental treatment of the watch her grandmother gave her. She certainly is very fond of the watch—she worries about damaging it; in fact she always sets it carefully in a special box before going to bed.",
+    "stimulus": "Maude is incessantly engaging in diatribes against people who are materialistic. But her hypocrisy is evinced by the sentimental treatment of the watch her grandmother gave her. She certainly is very fond of the watch—she worries about damaging it; in fact she always sets it carefully in a special box before going to bed.",
     "questionStem": "Which one of the following is an assumption on which the argument depends?",
     "answerChoices": {
       "A": "Possessions that come from relatives are treated with better care than those that do not.",
@@ -98,7 +98,7 @@
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 5. The most reliable way to detect the presence of life on a planet would be by determining whether or not its atmosphere contains methane. This is because methane completely disappears from a planet’s atmosphere through various chemical reactions unless it is constantly replenished by the biological processes of living beings.",
+    "stimulus": "The most reliable way to detect the presence of life on a planet would be by determining whether or not its atmosphere contains methane. This is because methane completely disappears from a planet’s atmosphere through various chemical reactions unless it is constantly replenished by the biological processes of living beings.",
     "questionStem": "Which one of the following statements, if true, most seriously weakens the argument?",
     "answerChoices": {
       "A": "There are other ways of detecting the presence of life on a planet.",
@@ -116,7 +116,7 @@
     "questionType": "Main Conclusion",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 6.",
+    "stimulus": "",
     "questionStem": "The main conclusion of Willett’s argument is that",
     "answerChoices": {
       "A": "Lopez and Simmons should not both have applied for jobs at Evritech Corporation",
@@ -140,7 +140,7 @@
     "questionType": "Principle Strengthen",
     "reasoningType": [],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 7.",
+    "stimulus": "",
     "questionStem": "Which one of the following principles, if valid, most helps to support the reasoning in Willett’s argument?",
     "answerChoices": {
       "A": "Corporations that have rules against hiring more than one member of the same family should also prohibit their employees from marrying one another.",
@@ -163,7 +163,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 8. Linguist: Only if a sentence can be diagrammed is it grammatical. Any grammatical sentence is recognized as grammatical by speakers of its language. Speaker X’s sentence can be diagrammed. So, speaker X’s sentence will be recognized as grammatical by speakers of its language.",
+    "stimulus": "Linguist: Only if a sentence can be diagrammed is it grammatical. Any grammatical sentence is recognized as grammatical by speakers of its language. Speaker X’s sentence can be diagrammed. So, speaker X’s sentence will be recognized as grammatical by speakers of its language.",
     "questionStem": "The linguist’s reasoning is flawed because it fails to consider the possibility that",
     "answerChoices": {
       "A": "most people are unable to diagram sentences correctly",
@@ -188,7 +188,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 9. To allay public concern about chemicals that are leaking into a river from a chemical company’s long-established dump, a company representative said, “Federal law requires that every new chemical be tested for safety before it is put onto the market.",
+    "stimulus": "To allay public concern about chemicals that are leaking into a river from a chemical company’s long-established dump, a company representative said, “Federal law requires that every new chemical be tested for safety before it is put onto the market.",
     "questionStem": "This is analogous to the federal law mandating testing of every pharmaceutical substance for safety.” Which one of the following, if true, most seriously weakens the representative’s implied argument that the public need not be concerned about the leak?",
     "answerChoices": {
       "A": "When pharmaceutical substances are tested for safety pursuant to federal requirements, a delay is imposed on the entry of potentially lifesaving substances onto the market.",
@@ -213,7 +213,7 @@
       "Causation"
     ],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 10. In the course of his reading, George Orwell probably encountered certain storytelling conventions over and over again, and these are the devices he would have most likely used in his work. That is why it does not follow that, even though his 1984 resembles other books of its futuristic genre, Orwell read those books; it is possible that he and the other authors were simply drawing on the same body of literary conventions.",
+    "stimulus": "In the course of his reading, George Orwell probably encountered certain storytelling conventions over and over again, and these are the devices he would have most likely used in his work. That is why it does not follow that, even though his 1984 resembles other books of its futuristic genre, Orwell read those books; it is possible that he and the other authors were simply drawing on the same body of literary conventions.",
     "questionStem": "Which one of the following most closely illustrates the principle that the passage illustrates?",
     "answerChoices": {
       "A": "A novel that is directly influenced by Gothic novels is likely to fall into the Gothic genre.",
@@ -236,7 +236,7 @@
     "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 11. On the basis of research with young children, a developmental psychologist hypothesized that the skills involved in copying curves must be developed before the skills involved in copying angles can be developed.",
+    "stimulus": "On the basis of research with young children, a developmental psychologist hypothesized that the skills involved in copying curves must be developed before the skills involved in copying angles can be developed.",
     "questionStem": "Which one of the following, if true, supports the developmental psychologist’s hypothesis?",
     "answerChoices": {
       "A": "All of the children who can copy curves can also copy straight lines.",
@@ -254,7 +254,7 @@
     "questionType": "Principle Conform",
     "reasoningType": [],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 12. Nearly everyone has complained of a mistaken utility bill that cannot easily be corrected or of computer files that cannot readily be retrieved. Yet few people today would tolerate waiting in long lines while clerks search for information that can now be found in seconds, and almost no one who has used a word processor would return to a typewriter.",
+    "stimulus": "Nearly everyone has complained of a mistaken utility bill that cannot easily be corrected or of computer files that cannot readily be retrieved. Yet few people today would tolerate waiting in long lines while clerks search for information that can now be found in seconds, and almost no one who has used a word processor would return to a typewriter.",
     "questionStem": "The information above conforms most closely to which one of the following principles?",
     "answerChoices": {
       "A": "The fact that people complain about some consequences of technology cannot be taken as a reliable indication that they would choose to live without it.",
@@ -278,7 +278,7 @@
       "Causation"
     ],
     "questionDifficulty": 1,
-    "stimulus": "Classification Confidence:** High 13. Television allows us to transmit images of ourselves that propagate into space. The earliest of these transmissions have by now reached all of our neighboring star systems. None of these transmissions, so far as we know, has been recognized; we have yet to receive any messages of extraterrestrial origin. We must conclude that there is no extraterrestrial intelligence in any of our neighboring star systems.",
+    "stimulus": "Television allows us to transmit images of ourselves that propagate into space. The earliest of these transmissions have by now reached all of our neighboring star systems. None of these transmissions, so far as we know, has been recognized; we have yet to receive any messages of extraterrestrial origin. We must conclude that there is no extraterrestrial intelligence in any of our neighboring star systems.",
     "questionStem": "The reasoning in the argument is questionable because the argument",
     "answerChoices": {
       "A": "fails to provide an adequate definition of the word “messages”",
@@ -302,7 +302,7 @@
       "Causation"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 14. Citizen: Our legislators need to act quickly to counter the effects of the recession, especially the present level of unemployment, which is the highest ever. We urgently need a major tax cut for our upper-income citizens. There would then be a correspondingly large increase in investment that would create new jobs. If this measure is not taken, investment will not grow.",
+    "stimulus": "Citizen: Our legislators need to act quickly to counter the effects of the recession, especially the present level of unemployment, which is the highest ever. We urgently need a major tax cut for our upper-income citizens. There would then be a correspondingly large increase in investment that would create new jobs. If this measure is not taken, investment will not grow.",
     "questionStem": "The citizen’s argument depends on the assumption that",
     "answerChoices": {
       "A": "the recession in the citizen’s country is the worst one in its history",
@@ -325,7 +325,7 @@
     "questionType": "Most Supported",
     "reasoningType": [],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 15. Ideally, scientific laws should display the virtues of precision and generality, as do the laws of physics. However, because of the nature of their subject matter, laws of social science often have to use terms that are imprecise; for example, one knows only vaguely what is meant by “republicanism” or “class.” As for generality, laws that apply only in certain social systems are typically the only ones possible for the social sciences.",
+    "stimulus": "Ideally, scientific laws should display the virtues of precision and generality, as do the laws of physics. However, because of the nature of their subject matter, laws of social science often have to use terms that are imprecise; for example, one knows only vaguely what is meant by “republicanism” or “class.” As for generality, laws that apply only in certain social systems are typically the only ones possible for the social sciences.",
     "questionStem": "Which one of the following statements is most strongly supported by the information above?",
     "answerChoices": {
       "A": "All else being equal, a precise, general scientific law is to be preferred over one that is not general.",
@@ -343,7 +343,7 @@
     "questionType": "Strengthen",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 16. The miscarriage of justice in the Barker case was due to the mistaken views held by some of the forensic scientists involved in the case, who believed that they owed allegiance only to the prosecuting lawyers. Justice was thwarted because these forensic scientists failed to provide evidence impartially to both the defense and the prosecution. Hence it is not forensic science in general that should be condemned for this injustice.",
+    "stimulus": "The miscarriage of justice in the Barker case was due to the mistaken views held by some of the forensic scientists involved in the case, who believed that they owed allegiance only to the prosecuting lawyers. Justice was thwarted because these forensic scientists failed to provide evidence impartially to both the defense and the prosecution. Hence it is not forensic science in general that should be condemned for this injustice.",
     "questionStem": "Which one of the following, if true, most strengthens the argument?",
     "answerChoices": {
       "A": "Most forensic scientists acknowledge a professional obligation to provide evidence impartially to both the defense and the prosecution.",
@@ -363,7 +363,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 17. Everyone who is excessively generous is not levelheaded, and no one who is levelheaded is bold.",
+    "stimulus": "Everyone who is excessively generous is not levelheaded, and no one who is levelheaded is bold.",
     "questionStem": "Which one of the following is strictly implied by the above?",
     "answerChoices": {
       "A": "Everyone who is excessively generous is not bold.",
@@ -384,7 +384,7 @@
     "questionType": "Weaken",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 18. In a study in which secondary school students were asked to identify the teachers they liked the best, the teachers most often identified possessed a personality type that constitutes 20 percent of the general public but only 5 percent of teachers. Thus something must discourage the people who would be the best-liked teachers from entering this profession.",
+    "stimulus": "In a study in which secondary school students were asked to identify the teachers they liked the best, the teachers most often identified possessed a personality type that constitutes 20 percent of the general public but only 5 percent of teachers. Thus something must discourage the people who would be the best-liked teachers from entering this profession.",
     "questionStem": "Which one of the following, if true, most weakens the argument?",
     "answerChoices": {
       "A": "People with the personality type constitute 5 percent of the medical profession.",
@@ -402,7 +402,7 @@
     "questionType": "Flaw",
     "reasoningType": [],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 19. A successful chess-playing computer would prove either that a machine can think or that chess does not involve thinking. In either case the conception of human intelligence would surely change.",
+    "stimulus": "A successful chess-playing computer would prove either that a machine can think or that chess does not involve thinking. In either case the conception of human intelligence would surely change.",
     "questionStem": "The reasoning above is most vulnerable to criticism on the grounds that it does not consider the possibility that",
     "answerChoices": {
       "A": "the conception of intelligence is inextricably linked to that of thought",
@@ -420,7 +420,7 @@
     "questionType": "Method",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 20. James: Chemists have recently invented a new technique for extracting rhodium, an element necessary for manufacturing catalytic converters for automobiles, from nuclear waste. Catalytic converters function to remove noxious gases from automobile exhaust. The use of nuclear power is therefore contributing in at least one way to creating a cleaner environment. Marta: The technique you mention, though effective, is still at an experimental stage, so there has been no shift in the sources of the rhodium currently used in manufacturing catalytic converters.",
+    "stimulus": "James: Chemists have recently invented a new technique for extracting rhodium, an element necessary for manufacturing catalytic converters for automobiles, from nuclear waste. Catalytic converters function to remove noxious gases from automobile exhaust. The use of nuclear power is therefore contributing in at least one way to creating a cleaner environment. Marta: The technique you mention, though effective, is still at an experimental stage, so there has been no shift in the sources of the rhodium currently used in manufacturing catalytic converters.",
     "questionStem": "Marta responds to James’s argument by",
     "answerChoices": {
       "A": "casting doubt on the accuracy of the claims made by James in support of his conclusion",
@@ -438,7 +438,7 @@
     "questionType": "Must Be False EXCEPT",
     "reasoningType": [],
     "questionDifficulty": 5,
-    "stimulus": "Classification Confidence:** High 21. Ethicist: A person who treats others well is more worthy of praise if this treatment is at least partially motivated by feelings of compassion than if it is entirely motivated by cold and dispassionate concern for moral obligation. This is so despite the fact that a person can choose to do what is morally right but cannot choose to have feelings.",
+    "stimulus": "Ethicist: A person who treats others well is more worthy of praise if this treatment is at least partially motivated by feelings of compassion than if it is entirely motivated by cold and dispassionate concern for moral obligation. This is so despite the fact that a person can choose to do what is morally right but cannot choose to have feelings.",
     "questionStem": "If the ethicist’s statements are true, then each of the following could be true except:",
     "answerChoices": {
       "A": "Only actions that are at least partially the result of a person’s feelings should be used in measuring the praiseworthiness of that person.",
@@ -459,7 +459,7 @@
     "questionType": "Sufficient Assumption",
     "reasoningType": [],
     "questionDifficulty": 3,
-    "stimulus": "Classification Confidence:** High 22. Children fall into three groups—nontasters, regular tasters, and supertasters—depending on how strongly they experience tastes. Supertasters strongly prefer mild cheddar cheese to sharp, regular tasters weakly prefer mild to sharp, and nontasters show no preference. Also, the more bitter a food tastes, the less children like it. Thus, supertasters experience sharp cheddar as tasting more bitter than mild cheddar, but nontasters experience sharp cheddar as tasting no more bitter than mild cheddar.",
+    "stimulus": "Children fall into three groups—nontasters, regular tasters, and supertasters—depending on how strongly they experience tastes. Supertasters strongly prefer mild cheddar cheese to sharp, regular tasters weakly prefer mild to sharp, and nontasters show no preference. Also, the more bitter a food tastes, the less children like it. Thus, supertasters experience sharp cheddar as tasting more bitter than mild cheddar, but nontasters experience sharp cheddar as tasting no more bitter than mild cheddar.",
     "questionStem": "Which one of the following, if assumed, enables the conclusion above to be properly inferred?",
     "answerChoices": {
       "A": "Supertasters like mild cheddar cheese more than do regular tasters.",
@@ -479,7 +479,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 23. Donna claims to have found the museum’s current exhibition of bronzes from Benin less interesting than many of the other exhibitions recently put on by the museum. According to all the critical reviews, however, the Benin exhibition is more interesting than any other exhibition that the museum has put on in years. Therefore, Donna’s claim must be false.",
+    "stimulus": "Donna claims to have found the museum’s current exhibition of bronzes from Benin less interesting than many of the other exhibitions recently put on by the museum. According to all the critical reviews, however, the Benin exhibition is more interesting than any other exhibition that the museum has put on in years. Therefore, Donna’s claim must be false.",
     "questionStem": "Which one of the following arguments contains flawed reasoning that is most similar to the flawed reasoning in the argument above?",
     "answerChoices": {
       "A": "Alice claims to have completed her assignment. According to her supervisor, however, the task that Alice was assigned to do has not yet been completed. Alice’s claim, therefore, must be false.",
@@ -504,7 +504,7 @@
       "Conditional Reasoning"
     ],
     "questionDifficulty": 4,
-    "stimulus": "Classification Confidence:** High 24. If an external force intervenes to give members of a community political self-determination, then that political community will almost surely fail to be truly free, since it is during the people’s struggle to become free by their own efforts that the political virtues necessary for maintaining freedom have the best chance of arising.",
+    "stimulus": "If an external force intervenes to give members of a community political self-determination, then that political community will almost surely fail to be truly free, since it is during the people’s struggle to become free by their own efforts that the political virtues necessary for maintaining freedom have the best chance of arising.",
     "questionStem": "The reasoning above conforms most closely to which one of the following principles?",
     "answerChoices": {
       "A": "Political freedom is a virtue that a community can attain through an external force.",
@@ -528,7 +528,7 @@
       "Comparative Reasoning"
     ],
     "questionDifficulty": 2,
-    "stimulus": "Classification Confidence:** High 25. Some residents of Midville claim that Midville is generally more expensive to live in than nearby towns are, but these people are mistaken. They focus on Midville’s relatively high tax rate while ignoring the services paid for by their taxes. Only Midville provides residents with trash removal, rent- and mortgage- assistance programs, and reasonably priced public transportation. In nearby towns individuals pay for their own trash removal, and housing and transportation costs are high in comparison to Midville.",
+    "stimulus": "Some residents of Midville claim that Midville is generally more expensive to live in than nearby towns are, but these people are mistaken. They focus on Midville’s relatively high tax rate while ignoring the services paid for by their taxes. Only Midville provides residents with trash removal, rent- and mortgage- assistance programs, and reasonably priced public transportation. In nearby towns individuals pay for their own trash removal, and housing and transportation costs are high in comparison to Midville.",
     "questionStem": "Which one of the following is the main point of the argument?",
     "answerChoices": {
       "A": "Midville is generally no more expensive to live in than nearby towns are.",

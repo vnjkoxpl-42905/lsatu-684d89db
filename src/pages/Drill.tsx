@@ -102,8 +102,11 @@ function DrillContent() {
     return (location.state || {}) as {
       mode: DrillMode;
       config?: FullSectionConfig | TypeDrillConfig;
+      practicingLabel?: string;
     };
   }, [searchParams, location.state]);
+
+  const practicingLabel = (location.state as { practicingLabel?: string } | null)?.practicingLabel;
 
   React.useEffect(() => {
     if (!user) navigate('/auth');
@@ -2375,6 +2378,12 @@ function DrillContent() {
                 Resume
               </Button>
             </Card>
+          </div>
+        )}
+
+        {practicingLabel && (
+          <div className="w-full bg-[#1a1a1a] text-white text-center py-2 px-4 text-[11px] font-bold uppercase tracking-[0.22em]">
+            Practicing: <span className="text-white/80 normal-case tracking-normal font-serif italic ml-1">{practicingLabel}</span>
           </div>
         )}
 
