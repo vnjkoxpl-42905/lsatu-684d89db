@@ -1,7 +1,8 @@
 import * as React from "react";
-import { HelpCircle, Play, GraduationCap } from "lucide-react";
+import { Play, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
+import QuestionMetadataPopover, { type QuestionMetadata } from "@/components/drill/QuestionMetadataPopover";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,8 @@ interface Props {
   tutorMode?: boolean;
   /** Toggle handler for Tutor mode. */
   onTutorModeChange?: (next: boolean) => void;
+  /** Current question metadata shown by the top help/info affordance. */
+  questionMetadata?: QuestionMetadata | null;
 }
 
 /**
@@ -36,6 +39,7 @@ export default function OfficialDrillFrame({
   tutorToggleVisible,
   tutorMode,
   onTutorModeChange,
+  questionMetadata,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -81,14 +85,14 @@ export default function OfficialDrillFrame({
               <span aria-hidden className="w-px h-5 bg-slate-300" />
             </>
           )}
-          <button
-            type="button"
-            aria-label="Help"
-            tabIndex={-1}
-            className="text-[#b91c1c] hover:text-[#7f1d1d] transition-colors cursor-default"
-          >
-            <HelpCircle className="w-[20px] h-[20px]" strokeWidth={2} />
-          </button>
+          <QuestionMetadataPopover
+            metadata={questionMetadata}
+            resetKey={[
+              questionMetadata?.pt,
+              questionMetadata?.section,
+              questionMetadata?.qnum,
+            ].filter(Boolean).join("-")}
+          />
           <span aria-hidden className="w-px h-5 bg-slate-300" />
           <span className="font-medium">Welcome, {welcomeName}</span>
         </div>
