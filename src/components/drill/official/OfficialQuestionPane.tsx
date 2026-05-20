@@ -79,21 +79,24 @@ export default function OfficialQuestionPane({
     cleanAnswerChoice(key, text),
   ] as const);
 
-  const baseSize = 17 * fontScale;
-  const answerSize = 16 * fontScale;
-  // Reading-optimized leading scales with Aa so size + line-height move together.
-  const stimLeading =
-    fontScale <= 0.95 ? 1.5 : fontScale <= 1.05 ? 1.6 : fontScale <= 1.2 ? 1.7 : 1.8;
-  const stimStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: stimLeading };
-  const stemStyle: React.CSSProperties = { fontSize: `${baseSize}px`, lineHeight: 1.65 };
-  const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
+  const baseSize = 19 * fontScale;
+  const officialContentTextStyle: React.CSSProperties = {
+    color: "#212529",
+    fontFamily: "Arial, Helvetica, sans-serif",
+    fontSize: `${baseSize}px`,
+    fontWeight: 400,
+    lineHeight: 1.35,
+  };
+  const stimStyle: React.CSSProperties = officialContentTextStyle;
+  const stemStyle: React.CSSProperties = officialContentTextStyle;
+  const answerTextStyle: React.CSSProperties = officialContentTextStyle;
 
   return (
     <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,48fr)_minmax(0,52fr)]">
       {/* Stimulus column */}
       <div
         className={cn(
-          "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 whitespace-pre-wrap",
           // Reading-optimized typography for every question.
           "antialiased",
           "selection:bg-transparent selection:text-foreground",
@@ -117,7 +120,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 text-black" style={stemStyle}>
+      <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8" style={stemStyle}>
         <div className="flex items-start justify-between gap-3">
           <div
             className="flex-1 flex items-start gap-2"
