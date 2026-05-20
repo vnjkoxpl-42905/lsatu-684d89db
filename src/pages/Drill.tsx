@@ -2546,7 +2546,7 @@ function DrillContent() {
         ) : (
           <>
         {/* Left Panel — Stimulus */}
-        <div className="flex-1 lg:max-h-full bg-white flex flex-col overflow-hidden">
+        <div className="flex-[1.1] lg:max-h-full bg-white flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto">
             <div className="p-6 sm:p-8 max-w-3xl mx-auto">
               {currentQuestion.stimulus && (() => {
@@ -2589,7 +2589,7 @@ function DrillContent() {
         <div className="flex-1 overflow-y-auto lg:border-l border-border lg:max-h-full bg-white">
           <div className="p-6 sm:p-8 max-w-3xl">
             {/* Question Stem */}
-            <div className="mb-6">
+            <div className="mb-4">
               <div
                 className={cn(
                   "text-[15px] font-semibold text-neutral-900 leading-[1.4] tracking-tight",

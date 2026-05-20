@@ -92,7 +92,7 @@ export default function OfficialQuestionPane({
   const answerTextStyle: React.CSSProperties = officialContentTextStyle;
 
   return (
-    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,48fr)_minmax(0,52fr)]">
+    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,53fr)_minmax(0,47fr)]">
       {/* Stimulus column */}
       <div
         className={cn(
@@ -160,7 +160,7 @@ export default function OfficialQuestionPane({
           </button>
         </div>
 
-        <ul className="mt-6 space-y-3.5">
+        <ul className="mt-4 space-y-3.5">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
