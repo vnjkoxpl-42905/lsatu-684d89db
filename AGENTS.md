@@ -19,5 +19,8 @@ Vitest is the primary unit-test runner, with React Testing Library available for
 ## Commit & Pull Request Guidelines
 Recent commits use short, imperative messages, sometimes prefixed by scope, such as `feat(admin-inbox): ...` or `Fix ...`. Keep commits focused and descriptive. Pull requests should summarize the user-visible change, call out route or permission impacts, and include screenshots for UI work when relevant.
 
+## Agent Workflow
+After completing any code or documentation change, automatically stage the changed files, commit with a concise message, and push to `origin main` unless the user says otherwise. Use the explicit flow `git add <files>`, `git commit -m "message"`, then `git push origin main`.
+
 ## Security & Configuration Tips
 Treat Supabase calls as sensitive. Do not hardcode secrets or service keys in client code. Update generated Supabase types when schema changes affect queries, and verify permission-sensitive routes with an admin account before merging.
