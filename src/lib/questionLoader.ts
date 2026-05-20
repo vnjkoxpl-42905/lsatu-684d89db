@@ -43,6 +43,13 @@ type RenderableLRQuestionInput = {
   answerChoices?: Partial<Record<'A' | 'B' | 'C' | 'D' | 'E', unknown>>;
 };
 
+const sharedPassageMetadataPrefixPattern =
+  /^\s*(?:The following passage is used for Section\s+\d+,\s+questions\s+\d+\s+through\s+\d+\.|Questions?\s+\d+\s+(?:through|and|[-–])\s+\d+\s+refer to the following passage\.)\s*/i;
+
+function stripSharedPassageMetadataPrefix(text: string): string {
+  return text.replace(sharedPassageMetadataPrefixPattern, '').trim();
+}
+
 export function isRenderableLRQuestion(q: RenderableLRQuestionInput): boolean {
   return (
     typeof q.stimulus === 'string' &&
@@ -101,6 +108,15 @@ function normalizeQuestionTextFields<T extends {
           target.stimulus = passage;
         }
       }
+    }
+  }
+
+  // Shared-passage imports may include a routing/instruction line at the
+  // beginning of the stimulus. Keep the passage itself, remove only that
+  // narrow metadata prefix.
+  for (const item of normalized) {
+    if (typeof item.stimulus === 'string') {
+      item.stimulus = stripSharedPassageMetadataPrefix(item.stimulus);
     }
   }
 
