@@ -89,11 +89,11 @@ export default function OfficialQuestionPane({
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
   return (
-    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,45fr)_minmax(0,55fr)]">
+    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,48fr)_minmax(0,52fr)]">
       {/* Stimulus column */}
       <div
         className={cn(
-          "min-w-0 px-6 py-7 sm:px-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          "min-w-0 px-6 py-7 sm:pl-9 sm:pr-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
           "antialiased",
           "selection:bg-transparent selection:text-foreground",
@@ -117,7 +117,7 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="min-w-0 px-6 py-7 sm:px-8 text-black" style={stemStyle}>
+      <div className="min-w-0 px-6 py-7 sm:pl-10 sm:pr-8 text-black" style={stemStyle}>
         <div className="flex items-start justify-between gap-3">
           <div
             className="flex-1 flex items-start gap-2"
@@ -157,7 +157,7 @@ export default function OfficialQuestionPane({
           </button>
         </div>
 
-        <ul className="mt-6 space-y-4">
+        <ul className="mt-6 space-y-3.5">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
@@ -170,7 +170,7 @@ export default function OfficialQuestionPane({
                   "grid grid-cols-[34px_minmax(0,1fr)_28px] items-start gap-4 group rounded-md transition-colors",
                   // Reserve consistent padding so revealing answers (which adds a
                   // ring) does not shift the row position.
-                  "px-1 py-2 ring-2 ring-transparent",
+                  "px-1 py-1.5 ring-2 ring-transparent",
                   isEliminated && !answerRevealed && "opacity-50",
                   isCorrect && "bg-green-50 ring-green-500",
                   isWrongSelected && "ring-red-500",
