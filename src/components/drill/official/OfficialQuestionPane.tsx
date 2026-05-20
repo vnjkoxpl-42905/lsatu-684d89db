@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Eye, Flag } from "lucide-react";
+import { Eye, EyeOff, Flag } from "lucide-react";
 import { HighlightedText } from "@/components/drill/HighlightedText";
 import type { Highlight } from "@/lib/highlightUtils";
 import { cn } from "@/lib/utils";
@@ -171,7 +171,6 @@ export default function OfficialQuestionPane({
                   // Reserve consistent padding so revealing answers (which adds a
                   // ring) does not shift the row position.
                   "px-1 py-1.5 ring-2 ring-transparent",
-                  isEliminated && !answerRevealed && "opacity-50",
                   isCorrect && "bg-green-50 ring-green-500",
                   isWrongSelected && "ring-red-500",
                 )}
@@ -183,25 +182,33 @@ export default function OfficialQuestionPane({
                   aria-pressed={isSelected}
                   aria-label={`Choice ${key}`}
                   className={cn(
-                    "shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
+                    "relative shrink-0 mt-0.5 rounded-full border-[2px] flex items-center justify-center text-[14px] font-semibold transition-colors",
                     "w-[34px] h-[34px] text-[13px]",
                     isCorrect
                       ? "border-green-700 bg-green-600 text-white"
                       : isSelected
                       ? "border-slate-900 bg-slate-900 text-white"
+                      : isEliminated && !answerRevealed
+                      ? "border-slate-500 bg-white text-slate-500"
                       : "border-slate-800 bg-white text-slate-900 hover:border-slate-900",
                     isEliminated && !answerRevealed && "cursor-not-allowed",
                   )}
                 >
                   {key}
+                  {isEliminated && !answerRevealed && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute left-1/2 top-1/2 h-[2px] w-[42px] -translate-x-1/2 -translate-y-1/2 -rotate-[32deg] rounded-full bg-slate-500"
+                    />
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                   disabled={isEliminated || answerRevealed}
                   className={cn(
-                    "min-w-0 text-left pt-0.5 whitespace-normal",
-                    isEliminated && !answerRevealed && "line-through cursor-not-allowed",
+                    "min-w-0 text-left pt-0.5 whitespace-normal transition-colors",
+                    isEliminated && !answerRevealed && "cursor-not-allowed text-slate-400",
                     isCorrect && "font-semibold text-green-900",
                   )}
                   style={answerTextStyle}
@@ -210,14 +217,26 @@ export default function OfficialQuestionPane({
                 </button>
                 <button
                   type="button"
-                  onClick={() => !answerRevealed && onEliminate(key)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (!answerRevealed) onEliminate(key);
+                  }}
                   disabled={answerRevealed}
                   aria-pressed={isEliminated}
                   aria-label={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
                   title={isEliminated ? `Restore choice ${key}` : `Eliminate choice ${key}`}
-                  className="shrink-0 p-1 mt-0.5 text-neutral-500 hover:text-neutral-700 rounded transition-colors disabled:opacity-50"
+                  className={cn(
+                    "shrink-0 p-1 mt-0.5 rounded transition-colors disabled:opacity-50",
+                    isEliminated && !answerRevealed
+                      ? "text-slate-400 hover:text-slate-600"
+                      : "text-neutral-500 hover:text-neutral-700",
+                  )}
                 >
-                  <Eye className="w-[20px] h-[20px]" strokeWidth={2.25} />
+                  {isEliminated && !answerRevealed ? (
+                    <EyeOff className="w-[20px] h-[20px]" strokeWidth={2.25} />
+                  ) : (
+                    <Eye className="w-[20px] h-[20px]" strokeWidth={2.25} />
+                  )}
                 </button>
               </li>
             );
