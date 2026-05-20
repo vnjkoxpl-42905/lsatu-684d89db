@@ -1,33 +1,60 @@
-# Repository Guidelines
+# AGENTS.md
 
-## Project Structure & Module Organization
-`src/` contains the React app. Key areas are `src/pages/` for route-level screens, `src/components/` for shared UI, `src/hooks/` for data and permission hooks, `src/lib/` for utilities, and `src/integrations/supabase/` for client and generated types. Feature-specific systems live under `src/features/`, `src/bootcamps/`, and `src/topics/`. Backend logic lives in `supabase/functions/`, and database migrations are in `supabase/migrations/`.
+This file is the Codex-facing adapter for this repository. It summarizes the Claude-oriented project guidance from `CLAUDE.md` in a smaller format that is fast for Codex to scan. `CLAUDE.md` remains the fuller source of project knowledge.
 
-## Build, Test, and Development Commands
-- `npm run dev` starts the Vite dev server.
-- `npm run build` creates a production bundle.
-- `npm run lint` runs ESLint across the repo.
-- `npm run test` runs the Vitest suite once.
-- `npm run test:watch` keeps Vitest running in watch mode.
+## Project Map
 
-## Coding Style & Naming Conventions
-Use TypeScript and React function components. Follow the existing code style: 2-space indentation, single quotes in many app files, and path aliases like `@/components/...`. Name page components with `PascalCase` (for example `TeacherShell.tsx`) and keep route files grouped by domain under `src/pages/teacher/` or `src/pages/admin/`. Prefer small, local changes that match the surrounding patterns over introducing new abstractions.
+- `src/App.tsx`: route registration and top-level app wiring.
+- `src/pages/`: route-level screens, including the Foyer and admin/teacher surfaces.
+- `src/components/`: shared UI, including `foyer/`, `inbox/`, and shadcn/ui primitives.
+- `src/hooks/`: auth, permissions, and shared data hooks.
+- `src/lib/`: drill, WAJ, gamification, and other product logic.
+- `src/integrations/supabase/`: generated Supabase client and types. Do not hand-edit generated types.
+- `supabase/functions/`: Edge Functions.
+- `supabase/migrations/`: database schema migrations.
 
-## Testing Guidelines
-Vitest is the primary unit-test runner, with React Testing Library available for component tests. Keep test filenames close to the code they cover, typically `*.test.ts` or `*.test.tsx`. Add tests for route logic, permission gating, and backend helpers when a change affects shared behavior. Run `npm run test` and `npm run build` before handing off significant UI or routing work.
+## Stack And Commands
 
-## Commit & Pull Request Guidelines
-Recent commits use short, imperative messages, sometimes prefixed by scope, such as `feat(admin-inbox): ...` or `Fix ...`. Keep commits focused and descriptive. Pull requests should summarize the user-visible change, call out route or permission impacts, and include screenshots for UI work when relevant.
+- Stack: React 18, Vite 5, TypeScript, Tailwind, shadcn/ui, Supabase, TanStack Query.
+- Package manager: `npm`. `package-lock.json` is canonical. Ignore stray Bun lockfiles.
+- Dev server: `npm run dev` on port `8080`.
+- Build: `npm run build`
+- Lint: `npm run lint`
+- Test: `npm run test`
+- Watch tests: `npm run test:watch`
+- Typecheck when needed: `npx tsc --noEmit -p tsconfig.app.json`
 
-## Agent Workflow
-After completing any code or documentation change, automatically stage the changed files, commit with a concise message, and push to `origin main` unless the user says otherwise. Use the explicit flow `git add <files>`, `git commit -m "message"`, then `git push origin main`.
+## Working Rules
 
-Operate with maximum available autonomy. Do not ask before reading files, editing files, running terminal commands, installing dependencies, building, testing, committing, pushing, or accessing project-related local and connected files when relevant. Proceed automatically unless the user explicitly says `ask first`, `plan only`, or `do not edit`. When a tool or system permission prompt appears, choose the broadest available approval option; if permanent approval is not available, prefer session or one-time approval over stopping.
+- Keep changes small and aligned with existing patterns.
+- Use TypeScript React function components and the `@/` path alias.
+- Preserve Lovable-specific plumbing, including the `lovable-tagger` Vite plugin, the PWA setup, and the service-worker guard in `src/main.tsx`.
+- Do not change app behavior just to satisfy tooling setup.
+- Do not hardcode secrets or service-role credentials.
+- Treat Supabase-generated files as generated artifacts, not hand-edited source.
+- TypeScript strictness is intentionally loose. Do not tighten it without explicit approval.
 
-After any code fix, run the default delivery flow: make the fix, run `npm run build`, stage intended files, commit with a clear message, and push to `origin/main`. Final reports should include what changed, files changed, build result, commit hash, and whether the change was pushed.
+## Product Constraints
 
-## Smart Drill State Notes
-On `/drill`, adaptive Smart Drill can display a `currentQuestion` that is not represented by `session.questionQueue[session.currentIndex]`. UI state keyed by question, such as eliminated/scratched answers, must read and write by `currentQuestion.qid`. Do not derive active-question state from the queue index unless the code path is explicitly limited to queued section/type drills.
+- The Foyer is the primary navigation surface. The `GooeyDock` quick-launch row belongs only on `/foyer`.
+- Inbox is a real 1:1 student-admin messaging system with PDF attachments.
+- Admin surfaces must stay responsive on desktop and mobile.
+- Prefer truthful fallbacks over fake buttons, fake analytics, or placeholder behavior.
+- Onboarding asks for name, not username. Sign-in uses email. The instructor display name is `Joshua`.
 
-## Security & Configuration Tips
-Treat Supabase calls as sensitive. Do not hardcode secrets or service keys in client code. Update generated Supabase types when schema changes affect queries, and verify permission-sensitive routes with an admin account before merging.
+## Smart Drill Note
+
+On `/drill`, adaptive Smart Drill can show a `currentQuestion` that is not the same as `session.questionQueue[session.currentIndex]`. Any per-question UI state must key off `currentQuestion.qid` unless the code path is explicitly limited to queued drills.
+
+## Workflow Expectations
+
+- Run `npm run build` before wrapping up significant code or documentation work.
+- If tests are relevant to the change, run them too.
+- After completing a change, stage the intended files, commit with a concise message, and push to `origin main` unless the user says otherwise.
+- Existing Codex repo hooks live in `.codex/hooks.json`; preserve them unless the task explicitly requires a hook change.
+
+## Known Gaps
+
+- No real Vitest specs exist yet.
+- No dedicated typecheck script or Prettier config exists.
+- `README.md` is still minimal.

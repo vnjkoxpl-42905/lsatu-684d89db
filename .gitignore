@@ -40,3 +40,6 @@ audit-*.jpeg
 
 .gemini/
 gha-creds-*.json
+
+# Codex local overrides
+.codex/*.local.toml
