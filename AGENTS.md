@@ -22,5 +22,9 @@ Recent commits use short, imperative messages, sometimes prefixed by scope, such
 ## Agent Workflow
 After completing any code or documentation change, automatically stage the changed files, commit with a concise message, and push to `origin main` unless the user says otherwise. Use the explicit flow `git add <files>`, `git commit -m "message"`, then `git push origin main`.
 
+Operate with maximum available autonomy. Do not ask before reading files, editing files, running terminal commands, installing dependencies, building, testing, committing, pushing, or accessing project-related local and connected files when relevant. Proceed automatically unless the user explicitly says `ask first`, `plan only`, or `do not edit`. When a tool or system permission prompt appears, choose the broadest available approval option; if permanent approval is not available, prefer session or one-time approval over stopping.
+
+After any code fix, run the default delivery flow: make the fix, run `npm run build`, stage intended files, commit with a clear message, and push to `origin/main`. Final reports should include what changed, files changed, build result, commit hash, and whether the change was pushed.
+
 ## Security & Configuration Tips
 Treat Supabase calls as sensitive. Do not hardcode secrets or service keys in client code. Update generated Supabase types when schema changes affect queries, and verify permission-sensitive routes with an admin account before merging.
