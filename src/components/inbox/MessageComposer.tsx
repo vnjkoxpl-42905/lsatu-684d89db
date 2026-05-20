@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Paperclip, Send, X, FileText, Sparkles, Cloud } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,6 +7,14 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
 import { toast } from 'sonner';
 import { DriveAttachmentPicker, type DriveFileRow } from './DriveAttachmentPicker';
+import { TemplateSuggestionPalette } from '@/components/teacher/templates/TemplateSuggestionPalette';
+import {
+  filterMessageTemplates,
+  listMessageTemplates,
+  replaceSlashCommand,
+  slashTemplateQuery,
+  type MessageTemplate,
+} from '@/lib/messageTemplates';
 
 const MAX_SIZE = 20 * 1024 * 1024;
 
@@ -19,6 +27,9 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const [sending, setSending] = useState(false);
   const [polishing, setPolishing] = useState(false);
   const [polished, setPolished] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<MessageTemplate[]>([]);
+  const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
+  const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -34,6 +45,27 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const isAdmin = !permissions.loading && permissions.is_admin;
   const showPolish = isAdmin;
   const showDrive = isAdmin;
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    listMessageTemplates('message')
+      .then((rows) => {
+        if (!cancelled) setTemplates(rows);
+      })
+      .catch((error) => {
+        if (!cancelled) console.error('Failed to load message templates', error);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin]);
+
+  const templateQuery = slashTemplateQuery(body);
+  const filteredTemplates = useMemo(
+    () => filterMessageTemplates(templates, templateQuery ?? ''),
+    [templates, templateQuery],
+  );
 
   const addDriveFiles = (picks: DriveFileRow[]) => {
     setDriveAttachments((prev) => {
@@ -80,6 +112,28 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
     } finally {
       setPolishing(false);
     }
+  };
+
+  const setBodyAndResize = (next: string) => {
+    setBody(next);
+    const query = slashTemplateQuery(next);
+    setTemplatePaletteOpen(query !== null && templates.length > 0);
+    setTemplatePaletteIndex(0);
+    requestAnimationFrame(adjustHeight);
+  };
+
+  const insertTemplate = (template: MessageTemplate) => {
+    const next = replaceSlashCommand(body, template.body);
+    setBody(next);
+    setPolished(null);
+    setTemplatePaletteOpen(false);
+    requestAnimationFrame(() => {
+      adjustHeight();
+      const el = textareaRef.current;
+      if (!el) return;
+      el.focus();
+      el.setSelectionRange(next.length, next.length);
+    });
   };
 
   const send = async () => {
@@ -146,6 +200,35 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   };
 
   const canSend = !!body.trim() || !!file || driveAttachments.length > 0;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (templatePaletteOpen && filteredTemplates.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setTemplatePaletteIndex((index) => (index + 1) % filteredTemplates.length);
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setTemplatePaletteIndex((index) => (index - 1 + filteredTemplates.length) % filteredTemplates.length);
+        return;
+      }
+      if (e.key === 'Tab' || (e.key === 'Enter' && !e.metaKey && !e.ctrlKey)) {
+        e.preventDefault();
+        insertTemplate(filteredTemplates[templatePaletteIndex]);
+        return;
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setTemplatePaletteOpen(false);
+        return;
+      }
+    }
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      send();
+    }
+  };
 
   return (
     <div className="border-t border-border bg-background/95 backdrop-blur px-3 py-3 shrink-0">
@@ -229,17 +312,20 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
-      <div className="rounded-xl border border-border bg-background shadow-sm focus-within:ring-2 focus-within:ring-ring/35">
+      <div className="relative rounded-xl border border-border bg-background shadow-sm focus-within:ring-2 focus-within:ring-ring/35">
+        <TemplateSuggestionPalette
+          open={templatePaletteOpen}
+          templates={filteredTemplates}
+          activeIndex={templatePaletteIndex}
+          onActiveIndexChange={setTemplatePaletteIndex}
+          onSelect={insertTemplate}
+          onClose={() => setTemplatePaletteOpen(false)}
+        />
         <Textarea
           ref={textareaRef}
           value={body}
-          onChange={(e) => { setBody(e.target.value); adjustHeight(); }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-              e.preventDefault();
-              send();
-            }
-          }}
+          onChange={(e) => setBodyAndResize(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Ask Joshua a question or send study context"
           className="w-full resize-none min-h-0 border-0 bg-transparent px-3.5 py-3 text-sm shadow-none focus-visible:ring-0"
           style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}

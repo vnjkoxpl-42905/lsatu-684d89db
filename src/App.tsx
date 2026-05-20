@@ -75,6 +75,7 @@ const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBoot
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
 const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
+const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
@@ -316,6 +317,11 @@ const App = () => {
                     <Route path="admin" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherAdmin />
+                      </React.Suspense>
+                    } />
+                    <Route path="templates" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherTemplates />
                       </React.Suspense>
                     } />
                     <Route path="access" element={<Navigate to="/teacher/admin" replace />} />

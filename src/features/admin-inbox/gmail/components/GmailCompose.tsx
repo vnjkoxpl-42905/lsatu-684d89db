@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FileText, HardDrive, Loader2, Minus, Paperclip, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,14 @@ import { GmailRecipientInput } from "./GmailRecipientInput";
 import { GmailDrivePicker } from "./GmailDrivePicker";
 import { toast } from "sonner";
 import type { GmailOutgoingAttachment } from "../api";
+import { TemplateSuggestionPalette } from "@/components/teacher/templates/TemplateSuggestionPalette";
+import {
+  filterMessageTemplates,
+  listMessageTemplates,
+  replaceSlashCommand,
+  slashTemplateQuery,
+  type MessageTemplate,
+} from "@/lib/messageTemplates";
 
 interface GmailComposeProps {
   open: boolean;
@@ -58,11 +66,35 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [drivePickerOpen, setDrivePickerOpen] = useState(false);
   const [readingFiles, setReadingFiles] = useState(false);
+  const [templates, setTemplates] = useState<MessageTemplate[]>([]);
+  const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
+  const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const send = useGmailSend();
   const contactsQuery = useGmailContacts({ enabled: open });
   const contacts = contactsQuery.data ?? [];
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    listMessageTemplates("email")
+      .then((rows) => {
+        if (!cancelled) setTemplates(rows);
+      })
+      .catch((error) => {
+        if (!cancelled) console.error("Failed to load email templates", error);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
+  const templateQuery = slashTemplateQuery(body);
+  const filteredTemplates = useMemo(
+    () => filterMessageTemplates(templates, templateQuery ?? ""),
+    [templates, templateQuery],
+  );
 
   if (!open) return null;
 
@@ -72,7 +104,24 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
   function reset() {
     setTo(""); setCc(""); setBcc(""); setSubject(""); setBody("");
     setShowCc(false); setShowBcc(false);
+    setTemplatePaletteOpen(false);
     setAttachments([]);
+  }
+
+  function handleBodyChange(next: string) {
+    setBody(next);
+    const query = slashTemplateQuery(next);
+    setTemplatePaletteOpen(query !== null && templates.length > 0);
+    setTemplatePaletteIndex(0);
+  }
+
+  function insertTemplate(template: MessageTemplate) {
+    const next = replaceSlashCommand(body, template.body);
+    setBody(next);
+    if (!subject.trim() && template.subject) {
+      setSubject(template.subject);
+    }
+    setTemplatePaletteOpen(false);
   }
 
   function handleSend() {
@@ -150,6 +199,29 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
 
   function removeAttachment(id: string) {
     setAttachments((prev) => prev.filter((a) => a.id !== id));
+  }
+
+  function handleBodyKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (!templatePaletteOpen || filteredTemplates.length === 0) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setTemplatePaletteIndex((index) => (index + 1) % filteredTemplates.length);
+      return;
+    }
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setTemplatePaletteIndex((index) => (index - 1 + filteredTemplates.length) % filteredTemplates.length);
+      return;
+    }
+    if (event.key === "Tab" || (event.key === "Enter" && !event.metaKey && !event.ctrlKey)) {
+      event.preventDefault();
+      insertTemplate(filteredTemplates[templatePaletteIndex]);
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setTemplatePaletteOpen(false);
+    }
   }
 
   return (
@@ -235,13 +307,24 @@ export function GmailCompose({ open, onClose, prefill }: GmailComposeProps) {
                 className="border-0 focus-visible:ring-0 h-8 text-sm shadow-none px-3"
               />
             </ComposeRow>
-            <Textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Write your message…"
-              rows={9}
-              className="border-0 focus-visible:ring-0 resize-none text-sm min-h-[200px] px-3 py-2"
-            />
+            <div className="relative">
+              <TemplateSuggestionPalette
+                open={templatePaletteOpen}
+                templates={filteredTemplates}
+                activeIndex={templatePaletteIndex}
+                onActiveIndexChange={setTemplatePaletteIndex}
+                onSelect={insertTemplate}
+                onClose={() => setTemplatePaletteOpen(false)}
+              />
+              <Textarea
+                value={body}
+                onChange={(e) => handleBodyChange(e.target.value)}
+                onKeyDown={handleBodyKeyDown}
+                placeholder="Write your message…"
+                rows={9}
+                className="border-0 focus-visible:ring-0 resize-none text-sm min-h-[200px] px-3 py-2"
+              />
+            </div>
 
             {attachments.length > 0 ? (
               <div className="px-3 pt-2 pb-1 flex flex-wrap gap-2 border-t border-border">
