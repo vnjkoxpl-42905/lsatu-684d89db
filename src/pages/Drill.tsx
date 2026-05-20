@@ -2660,7 +2660,7 @@ function DrillContent() {
             {session.mode === 'adaptive' && selectedAnswer && !showSolution && !tutorChatOpen && (
               <div className="flex justify-end gap-3 pt-6 mt-2">
                 <Button
-                  onClick={handleSubmit}
+                  onClick={() => handleSubmit()}
                   size="lg"
                   disabled={timer?.isPaused}
                 >
