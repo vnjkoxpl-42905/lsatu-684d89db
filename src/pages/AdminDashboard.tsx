@@ -123,7 +123,12 @@ function templateMatches(user: Record<string, unknown>, t: Record<string, boolea
 // dashboard, hub, and notification bell all read the same way.
 const timeAgo = formatRelativeShort;
 
-export default function AdminDashboard() {
+interface AdminDashboardProps {
+  embedded?: boolean;
+  title?: string;
+}
+
+export default function AdminDashboard({ embedded = false, title = "Admin Dashboard" }: AdminDashboardProps = {}) {
   const navigate = useNavigate();
   const { is_admin, loading: permLoading } = useUserPermissions();
   const [users, setUsers] = useState<ManagedUser[]>([]);
@@ -270,7 +275,7 @@ export default function AdminDashboard() {
 
   if (permLoading || loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className={`${embedded ? "h-full" : "min-h-screen"} bg-zinc-950 flex items-center justify-center`}>
         <div className="w-6 h-6 border-2 border-zinc-600 border-t-white rounded-full animate-spin" />
       </div>
     );
@@ -281,8 +286,9 @@ export default function AdminDashboard() {
   const maxAdoption = Math.max(...Object.values(computedAnalytics.feature_adoption), 1);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className={`${embedded ? "h-full overflow-y-auto" : "min-h-screen"} bg-zinc-950 text-zinc-100`}>
       {/* Header */}
+      {!embedded && (
       <div className="border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
           <button
@@ -294,13 +300,24 @@ export default function AdminDashboard() {
           </button>
           <Shield className="w-5 h-5 text-amber-500/70 shrink-0" />
           <h1 className="text-base sm:text-lg font-semibold tracking-tight truncate">
-            Admin Dashboard
+            {title}
           </h1>
           <span className="text-xs text-zinc-500 ml-auto shrink-0">{users.length} users</span>
         </div>
       </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
+        {embedded && (
+          <div className="flex items-center gap-3">
+            <Shield className="w-5 h-5 text-amber-500/70 shrink-0" />
+            <h1 className="text-base sm:text-lg font-semibold tracking-tight truncate">
+              {title}
+            </h1>
+            <span className="text-xs text-zinc-500 ml-auto shrink-0">{users.length} users</span>
+          </div>
+        )}
+
         {/* ── Analytics Cards ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total Users" value={computedAnalytics.total_users} />
@@ -546,5 +563,4 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
     </div>
   );
 }
-
 

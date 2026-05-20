@@ -8,6 +8,7 @@ import {
   Library,
   Flame,
   ArrowLeft,
+  ShieldCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -20,13 +21,14 @@ const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library', label: 'Library', Icon: Library },
+  { to: '/teacher/access', label: 'Access', Icon: ShieldCheck },
 ].filter((item) =>
   item.to === '/teacher/bootcamps' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
 );
 
 /**
  * Teacher Workspace shell. Premium operator hub for admins.
- * Six ranked tabs. Assistant is the default surface.
+ * Assistant is the default surface.
  */
 export default function TeacherShell() {
   const navigate = useNavigate();
@@ -61,7 +63,7 @@ export default function TeacherShell() {
       </header>
 
       <div className="flex-1 min-h-0 max-w-[1600px] w-full mx-auto flex flex-col md:flex-row">
-        {/* Desktop sidebar / mobile bottom-tab. Six ranked items. */}
+        {/* Desktop sidebar / mobile bottom-tab. */}
         <aside className="hidden md:flex md:w-[200px] shrink-0 border-r border-zinc-800/60 flex-col">
           <nav className="py-4 flex flex-col gap-0.5" aria-label="Teacher workspace">
             {NAV.map(({ to, label, Icon, end }) => (

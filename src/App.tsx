@@ -75,6 +75,7 @@ const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary")
 const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
+const TeacherAccess = React.lazy(() => import("./pages/teacher/TeacherAccess"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
@@ -315,6 +316,12 @@ const App = () => {
                         <TeacherStudentBootcampDetail />
                       </React.Suspense>
                     } />
+                    <Route path="access" element={
+                      <React.Suspense fallback={<div />}>
+                        <TeacherAccess />
+                      </React.Suspense>
+                    } />
+                    <Route path="permissions" element={<Navigate to="/teacher/access" replace />} />
                     <Route path="library" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherLibrary />
