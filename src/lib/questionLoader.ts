@@ -50,6 +50,17 @@ function stripSharedPassageMetadataPrefix(text: string): string {
   return text.replace(sharedPassageMetadataPrefixPattern, '').trim();
 }
 
+const dialogueIntroPattern = /^[A-Z][A-Za-z’' -]{1,80}:\s+/;
+const dialogueTransitionPattern = /[.!?]["”')\]]?\s+[A-Z][A-Za-z’' -]{1,80}:\s+/;
+const dialogueTurnBreakPattern =
+  /([.!?]["”')\]]?)\s+([A-Z][A-Za-z’' -]{1,80}:\s+)/g;
+
+function normalizeDialogueSpeakerBreaks(text: string): string {
+  if (!dialogueIntroPattern.test(text) || !dialogueTransitionPattern.test(text)) return text;
+
+  return text.replace(dialogueTurnBreakPattern, '$1\n$2');
+}
+
 export function isRenderableLRQuestion(q: RenderableLRQuestionInput): boolean {
   return (
     typeof q.stimulus === 'string' &&
@@ -117,6 +128,7 @@ function normalizeQuestionTextFields<T extends {
   for (const item of normalized) {
     if (typeof item.stimulus === 'string') {
       item.stimulus = stripSharedPassageMetadataPrefix(item.stimulus);
+      item.stimulus = normalizeDialogueSpeakerBreaks(item.stimulus);
     }
   }
 
