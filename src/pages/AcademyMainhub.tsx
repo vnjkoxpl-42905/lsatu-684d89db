@@ -10,6 +10,7 @@ import MainhubDock from "@/components/mainhub/MainhubDock";
 import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 import MainhubFindCard from "@/components/mainhub/MainhubFindCard";
 import MainhubFloatingChat from "@/components/mainhub/MainhubFloatingChat";
+import SmartLRTrainingCard from "@/components/mainhub/SmartLRTrainingCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import GooeyDock from "@/components/ui/gooey-dock";
@@ -263,25 +264,37 @@ export default function AcademyMainhub() {
         </SheetContent>
       </Sheet>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center px-6 py-10 pb-32">
+      <main className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-10 pb-32 md:px-6">
         <div className="pointer-events-none absolute right-8 top-7 z-10">
           <div data-tour="mainhub-dock" className="pointer-events-auto flex items-center gap-2">
             <MainhubDock />
             <MainhubAccountButton displayName={displayName} />
           </div>
         </div>
-        <div
-          data-tour="mainhub-orbital"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[520px] max-w-full"
-        >
-          <RadialOrbitalTimeline
-            timelineData={mainhubNodes}
-            onActivate={onOrbitalActivate}
-            renderExpandedContent={renderOrbitalExpanded}
-          />
-        </div>
 
-        <MainhubQuickDock />
+        <div className="relative flex h-full w-full max-w-[1220px] items-center justify-center gap-8">
+          <div className="hidden w-[320px] shrink-0 xl:flex">
+            <SmartLRTrainingCard />
+          </div>
+
+          <section
+            aria-label="Mainhub orbital workspace"
+            className="relative flex h-full min-h-[620px] min-w-0 flex-1 items-center justify-center"
+          >
+            <div
+              data-tour="mainhub-orbital"
+              className="absolute top-1/2 left-1/2 h-[520px] w-[480px] max-w-full -translate-x-1/2 -translate-y-1/2"
+            >
+              <RadialOrbitalTimeline
+                timelineData={mainhubNodes}
+                onActivate={onOrbitalActivate}
+                renderExpandedContent={renderOrbitalExpanded}
+              />
+            </div>
+
+            <MainhubQuickDock />
+          </section>
+        </div>
       </main>
 
       <MainhubFloatingChat />
