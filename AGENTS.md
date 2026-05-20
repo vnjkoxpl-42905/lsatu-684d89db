@@ -26,5 +26,8 @@ Operate with maximum available autonomy. Do not ask before reading files, editin
 
 After any code fix, run the default delivery flow: make the fix, run `npm run build`, stage intended files, commit with a clear message, and push to `origin/main`. Final reports should include what changed, files changed, build result, commit hash, and whether the change was pushed.
 
+## Smart Drill State Notes
+On `/drill`, adaptive Smart Drill can display a `currentQuestion` that is not represented by `session.questionQueue[session.currentIndex]`. UI state keyed by question, such as eliminated/scratched answers, must read and write by `currentQuestion.qid`. Do not derive active-question state from the queue index unless the code path is explicitly limited to queued section/type drills.
+
 ## Security & Configuration Tips
 Treat Supabase calls as sensitive. Do not hardcode secrets or service keys in client code. Update generated Supabase types when schema changes affect queries, and verify permission-sensitive routes with an admin account before merging.

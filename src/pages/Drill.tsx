@@ -160,12 +160,13 @@ function DrillContent() {
   const [hasTimer, setHasTimer] = React.useState(false);
   const [answerLocked, setAnswerLocked] = React.useState(false);
   const [eliminatedByQid, setEliminatedByQid] = React.useState<Map<string, Set<string>>>(new Map());
-  // Derived: eliminations for the active qid only (read-only proxy).
+  // Derived: eliminations for the displayed question only (read-only proxy).
+  // Adaptive Smart Drill can render a currentQuestion outside the queued index.
   // Shaped so we can later promote into session.attempts.get(qid).eliminated.
   const eliminatedAnswers = React.useMemo<Set<string>>(() => {
-    const qid = session?.questionQueue[session.currentIndex];
+    const qid = currentQuestion?.qid;
     return qid ? eliminatedByQid.get(qid) ?? new Set<string>() : new Set<string>();
-  }, [eliminatedByQid, session?.currentIndex, session?.questionQueue]);
+  }, [eliminatedByQid, currentQuestion?.qid]);
   const [highlightMode, setHighlightMode] = React.useState<'none' | 'yellow' | 'pink' | 'orange' | 'underline' | 'erase'>('none');
   const [highlights, setHighlights] = React.useState<Map<string, Highlight[]>>(new Map());
   const [highlightHistory, setHighlightHistory] = React.useState<Map<string, Highlight[]>[]>([]);
