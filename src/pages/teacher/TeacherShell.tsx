@@ -8,7 +8,7 @@ import {
   Library,
   Flame,
   ArrowLeft,
-  ShieldCheck,
+  Shield,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -21,7 +21,7 @@ const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/schedule', label: 'Schedule', Icon: CalendarDays },
   { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library', label: 'Library', Icon: Library },
-  { to: '/teacher/access', label: 'Access', Icon: ShieldCheck },
+  { to: '/teacher/admin', label: 'Admin', Icon: Shield },
 ].filter((item) =>
   item.to === '/teacher/bootcamps' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
 );

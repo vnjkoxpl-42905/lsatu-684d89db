@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, User, Shield, LogOut, Sliders, BarChart3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ChevronDown, User, Sliders, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
 import { formatParticipantName } from "@/lib/displayName";
@@ -36,7 +36,6 @@ export default function MainhubAccountButton({ displayName }: MainhubAccountButt
   const { user, signOut } = useAuth();
   const permissions = useUserPermissions();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const rawName =
     displayName?.trim() ||
@@ -45,9 +44,6 @@ export default function MainhubAccountButton({ displayName }: MainhubAccountButt
   const formatted = formatParticipantName(rawName, permissions.is_admin);
   const resolved = permissions.is_admin ? formatted : titleCase(formatted);
   const initial = resolved.charAt(0).toUpperCase() || "·";
-
-  const insideAdmin = location.pathname.startsWith("/admin");
-  const showAdminItem = permissions.is_admin && !insideAdmin;
 
   return (
     <DropdownMenu>
@@ -102,16 +98,6 @@ export default function MainhubAccountButton({ displayName }: MainhubAccountButt
           <User className="h-4 w-4 text-muted-foreground" aria-hidden />
           Profile
         </DropdownMenuItem>
-
-        {showAdminItem && (
-          <DropdownMenuItem
-            onClick={() => navigate("/admin")}
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground"
-          >
-            <Shield className="h-4 w-4 text-muted-foreground" aria-hidden />
-            Admin Dashboard
-          </DropdownMenuItem>
-        )}
 
         <DropdownMenuItem
           onClick={() => navigate("/settings/layout")}

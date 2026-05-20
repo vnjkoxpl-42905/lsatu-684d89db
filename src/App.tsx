@@ -40,7 +40,6 @@ const FallacyFlawBootcamp = React.lazy(() => import("./pages/FallacyFlawBootcamp
 import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 const Unsubscribe = React.lazy(() => import("./pages/Unsubscribe"));
-import AdminDashboard from "./pages/AdminDashboard";
 const AdminBoard = React.lazy(() => import("./pages/AdminBoard"));
 const DriveFiles = React.lazy(() => import("./pages/admin/DriveFiles"));
 const Homework = React.lazy(() => import("./pages/admin/Homework"));
@@ -75,7 +74,7 @@ const TeacherLibrary = React.lazy(() => import("./pages/teacher/TeacherLibrary")
 const TeacherBootcampsHub = React.lazy(() => import("./pages/teacher/TeacherBootcampsHub"));
 const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBootcampDetail"));
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
-const TeacherAccess = React.lazy(() => import("./pages/teacher/TeacherAccess"));
+const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
@@ -125,10 +124,8 @@ const App = () => {
             {/* Legacy redirect: /foyer was the original route; preserve deep links from older emails / bookmarks. */}
             <Route path="/foyer" element={<Navigate to="/mainhub" replace />} />
 
-            {/* Admin Dashboard. No question bank needed. */}
-            <Route path="/admin" element={
-              <AdminErrorBoundary routeLabel="/admin"><AdminDashboard /></AdminErrorBoundary>
-            } />
+            {/* Legacy Admin Dashboard entry now lives inside Teacher Workspace. */}
+            <Route path="/admin" element={<Navigate to="/teacher/admin" replace />} />
             <Route path="/admin/board" element={
               <ProtectedRoute flag="has_classroom_access">
                 <AdminErrorBoundary routeLabel="/admin/board">
@@ -316,12 +313,13 @@ const App = () => {
                         <TeacherStudentBootcampDetail />
                       </React.Suspense>
                     } />
-                    <Route path="access" element={
+                    <Route path="admin" element={
                       <React.Suspense fallback={<div />}>
-                        <TeacherAccess />
+                        <TeacherAdmin />
                       </React.Suspense>
                     } />
-                    <Route path="permissions" element={<Navigate to="/teacher/access" replace />} />
+                    <Route path="access" element={<Navigate to="/teacher/admin" replace />} />
+                    <Route path="permissions" element={<Navigate to="/teacher/admin" replace />} />
                     <Route path="library" element={
                       <React.Suspense fallback={<div />}>
                         <TeacherLibrary />
