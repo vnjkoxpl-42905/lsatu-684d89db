@@ -35,6 +35,23 @@ interface Props {
   onHighlightClick: (highlightId: string) => void;
 }
 
+function stripDataArtifacts(text: string): string {
+  return text
+    .replace(/\s*\{#\d+\}\s*/g, " ")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n[ \t]+/g, "\n")
+    .trim();
+}
+
+function cleanAnswerChoice(key: string, text: string): string {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return stripDataArtifacts(text)
+    .replace(new RegExp(`^\\s*[-–—]?\\s*\\[${escapedKey}\\]\\s*`, "i"), "")
+    .replace(new RegExp(`^\\s*[-–—]?\\s*\\(${escapedKey}\\)\\s*`, "i"), "")
+    .replace(new RegExp(`^\\s*[-–—]?\\s*${escapedKey}[.)]\\s*`, "i"), "")
+    .trim();
+}
+
 export default function OfficialQuestionPane({
   question,
   displayNumber,
@@ -55,7 +72,12 @@ export default function OfficialQuestionPane({
 }: Props) {
   const stimulusHighlights = highlights.filter((h) => h.section === "stimulus");
   const stemHighlights = highlights.filter((h) => h.section === "stem");
-  const answerEntries = Object.entries(question.answerChoices);
+  const stimulusText = stripDataArtifacts(question.stimulus);
+  const stemText = stripDataArtifacts(question.questionStem);
+  const answerEntries = Object.entries(question.answerChoices).map(([key, text]) => [
+    key,
+    cleanAnswerChoice(key, text),
+  ] as const);
 
   const baseSize = 17 * fontScale;
   const answerSize = 16 * fontScale;
@@ -67,11 +89,11 @@ export default function OfficialQuestionPane({
   const answerTextStyle: React.CSSProperties = { fontSize: `${answerSize}px`, lineHeight: 1.55 };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_0.8fr] flex-1">
+    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,45fr)_minmax(0,55fr)]">
       {/* Stimulus column */}
       <div
         className={cn(
-          "pl-0 pr-10 pt-5 pb-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
+          "min-w-0 px-6 py-7 sm:px-8 lg:border-r border-slate-200 text-black whitespace-pre-wrap",
           // Reading-optimized typography for every question.
           "antialiased",
           "selection:bg-transparent selection:text-foreground",
@@ -86,7 +108,7 @@ export default function OfficialQuestionPane({
         onMouseUp={(e) => onTextSelection(e, "stimulus")}
       >
         <HighlightedText
-          text={question.stimulus}
+          text={stimulusText}
           highlights={stimulusHighlights}
           onHighlightClick={onHighlightClick}
           eraserMode={highlightMode === "erase"}
@@ -95,8 +117,8 @@ export default function OfficialQuestionPane({
       </div>
 
       {/* Question column */}
-      <div className="px-5 pt-5 pb-8 text-black" style={stemStyle}>
-        <div className="flex items-start justify-between gap-3 mb-2">
+      <div className="min-w-0 px-6 py-7 sm:px-8 text-black" style={stemStyle}>
+        <div className="flex items-start justify-between gap-3">
           <div
             className="flex-1 flex items-start gap-2"
             onMouseUp={(e) => onTextSelection(e, "stem")}
@@ -106,7 +128,7 @@ export default function OfficialQuestionPane({
             </span>
             <div className="flex-1">
               <HighlightedText
-                text={question.questionStem}
+                text={stemText}
                 highlights={stemHighlights}
                 onHighlightClick={onHighlightClick}
                 eraserMode={highlightMode === "erase"}
@@ -135,7 +157,7 @@ export default function OfficialQuestionPane({
           </button>
         </div>
 
-        <ul className="space-y-4 mt-4">
+        <ul className="mt-6 space-y-4">
           {answerEntries.map(([key, text]) => {
             const isSelected = selectedAnswer === key;
             const isEliminated = eliminatedAnswers.has(key);
@@ -145,10 +167,10 @@ export default function OfficialQuestionPane({
               <li
                 key={key}
                 className={cn(
-                  "flex items-start gap-3 group rounded-md transition-colors",
+                  "grid grid-cols-[34px_minmax(0,1fr)_28px] items-start gap-4 group rounded-md transition-colors",
                   // Reserve consistent padding so revealing answers (which adds a
                   // ring) does not shift the row position.
-                  "px-1 py-1 ring-2 ring-transparent",
+                  "px-1 py-2 ring-2 ring-transparent",
                   isEliminated && !answerRevealed && "opacity-50",
                   isCorrect && "bg-green-50 ring-green-500",
                   isWrongSelected && "ring-red-500",
@@ -178,7 +200,7 @@ export default function OfficialQuestionPane({
                   onClick={() => !isEliminated && !answerRevealed && onAnswerSelect(key)}
                   disabled={isEliminated || answerRevealed}
                   className={cn(
-                    "flex-1 text-left pt-0.5",
+                    "min-w-0 text-left pt-0.5 whitespace-normal",
                     isEliminated && !answerRevealed && "line-through cursor-not-allowed",
                     isCorrect && "font-semibold text-green-900",
                   )}
