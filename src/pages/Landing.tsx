@@ -68,6 +68,10 @@ export default function Landing() {
     navigate('/drill', { state: { mode: 'type-drill', config } });
   };
 
+  const handleStartNaturalDrill = (config: TypeDrillConfig) => {
+    navigate('/drill', { state: { mode: 'natural-drill', config } });
+  };
+
   const userInitials = user?.email?.slice(0, 2).toUpperCase() || 'U';
 
   return (
@@ -152,7 +156,7 @@ export default function Landing() {
 
       {selectedMode === 'natural-drill' && (
         <NaturalDrillCreator
-          onStartDrill={handleStartTypeDrill}
+          onStartDrill={handleStartNaturalDrill}
           onCancel={() => setSelectedMode(null)}
         />
       )}

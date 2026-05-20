@@ -285,6 +285,10 @@ export default function Practice() {
     navigate(drillPath, { state: { mode: 'type-drill', config } });
   };
 
+  const handleStartNaturalDrill = (config: TypeDrillConfig) => {
+    navigate(drillPath, { state: { mode: 'natural-drill', config } });
+  };
+
   const handleModeClick = (modeId: DrillMode) => {
     setSelectedAction((prev) => (prev === modeId ? null : modeId));
   };
@@ -338,7 +342,7 @@ export default function Practice() {
     if (selectedAction === 'natural-drill') {
       return (
         <div className="animate-slide-up">
-          <NaturalDrillCreator onStartDrill={handleStartTypeDrill} onCancel={() => setSelectedAction(null)} />
+          <NaturalDrillCreator onStartDrill={handleStartNaturalDrill} onCancel={() => setSelectedAction(null)} />
         </div>
       );
     }

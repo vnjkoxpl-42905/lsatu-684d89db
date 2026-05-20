@@ -247,6 +247,11 @@ function DrillContent() {
         const config = state.config as FullSectionConfig;
         rawQuestions = questionBank.getSection(config.pt, config.section);
         setHasTimer(config.timer.mode !== 'unlimited');
+      } else if (mode === 'natural-drill' && state.config) {
+        const config = state.config as TypeDrillConfig;
+        rawQuestions = config.selectedQids
+          ?.map(qid => questionBank.getQuestion(qid))
+          .filter((q): q is LRQuestion => !!q) ?? [];
       } else if (mode === 'type-drill' && state.config) {
         const config = state.config as TypeDrillConfig;
         
@@ -272,7 +277,7 @@ function DrillContent() {
       let exhausted = false;
       
       const explicitQids =
-        mode === 'type-drill' &&
+        (mode === 'type-drill' || mode === 'natural-drill') &&
         state.config &&
         ((state.config as TypeDrillConfig).selectedQids?.length ?? 0) > 0;
 
@@ -370,7 +375,7 @@ function DrillContent() {
       setSession({
         mode,
         fullSectionConfig: mode === 'full-section' ? (state.config as FullSectionConfig) : undefined,
-        typeDrillConfig: mode === 'type-drill' ? (state.config as TypeDrillConfig) : undefined,
+        typeDrillConfig: (mode === 'type-drill' || mode === 'natural-drill') ? (state.config as TypeDrillConfig) : undefined,
         questionQueue,
         currentIndex: 0,
         attempts: new Map(),
@@ -603,6 +608,12 @@ function DrillContent() {
     setIsRetryAfterWrong(false);
     setCorrectExplanation('');
     setShowReviewButton(false);
+
+    // Reset visual timer for Smart Drill and Smart Builder only
+    if (session?.mode === 'adaptive' || session?.mode === 'natural-drill') {
+      timer?.reset();
+      timer?.start();
+    }
   };
 
   const checkIfFlagged = async () => {
