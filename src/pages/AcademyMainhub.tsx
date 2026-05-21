@@ -272,8 +272,8 @@ export default function AcademyMainhub() {
           </div>
         </div>
 
-        <div className="relative flex h-full w-full max-w-[1220px] items-center justify-center gap-8">
-          <div className="hidden w-[320px] shrink-0 xl:flex">
+        <div className="relative flex h-full w-full max-w-[1180px] items-center justify-center gap-6 2xl:gap-8">
+          <div className="hidden w-[420px] shrink-0 xl:flex 2xl:w-[480px]">
             <SmartLRTrainingCard />
           </div>
 
