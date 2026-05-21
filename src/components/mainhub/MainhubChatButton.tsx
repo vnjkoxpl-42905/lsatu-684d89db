@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { MessageSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   motion,
   useMotionValue,
@@ -7,24 +8,21 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useInbox } from "@/hooks/useInbox";
 import { useUserPermissions } from "@/hooks/useUserPermissions";
-import InboxPreviewCard from "@/components/mainhub/InboxPreviewCard";
 
 // Mirrors the magnify-on-hover DockItem pattern used by NotificationBell.
-// Lives in the top-right Mainhub cluster (MainhubDock) and opens a small inbox
-// preview popover. Distinct from the bottom-right FloatingMessenger, which
-// is the compact chat widget.
+// Lives in the top-right Mainhub cluster (MainhubDock) and routes to the full
+// Inbox. Distinct from the bottom-right Study Thread help widget.
 interface Props {
   mouseX: MotionValue<number>;
 }
 
 export default function MainhubChatButton({ mouseX }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const { conversations, unreadCount } = useInbox();
+  const navigate = useNavigate();
+  const { unreadCount } = useInbox();
   const { has_chat_access, is_admin, loading } = useUserPermissions();
-  const [open, setOpen] = useState(false);
 
   const distance = useTransform(mouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -40,8 +38,7 @@ export default function MainhubChatButton({ mouseX }: Props) {
   });
 
   if (loading) return null;
-  if (is_admin) return null;
-  if (!has_chat_access) return null;
+  if (!is_admin && !has_chat_access) return null;
 
   return (
     <motion.div
@@ -49,33 +46,24 @@ export default function MainhubChatButton({ mouseX }: Props) {
       style={{ width }}
       className="relative aspect-square rounded-full bg-foreground text-background"
     >
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button
-            type="button"
-            aria-label={
-              unreadCount > 0
-                ? `Inbox, ${unreadCount} unread`
-                : "Inbox"
-            }
-            className="absolute inset-0 flex items-center justify-center rounded-full transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            <motion.div
-              style={{ scale: iconScale }}
-              className="flex items-center justify-center"
-            >
-              <MessageSquare className="h-5 w-5" aria-hidden />
-            </motion.div>
-          </button>
-        </PopoverTrigger>
-        <PopoverContent
-          align="end"
-          sideOffset={12}
-          className="w-[min(360px,calc(100vw-2rem))] p-3"
+      <button
+        type="button"
+        onClick={() => navigate("/inbox")}
+        aria-label={
+          unreadCount > 0
+            ? `Messages, ${unreadCount} unread`
+            : "Messages"
+        }
+        title="Messages"
+        className="absolute inset-0 flex items-center justify-center rounded-full transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <motion.div
+          style={{ scale: iconScale }}
+          className="flex items-center justify-center"
         >
-          <InboxPreviewCard conversations={conversations} unreadCount={unreadCount} />
-        </PopoverContent>
-      </Popover>
+          <MessageSquare className="h-5 w-5" aria-hidden />
+        </motion.div>
+      </button>
 
       {unreadCount > 0 && (
         <span className="pointer-events-none absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
