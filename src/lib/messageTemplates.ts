@@ -73,7 +73,8 @@ function normalizeInput(input: MessageTemplateInput) {
 }
 
 export async function listMessageTemplates(type?: MessageTemplateType): Promise<MessageTemplate[]> {
-  let query = supabase
+  const client = supabase as any;
+  let query = client
     .from('teacher_message_templates')
     .select('*')
     .order('updated_at', { ascending: false });
@@ -84,38 +85,41 @@ export async function listMessageTemplates(type?: MessageTemplateType): Promise<
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data ?? []).map(fromRow);
+  return ((data ?? []) as any[]).map(fromRow);
 }
 
 export async function createMessageTemplate(
   ownerId: string,
   input: MessageTemplateInput,
 ): Promise<MessageTemplate> {
-  const { data, error } = await supabase
+  const client = supabase as any;
+  const { data, error } = await client
     .from('teacher_message_templates')
     .insert({ ...normalizeInput(input), owner_id: ownerId })
     .select()
     .single();
   if (error) throw error;
-  return fromRow(data);
+  return fromRow(data as any);
 }
 
 export async function updateMessageTemplate(
   id: string,
   input: MessageTemplateInput,
 ): Promise<MessageTemplate> {
-  const { data, error } = await supabase
+  const client = supabase as any;
+  const { data, error } = await client
     .from('teacher_message_templates')
     .update(normalizeInput(input))
     .eq('id', id)
     .select()
     .single();
   if (error) throw error;
-  return fromRow(data);
+  return fromRow(data as any);
 }
 
 export async function deleteMessageTemplate(id: string): Promise<void> {
-  const { error } = await supabase
+  const client = supabase as any;
+  const { error } = await client
     .from('teacher_message_templates')
     .delete()
     .eq('id', id);
