@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const AUTO = "auto";
 
-type Option = { value: string; label: string };
+type Option = { value: string; label: string; triggerLabel?: string };
 
 function SelectorDropdown({
   label,
@@ -44,7 +44,7 @@ function SelectorDropdown({
             {label}
           </span>
           <span className="mt-0.5 flex items-center justify-between gap-1 text-sm font-semibold text-slate-700">
-            <span className="truncate">{current?.label ?? "Auto"}</span>
+            <span className="truncate">{current?.triggerLabel ?? current?.label ?? "Auto"}</span>
             <ChevronDown
               className={cn(
                 "h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform",
@@ -163,15 +163,15 @@ export default function SmartLRTrainingCard() {
 
   const ptOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` })),
+    ...pts.map((n) => ({ value: String(n), label: `PrepTest ${n}`, triggerLabel: `PT ${n}` })),
   ];
   const sectionOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...sections.map((n) => ({ value: String(n), label: `Section ${n}` })),
+    ...sections.map((n) => ({ value: String(n), label: `Section ${n}`, triggerLabel: `S${n}` })),
   ];
   const qnumOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...qnums.map((n) => ({ value: String(n), label: `Question ${n}` })),
+    ...qnums.map((n) => ({ value: String(n), label: `Question ${n}`, triggerLabel: `Q${n}` })),
   ];
 
   return (
