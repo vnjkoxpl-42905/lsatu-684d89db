@@ -307,7 +307,7 @@ function MainhubHelpControl({
         aria-label="Get help from Joshua"
         title="Get help from Joshua"
         data-help-overlay
-        className="fixed bottom-5 left-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-black/10 bg-[#141414] text-white shadow-[0_14px_35px_rgba(15,23,42,0.18)] transition hover:bg-[#242424] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-black/10 bg-[#141414] text-white shadow-[0_14px_35px_rgba(15,23,42,0.18)] transition hover:bg-[#242424] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <MessageCircle className="h-5 w-5" strokeWidth={1.8} aria-hidden />
       </button>
@@ -317,7 +317,7 @@ function MainhubHelpControl({
           role="dialog"
           aria-label="LSAT U support chat"
           data-help-overlay
-          className="fixed bottom-20 left-5 z-50 flex h-[min(560px,calc(100dvh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-[#fbfcff] text-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.18)]"
+          className="fixed bottom-20 right-5 z-50 flex h-[min(560px,calc(100dvh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-[#fbfcff] text-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.18)]"
         >
           <header className="flex h-16 shrink-0 items-center gap-3 border-b border-slate-200/70 bg-white/80 px-4 backdrop-blur">
             <div
