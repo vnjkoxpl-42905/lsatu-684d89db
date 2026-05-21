@@ -58,6 +58,7 @@ export function ThreadList({
   return (
     <div role="list" className="flex flex-col gap-1 p-2">
       {conversations.map((c) => {
+        const isActive = activeId === c.id;
         const name = formatParticipantName(c.participants, user?.id || '');
         const initial = name
           .split(/\s+/)
