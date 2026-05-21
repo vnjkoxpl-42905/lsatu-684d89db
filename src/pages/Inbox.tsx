@@ -161,10 +161,10 @@ export default function Inbox() {
 
   return (
     <div className={cn('min-h-screen bg-[#FDFDFC]', !is_admin && 'bg-[#FDFDFC]')}>
-      <header className="border-b border-border bg-background/90 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <header className="border-b border-border bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/mainhub')} aria-label="Back to Main Hub">
+            <Button variant="ghost" size="icon" onClick={() => active ? clearThread() : navigate('/mainhub')} aria-label={active ? "Back to list" : "Back to Main Hub"}>
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-2">
@@ -172,7 +172,7 @@ export default function Inbox() {
                 className={cn(
                   'h-8 w-8 rounded-full flex items-center justify-center border',
                   is_admin
-                    ? 'bg-muted text-muted-foreground border-border'
+                    ? 'bg-slate-100 text-slate-700 border-slate-200'
                     : 'bg-primary/10 text-primary border-primary/20',
                 )}
                 aria-hidden="true"
@@ -180,11 +180,11 @@ export default function Inbox() {
                 {is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
               </div>
               <div className="min-w-0">
-                <h1 className="text-sm font-semibold leading-tight">
-                  {is_admin ? 'Inbox' : 'Joshua'}
+                <h1 className="text-sm font-bold leading-tight tracking-tight">
+                  {is_admin ? (active ? (active.participants.find(p => p.user_id !== user?.id)?.display_name || 'Inbox') : 'Inbox') : 'Joshua'}
                 </h1>
                 {!is_admin && (
-                  <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                  <p className="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">
                     Direct coaching thread
                   </p>
                 )}
@@ -260,7 +260,7 @@ export default function Inbox() {
           <aside
             className={cn(
               'border-r border-border md:overflow-y-auto md:flex md:flex-col bg-white/50 backdrop-blur-sm',
-              active ? 'hidden md:flex' : 'block',
+              active ? 'hidden md:flex' : 'flex flex-col',
             )}
           >
             {!is_admin && (

@@ -132,60 +132,61 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
     <div className="flex flex-col h-full bg-[#FDFDFC]">
       {!hideHeader && (
         <div className={cn(
-          "flex items-center gap-6 px-10 py-8 shrink-0",
-          "border-b border-border bg-white"
+          "flex flex-col shrink-0 bg-white border-b border-border"
         )}>
-          {onBack && (
-            <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden -ml-2" aria-label="Back">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          )}
-          <div
-            className={cn(
-              'w-14 h-14 flex items-center justify-center text-sm font-bold shrink-0',
-              is_admin
-                ? 'bg-slate-100 text-slate-700 rounded-2xl ring-1 ring-slate-200'
-                : 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full',
+          <div className="flex items-center gap-6 px-10 py-6">
+            {onBack && (
+              <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden -ml-2" aria-label="Back">
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
             )}
-            aria-hidden="true"
-          >
-            {is_admin ? headerInitial : <MessageCircle className="w-6 h-6" />}
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className={cn(
-              "font-bold text-2xl truncate leading-tight tracking-tight text-slate-900"
-            )}>
-              {headerName}
+            <div
+              className={cn(
+                'w-12 h-12 flex items-center justify-center text-sm font-bold shrink-0',
+                is_admin
+                  ? 'bg-slate-100 text-slate-700 rounded-2xl ring-1 ring-slate-200'
+                  : 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full md:hidden',
+              )}
+              aria-hidden="true"
+            >
+              {is_admin ? headerInitial : <MessageCircle className="w-5 h-5" />}
             </div>
-            <div className={cn(
-              "text-sm font-medium truncate mt-1 text-slate-500"
-            )}>
-              {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
-            </div>
-          </div>
-          
-          {is_admin && (
-            <div className="hidden lg:flex items-center gap-10 border-l border-slate-100 pl-10 ml-6 text-xs font-semibold tracking-wide uppercase">
-              <div className="flex flex-col gap-1.5">
-                <span className="text-slate-400">Status</span>
-                <span className="text-emerald-600 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Active
-                </span>
+            <div className="min-w-0 flex-1 md:hidden">
+              <div className={cn(
+                "font-bold text-xl truncate leading-tight tracking-tight text-slate-900"
+              )}>
+                {headerName}
               </div>
-              <div className="flex flex-col gap-1.5">
-                <span className="text-slate-400">Current Point</span>
-                <span className="text-slate-900">PT120 · S1</span>
+              <div className={cn(
+                "text-xs font-medium truncate mt-1 text-slate-500"
+              )}>
+                {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
               </div>
             </div>
-          )}
+            
+            {is_admin && (
+              <div className="flex items-center gap-8 text-[10px] font-bold tracking-[0.1em] uppercase">
+                <div className="flex items-center gap-3">
+                  <span className="text-slate-400">Status</span>
+                  <span className="text-emerald-600 flex items-center gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-emerald-500" />
+                    Active
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-slate-400">Current Point</span>
+                  <span className="text-slate-900">PT120 · S1</span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       <div
         ref={scrollRef}
         className={cn(
-          'flex-1 overflow-y-auto px-8 py-12 scrollbar-thin scrollbar-thumb-border',
+          'flex-1 overflow-y-auto px-10 py-12 scrollbar-thin scrollbar-thumb-border',
           'bg-[#FDFDFC]',
         )}
       >
