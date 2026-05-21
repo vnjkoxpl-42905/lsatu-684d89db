@@ -605,7 +605,7 @@ function MainhubHelpControl({
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  disabled={!conversationId || sending || recording}
+                  disabled={sending || recording}
                   aria-label="Attach file"
                   title="Attach file"
                   className="pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-45"
