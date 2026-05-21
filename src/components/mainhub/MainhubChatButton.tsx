@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { MessageSquare } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   motion,
@@ -44,24 +44,24 @@ export default function MainhubChatButton({ mouseX }: Props) {
     <motion.div
       ref={ref}
       style={{ width }}
-      className="relative aspect-square rounded-full bg-foreground text-background"
+      className="relative aspect-square rounded-[1.1rem] border border-border/70 bg-background text-muted-foreground shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
     >
       <button
         type="button"
         onClick={() => navigate("/inbox")}
         aria-label={
           unreadCount > 0
-            ? `Messages, ${unreadCount} unread`
-            : "Messages"
+            ? `Inbox, ${unreadCount} unread`
+            : "Inbox"
         }
-        title="Messages"
-        className="absolute inset-0 flex items-center justify-center rounded-full transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        title="Inbox"
+        className="absolute inset-0 flex items-center justify-center rounded-[1.1rem] transition-colors hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <motion.div
           style={{ scale: iconScale }}
           className="flex items-center justify-center"
         >
-          <MessageSquare className="h-5 w-5" aria-hidden />
+          <Mail className="h-5 w-5 stroke-[2.15]" aria-hidden />
         </motion.div>
       </button>
 

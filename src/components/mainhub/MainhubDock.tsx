@@ -3,9 +3,8 @@ import NotificationBell from "@/components/notifications/NotificationBell";
 import MainhubChatButton from "@/components/mainhub/MainhubChatButton";
 
 /**
- * Top-right Mainhub cluster. Holds the inbox preview button (Popover with
- * recent threads + link to full Inbox) and the notifications bell. The
- * bottom-right FloatingMessenger is a separate compact chat widget.
+ * Top-right Mainhub cluster. Holds the Inbox shortcut and notifications bell.
+ * The bottom-right FloatingMessenger is a separate compact chat widget.
  */
 export default function MainhubDock() {
   const mouseX = useMotionValue(Infinity);
