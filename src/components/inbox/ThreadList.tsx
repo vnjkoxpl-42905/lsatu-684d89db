@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
-import { MessageCircle, Paperclip } from 'lucide-react';
+import { Paperclip } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
 import { formatParticipantName } from '@/lib/displayName';
 
@@ -59,13 +59,14 @@ export function ThreadList({
     <div role="list" className="flex flex-col gap-1 p-2">
       {conversations.map((c) => {
         const isActive = activeId === c.id;
-        const name = formatParticipantName(c.participants, user?.id || '');
+        const name = otherParticipantName(c, user.id, c.subject || 'Conversation');
         const initial = name
           .split(/\s+/)
           .map((n) => n[0])
           .join('')
           .toUpperCase()
           .slice(0, 2) || '?';
+        const replyRequired = needsReply(c, user.id);
 
         return (
           <button
@@ -136,7 +137,7 @@ export function ThreadList({
                 )}
               </div>
               
-              {reply && (
+              {replyRequired && (
                 <div className="mt-2.5 inline-flex items-center px-2 py-0.5 text-[9px] uppercase tracking-[0.05em] font-bold bg-red-50 text-red-600 rounded-md ring-1 ring-red-100">
                   Reply Required
                 </div>
