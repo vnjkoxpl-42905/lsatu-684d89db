@@ -188,10 +188,6 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
                     Active
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-400">Current Point</span>
-                  <span className="text-slate-900">PT120 · S1</span>
-                </div>
               </div>
             )}
           </div>
