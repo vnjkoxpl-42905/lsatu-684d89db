@@ -10,32 +10,26 @@ export interface LayoutPrefs {
 const DEFAULT_SIDEBAR = [
   "/classroom",
   "/inbox",
-  "/waj",
-  "/flagged",
   "/practice",
-  "/bootcamps",
-  "/analytics",
   "/schedule",
-  "/admin/homework",
-  "/teacher",
 ];
 
 export const PRESETS: Record<Exclude<PresetId, "custom">, LayoutPrefs> = {
   default: {
     preset: "default",
-    orbital: ["smart-drill", "resume", "find"],
-    dock: ["teacher", "whiteboard", "help"],
+    orbital: ["resume", "analytics", "waj"],
+    dock: ["teacher", "whiteboard"],
     sidebar: DEFAULT_SIDEBAR,
   },
   minimal: {
     preset: "minimal",
-    orbital: ["resume"],
-    dock: ["inbox", "help"],
-    sidebar: ["/classroom", "/practice", "/bootcamps", "/inbox"],
+    orbital: ["resume", "analytics", "waj"],
+    dock: ["inbox"],
+    sidebar: ["/classroom", "/inbox", "/practice", "/schedule"],
   },
   power: {
     preset: "power",
-    orbital: ["smart-drill", "resume", "find"],
+    orbital: ["resume", "analytics", "waj"],
     dock: [
       "teacher",
       "whiteboard",
@@ -45,7 +39,6 @@ export const PRESETS: Record<Exclude<PresetId, "custom">, LayoutPrefs> = {
       "notifications",
       "profile",
       "settings",
-      "help",
     ],
     sidebar: DEFAULT_SIDEBAR,
   },

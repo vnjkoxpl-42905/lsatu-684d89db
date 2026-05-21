@@ -9,7 +9,7 @@ const HelpSheet = lazy(() => import('./HelpSheet'));
 // Routes where the floating Help button shouldn't appear.
 // /foyer = marketing/landing; /auth/* = sign in flow; admin surfaces
 // don't need student help (Joshua talks to himself there).
-const HIDDEN_PREFIXES = ['/foyer', '/auth', '/onboarding', '/reset-password', '/admin', '/teacher'];
+const HIDDEN_PREFIXES = ['/foyer', '/mainhub', '/auth', '/onboarding', '/reset-password', '/admin', '/teacher'];
 
 export function FloatingHelpButton() {
   const { user } = useAuth();
