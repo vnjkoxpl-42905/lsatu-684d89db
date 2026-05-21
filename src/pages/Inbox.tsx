@@ -185,7 +185,7 @@ export default function Inbox() {
       <header className="border-b border-border bg-white sticky top-0 z-10 shrink-0">
         <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => active ? clearThread() : navigate('/mainhub')} aria-label={active ? "Back to list" : "Back to Main Hub"}>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/mainhub')} aria-label="Back to Main Hub">
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex items-center gap-2">
