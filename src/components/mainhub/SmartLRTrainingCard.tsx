@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const AUTO = "auto";
 
-type Option = { value: string; label: string };
+type Option = { value: string; label: string; triggerLabel?: string };
 
 function SelectorDropdown({
   label,
