@@ -1,12 +1,95 @@
 import { useMemo, useState } from "react";
-import { ChevronDown, Flame, Play } from "lucide-react";
+import { Check, ChevronDown, Flame, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuestionBank } from "@/contexts/QuestionBankContext";
 import { questionBank } from "@/lib/questionLoader";
 import type { TypeDrillConfig } from "@/types/drill";
+import { cn } from "@/lib/utils";
 
 const AUTO = "auto";
+
+type Option = { value: string; label: string };
+
+function SelectorDropdown({
+  label,
+  value,
+  options,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: Option[];
+  disabled?: boolean;
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = options.find((o) => o.value === value) ?? options[0];
+
+  return (
+    <Popover open={open} onOpenChange={(o) => !disabled && setOpen(o)}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          disabled={disabled}
+          className={cn(
+            "flex h-12 min-w-0 flex-col justify-center rounded-2xl border border-slate-200 bg-white/70 px-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors",
+            disabled ? "cursor-not-allowed opacity-60" : "hover:border-slate-300",
+          )}
+        >
+          <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
+            {label}
+          </span>
+          <span className="mt-0.5 flex items-center justify-between gap-1 text-sm font-semibold text-slate-700">
+            <span className="truncate">{current?.label ?? "Auto"}</span>
+            <ChevronDown
+              className={cn(
+                "h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform",
+                open && "rotate-180",
+              )}
+              aria-hidden
+            />
+          </span>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        sideOffset={8}
+        className="w-[220px] rounded-2xl border border-slate-200 bg-white p-1.5 shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+      >
+        <ScrollArea className="h-[280px] pr-1">
+          <div className="flex flex-col">
+            {options.map((opt) => {
+              const selected = opt.value === value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "flex items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors",
+                    selected
+                      ? "bg-slate-100 text-slate-900"
+                      : "text-slate-700 hover:bg-slate-50",
+                  )}
+                >
+                  <span className="truncate">{opt.label}</span>
+                  {selected && <Check className="h-4 w-4 text-slate-500" aria-hidden />}
+                </button>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default function SmartLRTrainingCard() {
   const navigate = useNavigate();
@@ -23,7 +106,7 @@ export default function SmartLRTrainingCard() {
 
   const pts = useMemo(
     () =>
-      Array.from(new Set(allQuestions.map((q) => q.pt))).sort((a, b) => a - b),
+      Array.from(new Set(allQuestions.map((q) => q.pt))).sort((a, b) => b - a),
     [allQuestions],
   );
 
@@ -50,7 +133,6 @@ export default function SmartLRTrainingCard() {
   }, [allQuestions, pt, section]);
 
   const startSmartDrill = () => {
-    // Specific question selected → deep link by qid
     if (pt !== AUTO && section !== AUTO && qnum !== AUTO) {
       const q = allQuestions.find(
         (x) =>
@@ -64,7 +146,6 @@ export default function SmartLRTrainingCard() {
       }
     }
 
-    // Filtered drill (PT, or PT+Section)
     if (pt !== AUTO) {
       const config: TypeDrillConfig = {
         qtypes: [],
@@ -77,54 +158,20 @@ export default function SmartLRTrainingCard() {
       return;
     }
 
-    // Pure adaptive
     navigate("/drill", { state: { mode: "adaptive" } });
   };
 
-  const selectors: Array<{
-    label: string;
-    value: string;
-    onChange: (v: string) => void;
-    options: Array<{ value: string; label: string }>;
-    disabled: boolean;
-  }> = [
-    {
-      label: "Practice Test",
-      value: pt,
-      onChange: (v) => {
-        setPt(v);
-        setSection(AUTO);
-        setQnum(AUTO);
-      },
-      options: [
-        { value: AUTO, label: "Auto" },
-        ...pts.map((n) => ({ value: String(n), label: `PT ${n}` })),
-      ],
-      disabled: isLoading || pts.length === 0,
-    },
-    {
-      label: "Section",
-      value: section,
-      onChange: (v) => {
-        setSection(v);
-        setQnum(AUTO);
-      },
-      options: [
-        { value: AUTO, label: "Auto" },
-        ...sections.map((n) => ({ value: String(n), label: `Section ${n}` })),
-      ],
-      disabled: pt === AUTO,
-    },
-    {
-      label: "Question",
-      value: qnum,
-      onChange: setQnum,
-      options: [
-        { value: AUTO, label: "Auto" },
-        ...qnums.map((n) => ({ value: String(n), label: `Q${n}` })),
-      ],
-      disabled: section === AUTO,
-    },
+  const ptOptions: Option[] = [
+    { value: AUTO, label: "Auto" },
+    ...pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` })),
+  ];
+  const sectionOptions: Option[] = [
+    { value: AUTO, label: "Auto" },
+    ...sections.map((n) => ({ value: String(n), label: `Section ${n}` })),
+  ];
+  const qnumOptions: Option[] = [
+    { value: AUTO, label: "Auto" },
+    ...qnums.map((n) => ({ value: String(n), label: `Question ${n}` })),
   ];
 
   return (
@@ -171,37 +218,34 @@ export default function SmartLRTrainingCard() {
       </div>
 
       <div className="relative mb-4 grid grid-cols-3 gap-2.5" aria-label="Training selectors">
-        {selectors.map((s) => (
-          <label
-            key={s.label}
-            className={`relative flex h-12 min-w-0 flex-col justify-center rounded-2xl border border-slate-200 bg-white/70 px-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors ${
-              s.disabled ? "opacity-60" : "hover:border-slate-300"
-            }`}
-          >
-            <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
-              {s.label}
-            </span>
-            <span className="mt-0.5 flex items-center justify-between gap-1 text-sm font-semibold text-slate-600">
-              <span className="truncate">
-                {s.options.find((o) => o.value === s.value)?.label ?? "Auto"}
-              </span>
-              <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden />
-            </span>
-            <select
-              value={s.value}
-              disabled={s.disabled}
-              onChange={(e) => s.onChange(e.target.value)}
-              aria-label={s.label}
-              className="absolute inset-0 cursor-pointer opacity-0 disabled:cursor-not-allowed"
-            >
-              {s.options.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        ))}
+        <SelectorDropdown
+          label="Practice Test"
+          value={pt}
+          options={ptOptions}
+          disabled={isLoading || pts.length === 0}
+          onChange={(v) => {
+            setPt(v);
+            setSection(AUTO);
+            setQnum(AUTO);
+          }}
+        />
+        <SelectorDropdown
+          label="Section"
+          value={section}
+          options={sectionOptions}
+          disabled={pt === AUTO}
+          onChange={(v) => {
+            setSection(v);
+            setQnum(AUTO);
+          }}
+        />
+        <SelectorDropdown
+          label="Question"
+          value={qnum}
+          options={qnumOptions}
+          disabled={section === AUTO}
+          onChange={setQnum}
+        />
       </div>
 
       <Button
