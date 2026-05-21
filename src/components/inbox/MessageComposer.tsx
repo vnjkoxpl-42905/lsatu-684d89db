@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Paperclip, Send, X, FileText, Sparkles, Cloud } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,6 @@ import { DriveAttachmentPicker, type DriveFileRow } from './DriveAttachmentPicke
 import { TemplateSuggestionPalette } from '@/components/teacher/templates/TemplateSuggestionPalette';
 import {
   filterMessageTemplates,
-  listMessageTemplates,
   replaceSlashCommand,
   slashTemplateQuery,
   type MessageTemplate,
@@ -28,7 +27,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const [sending, setSending] = useState(false);
   const [polishing, setPolishing] = useState(false);
   const [polished, setPolished] = useState<string | null>(null);
-  const [templates, setTemplates] = useState<MessageTemplate[]>([]);
+  const [templates] = useState<MessageTemplate[]>([]);
   const [templatePaletteOpen, setTemplatePaletteOpen] = useState(false);
   const [templatePaletteIndex, setTemplatePaletteIndex] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -46,21 +45,6 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   const isAdmin = !permissions.loading && permissions.is_admin;
   const showPolish = isAdmin;
   const showDrive = isAdmin;
-
-  useEffect(() => {
-    if (!isAdmin) return;
-    let cancelled = false;
-    listMessageTemplates('message')
-      .then((rows) => {
-        if (!cancelled) setTemplates(rows);
-      })
-      .catch((error) => {
-        if (!cancelled) console.error('Failed to load message templates', error);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [isAdmin]);
 
   const templateQuery = slashTemplateQuery(body);
   const filteredTemplates = useMemo(

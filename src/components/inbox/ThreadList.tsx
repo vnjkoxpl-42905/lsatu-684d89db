@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { format, isToday, isYesterday } from 'date-fns';
 import { Paperclip } from 'lucide-react';
 import type { Conversation } from '@/hooks/useInbox';
-import { formatParticipantName } from '@/lib/displayName';
+import { initialsFromName, needsReply, otherParticipantName } from './inboxDisplay';
 
 type Variant = 'admin' | 'student';
 
@@ -13,19 +13,6 @@ interface Props {
   onSelect: (id: string) => void;
   variant?: Variant;
   emptyLabel?: string;
-}
-
-function otherParticipantName(c: Conversation, ownId: string, fallback: string) {
-  const others = c.participants.filter((p) => p.user_id !== ownId);
-  const names = others
-    .map((o) => formatParticipantName(o.display_name, o.is_admin))
-    .filter((n) => n && n !== 'User');
-  if (names.length > 0) return names.join(', ');
-  return c.subject || fallback;
-}
-
-function needsReply(c: Conversation, ownId: string) {
-  return !!(c.last_message && c.last_message.sender_id !== ownId);
 }
 
 function compactTime(iso: string) {
@@ -60,12 +47,7 @@ export function ThreadList({
       {conversations.map((c) => {
         const isActive = activeId === c.id;
         const name = otherParticipantName(c, user.id, c.subject || 'Conversation');
-        const initial = name
-          .split(/\s+/)
-          .map((n) => n[0])
-          .join('')
-          .toUpperCase()
-          .slice(0, 2) || '?';
+        const initial = initialsFromName(name);
         const replyRequired = needsReply(c, user.id);
 
         return (

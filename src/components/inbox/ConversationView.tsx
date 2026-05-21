@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { MessageBubble } from './MessageBubble';
 import { MessageComposer } from './MessageComposer';
 import { formatParticipantName } from '@/lib/displayName';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { initialsFromName } from './inboxDisplay';
 
 interface Props {
   conversation: Conversation;
@@ -109,9 +110,20 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
     [messages, user],
   );
 
-  if (!user) return null;
+  const nameById = useMemo(
+    () =>
+      new Map(
+        conversation.participants.map((participant) => [
+          participant.user_id,
+          formatParticipantName(participant.display_name, participant.is_admin),
+        ]),
+      ),
+    [conversation.participants],
+  );
 
-  const others = conversation.participants.filter((p) => p.user_id !== user.id);
+  const others = user
+    ? conversation.participants.filter((p) => p.user_id !== user.id)
+    : [];
   const formattedNames = others
     .map((o) => formatParticipantName(o.display_name, o.is_admin))
     .filter((n) => n && n !== 'User');
@@ -125,13 +137,10 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
 
   const headerInitial = useMemo(() => {
     if (!is_admin) return 'J';
-    return headerName
-      .split(/\s+/)
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2) || '?';
+    return initialsFromName(headerName);
   }, [is_admin, headerName]);
+
+  if (!user) return null;
 
   return (
     <div className="flex flex-col h-full bg-[#FDFDFC]">

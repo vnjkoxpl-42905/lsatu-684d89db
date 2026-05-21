@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
 import { GmailPane } from '@/features/admin-inbox/gmail/components/GmailPane';
 import { DrivePanel } from '@/components/inbox/DrivePanel';
+import { initialsFromName, needsReply, otherParticipantName } from '@/components/inbox/inboxDisplay';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
@@ -66,7 +67,7 @@ function applyAdminFilters(
   if (filter === 'unread') {
     filtered = filtered.filter((c) => c.unread);
   } else if (filter === 'needs_reply') {
-    filtered = filtered.filter((c) => c.reply_required);
+    filtered = filtered.filter((c) => needsReply(c, ownId));
   } else if (filter === 'attachments') {
     filtered = filtered.filter((c) => c.hasAttachments);
   }
@@ -103,21 +104,14 @@ export default function Inbox() {
 
   const headerName = useMemo(() => {
     if (!is_admin) return 'Joshua';
-    if (!active) return 'Inbox';
-    const other = active.participants.find((p) => p.user_id !== user?.id);
-    return other?.display_name || 'Inbox';
+    if (!active || !user) return 'Inbox';
+    return otherParticipantName(active, user.id, active.subject || 'Inbox');
   }, [is_admin, active, user]);
 
   const headerInitial = useMemo(() => {
     if (!is_admin) return 'J';
-    const name = headerName;
-    if (name === 'Inbox') return null;
-    return name
-      .split(/\s+/)
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+    if (headerName === 'Inbox') return null;
+    return initialsFromName(headerName);
   }, [is_admin, headerName]);
 
   const composeTarget = (location.state as any)?.composeTarget || null;
