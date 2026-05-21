@@ -58,12 +58,14 @@ export function ThreadList({
   return (
     <div role="list" className="flex flex-col gap-1 p-2">
       {conversations.map((c) => {
-        const fallback = isAdmin ? 'Conversation' : 'Joshua';
-        const name = otherParticipantName(c, user.id, fallback);
-        const initial = name.charAt(0).toUpperCase();
-        const isActive = c.id === activeId;
-        const reply = isAdmin && needsReply(c, user.id);
-        
+        const name = formatParticipantName(c.participants, user?.id || '');
+        const initial = name
+          .split(/\s+/)
+          .map((n) => n[0])
+          .join('')
+          .toUpperCase()
+          .slice(0, 2) || '?';
+
         return (
           <button
             key={c.id}
@@ -79,15 +81,16 @@ export function ThreadList({
           >
             <div
               className={cn(
-                'w-10 h-10 flex items-center justify-center text-xs font-bold shrink-0 rounded-full transition-all',
+                'w-10 h-10 flex items-center justify-center text-[10px] font-bold shrink-0 rounded-full transition-all tracking-tight',
                 isActive 
                   ? 'bg-slate-900 text-white shadow-sm scale-105' 
-                  : 'bg-white text-slate-900 ring-1 ring-slate-200 group-hover:ring-slate-300',
+                  : 'bg-white text-slate-700 ring-1 ring-slate-200 group-hover:ring-slate-300 shadow-sm',
               )}
               aria-hidden="true"
             >
-              {isAdmin ? initial : <MessageCircle className="w-4 h-4" />}
+              {initial}
             </div>
+
             
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">

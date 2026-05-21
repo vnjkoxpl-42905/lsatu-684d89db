@@ -119,14 +119,19 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   const headerName = is_admin
     ? formattedNames.join(', ') || conversation.subject || 'Conversation'
     : formattedNames.find((n) => n) || 'Joshua';
-  const headerInitial = headerName.charAt(0).toUpperCase();
   const headerSubtitle = is_admin
     ? conversation.subject || 'Student message thread'
     : 'Your coach';
 
-  const nameById = new Map(
-    conversation.participants.map((p) => [p.user_id, formatParticipantName(p.display_name, p.is_admin)]),
-  );
+  const headerInitial = useMemo(() => {
+    if (!is_admin) return 'J';
+    return headerName
+      .split(/\s+/)
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || '?';
+  }, [is_admin, headerName]);
 
   return (
     <div className="flex flex-col h-full bg-[#FDFDFC]">
@@ -142,15 +147,16 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
             )}
             <div
               className={cn(
-                'w-12 h-12 flex items-center justify-center text-sm font-bold shrink-0',
+                'w-12 h-12 flex items-center justify-center text-[10px] font-bold shrink-0 rounded-full md:hidden tracking-tight transition-all',
                 is_admin
-                  ? 'bg-slate-100 text-slate-700 rounded-2xl ring-1 ring-slate-200'
-                  : 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full md:hidden',
+                  ? 'bg-slate-100 text-slate-700 ring-1 ring-slate-200'
+                  : 'bg-primary/10 text-primary ring-1 ring-primary/25',
               )}
               aria-hidden="true"
             >
-              {is_admin ? headerInitial : <MessageCircle className="w-5 h-5" />}
+              {headerInitial}
             </div>
+
             <div className="min-w-0 flex-1 md:hidden">
               <div className={cn(
                 "font-bold text-xl truncate leading-tight tracking-tight text-slate-900"

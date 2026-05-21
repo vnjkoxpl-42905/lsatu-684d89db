@@ -101,6 +101,25 @@ export default function Inbox() {
     [conversations, activeId],
   );
 
+  const headerName = useMemo(() => {
+    if (!is_admin) return 'Joshua';
+    if (!active) return 'Inbox';
+    const other = active.participants.find((p) => p.user_id !== user?.id);
+    return other?.display_name || 'Inbox';
+  }, [is_admin, active, user]);
+
+  const headerInitial = useMemo(() => {
+    if (!is_admin) return 'J';
+    const name = headerName;
+    if (name === 'Inbox') return null;
+    return name
+      .split(/\s+/)
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  }, [is_admin, headerName]);
+
   const composeTarget = (location.state as any)?.composeTarget || null;
   const clearComposeTarget = () => navigate(location.pathname, { replace: true, state: {} });
 
@@ -172,18 +191,18 @@ export default function Inbox() {
             <div className="flex items-center gap-2">
               <div
                 className={cn(
-                  'h-8 w-8 rounded-full flex items-center justify-center border',
+                  'h-8 w-8 rounded-full flex items-center justify-center border text-[10px] font-bold tracking-tight transition-all',
                   is_admin
                     ? 'bg-slate-100 text-slate-700 border-slate-200'
                     : 'bg-primary/10 text-primary border-primary/20',
                 )}
                 aria-hidden="true"
               >
-                {is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
+                {headerInitial || (is_admin ? <InboxIcon className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />)}
               </div>
               <div className="min-w-0">
                 <h1 className="text-sm font-bold leading-tight tracking-tight">
-                  {is_admin ? (active ? (active.participants.find(p => p.user_id !== user?.id)?.display_name || 'Inbox') : 'Inbox') : 'Joshua'}
+                  {headerName}
                 </h1>
                 {!is_admin && (
                   <p className="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">
