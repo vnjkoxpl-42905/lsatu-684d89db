@@ -186,7 +186,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
       <div
         ref={scrollRef}
         className={cn(
-          'flex-1 overflow-y-auto px-10 py-12 scrollbar-thin scrollbar-thumb-border',
+          'flex-1 overflow-y-auto px-10 py-12 scrollbar-thin scrollbar-thumb-border min-h-0',
           'bg-[#FDFDFC]',
         )}
       >
@@ -222,7 +222,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         )}
       </div>
 
-      <div className="bg-white/80 backdrop-blur-md border-t border-border">
+      <div className="bg-white/80 backdrop-blur-md border-t border-border shrink-0">
         <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
       </div>
     </div>

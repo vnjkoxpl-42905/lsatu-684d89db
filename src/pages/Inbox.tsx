@@ -3,23 +3,34 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useInbox, type Conversation } from '@/hooks/useInbox';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  ArrowLeft,
+  Search,
+  MessageCircle,
+  Inbox as InboxIcon,
+  Mail,
+  HardDrive,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { ThreadList, ThreadListSkeleton } from '@/components/inbox/ThreadList';
 import { ConversationView } from '@/components/inbox/ConversationView';
 import { NewConversationDialog } from '@/components/inbox/NewConversationDialog';
-import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ArrowLeft, HardDrive, Inbox as InboxIcon, Mail, MessageCircle, Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { formatParticipantName } from '@/lib/displayName';
 import { startJoshuaConversation } from '@/lib/joshuaThread';
 import { toast } from 'sonner';
-import { GmailPane } from '@/features/admin-inbox/gmail';
+import { StudentEmptyState } from '@/components/inbox/StudentEmptyState';
+import { GmailPane } from '@/features/admin-inbox/gmail/components/GmailPane';
 import { DrivePanel } from '@/components/inbox/DrivePanel';
 
 type AdminFilter = 'all' | 'unread' | 'needs_reply' | 'attachments';
 
-const FILTER_TABS: { id: AdminFilter; label: string }[] = [
+interface FilterTab {
+  id: AdminFilter;
+  label: string;
+}
+
+const FILTER_TABS: FilterTab[] = [
   { id: 'all', label: 'All' },
   { id: 'unread', label: 'Unread' },
   { id: 'needs_reply', label: 'Needs reply' },
@@ -27,18 +38,11 @@ const FILTER_TABS: { id: AdminFilter; label: string }[] = [
 ];
 
 const FILTER_EMPTY_LABEL: Record<AdminFilter, string> = {
-  all: 'No conversations yet.',
-  unread: 'No unread messages.',
-  needs_reply: 'Nothing needs a reply.',
-  attachments: 'No conversations with attachments.',
+  all: 'No threads yet.',
+  unread: 'No unread threads.',
+  needs_reply: 'No threads need reply.',
+  attachments: 'No threads with attachments.',
 };
-
-function searchableName(c: Conversation, ownId: string) {
-  return c.participants
-    .filter((p) => p.user_id !== ownId)
-    .map((p) => formatParticipantName(p.display_name, p.is_admin))
-    .join(' ');
-}
 
 function applyAdminFilters(
   conversations: Conversation[],
@@ -46,57 +50,59 @@ function applyAdminFilters(
   filter: AdminFilter,
   query: string,
 ) {
-  const q = query.trim().toLowerCase();
-  const filtered = conversations.filter((c) => {
-    if (filter === 'unread' && !c.unread) return false;
-    if (filter === 'needs_reply') {
-      if (!(c.last_message && c.last_message.sender_id !== ownId)) return false;
-    }
-    if (filter === 'attachments' && !c.hasAttachments) return false;
-    if (q) {
-      const name = searchableName(c, ownId).toLowerCase();
-      const preview = (c.last_message?.body ?? c.subject ?? '').toLowerCase();
-      if (!name.includes(q) && !preview.includes(q)) return false;
-    }
-    return true;
-  });
-  return filtered.sort((a, b) => {
-    const aPriority = (a.unread ? 1 : 0) + (a.last_message && a.last_message.sender_id !== ownId ? 1 : 0);
-    const bPriority = (b.unread ? 1 : 0) + (b.last_message && b.last_message.sender_id !== ownId ? 1 : 0);
-    if (aPriority !== bPriority) return bPriority - aPriority;
-    return new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime();
-  });
+  let filtered = [...conversations];
+
+  if (query.trim()) {
+    const q = query.toLowerCase();
+    filtered = filtered.filter((c) => {
+      const other = c.participants.find((p) => p.user_id !== ownId);
+      const nameMatch = other?.display_name?.toLowerCase().includes(q);
+      const subjectMatch = c.subject?.toLowerCase().includes(q);
+      const bodyMatch = c.last_message?.body?.toLowerCase().includes(q);
+      return nameMatch || subjectMatch || bodyMatch;
+    });
+  }
+
+  if (filter === 'unread') {
+    filtered = filtered.filter((c) => c.unread);
+  } else if (filter === 'needs_reply') {
+    filtered = filtered.filter((c) => c.reply_required);
+  } else if (filter === 'attachments') {
+    filtered = filtered.filter((c) => c.hasAttachments);
+  }
+
+  return filtered.sort(
+    (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
+  );
 }
 
-function pickStudentPrimary(conversations: Conversation[], ownId: string): Conversation | null {
+/**
+ * Student auto-select: prioritize the thread where an admin is present (the Joshua thread).
+ */
+function pickStudentPrimary(conversations: Conversation[], ownId: string) {
   if (conversations.length === 0) return null;
-  // Prefer the thread that includes an admin participant; fall back to most recent.
   const withAdmin = conversations.find((c) =>
     c.participants.some((p) => p.user_id !== ownId && p.is_admin),
   );
-  if (withAdmin) return withAdmin;
-  return [...conversations].sort(
-    (a, b) => new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime(),
-  )[0];
+  return withAdmin || conversations[0];
 }
 
 export default function Inbox() {
-  const { user, authReady } = useAuth();
+  const { conversationId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { conversationId } = useParams();
-  const { conversations, loading, refresh, unreadCount } = useInbox();
+  const { user, authReady } = useAuth();
   const { is_admin, loading: permsLoading } = useUserPermissions();
-  const activeId = conversationId ?? null;
+  const { conversations, loading, unreadCount, refresh } = useInbox();
 
-  const [composeTarget, setComposeTarget] = useState<string | null>(
-    () => (location.state as { composeWith?: string } | null)?.composeWith ?? null,
+  const activeId = conversationId || null;
+  const active = useMemo(
+    () => conversations.find((c) => c.id === activeId) ?? null,
+    [conversations, activeId],
   );
-  useEffect(() => {
-    if (location.state) navigate(location.pathname, { replace: true, state: null });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const clearComposeTarget = useCallback(() => setComposeTarget(null), []);
+
+  const composeTarget = (location.state as any)?.composeTarget || null;
+  const clearComposeTarget = () => navigate(location.pathname, { replace: true, state: {} });
 
   useEffect(() => {
     if (authReady && !user) navigate('/auth', { replace: true });
@@ -148,11 +154,7 @@ export default function Inbox() {
   const selectThread = (id: string) => navigate(`/inbox/${id}`);
   const clearThread = () => navigate('/inbox');
 
-  const active = conversations.find((c) => c.id === activeId) ?? null;
-
-  if (!authReady || permsLoading) return null;
-
-  const showEmptyStudent = !is_admin && !loading && conversations.length === 0;
+  const showEmptyStudent = !is_admin && !active && !loading && conversations.length === 0;
 
   const adminEmptyLabel =
     query.trim().length > 0
@@ -160,8 +162,8 @@ export default function Inbox() {
       : FILTER_EMPTY_LABEL[filter];
 
   return (
-    <div className={cn('min-h-screen bg-[#FDFDFC]', !is_admin && 'bg-[#FDFDFC]')}>
-      <header className="border-b border-border bg-white sticky top-0 z-10">
+    <div className={cn('h-screen overflow-hidden flex flex-col bg-[#FDFDFC]', !is_admin && 'bg-[#FDFDFC]')}>
+      <header className="border-b border-border bg-white sticky top-0 z-10 shrink-0">
         <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => active ? clearThread() : navigate('/mainhub')} aria-label={active ? "Back to list" : "Back to Main Hub"}>
@@ -241,30 +243,30 @@ export default function Inbox() {
       {/* TODO: migrate to has_admin_inbox_access flag per CLAUDE.md "granular flags not roles."
           Tracking ticket TBD. Until then, is_admin matches the existing admin-inbox gate. */}
       {is_admin && source === 'gmail' ? (
-        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
+        <div className="max-w-7xl mx-auto flex-1 min-h-0">
           <GmailPane />
         </div>
       ) : is_admin && source === 'drive' ? (
-        <div className="max-w-7xl mx-auto h-[calc(100vh-57px)]">
+        <div className="max-w-7xl mx-auto flex-1 min-h-0">
           <DrivePanel />
         </div>
       ) : showEmptyStudent ? (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto flex-1 min-h-0">
           <StudentEmptyState onStart={handleStartJoshua} isStarting={starting} />
         </div>
       ) : (
         <div className={cn(
-          'max-w-7xl mx-auto md:grid md:h-[calc(100vh-57px)]',
+          'max-w-7xl mx-auto md:grid flex-1 min-h-0 w-full',
           is_admin ? 'md:grid-cols-[360px_1fr]' : 'md:grid-cols-[320px_1fr]',
         )}>
           <aside
             className={cn(
-              'border-r border-border md:overflow-y-auto md:flex md:flex-col bg-white/50 backdrop-blur-sm',
+              'border-r border-border h-full md:flex md:flex-col bg-white/50 backdrop-blur-sm overflow-hidden',
               active ? 'hidden md:flex' : 'flex flex-col',
             )}
           >
             {!is_admin && (
-              <div className="px-4 py-4 border-b border-border bg-white/80">
+              <div className="px-4 py-4 border-b border-border bg-white/80 shrink-0">
                 <div className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider">
                   Coaching
                 </div>
@@ -309,7 +311,7 @@ export default function Inbox() {
                 </div>
               </div>
             )}
-            <div className="flex-1 md:overflow-y-auto">
+            <div className="flex-1 overflow-y-auto">
               {loading ? (
                 <ThreadListSkeleton count={6} />
               ) : (
@@ -324,7 +326,7 @@ export default function Inbox() {
             </div>
           </aside>
 
-          <main className={cn('md:h-full flex-col h-[calc(100vh-57px)]', active ? 'flex' : 'hidden md:flex')}>
+          <main className={cn('h-full flex flex-col min-h-0', active ? 'flex' : 'hidden md:flex')}>
             {active ? (
               <ConversationView
                 conversation={active}
