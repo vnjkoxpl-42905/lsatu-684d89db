@@ -10,6 +10,15 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function fileKindLabel(mimeType: string) {
+  if (mimeType === 'application/pdf') return 'PDF';
+  if (mimeType.startsWith('image/')) return 'Image';
+  if (mimeType.startsWith('audio/')) return 'Audio';
+  if (mimeType.includes('word') || mimeType.includes('document')) return 'Document';
+  if (mimeType.startsWith('text/')) return 'Text';
+  return 'File';
+}
+
 function ImageAttachment({ attachment }: { attachment: MessageAttachment }) {
   const [url, setUrl] = useState<string | null>(null);
 
@@ -102,7 +111,7 @@ export function AttachmentCard({ attachment }: { attachment: MessageAttachment }
       <div className="min-w-0 flex-1">
         <div className="text-sm font-medium truncate">{attachment.file_name}</div>
         <div className="text-xs text-muted-foreground">
-          {isDrive ? 'Google Drive' : `${formatSize(attachment.file_size)} · PDF`}
+          {isDrive ? 'Google Drive' : `${formatSize(attachment.file_size)} · ${fileKindLabel(attachment.mime_type ?? '')}`}
         </div>
       </div>
       {isDrive ? (

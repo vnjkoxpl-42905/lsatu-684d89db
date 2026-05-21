@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2, Menu, MessageCircle, Mic, Paperclip, Send, Smile, X } from "lucide-react";
+import { FileText, Loader2, Menu, MessageCircle, Mic, Paperclip, Send, Smile, Square, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
@@ -17,9 +17,15 @@ import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useLastActivity } from "@/hooks/useLastActivity";
 import { useConversationMessages } from "@/hooks/useInbox";
+import { AttachmentCard } from "@/components/inbox/AttachmentCard";
 import { resolveResumeTarget } from "@/lib/lastActivity";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
 import { startJoshuaConversation } from "@/lib/joshuaThread";
+import {
+  MAINHUB_ATTACHMENT_ACCEPT,
+  insertEmojiAtSelection,
+  validateStudyThreadFile,
+} from "@/lib/mainhubComposer";
 import {
   ORBITAL_CATALOG,
   findCatalogItem,
@@ -27,6 +33,7 @@ import {
 } from "@/lib/layoutCatalog";
 
 const REQUIRED_ORBITAL_IDS = ["resume", "analytics", "waj"] as const;
+const MAINHUB_EMOJI_CHOICES = ["🙂", "👍", "🔥", "💪", "✅", "🙏", "📌", "🧠", "🎯", "✍️", "📚", "✨"];
 
 interface OrbitalRenderInfo {
   date: string;
@@ -245,10 +252,19 @@ function MainhubHelpControl({
   const { user } = useAuth();
   const [conversationId, setConversationId] = React.useState<string | null>(null);
   const [threadError, setThreadError] = React.useState<string | null>(null);
+  const [composerError, setComposerError] = React.useState<string | null>(null);
   const [openingThread, setOpeningThread] = React.useState(false);
   const [body, setBody] = React.useState("");
+  const [attachment, setAttachment] = React.useState<File | null>(null);
+  const [emojiOpen, setEmojiOpen] = React.useState(false);
+  const [recording, setRecording] = React.useState(false);
   const [sending, setSending] = React.useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const fileRef = React.useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = React.useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = React.useRef<MediaStream | null>(null);
+  const mediaChunksRef = React.useRef<Blob[]>([]);
   const { messages, loading, refresh } = useConversationMessages(conversationId);
 
   React.useEffect(() => {
@@ -280,23 +296,166 @@ function MainhubHelpControl({
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages.length, open]);
 
+  React.useEffect(() => {
+    if (open) return;
+    setBody("");
+    setAttachment(null);
+    setComposerError(null);
+    setEmojiOpen(false);
+  }, [open]);
+
+  React.useEffect(() => {
+    return () => {
+      mediaRecorderRef.current?.state === "recording" && mediaRecorderRef.current.stop();
+      mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+    };
+  }, []);
+
+  const canRecord =
+    typeof navigator !== "undefined" &&
+    !!navigator.mediaDevices?.getUserMedia &&
+    typeof MediaRecorder !== "undefined";
+
+  const chooseAttachment = (file: File | null) => {
+    if (!file) return;
+    const error = validateStudyThreadFile(file);
+    if (error) {
+      setComposerError(error);
+      if (fileRef.current) fileRef.current.value = "";
+      return;
+    }
+    setComposerError(null);
+    setAttachment(file);
+  };
+
+  const selectEmoji = (emoji: string) => {
+    const el = textareaRef.current;
+    const { next, cursor } = insertEmojiAtSelection(
+      body,
+      emoji,
+      el?.selectionStart,
+      el?.selectionEnd,
+    );
+    setBody(next);
+    setEmojiOpen(false);
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(cursor, cursor);
+    });
+  };
+
+  const stopRecordingTracks = () => {
+    mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+    mediaStreamRef.current = null;
+  };
+
+  const startRecording = async () => {
+    if (!canRecord || recording || sending) return;
+    setComposerError(null);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      mediaChunksRef.current = [];
+      const recorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = recorder;
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) mediaChunksRef.current.push(event.data);
+      };
+      recorder.onstop = () => {
+        const type = recorder.mimeType || "audio/webm";
+        const blob = new Blob(mediaChunksRef.current, { type });
+        mediaChunksRef.current = [];
+        stopRecordingTracks();
+        setRecording(false);
+        if (blob.size === 0) return;
+        setAttachment(
+          new File([blob], `voice-message-${Date.now()}.webm`, {
+            type,
+          }),
+        );
+      };
+      recorder.start();
+      setRecording(true);
+    } catch (error) {
+      stopRecordingTracks();
+      setRecording(false);
+      setComposerError(error instanceof Error ? error.message : "Could not access your microphone.");
+    }
+  };
+
+  const stopRecording = () => {
+    const recorder = mediaRecorderRef.current;
+    if (!recorder || recorder.state !== "recording") return;
+    recorder.stop();
+  };
+
+  const cancelRecording = () => {
+    const recorder = mediaRecorderRef.current;
+    mediaChunksRef.current = [];
+    if (recorder && recorder.state === "recording") {
+      recorder.onstop = () => {
+        stopRecordingTracks();
+        setRecording(false);
+      };
+      recorder.stop();
+    } else {
+      stopRecordingTracks();
+      setRecording(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (open || !recording) return;
+    cancelRecording();
+  }, [open, recording]);
+
+  const uploadAttachment = async (messageId: string, file: File) => {
+    if (!conversationId) return;
+    const safeName = file.name.replace(/[^\w.\-() ]+/g, "_");
+    const path = `${conversationId}/${messageId}/${Date.now()}-${safeName}`;
+    const mimeType = file.type || "application/octet-stream";
+    const { error: uploadError } = await supabase.storage
+      .from("message-attachments")
+      .upload(path, file, { contentType: mimeType, upsert: false });
+    if (uploadError) throw uploadError;
+
+    const { error: attachmentError } = await supabase.from("message_attachments").insert({
+      message_id: messageId,
+      kind: "storage",
+      storage_path: path,
+      file_name: file.name,
+      file_size: file.size,
+      mime_type: mimeType,
+    });
+    if (attachmentError) throw attachmentError;
+  };
+
   const sendMessage = async () => {
     const text = body.trim();
-    if (!user || !conversationId || !text || sending) return;
+    if (!user || !conversationId || (!text && !attachment) || sending || recording) return;
     setSending(true);
+    setComposerError(null);
     try {
-      const { error } = await supabase
+      const { data: message, error } = await supabase
         .from("messages")
-        .insert({ conversation_id: conversationId, sender_id: user.id, body: text });
-      if (error) throw error;
+        .insert({ conversation_id: conversationId, sender_id: user.id, body: text })
+        .select("id")
+        .single();
+      if (error || !message) throw error ?? new Error("Could not send your message.");
+      if (attachment) await uploadAttachment(message.id, attachment);
       setBody("");
+      setAttachment(null);
+      setEmojiOpen(false);
+      if (fileRef.current) fileRef.current.value = "";
       await refresh();
     } catch (error) {
-      setThreadError(error instanceof Error ? error.message : "Could not send your message.");
+      setComposerError(error instanceof Error ? error.message : "Could not send your message.");
     } finally {
       setSending(false);
     }
   };
+
+  const canSend = !!body.trim() || !!attachment;
 
   return (
     <>
@@ -374,6 +533,13 @@ function MainhubHelpControl({
                       }`}
                     >
                       {message.body}
+                      {message.attachments.length > 0 && (
+                        <div className="mt-2 space-y-2">
+                          {message.attachments.map((item) => (
+                            <AttachmentCard key={item.id} attachment={item} />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -382,8 +548,46 @@ function MainhubHelpControl({
           </div>
 
           <div className="shrink-0 border-t border-slate-200/80 bg-[#fbfcff] px-3 py-3">
+            <input
+              ref={fileRef}
+              type="file"
+              accept={MAINHUB_ATTACHMENT_ACCEPT}
+              className="hidden"
+              onChange={(event) => chooseAttachment(event.target.files?.[0] ?? null)}
+            />
             <div className="relative min-h-[124px] rounded-[24px] border border-slate-200 bg-white shadow-sm transition focus-within:border-slate-300 focus-within:ring-2 focus-within:ring-slate-300/50">
+              {attachment && (
+                <div className="mx-3 mt-3 flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                  <FileText className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
+                  <span className="min-w-0 flex-1 truncate">{attachment.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAttachment(null);
+                      if (fileRef.current) fileRef.current.value = "";
+                    }}
+                    aria-label="Remove attachment"
+                    className="inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-200/70 hover:text-slate-700"
+                  >
+                    <X className="h-3.5 w-3.5" aria-hidden />
+                  </button>
+                </div>
+              )}
+              {recording && (
+                <div className="mx-3 mt-3 flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                  <span className="h-2 w-2 rounded-full bg-slate-900" aria-hidden />
+                  <span className="flex-1">Recording voice message...</span>
+                  <button
+                    type="button"
+                    onClick={cancelRecording}
+                    className="rounded-full px-2 py-1 text-slate-500 transition hover:bg-slate-200/70 hover:text-slate-800"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
               <textarea
+                ref={textareaRef}
                 value={body}
                 onChange={(event) => setBody(event.target.value)}
                 onKeyDown={(event) => {
@@ -400,42 +604,70 @@ function MainhubHelpControl({
               <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1 text-slate-400">
                 <button
                   type="button"
-                  disabled
+                  onClick={() => fileRef.current?.click()}
+                  disabled={!conversationId || sending || recording}
                   aria-label="Attach file"
-                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
+                  title="Attach file"
+                  className="pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <Paperclip className="h-[18px] w-[18px]" strokeWidth={2.1} aria-hidden />
                 </button>
-                <button
-                  type="button"
-                  disabled
-                  aria-label="Add emoji"
-                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
-                >
-                  <Smile className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
-                </button>
+                <div className="pointer-events-auto relative">
+                  <button
+                    type="button"
+                    onClick={() => setEmojiOpen((next) => !next)}
+                    disabled={!conversationId || sending}
+                    aria-label="Add emoji"
+                    aria-expanded={emojiOpen}
+                    title="Add emoji"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    <Smile className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
+                  </button>
+                  {emojiOpen && (
+                    <div className="absolute bottom-10 left-0 z-10 grid w-[184px] grid-cols-6 gap-1 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_18px_45px_rgba(15,23,42,0.16)]">
+                      {MAINHUB_EMOJI_CHOICES.map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => selectEmoji(emoji)}
+                          className="flex h-7 w-7 items-center justify-center rounded-lg text-base transition hover:bg-slate-100"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <button
                   type="button"
                   disabled
                   aria-label="Add GIF"
-                  className="pointer-events-auto inline-flex h-8 min-w-8 cursor-default items-center justify-center rounded-full px-1 text-[11px] font-semibold tracking-[0.02em] text-slate-400"
+                  title="GIF support coming soon"
+                  className="pointer-events-auto inline-flex h-8 min-w-8 cursor-not-allowed items-center justify-center rounded-full px-1 text-[11px] font-semibold tracking-[0.02em] text-slate-400 opacity-55"
                 >
                   GIF
                 </button>
                 <button
                   type="button"
-                  disabled
+                  onClick={recording ? stopRecording : startRecording}
+                  disabled={!conversationId || sending || !canRecord}
                   aria-label="Record voice message"
-                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
+                  title={canRecord ? (recording ? "Stop recording" : "Record voice message") : "Voice messages coming soon"}
+                  className="pointer-events-auto inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  <Mic className="h-[18px] w-[18px]" strokeWidth={2.1} aria-hidden />
+                  {recording ? (
+                    <Square className="h-[15px] w-[15px]" strokeWidth={2.1} aria-hidden />
+                  ) : (
+                    <Mic className="h-[18px] w-[18px]" strokeWidth={2.1} aria-hidden />
+                  )}
                 </button>
               </div>
               <div className="absolute bottom-3 right-3">
                 <button
                   type="button"
                   onClick={sendMessage}
-                  disabled={!conversationId || !body.trim() || sending}
+                  disabled={!conversationId || !canSend || sending || recording}
                   aria-label="Send message"
                   className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-white shadow-sm transition hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 disabled:shadow-none"
                 >
@@ -447,6 +679,11 @@ function MainhubHelpControl({
                 </button>
               </div>
             </div>
+            {composerError && (
+              <div className="mt-2 px-2 text-xs text-slate-500" role="status">
+                {composerError}
+              </div>
+            )}
           </div>
         </section>
       )}
