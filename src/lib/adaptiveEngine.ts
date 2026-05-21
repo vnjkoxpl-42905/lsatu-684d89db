@@ -22,6 +22,16 @@ const ADAPTIVE_CONFIG = {
   slowThresholdMs: 120000,
 } as const;
 
+export const SMART_DRILL_SELECTOR_WEIGHTS = {
+  weaknessFit: 0.4,
+  difficultyFit: 0.3,
+  freshness: 0.15,
+  variety: 0.1,
+  metadataQuality: 0.05,
+} as const;
+
+export type AdaptiveHydrationStatus = 'idle' | 'loading' | 'ready' | 'failed';
+
 export interface StudentAbility {
   overall: number;
   byQType: Record<string, number>;
@@ -115,13 +125,33 @@ export class AdaptiveEngine {
   private cooldowns: Map<string, Date> = new Map();
   private recentAttempts: AttemptRecord[] = [];
   private hydrated = false;
+  private hydrationStatus: AdaptiveHydrationStatus = 'idle';
+  private hydrationPromise: Promise<void> | null = null;
 
   /**
    * Hydrate engine state from the database so it persists across sessions.
    * Loads the user's last 200 attempts and rebuilds cooldowns.
    */
+  getHydrationStatus(): AdaptiveHydrationStatus {
+    return this.hydrationStatus;
+  }
+
+  async ensureHydratedFromDB(classId: string): Promise<void> {
+    if (this.hydrated || this.hydrationStatus === 'failed') return;
+    if (this.hydrationPromise) return this.hydrationPromise;
+
+    this.hydrationStatus = 'loading';
+    this.hydrationPromise = this.loadHydrationFromDB(classId).finally(() => {
+      this.hydrationPromise = null;
+    });
+    return this.hydrationPromise;
+  }
+
   async hydrateFromDB(classId: string): Promise<void> {
-    if (this.hydrated) return;
+    return this.ensureHydratedFromDB(classId);
+  }
+
+  private async loadHydrationFromDB(classId: string): Promise<void> {
     try {
       const { data, error } = await supabase
         .from('attempts')
@@ -133,6 +163,7 @@ export class AdaptiveEngine {
       if (error || !data) {
         console.warn('Failed to hydrate adaptive engine:', error);
         this.hydrated = true;
+        this.hydrationStatus = 'failed';
         return;
       }
 
@@ -160,10 +191,12 @@ export class AdaptiveEngine {
       }
 
       this.hydrated = true;
+      this.hydrationStatus = 'ready';
       console.log(`Adaptive engine hydrated with ${data.length} attempts`);
     } catch (err) {
       console.error('Error hydrating adaptive engine:', err);
       this.hydrated = true;
+      this.hydrationStatus = 'failed';
     }
   }
 
@@ -481,11 +514,11 @@ export class AdaptiveEngine {
       const variety = Math.max(0.4, 1 - recentSameTypeCount * 0.2);
 
       const score =
-        0.4 * weaknessFit +
-        0.3 * difficultyFit +
-        0.15 * freshness +
-        0.1 * variety +
-        0.05 * metadataQuality;
+        SMART_DRILL_SELECTOR_WEIGHTS.weaknessFit * weaknessFit +
+        SMART_DRILL_SELECTOR_WEIGHTS.difficultyFit * difficultyFit +
+        SMART_DRILL_SELECTOR_WEIGHTS.freshness * freshness +
+        SMART_DRILL_SELECTOR_WEIGHTS.variety * variety +
+        SMART_DRILL_SELECTOR_WEIGHTS.metadataQuality * metadataQuality;
 
       if (!best || score > best.selectionReason.score) {
         best = {

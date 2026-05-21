@@ -194,6 +194,7 @@ function DrillContent() {
   const [availablePoolSize, setAvailablePoolSize] = React.useState(0);
   const [poolExhausted, setPoolExhausted] = React.useState(false);
   const [bootError, setBootError] = React.useState<string | null>(null);
+  const [adaptiveHydrationStatus, setAdaptiveHydrationStatus] = React.useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
   const { classId, loading: classIdLoading } = useClassId();
   const [advanceToken, setAdvanceToken] = React.useState(0);
   const currentViewId = React.useRef<string | null>(null);
@@ -218,7 +219,8 @@ function DrillContent() {
   const timer = useTimerContextSafe();
 
   // BR only for Full Section and Type Drill modes
-  const brEnabled = session?.mode === 'full-section' || session?.mode === 'type-drill';
+  const sessionMode = session?.mode;
+  const brEnabled = sessionMode === 'full-section' || sessionMode === 'type-drill';
 
   // class_id resolved via useClassId() hook above (F1.10).
 
@@ -385,12 +387,38 @@ function DrillContent() {
     initializeSession();
   }, [state, navigate, classId, classIdLoading, qbLoading, settings.allowRepeats, settings.preferUnseen, settings.recycleAfterDays]);
 
-  // Hydrate adaptive engine from DB on session start
+  // Hydrate adaptive engine from DB before Smart Drill selects its first
+  // question. If hydration fails, the selector may proceed with current-session
+  // state only; it must not cold-start merely because the DB read is still in
+  // flight.
   React.useEffect(() => {
-    if (classId && session) {
-      adaptiveEngine.hydrateFromDB(classId);
+    if (sessionMode !== 'adaptive') {
+      setAdaptiveHydrationStatus('idle');
+      return;
     }
-  }, [classId, !!session]);
+
+    if (classIdLoading) {
+      setAdaptiveHydrationStatus('loading');
+      return;
+    }
+
+    if (!classId) {
+      console.warn('[Drill] adaptive hydration skipped: classId unavailable');
+      setAdaptiveHydrationStatus('failed');
+      return;
+    }
+
+    let cancelled = false;
+    const currentHydrationStatus = adaptiveEngine.getHydrationStatus();
+    setAdaptiveHydrationStatus(currentHydrationStatus === 'idle' ? 'loading' : currentHydrationStatus);
+    adaptiveEngine.ensureHydratedFromDB(classId).then(() => {
+      if (!cancelled) setAdaptiveHydrationStatus(adaptiveEngine.getHydrationStatus());
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [adaptiveEngine, classId, classIdLoading, sessionMode]);
 
   // Homework: mark assignment as in_progress on first question render.
   React.useEffect(() => {
@@ -499,6 +527,7 @@ function DrillContent() {
   // the picked qid back to question_exposures so subsequent picks see it.
   React.useEffect(() => {
     if (!session || session.mode !== 'adaptive') return;
+    if (adaptiveHydrationStatus === 'idle' || adaptiveHydrationStatus === 'loading') return;
 
     let cancelled = false;
     (async () => {
@@ -564,7 +593,7 @@ function DrillContent() {
     return () => {
       cancelled = true;
     };
-  }, [advanceToken]);
+  }, [advanceToken, adaptiveHydrationStatus]);
 
   // Non-adaptive mode: load question based on session.currentIndex
   React.useEffect(() => {
@@ -601,10 +630,14 @@ function DrillContent() {
 
   // Also trigger initial adaptive selection when session first initializes
   React.useEffect(() => {
-    if (session?.mode === 'adaptive' && !currentQuestion) {
+    if (
+      sessionMode === 'adaptive' &&
+      !currentQuestion &&
+      (adaptiveHydrationStatus === 'ready' || adaptiveHydrationStatus === 'failed')
+    ) {
       setAdvanceToken(t => t + 1);
     }
-  }, [session?.mode]);
+  }, [sessionMode, currentQuestion, adaptiveHydrationStatus]);
 
   const resetPerQuestionState = () => {
     setSelectedAnswer('');
@@ -1889,9 +1922,21 @@ function DrillContent() {
     );
   }
 
-  // Adaptive: currentQuestion null while session exists = effect chain still loading
+  // Adaptive: currentQuestion null while session exists = hydration/selection
+  // chain still loading. Keep this truthful instead of showing a blank page.
   if (session?.mode === 'adaptive' && !currentQuestion) {
-    return <div className="min-h-screen bg-background" />;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-6 text-center">
+          <h2 className="text-lg font-semibold mb-2">Preparing Smart Drill…</h2>
+          <p className="text-sm text-muted-foreground">
+            {adaptiveHydrationStatus === 'loading' || adaptiveHydrationStatus === 'idle'
+              ? 'Loading your attempt history.'
+              : 'Selecting your next question.'}
+          </p>
+        </Card>
+      </div>
+    );
   }
 
   // Initial loading — class id, question bank, or session not yet ready.

@@ -1,6 +1,39 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { AdaptiveEngine, type AttemptRecord, type StudentAbility } from './adaptiveEngine';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import {
+  AdaptiveEngine,
+  SMART_DRILL_SELECTOR_WEIGHTS,
+  type AttemptRecord,
+  type StudentAbility,
+} from './adaptiveEngine';
 import type { LRQuestion } from './questionLoader';
+
+type AttemptRow = {
+  qid: string;
+  correct: boolean;
+  time_ms: number;
+  qtype: string;
+  level: number;
+  timestamp_iso: string;
+};
+
+let mockAttemptsRows: AttemptRow[] | null = [];
+let mockAttemptsError: { message: string } | null = null;
+let mockQueryCount = 0;
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: () => {
+      mockQueryCount += 1;
+      const builder = {
+        select: () => builder,
+        eq: () => builder,
+        order: () => builder,
+        limit: () => Promise.resolve({ data: mockAttemptsRows, error: mockAttemptsError }),
+      };
+      return builder;
+    },
+  },
+}));
 
 function makeQuestion(overrides: Partial<LRQuestion> = {}): LRQuestion {
   return {
@@ -28,6 +61,19 @@ function makeAttempt(overrides: Partial<AttemptRecord> = {}): AttemptRecord {
     ...overrides,
   };
 }
+
+beforeEach(() => {
+  mockAttemptsRows = [];
+  mockAttemptsError = null;
+  mockQueryCount = 0;
+  vi.spyOn(console, 'log').mockImplementation(() => {});
+  vi.spyOn(console, 'warn').mockImplementation(() => {});
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 // ─── calculateAbility ────────────────────────────────────────────────────────
 
@@ -107,6 +153,80 @@ describe('AdaptiveEngine.recordAttempt', () => {
   });
 });
 
+// ─── DB hydration ────────────────────────────────────────────────────────────
+
+describe('AdaptiveEngine.hydration', () => {
+  it('waits for hydrated historical attempts before adaptive selection builds a profile', async () => {
+    mockAttemptsRows = [
+      {
+        qid: 'historic-flaw',
+        correct: false,
+        time_ms: 70000,
+        qtype: 'Flaw',
+        level: 4,
+        timestamp_iso: '2024-01-01T00:00:00.000Z',
+      },
+    ];
+    const engine = new AdaptiveEngine();
+
+    expect(engine.getHydrationStatus()).toBe('idle');
+    await engine.ensureHydratedFromDB('class-1');
+
+    expect(engine.getHydrationStatus()).toBe('ready');
+    expect(engine.getRecentAttempts()).toEqual([
+      expect.objectContaining({
+        qid: 'historic-flaw',
+        qtype: 'Flaw',
+        difficulty: 4,
+        correct: false,
+      }),
+    ]);
+  });
+
+  it('does not accidentally cold-start the first profile when DB history is available', async () => {
+    mockAttemptsRows = Array.from({ length: 16 }, (_, i) => ({
+      qid: `historic-${i}`,
+      correct: i % 2 === 0,
+      time_ms: 60000 + i,
+      qtype: 'Necessary Assumption',
+      level: 3,
+      timestamp_iso: new Date(2024, 0, i + 1).toISOString(),
+    }));
+    const engine = new AdaptiveEngine();
+
+    await engine.ensureHydratedFromDB('class-1');
+    const profile = engine.buildStudentProfile(engine.getRecentAttempts());
+
+    expect(profile.attemptCount).toBe(16);
+    expect(profile.dataMode).toBe('warm');
+    expect(profile.byQType['Necessary Assumption'].attempts).toBe(16);
+  });
+
+  it('shares an in-flight hydration promise so selection cannot race duplicate DB reads', async () => {
+    mockAttemptsRows = [];
+    const engine = new AdaptiveEngine();
+
+    await Promise.all([
+      engine.ensureHydratedFromDB('class-1'),
+      engine.ensureHydratedFromDB('class-1'),
+    ]);
+
+    expect(mockQueryCount).toBe(1);
+    expect(engine.getHydrationStatus()).toBe('ready');
+  });
+
+  it('marks hydration failed without blocking future selection forever', async () => {
+    mockAttemptsRows = null;
+    mockAttemptsError = { message: 'network down' };
+    const engine = new AdaptiveEngine();
+
+    await engine.ensureHydratedFromDB('class-1');
+
+    expect(engine.getHydrationStatus()).toBe('failed');
+    expect(engine.getRecentAttempts()).toEqual([]);
+  });
+});
+
 // ─── Smart Drill selector profile ───────────────────────────────────────────
 
 describe('AdaptiveEngine.buildStudentProfile', () => {
@@ -169,6 +289,16 @@ describe('AdaptiveEngine.buildStudentProfile', () => {
 // ─── Smart Drill selector ───────────────────────────────────────────────────
 
 describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
+  it('keeps selector weights stable and centralized', () => {
+    expect(SMART_DRILL_SELECTOR_WEIGHTS).toEqual({
+      weaknessFit: 0.4,
+      difficultyFit: 0.3,
+      freshness: 0.15,
+      variety: 0.1,
+      metadataQuality: 0.05,
+    });
+  });
+
   it('prioritizes weak qtype, difficulty, reasoning type, and feature matches', () => {
     const engine = new AdaptiveEngine();
     const profile = engine.buildStudentProfile([
@@ -227,17 +357,35 @@ describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
     );
   });
 
-  it('never selects current-session qids or immediately repeats latest correct or missed qids', () => {
+  it('excludes missed qids for now; redemption is deferred to future spaced review', () => {
+    const engine = new AdaptiveEngine();
+    const attempts = [
+      makeAttempt({ qid: 'missed-now', correct: false, timestamp: new Date('2024-01-04') }),
+    ];
+    const profile = engine.buildStudentProfile(attempts);
+    const pool = [
+      makeQuestion({ qid: 'missed-now' }),
+      makeQuestion({ qid: 'fresh' }),
+    ];
+
+    const selected = engine.selectSmartDrillQuestion(pool, profile, {
+      attempts,
+      currentSessionUsedQids: new Set(),
+      recentExposureQids: new Set(),
+    });
+
+    expect(selected?.question.qid).toBe('fresh');
+  });
+
+  it('never selects current-session qids or immediately repeats latest correct qids', () => {
     const engine = new AdaptiveEngine();
     const attempts = [
       makeAttempt({ qid: 'correct-now', correct: true, timestamp: new Date('2024-01-03') }),
-      makeAttempt({ qid: 'missed-now', correct: false, timestamp: new Date('2024-01-04') }),
     ];
     const profile = engine.buildStudentProfile(attempts);
     const pool = [
       makeQuestion({ qid: 'used-this-session' }),
       makeQuestion({ qid: 'correct-now' }),
-      makeQuestion({ qid: 'missed-now' }),
       makeQuestion({ qid: 'fresh' }),
     ];
 
