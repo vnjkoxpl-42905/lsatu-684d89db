@@ -34,10 +34,11 @@ function SelectorDropdown({
       <PopoverTrigger asChild>
         <button
           type="button"
-          disabled={disabled}
+          aria-disabled={disabled}
+          tabIndex={disabled ? -1 : undefined}
           className={cn(
             "flex h-12 min-w-0 flex-col justify-center rounded-2xl border border-slate-200 bg-white/70 px-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors",
-            disabled ? "cursor-not-allowed opacity-60" : "hover:border-slate-300",
+            disabled ? "cursor-default opacity-60" : "cursor-pointer hover:border-slate-300",
           )}
         >
           <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
