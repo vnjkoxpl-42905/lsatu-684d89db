@@ -2203,42 +2203,6 @@ export type Database = {
         }
         Relationships: []
       }
-      teacher_message_templates: {
-        Row: {
-          body: string
-          created_at: string
-          id: string
-          owner_id: string
-          placeholders: Json
-          subject: string | null
-          template_type: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          body: string
-          created_at?: string
-          id?: string
-          owner_id?: string
-          placeholders?: Json
-          subject?: string | null
-          template_type?: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          body?: string
-          created_at?: string
-          id?: string
-          owner_id?: string
-          placeholders?: Json
-          subject?: string | null
-          template_type?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       teaching_assets: {
         Row: {
           asset_type: string
