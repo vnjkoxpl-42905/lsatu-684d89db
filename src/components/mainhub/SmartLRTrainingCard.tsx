@@ -44,7 +44,7 @@ function SelectorDropdown({
             {label}
           </span>
           <span className="mt-0.5 flex items-center justify-between gap-1 text-sm font-semibold text-slate-700">
-            <span className="truncate">{current?.label ?? "Auto"}</span>
+            <span className="truncate">{current?.triggerLabel ?? current?.label ?? "Auto"}</span>
             <ChevronDown
               className={cn(
                 "h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform",
