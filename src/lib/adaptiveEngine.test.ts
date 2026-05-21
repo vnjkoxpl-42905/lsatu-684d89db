@@ -107,3 +107,163 @@ describe('AdaptiveEngine.recordAttempt', () => {
   });
 });
 
+// ─── Smart Drill selector profile ───────────────────────────────────────────
+
+describe('AdaptiveEngine.buildStudentProfile', () => {
+  it('tracks weakness by qtype, difficulty, reasoning type, and question features', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([
+      makeAttempt({
+        qid: 'flaw-1',
+        qtype: 'Flaw',
+        difficulty: 3,
+        correct: false,
+        reasoningType: ['Causation'],
+        questionFeatures: ['Causal Difference-Maker'],
+      }),
+      makeAttempt({
+        qid: 'flaw-2',
+        qtype: 'Flaw',
+        difficulty: 3,
+        correct: false,
+        reasoningType: ['Causation'],
+        questionFeatures: ['Causal Difference-Maker'],
+      }),
+      makeAttempt({
+        qid: 'weaken-1',
+        qtype: 'Weaken',
+        difficulty: 2,
+        correct: true,
+        reasoningType: ['Conditional Reasoning'],
+        questionFeatures: ['Contrapositive Logic'],
+      }),
+    ]);
+
+    expect(profile.attemptCount).toBe(3);
+    expect(profile.byQType.Flaw.accuracy).toBe(0);
+    expect(profile.byDifficulty[3].accuracy).toBe(0);
+    expect(profile.byReasoningType.Causation.accuracy).toBe(0);
+    expect(profile.byQuestionFeature['Causal Difference-Maker'].accuracy).toBe(0);
+    expect(profile.dataMode).toBe('cold');
+  });
+
+  it('degrades gracefully when reasoning metadata is missing', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([
+      makeAttempt({
+        qid: 'na-1',
+        qtype: 'Necessary Assumption',
+        difficulty: 2,
+        correct: false,
+        reasoningType: undefined,
+        questionFeatures: undefined,
+      }),
+    ]);
+
+    expect(profile.byQType['Necessary Assumption'].accuracy).toBe(0);
+    expect(profile.byReasoningType).toEqual({});
+    expect(profile.byQuestionFeature).toEqual({});
+  });
+});
+
+// ─── Smart Drill selector ───────────────────────────────────────────────────
+
+describe('AdaptiveEngine.selectSmartDrillQuestion', () => {
+  it('prioritizes weak qtype, difficulty, reasoning type, and feature matches', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([
+      makeAttempt({
+        qid: 'miss-1',
+        qtype: 'Flaw',
+        difficulty: 3,
+        correct: false,
+        reasoningType: ['Causation'],
+        questionFeatures: ['Causal Difference-Maker'],
+      }),
+      makeAttempt({
+        qid: 'miss-2',
+        qtype: 'Flaw',
+        difficulty: 3,
+        correct: false,
+        reasoningType: ['Causation'],
+        questionFeatures: ['Causal Difference-Maker'],
+      }),
+      makeAttempt({
+        qid: 'hit-1',
+        qtype: 'Weaken',
+        difficulty: 3,
+        correct: true,
+        reasoningType: ['Conditional Reasoning'],
+        questionFeatures: ['Contrapositive Logic'],
+      }),
+    ]);
+
+    const pool = [
+      makeQuestion({
+        qid: 'target',
+        qtype: 'Flaw',
+        difficulty: 3,
+        reasoningType: ['Causation'],
+        questionFeatures: ['Causal Difference-Maker'],
+      }),
+      makeQuestion({
+        qid: 'distractor',
+        qtype: 'Weaken',
+        difficulty: 3,
+        reasoningType: ['Conditional Reasoning'],
+        questionFeatures: ['Contrapositive Logic'],
+      }),
+    ];
+
+    const selected = engine.selectSmartDrillQuestion(pool, profile, {
+      attempts: [],
+      currentSessionUsedQids: new Set(),
+      recentExposureQids: new Set(),
+    });
+
+    expect(selected?.question.qid).toBe('target');
+    expect(selected?.selectionReason.matchedWeaknesses).toEqual(
+      expect.arrayContaining(['qtype:Flaw', 'reasoningType:Causation', 'questionFeature:Causal Difference-Maker']),
+    );
+  });
+
+  it('never selects current-session qids or immediately repeats latest correct or missed qids', () => {
+    const engine = new AdaptiveEngine();
+    const attempts = [
+      makeAttempt({ qid: 'correct-now', correct: true, timestamp: new Date('2024-01-03') }),
+      makeAttempt({ qid: 'missed-now', correct: false, timestamp: new Date('2024-01-04') }),
+    ];
+    const profile = engine.buildStudentProfile(attempts);
+    const pool = [
+      makeQuestion({ qid: 'used-this-session' }),
+      makeQuestion({ qid: 'correct-now' }),
+      makeQuestion({ qid: 'missed-now' }),
+      makeQuestion({ qid: 'fresh' }),
+    ];
+
+    const selected = engine.selectSmartDrillQuestion(pool, profile, {
+      attempts,
+      currentSessionUsedQids: new Set(['used-this-session']),
+      recentExposureQids: new Set(),
+    });
+
+    expect(selected?.question.qid).toBe('fresh');
+  });
+
+  it('respects recent exposure history before falling back to exposed questions', () => {
+    const engine = new AdaptiveEngine();
+    const profile = engine.buildStudentProfile([]);
+    const pool = [
+      makeQuestion({ qid: 'recently-shown' }),
+      makeQuestion({ qid: 'fresh' }),
+    ];
+
+    const selected = engine.selectSmartDrillQuestion(pool, profile, {
+      attempts: [],
+      currentSessionUsedQids: new Set(),
+      recentExposureQids: new Set(['recently-shown']),
+    });
+
+    expect(selected?.question.qid).toBe('fresh');
+  });
+});

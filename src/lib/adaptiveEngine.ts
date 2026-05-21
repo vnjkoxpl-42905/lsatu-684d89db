@@ -1,6 +1,6 @@
 // Deterministic adaptive question selection engine
 
-import { LRQuestion } from './questionLoader';
+import { LRQuestion, questionBank } from './questionLoader';
 import { supabase } from '@/integrations/supabase/client';
 
 const ADAPTIVE_CONFIG = {
@@ -34,6 +34,46 @@ export interface AttemptRecord {
   qtype: string;
   difficulty: number;
   timestamp: Date;
+  reasoningType?: string[];
+  questionFeatures?: string[];
+}
+
+export type SmartDrillDataMode = 'cold' | 'warm' | 'personalized';
+
+export interface SmartDrillStat {
+  attempts: number;
+  accuracy: number;
+  weightedAccuracy: number;
+  avgDifficulty: number;
+}
+
+export interface SmartDrillProfile {
+  attemptCount: number;
+  dataMode: SmartDrillDataMode;
+  overall: SmartDrillStat;
+  byQType: Record<string, SmartDrillStat>;
+  byDifficulty: Record<number, SmartDrillStat>;
+  byReasoningType: Record<string, SmartDrillStat>;
+  byQuestionFeature: Record<string, SmartDrillStat>;
+}
+
+export interface SmartDrillSelectionContext {
+  attempts: AttemptRecord[];
+  currentSessionUsedQids: Set<string>;
+  recentExposureQids: Set<string>;
+}
+
+export interface SmartDrillSelectionReason {
+  score: number;
+  matchedWeaknesses: string[];
+  excludedRecentExposure: boolean;
+  targetDifficulty: number;
+  dataMode: SmartDrillDataMode;
+}
+
+export interface SmartDrillSelection {
+  question: LRQuestion;
+  selectionReason: SmartDrillSelectionReason;
 }
 
 export interface WeakAreaAnalysis {
@@ -99,13 +139,16 @@ export class AdaptiveEngine {
       // Rebuild recent attempts and cooldowns from DB history (oldest first)
       const sorted = [...data].reverse();
       for (const a of sorted) {
+        const question = questionBank.getQuestion(a.qid);
         const record: AttemptRecord = {
           qid: a.qid,
           correct: a.correct,
           time_ms: a.time_ms,
-          qtype: a.qtype,
-          difficulty: a.level,
+          qtype: question?.qtype ?? a.qtype,
+          difficulty: question?.difficulty ?? a.level,
           timestamp: new Date(a.timestamp_iso),
+          reasoningType: question?.reasoningType ?? [],
+          questionFeatures: question?.questionFeatures ?? [],
         };
         this.recentAttempts.push(record);
         this.cooldowns.set(a.qid, new Date(a.timestamp_iso));
@@ -259,6 +302,206 @@ export class AdaptiveEngine {
     if (this.recentAttempts.length > 100) {
       this.recentAttempts.shift();
     }
+  }
+
+  getRecentAttempts(): AttemptRecord[] {
+    return [...this.recentAttempts];
+  }
+
+  buildStudentProfile(attempts: AttemptRecord[]): SmartDrillProfile {
+    const normalized = attempts.map((attempt) => ({
+      ...attempt,
+      reasoningType: Array.isArray(attempt.reasoningType) ? attempt.reasoningType : [],
+      questionFeatures: Array.isArray(attempt.questionFeatures) ? attempt.questionFeatures : [],
+    }));
+
+    const sortedNewestFirst = [...normalized].sort(
+      (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+    );
+
+    type Bucket = {
+      attempts: number;
+      correctWeighted: number;
+      totalWeighted: number;
+      difficultyTotal: number;
+    };
+
+    const emptyBucket = (): Bucket => ({
+      attempts: 0,
+      correctWeighted: 0,
+      totalWeighted: 0,
+      difficultyTotal: 0,
+    });
+
+    const add = (map: Record<string, Bucket>, key: string, attempt: AttemptRecord, weight: number) => {
+      if (!key) return;
+      if (!map[key]) map[key] = emptyBucket();
+      map[key].attempts += 1;
+      map[key].totalWeighted += weight;
+      map[key].difficultyTotal += attempt.difficulty;
+      if (attempt.correct) map[key].correctWeighted += weight;
+    };
+
+    const overallBucket = emptyBucket();
+    const qtypeBuckets: Record<string, Bucket> = {};
+    const difficultyBuckets: Record<string, Bucket> = {};
+    const reasoningBuckets: Record<string, Bucket> = {};
+    const featureBuckets: Record<string, Bucket> = {};
+
+    sortedNewestFirst.forEach((attempt, idx) => {
+      const weight = Math.exp(-idx / ADAPTIVE_CONFIG.recencyHalfLife);
+      overallBucket.attempts += 1;
+      overallBucket.totalWeighted += weight;
+      overallBucket.difficultyTotal += attempt.difficulty;
+      if (attempt.correct) overallBucket.correctWeighted += weight;
+
+      add(qtypeBuckets, attempt.qtype, attempt, weight);
+      add(difficultyBuckets, String(attempt.difficulty), attempt, weight);
+      for (const reasoningType of attempt.reasoningType ?? []) {
+        add(reasoningBuckets, reasoningType, attempt, weight);
+      }
+      for (const feature of attempt.questionFeatures ?? []) {
+        add(featureBuckets, feature, attempt, weight);
+      }
+    });
+
+    const toStat = (bucket?: Bucket): SmartDrillStat => {
+      if (!bucket || bucket.attempts === 0 || bucket.totalWeighted === 0) {
+        return { attempts: 0, accuracy: 0, weightedAccuracy: 0, avgDifficulty: 3 };
+      }
+      const weightedAccuracy = bucket.correctWeighted / bucket.totalWeighted;
+      return {
+        attempts: bucket.attempts,
+        accuracy: weightedAccuracy,
+        weightedAccuracy,
+        avgDifficulty: bucket.difficultyTotal / bucket.attempts,
+      };
+    };
+
+    const mapStats = (buckets: Record<string, Bucket>) =>
+      Object.fromEntries(Object.entries(buckets).map(([key, bucket]) => [key, toStat(bucket)]));
+
+    const dataMode: SmartDrillDataMode =
+      normalized.length < 15 ? 'cold' : normalized.length < 50 ? 'warm' : 'personalized';
+
+    return {
+      attemptCount: normalized.length,
+      dataMode,
+      overall: toStat(overallBucket),
+      byQType: mapStats(qtypeBuckets),
+      byDifficulty: mapStats(difficultyBuckets) as Record<number, SmartDrillStat>,
+      byReasoningType: mapStats(reasoningBuckets),
+      byQuestionFeature: mapStats(featureBuckets),
+    };
+  }
+
+  selectSmartDrillQuestion(
+    pool: LRQuestion[],
+    profile: SmartDrillProfile,
+    context: SmartDrillSelectionContext,
+  ): SmartDrillSelection | null {
+    if (pool.length === 0) return null;
+
+    const latestOutcomeByQid = new Map<string, boolean>();
+    for (const attempt of [...context.attempts].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())) {
+      if (!latestOutcomeByQid.has(attempt.qid)) {
+        latestOutcomeByQid.set(attempt.qid, attempt.correct);
+      }
+    }
+
+    const hardEligible = pool.filter((q) => {
+      if (context.currentSessionUsedQids.has(q.qid)) return false;
+      if (latestOutcomeByQid.has(q.qid)) return false;
+      return true;
+    });
+
+    const freshEligible = hardEligible.filter((q) => !context.recentExposureQids.has(q.qid));
+    const candidates = freshEligible.length > 0 ? freshEligible : hardEligible;
+    if (candidates.length === 0) return null;
+
+    const targetDifficulty = (q: LRQuestion): number => {
+      const qtypeStat = profile.byQType[q.qtype];
+      const base = qtypeStat?.attempts ? qtypeStat.avgDifficulty : profile.overall.avgDifficulty;
+      const accuracy = qtypeStat?.attempts ? qtypeStat.weightedAccuracy : profile.overall.weightedAccuracy;
+      if (profile.attemptCount === 0) return 3;
+      if (accuracy < 0.55) return Math.max(1, Math.round(base));
+      if (accuracy < 0.70) return Math.max(2, Math.round(base));
+      if (accuracy < 0.85) return Math.min(4, Math.max(3, Math.round(base)));
+      return Math.min(5, Math.max(4, Math.round(base + 1)));
+    };
+
+    const weaknessFor = (stat?: SmartDrillStat): number | null => {
+      if (!stat || stat.attempts === 0) return null;
+      return Math.max(0, 1 - stat.weightedAccuracy);
+    };
+
+    let best: SmartDrillSelection | null = null;
+
+    for (const q of candidates) {
+      const matchedWeaknesses: string[] = [];
+      const weaknessScores: number[] = [];
+
+      const qtypeWeakness = weaknessFor(profile.byQType[q.qtype]);
+      if (qtypeWeakness !== null) {
+        weaknessScores.push(qtypeWeakness);
+        if (qtypeWeakness >= 0.4) matchedWeaknesses.push(`qtype:${q.qtype}`);
+      }
+
+      const difficultyWeakness = weaknessFor(profile.byDifficulty[q.difficulty]);
+      if (difficultyWeakness !== null) weaknessScores.push(difficultyWeakness * 0.75);
+
+      for (const reasoningType of q.reasoningType ?? []) {
+        const weakness = weaknessFor(profile.byReasoningType[reasoningType]);
+        if (weakness !== null) {
+          weaknessScores.push(weakness);
+          if (weakness >= 0.4) matchedWeaknesses.push(`reasoningType:${reasoningType}`);
+        }
+      }
+
+      for (const feature of q.questionFeatures ?? []) {
+        const weakness = weaknessFor(profile.byQuestionFeature[feature]);
+        if (weakness !== null) {
+          weaknessScores.push(weakness);
+          if (weakness >= 0.4) matchedWeaknesses.push(`questionFeature:${feature}`);
+        }
+      }
+
+      const weaknessFit = weaknessScores.length > 0
+        ? weaknessScores.reduce((sum, score) => sum + score, 0) / weaknessScores.length
+        : profile.attemptCount === 0 ? 0.5 : 0.2;
+      const target = targetDifficulty(q);
+      const difficultyFit = Math.max(0, 1 - Math.abs(q.difficulty - target) / 4);
+      const freshness = context.recentExposureQids.has(q.qid) ? 0.1 : 1;
+      const metadataQuality =
+        (q.reasoningType?.length ? 0.5 : 0) +
+        (q.questionFeatures?.length ? 0.5 : 0);
+      const recentSameTypeCount = context.attempts
+        .slice(-3)
+        .filter((attempt) => attempt.qtype === q.qtype).length;
+      const variety = Math.max(0.4, 1 - recentSameTypeCount * 0.2);
+
+      const score =
+        0.4 * weaknessFit +
+        0.3 * difficultyFit +
+        0.15 * freshness +
+        0.1 * variety +
+        0.05 * metadataQuality;
+
+      if (!best || score > best.selectionReason.score) {
+        best = {
+          question: q,
+          selectionReason: {
+            score,
+            matchedWeaknesses,
+            excludedRecentExposure: context.recentExposureQids.has(q.qid),
+            targetDifficulty: target,
+            dataMode: profile.dataMode,
+          },
+        };
+      }
+    }
+
+    return best;
   }
 
   calculateAbility(attempts: AttemptRecord[]): StudentAbility {
@@ -581,7 +824,7 @@ export class AdaptiveEngine {
     }
 
     // Exponential decay weight: most recent = 1.0, older → smaller
-    const weighted = rawAttempts.map((a: any, idx: number) => ({
+    const weighted = rawAttempts.map((a, idx: number) => ({
       ...a,
       weight: Math.exp(-idx / ADAPTIVE_CONFIG.recencyHalfLife),
     }));
@@ -591,7 +834,7 @@ export class AdaptiveEngine {
 
     // ── 3. Build lookup sets ─────────────────────────────────────────────────
     // All qids the user has ever attempted (for "unseen" filtering)
-    const attemptedQids = new Set<string>(rawAttempts.map((a: any) => a.qid));
+    const attemptedQids = new Set<string>(rawAttempts.map((a) => a.qid));
 
     // Most-recently-wrong qids (deduplicated, preserving last outcome per qid)
     const lastOutcomeByQid: Record<string, boolean> = {};
@@ -670,7 +913,7 @@ export class AdaptiveEngine {
       const progressionDeficit = target.progression - progression.length;
       const redemptionDeficit  = target.redemption  - redemption.length;
       const maintenanceDeficit = target.maintenance - maintenance.length;
-      let remaining = [...fallback];
+      const remaining = [...fallback];
       if (progressionDeficit > 0) {
         const take = remaining.splice(0, progressionDeficit);
         progression = [...progression, ...take];

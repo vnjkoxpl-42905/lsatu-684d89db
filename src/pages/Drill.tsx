@@ -349,7 +349,7 @@ function DrillContent() {
           }
           
           // Round-robin select
-          let selected: LRQuestion[] = [];
+          const selected: LRQuestion[] = [];
           const groupArrays = Array.from(groups.values());
           
           while (selected.length < config.count && groupArrays.some(g => g.length > 0)) {
@@ -513,13 +513,9 @@ function DrillContent() {
       if (cancelled) return;
 
       const allQuestions = questionBank.getAllQuestions();
-      const eligibleByExposure = allQuestions.filter((q) => !excludedQids.has(q.qid));
-      // If every question is in the 500-window (small bank or test data), fall
-      // back to the full pool so adaptive can still pick something.
-      const eligible = eligibleByExposure.length > 0 ? eligibleByExposure : allQuestions;
-
-      const attemptRecords = Array.from(session.attempts.entries()).map(([qid, attempt]) => {
-        const q = questionBank.getQuestion(qid)!;
+      const sessionAttemptRecords = Array.from(session.attempts.entries()).flatMap(([qid, attempt]) => {
+        const q = questionBank.getQuestion(qid);
+        if (!q) return [];
         return {
           qid,
           correct: attempt.correct,
@@ -527,13 +523,30 @@ function DrillContent() {
           qtype: q.qtype,
           difficulty: q.difficulty,
           timestamp: new Date(attempt.timestamp),
+          reasoningType: q.reasoningType ?? [],
+          questionFeatures: q.questionFeatures ?? [],
         };
       });
 
-      const ability = adaptiveEngine.calculateAbility(attemptRecords);
-      const nextQuestion = adaptiveEngine.selectNextQuestion(eligible, ability, 0.15);
+      const historicalAttempts = adaptiveEngine.getRecentAttempts();
+      const combinedAttempts = [...historicalAttempts, ...sessionAttemptRecords];
+      const profile = adaptiveEngine.buildStudentProfile(combinedAttempts);
+      const selection = adaptiveEngine.selectSmartDrillQuestion(allQuestions, profile, {
+        attempts: combinedAttempts,
+        currentSessionUsedQids: new Set(session.attempts.keys()),
+        recentExposureQids: excludedQids,
+      });
+      const nextQuestion = selection?.question ?? null;
 
       if (cancelled) return;
+
+      if (!nextQuestion) {
+        setSession(null);
+        setBootError(
+          "No new Smart Drill questions are available without repeating recent work. Try a focused drill or come back after more questions are added."
+        );
+        return;
+      }
 
       setCurrentQuestion(nextQuestion);
       resetPerQuestionState();
@@ -942,6 +955,7 @@ function DrillContent() {
       } else {
         toast.error("Couldn't save your answer. Check your connection and try the next question.");
       }
+      if (session.mode === 'adaptive') return;
     }
     if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
 
@@ -995,6 +1009,8 @@ function DrillContent() {
       qtype: currentQuestion.qtype,
       difficulty: currentQuestion.difficulty,
       timestamp: new Date(),
+      reasoningType: currentQuestion.reasoningType ?? [],
+      questionFeatures: currentQuestion.questionFeatures ?? [],
     });
 
     setSession({ ...session, attempts: newAttempts });
@@ -1058,6 +1074,8 @@ function DrillContent() {
       qtype: currentQuestion.qtype,
       difficulty: currentQuestion.difficulty,
       timestamp: new Date(),
+      reasoningType: currentQuestion.reasoningType ?? [],
+      questionFeatures: currentQuestion.questionFeatures ?? [],
     });
 
     // Track question usage
@@ -1097,6 +1115,7 @@ function DrillContent() {
         } else {
           toast.error("Couldn't save your answer. Check your connection and try the next question.");
         }
+        return;
       }
       await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
@@ -1120,6 +1139,8 @@ function DrillContent() {
         qtype: currentQuestion.qtype,
         difficulty: currentQuestion.difficulty,
         timestamp: new Date(),
+        reasoningType: currentQuestion.reasoningType ?? [],
+        questionFeatures: currentQuestion.questionFeatures ?? [],
       });
 
       // Track question usage
@@ -1170,6 +1191,7 @@ function DrillContent() {
         } else {
           toast.error("Couldn't save your answer. Check your connection and try the next question.");
         }
+        if (session.mode === 'adaptive') return;
       }
       await flushReplay(currentQuestion.qid, session.mode);
       if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
@@ -1191,6 +1213,8 @@ function DrillContent() {
         qtype: currentQuestion.qtype,
         difficulty: currentQuestion.difficulty,
         timestamp: new Date(),
+        reasoningType: currentQuestion.reasoningType ?? [],
+        questionFeatures: currentQuestion.questionFeatures ?? [],
       });
 
       // Track question usage
@@ -1417,6 +1441,10 @@ function DrillContent() {
     if (!session) return;
 
     if (session.mode === 'adaptive') {
+      if (!currentQuestion || !session.attempts.has(currentQuestion.qid)) {
+        toast.error("Save this answer before moving to the next Smart Drill question.");
+        return;
+      }
       // Increment advanceToken to trigger adaptive question selection
       setAdvanceToken(t => t + 1);
     } else {
