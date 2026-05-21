@@ -163,15 +163,15 @@ export default function SmartLRTrainingCard() {
 
   const ptOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...pts.map((n) => ({ value: String(n), label: `PrepTest ${n}` })),
+    ...pts.map((n) => ({ value: String(n), label: `PrepTest ${n}`, triggerLabel: `PT ${n}` })),
   ];
   const sectionOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...sections.map((n) => ({ value: String(n), label: `Section ${n}` })),
+    ...sections.map((n) => ({ value: String(n), label: `Section ${n}`, triggerLabel: `S${n}` })),
   ];
   const qnumOptions: Option[] = [
     { value: AUTO, label: "Auto" },
-    ...qnums.map((n) => ({ value: String(n), label: `Question ${n}` })),
+    ...qnums.map((n) => ({ value: String(n), label: `Question ${n}`, triggerLabel: `Q${n}` })),
   ];
 
   return (
