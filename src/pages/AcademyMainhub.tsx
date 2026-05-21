@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2, Menu, MessageCircle, Send, X } from "lucide-react";
+import { Loader2, Menu, MessageCircle, Mic, Paperclip, Send, Smile, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
@@ -328,7 +328,7 @@ function MainhubHelpControl({
             </div>
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-semibold text-slate-900">LSAT U Support</div>
-              <div className="truncate text-[11px] text-slate-500">Joshua and your study thread</div>
+              <div className="truncate text-[11px] text-slate-500">Joshua and your Study Thread</div>
             </div>
             <button
               type="button"
@@ -382,7 +382,7 @@ function MainhubHelpControl({
           </div>
 
           <div className="shrink-0 border-t border-slate-200/80 bg-[#fbfcff] px-3 py-3">
-            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-slate-300/60">
+            <div className="relative min-h-[124px] rounded-[24px] border border-slate-200 bg-white shadow-sm transition focus-within:border-slate-300 focus-within:ring-2 focus-within:ring-slate-300/50">
               <textarea
                 value={body}
                 onChange={(event) => setBody(event.target.value)}
@@ -395,15 +395,49 @@ function MainhubHelpControl({
                 disabled={!conversationId || sending}
                 placeholder="Message..."
                 rows={2}
-                className="min-h-[56px] w-full resize-none rounded-t-2xl border-0 bg-transparent px-4 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-default disabled:opacity-60"
+                className="min-h-[118px] w-full resize-none rounded-[24px] border-0 bg-transparent px-4 pb-14 pt-4 text-[15px] leading-relaxed text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-default disabled:opacity-60"
               />
-              <div className="flex items-center justify-end border-t border-slate-100 px-2 py-1.5">
+              <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1 text-slate-400">
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Attach file"
+                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
+                >
+                  <Paperclip className="h-[18px] w-[18px]" strokeWidth={2.1} aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Add emoji"
+                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
+                >
+                  <Smile className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Add GIF"
+                  className="pointer-events-auto inline-flex h-8 min-w-8 cursor-default items-center justify-center rounded-full px-1 text-[11px] font-semibold tracking-[0.02em] text-slate-400"
+                >
+                  GIF
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  aria-label="Record voice message"
+                  className="pointer-events-auto inline-flex h-8 w-8 cursor-default items-center justify-center rounded-full text-slate-400"
+                >
+                  <Mic className="h-[18px] w-[18px]" strokeWidth={2.1} aria-hidden />
+                </button>
+              </div>
+              <div className="absolute bottom-3 right-3">
                 <button
                   type="button"
                   onClick={sendMessage}
                   disabled={!conversationId || !body.trim() || sending}
                   aria-label="Send message"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-white transition hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-white shadow-sm transition hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 disabled:shadow-none"
                 >
                   {sending ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
