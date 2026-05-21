@@ -129,11 +129,11 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
   );
 
   return (
-    <div className={cn("flex flex-col h-full", is_admin ? "bg-[#020408]" : "bg-background")}>
+    <div className="flex flex-col h-full bg-[#FDFDFC]">
       {!hideHeader && (
         <div className={cn(
-          "flex items-center gap-4 px-8 py-8 shrink-0",
-          is_admin ? "border-b border-white/10 bg-black" : "border-b border-border bg-background/90 backdrop-blur"
+          "flex items-center gap-6 px-10 py-8 shrink-0",
+          "border-b border-border bg-white"
         )}>
           {onBack && (
             <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden -ml-2" aria-label="Back">
@@ -142,41 +142,40 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
           )}
           <div
             className={cn(
-              'w-14 h-14 flex items-center justify-center text-sm font-black shrink-0',
+              'w-14 h-14 flex items-center justify-center text-sm font-bold shrink-0',
               is_admin
-                ? 'bg-white text-black rounded-none shadow-[6px_6px_0_rgba(255,255,255,0.05)] border border-white'
-                : !is_admin
-                  ? 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full'
-                  : 'bg-muted text-foreground/70 rounded-full',
+                ? 'bg-slate-100 text-slate-700 rounded-2xl ring-1 ring-slate-200'
+                : 'bg-primary/10 text-primary ring-1 ring-primary/25 rounded-full',
             )}
             aria-hidden="true"
           >
-            {is_admin ? headerInitial : <MessageCircle className="w-5 h-5" />}
+            {is_admin ? headerInitial : <MessageCircle className="w-6 h-6" />}
           </div>
           <div className="min-w-0 flex-1">
             <div className={cn(
-              "font-bold text-xl truncate leading-tight tracking-tight",
-              is_admin ? "text-white uppercase tracking-[0.05em]" : "text-foreground"
+              "font-bold text-2xl truncate leading-tight tracking-tight text-slate-900"
             )}>
               {headerName}
             </div>
             <div className={cn(
-              "text-[10px] truncate mt-1 font-mono uppercase tracking-[0.25em]",
-              is_admin ? "text-white/30" : "text-muted-foreground"
+              "text-sm font-medium truncate mt-1 text-slate-500"
             )}>
               {is_admin ? headerSubtitle : 'Send questions, context, and files in one thread'}
             </div>
           </div>
           
           {is_admin && (
-            <div className="hidden lg:flex items-center gap-10 border-l border-white/10 pl-10 ml-10 font-mono text-[9px] uppercase tracking-[0.2em]">
+            <div className="hidden lg:flex items-center gap-10 border-l border-slate-100 pl-10 ml-6 text-xs font-semibold tracking-wide uppercase">
               <div className="flex flex-col gap-1.5">
-                <span className="text-white/10 font-bold">Status</span>
-                <span className="text-emerald-500 font-bold">Active</span>
+                <span className="text-slate-400">Status</span>
+                <span className="text-emerald-600 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  Active
+                </span>
               </div>
               <div className="flex flex-col gap-1.5">
-                <span className="text-white/10 font-bold">Current Point</span>
-                <span className="text-white/60 font-bold">PT120 · S1</span>
+                <span className="text-slate-400">Current Point</span>
+                <span className="text-slate-900">PT120 · S1</span>
               </div>
             </div>
           )}
@@ -186,29 +185,26 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
       <div
         ref={scrollRef}
         className={cn(
-          'flex-1 overflow-y-auto px-8 py-10 scrollbar-thin scrollbar-thumb-white/10',
-          is_admin ? 'bg-[#020408]' : 'bg-muted/20',
+          'flex-1 overflow-y-auto px-8 py-12 scrollbar-thin scrollbar-thumb-border',
+          'bg-[#FDFDFC]',
         )}
       >
         {loading ? (
           <ConversationSkeleton />
         ) : messages.length === 0 ? (
-          <div className="text-center text-[10px] uppercase tracking-[0.4em] font-black text-white/5 py-32">
-            NO COMMUNICATION LOGGED
+          <div className="text-center text-sm font-medium text-slate-300 py-32">
+            No communication logged
           </div>
         ) : (
           <div className="mx-auto max-w-4xl space-y-12">
             {sections.map((section) => (
-              <div key={section.key} className="space-y-6">
-                <div className="flex items-center gap-6 my-10">
-                  <div className={cn("flex-1 h-px", is_admin ? "bg-white/5" : "bg-border/60")} />
-                  <div className={cn(
-                    "text-[9px] uppercase tracking-[0.4em] font-black",
-                    is_admin ? "text-white/15" : "text-muted-foreground"
-                  )}>
+              <div key={section.key} className="space-y-8">
+                <div className="flex items-center gap-8 my-14">
+                  <div className="flex-1 h-px bg-slate-200/60" />
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
                     {section.label}
                   </div>
-                  <div className={cn("flex-1 h-px", is_admin ? "bg-white/5" : "bg-border/60")} />
+                  <div className="flex-1 h-px bg-slate-200/60" />
                 </div>
                 {section.items.map(({ msg, showSenderName, isLastInGroup }) => (
                   <MessageBubble
@@ -225,7 +221,7 @@ export function ConversationView({ conversation, onBack, onMessageSent, hideHead
         )}
       </div>
 
-      <div className={cn(is_admin && "bg-black p-6 border-t border-white/10")}>
+      <div className="bg-white/80 backdrop-blur-md border-t border-border">
         <MessageComposer conversationId={conversation.id} onSent={() => { refresh(); onMessageSent?.(); }} />
       </div>
     </div>

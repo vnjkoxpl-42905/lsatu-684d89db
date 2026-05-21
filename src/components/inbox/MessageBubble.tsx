@@ -24,15 +24,15 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
 
   if (is_admin) {
     return (
-      <div className={cn('flex flex-col gap-2 group', isOwn ? 'items-end' : 'items-start')}>
-        {/* Dossier Label */}
+      <div className={cn('flex flex-col gap-2.5 group', isOwn ? 'items-end' : 'items-start')}>
+        {/* Label */}
         <div className={cn(
-          "text-[9px] font-mono font-black uppercase tracking-[0.3em] flex items-center gap-2",
-          isOwn ? "text-white/40" : "text-white/20"
+          "text-[9px] font-bold uppercase tracking-[0.25em] flex items-center gap-3",
+          isOwn ? "text-slate-400" : "text-slate-300"
         )}>
           {isOwn ? "JOSHUA" : senderName?.toUpperCase() || "STUDENT"}
           {showTimestamp && (
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-medium ml-2">
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[8px] font-medium text-slate-400">
               {shortTime(created).toUpperCase()}
             </span>
           )}
@@ -40,20 +40,17 @@ export function MessageBubble({ message, isOwn, senderName, showTimestamp = true
 
         <div
           className={cn(
-            'flex flex-col gap-3 max-w-[85%] md:max-w-[80%]',
+            'flex flex-col gap-4 max-w-[85%] md:max-w-[75%]',
             isOwn ? 'items-end' : 'items-start',
           )}
         >
           {hasBody && (
             <div
               className={cn(
-                'px-6 py-4 text-[14px] leading-relaxed break-words border transition-all',
+                'px-6 py-5 text-[15px] leading-[1.6] break-words border transition-all',
                 isOwn
-                  ? 'bg-white text-black border-white font-serif italic selection:bg-black/10'
-                  : 'bg-black text-white/90 border-white/20 selection:bg-white/20',
-                isOwn 
-                  ? "shadow-[4px_4px_0_rgba(255,255,255,0.05)]" 
-                  : "shadow-[4px_4px_0_rgba(255,255,255,0.02)]"
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-2xl rounded-tr-sm'
+                  : 'bg-white text-slate-800 border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.02)] rounded-2xl rounded-tl-sm',
               )}
             >
               {message.body}

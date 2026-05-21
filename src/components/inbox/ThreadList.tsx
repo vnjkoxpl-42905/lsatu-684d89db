@@ -56,7 +56,7 @@ export function ThreadList({
   const isAdmin = variant === 'admin';
 
   return (
-    <div role="list" className={cn(isAdmin && "bg-[#05070A]")}>
+    <div role="list" className="flex flex-col gap-1 p-2">
       {conversations.map((c) => {
         const fallback = isAdmin ? 'Conversation' : 'Joshua';
         const name = otherParticipantName(c, user.id, fallback);
@@ -70,39 +70,19 @@ export function ThreadList({
             role="listitem"
             onClick={() => onSelect(c.id)}
             className={cn(
-              'group w-full flex items-start gap-4 text-left transition-all relative',
-              isAdmin 
-                ? [
-                    'px-4 py-5 border-b border-white/5',
-                    isActive 
-                      ? 'bg-white/[0.03]' 
-                      : 'hover:bg-white/[0.02]'
-                  ]
-                : [
-                    'px-3.5 py-3.5 rounded-lg border border-border/70 bg-background shadow-sm mt-2 first:mt-0',
-                    isActive
-                      ? 'border-primary/35 bg-primary/[0.04] ring-1 ring-primary/15'
-                      : 'hover:bg-muted/40 hover:border-border'
-                  ]
+              'group w-full flex items-start gap-3 text-left transition-all relative',
+              'px-4 py-4 rounded-xl border',
+              isActive
+                ? 'border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] ring-1 ring-black/5'
+                : 'border-transparent hover:bg-white/40 hover:border-border/20'
             )}
           >
-            {/* Active Indicator (Admin only) */}
-            {isAdmin && isActive && (
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)]" />
-            )}
-
             <div
               className={cn(
-                'w-10 h-10 flex items-center justify-center text-xs font-bold shrink-0',
-                isAdmin
-                  ? [
-                      'rounded-none border border-white/10',
-                      isActive ? 'bg-white text-black border-white' : 'bg-black text-white/40'
-                    ]
-                  : [
-                      'rounded-full',
-                      isActive ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-primary/10 text-primary ring-1 ring-primary/20'
-                    ],
+                'w-10 h-10 flex items-center justify-center text-xs font-bold shrink-0 rounded-full transition-all',
+                isActive 
+                  ? 'bg-slate-900 text-white shadow-sm scale-105' 
+                  : 'bg-white text-slate-900 ring-1 ring-slate-200 group-hover:ring-slate-300',
               )}
               aria-hidden="true"
             >
@@ -113,23 +93,19 @@ export function ThreadList({
               <div className="flex items-center justify-between gap-2">
                 <div
                   className={cn(
-                    'truncate text-[13px] tracking-wide',
-                    isAdmin
-                      ? c.unread ? 'font-bold text-white' : 'font-medium text-white/50'
-                      : c.unread ? 'font-semibold text-foreground' : 'font-medium text-foreground/90',
+                    'truncate text-[13px] tracking-tight',
+                    c.unread ? 'font-bold text-slate-900' : 'font-semibold text-slate-700',
                   )}
                 >
                   {name}
                 </div>
                 <div
                   className={cn(
-                    'shrink-0 text-[9px] font-mono tabular-nums tracking-[0.1em]',
-                    isAdmin
-                      ? c.unread ? 'text-white' : 'text-white/20'
-                      : c.unread ? 'text-foreground font-medium' : 'text-muted-foreground',
+                    'shrink-0 text-[10px] font-medium tracking-wide uppercase',
+                    c.unread ? 'text-primary' : 'text-slate-400',
                   )}
                 >
-                  {compactTime(c.last_message_at).toUpperCase()}
+                  {compactTime(c.last_message_at)}
                 </div>
               </div>
               
@@ -137,37 +113,32 @@ export function ThreadList({
                 <div
                   className={cn(
                     'text-[12px] flex-1 line-clamp-1 break-words leading-relaxed',
-                    isAdmin
-                      ? c.unread ? 'text-white/70' : 'text-white/25'
-                      : c.unread ? 'text-foreground/90' : 'text-muted-foreground',
+                    c.unread ? 'text-slate-900 font-medium' : 'text-slate-500',
                   )}
                 >
                   {c.last_message?.body || c.subject || 'NEW CONVERSATION'}
                 </div>
-                {isAdmin && c.hasAttachments && (
+                {c.hasAttachments && (
                   <Paperclip
-                    className="w-3 h-3 text-white/20 shrink-0"
+                    className="w-3 h-3 text-slate-400 shrink-0"
                     aria-label="Has attachments"
                   />
                 )}
                 {c.unread && (
                   <div
-                    className={cn(
-                      "w-1.5 h-1.5 shrink-0",
-                      isAdmin ? "bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "bg-primary rounded-full"
-                    )}
+                    className="w-1.5 h-1.5 shrink-0 bg-primary rounded-full shadow-[0_0_0_2px_rgba(var(--primary),0.1)]"
                     aria-label="Unread"
                   />
                 )}
               </div>
               
               {reply && (
-                <div className="mt-2.5 inline-flex items-center px-1.5 py-0.5 text-[8px] uppercase tracking-[0.25em] font-black bg-white text-black">
-                  REPLY REQUIRED
+                <div className="mt-2.5 inline-flex items-center px-2 py-0.5 text-[9px] uppercase tracking-[0.05em] font-bold bg-red-50 text-red-600 rounded-md ring-1 ring-red-100">
+                  Reply Required
                 </div>
               )}
               {!isAdmin && (
-                <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                <div className="mt-2.5 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
                   1:1 coaching
                 </div>
               )}

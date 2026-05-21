@@ -160,7 +160,7 @@ export default function Inbox() {
       : FILTER_EMPTY_LABEL[filter];
 
   return (
-    <div className={cn('min-h-screen bg-background', !is_admin && 'bg-muted/20')}>
+    <div className={cn('min-h-screen bg-[#FDFDFC]', !is_admin && 'bg-[#FDFDFC]')}>
       <header className="border-b border-border bg-background/90 backdrop-blur sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -259,13 +259,13 @@ export default function Inbox() {
         )}>
           <aside
             className={cn(
-              'border-r border-border md:overflow-y-auto md:flex md:flex-col bg-background/70',
+              'border-r border-border md:overflow-y-auto md:flex md:flex-col bg-white/50 backdrop-blur-sm',
               active ? 'hidden md:flex' : 'block',
             )}
           >
             {!is_admin && (
-              <div className="px-4 py-4 border-b border-border bg-background">
-                <div className="text-[11px] font-semibold uppercase text-muted-foreground">
+              <div className="px-4 py-4 border-b border-border bg-white/80">
+                <div className="text-[11px] font-semibold uppercase text-muted-foreground tracking-wider">
                   Coaching
                 </div>
                 <div className="mt-1 text-sm font-medium text-foreground">
@@ -274,20 +274,20 @@ export default function Inbox() {
               </div>
             )}
             {is_admin && (
-              <div className="px-3 py-3 border-b border-border space-y-2.5 shrink-0">
+              <div className="px-4 py-4 border-b border-border space-y-3 shrink-0 bg-white/40">
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search students or messages"
-                    className="pl-8 h-9 text-sm"
+                    className="pl-9 h-9 text-sm bg-white/80 border-border/50 focus:bg-white transition-colors"
                   />
                 </div>
                 <div
                   role="tablist"
                   aria-label="Filter conversations"
-                  className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-muted/60 w-full"
+                  className="inline-flex items-center gap-1 p-1 rounded-xl bg-muted/40 w-full"
                 >
                   {FILTER_TABS.map((t) => (
                     <button
@@ -296,11 +296,11 @@ export default function Inbox() {
                       aria-selected={filter === t.id}
                       onClick={() => setFilter(t.id)}
                       className={cn(
-                        'flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all whitespace-nowrap',
+                        'flex-1 px-2 py-1.5 text-[11px] font-medium rounded-lg transition-all whitespace-nowrap',
                         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                         filter === t.id
-                          ? 'bg-background text-foreground shadow-sm'
-                          : 'text-muted-foreground hover:text-foreground',
+                          ? 'bg-white text-foreground shadow-sm ring-1 ring-black/5'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-white/50',
                       )}
                     >
                       {t.label}
@@ -332,7 +332,7 @@ export default function Inbox() {
                 onMessageSent={refresh}
               />
             ) : (
-              <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground">
+              <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground bg-[#FDFDFC]">
                 {is_admin ? 'Pick a thread to open' : 'Loading conversation'}
               </div>
             )}

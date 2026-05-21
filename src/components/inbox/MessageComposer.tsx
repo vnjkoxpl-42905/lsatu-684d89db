@@ -231,48 +231,48 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
   };
 
   return (
-    <div className="border-t border-border bg-background/95 backdrop-blur px-3 py-3 shrink-0">
-      <div className="mx-auto max-w-3xl space-y-2">
+    <div className="px-6 py-6 shrink-0 bg-transparent">
+      <div className="mx-auto max-w-4xl space-y-4">
       {file && (
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/40 text-sm">
-          <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
-          <span className="flex-1 truncate text-xs">{file.name}</span>
+        <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm shadow-sm">
+          <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+          <span className="flex-1 truncate text-xs font-semibold text-slate-700">{file.name}</span>
           <button
             onClick={() => setFile(null)}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-slate-400 hover:text-slate-900 transition-colors"
             aria-label="Remove attachment"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       )}
       {driveAttachments.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {driveAttachments.map((d) => (
             <div
               key={d.id}
-              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg border border-border bg-muted/40 text-xs max-w-full"
+              className="inline-flex items-center gap-2.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs max-w-full shadow-sm"
             >
-              <Cloud className="w-3 h-3 text-muted-foreground shrink-0" />
-              <span className="truncate max-w-[180px]">{d.file_name}</span>
+              <Cloud className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <span className="truncate max-w-[200px] font-semibold text-slate-700">{d.file_name}</span>
               <button
                 onClick={() => removeDriveFile(d.id)}
-                className="text-muted-foreground hover:text-foreground shrink-0 transition-colors"
+                className="text-slate-400 hover:text-slate-900 shrink-0 transition-colors"
                 aria-label={`Remove ${d.file_name}`}
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           ))}
         </div>
       )}
       {polished !== null && (
-        <div className="px-3 py-2 rounded-lg border border-border bg-muted/30 text-sm space-y-2">
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-            Polished version
+        <div className="px-5 py-4 rounded-2xl border border-slate-200 bg-white shadow-lg space-y-4 ring-1 ring-black/5">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">
+            AI Polished Version
           </div>
-          <div className="whitespace-pre-wrap text-sm leading-relaxed">{polished}</div>
-          <div className="flex flex-wrap gap-1 pt-0.5">
+          <div className="whitespace-pre-wrap text-sm leading-relaxed text-slate-800 font-medium">{polished}</div>
+          <div className="flex flex-wrap gap-2 pt-1">
             <Button
               size="sm"
               onClick={() => {
@@ -280,27 +280,28 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
                 setPolished(null);
               }}
               disabled={sending || polishing}
-              className="h-7 px-2.5 text-xs"
+              className="h-8 px-4 text-xs font-bold bg-slate-900 text-white rounded-lg hover:bg-slate-800"
             >
-              Use this
+              Apply this
             </Button>
             <Button
               size="sm"
               variant="ghost"
               onClick={() => setPolished(null)}
               disabled={sending || polishing}
-              className="h-7 px-2.5 text-xs"
+              className="h-8 px-4 text-xs font-bold text-slate-500 rounded-lg hover:bg-slate-50"
             >
-              Keep mine
+              Discard
             </Button>
+            <div className="flex-1" />
             <Button
               size="sm"
               variant="ghost"
               onClick={polish}
               disabled={sending || polishing || body.trim().length < 3}
-              className="h-7 px-2.5 text-xs"
+              className="h-8 px-4 text-xs font-bold text-slate-400 rounded-lg hover:bg-slate-50"
             >
-              Try again
+              Regenerate
             </Button>
           </div>
         </div>
@@ -312,7 +313,7 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
         className="hidden"
         onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
       />
-      <div className="relative rounded-xl border border-border bg-background shadow-sm focus-within:ring-2 focus-within:ring-ring/35">
+      <div className="relative rounded-2xl border border-slate-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] focus-within:ring-2 focus-within:ring-slate-900/5 focus-within:border-slate-300 transition-all">
         <TemplateSuggestionPalette
           open={templatePaletteOpen}
           templates={filteredTemplates}
@@ -327,19 +328,19 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
           onChange={(e) => setBodyAndResize(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask Joshua a question or send study context"
-          className="w-full resize-none min-h-0 border-0 bg-transparent px-3.5 py-3 text-sm shadow-none focus-visible:ring-0"
-          style={{ height: '44px', overflowY: 'hidden', transition: 'none' }}
+          className="w-full resize-none min-h-0 border-0 bg-transparent px-5 py-4 text-[15px] shadow-none focus-visible:ring-0 placeholder:text-slate-400 text-slate-800 font-medium"
+          style={{ height: '54px', overflowY: 'hidden', transition: 'none' }}
         />
-        <div className="flex items-center gap-1 border-t border-border/70 px-2 py-1.5">
+        <div className="flex items-center gap-2 px-3 py-2 border-t border-slate-50">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => fileRef.current?.click()}
             disabled={sending}
             aria-label="Attach PDF"
-            className="h-8 w-8"
+            className="h-9 w-9 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl"
           >
-            <Paperclip className="w-4 h-4" />
+            <Paperclip className="w-4.5 h-4.5" />
           </Button>
           {showDrive && (
             <DriveAttachmentPicker onAttach={addDriveFiles} disabled={sending} />
@@ -352,22 +353,27 @@ export function MessageComposer({ conversationId, onSent }: { conversationId: st
               disabled={sending || polishing || body.trim().length < 3}
               aria-label="Polish with AI"
               title="Polish with AI"
-              className="h-8 w-8"
+              className="h-9 w-9 text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-xl"
             >
-              <Sparkles className={`w-4 h-4 ${polishing ? 'animate-pulse' : ''}`} />
+              <Sparkles className={`w-4.5 h-4.5 ${polishing ? 'animate-pulse' : ''}`} />
             </Button>
           )}
           <div className="flex-1" />
-          <span className="hidden sm:inline text-[10px] text-muted-foreground/60 mr-1.5 select-none">⌘↵</span>
+          <span className="hidden sm:inline text-[10px] font-bold text-slate-300 tracking-widest mr-3 select-none">CMD+ENTER</span>
           <Button
             onClick={send}
             disabled={sending || !canSend}
             size="icon"
             variant={canSend ? 'default' : 'ghost'}
             aria-label="Send"
-            className="h-8 w-8"
+            className={cn(
+              "h-9 w-9 rounded-xl transition-all",
+              canSend 
+                ? "bg-slate-900 text-white hover:bg-slate-800 shadow-sm" 
+                : "text-slate-300 hover:bg-transparent"
+            )}
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4.5 h-4.5" />
           </Button>
         </div>
       </div>
