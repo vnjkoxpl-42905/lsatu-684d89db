@@ -6,14 +6,6 @@ const selectorLabels = ["Practice Test", "Section", "Question"] as const;
 
 export default function SmartLRTrainingCard() {
   const navigate = useNavigate();
-  const smartLRScore: number | null = null;
-  const streakDays: number | null = null;
-  const gaugeRadius = 84;
-  const gaugeCircumference = 2 * Math.PI * gaugeRadius;
-  const scoreProgress = smartLRScore === null ? 0 : Math.max(0, Math.min(100, smartLRScore));
-  const progressLength = (scoreProgress / 100) * gaugeCircumference;
-  const scoreDisplay = smartLRScore === null ? "--" : smartLRScore.toString();
-  const streakDisplay = streakDays === null ? "--" : streakDays.toString();
 
   const startSmartDrill = () => {
     navigate("/drill", { state: { mode: "adaptive" } });
@@ -22,84 +14,60 @@ export default function SmartLRTrainingCard() {
   return (
     <section
       aria-label="Smart LR Training"
-      className="group relative w-full overflow-hidden rounded-[30px] border border-slate-200/90 bg-[#fbfcff] px-6 py-7 text-slate-900 shadow-[0_22px_70px_rgba(41,51,79,0.11)]"
+      className="group relative w-full overflow-hidden rounded-[32px] border border-slate-200/50 bg-[#fbfcff] px-6 py-8 text-slate-900 shadow-[0_15px_40px_rgba(15,23,42,0.04)]"
     >
+      {/* Visual Accent Inner Ring */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-[30px] ring-1 ring-white/85"
+        className="pointer-events-none absolute inset-0 rounded-[32px] ring-1 ring-white/80"
       />
 
       <div className="relative mb-6 flex flex-col items-center">
+        {/* Semi-circular Gauge Centerpiece */}
         <div
-          className="relative h-[236px] w-[236px]"
+          className="relative h-[160px] w-[220px] flex items-center justify-center"
           role="img"
-          aria-label={`Smart LR Score ${scoreDisplay} out of 100`}
+          aria-label="Smart LR Score 0"
         >
-          <svg className="h-full w-full -rotate-90" viewBox="0 0 220 220" aria-hidden>
-            <circle
-              cx="110"
-              cy="110"
-              r={gaugeRadius}
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 200 160" aria-hidden>
+            <path
+              d="M 35 130 A 65 65 0 1 1 165 130"
               fill="none"
-              stroke="#eef2f8"
-              strokeWidth="16"
-            />
-            <circle
-              cx="110"
-              cy="110"
-              r={gaugeRadius}
-              fill="none"
-              stroke="#dbeafe"
+              stroke="#e2e8f0"
+              strokeWidth="10"
               strokeLinecap="round"
-              strokeWidth="16"
-              strokeDasharray={`${gaugeCircumference * 0.14} ${gaugeCircumference}`}
-              strokeDashoffset={gaugeCircumference * 0.06}
-            />
-            <circle
-              cx="110"
-              cy="110"
-              r={gaugeRadius}
-              fill="none"
-              stroke="#111827"
-              strokeLinecap="round"
-              strokeWidth="16"
-              strokeDasharray={
-                smartLRScore === null
-                  ? `${gaugeCircumference * 0.035} ${gaugeCircumference}`
-                  : `${progressLength} ${gaugeCircumference}`
-              }
-              strokeDashoffset={smartLRScore === null ? gaugeCircumference * 0.7 : 0}
+              className="opacity-70"
             />
           </svg>
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Smart LR Score
+          {/* Large Centered 0 - Main Visual Focus */}
+          <div className="absolute inset-0 flex items-center justify-center pt-2">
+            <span className="text-[76px] font-bold tracking-tight text-slate-400/90 leading-none">
+              0
             </span>
-            <div className="flex items-baseline justify-center">
-              <span className="text-[54px] font-semibold leading-none tracking-normal text-slate-950">
-                {scoreDisplay}
-              </span>
-              <span className="ml-2 text-lg font-semibold text-slate-400">/ 100</span>
-            </div>
           </div>
         </div>
 
-        <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3.5 py-2 text-sm font-semibold text-slate-500 shadow-sm">
-          <Flame className="h-4 w-4 text-orange-500" aria-hidden />
-          <span>Streak</span>
-          <span className="tabular-nums text-slate-900">{streakDisplay}</span>
-          <span className="font-medium text-slate-400">days</span>
+        {/* Small Subtle Label Below Gauge */}
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400/90 mt-1">
+          Smart LR Score
+        </span>
+
+        {/* Sleek Integrated Streak Inline Row */}
+        <div className="mt-3.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500/90">
+          <Flame className="h-4 w-4 text-orange-500 fill-orange-500/10" aria-hidden />
+          <span>Streak -- days</span>
         </div>
       </div>
 
+      {/* Manual Selection Dropdowns */}
       <div className="relative mb-4 grid grid-cols-3 gap-2.5" aria-label="Training selectors">
         {selectorLabels.map((label) => (
           <button
             key={label}
             type="button"
             disabled
-            className="flex h-12 min-w-0 flex-col justify-center rounded-2xl border border-slate-200 bg-white/75 px-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors disabled:cursor-not-allowed disabled:opacity-100"
+            className="flex h-12 min-w-0 flex-col justify-center rounded-2xl border border-slate-200 bg-white/70 px-3 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors disabled:cursor-not-allowed"
           >
             <span className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">
               {label}
@@ -112,19 +80,22 @@ export default function SmartLRTrainingCard() {
         ))}
       </div>
 
+      {/* Main Start CTA Button */}
       <Button
         type="button"
         onClick={startSmartDrill}
-        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_16px_30px_rgba(15,23,42,0.18)] transition-transform duration-200 hover:bg-slate-800 group-hover:-translate-y-0.5"
+        className="relative h-12 min-h-12 w-full rounded-2xl border border-slate-950 bg-slate-950 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,23,42,0.12)] transition-transform duration-200 hover:bg-slate-800 active:scale-[0.98]"
       >
         <Play className="h-4 w-4" aria-hidden />
         Start Smart LR Drill
       </Button>
 
+      {/* Bottom Separator Highlight */}
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-0 left-7 right-7 h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent"
+        className="pointer-events-none absolute bottom-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-slate-300/40 to-transparent"
       />
     </section>
   );
 }
+
