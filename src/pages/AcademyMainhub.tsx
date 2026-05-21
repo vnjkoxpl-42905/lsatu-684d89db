@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { LifeBuoy, Menu } from "lucide-react";
+import { Loader2, Menu, MessageCircle, Send, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import MainhubSidebar from "@/components/mainhub/MainhubSidebar";
@@ -11,14 +11,15 @@ import MainhubAccountButton from "@/components/mainhub/MainhubAccountButton";
 import SmartLRTrainingCard from "@/components/mainhub/SmartLRTrainingCard";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import HelpDialog from "@/components/mainhub/HelpDialog";
 import { hasSeenTour, startTour } from "@/components/mainhub/GuidedTour";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
 import { useClassroomItems } from "@/hooks/useClassroomItems";
 import { useOrbitalActive } from "@/contexts/OrbitalActiveContext";
 import { useLastActivity } from "@/hooks/useLastActivity";
+import { useConversationMessages } from "@/hooks/useInbox";
 import { resolveResumeTarget } from "@/lib/lastActivity";
 import { nextActionFor, resolveItemRoute } from "@/lib/classroomItems";
+import { startJoshuaConversation } from "@/lib/joshuaThread";
 import {
   ORBITAL_CATALOG,
   findCatalogItem,
@@ -229,7 +230,6 @@ export default function AcademyMainhub() {
       <MainhubHelpControl
         open={helpOpen}
         onOpenChange={setHelpOpen}
-        onReplayTour={() => startTour()}
       />
     </div>
   );
@@ -238,25 +238,184 @@ export default function AcademyMainhub() {
 function MainhubHelpControl({
   open,
   onOpenChange,
-  onReplayTour,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onReplayTour?: () => void;
 }) {
+  const { user } = useAuth();
+  const [conversationId, setConversationId] = React.useState<string | null>(null);
+  const [threadError, setThreadError] = React.useState<string | null>(null);
+  const [openingThread, setOpeningThread] = React.useState(false);
+  const [body, setBody] = React.useState("");
+  const [sending, setSending] = React.useState(false);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const { messages, loading, refresh } = useConversationMessages(conversationId);
+
+  React.useEffect(() => {
+    if (!open || conversationId) return;
+    let cancelled = false;
+    setOpeningThread(true);
+    setThreadError(null);
+
+    startJoshuaConversation()
+      .then((id) => {
+        if (!cancelled) setConversationId(id);
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setThreadError(error instanceof Error ? error.message : "Could not open your thread.");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setOpeningThread(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [conversationId, open]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+  }, [messages.length, open]);
+
+  const sendMessage = async () => {
+    const text = body.trim();
+    if (!user || !conversationId || !text || sending) return;
+    setSending(true);
+    try {
+      const { error } = await supabase
+        .from("messages")
+        .insert({ conversation_id: conversationId, sender_id: user.id, body: text });
+      if (error) throw error;
+      setBody("");
+      await refresh();
+    } catch (error) {
+      setThreadError(error instanceof Error ? error.message : "Could not send your message.");
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <>
       <button
         type="button"
-        onClick={() => onOpenChange(true)}
+        onClick={() => onOpenChange(!open)}
+        aria-expanded={open}
         aria-label="Get help from Joshua"
         title="Get help from Joshua"
         data-help-overlay
-        className="fixed bottom-5 left-5 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background/90 text-muted-foreground shadow-sm backdrop-blur transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="fixed bottom-5 left-5 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full border border-black/10 bg-[#141414] text-white shadow-[0_14px_35px_rgba(15,23,42,0.18)] transition hover:bg-[#242424] active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <LifeBuoy className="h-4 w-4" aria-hidden />
+        <MessageCircle className="h-5 w-5" strokeWidth={1.8} aria-hidden />
       </button>
-      <HelpDialog open={open} onOpenChange={onOpenChange} onReplayTour={onReplayTour} />
+
+      {open && (
+        <section
+          role="dialog"
+          aria-label="LSAT U support chat"
+          data-help-overlay
+          className="fixed bottom-20 left-5 z-50 flex h-[min(560px,calc(100dvh-7rem))] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-[#fbfcff] text-slate-900 shadow-[0_24px_70px_rgba(15,23,42,0.18)]"
+        >
+          <header className="flex h-16 shrink-0 items-center gap-3 border-b border-slate-200/70 bg-white/80 px-4 backdrop-blur">
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950 text-[13px] font-semibold text-white shadow-sm"
+              aria-hidden
+            >
+              J
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-semibold text-slate-900">LSAT U Support</div>
+              <div className="truncate text-[11px] text-slate-500">Joshua and your study thread</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              aria-label="Minimize support chat"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X className="h-4 w-4" aria-hidden />
+            </button>
+          </header>
+
+          <div
+            ref={scrollRef}
+            className="min-h-0 flex-1 overflow-y-auto bg-white px-4 py-5"
+          >
+            {threadError ? (
+              <div className="flex h-full items-center justify-center px-6 text-center text-sm text-slate-500">
+                {threadError}
+              </div>
+            ) : openingThread || loading ? (
+              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                Opening your thread...
+              </div>
+            ) : messages.length === 0 ? (
+              <div className="flex h-full items-start justify-center pt-5 text-center">
+                <p className="text-[22px] font-medium tracking-normal text-slate-500">
+                  Need some help?
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.sender_id === user?.id ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[82%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
+                        message.sender_id === user?.id
+                          ? "rounded-br-md bg-slate-950 text-white"
+                          : "rounded-bl-md bg-slate-100 text-slate-800"
+                      }`}
+                    >
+                      {message.body}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="shrink-0 border-t border-slate-200/80 bg-[#fbfcff] px-3 py-3">
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-slate-300/60">
+              <textarea
+                value={body}
+                onChange={(event) => setBody(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+                    event.preventDefault();
+                    sendMessage();
+                  }
+                }}
+                disabled={!conversationId || sending}
+                placeholder="Message..."
+                rows={2}
+                className="min-h-[56px] w-full resize-none rounded-t-2xl border-0 bg-transparent px-4 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-default disabled:opacity-60"
+              />
+              <div className="flex items-center justify-end border-t border-slate-100 px-2 py-1.5">
+                <button
+                  type="button"
+                  onClick={sendMessage}
+                  disabled={!conversationId || !body.trim() || sending}
+                  aria-label="Send message"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-white transition hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300"
+                >
+                  {sending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  ) : (
+                    <Send className="h-4 w-4" aria-hidden />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
