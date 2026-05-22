@@ -8,6 +8,7 @@ export interface LayoutPrefs {
 }
 
 const DEFAULT_SIDEBAR = [
+  "/teacher",
   "/classroom",
   "/inbox",
   "/practice",
@@ -25,7 +26,7 @@ export const PRESETS: Record<Exclude<PresetId, "custom">, LayoutPrefs> = {
     preset: "minimal",
     orbital: ["resume", "analytics", "waj"],
     dock: ["inbox"],
-    sidebar: ["/classroom", "/inbox", "/practice", "/schedule"],
+    sidebar: DEFAULT_SIDEBAR,
   },
   power: {
     preset: "power",

@@ -52,6 +52,7 @@ export const ORBITAL_CATALOG: CatalogItem[] = [
 // Mainhub sidebar nav items. The `id` is the route path so saved layouts survive
 // refactors; consumers map id -> NAV_ITEM to render.
 export const SIDEBAR_CATALOG: CatalogItem[] = [
+  { id: "/teacher", label: "Teacher Workspace", icon: Command, to: "/teacher", adminOnly: true, description: "Open the Teacher Workspace." },
   { id: "/classroom", label: "Classroom", icon: GraduationCap, to: "/classroom", requires: "has_classroom_access", description: "Assigned work, recaps, and announcements." },
   { id: "/inbox", label: "Messages", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access", description: "1:1 message threads with Joshua." },
   { id: "/practice", label: "Practice Hub", icon: Dumbbell, to: "/practice", requires: "has_practice_access", description: "Drill-launcher hub: full sections, smart builder, custom drills." },
