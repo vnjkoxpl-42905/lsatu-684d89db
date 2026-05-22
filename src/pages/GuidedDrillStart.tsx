@@ -83,14 +83,23 @@ export default function GuidedDrillStart() {
       return;
     }
 
-    const pool = resolveGuidedDrillPool(drill.bank_filter);
-    if (pool.length === 0) {
-      toast.error('No matching questions found for this drill.');
-      return;
-    }
+    // Priority 1+2: exact attached question IDs (assignment override > drill-level list)
+    const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
+    const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
 
-    const want = drill.question_count ?? Math.min(pool.length, 10);
-    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, want);
+    let selectedQids: string[];
+    if (exactQids.length > 0) {
+      selectedQids = exactQids;
+    } else {
+      // Priority 3 (fallback): random sample from bank_filter pool
+      const pool = resolveGuidedDrillPool(drill.bank_filter);
+      if (pool.length === 0) {
+        toast.error('No matching questions found for this drill.');
+        return;
+      }
+      const want = drill.question_count ?? Math.min(pool.length, 10);
+      selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
+    }
 
     if (assignment) {
       await markCardRead(assignment.id);
@@ -101,8 +110,8 @@ export default function GuidedDrillStart() {
       qtypes: drill.question_types || [],
       difficulties: [],
       pts: [],
-      count: shuffled.length,
-      selectedQids: shuffled.map((q) => q.qid),
+      count: selectedQids.length,
+      selectedQids,
       unseen_only: false,
     };
 
