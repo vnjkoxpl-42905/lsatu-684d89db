@@ -29,6 +29,7 @@ export interface GuidedDrill {
   bank_filter: GuidedDrillBankFilter;
   source_file?: string | null;
   is_published: boolean;
+  question_qids?: string[];
 }
 
 export interface GuidedDrillAssignment {
@@ -45,6 +46,34 @@ export interface GuidedDrillAssignment {
   started_at: string | null;
   completed_at: string | null;
   attempt_session_id: string | null;
+  question_qids?: string[];
+}
+
+/**
+ * Resolve the ordered list of exact question IDs for a guided drill, if any.
+ * Priority:
+ *   1. Assignment-level override (per-student exact list)
+ *   2. Drill-level exact list (guided_drills.question_qids)
+ * Returns [] if no exact list is attached — caller should then fall back to bank_filter sampling.
+ * Filters out qids not present in the loaded question bank to avoid broken drills.
+ */
+export function resolveExactGuidedDrillQids(
+  drill: GuidedDrill | null | undefined,
+  assignment: GuidedDrillAssignment | null | undefined,
+  knownQids: Set<string>,
+): string[] {
+  const fromAssignment = assignment?.question_qids ?? [];
+  const fromDrill = drill?.question_qids ?? [];
+  const ordered = fromAssignment.length > 0 ? fromAssignment : fromDrill;
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const qid of ordered) {
+    if (!qid || seen.has(qid)) continue;
+    if (knownQids.size > 0 && !knownQids.has(qid)) continue;
+    seen.add(qid);
+    out.push(qid);
+  }
+  return out;
 }
 
 export async function listGuidedDrills(): Promise<GuidedDrill[]> {
