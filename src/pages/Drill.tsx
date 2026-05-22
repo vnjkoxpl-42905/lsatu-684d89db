@@ -2379,14 +2379,6 @@ function DrillContent() {
           pauseNoun={isFullSection ? 'Section' : 'Question'}
           tutorToggleVisible={session?.mode === 'adaptive'}
           tutorMode={tutorMode}
-          questionMetadata={{
-            pt: currentQuestion.pt,
-            section: currentQuestion.section,
-            qnum: currentQuestion.qnum,
-            reasoningType: currentQuestion.reasoningType,
-            questionType: currentQuestion.qtype,
-            questionFeatures: currentQuestion.questionFeatures,
-          }}
           onTutorModeChange={(next) => {
             setTutorMode(next);
             if (next && currentQuestion && session?.mode === 'adaptive') {

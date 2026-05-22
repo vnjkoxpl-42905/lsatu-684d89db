@@ -2,7 +2,6 @@ import * as React from "react";
 import { Play, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import DrillNotepad from "@/components/drill/DrillNotepad";
-import QuestionMetadataPopover, { type QuestionMetadata } from "@/components/drill/QuestionMetadataPopover";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -21,8 +20,6 @@ interface Props {
   tutorMode?: boolean;
   /** Toggle handler for Tutor mode. */
   onTutorModeChange?: (next: boolean) => void;
-  /** Current question metadata shown by the top help/info affordance. */
-  questionMetadata?: QuestionMetadata | null;
 }
 
 /**
@@ -39,7 +36,6 @@ export default function OfficialDrillFrame({
   tutorToggleVisible,
   tutorMode,
   onTutorModeChange,
-  questionMetadata,
 }: Props) {
   const { user } = useAuth();
   const rawName = (user?.user_metadata?.display_name as string | undefined)?.trim();
@@ -85,15 +81,6 @@ export default function OfficialDrillFrame({
               <span aria-hidden className="w-px h-5 bg-slate-300" />
             </>
           )}
-          <QuestionMetadataPopover
-            metadata={questionMetadata}
-            resetKey={[
-              questionMetadata?.pt,
-              questionMetadata?.section,
-              questionMetadata?.qnum,
-            ].filter(Boolean).join("-")}
-          />
-          <span aria-hidden className="w-px h-5 bg-slate-300" />
           <span className="font-medium">Welcome, {welcomeName}</span>
         </div>
         {header && (
