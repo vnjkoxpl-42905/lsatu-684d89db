@@ -5,11 +5,13 @@ import {
   getGuidedDrillBySlug,
   markCardRead,
   markStarted,
+  resolveExactGuidedDrillQids,
   resolveGuidedDrillPool,
   type GuidedDrill,
   type GuidedDrillAssignment,
 } from '@/lib/guidedDrills';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
+import { questionBank } from '@/lib/questionLoader';
 import {
   findGuidedDrillHtmlByDrill,
   findGuidedDrillHtmlBySlug,
