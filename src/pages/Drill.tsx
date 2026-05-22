@@ -203,6 +203,7 @@ function DrillContent() {
   const eventsRef = React.useRef<eventWithTime[]>([]);
   const stopRecordingRef = React.useRef<(() => void) | null>(null);
   const lastRecordedQidRef = React.useRef<string | null>(null);
+  const adaptiveCommitInFlightRef = React.useRef<Set<string>>(new Set());
 
   // Homework assignment: dedupe the status='in_progress' write per mount.
   const assignmentStartedRef = React.useRef(false);
@@ -1297,6 +1298,123 @@ function DrillContent() {
     }
   };
 
+  const commitCurrentAdaptiveAnswer = async ({
+    revealAfterSave,
+    advanceAfterSave,
+  }: {
+    revealAfterSave: boolean;
+    advanceAfterSave: boolean;
+  }): Promise<boolean> => {
+    if (!currentQuestion || !session || session.mode !== 'adaptive') return false;
+
+    const qid = currentQuestion.qid;
+    const existingAttempt = session.attempts.get(qid);
+
+    if (existingAttempt) {
+      if (revealAfterSave) {
+        if (existingAttempt.selectedAnswer) setSelectedAnswer(existingAttempt.selectedAnswer);
+        setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
+        setAnswerLocked(true);
+        setSession(prev => {
+          if (!prev) return prev;
+          const existing = prev.attempts.get(qid);
+          if (!existing) return prev;
+          const attempts = new Map(prev.attempts);
+          attempts.set(qid, { ...existing, answerRevealed: true });
+          return { ...prev, attempts };
+        });
+      }
+      if (advanceAfterSave) setAdvanceToken(t => t + 1);
+      return true;
+    }
+
+    if (!selectedAnswer) {
+      toast.error(
+        revealAfterSave
+          ? 'Select an answer before showing the answer.'
+          : 'Select an answer before moving to the next question.',
+      );
+      return false;
+    }
+
+    if (adaptiveCommitInFlightRef.current.has(qid)) return false;
+    adaptiveCommitInFlightRef.current.add(qid);
+
+    const committedAnswer = selectedAnswer;
+    const correct = committedAnswer === currentQuestion.correctAnswer;
+    const timeMs = Math.floor(performance.now() - questionStartTime);
+
+    try {
+      const saved = await persistAttempt({
+        qid,
+        correct,
+        time_ms: timeMs,
+        qtype: currentQuestion.qtype,
+        level: currentQuestion.difficulty,
+        confidence: null,
+        mode: session.mode,
+        selected_answer: committedAnswer,
+      });
+
+      if (!saved) {
+        if (!classId && !user?.id) {
+          toast.error("Your session is out of sync. Please refresh the page or sign back in.");
+        } else {
+          toast.error("Couldn't save your answer. Check your connection and try the next question.");
+        }
+        return false;
+      }
+
+      await flushReplay(qid, session.mode);
+      if (currentViewId.current) QuestionPoolService.markViewAnswered(currentViewId.current);
+
+      const committedAttempt: DrillSession['attempts'] extends Map<string, infer Attempt> ? Attempt : never = {
+        selectedAnswer: committedAnswer,
+        correct,
+        timeMs,
+        timestamp: Date.now(),
+        confidence: null,
+        reviewDone: false,
+        answerRevealed: revealAfterSave,
+      };
+
+      const newAttempts = new Map(session.attempts);
+      newAttempts.set(qid, committedAttempt);
+
+      adaptiveEngine.recordAttempt({
+        qid,
+        correct,
+        time_ms: timeMs,
+        qtype: currentQuestion.qtype,
+        difficulty: currentQuestion.difficulty,
+        timestamp: new Date(),
+        reasoningType: currentQuestion.reasoningType ?? [],
+        questionFeatures: currentQuestion.questionFeatures ?? [],
+      });
+
+      if (classId && session.mode) {
+        QuestionPoolService.markQuestionSeen(qid, classId, session.mode);
+      }
+
+      setSession({ ...session, attempts: newAttempts });
+
+      if (revealAfterSave) {
+        setShowAnswerRevealed(prev => new Map(prev).set(qid, true));
+        setAnswerLocked(true);
+        if (committedAnswer !== currentQuestion.correctAnswer) {
+          setTutorQuestionSnapshot(currentQuestion);
+          setTutorUserAnswerSnapshot(committedAnswer);
+          setTutorChatOpen(true);
+        }
+      }
+
+      if (advanceAfterSave) setAdvanceToken(t => t + 1);
+      return true;
+    } finally {
+      adaptiveCommitInFlightRef.current.delete(qid);
+    }
+  };
+
   const generateCorrectExplanation = async () => {
     if (!currentQuestion) return;
     
@@ -2317,7 +2435,7 @@ function DrillContent() {
     const currentAttempted = attemptedQids.has(currentQuestion.qid);
     const requiresAnswerBeforeNext = !isFullSection && !isPracticeSetMode;
     const officialNextDisabled =
-      !!timer?.isPaused || (requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted);
+      !!timer?.isPaused || (!isAdaptiveMode && requiresAnswerBeforeNext && !selectedAnswer && !currentAttempted);
     const officialPrev = isAdaptiveMode
       ? () => {}
       : isPracticeSetMode
@@ -2332,13 +2450,19 @@ function DrillContent() {
           return;
         }
         if (isAdaptiveMode) {
-          await handleSubmit({ advanceAfterSubmit: true });
+          await commitCurrentAdaptiveAnswer({
+            revealAfterSave: false,
+            advanceAfterSave: true,
+          });
+          return;
         } else {
           committedAttempts = await handleSubmitNonAdaptive(selectedAnswer, { advanceAfterSubmit: true });
         }
       }
       if (isPracticeSetMode) {
         handlePracticeSetNext();
+      } else if (isAdaptiveMode) {
+        setAdvanceToken(t => t + 1);
       } else if (!isAdaptiveMode && session.currentIndex >= session.questionQueue.length - 1) {
         await handleFinishSection(committedAttempts ?? session.attempts);
       } else {
@@ -2425,18 +2549,13 @@ function DrillContent() {
               onComplete={session.mode === 'adaptive' ? undefined : handleFinishSection}
               showAnswerVisible={
                 session.mode === 'adaptive' &&
-                !!selectedAnswer &&
                 !showAnswerRevealed.get(currentQuestion.qid)
               }
               onShowAnswer={() => {
-                if (!currentQuestion) return;
-                setShowAnswerRevealed(prev => new Map(prev).set(currentQuestion.qid, true));
-                // If wrong, auto-open the AI tutor in post-answer mode
-                if (selectedAnswer && selectedAnswer !== currentQuestion.correctAnswer) {
-                  setTutorQuestionSnapshot(currentQuestion);
-                  setTutorUserAnswerSnapshot(selectedAnswer);
-                  setTutorChatOpen(true);
-                }
+                void commitCurrentAdaptiveAnswer({
+                  revealAfterSave: true,
+                  advanceAfterSave: false,
+                });
               }}
             />
           }
