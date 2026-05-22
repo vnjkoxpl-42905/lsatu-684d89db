@@ -4,6 +4,7 @@ import {
   CalendarDays,
   Command,
   Dumbbell,
+  Flame,
   GraduationCap,
   Inbox,
   LifeBuoy,
@@ -54,6 +55,7 @@ export const ORBITAL_CATALOG: CatalogItem[] = [
 export const SIDEBAR_CATALOG: CatalogItem[] = [
   { id: "/teacher", label: "Teacher Workspace", icon: Command, to: "/teacher", adminOnly: true, description: "Open the Teacher Workspace." },
   { id: "/classroom", label: "Classroom", icon: GraduationCap, to: "/classroom", requires: "has_classroom_access", description: "Assigned work, recaps, and announcements." },
+  { id: "/bootcamps", label: "Bootcamps", icon: Flame, to: "/bootcamps", requires: "has_bootcamp_access", description: "Multi-day skill modules and assigned bootcamp tracks." },
   { id: "/inbox", label: "Messages", icon: MessagesSquare, to: "/inbox", requires: "has_chat_access", description: "1:1 message threads with Joshua." },
   { id: "/practice", label: "Practice Hub", icon: Dumbbell, to: "/practice", requires: "has_practice_access", description: "Drill-launcher hub: full sections, smart builder, custom drills." },
   { id: "/schedule", label: "Schedule", icon: CalendarDays, to: "/schedule", requires: "has_schedule_access", description: "Calendar of due dates and weekly plan items." },

@@ -10,6 +10,7 @@ export interface LayoutPrefs {
 const DEFAULT_SIDEBAR = [
   "/teacher",
   "/classroom",
+  "/bootcamps",
   "/inbox",
   "/practice",
   "/schedule",
