@@ -28,10 +28,10 @@ export function SegmentedControl<T extends string>({
       role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
-        'inline-flex rounded-3 p-0.5',
-        'bg-[image:var(--grad-surface-elev)]',
-        'border border-[rgb(var(--border)/0.10)]',
-        'shadow-[inset_0_1px_0_rgb(255_255_255/0.04),0_1px_2px_rgb(0_0_0/0.4)]',
+        'inline-flex rounded-[6px] p-1',
+        'bg-[rgb(255_255_255/0.74)]',
+        'border border-[rgb(26_26_26/0.10)]',
+        'shadow-[var(--soft-shadow)]',
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function SegmentedControl<T extends string>({
             aria-checked={active}
             onClick={() => onChange(o.value)}
             className={cn(
-              'relative h-7 px-3.5 rounded-2 font-mc-mono text-mono transition-colors duration-150 ease-eased',
+              'relative h-8 px-3.5 rounded-[4px] font-mc-mono text-mono uppercase tracking-[0.18em] transition-colors duration-150 ease-eased',
               'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-1',
               active ? 'text-mc-accent' : 'text-ink-soft hover:text-ink',
             )}
@@ -55,10 +55,10 @@ export function SegmentedControl<T extends string>({
                 aria-hidden="true"
                 transition={{ type: 'spring', stiffness: 420, damping: 36, mass: 0.6 }}
                 className={cn(
-                  'absolute inset-0 rounded-2',
-                  'bg-[image:var(--grad-accent-soft)]',
-                  'border border-[color:var(--border-accent-mid)]',
-                  'shadow-[inset_0_1px_0_rgb(255_255_255/0.08),var(--glow-accent-soft)]',
+                  'absolute inset-0 rounded-[4px]',
+                  'bg-white',
+                  'border border-[rgb(26_26_26/0.12)]',
+                  'shadow-[var(--soft-shadow)]',
                 )}
               />
             ) : null}

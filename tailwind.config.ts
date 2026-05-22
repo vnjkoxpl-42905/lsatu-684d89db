@@ -192,9 +192,9 @@ export default {
       },
       fontFamily: {
         /* MC bootcamp font stacks — only consumed by classes inside .mc-bootcamp */
-        "mc-sans": ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
-        "mc-serif": ['Fraunces', 'ui-serif', 'Iowan Old Style', '"Apple Garamond"', 'Georgia', 'serif'],
-        "mc-mono": ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        "mc-sans": ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+        "mc-serif": ['Georgia', '"Times New Roman"', 'ui-serif', 'serif'],
+        "mc-mono": ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
         /* FF bootcamp font stacks */
         display: ['Georgia', '"Times New Roman"', 'serif'],
       },

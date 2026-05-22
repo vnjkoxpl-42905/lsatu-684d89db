@@ -15,28 +15,22 @@ export function RunnerHero({ step, progressLabel, Icon = Sparkles }: Props): JSX
   return (
     <section
       className={cn(
-        'relative isolate overflow-hidden rounded-5 p-7 desktop:p-9',
-        'bg-[image:var(--grad-surface-elev)]',
-        'border border-[color:var(--border-accent-soft)]',
-        'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+        'relative isolate overflow-hidden rounded-[8px] p-7 desktop:p-10',
+        'bg-white border border-[rgb(26_26_26/0.10)] shadow-[var(--shadow-3)]',
       )}
       aria-label="Your next training step"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-50 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.22), transparent 70%)' }}
+        className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-70 blur-3xl"
+        style={{ background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.92), transparent 70%)' }}
       />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
-      />
-      <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-6">
+      <div className="relative flex flex-col gap-6">
         <div className="min-w-0 flex-1">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.30em] text-ink-faint">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]"
             />
             {step.eyebrow}
             {progressLabel ? (
@@ -45,10 +39,10 @@ export function RunnerHero({ step, progressLabel, Icon = Sparkles }: Props): JSX
               </span>
             ) : null}
           </div>
-          <h2 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
+          <h2 className="mt-4 max-w-[9ch] font-mc-serif text-[clamp(4rem,9vw,8.5rem)] font-medium italic text-ink leading-[0.82] tracking-[-0.08em]">
             {step.title}
           </h2>
-          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[58ch] leading-relaxed">
+          <p className="font-mc-sans text-body-prose mt-5 text-ink-soft max-w-[42rem] leading-relaxed">
             {step.subtitle}
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -74,15 +68,7 @@ export function RunnerHero({ step, progressLabel, Icon = Sparkles }: Props): JSX
             ) : null}
           </div>
         </div>
-        <div
-          aria-hidden="true"
-          className={cn(
-            'shrink-0 hidden desktop:inline-flex h-20 w-20 items-center justify-center rounded-5',
-            'bg-[image:var(--grad-accent-strong)]',
-            'border border-[color:var(--border-accent-mid)]',
-            'text-mc-accent shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.10)]',
-          )}
-        >
+        <div className="hidden" aria-hidden="true">
           <Icon className="h-8 w-8" strokeWidth={1.8} />
         </div>
       </div>

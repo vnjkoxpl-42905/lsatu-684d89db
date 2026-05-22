@@ -108,11 +108,10 @@ export function DiagnosticsIndex() {
             Diagnostics
           </div>
           <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-tight">
-            Calibration after teaching
+            Lesson 13 after teaching
           </h1>
           <p className="font-mc-serif text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
-            We do not score you before we teach you. The dashboard activates the moment your first
-            calibration is in.
+            We do not score you before we teach you. This area wakes up once Lesson 13 is complete.
           </p>
         </div>
       </header>
@@ -133,14 +132,14 @@ export function DiagnosticsIndex() {
           <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-5">
             <div className="min-w-0 flex-1">
               <Badge tone="warn" dot>
-                awaiting first calibration
+                awaiting Lesson 13
               </Badge>
               <h2 className="font-mc-serif text-h1 font-semibold mt-3 text-ink leading-tight">
-                Take the Lesson 13 calibration
+                Take Lesson 13
               </h2>
               <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
-                The dashboard, recommendations, and trait profile all populate from your calibration.
-                Until then, this surface is honestly empty.
+                The dashboard, recommendations, and trait profile all populate from Lesson 13.
+                Until then, this section is honestly empty.
               </p>
               <div className="mt-4">
                 <Link
@@ -152,7 +151,7 @@ export function DiagnosticsIndex() {
                     leftIcon={<Award className="h-4 w-4" strokeWidth={2.2} />}
                     rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
                   >
-                    Start calibration
+                    Open Lesson 13
                   </Button>
                 </Link>
               </div>
@@ -186,7 +185,7 @@ export function DiagnosticsIndex() {
 
       <section>
         <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
-          Diagnostic surfaces
+          Diagnostic sections
         </h2>
         <ul className="grid gap-3 sm:grid-cols-2">
           {DIAG_SECTIONS.map((s) => {

@@ -113,7 +113,7 @@ export function SimulatorOverview() {
               Simulator unlocked
             </Badge>
             <span className="font-mc-mono text-mono text-ink-faint">
-              Drill 3.4 cleared. Open any of the surfaces below.
+              Drill 3.4 cleared. Open any of the sections below.
             </span>
           </div>
         </section>

@@ -213,15 +213,15 @@ function Hero({
     <header className="relative isolate mb-8">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.20), transparent 70%)' }}
+        className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-60 blur-3xl"
+        style={{ background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.86), transparent 70%)' }}
       />
       <div className="relative">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]"
             />
             {studentEyebrow}
           </div>
@@ -231,10 +231,10 @@ function Hero({
             </Badge>
           ) : null}
         </div>
-        <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
+        <h1 className="mt-3 font-mc-serif text-[clamp(3rem,6vw,5rem)] font-medium italic text-ink leading-[0.92] tracking-[-0.06em]">
           {title}
         </h1>
-        <p className="font-mc-serif text-h3 mt-4 text-ink-soft italic border-l border-l-[color:var(--border-accent-strong)] pl-4 leading-relaxed">
+        <p className="mt-5 max-w-[48rem] border-l border-l-[rgb(26_26_26/0.18)] pl-4 font-mc-sans text-body-prose leading-relaxed text-ink-soft">
           {hook}
         </p>
       </div>
@@ -246,9 +246,9 @@ function PhaseStrip({ phases, index }: { phases: Phase[]; index: number }): JSX.
   return (
     <div
       className={cn(
-        'rounded-3 px-3 py-2.5',
-        'bg-[image:var(--grad-surface-soft)]',
-        'border border-[rgb(var(--border)/0.08)]',
+        'rounded-[6px] px-3 py-2.5',
+        'bg-[rgb(255_255_255/0.72)]',
+        'border border-[rgb(26_26_26/0.10)]',
       )}
       role="progressbar"
       aria-valuenow={index + 1}
@@ -266,11 +266,11 @@ function PhaseStrip({ phases, index }: { phases: Phase[]; index: number }): JSX.
                   'relative inline-flex h-6 items-center gap-1.5 rounded-full px-2.5',
                   'font-mc-mono text-[10.5px] uppercase tracking-wider transition-colors duration-150 ease-eased',
                   status === 'done' &&
-                    'bg-[rgb(var(--accent)/0.14)] text-mc-accent border border-[color:var(--border-accent-soft)]',
+                    'bg-[rgb(255_255_255/0.92)] text-ink border border-[rgb(26_26_26/0.12)]',
                   status === 'active' &&
-                    'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-strong)] shadow-[var(--glow-accent-soft)]',
+                    'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(26_26_26/0.16)]',
                   status === 'upcoming' &&
-                    'bg-[rgb(var(--surface-elev))] text-ink-faint border border-[rgb(var(--border)/0.10)]',
+                    'bg-[rgb(250_247_239)] text-ink-faint border border-[rgb(26_26_26/0.10)]',
                 )}
               >
                 {status === 'done' ? (
@@ -330,7 +330,7 @@ function PhaseBody({
     case 'briefing':
       return (
         <Card variant="surface">
-          <div className="font-mc-mono text-mono uppercase tracking-wider text-mc-accent">
+          <div className="font-mc-mono text-mono uppercase tracking-[0.22em] text-ink-faint">
             What you'll do
           </div>
           <p className="mt-2 font-mc-serif text-h3 text-ink leading-snug">{phase.goal}</p>
@@ -338,10 +338,10 @@ function PhaseBody({
             {phase.body}
           </p>
           {phase.primer ? (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full px-3 py-1 bg-[image:var(--grad-accent-soft)] border border-[color:var(--border-accent-soft)] text-mc-accent font-mc-mono text-mono uppercase tracking-wider">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-[999px] border border-[rgb(26_26_26/0.10)] bg-[rgb(250_247_239)] px-3 py-1 font-mc-mono text-mono uppercase tracking-[0.18em] text-ink">
               <span
                 aria-hidden="true"
-                className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
+                className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--ink))]"
               />
               Hold this in mind: {phase.primer}
             </div>
@@ -439,7 +439,7 @@ function PhaseBody({
 
     case 'coach':
       return (
-        <Card variant="elev" className="border border-[color:var(--border-accent-strong)] bg-[rgb(var(--accent)/0.04)]">
+        <Card variant="elev" className="border border-[rgb(26_26_26/0.12)] bg-[rgb(250_247_239/0.96)]">
           <h2 className="font-mc-serif text-h2 font-semibold text-ink leading-tight">{phase.title}</h2>
           <CoachRow isFirst label="Structure map" body={phase.structure_map} />
           <CoachRow label="Core move" body={phase.core_move} />
@@ -493,7 +493,7 @@ function CheckpointPhase({
                   'transition-[border-color,background,box-shadow] duration-180 ease-eased',
                   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                   !isPicked &&
-                    'border-[rgb(var(--border)/0.10)] bg-[image:var(--grad-surface-soft)] hover:border-[color:var(--border-accent-soft)]',
+                    'border-[rgb(26_26_26/0.10)] bg-[rgb(255_255_255/0.82)] hover:border-[rgb(26_26_26/0.18)]',
                   isPicked && opt.correct &&
                     'border-[rgb(var(--success)/0.50)] bg-[rgb(var(--success)/0.08)]',
                   isPicked && !opt.correct &&
@@ -510,7 +510,7 @@ function CheckpointPhase({
                       isPicked && !opt.correct &&
                         'bg-[rgb(var(--error)/0.18)] text-[rgb(var(--error))] border border-[rgb(var(--error)/0.50)]',
                       !isPicked &&
-                        'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
+                        'bg-[rgb(250_247_239)] text-ink-soft border border-[rgb(26_26_26/0.10)]',
                     )}
                   >
                     {opt.id}
@@ -527,7 +527,7 @@ function CheckpointPhase({
       {picked ? (
         <div
           className={cn(
-            'mt-4 rounded-3 px-4 py-3 border',
+            'mt-4 rounded-[6px] border px-4 py-3',
             picked.correct
               ? 'bg-[rgb(var(--success)/0.06)] border-[rgb(var(--success)/0.40)]'
               : 'bg-[rgb(var(--error)/0.06)] border-[rgb(var(--error)/0.40)]',
@@ -625,33 +625,27 @@ function ClearedScreen({
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto">
       <section
         className={cn(
-          'relative isolate overflow-hidden rounded-5 p-7 desktop:p-9',
-          'bg-[image:var(--grad-surface-elev)]',
-          'border border-[color:var(--border-accent-soft)]',
-          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
+          'relative isolate overflow-hidden rounded-[8px] p-7 desktop:p-9',
+          'bg-white border border-[rgb(26_26_26/0.10)] shadow-[var(--shadow-3)]',
         )}
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-50 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.22), transparent 70%)' }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+          className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-70 blur-3xl"
+          style={{ background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.92), transparent 70%)' }}
         />
         <div className="relative">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)] motion-safe:animate-pulse motion-reduce:animate-none"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]"
             />
             {studentEyebrow} cleared
           </div>
-          <h1 className="font-mc-serif text-display font-semibold mt-3 text-ink leading-[1.05]">
+          <h1 className="mt-3 font-mc-serif text-[clamp(3rem,6vw,5rem)] font-medium italic text-ink leading-[0.92] tracking-[-0.06em]">
             Nice. {title}
           </h1>
-          <p className="font-mc-serif text-body-prose mt-4 text-ink-soft leading-relaxed max-w-[58ch]">
+          <p className="mt-4 max-w-[58ch] font-mc-sans text-body-prose leading-relaxed text-ink-soft">
             That session is logged. Your next step is ready in the trainer.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">

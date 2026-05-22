@@ -13,29 +13,29 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const VAR: Record<Variant, string> = {
   surface: cn(
-    'bg-[image:var(--grad-surface-soft)]',
-    'border border-[rgb(var(--border)/0.08)]',
+    'bg-white',
+    'border border-[rgb(26_26_26/0.10)]',
     'shadow-[var(--shadow-1)]',
   ),
   elev: cn(
     'bg-[image:var(--grad-surface-elev)]',
-    'border border-[rgb(var(--border)/0.10)]',
+    'border border-[rgb(26_26_26/0.10)]',
     'shadow-[var(--shadow-2)]',
   ),
   ghost: cn(
     'bg-transparent',
-    'border border-[rgb(var(--border)/0.08)]',
+    'border border-[rgb(26_26_26/0.10)]',
   ),
 };
 
 const INTERACTIVE = cn(
   'transition-[transform,box-shadow,border-color] duration-180 ease-eased',
-  'hover:-translate-y-[2px] hover:border-[color:var(--border-accent-mid)] hover:shadow-[var(--shadow-lift)]',
+  'hover:-translate-y-[2px] hover:border-[rgb(26_26_26/0.22)] hover:shadow-[var(--shadow-lift)]',
 );
 
 const ACCENT_OVERLAY = cn(
-  'border-[color:var(--border-accent-soft)]',
-  'shadow-[var(--shadow-2),var(--glow-accent-soft)]',
+  'border-[rgb(26_26_26/0.18)] bg-[rgb(250_247_239/0.96)]',
+  'shadow-[var(--shadow-2)]',
 );
 
 export function Card({
@@ -49,7 +49,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'mc-card-highlight relative isolate overflow-hidden rounded-4 p-4',
+        'mc-card-highlight relative isolate overflow-hidden rounded-[6px] p-5',
         VAR[variant],
         accent && ACCENT_OVERLAY,
         interactive && INTERACTIVE,

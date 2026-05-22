@@ -17,7 +17,7 @@ import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 const CAPSTONE: { id: string; number: string; title: string; route: string } = {
   id: 'MC-HS-5.8',
   number: '5.8',
-  title: 'Capstone (5 calibration items)',
+  title: 'Capstone (5 final check items)',
   route: '/hard-sentences/capstone',
 };
 
@@ -121,7 +121,7 @@ export function HardSentencesIndex() {
                       <div className="flex flex-wrap items-baseline gap-2">
                         {isCapstone ? (
                           <Badge tone="accent" dot>
-                            capstone · 5 calibration items
+                            capstone · 5 final check items
                           </Badge>
                         ) : null}
                       </div>

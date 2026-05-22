@@ -16,12 +16,9 @@ import {
 } from '@/bootcamps/main-conclusion/lib/runner';
 import { RunnerHero } from '@/bootcamps/main-conclusion/components/training-runner/RunnerHero';
 import { TrainingPath } from '@/bootcamps/main-conclusion/components/training-runner/TrainingPath';
-import { JumpTo } from '@/bootcamps/main-conclusion/components/training-runner/JumpTo';
 import { Sparkles, BookOpen, Award, Dumbbell, Target } from 'lucide-react';
-import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const LESSONS = lessonsData as LessonRow[];
-const TOTAL_TEACHING = 12;
 
 export function ModuleIndex(): JSX.Element {
   const { progress } = useModuleProgress();
@@ -48,57 +45,26 @@ export function ModuleIndex(): JSX.Element {
       : Sparkles;
 
   // Custom copy for first run as requested
-  const heroStep = isFreshRun ? {
-    ...step,
-    title: 'Lesson 1: What’s an argument?',
-    subtitle: 'Before you can answer LR questions, you need to see the argument clearly: what the author is claiming, what support they give, and where the reasoning can break.',
-    cta: 'Begin Lesson 1',
-  } : step;
+  const heroStep = isFreshRun
+    ? {
+        ...step,
+        title: 'Lesson 1: What’s an argument?',
+        subtitle:
+          'Start with the core skill: seeing what the author is claiming, what support they give, and how the reasoning fits together.',
+        cta: 'Begin Lesson 1',
+        secondary: { label: 'View lessons', href: '/bootcamp/intro-to-lr/lessons' },
+      }
+    : {
+        ...step,
+        secondary: step.secondary ?? { label: 'View lessons', href: '/bootcamp/intro-to-lr/lessons' },
+      };
 
   return (
     <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[1100px] mx-auto space-y-8">
-      <BrandLine />
       <RunnerHero step={heroStep} Icon={Icon} />
-      
-      {isFreshRun ? (
-        <div className="rounded-3 px-6 py-6 border border-[color:var(--border-accent-soft)] bg-[image:var(--grad-surface-elev)] shadow-[var(--shadow-3)]">
-          <h3 className="font-mc-serif text-lg font-semibold text-ink">What you’ll do first</h3>
-          <ul className="mt-4 space-y-2 font-mc-mono text-mono text-ink-soft">
-            <li className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
-              Learn what counts as an argument
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
-              Separate premises from conclusions
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
-              Practice spotting the main point
-            </li>
-          </ul>
-        </div>
-      ) : (
+      {!isFreshRun ? (
         <TrainingPath dots={path} />
-      )}
-      
-      {!isFreshRun && <JumpTo />}
+      ) : null}
     </div>
   );
 }
-
-/**
- * Brand line above the hero.
- */
-function BrandLine(): JSX.Element {
-  return (
-    <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-      <span
-        aria-hidden="true"
-        className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
-      />
-      START HERE
-    </div>
-  );
-}
-

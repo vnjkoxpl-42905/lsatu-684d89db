@@ -56,9 +56,9 @@ export function QuestionCard({
       <div className="flex items-center gap-2">
         <span
           aria-hidden="true"
-          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
+          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--ink))]"
         />
-        <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">{questionId}</div>
+        <div className="font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">{questionId}</div>
       </div>
       {stimulusSlot ?? (stimulus ? (
         <p className="font-mc-serif text-body-prose text-ink leading-relaxed">{stimulus}</p>
@@ -82,10 +82,10 @@ export function QuestionCard({
                   'disabled:cursor-default',
                   // Default
                   !submitted && !isPicked &&
-                    'border-[rgb(var(--border)/0.10)] bg-[image:var(--grad-surface-soft)] hover:-translate-y-[1px] hover:border-[color:var(--border-accent-soft)] hover:shadow-[var(--shadow-2)]',
+                    'border-[rgb(26_26_26/0.10)] bg-[rgb(255_255_255/0.86)] hover:-translate-y-[1px] hover:border-[rgb(26_26_26/0.18)] hover:shadow-[var(--shadow-2)]',
                   // Picked, not yet submitted
                   !submitted && isPicked &&
-                    'border-[color:var(--border-accent-strong)] bg-[image:var(--grad-accent-soft)] shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.06)]',
+                    'border-[rgb(26_26_26/0.22)] bg-[rgb(250_247_239)] shadow-[var(--soft-shadow)]',
                   // After submit — picked + correct
                   submitted && isPicked && c.is_correct &&
                     'border-[rgb(var(--success)/0.50)] bg-[rgb(var(--success)/0.10)]',
@@ -157,9 +157,9 @@ function LetterChip({ letter, state }: { letter: Letter; state: ChipState }) {
         'font-mc-mono text-mono font-semibold uppercase',
         'transition-[background,color,border-color,box-shadow] duration-180 ease-eased',
         state === 'idle' &&
-          'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.12)] group-hover/choice:border-[color:var(--border-accent-soft)] group-hover/choice:text-ink',
+          'bg-[rgb(250_247_239)] text-ink-soft border border-[rgb(26_26_26/0.12)] group-hover/choice:border-[rgb(26_26_26/0.18)] group-hover/choice:text-ink',
         state === 'picked' &&
-          'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-strong)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]',
+          'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(26_26_26/0.16)]',
         state === 'correct' &&
           'bg-[rgb(var(--success)/0.18)] text-[rgb(var(--success))] border border-[rgb(var(--success)/0.50)]',
         state === 'wrong' &&

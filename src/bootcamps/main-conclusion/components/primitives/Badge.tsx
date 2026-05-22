@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
 
 const TONE: Record<Tone, { container: string; dot: string }> = {
   neutral: {
-    container: 'bg-[rgb(var(--surface-elev))] text-ink-faint border border-[rgb(var(--border)/0.10)]',
+    container: 'bg-[rgb(255_255_255/0.78)] text-ink-faint border border-[rgb(26_26_26/0.10)]',
     dot: 'bg-[rgb(var(--ink-faint))]',
   },
   success: {
@@ -29,11 +29,10 @@ const TONE: Record<Tone, { container: string; dot: string }> = {
   },
   accent: {
     container: cn(
-      'bg-[image:var(--grad-accent-soft)] text-mc-accent',
-      'border border-[color:var(--border-accent-mid)]',
-      'shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]',
+      'bg-[rgb(255_255_255/0.78)] text-ink',
+      'border border-[rgb(26_26_26/0.12)]',
     ),
-    dot: 'bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]',
+    dot: 'bg-[rgb(var(--ink))]',
   },
 };
 
@@ -42,7 +41,7 @@ export function Badge({ tone = 'neutral', dot = false, pulse = false, className,
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-2 px-2 py-0.5 font-mc-mono text-mono uppercase tracking-wider',
+        'inline-flex items-center gap-1.5 rounded-[4px] px-2.5 py-1 font-mc-mono text-mono uppercase tracking-[0.18em]',
         t.container,
         className,
       )}

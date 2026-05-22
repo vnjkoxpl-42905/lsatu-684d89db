@@ -301,7 +301,7 @@ export function IndicatorTagger({ sentence, targets, allowedCategories, onComple
             {correctCount === targets.length
               ? 'Clean read across every indicator. Move on.'
               : correctCount === 0
-                ? 'Every indicator slipped. Not a grade. A calibration. Read the notes above slowly.'
+                ? 'Every indicator slipped. Not a grade. Slow down and read the notes above carefully.'
                 : 'Read the per-indicator notes above before you continue.'}
           </p>
           <Button

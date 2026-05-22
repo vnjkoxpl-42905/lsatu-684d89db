@@ -16,15 +16,15 @@ export function TrainingPath({ dots }: Props): JSX.Element {
   return (
     <section
       className={cn(
-        'rounded-4 p-5',
-        'bg-[image:var(--grad-surface-soft)]',
-        'border border-[rgb(var(--border)/0.08)]',
+        'rounded-[8px] p-5',
+        'bg-[rgb(255_255_255/0.82)]',
+        'border border-[rgb(26_26_26/0.10)]',
         'shadow-[var(--shadow-1)]',
       )}
       aria-label="Lesson path"
     >
       <div className="flex items-center justify-between gap-2 mb-4">
-        <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint">
+        <div className="font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
           Lesson path
         </div>
         <div className="flex items-center gap-2 font-mc-mono text-mono text-ink-faint">
@@ -39,7 +39,7 @@ export function TrainingPath({ dots }: Props): JSX.Element {
             aria-valuemax={100}
           >
             <span
-              className="absolute inset-y-0 left-0 bg-[image:var(--grad-accent-strong)] shadow-[var(--glow-accent-soft)] transition-[width] duration-300 ease-eased"
+              className="absolute inset-y-0 left-0 bg-[image:var(--grad-accent-strong)] transition-[width] duration-300 ease-eased"
               style={{ width: `${pct}%` }}
             />
           </span>
@@ -62,11 +62,11 @@ export function TrainingPath({ dots }: Props): JSX.Element {
                     'transition-[background,color,border-color,transform,box-shadow] duration-150 ease-eased',
                     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                     d.status === 'done' &&
-                      'bg-[rgb(var(--accent)/0.16)] text-mc-accent border border-[color:var(--border-accent-mid)] hover:-translate-y-[1px] shadow-[var(--glow-accent-soft)]',
+                      'bg-[rgb(255_255_255/0.92)] text-ink border border-[rgb(26_26_26/0.14)] hover:-translate-y-[1px] shadow-[var(--soft-shadow)]',
                     d.status === 'active' &&
-                      'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-strong)] shadow-[var(--glow-accent-soft),inset_0_1px_0_rgb(255_255_255/0.10)]',
+                      'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(26_26_26/0.16)]',
                     d.status === 'upcoming' &&
-                      'bg-[rgb(var(--surface-elev))] text-ink-faint border border-[rgb(var(--border)/0.10)] hover:text-ink-soft hover:border-[color:var(--border-accent-soft)]',
+                      'bg-[rgb(250_247_239/0.92)] text-ink-faint border border-[rgb(26_26_26/0.10)] hover:text-ink-soft hover:border-[rgb(26_26_26/0.18)]',
                   )}
                 >
                   {d.capstone ? (

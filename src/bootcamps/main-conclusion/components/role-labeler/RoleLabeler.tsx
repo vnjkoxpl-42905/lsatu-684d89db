@@ -246,8 +246,8 @@ export function RoleLabeler({ segments, allowedRoles, rationale, onComplete }: P
             {cleanRead
               ? 'Clean read. The structure is in your hands now.'
               : correctCount === 0
-                ? 'Every sentence slipped. Not a grade. A calibration. Read the notes above slowly.'
-                : 'Not a grade. A calibration. Read the per-sentence notes above before you continue.'}
+                ? 'Every sentence slipped. Not a grade. Slow down and read the notes above carefully.'
+                : 'Not a grade. Read the per-sentence notes above before you continue.'}
           </p>
           <Button
             variant="subtle"

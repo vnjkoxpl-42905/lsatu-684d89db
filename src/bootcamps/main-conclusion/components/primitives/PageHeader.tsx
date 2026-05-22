@@ -35,31 +35,31 @@ export function PageHeader({
       {!noBloom ? (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
+          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-60 blur-3xl"
           style={{
-            background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)',
+            background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.86), transparent 70%)',
           }}
         />
       ) : null}
       <div className="relative flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]"
             />
             {eyebrow}
           </div>
           <Heading
             className={cn(
-              'font-mc-serif font-semibold mt-3 text-ink leading-tight',
-              level === 1 ? 'text-display' : 'text-h1',
+              'font-mc-serif mt-3 text-ink leading-[0.94] italic',
+              level === 1 ? 'text-[clamp(3.1rem,7vw,6rem)] font-medium tracking-[-0.06em]' : 'text-[clamp(2rem,4vw,2.7rem)] font-medium tracking-[-0.04em]',
             )}
           >
             {title}
           </Heading>
           {description ? (
-            <div className="font-mc-serif text-body-prose mt-3 text-ink-soft max-w-[60ch] leading-relaxed">
+            <div className="font-mc-sans text-body-prose mt-4 text-ink-soft max-w-[60ch] leading-relaxed">
               {description}
             </div>
           ) : null}

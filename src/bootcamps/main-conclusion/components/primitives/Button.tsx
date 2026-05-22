@@ -14,22 +14,22 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANTS: Record<Variant, string> = {
   primary: cn(
-    'mc-shine bg-[image:var(--grad-accent-strong)] text-mc-accent',
+    'mc-shine bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))]',
     'border border-[color:var(--border-accent-mid)]',
-    'shadow-[0_1px_2px_rgb(0_0_0/0.4),inset_0_1px_0_rgb(255_255_255/0.06)]',
-    'hover:border-[color:var(--border-accent-strong)] hover:shadow-[var(--glow-accent-soft),0_2px_4px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.10)]',
+    'shadow-[0_16px_34px_rgb(26_26_26/0.18)]',
+    'hover:-translate-y-[2px] hover:border-[color:var(--border-accent-strong)] hover:shadow-[0_20px_42px_rgb(26_26_26/0.22)]',
     'active:translate-y-[0.5px] active:shadow-[var(--shadow-press)]',
   ),
   ghost: cn(
     'bg-transparent text-ink-soft border border-transparent',
-    'hover:bg-[rgb(var(--surface-elev))] hover:text-ink hover:border-[rgb(var(--border)/0.08)]',
+    'hover:bg-[rgb(255_255_255/0.72)] hover:text-ink hover:border-[rgb(26_26_26/0.08)]',
     'active:translate-y-[0.5px]',
   ),
   subtle: cn(
-    'bg-[image:var(--grad-surface-elev)] text-ink',
-    'border border-[rgb(var(--border)/0.10)]',
-    'shadow-[0_1px_2px_rgb(0_0_0/0.3),inset_0_1px_0_rgb(255_255_255/0.04)]',
-    'hover:border-[color:var(--border-accent-soft)] hover:shadow-[0_4px_12px_-2px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.06)]',
+    'bg-[rgb(255_255_255/0.72)] text-ink',
+    'border border-[rgb(26_26_26/0.10)]',
+    'shadow-[var(--soft-shadow)]',
+    'hover:-translate-y-[2px] hover:bg-white hover:border-[rgb(26_26_26/0.22)] hover:shadow-[var(--shadow-1)]',
     'active:translate-y-[0.5px] active:shadow-[var(--shadow-press)]',
   ),
   danger: cn(
@@ -57,7 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       disabled={isDisabled}
       aria-busy={loading || undefined}
       className={cn(
-        'group/btn relative inline-flex items-center justify-center rounded-3 font-mc-mono',
+        'group/btn relative inline-flex items-center justify-center rounded-[4px] font-mc-mono uppercase tracking-[0.18em]',
         'transition-[transform,box-shadow,background,border-color] duration-150 ease-eased',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
         'disabled:opacity-50 disabled:pointer-events-none',

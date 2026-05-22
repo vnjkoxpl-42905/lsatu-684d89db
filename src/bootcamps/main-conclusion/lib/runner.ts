@@ -80,7 +80,7 @@ export function nextTrainingStep(
       eyebrow: 'Start training',
       title: first ? `Lesson 1: ${first.title}` : 'Lesson 1',
       subtitle:
-        'Begin with the foundation. Twelve voice-led lessons take you from "what is an argument" to spotting the conclusion at speed.',
+        'Begin with the foundation: arguments, support, and conclusions.',
       cta: 'Begin Lesson 1',
       href: first ? `${BC}/lessons/${first.number}` : `${BC}/lessons/1.1`,
     };
@@ -103,22 +103,22 @@ export function nextTrainingStep(
       title: `Lesson ${lessonInt}: ${firstUndoneTeaching.title}`,
       subtitle:
         teachingDoneCount === 0
-          ? 'Twelve guided sessions take you from "what is an argument" to spotting the conclusion at speed. Lesson 13 is the calibration that turns the dashboard on.'
+          ? 'Build the foundation first, then move lesson by lesson through the core LR patterns.'
           : `${teachingDoneCount} of ${teaching.length} teaching lessons cleared. One click and you are back in the seat.`,
       cta: teachingDoneCount === 0 ? `Begin Lesson ${lessonInt}` : `Continue Lesson ${lessonInt}`,
       href: `${BC}/lessons/${lessonNumber}`,
     };
   }
 
-  // 2) Teaching done, capstone not taken → push to calibration.
+  // 2) Teaching done, capstone not taken → push to the final lesson check.
   if (!capstoneAttempted) {
     return {
       kind: 'capstone',
-      eyebrow: 'Calibration time',
-      title: 'Take your calibration',
+      eyebrow: 'Lesson 13',
+      title: 'Take the final lesson check',
       subtitle:
-        'Twelve lessons clear. The calibration is the first time the dashboard learns anything about you. After the teaching, not before.',
-      cta: 'Start calibration',
+        'You have the teaching in place. Lesson 13 is the first full read on how the ideas are holding together.',
+      cta: 'Open Lesson 13',
       href: `${BC}/lessons/${CAPSTONE_NUMBER}`,
     };
   }
@@ -211,7 +211,7 @@ export function nextDrillStep(
     return {
       eyebrow: 'Next drill',
       title: `Drill ${next.number}: ${next.title}`,
-      subtitle: 'Four stages of five questions. Your run-rate is calibration, not a grade.',
+      subtitle: 'Four stages of five questions. Treat it as a timing check, not a grade.',
       cta: `Run Drill ${next.number}`,
       href: `${BC}/drills/${next.number}`,
       isGate: false,

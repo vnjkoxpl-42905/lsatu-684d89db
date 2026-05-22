@@ -26,18 +26,18 @@ export function CoachNoteCard({ questionId, structure_map, core_move, per_answer
     <Card
       variant="elev"
       data-coach-note={questionId}
-      className="relative space-y-4 border border-[color:var(--border-accent-strong)] bg-[rgb(var(--accent)/0.04)]"
+      className="relative space-y-4 border border-[rgb(26_26_26/0.12)] bg-[rgb(250_247_239/0.96)]"
     >
       <div
         aria-hidden="true"
-        className="absolute -top-3 -left-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[image:var(--grad-accent-strong)] border border-[color:var(--border-accent-mid)] text-mc-accent shadow-[var(--glow-accent-soft)]"
+        className="absolute -top-3 -left-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-[rgb(26_26_26/0.12)] bg-white text-ink shadow-[var(--soft-shadow)]"
       >
         <Quote className="h-3.5 w-3.5" strokeWidth={2.2} />
       </div>
-      <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
+      <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
         <span
           aria-hidden="true"
-          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
+          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--ink))]"
         />
         Coach's Note · {questionId}
       </div>

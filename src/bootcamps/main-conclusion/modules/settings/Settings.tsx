@@ -136,7 +136,7 @@ export function Settings() {
 
       <Modal open={confirmReset} onClose={() => setConfirmReset(false)} title="Reset all data?">
         <p className="font-mc-serif text-body-prose text-ink leading-relaxed">
-          Wipes all lessons completed, drill progress, simulator attempts, calibration, journal entries,
+          Wipes all lessons completed, drill progress, simulator attempts, Lesson 13 results, journal entries,
           SRS queue, and recordings. Cannot be undone.
         </p>
         <div className="mt-4 flex justify-end gap-2">

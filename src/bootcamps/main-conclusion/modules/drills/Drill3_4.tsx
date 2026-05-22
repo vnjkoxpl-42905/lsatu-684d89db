@@ -31,7 +31,7 @@ const stages: Stage<FamilyQuestion>[] = [
   {
     number: 2,
     title: 'Rebuttal-dominant set',
-    hint: 'Most items here are Rebuttal under harder surface conditions. One First-sentence calibration item is mixed in.',
+    hint: 'Most items here are Rebuttal under harder conditions. One First-sentence check item is mixed in.',
     questions: DRILL_3_4_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
   {

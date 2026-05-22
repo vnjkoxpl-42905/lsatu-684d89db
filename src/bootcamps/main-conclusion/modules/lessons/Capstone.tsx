@@ -64,8 +64,8 @@ function M1CapstoneCorrectOnly() {
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader
         eyebrow="Capstone"
-        title="Lesson 13 calibration"
-        description="Ten calibration items, different from anything in your lessons or drills. This measures what you learned, not what you memorized."
+        title="Lesson 13 final check"
+        description="Ten fresh items, different from anything in your lessons or drills. This measures what you learned, not what you memorized."
         actions={
           <>
             <Badge tone="warn" dot>

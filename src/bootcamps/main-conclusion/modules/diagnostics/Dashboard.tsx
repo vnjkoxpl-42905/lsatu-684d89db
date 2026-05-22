@@ -40,9 +40,9 @@ export function Dashboard() {
           <Badge tone="warn">awaiting first attempt</Badge>
           <h2 className="font-mc-serif text-h2 font-semibold mt-2">No data yet</h2>
           <p className="font-mc-serif text-body-prose text-ink mt-2">
-            The dashboard activates after your first Lesson 13 calibration attempt.{' '}
+            The dashboard activates after your first Lesson 13 attempt.{' '}
             <Link to="/bootcamp/intro-to-lr/lessons/1.13" className="text-mc-accent hover:underline">
-              Take the calibration →
+              Open Lesson 13 →
             </Link>
           </p>
         </Card>

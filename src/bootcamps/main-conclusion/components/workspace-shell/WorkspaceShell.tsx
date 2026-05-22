@@ -80,10 +80,10 @@ export function WorkspaceShell(): JSX.Element {
         className={cn(
           'desktop:hidden tablet:hidden',
           'fixed top-3 left-3 z-30 inline-flex items-center gap-1.5',
-          'rounded-full px-3 py-1.5',
-          'bg-[image:var(--grad-surface-elev)] border border-[rgb(var(--border)/0.12)]',
+          'rounded-[4px] px-3 py-1.5',
+          'bg-[rgb(255_255_255/0.82)] border border-[rgb(26_26_26/0.10)]',
           'text-ink-soft text-label font-mc-mono uppercase tracking-wider',
-          'shadow-[var(--shadow-2)] backdrop-blur',
+          'shadow-[var(--soft-shadow)] backdrop-blur',
         )}
       >
         <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
@@ -91,12 +91,12 @@ export function WorkspaceShell(): JSX.Element {
       </Link>
       <div className="grid h-full desktop:grid-cols-[260px_1fr] phone:grid-cols-1 tablet:grid-cols-[220px_1fr]">
         <LeftRail />
-        <main id="main" ref={mainRef} className="relative overflow-y-auto">
+        <main id="main" ref={mainRef} className="relative overflow-y-auto bg-transparent">
           <div
             aria-hidden="true"
             className={cn(
               'pointer-events-none sticky top-0 -mb-px h-px z-10',
-              'bg-gradient-to-r from-transparent via-[color:var(--border-accent-soft)] to-transparent',
+              'bg-gradient-to-r from-transparent via-[rgb(26_26_26/0.18)] to-transparent',
               'transition-opacity duration-220 ease-eased',
               scrolled ? 'opacity-100' : 'opacity-0',
             )}
