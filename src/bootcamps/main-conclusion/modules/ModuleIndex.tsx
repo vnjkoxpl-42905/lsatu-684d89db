@@ -34,10 +34,6 @@ export function ModuleIndex(): JSX.Element {
 
   const step = nextTrainingStep(progressLike, LESSONS);
   const path = buildLessonPath(progressLike, LESSONS);
-  // Count only the 12 teaching lessons (1.1–1.12). Capstone is tracked separately.
-  const teachingDoneCount = (progressLike?.completed_lessons ?? []).filter(
-    (id) => /^MC-LSN-1\.\d+$/.test(id) && id !== 'MC-LSN-1.13',
-  ).length;
   const isFreshRun = step.kind === 'start';
 
   const Icon =
@@ -51,27 +47,48 @@ export function ModuleIndex(): JSX.Element {
       ? BookOpen
       : Sparkles;
 
-  const progressLabel =
-    step.kind === 'continue-lesson'
-      ? `${teachingDoneCount} of ${TOTAL_TEACHING} done`
-      : step.kind === 'simulator-ready'
-      ? 'lessons cleared'
-      : undefined;
+  // Custom copy for first run as requested
+  const heroStep = isFreshRun ? {
+    ...step,
+    title: 'Lesson 1: What’s an argument?',
+    subtitle: 'Before you can answer LR questions, you need to see the argument clearly: what the author is claiming, what support they give, and where the reasoning can break.',
+    cta: 'Begin Lesson 1',
+  } : step;
 
   return (
     <div className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[1100px] mx-auto space-y-8">
       <BrandLine />
-      <RunnerHero step={step} progressLabel={progressLabel} Icon={Icon} />
-      {!isFreshRun ? <TrainingPath dots={path} /> : <FreshRunPreview />}
-      <JumpTo />
-      {isFreshRun ? <ShortcutHint /> : null}
+      <RunnerHero step={heroStep} Icon={Icon} />
+      
+      {isFreshRun ? (
+        <div className="rounded-3 px-6 py-6 border border-[color:var(--border-accent-soft)] bg-[image:var(--grad-surface-elev)] shadow-[var(--shadow-3)]">
+          <h3 className="font-mc-serif text-lg font-semibold text-ink">What you’ll do first</h3>
+          <ul className="mt-4 space-y-2 font-mc-mono text-mono text-ink-soft">
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
+              Learn what counts as an argument
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
+              Separate premises from conclusions
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-mc-accent" />
+              Practice spotting the main point
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <TrainingPath dots={path} />
+      )}
+      
+      {!isFreshRun && <JumpTo />}
     </div>
   );
 }
 
 /**
- * Brand line above the hero. Single eyebrow, no competing heading.
- * The hero's display title is the page's H1.
+ * Brand line above the hero.
  */
 function BrandLine(): JSX.Element {
   return (
@@ -80,62 +97,8 @@ function BrandLine(): JSX.Element {
         aria-hidden="true"
         className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
       />
-      Intro to LR · Logical Reasoning Bootcamp
+      START HERE
     </div>
   );
 }
 
-/**
- * First-run substitute for the lesson-path strip. A single line that promises
- * the shape of the journey, instead of 13 grey dots that show no signal yet.
- */
-function FreshRunPreview(): JSX.Element {
-  return (
-    <div
-      className={cn(
-        'rounded-3 px-4 py-3',
-        'bg-[image:var(--grad-surface-soft)]',
-        'border border-[rgb(var(--border)/0.08)]',
-      )}
-    >
-      <div className="flex items-center gap-3 font-mc-mono text-mono text-ink-faint">
-        <span
-          aria-hidden="true"
-          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
-        />
-        Twelve guided lessons, then the calibration that turns your dashboard on.
-      </div>
-    </div>
-  );
-}
-
-/**
- * One-time hint surfacing the keyboard shortcuts on first run.
- * Disappears the moment the student clears their first lesson.
- */
-function ShortcutHint(): JSX.Element {
-  return (
-    <p className="font-mc-mono text-mono text-ink-faint inline-flex flex-wrap items-center gap-2">
-      <Kbd>⌘K</Kbd>
-      <span>jump anywhere</span>
-      <span className="opacity-50">·</span>
-      <Kbd>⌘J</Kbd>
-      <span>ask the tutor</span>
-    </p>
-  );
-}
-
-function Kbd({ children }: { children: React.ReactNode }): JSX.Element {
-  return (
-    <kbd
-      className={cn(
-        'inline-flex h-5 min-w-[20px] items-center justify-center rounded-[5px] px-1',
-        'bg-[rgb(var(--surface-elev))] border border-[rgb(var(--border)/0.14)]',
-        'shadow-[inset_0_-1px_0_rgb(0_0_0/0.4),0_1px_0_rgb(255_255_255/0.04)]',
-        'font-mc-mono text-[10px] font-semibold text-ink-soft',
-      )}
-    >
-      {children}
-    </kbd>
-  );
-}
