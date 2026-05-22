@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   listGuidedDrills,
   createAssignments,
   resolveGuidedDrillPool,
   type GuidedDrill,
 } from '@/lib/guidedDrills';
+import { createClassroomItem } from '@/lib/classroomItems';
+import { notifyStudentOfClassroomItem, summarizeNotifyResult } from '@/lib/classroomNotify';
 import { useHubStudents } from '@/hooks/useHubStudents';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,6 +26,7 @@ import ReactMarkdown from 'react-markdown';
 const REASONING_TYPES = ['Conditional Reasoning', 'Causation', 'Comparative Reasoning'];
 
 export default function AdminGuidedDrills() {
+  const queryClient = useQueryClient();
   const { user } = useAuth();
   const { isLoading: qbLoading } = useQuestionBank();
   const { rows: students } = useHubStudents();
@@ -57,13 +61,59 @@ export default function AdminGuidedDrills() {
   const handleAssign = async () => {
     if (!assignDrill || !user || selectedStudents.size === 0) return;
     try {
-      await createAssignments({
+      const assignments = await createAssignments({
         guided_drill_ids: [assignDrill.id],
         student_ids: [...selectedStudents],
         scheduled_for: scheduledFor || null,
         assigned_by: user.id,
       });
-      toast.success(`Assigned "${assignDrill.title}" to ${selectedStudents.size} student(s)`);
+
+      // Create classroom items and notify for each assignment
+      // Use the start of the scheduled date for unlockAt if provided
+      const unlockAt = scheduledFor ? new Date(scheduledFor).toISOString() : null;
+
+      const notifyResults = await Promise.all(assignments.map(async (a) => {
+        // Create the linked classroom_items row
+        await createClassroomItem({
+          studentId: a.student_id,
+          createdBy: user.id,
+          type: 'drill',
+          title: assignDrill.title,
+          description: `New guided drill: ${assignDrill.title}`,
+          unlockAt,
+          sourceTable: 'guided_drill_assignments',
+          sourceId: a.id,
+          status: 'assigned',
+          visibleToStudent: true,
+        });
+
+        // Notify the student
+        return notifyStudentOfClassroomItem({
+          adminUserId: user.id,
+          studentId: a.student_id,
+          title: assignDrill.title,
+          route: `/guided/${a.id}?returnTo=/classroom`,
+          description: `New guided drill: ${assignDrill.title}`,
+        });
+      }));
+
+      // Invalidate relevant queries to ensure the classroom and hub update immediately
+      queryClient.invalidateQueries({ queryKey: ['guided-drill-assignments'] });
+      queryClient.invalidateQueries({ queryKey: ['classroom-items'] });
+      queryClient.invalidateQueries({ queryKey: ['hub-assignment-counts'] });
+
+      // Provide detailed feedback about assignment and notification success
+      const allOk = notifyResults.every(r => r.inbox_ok && r.bell_ok && r.email_ok);
+      if (allOk) {
+        toast.success(`Assigned "${assignDrill.title}" and notified ${selectedStudents.size} student(s)`);
+      } else {
+        const firstFailed = notifyResults.find(r => !r.inbox_ok || !r.bell_ok || !r.email_ok);
+        const summary = firstFailed ? summarizeNotifyResult(firstFailed) : "Assigned and notified";
+        toast.warning(summary, {
+          description: `Assigned to ${selectedStudents.size} student(s), but some notifications had issues.`
+        });
+      }
+
       setAssignDrill(null);
       setSelectedStudents(new Set());
       setScheduledFor('');
