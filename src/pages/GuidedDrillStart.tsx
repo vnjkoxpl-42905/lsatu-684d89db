@@ -1,64 +1,100 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getAssignment, markCardRead, markStarted, resolveGuidedDrillPool, type GuidedDrill, type GuidedDrillAssignment } from '@/lib/guidedDrills';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  getAssignment,
+  getGuidedDrillBySlug,
+  markCardRead,
+  markStarted,
+  resolveGuidedDrillPool,
+  type GuidedDrill,
+  type GuidedDrillAssignment,
+} from '@/lib/guidedDrills';
 import { useQuestionBank } from '@/contexts/QuestionBankContext';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import ReactMarkdown from 'react-markdown';
+import {
+  findGuidedDrillHtmlByDrill,
+  findGuidedDrillHtmlBySlug,
+} from '@/data/guidedDrillHtmlManifest';
 import { toast } from 'sonner';
 import type { TypeDrillConfig } from '@/types/drill';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
+function safeReturnPath(value: string | null): string {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) return '/classroom';
+  return value;
+}
+
 export default function GuidedDrillStart() {
-  const { assignmentId } = useParams<{ assignmentId: string }>();
+  const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { isLoading: qbLoading } = useQuestionBank();
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const cleanupIframeListenersRef = React.useRef<(() => void) | null>(null);
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
+  const [directDrill, setDirectDrill] = React.useState<GuidedDrill | null>(null);
   const [loading, setLoading] = React.useState(true);
-  const [scrolledToEnd, setScrolledToEnd] = React.useState(false);
-  const cardRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (!assignmentId) return;
-    getAssignment(assignmentId).then((a) => {
-      setAssignment(a as AssignmentWithDrill | null);
-      setLoading(false);
-    }).catch((e: unknown) => {
-      toast.error(e instanceof Error ? e.message : 'Failed to load assignment');
-      setLoading(false);
-    });
-  }, [assignmentId]);
+    setLoading(true);
+    setAssignment(null);
+    setDirectDrill(null);
 
-  React.useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    const handler = () => {
-      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 24) setScrolledToEnd(true);
-    };
-    el.addEventListener('scroll', handler);
-    handler();
-    return () => el.removeEventListener('scroll', handler);
-  }, [assignment]);
+    if (assignmentId) {
+      getAssignment(assignmentId).then((a) => {
+        setAssignment(a as AssignmentWithDrill | null);
+        setLoading(false);
+      }).catch((e: unknown) => {
+        toast.error(e instanceof Error ? e.message : 'Failed to load assignment');
+        setLoading(false);
+      });
+      return;
+    }
 
-  if (loading) return <div className="min-h-screen bg-background text-foreground p-8">Loading…</div>;
-  if (!assignment) return <div className="min-h-screen bg-background text-foreground p-8">Assignment not found.</div>;
+    if (slug) {
+      getGuidedDrillBySlug(slug).then((drill) => {
+        setDirectDrill(drill);
+        setLoading(false);
+      }).catch((e: unknown) => {
+        toast.error(e instanceof Error ? e.message : 'Failed to load guided drill');
+        setLoading(false);
+      });
+      return;
+    }
 
-  const drill = assignment.guided_drill;
-  const card = drill.instruction_card || {};
+    setLoading(false);
+  }, [assignmentId, slug]);
 
-  const handleStart = async () => {
-    if (qbLoading) { toast.info('Loading question bank…'); return; }
+  const drill = assignment?.guided_drill ?? directDrill;
+  const launchPage = React.useMemo(() => (
+    findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
+  ), [drill, slug]);
+
+  const handleReturn = React.useCallback(() => {
+    navigate(safeReturnPath(searchParams.get('returnTo')));
+  }, [navigate, searchParams]);
+
+  const handleStart = React.useCallback(async () => {
+    if (!drill) return;
+    if (qbLoading) {
+      toast.info('Loading question bank...');
+      return;
+    }
+
     const pool = resolveGuidedDrillPool(drill.bank_filter);
     if (pool.length === 0) {
       toast.error('No matching questions found for this drill.');
       return;
     }
+
     const want = drill.question_count ?? Math.min(pool.length, 10);
-    // Random sample without replacement
     const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, want);
-    await markCardRead(assignment.id);
-    await markStarted(assignment.id);
+
+    if (assignment) {
+      await markCardRead(assignment.id);
+      await markStarted(assignment.id);
+    }
+
     const config: TypeDrillConfig = {
       qtypes: drill.question_types || [],
       difficulties: [],
@@ -67,45 +103,82 @@ export default function GuidedDrillStart() {
       selectedQids: shuffled.map((q) => q.qid),
       unseen_only: false,
     };
-    navigate('/drill', { state: { mode: 'type-drill', config } });
-  };
+
+    const drillSearchParams = new URLSearchParams();
+    drillSearchParams.set('returnTo', safeReturnPath(searchParams.get('returnTo')));
+    if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
+
+    navigate(`/drill?${drillSearchParams.toString()}`, {
+      state: { mode: 'type-drill', config },
+    });
+  }, [assignment, drill, navigate, qbLoading, searchParams]);
+
+  const wireIframeControls = React.useCallback(() => {
+    cleanupIframeListenersRef.current?.();
+    cleanupIframeListenersRef.current = null;
+
+    const doc = iframeRef.current?.contentDocument;
+    if (!doc) return;
+
+    const onClick = (event: MouseEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      if (target.closest('[data-start-drill="true"]')) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        void handleStart();
+        return;
+      }
+
+      if (target.closest('[data-return="true"]')) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        handleReturn();
+      }
+    };
+
+    doc.addEventListener('click', onClick, true);
+    cleanupIframeListenersRef.current = () => doc.removeEventListener('click', onClick, true);
+  }, [handleReturn, handleStart]);
+
+  React.useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === 'lsatu:start-guided-drill') void handleStart();
+    };
+
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, [handleStart]);
+
+  React.useEffect(() => () => cleanupIframeListenersRef.current?.(), []);
+
+  if (loading) {
+    return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
+  }
+
+  if (!drill) {
+    return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
+  }
+
+  if (!launchPage) {
+    return (
+      <div className="min-h-screen bg-background text-foreground p-8">
+        Approved launch page not found for {drill.title}.
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="mb-6">
-          <div className="text-xs uppercase tracking-widest text-muted-foreground">Guided Drill · Week {drill.week}</div>
-          <h1 className="text-4xl font-serif italic mt-1">{drill.title}</h1>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {drill.category && <Badge variant="outline">{drill.category}</Badge>}
-            {drill.estimated_minutes && <Badge variant="outline">{drill.estimated_minutes} min</Badge>}
-            {drill.question_count && <Badge variant="outline">{drill.question_count} questions</Badge>}
-            {drill.question_types?.map((q: string) => <Badge key={q} variant="secondary">{q}</Badge>)}
-            {drill.reasoning_types?.map((r: string) => <Badge key={r}>{r}</Badge>)}
-          </div>
-        </div>
-
-        <div
-          ref={cardRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto rounded-3xl border border-border bg-card p-6"
-        >
-          <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
-            <ReactMarkdown>{card.left_md || ''}</ReactMarkdown>
-          </div>
-          <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
-            <ReactMarkdown>{card.right_md || ''}</ReactMarkdown>
-          </div>
-        </div>
-
-        <div className="mt-6 flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">
-            {scrolledToEnd ? '✓ Card reviewed — ready to start.' : 'Read the full card before starting (scroll to the end to enable Start).'}
-          </p>
-          <Button size="lg" disabled={!scrolledToEnd || qbLoading} onClick={handleStart}>
-            {drill.start_button_label || 'Start Drill'}
-          </Button>
-        </div>
-      </div>
-    </div>
+    <iframe
+      ref={iframeRef}
+      src={launchPage.htmlPath}
+      title={`${launchPage.title} launch page`}
+      className="block h-screen w-full border-0 bg-background"
+      onLoad={wireIframeControls}
+    />
   );
 }

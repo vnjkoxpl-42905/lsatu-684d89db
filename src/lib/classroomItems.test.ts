@@ -88,6 +88,15 @@ describe('nextActionFor', () => {
 // ─── resolveItemRoute ────────────────────────────────────────────────────────
 
 describe('resolveItemRoute', () => {
+  it('guided drill assignment rows open the guided launch page with classroom return context', () => {
+    const item = makeItem({
+      type: 'drill',
+      source_table: 'guided_drill_assignments',
+      source_id: 'guided-abc',
+    });
+    expect(resolveItemRoute(item)).toBe('/guided/guided-abc?returnTo=%2Fclassroom');
+  });
+
   it('drill with source_id → /drill?assignmentId=...', () => {
     const item = makeItem({ type: 'drill', source_id: 'set-abc' });
     expect(resolveItemRoute(item)).toBe('/drill?assignmentId=set-abc');

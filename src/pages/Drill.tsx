@@ -79,6 +79,7 @@ function DrillContent() {
   // context survives page refresh. Existing callers use location.state. URL
   // params take priority; fall back to state when absent.
   const assignmentId = searchParams.get('assignmentId');
+  const guidedAssignmentId = searchParams.get('guidedAssignmentId');
   const guidedSetId = searchParams.get('guidedSetId') ?? undefined;
   const { set: guidedSet } = useHomeworkSet(guidedSetId);
   const [guidedInfoOpen, setGuidedInfoOpen] = React.useState(false);
@@ -1581,6 +1582,24 @@ function DrillContent() {
           err,
         });
         toast.error("Couldn't mark your assignment complete. Your attempts saved; let Joshua know.");
+      }
+    }
+
+    if (guidedAssignmentId && user) {
+      try {
+        const { error } = await supabase
+          .from('guided_drill_assignments')
+          .update({ completed_at: new Date().toISOString(), status: 'completed' })
+          .eq('id', guidedAssignmentId)
+          .eq('student_id', user.id);
+        if (error) throw error;
+      } catch (err) {
+        console.error('[drill:guided-assignment:complete] update failed', {
+          userId: user.id,
+          guidedAssignmentId,
+          err,
+        });
+        toast.error("Couldn't mark your guided drill complete. Your attempts saved; let Joshua know.");
       }
     }
 

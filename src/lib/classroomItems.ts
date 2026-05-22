@@ -104,6 +104,9 @@ export function nextActionFor(items: ClassroomItem[]): ClassroomItem | null {
 export function resolveItemRoute(item: ClassroomItem): string | null {
   switch (item.type) {
     case 'drill':
+      if (item.source_table === 'guided_drill_assignments' && item.source_id) {
+        return `/guided/${encodeURIComponent(item.source_id)}?returnTo=${encodeURIComponent('/classroom')}`;
+      }
       if (item.source_id) return `/drill?assignmentId=${encodeURIComponent(item.source_id)}`;
       return '/drill';
     case 'homework':

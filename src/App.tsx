@@ -202,6 +202,13 @@ const App = () => {
                 </QuestionBankProvider>
               </React.Suspense>
             } />
+            <Route path="/guided-drills/:slug" element={
+              <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
+                <QuestionBankProvider>
+                  <GuidedDrillStart />
+                </QuestionBankProvider>
+              </React.Suspense>
+            } />
 
             {/* Inbox. Messaging, no question bank needed. */}
             <Route path="/inbox" element={
