@@ -953,6 +953,7 @@ export type Database = {
           created_at: string
           guided_drill_id: string
           id: string
+          question_qids: string[]
           read_card_at: string | null
           scheduled_for: string | null
           started_at: string | null
@@ -970,6 +971,7 @@ export type Database = {
           created_at?: string
           guided_drill_id: string
           id?: string
+          question_qids?: string[]
           read_card_at?: string | null
           scheduled_for?: string | null
           started_at?: string | null
@@ -987,6 +989,7 @@ export type Database = {
           created_at?: string
           guided_drill_id?: string
           id?: string
+          question_qids?: string[]
           read_card_at?: string | null
           scheduled_for?: string | null
           started_at?: string | null
@@ -1019,6 +1022,7 @@ export type Database = {
           order_in_week: number
           question_count: number | null
           question_features: string[]
+          question_qids: string[]
           question_types: string[]
           reasoning_types: string[]
           slug: string
@@ -1041,6 +1045,7 @@ export type Database = {
           order_in_week?: number
           question_count?: number | null
           question_features?: string[]
+          question_qids?: string[]
           question_types?: string[]
           reasoning_types?: string[]
           slug: string
@@ -1063,6 +1068,7 @@ export type Database = {
           order_in_week?: number
           question_count?: number | null
           question_features?: string[]
+          question_qids?: string[]
           question_types?: string[]
           reasoning_types?: string[]
           slug?: string
