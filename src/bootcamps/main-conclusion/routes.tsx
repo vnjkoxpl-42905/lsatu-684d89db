@@ -69,6 +69,7 @@ export function BootcampRoutes() {
         {/* ── M1 Lessons ──────────────────────────────────────────────────── */}
         <Route path="lessons" element={<LessonsIndex />} />
         <Route path="lessons/guided" element={<NewGuidedIntro />} />
+        <Route path="lessons/1.1" element={<ArgumentBasicsNotes />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/:lessonId" element={<Lesson />} />
