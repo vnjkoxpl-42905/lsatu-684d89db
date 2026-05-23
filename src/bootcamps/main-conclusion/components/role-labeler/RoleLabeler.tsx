@@ -39,41 +39,41 @@ const ROLE_LABEL: Record<Role, string> = {
 
 const ROLE_PICK_CLASS: Record<Role, string> = {
   conclusion:
-    'border-[rgb(var(--role-conclusion)/0.50)] bg-[rgb(var(--role-conclusion)/0.10)] text-[rgb(var(--role-conclusion))]',
+    'border-[rgb(var(--accent))] bg-[rgb(var(--surface-elev))] text-[rgb(var(--accent-deep))] font-semibold',
   premise:
-    'border-[rgb(var(--role-premise)/0.50)] bg-[rgb(var(--role-premise)/0.10)] text-[rgb(var(--role-premise))]',
+    'border-[rgb(var(--border)/0.22)] bg-[rgb(var(--surface-elev))] text-[rgb(var(--ink-soft))]',
   opposing:
-    'border-[rgb(var(--role-opposing)/0.50)] bg-[rgb(var(--role-opposing)/0.10)] text-[rgb(var(--role-opposing))]',
+    'border-[rgb(var(--border)/0.22)] bg-[rgb(var(--surface-elev))] text-[rgb(var(--ink-soft))]',
   background:
-    'border-[rgb(var(--role-background)/0.40)] bg-[rgb(var(--role-background)/0.10)] text-[rgb(var(--role-background))]',
+    'border-[rgb(var(--border)/0.22)] bg-[rgb(var(--surface-elev))] text-[rgb(var(--ink-soft))]',
 };
 
 const ROLE_DOT_CLASS: Record<Role, string> = {
-  conclusion: 'bg-[rgb(var(--role-conclusion))]',
-  premise: 'bg-[rgb(var(--role-premise))]',
-  opposing: 'bg-[rgb(var(--role-opposing))]',
-  background: 'bg-[rgb(var(--role-background))]',
+  conclusion: 'bg-[rgb(var(--accent-deep))]',
+  premise: 'bg-[rgb(var(--ink-faint))]',
+  opposing: 'bg-[rgb(var(--ink-faint))]',
+  background: 'bg-[rgb(var(--ink-faint))]',
 };
 
 const ROLE_REVEAL_CLASS: Record<Role, string> = {
   conclusion:
-    'bg-[rgb(var(--role-conclusion)/0.16)] border border-[rgb(var(--role-conclusion)/0.35)] text-ink',
+    'bg-[rgb(var(--surface-elev))] border-l-4 border-l-[rgb(var(--role-conclusion))] border border-[rgb(var(--border)/0.12)] text-ink',
   premise:
-    'bg-[rgb(var(--role-premise)/0.14)] border border-[rgb(var(--role-premise)/0.30)] text-ink',
+    'bg-[rgb(var(--surface-elev))] border-l-4 border-l-[rgb(var(--role-premise))] border border-[rgb(var(--border)/0.12)] text-ink',
   opposing:
-    'bg-[rgb(var(--role-opposing)/0.14)] border border-[rgb(var(--role-opposing)/0.32)] text-ink',
+    'bg-[rgb(var(--surface-elev))] border-l-4 border-l-[rgb(var(--role-opposing))] border border-[rgb(var(--border)/0.12)] text-ink',
   background:
-    'bg-[rgb(var(--role-background)/0.10)] border border-[rgb(var(--role-background)/0.25)] text-ink-soft',
+    'bg-[rgb(var(--surface-elev))] border-l-4 border-l-[rgb(var(--role-background))] border border-[rgb(var(--border)/0.12)] text-ink-soft',
 };
 
 // Role-color prefix on the reveal row. Same role-color vocabulary as the chip,
 // the segment background tint, and the lesson-prose highlight. Aspiring Gold
 // is reserved for the runner shell and primary CTA, not argument structure.
 const ROLE_PREFIX_CLASS: Record<Role, string> = {
-  conclusion: 'text-[rgb(var(--role-conclusion))]',
-  premise: 'text-[rgb(var(--role-premise))]',
-  opposing: 'text-[rgb(var(--role-opposing))]',
-  background: 'text-[rgb(var(--role-background))]',
+  conclusion: 'text-[rgb(var(--role-conclusion))] font-mc-mono text-[10px] font-bold uppercase tracking-wider',
+  premise: 'text-[rgb(var(--role-premise))] font-mc-mono text-[10px] font-bold uppercase tracking-wider',
+  opposing: 'text-[rgb(var(--role-opposing))] font-mc-mono text-[10px] font-bold uppercase tracking-wider',
+  background: 'text-[rgb(var(--role-background))] font-mc-mono text-[10px] font-bold uppercase tracking-wider',
 };
 
 /**
