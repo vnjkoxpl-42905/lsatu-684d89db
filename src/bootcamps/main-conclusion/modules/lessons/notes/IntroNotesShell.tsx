@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
-import { ArrowRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 interface IntroNotesShellProps {
   eyebrow: string;
@@ -30,12 +30,12 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                   onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
                   className="w-full bg-[#1a1a1a] border border-[rgba(245,242,237,0.1)] text-[#F5F2ED] p-8 text-left hover:bg-[rgba(245,242,237,0.08)] transition-all"
                 >
-                  <div className="text-3xl font-serif italic mb-6">START HERE</div>
-                  <div className="flex justify-end"><ArrowRight className="h-8 w-8" /></div>
+                  <div className="text-3xl font-serif italic mb-6">START READING</div>
+                  <div className="flex justify-end"><ArrowDown className="h-8 w-8" /></div>
                 </button>
               </div>
               <div className="scroll-hint border-t border-[rgba(245,242,237,0.12)] pt-6 mt-8 text-[10px] uppercase tracking-[0.22em] text-[rgba(245,242,237,0.46)] font-bold">
-                Scroll down for notes ↓
+                Scroll down to begin ↓
               </div>
             </div>
           </aside>
