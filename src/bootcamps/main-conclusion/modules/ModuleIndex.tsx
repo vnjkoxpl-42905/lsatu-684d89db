@@ -46,7 +46,6 @@ export function ModuleIndex(): JSX.Element {
       ? BookOpen
       : Sparkles;
 
-  // Custom copy for first run as requested
   const heroStep = isFreshRun
     ? {
         ...step,
@@ -55,7 +54,9 @@ export function ModuleIndex(): JSX.Element {
         subtitle:
           'Before you answer LR questions, learn how to see the argument clearly: what the author claims, what support they give, and where the reasoning can break.',
         cta: 'Begin Lesson 1',
-        secondary: undefined, // Only one primary action above the fold
+        // Force absolute path for navigation
+        href: '/bootcamp/intro-to-lr/lessons/1.1',
+        secondary: undefined,
       }
     : {
         ...step,
