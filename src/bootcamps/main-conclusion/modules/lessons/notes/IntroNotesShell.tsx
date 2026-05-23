@@ -24,20 +24,17 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
           </div>
 
           <aside className="summary-card bg-white border border-[rgba(26,26,26,0.1)] p-1 shadow-[0_26px_76px_rgba(26,26,26,0.12)]">
-            <div className="summary-inner bg-[#1a1a1a] text-[#F5F2ED] p-8 min-h-[350px] flex flex-col justify-between">
-              <div>
-                <button 
-                  onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full bg-[#1a1a1a] border border-[rgba(245,242,237,0.1)] text-[#F5F2ED] p-8 text-left hover:bg-[rgba(245,242,237,0.08)] transition-all"
-                >
-                  <div className="text-3xl font-serif italic mb-6">START READING</div>
-                  <div className="flex justify-end"><ArrowDown className="h-8 w-8" /></div>
-                </button>
+            <button 
+              onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full bg-[#1a1a1a] text-[#F5F2ED] p-8 min-h-[350px] flex flex-col items-center justify-center gap-6 text-center hover:bg-[rgba(26,26,26,0.9)] transition-all"
+            >
+              <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[rgba(245,242,237,0.46)]">BEGIN</div>
+              <div className="text-4xl font-serif italic">Start reading</div>
+              <div className="text-sm text-[rgba(245,242,237,0.6)]">The notes begin below.</div>
+              <div className="mt-4 border border-[rgba(245,242,237,0.2)] rounded-full p-3">
+                <ArrowDown className="h-6 w-6" />
               </div>
-              <div className="scroll-hint border-t border-[rgba(245,242,237,0.12)] pt-6 mt-8 text-[10px] uppercase tracking-[0.22em] text-[rgba(245,242,237,0.46)] font-bold">
-                Scroll down to begin ↓
-              </div>
-            </div>
+            </button>
           </aside>
         </section>
 
