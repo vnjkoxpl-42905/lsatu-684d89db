@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 import { ArrowDown } from "lucide-react";
 
@@ -10,6 +11,12 @@ interface IntroNotesShellProps {
 }
 
 export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNotesShellProps) {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans">
       <DynamicIslandTOC />
