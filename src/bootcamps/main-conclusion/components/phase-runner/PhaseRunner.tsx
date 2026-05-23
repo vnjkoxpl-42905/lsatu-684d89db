@@ -21,6 +21,7 @@ import { ConclusionPicker } from '@/bootcamps/main-conclusion/components/conclus
 import { PronounUnpacker } from '@/bootcamps/main-conclusion/components/pronoun-unpacker/PronounUnpacker';
 import { AbsoluteStatementsWalk } from '@/bootcamps/main-conclusion/components/absolute-statements/AbsoluteStatementsWalk';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { DynamicIslandPhaseNav } from '@/bootcamps/main-conclusion/components/training-runner/DynamicIslandPhaseNav';
 import type { Phase, Role } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 
 interface Props {
