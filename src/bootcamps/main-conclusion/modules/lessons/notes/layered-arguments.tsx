@@ -31,7 +31,7 @@ export default function LayeredArgumentsNotes() {
       <section data-toc data-toc-title="Trojan Horse structure" className="note-section p-10">
         <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Trojan Horse</div>
         <div className="question-box relative bg-[#FAF7EF] p-8 border border-[rgba(26,26,26,0.1)]">
-          <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">The Trojan Horse—a seemingly agreeable opening followed by a pivot—is the classic way the LSAT tests if you can separate the wind-up from the swing.</p>
+          <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">The Trojan Horse, a seemingly agreeable opening followed by a pivot, is the classic way the LSAT tests if you can separate the wind-up from the swing.</p>
         </div>
       </section>
     </IntroNotesShell>

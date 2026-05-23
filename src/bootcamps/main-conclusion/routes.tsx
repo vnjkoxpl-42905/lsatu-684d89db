@@ -48,6 +48,8 @@ import PracticePathNotes from '@/bootcamps/main-conclusion/modules/lessons/notes
 
 import { useParams } from 'react-router-dom';
 
+import { useParams } from 'react-router-dom';
+
 function NoteLoader() {
   const { noteId } = useParams();
   switch (noteId) {
@@ -60,6 +62,17 @@ function NoteLoader() {
   }
 }
 
+function LegacyLessonRedirect() {
+  const { lessonId } = useParams();
+  if (lessonId === '1.1') {
+    return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/argument-basics" replace />;
+  }
+  if (lessonId === '1.13') {
+    return <Navigate to="/bootcamp/intro-to-lr/lessons/legacy/1.13" replace />;
+  }
+  return <Navigate to={`/bootcamp/intro-to-lr/lessons/legacy/${lessonId ?? ''}`} replace />;
+}
+
 export function BootcampRoutes() {
   return (
     <Routes>
@@ -70,12 +83,10 @@ export function BootcampRoutes() {
         <Route path="lessons" element={<NewGuidedIntro />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
-
+        
         {/* Redirects */}
-        <Route path="lessons/1.1" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/argument-basics" replace />} />
-        <Route path="lessons/1.13" element={<Navigate to="/bootcamp/intro-to-lr/lessons/legacy/1.13" replace />} />
-        <Route path="lessons/:lessonId" element={<Navigate to="/bootcamp/intro-to-lr/lessons/legacy/:lessonId" replace />} />
-
+        <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
+        
         <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
 

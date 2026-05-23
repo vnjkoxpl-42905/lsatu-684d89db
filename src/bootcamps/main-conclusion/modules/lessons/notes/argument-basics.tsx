@@ -20,7 +20,7 @@ export default function ArgumentBasicsNotes() {
 
       <section data-toc data-toc-title="Conclusions" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
         <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Conclusions</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">The conclusion is the claim the author wants you to believe. This is what the premises are built to support. Question this claim—this is where the argument's validity lives.</p>
+        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">The conclusion is the claim the author wants you to believe. This is what the premises are built to support. Question this claim. This is where the argument's validity lives.</p>
       </section>
 
       <section data-toc data-toc-title="2-Part Conclusion Check" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
