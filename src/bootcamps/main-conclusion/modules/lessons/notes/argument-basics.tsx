@@ -1,4 +1,6 @@
 import { IntroNotesShell } from "./IntroNotesShell";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const Kicker = ({ children }: { children: string }) => (
   <div className="text-[10px] uppercase tracking-[0.26em] font-bold text-[rgba(26,26,26,0.48)] mb-4">{children}</div>
@@ -79,10 +81,25 @@ export default function ArgumentBasicsNotes() {
 
       <section data-toc data-toc-title="Checkpoint" className="note-section p-10">
         <Kicker>Checkpoint</Kicker>
-        <div className="bg-[#1a1a1a] text-[#F5F2ED] p-8">
+        <div className="bg-[#1a1a1a] text-[#F5F2ED] p-8 mb-12">
           <p className="text-[20px] leading-[1.68]">Remember: Premise truth is given. The whole argumentative game is about how the premises fit together, not whether they are world-true.</p>
         </div>
       </section>
-    </IntroNotesShell>
-  );
-}
+
+      <section className="p-10 bg-[#FAF7EF] border-t border-[rgba(26,26,26,0.1)]">
+        <Link to="/bootcamp/intro-to-lr/lessons/notes/where-conclusions-hide" className="group flex items-center justify-between p-8 bg-white border border-[rgba(26,26,26,0.1)] hover:border-[rgba(26,26,26,0.3)] transition-all">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2">Next</div>
+            <div className="text-2xl font-serif italic mb-1">Where Conclusions Hide</div>
+            <div className="text-sm text-[rgba(26,26,26,0.6)]">Learn where authors usually hide the main conclusion.</div>
+          </div>
+          <div className="bg-[#1a1a1a] text-[#F5F2ED] px-6 py-4 flex items-center gap-3 group-hover:bg-[rgba(26,26,26,0.88)]">
+            <span className="text-[12px] uppercase tracking-[0.18em] font-bold">Continue</span>
+            <ArrowRight className="h-5 w-5" />
+          </div>
+        </Link>
+      </section>
+      </IntroNotesShell>
+      );
+      }
+
