@@ -13,28 +13,28 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const VAR: Record<Variant, string> = {
   surface: cn(
-    'bg-white',
-    'border border-[rgb(26_26_26/0.10)]',
+    'bg-[rgb(var(--surface))]',
+    'border border-[rgb(var(--border)/0.10)]',
     'shadow-[var(--shadow-1)]',
   ),
   elev: cn(
     'bg-[image:var(--grad-surface-elev)]',
-    'border border-[rgb(26_26_26/0.10)]',
+    'border border-[rgb(var(--border)/0.10)]',
     'shadow-[var(--shadow-2)]',
   ),
   ghost: cn(
     'bg-transparent',
-    'border border-[rgb(26_26_26/0.10)]',
+    'border border-[rgb(var(--border)/0.10)]',
   ),
 };
 
 const INTERACTIVE = cn(
   'transition-[transform,box-shadow,border-color] duration-180 ease-eased',
-  'hover:-translate-y-[2px] hover:border-[rgb(26_26_26/0.22)] hover:shadow-[var(--shadow-lift)]',
+  'hover:-translate-y-[2px] hover:border-[rgb(var(--border)/0.22)] hover:shadow-[var(--shadow-lift)]',
 );
 
 const ACCENT_OVERLAY = cn(
-  'border-[rgb(26_26_26/0.18)] bg-[rgb(250_247_239/0.96)]',
+  'border-[rgb(var(--accent)/0.18)] bg-[rgb(var(--surface-elev)/0.96)]',
   'shadow-[var(--shadow-2)]',
 );
 

@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
 
 const TONE: Record<Tone, { container: string; dot: string }> = {
   neutral: {
-    container: 'bg-[rgb(255_255_255/0.78)] text-ink-faint border border-[rgb(26_26_26/0.10)]',
+    container: 'bg-[rgb(var(--ink)/0.06)] text-[rgb(var(--ink-faint))] border border-[rgb(var(--border)/0.08)]',
     dot: 'bg-[rgb(var(--ink-faint))]',
   },
   success: {
@@ -29,10 +29,10 @@ const TONE: Record<Tone, { container: string; dot: string }> = {
   },
   accent: {
     container: cn(
-      'bg-[rgb(255_255_255/0.78)] text-ink',
-      'border border-[rgb(26_26_26/0.12)]',
+      'bg-[rgb(var(--accent)/0.12)] text-[rgb(var(--accent))]',
+      'border border-[rgb(var(--accent)/0.22)] shadow-[var(--glow-accent-soft)]',
     ),
-    dot: 'bg-[rgb(var(--ink))]',
+    dot: 'bg-[rgb(var(--accent))]',
   },
 };
 

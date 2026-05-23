@@ -20,20 +20,20 @@ export function LessonsIndex(): JSX.Element {
     <div className="mx-auto max-w-[860px] px-6 py-12 desktop:px-12 desktop:py-16">
       <Header completedCount={completedCount} totalCount={totalCount} />
 
-      <ul className="mt-10 overflow-hidden rounded-[8px] border border-[rgb(26_26_26/0.10)] bg-[rgb(255_255_255/0.82)] shadow-[var(--shadow-1)]">
+      <ul className="mt-10 overflow-hidden rounded-[8px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface)/0.82)] shadow-[var(--shadow-1)]">
         {all.map((l, idx) => {
           const completed = progress?.completed_lessons.includes(l.id) ?? false;
           const unlocked = true;
           const isLast = idx === all.length - 1;
           return (
-            <li key={l.id} className={cn(!isLast && 'border-b border-[rgb(26_26_26/0.06)]')}>
+            <li key={l.id} className={cn(!isLast && 'border-b border-[rgb(var(--border)/0.06)]')}>
               <Link
                 to={`/bootcamp/intro-to-lr/lessons/${l.number}`}
                 className={cn(
                   'group flex items-center gap-4 px-5 py-4',
                   'transition-colors duration-150 ease-eased',
                   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-[-2px]',
-                  unlocked ? 'hover:bg-[rgb(255_255_255/1)]' : 'opacity-40 cursor-not-allowed pointer-events-none',
+                  unlocked ? 'hover:bg-[rgb(var(--surface)/1)]' : 'opacity-40 cursor-not-allowed pointer-events-none',
                 )}
               >
                 <StatusIcon completed={completed} unlocked={unlocked} />
@@ -81,7 +81,7 @@ function Header({
   return (
     <header>
       <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
-        <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]" />
+        <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]" />
         Lessons
       </div>
       <h1 className="mt-3 font-mc-serif text-[clamp(3rem,6vw,4.8rem)] font-medium italic text-ink leading-[0.92] tracking-[-0.06em]">
@@ -97,7 +97,7 @@ function Header({
           {completedCount} / {totalCount} complete
         </div>
         <div
-          className="relative h-1.5 w-40 overflow-hidden rounded-full bg-[rgb(250_247_239)]"
+          className="relative h-1.5 w-40 overflow-hidden rounded-full bg-[rgb(var(--surface-elev))]"
           role="progressbar"
           aria-valuenow={pct}
           aria-valuemin={0}
@@ -127,7 +127,7 @@ function StatusIcon({
         aria-hidden="true"
         className={cn(
           'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-          'border border-[rgb(26_26_26/0.14)] bg-[rgb(255_255_255/0.92)] text-ink shadow-[var(--soft-shadow)]',
+          'border border-[rgb(var(--border)/0.14)] bg-[rgb(var(--surface)/0.92)] text-ink shadow-[var(--soft-shadow)]',
         )}
       >
         <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
@@ -140,7 +140,7 @@ function StatusIcon({
         aria-hidden="true"
         className={cn(
           'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-          'border border-[rgb(26_26_26/0.10)] bg-[rgb(250_247_239)] text-ink-faint',
+          'border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev))] text-ink-faint',
         )}
       >
         <Lock className="h-3 w-3" strokeWidth={2.2} />
@@ -152,7 +152,7 @@ function StatusIcon({
       aria-hidden="true"
       className={cn(
         'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-        'border border-[rgb(26_26_26/0.10)] bg-[rgb(250_247_239)]',
+        'border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev))]',
       )}
     >
       <span className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink-faint))]" />

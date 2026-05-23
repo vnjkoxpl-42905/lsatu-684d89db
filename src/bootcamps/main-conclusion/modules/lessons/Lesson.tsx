@@ -155,7 +155,7 @@ export function Lesson(): JSX.Element {
             <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
               <span
                 aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(var(--accent)/0.6)]"
               />
               Lesson {data.number}
             </div>
@@ -191,7 +191,7 @@ export function Lesson(): JSX.Element {
           if (block.kind === 'example') {
             // Layer 3 — guided example
             return (
-              <aside key={i} className="my-6 px-5 py-4 rounded-3 bg-surface border border-[rgb(var(--border)/0.08)]">
+              <aside key={i} className="my-6 px-5 py-4 rounded-3 bg-[rgb(var(--surface))] border border-[rgb(var(--border)/0.08)]">
                 <div className="font-mc-mono text-label uppercase tracking-wider text-ink-faint mb-2">{block.tag}</div>
                 <div className="font-mc-serif text-body-prose" dangerouslySetInnerHTML={{ __html: block.body }} />
               </aside>
@@ -220,7 +220,7 @@ export function Lesson(): JSX.Element {
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
         />
         <div className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent inline-flex items-center gap-2">
-          <span aria-hidden="true" className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]" />
+          <span aria-hidden="true" className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(var(--accent)/0.7)]" />
           Checkpoint
         </div>
         <h2 id="checkpoint-heading" className="font-mc-serif text-h2 font-semibold mt-2 text-ink leading-tight">
@@ -243,7 +243,7 @@ export function Lesson(): JSX.Element {
                       ? opt.correct
                         ? 'border-role-conclusion bg-[rgb(var(--role-conclusion)/0.08)]'
                         : 'border-mc-error bg-[rgb(var(--error)/0.08)]'
-                      : 'border-[rgb(var(--border)/0.08)] hover:border-[rgb(var(--accent)/0.4)] hover:bg-surface',
+                      : 'border-[rgb(var(--border)/0.08)] hover:border-[rgb(var(--accent)/0.4)] hover:bg-[rgb(var(--surface))]',
                   ].join(' ')}
                 >
                   <span className="font-mc-mono text-mono text-ink-faint mr-3">{opt.id}</span>
@@ -301,7 +301,7 @@ export function Lesson(): JSX.Element {
               <button
                 key={ref.reference_id}
                 type="button"
-                className="px-3 py-1.5 rounded-2 border border-[rgb(var(--border)/0.08)] hover:bg-surface font-mc-mono text-mono text-ink-soft hover:text-ink transition-colors duration-150 ease-eased"
+                className="px-3 py-1.5 rounded-2 border border-[rgb(var(--border)/0.08)] hover:bg-[rgb(var(--surface))] font-mc-mono text-mono text-ink-soft hover:text-ink transition-colors duration-150 ease-eased"
                 onClick={() => drawer.open({ mode: 'reference', reference_id: ref.reference_id })}
               >
                 {ref.label}

@@ -32,8 +32,8 @@ export function LeftRail(): JSX.Element {
     <aside
       className={cn(
         'left-rail relative flex h-full flex-col phone:hidden',
-        'border-r border-[rgb(26_26_26/0.08)]',
-        'bg-[rgb(250_247_239/0.74)] backdrop-blur',
+        'border-r border-[rgb(var(--border)/0.08)]',
+        'bg-[rgb(var(--surface-elev)/0.74)] backdrop-blur-md',
       )}
     >
       <div className="px-5 pt-7 pb-6">
@@ -54,7 +54,7 @@ export function LeftRail(): JSX.Element {
             aria-hidden="true"
             className={cn(
               'inline-flex h-7 w-7 items-center justify-center rounded-[4px]',
-              'bg-[rgb(255_255_255/0.86)] border border-[rgb(26_26_26/0.10)] shadow-[var(--soft-shadow)]',
+              'bg-[rgb(var(--surface)/0.86)] border border-[rgb(var(--border)/0.10)] shadow-[var(--soft-shadow)]',
               'font-mc-serif text-[12px] font-medium italic text-ink',
             )}
           >
@@ -83,8 +83,8 @@ export function LeftRail(): JSX.Element {
                     'text-body transition-[background,color,border-color,box-shadow] duration-150 ease-eased border',
                     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                     isActive
-                      ? 'text-ink bg-white border-[rgb(26_26_26/0.10)] shadow-[var(--soft-shadow)]'
-                      : 'text-ink-soft border-transparent hover:text-ink hover:bg-[rgb(255_255_255/0.66)] hover:border-[rgb(26_26_26/0.08)]',
+                      ? 'text-ink bg-[rgb(var(--surface))] border-[rgb(var(--border)/0.10)] shadow-[var(--soft-shadow)]'
+                      : 'text-ink-soft border-transparent hover:text-ink hover:bg-[rgb(var(--surface)/0.66)] hover:border-[rgb(var(--border)/0.08)]',
                   )
                 }
               >

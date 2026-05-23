@@ -17,8 +17,8 @@ export function TrainingPath({ dots }: Props): JSX.Element {
     <section
       className={cn(
         'rounded-[8px] p-5',
-        'bg-[rgb(255_255_255/0.82)]',
-        'border border-[rgb(26_26_26/0.10)]',
+        'bg-[rgb(var(--surface)/0.82)]',
+        'border border-[rgb(var(--border)/0.10)]',
         'shadow-[var(--shadow-1)]',
       )}
       aria-label="Lesson path"
@@ -62,11 +62,11 @@ export function TrainingPath({ dots }: Props): JSX.Element {
                     'transition-[background,color,border-color,transform,box-shadow] duration-150 ease-eased',
                     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                     d.status === 'done' &&
-                      'bg-[rgb(255_255_255/0.92)] text-ink border border-[rgb(26_26_26/0.14)] hover:-translate-y-[1px] shadow-[var(--soft-shadow)]',
+                      'bg-[rgb(var(--surface)/0.92)] text-ink border border-[rgb(var(--border)/0.14)] hover:-translate-y-[1px] shadow-[var(--soft-shadow)]',
                     d.status === 'active' &&
-                      'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(26_26_26/0.16)]',
+                      'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(var(--bg)/0.16)]',
                     d.status === 'upcoming' &&
-                      'bg-[rgb(250_247_239/0.92)] text-ink-faint border border-[rgb(26_26_26/0.10)] hover:text-ink-soft hover:border-[rgb(26_26_26/0.18)]',
+                      'bg-[rgb(var(--surface-elev)/0.92)] text-ink-faint border border-[rgb(var(--border)/0.10)] hover:text-ink-soft hover:border-[rgb(var(--border)/0.18)]',
                   )}
                 >
                   {d.capstone ? (

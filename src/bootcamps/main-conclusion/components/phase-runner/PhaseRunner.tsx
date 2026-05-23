@@ -214,14 +214,14 @@ function Hero({
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-60 blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.86), transparent 70%)' }}
+        style={{ background: 'radial-gradient(closest-side, rgb(var(--surface) / 0.86), transparent 70%)' }}
       />
       <div className="relative">
         <div className="flex flex-wrap items-center gap-2">
           <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--ink))]"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"
             />
             {studentEyebrow}
           </div>
@@ -234,7 +234,7 @@ function Hero({
         <h1 className="mt-3 font-mc-serif text-[clamp(3rem,6vw,5rem)] font-medium italic text-ink leading-[0.92] tracking-[-0.06em]">
           {title}
         </h1>
-        <p className="mt-5 max-w-[48rem] border-l border-l-[rgb(26_26_26/0.18)] pl-4 font-mc-sans text-body-prose leading-relaxed text-ink-soft">
+        <p className="mt-5 max-w-[48rem] border-l border-l-[rgb(var(--border)/0.18)] pl-4 font-mc-sans text-body-prose leading-relaxed text-ink-soft">
           {hook}
         </p>
       </div>
@@ -247,8 +247,8 @@ function PhaseStrip({ phases, index }: { phases: Phase[]; index: number }): JSX.
     <div
       className={cn(
         'rounded-[6px] px-3 py-2.5',
-        'bg-[rgb(255_255_255/0.72)]',
-        'border border-[rgb(26_26_26/0.10)]',
+        'bg-[rgb(var(--surface)/0.72)]',
+        'border border-[rgb(var(--border)/0.10)]',
       )}
       role="progressbar"
       aria-valuenow={index + 1}
@@ -266,11 +266,11 @@ function PhaseStrip({ phases, index }: { phases: Phase[]; index: number }): JSX.
                   'relative inline-flex h-6 items-center gap-1.5 rounded-full px-2.5',
                   'font-mc-mono text-[10.5px] uppercase tracking-wider transition-colors duration-150 ease-eased',
                   status === 'done' &&
-                    'bg-[rgb(255_255_255/0.92)] text-ink border border-[rgb(26_26_26/0.12)]',
+                    'bg-[rgb(var(--surface)/0.92)] text-ink border border-[rgb(var(--border)/0.12)]',
                   status === 'active' &&
-                    'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(26_26_26/0.16)]',
+                    'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(var(--bg)/0.16)]',
                   status === 'upcoming' &&
-                    'bg-[rgb(250_247_239)] text-ink-faint border border-[rgb(26_26_26/0.10)]',
+                    'bg-[rgb(var(--surface-elev))] text-ink-faint border border-[rgb(var(--border)/0.10)]',
                 )}
               >
                 {status === 'done' ? (
@@ -304,7 +304,7 @@ function PhaseLabel({ label }: { label: string }): JSX.Element {
     <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
       <span
         aria-hidden="true"
-        className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(232_208_139/0.7)]"
+        className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_6px_rgb(var(--accent)/0.7)]"
       />
       {label}
     </div>
@@ -338,7 +338,7 @@ function PhaseBody({
             {phase.body}
           </p>
           {phase.primer ? (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-[999px] border border-[rgb(26_26_26/0.10)] bg-[rgb(250_247_239)] px-3 py-1 font-mc-mono text-mono uppercase tracking-[0.18em] text-ink">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-[999px] border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev))] px-3 py-1 font-mc-mono text-mono uppercase tracking-[0.18em] text-ink">
               <span
                 aria-hidden="true"
                 className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--ink))]"
@@ -439,7 +439,7 @@ function PhaseBody({
 
     case 'coach':
       return (
-        <Card variant="elev" className="border border-[rgb(26_26_26/0.12)] bg-[rgb(250_247_239/0.96)]">
+        <Card variant="elev" className="border border-[rgb(var(--border)/0.12)] bg-[rgb(var(--surface-elev)/0.96)]">
           <h2 className="font-mc-serif text-h2 font-semibold text-ink leading-tight">{phase.title}</h2>
           <CoachRow isFirst label="Structure map" body={phase.structure_map} />
           <CoachRow label="Core move" body={phase.core_move} />
@@ -493,7 +493,7 @@ function CheckpointPhase({
                   'transition-[border-color,background,box-shadow] duration-180 ease-eased',
                   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2',
                   !isPicked &&
-                    'border-[rgb(26_26_26/0.10)] bg-[rgb(255_255_255/0.82)] hover:border-[rgb(26_26_26/0.18)]',
+                    'border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface)/0.82)] hover:border-[rgb(var(--border)/0.18)]',
                   isPicked && opt.correct &&
                     'border-[rgb(var(--success)/0.50)] bg-[rgb(var(--success)/0.08)]',
                   isPicked && !opt.correct &&
@@ -510,7 +510,7 @@ function CheckpointPhase({
                       isPicked && !opt.correct &&
                         'bg-[rgb(var(--error)/0.18)] text-[rgb(var(--error))] border border-[rgb(var(--error)/0.50)]',
                       !isPicked &&
-                        'bg-[rgb(250_247_239)] text-ink-soft border border-[rgb(26_26_26/0.10)]',
+                        'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
                     )}
                   >
                     {opt.id}
@@ -626,13 +626,13 @@ function ClearedScreen({
       <section
         className={cn(
           'relative isolate overflow-hidden rounded-[8px] p-7 desktop:p-9',
-          'bg-white border border-[rgb(26_26_26/0.10)] shadow-[var(--shadow-3)]',
+          'bg-[rgb(var(--surface))] border border-[rgb(var(--border)/0.10)] shadow-[var(--shadow-3)]',
         )}
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-24 right-0 h-64 w-[440px] max-w-full opacity-70 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(255 255 255 / 0.92), transparent 70%)' }}
+          style={{ background: 'radial-gradient(closest-side, rgb(var(--surface) / 0.92), transparent 70%)' }}
         />
         <div className="relative">
           <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.28em] text-ink-faint">

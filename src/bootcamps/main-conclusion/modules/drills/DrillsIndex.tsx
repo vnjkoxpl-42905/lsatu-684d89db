@@ -47,18 +47,18 @@ export function DrillsIndex() {
   const pct = Math.round((doneCount / DRILLS.length) * 100);
 
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8 pb-32">
       <header className="relative isolate">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(232 208 139 / 0.20), transparent 70%)' }}
+          style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.20), transparent 70%)' }}
         />
         <div className="relative">
           <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
             <span
               aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(var(--accent)/0.6)]"
             />
             Drills
           </div>
@@ -97,7 +97,7 @@ export function DrillsIndex() {
             <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
               <span
                 aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(var(--accent)/0.6)]"
               />
               {next.eyebrow}
             </div>
@@ -151,7 +151,7 @@ export function DrillsIndex() {
                       isDone
                         ? 'bg-[rgb(var(--success)/0.16)] text-[rgb(var(--success))] border border-[rgb(var(--success)/0.40)]'
                         : d.gates_simulator || isActive
-                        ? 'bg-[image:var(--grad-accent-strong)] text-mc-accent border border-[color:var(--border-accent-mid)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]'
+                        ? 'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-mid)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]'
                         : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
                     )}
                   >
