@@ -144,7 +144,8 @@ export function Lesson(): JSX.Element {
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-[840px] mx-auto" data-lesson-id={data.id}>
-      <header className="relative isolate mb-10">
+      <DynamicIslandTOC />
+      <header className="relative isolate mb-10" data-toc data-toc-title="Overview">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
@@ -182,7 +183,7 @@ export function Lesson(): JSX.Element {
           }
           if (block.kind === 'callout') {
             return (
-              <aside key={i} className="my-6 px-5 py-4 rounded-3 border border-mc-accent bg-[rgb(var(--accent)/0.06)]">
+              <aside key={i} data-toc data-toc-title={block.label} className="my-6 px-5 py-4 rounded-3 border border-mc-accent bg-[rgb(var(--accent)/0.06)]">
                 <div className="font-mc-mono text-label uppercase tracking-wider text-mc-accent mb-2">{block.label}</div>
                 <div className="font-mc-serif text-body-prose text-ink" dangerouslySetInnerHTML={{ __html: block.body }} />
               </aside>
@@ -212,6 +213,8 @@ export function Lesson(): JSX.Element {
 
       {/* Layer 4 — Checkpoint question */}
       <section
+        data-toc
+        data-toc-title="Checkpoint"
         className="relative isolate mt-12 px-6 py-7 rounded-5 overflow-hidden bg-[image:var(--grad-surface-elev)] border border-[color:var(--border-accent-soft)] shadow-[var(--shadow-2),var(--glow-accent-soft)]"
         aria-labelledby="checkpoint-heading"
       >

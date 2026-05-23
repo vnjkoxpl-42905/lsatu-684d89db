@@ -44,7 +44,7 @@ function CircleProgress({ percentage }: { percentage: number }) {
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="rgb(var(--accent))"
+        stroke="rgb(var(--ink))"
         strokeWidth={strokeWidth}
         strokeDasharray={circumference}
         initial={{ strokeDashoffset: circumference }}
@@ -60,10 +60,6 @@ function CircleProgress({ percentage }: { percentage: number }) {
 
 type DynamicIslandTOCProps = {
   children?: ReactNode;
-  /**
-   * CSS selector to find headings.
-   * Defaults to common blog content wrappers and explicit [data-toc] elements.
-   */
   selector?: string;
 };
 
@@ -77,15 +73,16 @@ export function DynamicIslandTOC({
   const [isExpanded, setIsExpanded] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // 1. DOM Scanning Strategy
   useEffect(() => {
+    const scrollContainer = document.querySelector('#main') as HTMLElement | null;
+    if (!scrollContainer) return;
+
     const getHeadings = () => {
-      const elements = Array.from(document.querySelectorAll(selector)) as HTMLElement[];
+      const elements = Array.from(scrollContainer.querySelectorAll(selector)) as HTMLElement[];
 
       const validHeadings = elements
-        .filter((el) => !el.hasAttribute("data-toc-ignore")) // Allow explicit skipping
+        .filter((el) => !el.hasAttribute("data-toc-ignore"))
         .map((el, index) => {
-          // Auto-generate ID if missing
           if (!el.id) {
             const generatedId =
               el.textContent
@@ -95,9 +92,6 @@ export function DynamicIslandTOC({
             el.id = generatedId;
           }
 
-          // 1. Check data-toc-depth attribute
-          // 2. Fallback to standard HTML tag levels (H1 = 1, H2 = 2)
-          // 3. Default to level 2 if not a heading tag
           const depthAttr = el.getAttribute("data-toc-depth");
           let level = 2;
 
@@ -110,13 +104,10 @@ export function DynamicIslandTOC({
             }
           }
 
-          // Allow title overrides via data-toc-title
           const text = el.getAttribute("data-toc-title") || el.textContent || "Section";
-
           return { id: el.id, text, level, element: el };
         });
 
-      // Sort by DOM order mathematically
       validHeadings.sort((a, b) =>
         a.element.compareDocumentPosition(b.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
       );
@@ -124,18 +115,20 @@ export function DynamicIslandTOC({
       setHeadings(validHeadings);
     };
 
-    // Slight delay ensures hydration is complete
     const timer = setTimeout(getHeadings, 100);
     return () => clearTimeout(timer);
   }, [selector]);
 
-  // 2. Scroll Spy & Progress
   useEffect(() => {
+    const scrollContainer = document.querySelector('#main') as HTMLElement | null;
+    if (!scrollContainer) return;
+
     const handleScroll = () => {
       let currentActiveId: string | null = null;
+      const containerRect = scrollContainer.getBoundingClientRect();
+
       for (const heading of headings) {
-        const top = heading.element.getBoundingClientRect().top;
-        // 120px offset to trigger active state just as heading reaches the top
+        const top = heading.element.getBoundingClientRect().top - containerRect.top;
         if (top <= 150) {
           currentActiveId = heading.id;
         } else {
@@ -149,19 +142,18 @@ export function DynamicIslandTOC({
 
       setActiveId(currentActiveId);
 
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(total > 0 ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0);
+      const total = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+      setProgress(total > 0 ? Math.min(100, Math.max(0, (scrollContainer.scrollTop / total) * 100)) : 0);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [headings]);
 
   const activeHeading = headings.find((h) => h.id === activeId);
 
-  // Normalize depths so the highest-level heading in the doc touches the left edge
   const minLevel = useMemo(() => {
     if (headings.length === 0) return 1;
     return Math.min(...headings.map((h) => h.level));
@@ -170,8 +162,6 @@ export function DynamicIslandTOC({
   return (
     <>
       {children}
-
-      {/* Backdrop Blur Overlay */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -184,8 +174,6 @@ export function DynamicIslandTOC({
           />
         )}
       </AnimatePresence>
-
-      {/* Dynamic Island Wrapper */}
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -193,9 +181,7 @@ export function DynamicIslandTOC({
         className="fixed bottom-[30px] left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center pointer-events-none"
       >
         <motion.div
-          onClick={() => {
-            if (!isExpanded) setIsExpanded(true);
-          }}
+          onClick={() => { if (!isExpanded) setIsExpanded(true); }}
           initial={false}
           animate={{
             width: isExpanded ? 340 : 280,
@@ -206,24 +192,17 @@ export function DynamicIslandTOC({
           style={{ cursor: isExpanded ? "default" : "pointer" }}
           className={cn(
             "relative overflow-hidden pointer-events-auto",
-            "bg-[rgb(var(--surface)/0.94)] backdrop-blur-md",
+            "bg-[rgb(var(--surface-elev)/0.94)] backdrop-blur-md",
             "border border-[rgb(var(--border)/0.12)]",
             "shadow-[var(--shadow-3)]"
           )}
         >
-          {/* CLOSED PILL CONTENT */}
           <motion.div
             initial={false}
-            animate={{
-              opacity: isExpanded ? 0 : 1,
-              scale: isExpanded ? 0.95 : 1,
-              filter: isExpanded ? "blur(4px)" : "blur(0px)",
-            }}
-            transition={{ ...islandTransition, delay: isExpanded ? 0 : 0.1 }}
+            animate={{ opacity: isExpanded ? 0 : 1, scale: isExpanded ? 0.95 : 1 }}
             className={cn("absolute inset-0 flex items-center gap-4 px-5", isExpanded && "pointer-events-none")}
           >
             <div className="h-2 w-2 shrink-0 rounded-full bg-[rgb(var(--ink))]" />
-
             <div className="relative flex h-full flex-1 items-center overflow-hidden text-left">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
@@ -231,81 +210,46 @@ export function DynamicIslandTOC({
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                   className="block w-full overflow-hidden text-ellipsis whitespace-nowrap font-mc-mono text-[13px] font-bold tracking-tight text-[rgb(var(--ink))]"
                 >
                   {activeHeading?.text || "Contents"}
                 </motion.span>
               </AnimatePresence>
             </div>
-
             <CircleProgress percentage={progress} />
           </motion.div>
-
-          {/* EXPANDED MENU CONTENT */}
           <motion.div
             initial={false}
-            animate={{
-              opacity: isExpanded ? 1 : 0,
-              scale: isExpanded ? 1 : 1.05,
-            }}
-            transition={{ ...islandTransition, delay: isExpanded ? 0.1 : 0 }}
+            animate={{ opacity: isExpanded ? 1 : 0 }}
             className={cn("absolute inset-0 flex flex-col", !isExpanded && "pointer-events-none")}
           >
             <div className="flex shrink-0 items-center justify-between px-6 pb-3 pt-5 border-b border-[rgb(var(--border)/0.08)]">
-              <span className="font-mc-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[rgb(var(--ink-faint))]">
-                Contents
-              </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsExpanded(false);
-                }}
-                className="text-[rgb(var(--ink-faint))] transition-colors hover:text-[rgb(var(--ink))]"
-              >
+              <span className="font-mc-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[rgb(var(--ink-faint))]">Contents</span>
+              <button onClick={(e) => { e.stopPropagation(); setIsExpanded(false); }} className="text-[rgb(var(--ink-faint))] hover:text-[rgb(var(--ink))]">
                 <X className="h-5 w-5" />
               </button>
             </div>
-
-            <div className="flex-1 overflow-y-auto overscroll-contain px-3 pb-4 pt-2">
+            <div className="flex-1 overflow-y-auto px-3 pb-4 pt-2">
               <div className="flex flex-col gap-1">
                 {headings.map((h) => {
                   const isActive = activeId === h.id;
-                  const isHovered = hoveredId === h.id;
-
                   const indentLevel = Math.max(0, h.level - minLevel);
-                  const paddingLeft = indentLevel * 14 + 12;
-
                   return (
                     <button
                       key={h.id}
-                      onMouseEnter={() => setHoveredId(h.id)}
-                      onMouseLeave={() => setHoveredId(null)}
                       onClick={(e) => {
                         e.stopPropagation();
-                        const yOffset = -80;
-                        const y = h.element.getBoundingClientRect().top + window.scrollY + yOffset;
-                        window.scrollTo({ top: y, behavior: "smooth" });
+                        const scrollContainer = document.querySelector('#main') as HTMLElement;
+                        scrollContainer.scrollTo({ top: h.element.offsetTop - 80, behavior: "smooth" });
                         setIsExpanded(false);
                       }}
-                      style={{ paddingLeft: `${paddingLeft}px` }}
+                      style={{ paddingLeft: `${indentLevel * 14 + 12}px` }}
                       className={cn(
-                        "group flex w-full shrink-0 cursor-pointer items-center rounded-[8px] border-none py-2 pr-3 text-left transition-all duration-220 ease-eased",
-                        isActive && "bg-[rgb(var(--ink)/0.08)] font-bold text-[rgb(var(--ink))]",
-                        !isActive && isHovered && "bg-[rgb(var(--ink)/0.04)] text-[rgb(var(--ink)/0.85)]",
-                        !isActive && !isHovered && "bg-transparent text-[rgb(var(--ink-faint))]",
+                        "group flex w-full shrink-0 items-center rounded-[8px] py-2 pr-3 text-left transition-all",
+                        isActive ? "bg-[rgb(var(--ink)/0.08)] font-bold text-[rgb(var(--ink))]" : "text-[rgb(var(--ink-faint))]",
                       )}
                     >
-                      <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap font-mc-mono text-[12px] uppercase tracking-wide transition-transform duration-220 group-hover:translate-x-1">
-                        {h.text}
-                      </span>
-
-                      <motion.div
-                        initial={false}
-                        animate={{ scale: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="ml-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[rgb(var(--ink))]"
-                      />
+                      <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap font-mc-mono text-[12px] uppercase">{h.text}</span>
                     </button>
                   );
                 })}
