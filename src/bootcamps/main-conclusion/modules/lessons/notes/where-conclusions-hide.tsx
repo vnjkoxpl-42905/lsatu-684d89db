@@ -39,7 +39,7 @@ export default function WhereConclusionsHideNotes() {
         <div className="p-12 desktop:p-16 pb-8">
           <Kicker>Common hiding spots</Kicker>
           <p className="font-mc-sans text-[16px] text-[rgba(26,26,26,0.6)] mb-12">
-            Most Main Conclusions live in one of three places.
+            Common conclusion hiding spots.
           </p>
         </div>
         
@@ -60,9 +60,9 @@ export default function WhereConclusionsHideNotes() {
           </div>
           <div className="p-10 desktop:p-12 hover:bg-[#FAF7EF]/30 transition-colors">
             <div className="h-8 w-8 rounded-full border border-[#1a1a1a] flex items-center justify-center font-mc-mono text-[12px] mb-6">03</div>
-            <h3 className="font-mc-serif text-2xl italic mb-4">Middle ground</h3>
+            <h3 className="font-mc-serif text-2xl italic mb-4">Between setup and evidence</h3>
             <p className="font-mc-sans text-[17px] leading-relaxed text-[rgba(26,26,26,0.8)]">
-              Sometimes the point is sandwiched between context and evidence. It feels like the goal toward which everything else is building.
+              Sometimes the author gives context first, then states the point, then gives support. The conclusion is the claim the rest of the argument is built around.
             </p>
           </div>
         </div>
@@ -87,7 +87,7 @@ export default function WhereConclusionsHideNotes() {
             <div className="p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-sm">
               <div className="font-mc-mono text-[11px] uppercase tracking-wider text-[rgba(26,26,26,0.4)] mb-4">Conclusion indicators</div>
               <p className="font-mc-sans font-bold text-[#1a1a1a] mb-2">Thus, So, Therefore, Hence</p>
-              <p className="font-mc-sans text-[15px] text-[rgba(26,26,26,0.6)]">These mark where the author is landing their plane.</p>
+              <p className="font-mc-sans text-[15px] text-[rgba(26,26,26,0.6)]">These point to claims the author wants you to notice.</p>
             </div>
             <div className="p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-sm">
               <div className="font-mc-mono text-[11px] uppercase tracking-wider text-[rgba(26,26,26,0.4)] mb-4">Premise indicators</div>
