@@ -39,6 +39,26 @@ import { MistakeProfile } from '@/bootcamps/main-conclusion/modules/diagnostics/
 import { SrsQueue } from '@/bootcamps/main-conclusion/modules/diagnostics/SrsQueue';
 import { Journal } from '@/bootcamps/main-conclusion/modules/journal/Journal';
 import { Settings } from '@/bootcamps/main-conclusion/modules/settings/Settings';
+import { NewGuidedIntro } from '@/bootcamps/main-conclusion/modules/lessons/NewGuidedIntro';
+import ArgumentBasicsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/argument-basics';
+import WhereConclusionsHideNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/where-conclusions-hide';
+import LayeredArgumentsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/layered-arguments';
+import MatchingTheAnswerNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/matching-the-answer';
+import PracticePathNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/practice-path';
+
+import { useParams } from 'react-router-dom';
+
+function NoteLoader() {
+  const { noteId } = useParams();
+  switch (noteId) {
+    case 'argument-basics': return <ArgumentBasicsNotes />;
+    case 'where-conclusions-hide': return <WhereConclusionsHideNotes />;
+    case 'layered-arguments': return <LayeredArgumentsNotes />;
+    case 'matching-the-answer': return <MatchingTheAnswerNotes />;
+    case 'practice-path': return <PracticePathNotes />;
+    default: return <Navigate to="/bootcamp/intro-to-lr/lessons/guided" replace />;
+  }
+}
 
 export function BootcampRoutes() {
   return (
@@ -48,6 +68,8 @@ export function BootcampRoutes() {
 
         {/* ── M1 Lessons ──────────────────────────────────────────────────── */}
         <Route path="lessons" element={<LessonsIndex />} />
+        <Route path="lessons/guided" element={<NewGuidedIntro />} />
+        <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/:lessonId" element={<Lesson />} />
 
