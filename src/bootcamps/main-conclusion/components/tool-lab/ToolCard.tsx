@@ -19,26 +19,26 @@ export function ToolCard({ tool }: Props): JSX.Element {
   return (
     <section className="space-y-6">
       <header>
-        <div className="font-mc-mono text-label uppercase tracking-[0.16em] text-mc-accent inline-flex items-center gap-2">
+        <div className="font-mc-mono text-[10px] uppercase tracking-[0.22em] text-mc-accent inline-flex items-center gap-2">
           <span
             aria-hidden="true"
-            className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))]"
+            className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"
           />
           Training tool
         </div>
-        <h3 className="font-mc-serif text-h2 font-semibold mt-2 text-ink leading-tight">
+        <h3 className="font-mc-serif text-[26px] font-semibold mt-3 text-[rgb(var(--ink))] leading-tight">
           {tool.name}
         </h3>
       </header>
 
-      <div className="space-y-4">
+      <div className="grid gap-6">
         <ToolBlurb label="What it does" body={tool.what_it_does} />
         <ToolBlurb label="When to use" body={tool.when_to_use} />
         <ToolBlurb label="What it prevents" body={tool.prevents} />
       </div>
 
       {tool.example ? (
-        <p className="font-mc-serif text-body text-ink-soft italic border-l border-l-[color:var(--border-accent-soft)] pl-3 leading-relaxed">
+        <p className="font-mc-serif text-[16px] text-[rgb(var(--ink-soft))] italic border-l border-l-[rgb(var(--accent))] pl-4 leading-relaxed">
           {tool.example}
         </p>
       ) : null}
@@ -51,10 +51,10 @@ export function ToolCard({ tool }: Props): JSX.Element {
 function ToolBlurb({ label, body }: { label: string; body: string }): JSX.Element {
   return (
     <div>
-      <div className="font-mc-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint">
+      <div className="font-mc-mono text-[10px] uppercase tracking-[0.20em] text-[rgb(var(--ink-faint))]">
         {label}
       </div>
-      <p className="mt-2 font-mc-serif text-[15.5px] text-ink leading-[1.65]">{body}</p>
+      <p className="mt-2 font-mc-serif text-[15.5px] text-[rgb(var(--ink))] leading-[1.65]">{body}</p>
     </div>
   );
 }
@@ -63,15 +63,15 @@ function TryIt({ tool }: { tool: ToolCardData }): JSX.Element {
   return (
     <div
       className={cn(
-        'mt-6 rounded-3 px-4 py-4 sm:px-5',
-        'bg-[rgb(var(--surface-elev)/0.45)]',
-        'border border-[rgb(var(--border)/0.08)]',
+        'mt-8 rounded-[2px] px-6 py-6',
+        'bg-[rgb(var(--surface-elev))]',
+        'border border-[rgb(var(--border)/0.12)]',
       )}
     >
-      <div className="flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.16em] text-mc-accent mb-3">
+      <div className="flex items-center gap-2 font-mc-mono text-[10px] uppercase tracking-[0.20em] text-[rgb(var(--accent))] mb-4">
         <span
           aria-hidden="true"
-          className="inline-block h-1 w-1 rounded-full bg-[rgb(var(--accent))]"
+          className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"
         />
         Try it
       </div>
