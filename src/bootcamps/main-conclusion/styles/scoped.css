@@ -21,17 +21,17 @@
   --accent-deep: 197 160 89;
   --accent-dim: 232 208 139;
 
-  /* Surfaces (dark-mode default) */
-  --bg: 5 7 10;
-  --bg-2: 11 17 32;
-  --surface: 18 21 30;
-  --surface-elev: 26 30 43;
-  --border: 255 255 255;
+  /* Surfaces (guided-drill template light mode) */
+  --bg: 245 242 237;          /* #f5f2ed cream */
+  --bg-2: 250 247 239;        /* #faf7ef lighter cream */
+  --surface: 255 255 255;     /* white */
+  --surface-elev: 250 247 239;
+  --border: 26 26 26;         /* ink based */
 
-  /* Ink */
-  --ink: 241 245 249;
-  --ink-soft: 203 213 225;
-  --ink-faint: 148 163 184;
+  /* Ink (text) */
+  --ink: 26 26 26;            /* #1a1a1a black/near-black */
+  --ink-soft: 26 26 26 / 0.58;
+  --ink-faint: 26 26 26 / 0.38;
 
   /* Argument-structure roles */
   --role-conclusion: 16 185 129;
@@ -68,11 +68,11 @@
   --s-12: 48px;
   --s-16: 64px;
 
-  /* Radius */
-  --r-2: 4px;
-  --r-3: 8px;
-  --r-5: 14px;
-  --r-8: 24px;
+  /* Radius (sharp 2px as seen in guided-drill template) */
+  --r-2: 2px;
+  --r-3: 2px;
+  --r-5: 2px;
+  --r-8: 2px;
   --r-full: 9999px;
 
   /* Motion */
@@ -81,27 +81,30 @@
   --d-mid: 180ms;
   --d-slow: 220ms;
 
-  /* Shadows */
-  --shadow-1: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-2: 0 0 0 1px rgb(255 255 255 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.6);
-  --shadow-3: 0 0 0 1px rgb(255 255 255 / 0.08), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+  /* Shadows (guided-drill template style) */
+  --shadow-1: 0 0 0 1px rgb(var(--ink) / 0.04), 0 1px 2px rgb(var(--ink) / 0.1);
+  --shadow-2: 0 14px 34px rgb(var(--ink) / 0.075);
+  --shadow-3: 0 26px 76px rgb(var(--ink) / 0.12);
 
   /* Premium tokens (Phase 0 redesign) */
-  --shadow-lift: 0 0 0 1px rgb(232 208 139 / 0.18), 0 16px 40px -12px rgb(0 0 0 / 0.7), 0 4px 16px -4px rgb(232 208 139 / 0.08);
-  --shadow-press: 0 0 0 1px rgb(232 208 139 / 0.22), 0 2px 8px -2px rgb(0 0 0 / 0.5);
-  --glow-accent-soft: 0 0 24px -4px rgb(232 208 139 / 0.18);
-  --glow-accent-strong: 0 0 32px -2px rgb(232 208 139 / 0.36);
-  --grad-surface-soft: linear-gradient(180deg, rgb(26 30 43 / 0.85) 0%, rgb(18 21 30 / 0.95) 100%);
-  --grad-surface-elev: linear-gradient(180deg, rgb(32 36 50 / 0.9) 0%, rgb(22 26 38 / 0.95) 100%);
-  --grad-accent-soft: linear-gradient(135deg, rgb(232 208 139 / 0.12) 0%, rgb(197 160 89 / 0.06) 100%);
-  --grad-accent-strong: linear-gradient(135deg, rgb(242 223 154 / 0.32) 0%, rgb(197 160 89 / 0.16) 100%);
-  --grad-shimmer: linear-gradient(110deg, transparent 0%, rgb(255 255 255 / 0.06) 40%, rgb(232 208 139 / 0.10) 50%, rgb(255 255 255 / 0.06) 60%, transparent 100%);
-  --grad-card-highlight: linear-gradient(180deg, rgb(255 255 255 / 0.06) 0%, transparent 24%);
-  --border-accent-soft: rgb(232 208 139 / 0.18);
-  --border-accent-mid: rgb(232 208 139 / 0.32);
-  --border-accent-strong: rgb(232 208 139 / 0.50);
+  --shadow-lift: 0 18px 40px -12px rgb(var(--ink) / 0.12);
+  --shadow-press: 0 2px 8px -2px rgb(var(--ink) / 0.08);
+  --glow-accent-soft: 0 0 0 transparent;
+  --glow-accent-strong: 0 0 0 transparent;
+  --grad-surface-soft: linear-gradient(180deg, rgb(255 255 255 / 0.96) 0%, rgb(250 247 239 / 0.98) 100%);
+  --grad-surface-elev: linear-gradient(180deg, rgb(250 247 239 / 0.98) 0%, rgb(245 242 237 / 0.98) 100%);
+  --grad-accent-soft: linear-gradient(135deg, rgb(var(--accent) / 0.12) 0%, rgb(var(--accent) / 0.06) 100%);
+  --grad-accent-strong: linear-gradient(135deg, rgb(var(--accent) / 1) 0%, rgb(var(--accent) / 0.9) 100%);
+  --grad-shimmer: linear-gradient(110deg, transparent 0%, rgb(255 255 255 / 0.4) 40%, rgb(var(--accent) / 0.2) 50%, rgb(255 255 255 / 0.4) 60%, transparent 100%);
+  --grad-card-highlight: linear-gradient(180deg, rgb(255 255 255 / 0.6) 0%, transparent 24%);
+  --border-accent-soft: rgb(var(--accent) / 0.18);
+  --border-accent-mid: rgb(var(--accent) / 0.32);
+  --border-accent-strong: rgb(var(--accent) / 0.50);
 
-  background: rgb(var(--bg));
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255,255,255,.82), transparent 28%),
+    radial-gradient(circle at 88% 3%, rgba(26,26,26,.048), transparent 30%),
+    rgb(var(--bg));
   color: rgb(var(--ink));
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: var(--t-body);
