@@ -14,9 +14,9 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans">
       <DynamicIslandTOC />
 
-      <main className="max-w-[1180px] mx-auto px-6 md:px-12 py-16">
+      <main className="max-w-[1180px] mx-auto px-6 md:px-12">
         {/* Launch / Hero Screen */}
-        <section className="launch-screen min-h-[calc(100vh-178px)] grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center pb-32">
+        <section className="launch-screen min-h-screen flex flex-col justify-center grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center py-20">
           <div className="hero-copy">
             <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">{eyebrow}</p>
             <h1 className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">{title}</h1>

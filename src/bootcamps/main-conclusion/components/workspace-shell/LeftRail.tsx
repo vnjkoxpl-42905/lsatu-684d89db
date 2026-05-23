@@ -88,9 +88,10 @@ export function LeftRail(): JSX.Element {
 
       <nav className="px-2.5 flex-1">
         {navSections.map((section) => (
-          <details key={section.title} open={!section.collapsed} className="mb-4">
+          <details key={section.title} open={!section.collapsed} className="group/details mb-4">
             <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
               {section.title}
+              <span className="text-[10px] opacity-50 group-open/details:rotate-180 transition-transform duration-200">⌄</span>
             </summary>
             <ul className="space-y-0.5">
               {section.items.map((item) => (
