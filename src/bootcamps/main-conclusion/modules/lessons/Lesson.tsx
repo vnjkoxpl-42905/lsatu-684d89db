@@ -15,6 +15,7 @@ import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { ArrowLeft, ArrowRight, Check, X as XIcon } from 'lucide-react';
 import { PhaseRunner } from '@/bootcamps/main-conclusion/components/phase-runner/PhaseRunner';
+import { DynamicIslandTOC } from '@/components/ui/dynamic-island-toc';
 import { getPhasedLesson } from '@/bootcamps/main-conclusion/content/lessons-phased.source';
 import type { LessonId, NamedToolId, ReferenceId } from '@/bootcamps/main-conclusion/types/source-slots';
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export function NewGuidedIntro() {
   const notes = [
@@ -11,31 +11,50 @@ export function NewGuidedIntro() {
   ];
 
   return (
-    <div className="mx-auto max-w-[860px] px-6 py-12 desktop:px-12 desktop:py-16">
-      <header className="mb-10">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-4">Intro to LR</h1>
-        <p className="text-lg text-muted-foreground">A guided, article-based journey into LSAT Logical Reasoning.</p>
-      </header>
+    <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans px-6 md:px-12 py-24">
+      <div className="max-w-[1180px] mx-auto">
+        <header className="mb-24">
+          <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">Introduction</p>
+          <h1 className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">Intro to LR.</h1>
+          <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">A guided, article-based journey into LSAT Logical Reasoning.</p>
+        </header>
 
-      <ul className="rounded-xl border border-border bg-card shadow-sm">
-        {notes.map((n, idx) => (
-          <li key={n.id} className={idx !== notes.length - 1 ? "border-b border-border" : ""}>
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
             <Link
-              to={`/bootcamp/intro-to-lr/lessons/notes/${n.id}`}
-              className="group flex items-center gap-4 px-6 py-5 hover:bg-muted/50 transition-colors"
+              to="/bootcamp/intro-to-lr/lessons/notes/argument-basics"
+              className="block w-full bg-[#1a1a1a] text-[#F5F2ED] p-12 hover:bg-[rgba(26,26,26,0.9)] transition-all"
             >
-
-              <BookOpen className="h-5 w-5 text-primary" />
-              <span className="flex-grow text-lg font-medium">{n.title}</span>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+              <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(245,242,237,0.46)] mb-6">Start Here</div>
+              <div className="text-5xl font-serif italic mb-12">Begin Lesson 1</div>
+              <ArrowRight className="h-8 w-8" />
             </Link>
-          </li>
-        ))}
-      </ul>
-      
-      <div className="mt-12 text-sm text-muted-foreground">
-        <p>Legacy lessons are still available via the navigation menu if needed.</p>
+          </div>
+
+          <ul className="space-y-4">
+            {notes.map((n) => (
+              <li key={n.id}>
+                <Link
+                  to={`/bootcamp/intro-to-lr/lessons/notes/${n.id}`}
+                  className="block p-8 bg-white border border-[rgba(26,26,26,0.1)] hover:border-[rgba(26,26,26,0.3)] transition-all"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold">{n.title}</span>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <footer className="mt-24 text-center">
+          <Link to="/bootcamp/intro-to-lr/lessons/legacy" className="text-[10px] uppercase tracking-[0.22em] text-[rgba(26,26,26,0.46)] font-bold underline hover:text-primary">
+            View legacy lesson list
+          </Link>
+        </footer>
       </div>
     </div>
   );
 }
+

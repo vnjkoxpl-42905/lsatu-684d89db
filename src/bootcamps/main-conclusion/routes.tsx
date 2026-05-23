@@ -70,8 +70,15 @@ export function BootcampRoutes() {
         <Route path="lessons" element={<NewGuidedIntro />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
+
+        {/* Redirects */}
+        <Route path="lessons/1.1" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/argument-basics" replace />} />
+        <Route path="lessons/1.13" element={<Navigate to="/bootcamp/intro-to-lr/lessons/legacy/1.13" replace />} />
+        <Route path="lessons/:lessonId" element={<Navigate to="/bootcamp/intro-to-lr/lessons/legacy/:lessonId" replace />} />
+
         <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
+
 
         {/* ── M2 Reference ────────────────────────────────────────────────── */}
         <Route path="reference" element={<ReferenceIndex />} />
