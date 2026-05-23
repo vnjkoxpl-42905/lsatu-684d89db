@@ -55,7 +55,7 @@ export function ModuleIndex(): JSX.Element {
           'Before you answer LR questions, learn how to see the argument clearly: what the author claims, what support they give, and where the reasoning can break.',
         cta: 'Begin Lesson 1',
         // Force absolute path for navigation
-        href: '/bootcamp/intro-to-lr/lessons/1.1',
+        href: '/bootcamp/intro-to-lr/lessons/notes/argument-basics',
         secondary: undefined,
       }
     : {

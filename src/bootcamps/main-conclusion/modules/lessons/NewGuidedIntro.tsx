@@ -21,9 +21,10 @@ export function NewGuidedIntro() {
         {notes.map((n, idx) => (
           <li key={n.id} className={idx !== notes.length - 1 ? "border-b border-border" : ""}>
             <Link
-              to={`/bootcamp/intro-to-lr/notes/${n.id}`}
+              to={`/bootcamp/intro-to-lr/lessons/notes/${n.id}`}
               className="group flex items-center gap-4 px-6 py-5 hover:bg-muted/50 transition-colors"
             >
+
               <BookOpen className="h-5 w-5 text-primary" />
               <span className="flex-grow text-lg font-medium">{n.title}</span>
               <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />

@@ -56,7 +56,7 @@ function NoteLoader() {
     case 'layered-arguments': return <LayeredArgumentsNotes />;
     case 'matching-the-answer': return <MatchingTheAnswerNotes />;
     case 'practice-path': return <PracticePathNotes />;
-    default: return <Navigate to="/bootcamp/intro-to-lr/lessons/guided" replace />;
+    default: return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
   }
 }
 
@@ -67,12 +67,11 @@ export function BootcampRoutes() {
         <Route index element={<ModuleIndex />} />
 
         {/* ── M1 Lessons ──────────────────────────────────────────────────── */}
-        <Route path="lessons" element={<LessonsIndex />} />
-        <Route path="lessons/guided" element={<NewGuidedIntro />} />
-        <Route path="lessons/1.1" element={<ArgumentBasicsNotes />} />
+        <Route path="lessons" element={<NewGuidedIntro />} />
+        <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
-        <Route path="lessons/1.13" element={<CapstoneRoute />} />
-        <Route path="lessons/:lessonId" element={<Lesson />} />
+        <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
+        <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
 
         {/* ── M2 Reference ────────────────────────────────────────────────── */}
         <Route path="reference" element={<ReferenceIndex />} />
