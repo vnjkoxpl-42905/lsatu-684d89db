@@ -43,7 +43,7 @@ export default function ArgumentBasicsNotes() {
 
       <section data-toc data-toc-title="Your turn" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
         <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Your turn</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">Practice identifying roles in the drill below. Focus on painting the conclusion green and the premises blue.</p>
+        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">You will practice this in the X-Ray Drill during the Practice Path. For now, make sure you can explain which sentence is the conclusion and which sentences support it.</p>
       </section>
 
       <section data-toc data-toc-title="Checkpoint" className="note-section p-10">

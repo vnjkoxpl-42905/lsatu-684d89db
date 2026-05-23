@@ -48,8 +48,6 @@ import PracticePathNotes from '@/bootcamps/main-conclusion/modules/lessons/notes
 
 import { useParams } from 'react-router-dom';
 
-import { useParams } from 'react-router-dom';
-
 function NoteLoader() {
   const { noteId } = useParams();
   switch (noteId) {
