@@ -73,13 +73,17 @@ export default function ArgumentBasicsNotes() {
 
       <section data-toc data-toc-title="Your turn" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
         <Kicker>Your turn</Kicker>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">You will practice this in the X-Ray Drill during the Practice Path. For now, make sure you can explain which sentence is the conclusion and which sentences support it.</p>
+        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)]">Before moving on, test the structure:</p>
+        <ul className="space-y-4 mt-4 text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] list-decimal pl-5">
+          <li>What is the author trying to prove?</li>
+          <li>Which sentence gives the reason?</li>
+        </ul>
       </section>
 
       <section data-toc data-toc-title="Checkpoint" className="note-section p-10">
         <Kicker>Checkpoint</Kicker>
         <div className="bg-[#1a1a1a] text-[#F5F2ED] p-8 mb-12">
-          <p className="text-[20px] leading-[1.68]">Remember: Premise truth is given. The whole argumentative game is about how the premises fit together, not whether they are world-true.</p>
+          <p className="text-[20px] leading-[1.68]">Remember: You do not judge whether the premises are true in real life. You judge how they support the conclusion.</p>
         </div>
       </section>
 
