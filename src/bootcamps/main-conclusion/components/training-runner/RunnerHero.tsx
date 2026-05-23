@@ -48,15 +48,12 @@ export function RunnerHero({ step, progressLabel, Icon = Sparkles }: Props): JSX
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               to={step.href}
-              className="rounded-[2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[rgb(var(--ink))] focus-visible:outline-offset-2"
+              className="inline-flex h-14 items-center gap-3 rounded-[2px] bg-[#1a1a1a] px-8 text-[#F5F2ED] transition-all hover:bg-[rgba(26,26,26,0.9)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--ink))]"
             >
-              <Button
-                size="lg"
-                rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
-                className="!h-14 !px-8 !rounded-[2px]"
-              >
+              <span className="font-bold uppercase tracking-[0.16em] text-[14px]">
                 {step.cta}
-              </Button>
+              </span>
+              <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
             </Link>
             {step.secondary ? (
               <Link
