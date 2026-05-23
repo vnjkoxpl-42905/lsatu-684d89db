@@ -163,7 +163,12 @@ export function PhaseRunner({
     >
       <Hero studentEyebrow={studentEyebrow} title={title} hook={hook} completed={completed} />
 
-      <PhaseStrip phases={phases} index={phaseIndex} />
+      <DynamicIslandPhaseNav 
+        phases={phases} 
+        currentIndex={phaseIndex} 
+        onNavigate={(idx) => setPhaseIndex(() => idx)}
+        canAdvance={canAdvance}
+      />
 
       <section className="mt-8">
         <PhaseLabel label={phaseLabel} />
@@ -239,63 +244,6 @@ function Hero({
         </p>
       </div>
     </header>
-  );
-}
-
-function PhaseStrip({ phases, index }: { phases: Phase[]; index: number }): JSX.Element {
-  return (
-    <div
-      className={cn(
-        'rounded-[6px] px-3 py-2.5',
-        'bg-[rgb(var(--surface)/0.72)]',
-        'border border-[rgb(var(--border)/0.10)]',
-      )}
-      role="progressbar"
-      aria-valuenow={index + 1}
-      aria-valuemin={1}
-      aria-valuemax={phases.length}
-      aria-label="Lesson phase"
-    >
-      <ol className="flex flex-wrap items-center gap-1.5">
-        {phases.map((p, i) => {
-          const status = i < index ? 'done' : i === index ? 'active' : 'upcoming';
-          return (
-            <li key={i} className="flex items-center">
-              <span
-                className={cn(
-                  'relative inline-flex h-6 items-center gap-1.5 rounded-full px-2.5',
-                  'font-mc-mono text-[10.5px] uppercase tracking-wider transition-colors duration-150 ease-eased',
-                  status === 'done' &&
-                    'bg-[rgb(var(--surface)/0.92)] text-ink border border-[rgb(var(--border)/0.12)]',
-                  status === 'active' &&
-                    'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-strong)] shadow-[0_16px_34px_rgb(var(--bg)/0.16)]',
-                  status === 'upcoming' &&
-                    'bg-[rgb(var(--surface-elev))] text-ink-faint border border-[rgb(var(--border)/0.10)]',
-                )}
-              >
-                {status === 'done' ? (
-                  <Check className="h-3 w-3" strokeWidth={2.6} aria-hidden="true" />
-                ) : (
-                  <span aria-hidden="true" className="font-semibold">
-                    {i + 1}
-                  </span>
-                )}
-                <span>{PHASE_LABEL[p.kind]}</span>
-              </span>
-              {i < phases.length - 1 ? (
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    'mx-0.5 h-px w-3',
-                    status === 'done' ? 'bg-[color:var(--border-accent-soft)]' : 'bg-[rgb(var(--border)/0.10)]',
-                  )}
-                />
-              ) : null}
-            </li>
-          );
-        })}
-      </ol>
-    </div>
   );
 }
 
