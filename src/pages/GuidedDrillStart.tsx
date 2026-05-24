@@ -142,11 +142,23 @@ export default function GuidedDrillStart() {
     };
 
     const drillSearchParams = new URLSearchParams();
+    drillSearchParams.set('mode', 'type-drill');
+    drillSearchParams.set('qids', selectedQids.join(','));
     drillSearchParams.set('returnTo', bootcampOverride?.returnTo ?? safeReturnPath(searchParams.get('returnTo')));
+    if (bootcampOverride?.title ?? drill?.title) {
+      drillSearchParams.set('focus', bootcampOverride?.title ?? drill!.title);
+    }
+    if (bootcampOverride?.source) {
+      drillSearchParams.set('source', bootcampOverride.source);
+    }
     if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
 
     navigate(`/drill?${drillSearchParams.toString()}`, {
-      state: { mode: 'type-drill', config },
+      state: { 
+        mode: 'type-drill', 
+        config, 
+        practicingLabel: bootcampOverride?.title ?? drill?.title 
+      },
     });
   }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride]);
 
