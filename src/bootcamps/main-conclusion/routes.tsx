@@ -21,6 +21,7 @@ import { ReferenceIndex } from '@/bootcamps/main-conclusion/modules/reference/Re
 import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/modules/reference/ReferenceSection';
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
 import { DrillsIndex, DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
+import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import {
   SimulatorOverview,
   QuestionBank,
