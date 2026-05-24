@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 
 export function NewGuidedIntro() {
   const notes = [
-    { id: 'argument-basics', title: 'Argument Basics' },
     { id: 'where-conclusions-hide', title: 'Where Conclusions Hide' },
     { id: 'layered-arguments', title: 'Layered Arguments' },
     { id: 'matching-the-answer', title: 'Matching the Answer' },
@@ -25,21 +24,25 @@ export function NewGuidedIntro() {
               to="/bootcamp/intro-to-lr/lessons/notes/argument-basics"
               className="block w-full bg-[#1a1a1a] text-[#F5F2ED] p-12 hover:bg-[rgba(26,26,26,0.9)] transition-all"
             >
-              <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(245,242,237,0.46)] mb-6">Start Here</div>
-              <div className="text-5xl font-serif italic mb-12">Begin Lesson 1</div>
+              <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(245,242,237,0.46)] mb-2">LESSON 1</div>
+              <div className="text-5xl font-serif italic mb-2">Argument Basics</div>
+              <div className="text-[10px] uppercase tracking-[0.20em] text-[rgba(245,242,237,0.6)] mb-12">Start here</div>
               <ArrowRight className="h-8 w-8" />
             </Link>
           </div>
 
           <ul className="space-y-4">
-            {notes.map((n) => (
+            {notes.map((n, index) => (
               <li key={n.id}>
                 <Link
                   to={`/bootcamp/intro-to-lr/lessons/notes/${n.id}`}
                   className="block p-8 bg-white border border-[rgba(26,26,26,0.1)] hover:border-[rgba(26,26,26,0.3)] transition-all"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold">{n.title}</span>
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.20em] text-[rgba(26,26,26,0.4)] mb-1">Lesson {index + 2}</div>
+                      <span className="text-lg font-bold">{n.title}</span>
+                    </div>
                     <ArrowRight className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </Link>
@@ -51,4 +54,3 @@ export function NewGuidedIntro() {
     </div>
   );
 }
-
