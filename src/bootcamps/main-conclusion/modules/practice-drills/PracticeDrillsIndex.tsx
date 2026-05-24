@@ -62,15 +62,18 @@ const SETS: PracticeSet[] = [
 
 export function PracticeDrillsIndex() {
   const navigate = useNavigate();
-  const [activeSet, setActiveSet] = useState<PracticeSet | null>(null);
-
-  if (activeSet) {
-    const items = (SIMULATOR_DATA as any[]).filter(item => activeSet.qids.includes(item.id));
-    return <PracticeRunner items={items} title={activeSet.title} onExit={() => setActiveSet(null)} />;
-  }
-
   const handleViewInstructions = (set: PracticeSet) => {
-    setActiveSet(set);
+    navigate(`/guided-drills/${set.instructionsSlug}?returnTo=/bootcamp/intro-to-lr/practice-drills`, {
+      state: {
+        bootcampOverride: {
+          selectedQids: set.qids,
+          qtypes: ['Main Conclusion'],
+          title: set.title,
+          returnTo: '/bootcamp/intro-to-lr/practice-drills',
+          source: 'intro-to-lr-practice-drills',
+        },
+      },
+    });
   };
 
   return (

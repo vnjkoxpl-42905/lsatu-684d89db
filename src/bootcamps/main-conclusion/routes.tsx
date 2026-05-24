@@ -22,6 +22,18 @@ import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/mo
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
 import { DrillsIndex, DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
+import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
+import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
+
+function PracticeRunnerWrapper() {
+  const { practiceSlug } = useParams();
+  const navigate = useNavigate();
+  const items = (SIMULATOR_DATA as any[]).filter(item => {
+    if (practiceSlug === 'rebuttal') return item.id.includes('Q8') || item.id.includes('Q9') || item.id.includes('Q10') || item.id.includes('Q11');
+    return item.id.includes('Q1') || item.id.includes('Q2') || item.id.includes('Q3') || item.id.includes('Q4') || item.id.includes('Q5') || item.id.includes('Q6');
+  });
+  return <PracticeRunner items={items} title={practiceSlug === 'rebuttal' ? 'Rebuttal Main Conclusion' : 'First-Sentence Main Conclusion'} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
+}
 import {
   SimulatorOverview,
   QuestionBank,
@@ -112,6 +124,7 @@ export function BootcampRoutes() {
 
         {/* ── Practice Drills (assigned question sets) ───────────────────── */}
         <Route path="practice-drills" element={<PracticeDrillsIndex />} />
+        <Route path="practice-drills/:practiceSlug" element={<PracticeRunnerWrapper />} />
 
 
         {/* ── M4 Simulator (gated by Drill 3.4) ──────────────────────────── */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 interface SimulatorItem {
@@ -23,15 +23,23 @@ interface PracticeRunnerProps {
 export function PracticeRunner({ items, title, onExit }: PracticeRunnerProps) {
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
+  const [conclusionInput, setConclusionInput] = useState('');
+  
+  if (!items || items.length === 0) {
+    return <div className="p-12 text-center text-ink-soft">No questions available in this drill.</div>;
+  }
+
   const item = items[index];
 
   const handleNext = () => {
     setRevealed(false);
+    setConclusionInput('');
     setIndex((i) => Math.min(i + 1, items.length - 1));
   };
 
   const handlePrev = () => {
     setRevealed(false);
+    setConclusionInput('');
     setIndex((i) => Math.max(i - 1, 0));
   };
 
@@ -59,9 +67,18 @@ export function PracticeRunner({ items, title, onExit }: PracticeRunnerProps) {
           </Card>
 
           {!revealed ? (
-            <Button className="w-full" onClick={() => setRevealed(true)}>
-              Reveal Analysis
-            </Button>
+            <div className="space-y-4">
+              <textarea
+                className="w-full p-4 rounded-3 border bg-[rgb(var(--surface))] font-mc-serif text-body text-ink focus:ring-2 focus:ring-mc-accent/20 outline-none"
+                placeholder="Write the main conclusion in your own words..."
+                rows={4}
+                value={conclusionInput}
+                onChange={(e) => setConclusionInput(e.target.value)}
+              />
+              <Button className="w-full" disabled={!conclusionInput.trim()} onClick={() => setRevealed(true)}>
+                Reveal Analysis
+              </Button>
+            </div>
           ) : (
             <motion.div 
               initial={{ opacity: 0 }} 
