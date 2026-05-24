@@ -65,6 +65,8 @@ export function PracticeDrillsIndex() {
       state: {
         bootcampOverride: {
           selectedQids: set.qids,
+          qtypes: ['Main Conclusion'],
+          title: set.title,
           returnTo: '/bootcamp/intro-to-lr/practice-drills',
           source: 'intro-to-lr-practice-drills',
         },

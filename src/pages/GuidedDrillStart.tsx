@@ -73,31 +73,28 @@ export default function GuidedDrillStart() {
     findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
   ), [drill, slug]);
 
+  const bootcampOverride = (location.state as any)?.bootcampOverride;
+
   const handleReturn = React.useCallback(() => {
     navigate(safeReturnPath(searchParams.get('returnTo')));
   }, [navigate, searchParams]);
 
   const handleStart = React.useCallback(async () => {
-    if (!drill) return;
+    if (!drill && !bootcampOverride) return;
     if (qbLoading) {
       toast.info('Loading question bank...');
       return;
     }
 
-    const bootcampOverride = (location.state as any)?.bootcampOverride;
     let selectedQids: string[];
-
     if (bootcampOverride?.selectedQids) {
       selectedQids = bootcampOverride.selectedQids;
-    } else {
-      // Priority 1+2: exact attached question IDs (assignment override > drill-level list)
+    } else if (drill) {
       const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
       const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
-
       if (exactQids.length > 0) {
         selectedQids = exactQids;
       } else {
-        // Priority 3 (fallback): random sample from bank_filter pool
         const pool = resolveGuidedDrillPool(drill.bank_filter);
         if (pool.length === 0) {
           toast.error('No matching questions found for this drill.');
@@ -106,6 +103,8 @@ export default function GuidedDrillStart() {
         const want = drill.question_count ?? Math.min(pool.length, 10);
         selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
       }
+    } else {
+      return;
     }
 
     if (assignment) {
@@ -114,7 +113,7 @@ export default function GuidedDrillStart() {
     }
 
     const config: TypeDrillConfig = {
-      qtypes: drill.question_types || [],
+      qtypes: drill?.question_types || bootcampOverride?.qtypes || ['Main Conclusion'],
       difficulties: [],
       pts: [],
       count: selectedQids.length,
@@ -129,7 +128,7 @@ export default function GuidedDrillStart() {
     navigate(`/drill?${drillSearchParams.toString()}`, {
       state: { mode: 'type-drill', config },
     });
-  }, [assignment, drill, navigate, qbLoading, searchParams, location.state]);
+  }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride]);
 
   const wireIframeControls = React.useCallback(() => {
     cleanupIframeListenersRef.current?.();
@@ -178,14 +177,14 @@ export default function GuidedDrillStart() {
     return <div className="min-h-screen bg-background text-foreground p-8">Loading...</div>;
   }
 
-  if (!drill) {
+  if (!drill && !bootcampOverride) {
     return <div className="min-h-screen bg-background text-foreground p-8">Guided drill not found.</div>;
   }
 
   if (!launchPage) {
     return (
       <div className="min-h-screen bg-background text-foreground p-8">
-        Approved launch page not found for {drill.title}.
+        Approved launch page not found.
       </div>
     );
   }
