@@ -12,13 +12,11 @@ const Kicker = ({ children, className }: { children: React.ReactNode; className?
 const DrillCard = ({ 
   id, 
   name, 
-  purpose, 
-  to 
+  purpose
 }: { 
   id: string; 
   name: string; 
   purpose: string; 
-  to: string 
 }) => (
   <div className="group bg-white border border-[rgba(26,26,26,0.1)] p-8 transition-all hover:border-[rgba(26,26,26,0.3)]">
     <div className="font-mc-mono text-[10px] uppercase tracking-widest text-[rgba(26,26,26,0.4)] mb-3">
@@ -89,19 +87,16 @@ export default function PracticePathNotes() {
             id="3.1" 
             name="Indicator Word ID" 
             purpose="Practice identifying indicator words for conclusion, premise, pivot, and concession." 
-            to="/bootcamp/intro-to-lr/drills/3.1" 
           />
           <DrillCard 
             id="3.3" 
             name="First-Sentence Reading" 
             purpose="Focus on identifying potential conclusion candidates in the first sentence." 
-            to="/bootcamp/intro-to-lr/drills/3.3" 
           />
           <DrillCard 
             id="3.4" 
             name="Rebuttal vs First-Sentence" 
             purpose="Practice differentiating between structures where the author pivots from an opening view." 
-            to="/bootcamp/intro-to-lr/drills/3.4" 
           />
         </div>
       </section>
@@ -118,19 +113,16 @@ export default function PracticePathNotes() {
             id="3.2" 
             name="Sentence Role Drill" 
             purpose="Practice labeling sentences as premise, conclusion, or background." 
-            to="/bootcamp/intro-to-lr/drills/3.2" 
           />
           <DrillCard 
             id="3.5" 
             name="Chain Mapping" 
             purpose="Map the relationship between intermediate and main conclusions." 
-            to="/bootcamp/intro-to-lr/drills/3.5" 
           />
           <DrillCard 
             id="3.9" 
             name="Nested Claims" 
             purpose="Analyze arguments with layered premises and nested conclusions." 
-            to="/bootcamp/intro-to-lr/drills/3.9" 
           />
         </div>
       </section>
@@ -147,13 +139,11 @@ export default function PracticePathNotes() {
             id="3.7" 
             name="Vague Word Replacement" 
             purpose="Practice replacing vague words with the actual thing being discussed." 
-            to="/bootcamp/intro-to-lr/drills/3.7" 
           />
           <DrillCard 
             id="3.8" 
             name="Read and Restate" 
             purpose="Practice saying conclusions back in your own words before looking at the choices." 
-            to="/bootcamp/intro-to-lr/drills/3.8" 
           />
           <div className="hidden lg:block bg-[#FAF7EF]/10 p-8 border-l border-[rgba(26,26,26,0.1)]" />
         </div>
