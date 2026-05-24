@@ -26,12 +26,34 @@ function safeReturnPath(value: string | null): string {
   return value;
 }
 
+const BOOTCAMP_GUIDED_DRILL_OVERRIDES = {
+  'first-sentence-conclusions': {
+    selectedQids: ['MC-SIM-Q1', 'MC-SIM-Q2', 'MC-SIM-Q3', 'MC-SIM-Q4', 'MC-SIM-Q5', 'MC-SIM-Q6'],
+    qtypes: ['Main Conclusion'],
+    title: 'First-Sentence Main Conclusion',
+    returnTo: '/bootcamp/intro-to-lr/practice-drills',
+    source: 'intro-to-lr-practice-drills',
+  },
+  'rebuttal-conclusions': {
+    selectedQids: ['MC-SIM-Q8', 'MC-SIM-Q9', 'MC-SIM-Q10', 'MC-SIM-Q11'],
+    qtypes: ['Main Conclusion'],
+    title: 'Rebuttal Main Conclusion',
+    returnTo: '/bootcamp/intro-to-lr/practice-drills',
+    source: 'intro-to-lr-practice-drills',
+  },
+} as const;
+
 export default function GuidedDrillStart() {
   const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { isLoading: qbLoading } = useQuestionBank();
+
+  const stateBootcampOverride = (location.state as any)?.bootcampOverride;
+  const slugBootcampOverride = slug ? BOOTCAMP_GUIDED_DRILL_OVERRIDES[slug as keyof typeof BOOTCAMP_GUIDED_DRILL_OVERRIDES] : undefined;
+  const bootcampOverride = stateBootcampOverride ?? slugBootcampOverride;
+
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const cleanupIframeListenersRef = React.useRef<(() => void) | null>(null);
   const [assignment, setAssignment] = React.useState<AssignmentWithDrill | null>(null);
@@ -72,8 +94,6 @@ export default function GuidedDrillStart() {
   const launchPage = React.useMemo(() => (
     findGuidedDrillHtmlByDrill(drill) ?? findGuidedDrillHtmlBySlug(slug)
   ), [drill, slug]);
-
-  const bootcampOverride = (location.state as any)?.bootcampOverride;
 
   const handleReturn = React.useCallback(() => {
     navigate(safeReturnPath(searchParams.get('returnTo')));
