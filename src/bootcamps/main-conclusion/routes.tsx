@@ -21,6 +21,7 @@ import { ReferenceIndex } from '@/bootcamps/main-conclusion/modules/reference/Re
 import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/modules/reference/ReferenceSection';
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
 import { DrillsIndex, DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
+import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import {
   SimulatorOverview,
   QuestionBank,
@@ -108,6 +109,10 @@ export function BootcampRoutes() {
         {/* ── M3 Drills ───────────────────────────────────────────────────── */}
         <Route path="drills" element={<DrillsIndex />} />
         <Route path="drills/:drillId" element={<DrillShell />} />
+
+        {/* ── Practice Drills (assigned question sets) ───────────────────── */}
+        <Route path="practice-drills" element={<PracticeDrillsIndex />} />
+
 
         {/* ── M4 Simulator (gated by Drill 3.4) ──────────────────────────── */}
         <Route

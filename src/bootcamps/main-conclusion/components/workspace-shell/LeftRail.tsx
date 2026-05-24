@@ -7,6 +7,7 @@ import {
   ScanText,
   LineChart,
   ArrowLeft,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
@@ -31,10 +32,11 @@ const navSections: NavSection[] = [
   {
     title: 'Practice',
     items: [
+      { label: 'Practice Drills', to: '/bootcamp/intro-to-lr/practice-drills', Icon: Sparkles },
       { label: 'Drills', to: '/bootcamp/intro-to-lr/drills', Icon: Dumbbell },
       { label: 'Simulator', to: '/bootcamp/intro-to-lr/simulator', Icon: Target },
     ],
-    collapsed: true,
+    collapsed: false,
   },
   {
     title: 'Tools',
