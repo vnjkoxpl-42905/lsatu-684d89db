@@ -110,6 +110,10 @@ export function BootcampRoutes() {
         <Route path="drills" element={<DrillsIndex />} />
         <Route path="drills/:drillId" element={<DrillShell />} />
 
+        {/* ── Practice Drills (assigned question sets) ───────────────────── */}
+        <Route path="practice-drills" element={<PracticeDrillsIndex />} />
+
+
         {/* ── M4 Simulator (gated by Drill 3.4) ──────────────────────────── */}
         <Route
           path="simulator"
