@@ -31,10 +31,10 @@ const DrillCard = ({
       {purpose}
     </p>
     <Link 
-      to={to} 
+      to="/bootcamp/intro-to-lr/practice-drills" 
       className="inline-flex h-12 items-center gap-3 bg-[#1a1a1a] px-6 text-[#F5F2ED] transition-colors hover:bg-[rgba(26,26,26,0.88)]"
     >
-      <span className="font-bold uppercase tracking-[0.16em] text-[11px]">Start drill</span>
+      <span className="font-bold uppercase tracking-[0.16em] text-[11px]">Open practice drills</span>
       <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
     </Link>
   </div>
