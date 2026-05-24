@@ -154,8 +154,8 @@ export default function GuidedDrillStart() {
     if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
 
     if (bootcampOverride?.source === 'intro-to-lr-practice-drills') {
-      const slug = slug === 'rebuttal-conclusions' ? 'rebuttal' : 'first-sentence';
-      navigate(`/bootcamp/intro-to-lr/practice-drills/${slug}`);
+      const practiceSlug = slug === 'rebuttal-conclusions' ? 'rebuttal' : 'first-sentence';
+      navigate(`/bootcamp/intro-to-lr/practice-drills/${practiceSlug}`);
       return;
     }
 

@@ -302,7 +302,7 @@ export function StageGateTracker<TPayload>({
                     Next Question
                   </Button>
                 ) : (
-                  <Button variant="accent" onClick={finishStage}>
+                  <Button variant="primary" onClick={finishStage}>
                     Finish Stage
                   </Button>
                 )

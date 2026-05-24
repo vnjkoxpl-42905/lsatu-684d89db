@@ -5,12 +5,12 @@
  * + nested <Routes> under the parent path /bootcamp/intro-to-lr/*, so this file
  * exports a <BootcampRoutes /> component that renders the nested route tree.
  *
- * All paths are relative; the parent route's `*` wildcard matches against them.
+ * All paths are relative; the parent route's * wildcard matches against them.
  * The shell + drawer + palette + tutor live inside <WorkspaceShell />, mounted
  * here so that every nested route shares the chrome.
  */
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import { WorkspaceShell } from '@/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell';
 import { LockedRoute } from '@/bootcamps/main-conclusion/components/workspace-shell/LockedRoute';
 import { ModuleIndex } from '@/bootcamps/main-conclusion/modules/ModuleIndex';
@@ -24,16 +24,6 @@ import { DrillsIndex, DrillShell } from '@/bootcamps/main-conclusion/modules/dri
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
 import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
-
-function PracticeRunnerWrapper() {
-  const { practiceSlug } = useParams();
-  const navigate = useNavigate();
-  const items = (SIMULATOR_DATA as any[]).filter(item => {
-    if (practiceSlug === 'rebuttal') return item.id.includes('Q8') || item.id.includes('Q9') || item.id.includes('Q10') || item.id.includes('Q11');
-    return item.id.includes('Q1') || item.id.includes('Q2') || item.id.includes('Q3') || item.id.includes('Q4') || item.id.includes('Q5') || item.id.includes('Q6');
-  });
-  return <PracticeRunner items={items} title={practiceSlug === 'rebuttal' ? 'Rebuttal Main Conclusion' : 'First-Sentence Main Conclusion'} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
-}
 import {
   SimulatorOverview,
   QuestionBank,
@@ -59,7 +49,24 @@ import LayeredArgumentsNotes from '@/bootcamps/main-conclusion/modules/lessons/n
 import MatchingTheAnswerNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/matching-the-answer';
 import PracticePathNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/practice-path';
 
-import { useParams } from 'react-router-dom';
+const PRACTICE_RUNNER_SETS = {
+  'first-sentence': {
+    title: 'First-Sentence Main Conclusion',
+    qids: ['MC-SIM-Q1', 'MC-SIM-Q2', 'MC-SIM-Q3', 'MC-SIM-Q4', 'MC-SIM-Q5', 'MC-SIM-Q6'],
+  },
+  rebuttal: {
+    title: 'Rebuttal Main Conclusion',
+    qids: ['MC-SIM-Q8', 'MC-SIM-Q9', 'MC-SIM-Q10', 'MC-SIM-Q11'],
+  },
+} as const;
+
+function PracticeRunnerWrapper() {
+  const { practiceSlug } = useParams();
+  const navigate = useNavigate();
+  const set = PRACTICE_RUNNER_SETS[practiceSlug as keyof typeof PRACTICE_RUNNER_SETS] ?? PRACTICE_RUNNER_SETS['first-sentence'];
+  const items = (SIMULATOR_DATA as any[]).filter((item: any) => (set.qids as readonly string[]).includes(item.id));
+  return <PracticeRunner items={items} title={set.title} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
+}
 
 function NoteLoader() {
   const { noteId } = useParams();
@@ -89,20 +96,12 @@ export function BootcampRoutes() {
     <Routes>
       <Route element={<WorkspaceShell />}>
         <Route index element={<ModuleIndex />} />
-
-        {/* ── M1 Lessons ──────────────────────────────────────────────────── */}
         <Route path="lessons" element={<NewGuidedIntro />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
-        
-        {/* Redirects */}
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
-        
         <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
-
-
-        {/* ── M2 Reference ────────────────────────────────────────────────── */}
         <Route path="reference" element={<ReferenceIndex />} />
         <Route path="reference/indicators" element={<IndicatorVault />} />
         <Route path="reference/2-part-check" element={<ReferenceSection />} />
@@ -117,17 +116,10 @@ export function BootcampRoutes() {
         <Route path="reference/companion-mode" element={<ReferenceSection />} />
         <Route path="reference/named-tools" element={<ReferenceSection />} />
         <Route path="reference/named-tools/:toolId" element={<NamedToolEntry />} />
-
-        {/* ── M3 Drills ───────────────────────────────────────────────────── */}
         <Route path="drills" element={<DrillsIndex />} />
         <Route path="drills/:drillId" element={<DrillShell />} />
-
-        {/* ── Practice Drills (assigned question sets) ───────────────────── */}
         <Route path="practice-drills" element={<PracticeDrillsIndex />} />
         <Route path="practice-drills/:practiceSlug" element={<PracticeRunnerWrapper />} />
-
-
-        {/* ── M4 Simulator (gated by Drill 3.4) ──────────────────────────── */}
         <Route
           path="simulator"
           element={
@@ -176,13 +168,9 @@ export function BootcampRoutes() {
             </LockedRoute>
           }
         />
-
-        {/* ── M5 Hard Sentences ───────────────────────────────────────────── */}
         <Route path="hard-sentences" element={<HardSentencesIndex />} />
         <Route path="hard-sentences/capstone" element={<CapstoneRoute />} />
         <Route path="hard-sentences/:sectionId" element={<HardSentenceSection />} />
-
-        {/* ── M6 Diagnostics ──────────────────────────────────────────────── */}
         <Route path="diagnostics" element={<DiagnosticsIndex />} />
         <Route path="diagnostics/philosophy" element={<Philosophy />} />
         <Route path="diagnostics/dashboard" element={<Dashboard />} />
@@ -191,12 +179,8 @@ export function BootcampRoutes() {
         <Route path="diagnostics/trait-profile" element={<TraitProfile />} />
         <Route path="diagnostics/mistake-profile" element={<MistakeProfile />} />
         <Route path="diagnostics/srs" element={<SrsQueue />} />
-
-        {/* ── Cross-cutting ───────────────────────────────────────────────── */}
         <Route path="journal" element={<Journal />} />
         <Route path="settings" element={<Settings />} />
-
-        {/* 404 → bootcamp index */}
         <Route path="*" element={<Navigate to="" replace />} />
       </Route>
     </Routes>

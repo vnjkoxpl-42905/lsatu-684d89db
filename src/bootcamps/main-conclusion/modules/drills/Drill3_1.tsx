@@ -121,8 +121,7 @@ function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
           return (
             <Button
               key={cat}
-              variant={tone === 'subtle' ? 'subtle' : 'filled'}
-              tone={tone !== 'subtle' ? tone : undefined}
+              variant={tone === 'subtle' ? 'subtle' : 'primary'}
               className={cn(
                 'h-auto py-3 text-body font-semibold justify-center',
                 state.answered && !isSelected && !isCorrect && 'opacity-30'
