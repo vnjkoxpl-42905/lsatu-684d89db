@@ -5,12 +5,11 @@
  *   • First-Sentence Main Conclusion  — structure_family "First-sentence"
  *   • Rebuttal Main Conclusion        — structure_family "Rebuttal"
  *
- * Flow: list → instruction card (title, count, constraint, Level, Order)
+ * Flow: list → instruction card (title, count, constraint)
  *  → /guided-drills/:slug (instruction surface)
- *  → Start Drill launches /drill (type-drill) with a pre-resolved selectedQids list.
+ *  → Start Drill launches bootcamp-native runner route at /bootcamp/intro-to-lr/practice-drills/:practiceSlug.
  */
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
@@ -18,8 +17,6 @@ import {
   MessageSquareWarning,
 } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
-import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 
 type SetKey = 'first-sentence' | 'rebuttal';
 
