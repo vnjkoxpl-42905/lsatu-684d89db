@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import {
   getAssignment,
   getGuidedDrillBySlug,
@@ -30,6 +30,7 @@ export default function GuidedDrillStart() {
   const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLoading: qbLoading } = useQuestionBank();
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const cleanupIframeListenersRef = React.useRef<(() => void) | null>(null);
@@ -83,22 +84,28 @@ export default function GuidedDrillStart() {
       return;
     }
 
-    // Priority 1+2: exact attached question IDs (assignment override > drill-level list)
-    const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
-    const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
-
+    const bootcampOverride = (location.state as any)?.bootcampOverride;
     let selectedQids: string[];
-    if (exactQids.length > 0) {
-      selectedQids = exactQids;
+
+    if (bootcampOverride?.selectedQids) {
+      selectedQids = bootcampOverride.selectedQids;
     } else {
-      // Priority 3 (fallback): random sample from bank_filter pool
-      const pool = resolveGuidedDrillPool(drill.bank_filter);
-      if (pool.length === 0) {
-        toast.error('No matching questions found for this drill.');
-        return;
+      // Priority 1+2: exact attached question IDs (assignment override > drill-level list)
+      const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
+      const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
+
+      if (exactQids.length > 0) {
+        selectedQids = exactQids;
+      } else {
+        // Priority 3 (fallback): random sample from bank_filter pool
+        const pool = resolveGuidedDrillPool(drill.bank_filter);
+        if (pool.length === 0) {
+          toast.error('No matching questions found for this drill.');
+          return;
+        }
+        const want = drill.question_count ?? Math.min(pool.length, 10);
+        selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
       }
-      const want = drill.question_count ?? Math.min(pool.length, 10);
-      selectedQids = [...pool].sort(() => Math.random() - 0.5).slice(0, want).map((q) => q.qid);
     }
 
     if (assignment) {
@@ -116,13 +123,13 @@ export default function GuidedDrillStart() {
     };
 
     const drillSearchParams = new URLSearchParams();
-    drillSearchParams.set('returnTo', safeReturnPath(searchParams.get('returnTo')));
+    drillSearchParams.set('returnTo', bootcampOverride?.returnTo ?? safeReturnPath(searchParams.get('returnTo')));
     if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
 
     navigate(`/drill?${drillSearchParams.toString()}`, {
       state: { mode: 'type-drill', config },
     });
-  }, [assignment, drill, navigate, qbLoading, searchParams]);
+  }, [assignment, drill, navigate, qbLoading, searchParams, location.state]);
 
   const wireIframeControls = React.useCallback(() => {
     cleanupIframeListenersRef.current?.();
