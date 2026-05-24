@@ -47,12 +47,6 @@ export function NewGuidedIntro() {
             ))}
           </ul>
         </section>
-
-        <footer className="mt-24 text-center">
-          <Link to="/bootcamp/intro-to-lr/lessons/legacy" className="text-[10px] uppercase tracking-[0.22em] text-[rgba(26,26,26,0.46)] font-bold underline hover:text-primary">
-            View legacy lesson list
-          </Link>
-        </footer>
       </div>
     </div>
   );
