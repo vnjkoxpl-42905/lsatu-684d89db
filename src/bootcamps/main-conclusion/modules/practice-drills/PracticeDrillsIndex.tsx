@@ -10,6 +10,7 @@
  *  → Start Drill launches /drill (type-drill) with a pre-resolved selectedQids list.
  */
 
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
@@ -17,6 +18,8 @@ import {
   MessageSquareWarning,
 } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
+import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 
 type SetKey = 'first-sentence' | 'rebuttal';
 
@@ -59,19 +62,15 @@ const SETS: PracticeSet[] = [
 
 export function PracticeDrillsIndex() {
   const navigate = useNavigate();
+  const [activeSet, setActiveSet] = useState<PracticeSet | null>(null);
+
+  if (activeSet) {
+    const items = (SIMULATOR_DATA as any[]).filter(item => activeSet.qids.includes(item.id));
+    return <PracticeRunner items={items} title={activeSet.title} onExit={() => setActiveSet(null)} />;
+  }
 
   const handleViewInstructions = (set: PracticeSet) => {
-    navigate(`/guided-drills/${set.instructionsSlug}?returnTo=/bootcamp/intro-to-lr/practice-drills`, {
-      state: {
-        bootcampOverride: {
-          selectedQids: set.qids,
-          qtypes: ['Main Conclusion'],
-          title: set.title,
-          returnTo: '/bootcamp/intro-to-lr/practice-drills',
-          source: 'intro-to-lr-practice-drills',
-        },
-      },
-    });
+    setActiveSet(set);
   };
 
   return (
