@@ -1,5 +1,58 @@
 import { IntroNotesShell } from "./IntroNotesShell";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+
+const Kicker = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={cn("text-[10px] uppercase tracking-[0.26em] font-bold text-[rgba(26,26,26,0.48)] mb-4", className)}>
+    {children}
+  </div>
+);
+
+const DrillCard = ({ 
+  id, 
+  name, 
+  purpose, 
+  to 
+}: { 
+  id: string; 
+  name: string; 
+  purpose: string; 
+  to: string 
+}) => (
+  <div className="group bg-white border border-[rgba(26,26,26,0.1)] p-8 transition-all hover:border-[rgba(26,26,26,0.3)]">
+    <div className="font-mc-mono text-[10px] uppercase tracking-widest text-[rgba(26,26,26,0.4)] mb-3">
+      Drill {id}
+    </div>
+    <h3 className="font-mc-serif text-xl italic mb-3 text-[#1a1a1a]">
+      {name}
+    </h3>
+    <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)] mb-8">
+      {purpose}
+    </p>
+    <Link 
+      to={to} 
+      className="inline-flex h-12 items-center gap-3 bg-[#1a1a1a] px-6 text-[#F5F2ED] transition-colors hover:bg-[rgba(26,26,26,0.88)]"
+    >
+      <span className="font-bold uppercase tracking-[0.16em] text-[11px]">Start drill</span>
+      <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+    </Link>
+  </div>
+);
+
+const PhaseHeader = ({ number, title, subtitle }: { number: string; title: string; subtitle: string }) => (
+  <div className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)] bg-[#FAF7EF]/30">
+    <div className="flex items-start gap-6">
+      <div className="h-10 w-10 rounded-full border border-[#1a1a1a] flex items-center justify-center font-mc-mono text-[14px] shrink-0">
+        {number}
+      </div>
+      <div>
+        <h2 className="font-mc-serif text-3xl italic mb-2 text-[#1a1a1a]">{title}</h2>
+        <p className="font-mc-sans text-[16px] text-[rgba(26,26,26,0.6)]">{subtitle}</p>
+      </div>
+    </div>
+  </div>
+);
 
 export default function PracticePathNotes() {
   return (
@@ -8,52 +61,129 @@ export default function PracticePathNotes() {
       title="Practice Path."
       subtitle="Master LR with our guided practice drills."
     >
-      <section data-toc data-toc-title="Indicator Word ID" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-6">Indicator Word ID</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Practice identifying indicator words for conclusion, premise, pivot, and concession.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.1" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.1</Link>
+      {/* 1. Opening Section */}
+      <section 
+        data-toc 
+        data-toc-title="The launchpad" 
+        className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)]"
+      >
+        <p className="font-mc-serif italic text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] text-[#1a1a1a] tracking-[-0.03em] mb-10 max-w-[18ch]">
+          Now turn recognition into reps.
+        </p>
+        <div className="max-w-[42rem]">
+          <p className="font-mc-sans text-[20px] leading-[1.6] text-[rgba(26,26,26,0.86)]">
+            You have the method. The drills teach your eye to find the conclusion under pressure. Work through the phases to build your speed and precision.
+          </p>
+        </div>
       </section>
 
-      <section data-toc data-toc-title="X-Ray Drill" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">X-Ray Drill</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Practice labeling sentences as premise, conclusion, or background.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.2" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.2</Link>
+      {/* Phase 1: Notice the signals */}
+      <section data-toc data-toc-title="Phase 1: Signals">
+        <PhaseHeader 
+          number="01" 
+          title="Notice the signals" 
+          subtitle="Train your eye to spot the indicators and structures that reveal the conclusion's hiding spots." 
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)]">
+          <DrillCard 
+            id="3.1" 
+            name="Indicator Word ID" 
+            purpose="Practice identifying indicator words for conclusion, premise, pivot, and concession." 
+            to="/bootcamp/intro-to-lr/drills/3.1" 
+          />
+          <DrillCard 
+            id="3.3" 
+            name="First-Sentence Reading" 
+            purpose="Focus on identifying potential conclusion candidates in the first sentence." 
+            to="/bootcamp/intro-to-lr/drills/3.3" 
+          />
+          <DrillCard 
+            id="3.4" 
+            name="Rebuttal vs First-Sentence" 
+            purpose="Practice differentiating between structures where the author pivots from an opening view." 
+            to="/bootcamp/intro-to-lr/drills/3.4" 
+          />
+        </div>
       </section>
 
-      <section data-toc data-toc-title="First-Sentence Reading" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">First-Sentence</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Focus on identifying potential conclusion candidates in the first sentence.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.3" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.3</Link>
+      {/* Phase 2: Map the structure */}
+      <section data-toc data-toc-title="Phase 2: Structure">
+        <PhaseHeader 
+          number="02" 
+          title="Map the structure" 
+          subtitle="Break down layered arguments and bridge the gap between evidence and the final goal." 
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)]">
+          <DrillCard 
+            id="3.2" 
+            name="Sentence Role Drill" 
+            purpose="Practice labeling sentences as premise, conclusion, or background." 
+            to="/bootcamp/intro-to-lr/drills/3.2" 
+          />
+          <DrillCard 
+            id="3.5" 
+            name="Chain Mapping" 
+            purpose="Map the relationship between intermediate and main conclusions." 
+            to="/bootcamp/intro-to-lr/drills/3.5" 
+          />
+          <DrillCard 
+            id="3.9" 
+            name="Nested Claims" 
+            purpose="Analyze arguments with layered premises and nested conclusions." 
+            to="/bootcamp/intro-to-lr/drills/3.9" 
+          />
+        </div>
       </section>
 
-      <section data-toc data-toc-title="Rebuttal vs First-Sentence" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Rebuttal vs First-Sentence</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Practice differentiating between Stash 1 (first sentence) and Stash 2 (after the pivot) structures.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.4" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.4</Link>
+      {/* Phase 3: Match the meaning */}
+      <section data-toc data-toc-title="Phase 3: Meaning">
+        <PhaseHeader 
+          number="03" 
+          title="Match the meaning" 
+          subtitle="Translate the author's exact claim into plain English and match it to the correct answer choice." 
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[rgba(26,26,26,0.1)] border-b border-[rgba(26,26,26,0.1)]">
+          <DrillCard 
+            id="3.7" 
+            name="Vague Word Replacement" 
+            purpose="Practice replacing vague words with the actual thing being discussed." 
+            to="/bootcamp/intro-to-lr/drills/3.7" 
+          />
+          <DrillCard 
+            id="3.8" 
+            name="Read and Restate" 
+            purpose="Practice saying conclusions back in your own words before looking at the choices." 
+            to="/bootcamp/intro-to-lr/drills/3.8" 
+          />
+          <div className="hidden lg:block bg-[#FAF7EF]/10 p-8 border-l border-[rgba(26,26,26,0.1)]" />
+        </div>
       </section>
 
-      <section data-toc data-toc-title="Chain Mapping" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Chain Mapping</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Map the relationship between intermediate and main conclusions.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.5" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.5</Link>
-      </section>
-
-      <section data-toc data-toc-title="Pronoun Replacement" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Pronoun Replacement</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Practice replacing pronouns to reveal the true antecedent.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.7" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.7</Link>
-      </section>
-
-      <section data-toc data-toc-title="Read and Restate" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Read and Restate</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Practice saying conclusions back in your own words.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.8" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.8</Link>
-      </section>
-
-      <section data-toc data-toc-title="Nested Claims" className="note-section p-10 border-b border-[rgba(26,26,26,0.1)]">
-        <div className="text-[10px] uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)] mb-4">Nested Claims</div>
-        <p className="text-[20px] leading-[1.68] text-[rgba(26,26,26,0.86)] mb-6">Analyze arguments with layered premises and nested conclusions.</p>
-        <Link to="/bootcamp/intro-to-lr/drills/3.9" className="inline-block bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 rounded-sm text-sm uppercase tracking-[0.20em] font-bold">Start Drill 3.9</Link>
+      {/* Final Check card */}
+      <section 
+        data-toc 
+        data-toc-title="Training Mindset" 
+        className="p-12 desktop:p-24 bg-[#FAF7EF]/20"
+      >
+        <div className="max-w-[54rem] mx-auto">
+          <div className="relative p-12 desktop:p-16 bg-[#1a1a1a] text-[#F5F2ED] rounded-[2px] shadow-[var(--shadow-3)] overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -mr-20 -mt-20" />
+            
+            <Kicker className="text-white/40">Training Mindset</Kicker>
+            <h2 className="font-mc-serif text-[clamp(2rem,5vw,3.5rem)] italic leading-[1.1] mb-10">
+              Do not rush the reps.
+            </h2>
+            
+            <div className="space-y-6 font-mc-sans text-[18px] leading-relaxed text-white/80 border-t border-white/10 pt-10">
+              <p>
+                Each drill is training one move. Get the move clean before you try to get it fast.
+              </p>
+              <div className="font-mc-mono text-[11px] uppercase tracking-[0.2em] text-white/40 pt-4">
+                Precision first. Speed later.
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </IntroNotesShell>
   );
