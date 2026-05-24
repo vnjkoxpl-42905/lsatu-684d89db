@@ -7,6 +7,7 @@ import {
   ScanText,
   LineChart,
   ArrowLeft,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
