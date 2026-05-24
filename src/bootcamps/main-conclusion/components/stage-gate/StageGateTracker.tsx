@@ -85,17 +85,28 @@ export function StageGateTracker<TPayload>({
       const next = prev.map((s) => ({ ...s, responses: [...s.responses] }));
       const cur = next[activeStage]!;
       cur.responses[qIndex] = { correct, selectedAnswer };
+      return next;
+    });
+  }
+
+  function finishStage() {
+    setStageStates((prev) => {
+      const next = prev.map((s) => ({ ...s, responses: [...s.responses] }));
+      const cur = next[activeStage]!;
       
-      const allAnswered = cur.responses.every((r) => r !== null);
-      if (allAnswered) {
-        const score = cur.responses.filter((r) => r?.correct).length;
-        cur.completed = true;
-        cur.passed = score >= PASS_SCORE;
-        onStageComplete?.(activeStage + 1, score, cur.passed);
-        if (activeStage === stages.length - 1 && cur.passed) {
-          onDrillComplete?.();
-        }
+      const responses = cur.responses;
+      const allAnswered = responses.every((r) => r !== null);
+      if (!allAnswered) return prev;
+
+      const score = responses.filter((r) => r?.correct).length;
+      cur.completed = true;
+      cur.passed = score >= PASS_SCORE;
+      
+      onStageComplete?.(activeStage + 1, score, cur.passed);
+      if (activeStage === stages.length - 1 && cur.passed) {
+        onDrillComplete?.();
       }
+      
       return next;
     });
   }
@@ -284,17 +295,7 @@ export function StageGateTracker<TPayload>({
                     Next Question
                   </Button>
                 ) : (
-                  <Button variant="accent" onClick={() => {
-                    // Force re-trigger completion check if needed
-                    const allAnswered = stage.questions.every((_, i) => state.responses[i] !== null);
-                    if (allAnswered) {
-                      const score = state.responses.filter((r) => r?.correct).length;
-                      onStageComplete?.(activeStage + 1, score, score >= PASS_SCORE);
-                      if (activeStage === stages.length - 1 && score >= PASS_SCORE) {
-                        onDrillComplete?.();
-                      }
-                    }
-                  }}>
+                  <Button variant="accent" onClick={finishStage}>
                     Finish Stage
                   </Button>
                 )
