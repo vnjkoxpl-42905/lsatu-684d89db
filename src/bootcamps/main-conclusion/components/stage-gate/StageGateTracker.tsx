@@ -30,6 +30,9 @@ interface QuestionResponse {
 
 interface Props<TPayload> {
   drillId: string;
+  title?: string;
+  eyebrow?: string;
+  subtitle?: string;
   stages: Stage<TPayload>[];
   renderQuestion: (
     q: StageQuestion<TPayload>,
@@ -55,6 +58,9 @@ function blankStage(qCount: number): StageState {
 
 export function StageGateTracker<TPayload>({
   drillId,
+  title,
+  eyebrow = 'Guided Drill',
+  subtitle,
   stages,
   renderQuestion,
   onStageComplete,
@@ -134,9 +140,10 @@ export function StageGateTracker<TPayload>({
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(232_208_139/0.6)]"
             />
-            Stage-Gate Tracker
+            {eyebrow}
           </div>
-          <h1 className="font-mc-serif text-h1 font-semibold mt-2 text-ink">{drillId}</h1>
+          <h1 className="font-mc-serif text-h1 font-semibold mt-2 text-ink">{title || drillId}</h1>
+          {subtitle && <p className="font-mc-serif text-body-prose text-ink-soft mt-2">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-2">
           <Badge tone="success" dot pulse>auto-save on</Badge>

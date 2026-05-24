@@ -20,26 +20,26 @@ import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 const stages: Stage<IndicatorIdQuestion>[] = [
   {
     number: 1,
-    title: 'Single-word identification',
-    hint: 'Read the sentence. Tap the category for the highlighted word.',
+    title: 'Signal Basics',
+    hint: 'Learn the core jobs signals perform: support, conclusion, contrast, concession, opinion, and opposing view.',
     questions: DRILL_3_1_STAGE_1.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
   {
     number: 2,
-    title: 'Multi-word phrases',
-    hint: 'Read the sentence. Tap the category for the highlighted phrase.',
+    title: 'Signal Phrases',
+    hint: 'Some signals are phrases. Read what the phrase is doing, not just what words it contains.',
     questions: DRILL_3_1_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
   {
     number: 3,
-    title: 'Mixed signals',
-    hint: 'Sentences with multiple cues. Read the whole context before choosing.',
+    title: 'Contrast and Concession',
+    hint: 'When a sentence contains more than one signal, ask which side the author ultimately supports.',
     questions: DRILL_3_1_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
   {
     number: 4,
-    title: 'Speed run',
-    hint: 'Compressed sentences. Aim for sub-3-second decisions.',
+    title: 'Recognition Sprint',
+    hint: 'Make the same call faster without losing precision.',
     questions: DRILL_3_1_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
   },
 ];
@@ -52,6 +52,9 @@ export function Drill3_1() {
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-2xl mx-auto">
       <StageGateTracker
         drillId="MC-DRL-3.1"
+        eyebrow="Guided Drill"
+        title="Indicator Recognition"
+        subtitle="Learn to identify whether a signal is pointing to support, conclusion, contrast, concession, or someone else’s view."
         stages={stages}
         renderQuestion={(q, onAnswer, state) => (
           <IndicatorQuestionView q={q.payload} state={state} onAnswer={onAnswer} />
@@ -68,6 +71,8 @@ interface ViewProps {
     answered: boolean; 
     correct: boolean | null; 
     selectedAnswer?: string | null; 
+    questionIndex: number;
+    totalQuestions: number;
   };
   onAnswer: (correct: boolean, selectedAnswer?: string) => void;
 }
@@ -83,7 +88,9 @@ function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
   return (
     <div className="space-y-6">
       <Card variant="surface" className="p-6">
-        <p className="font-mc-mono text-xs uppercase tracking-widest text-ink-faint">{q.id}</p>
+        <p className="font-mc-mono text-xs uppercase tracking-widest text-ink-faint">
+          Question {state.questionIndex + 1} of {state.totalQuestions}
+        </p>
         <p className="font-mc-serif text-h3 text-ink mt-4 leading-relaxed">
           {parts.map((p, i) =>
             p === q.highlighted_word ? (
@@ -95,7 +102,9 @@ function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
             ),
           )}
         </p>
-        <p className="font-mc-serif text-body text-ink-soft italic mt-4">{q.prompt}</p>
+        <p className="font-mc-serif text-body text-ink-soft italic mt-4">
+          What job is the highlighted signal doing?
+        </p>
       </Card>
 
       <div className="grid grid-cols-2 gap-3">
@@ -121,7 +130,7 @@ function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
               disabled={state.answered}
               onClick={() => pick(cat)}
             >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              {cat === 'opposing' ? 'Opposing View' : cat.charAt(0).toUpperCase() + cat.slice(1)}
             </Button>
           );
         })}
