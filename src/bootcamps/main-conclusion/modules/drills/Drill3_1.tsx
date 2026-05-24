@@ -6,7 +6,6 @@
 import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/components/stage-gate/StageGateTracker';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
-import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import {
   DRILL_3_1_STAGE_1,
   DRILL_3_1_STAGE_2,
@@ -16,6 +15,7 @@ import {
 } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
+import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const stages: Stage<IndicatorIdQuestion>[] = [
   {
@@ -44,21 +44,12 @@ const stages: Stage<IndicatorIdQuestion>[] = [
   },
 ];
 
-const TONE_BY_CAT: Record<string, 'conclusion' | 'premise' | 'pivot' | 'opposing' | 'concession' | 'background' | 'accent'> = {
-  conclusion: 'conclusion',
-  premise: 'premise',
-  pivot: 'pivot',
-  concession: 'concession',
-  opposing: 'opposing',
-  opinion: 'accent',
-};
-
 export function Drill3_1() {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
 
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-2xl mx-auto">
       <StageGateTracker
         drillId="MC-DRL-3.1"
         stages={stages}
@@ -73,59 +64,82 @@ export function Drill3_1() {
 
 interface ViewProps {
   q: IndicatorIdQuestion;
-  state: { answered: boolean; correct: boolean | null };
-  onAnswer: (correct: boolean) => void;
+  state: { 
+    answered: boolean; 
+    correct: boolean | null; 
+    selectedAnswer?: string | null; 
+  };
+  onAnswer: (correct: boolean, selectedAnswer?: string) => void;
 }
 
 function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
-  function pick(category: IndicatorIdQuestion['correct_category']) {
+  function pick(category: string) {
     if (state.answered) return;
-    onAnswer(category === q.correct_category);
+    onAnswer(category === q.correct_category, category);
   }
-  const highlighted = q.text.replace(
-    q.highlighted_word,
-    `__HIGHLIGHT__${q.highlighted_word}__/HIGHLIGHT__`,
-  );
-  const parts = highlighted.split(/__HIGHLIGHT__|__\/HIGHLIGHT__/);
+
+  const parts = q.text.split(new RegExp(`(${q.highlighted_word})`, 'g'));
 
   return (
-    <Card variant="surface">
-      <p className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">{q.id}</p>
-      <p className="font-mc-serif text-body-prose text-ink mt-2 leading-relaxed">
-        {parts.map((p, i) =>
-          i % 2 === 1 ? (
-            <mark key={i} className="bg-[rgb(var(--accent)/0.20)] text-mc-accent rounded px-1 py-0.5 not-italic">
-              {p}
-            </mark>
-          ) : (
-            <span key={i}>{p}</span>
-          ),
-        )}
-      </p>
-      <p className="font-mc-serif text-body text-ink-soft italic mt-3">{q.prompt}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {q.category_options.map((cat) => (
-          <Button
-            key={cat}
-            variant="subtle"
-            size="sm"
-            disabled={state.answered}
-            onClick={() => pick(cat)}
-          >
-            <Chip tone={TONE_BY_CAT[cat]}>{cat}</Chip>
-          </Button>
-        ))}
-      </div>
-      {state.answered ? (
-        <p
-          className={`mt-3 font-mc-serif text-body-prose ${
-            state.correct ? 'text-[rgb(var(--success))]' : 'text-[rgb(var(--error))]'
-          }`}
-        >
-          {state.correct ? '✓ ' : '✗ '}
-          {q.rationale}
+    <div className="space-y-6">
+      <Card variant="surface" className="p-6">
+        <p className="font-mc-mono text-xs uppercase tracking-widest text-ink-faint">{q.id}</p>
+        <p className="font-mc-serif text-h3 text-ink mt-4 leading-relaxed">
+          {parts.map((p, i) =>
+            p === q.highlighted_word ? (
+              <mark key={i} className="bg-[#F3D27A]/35 text-[#1a1a1a] border-b border-[#D6A82E] rounded-sm px-1 not-italic">
+                {p}
+              </mark>
+            ) : (
+              <span key={i}>{p}</span>
+            ),
+          )}
         </p>
-      ) : null}
-    </Card>
+        <p className="font-mc-serif text-body text-ink-soft italic mt-4">{q.prompt}</p>
+      </Card>
+
+      <div className="grid grid-cols-2 gap-3">
+        {q.category_options.map((cat) => {
+          const isSelected = state.selectedAnswer === cat;
+          const isCorrect = cat === q.correct_category;
+          
+          let tone: 'subtle' | 'success' | 'error' = 'subtle';
+          if (state.answered) {
+            if (isCorrect) tone = 'success';
+            else if (isSelected) tone = 'error';
+          }
+
+          return (
+            <Button
+              key={cat}
+              variant={tone === 'subtle' ? 'subtle' : 'filled'}
+              tone={tone !== 'subtle' ? tone : undefined}
+              className={cn(
+                'h-auto py-3 text-body font-semibold justify-center',
+                state.answered && !isSelected && !isCorrect && 'opacity-30'
+              )}
+              disabled={state.answered}
+              onClick={() => pick(cat)}
+            >
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </Button>
+          );
+        })}
+      </div>
+
+      {state.answered && (
+        <div className={cn(
+          'p-4 rounded-3 border font-mc-serif text-body-prose',
+          state.correct 
+            ? 'bg-[rgb(var(--success)/0.08)] border-[rgb(var(--success)/0.2)] text-ink'
+            : 'bg-[rgb(var(--error)/0.08)] border-[rgb(var(--error)/0.2)] text-ink'
+        )}>
+          <p className="font-semibold mb-1">
+            {state.correct ? 'Correct.' : 'Not quite.'}
+          </p>
+          <p className="text-ink-soft">{q.rationale}</p>
+        </div>
+      )}
+    </div>
   );
 }

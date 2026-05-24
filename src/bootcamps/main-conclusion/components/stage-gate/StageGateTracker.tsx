@@ -4,8 +4,8 @@
  */
 
 import { useMemo, useState, type ReactNode } from 'react';
-import { motion } from 'framer-motion';
-import { Check, Lock, RefreshCcw, ArrowRight, FileDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, Lock, RefreshCcw, ArrowRight, ArrowLeft, FileDown } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
@@ -23,13 +23,18 @@ export interface Stage<TPayload = unknown> {
   questions: StageQuestion<TPayload>[];
 }
 
+interface QuestionResponse {
+  correct: boolean;
+  selectedAnswer?: string;
+}
+
 interface Props<TPayload> {
   drillId: string;
   stages: Stage<TPayload>[];
   renderQuestion: (
     q: StageQuestion<TPayload>,
-    onAnswer: (correct: boolean) => void,
-    state: { answered: boolean; correct: boolean | null },
+    onAnswer: (correct: boolean, selectedAnswer?: string) => void,
+    state: { answered: boolean; correct: boolean | null; selectedAnswer?: string | null; questionIndex: number; totalQuestions: number },
   ) => ReactNode;
   onStageComplete?: (stage: number, score: number, passed: boolean) => void;
   onDrillComplete?: () => void;
@@ -39,7 +44,7 @@ interface Props<TPayload> {
 const PASS_SCORE = 4;
 
 interface StageState {
-  responses: Array<boolean | null>;
+  responses: Array<QuestionResponse | null>;
   completed: boolean;
   passed: boolean;
 }
@@ -60,6 +65,7 @@ export function StageGateTracker<TPayload>({
     stages.map((s) => blankStage(s.questions.length)),
   );
   const [activeStage, setActiveStage] = useState(0);
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
 
   const unlocked = useMemo(() => {
     const u = stages.map(() => false);
@@ -74,14 +80,15 @@ export function StageGateTracker<TPayload>({
   const state = stageStates[activeStage]!;
   const allCleared = stageStates.every((s) => s.passed);
 
-  function answerQuestion(qIndex: number, correct: boolean) {
+  function answerQuestion(qIndex: number, correct: boolean, selectedAnswer?: string) {
     setStageStates((prev) => {
       const next = prev.map((s) => ({ ...s, responses: [...s.responses] }));
       const cur = next[activeStage]!;
-      cur.responses[qIndex] = correct;
+      cur.responses[qIndex] = { correct, selectedAnswer };
+      
       const allAnswered = cur.responses.every((r) => r !== null);
       if (allAnswered) {
-        const score = cur.responses.filter(Boolean).length;
+        const score = cur.responses.filter((r) => r?.correct).length;
         cur.completed = true;
         cur.passed = score >= PASS_SCORE;
         onStageComplete?.(activeStage + 1, score, cur.passed);
@@ -99,6 +106,12 @@ export function StageGateTracker<TPayload>({
       next[activeStage] = blankStage(stage.questions.length);
       return next;
     });
+    setActiveQuestionIndex(0);
+  }
+
+  function switchStage(index: number) {
+    setActiveStage(index);
+    setActiveQuestionIndex(0);
   }
 
   return (
@@ -115,9 +128,7 @@ export function StageGateTracker<TPayload>({
           <h1 className="font-mc-serif text-h1 font-semibold mt-2 text-ink">{drillId}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <Badge tone="success" dot pulse>
-            auto-save on
-          </Badge>
+          <Badge tone="success" dot pulse>auto-save on</Badge>
           {onPdfExport ? (
             <Button
               variant="subtle"
@@ -136,14 +147,14 @@ export function StageGateTracker<TPayload>({
           const st = stageStates[i]!;
           const isActive = i === activeStage;
           const isUnlocked = unlocked[i];
-          const score = st.responses.filter(Boolean).length;
+          const score = st.responses.filter((r) => r?.correct).length;
           return (
             <button
               key={s.number}
               role="tab"
               aria-selected={isActive}
               disabled={!isUnlocked}
-              onClick={() => setActiveStage(i)}
+              onClick={() => switchStage(i)}
               className={cn(
                 'group/stage relative rounded-3 border px-3 py-3 text-left',
                 'transition-[background,border-color,box-shadow,transform] duration-180 ease-eased',
@@ -200,7 +211,7 @@ export function StageGateTracker<TPayload>({
                       'h-1 flex-1 rounded-full',
                       r === null
                         ? 'bg-[rgb(var(--border)/0.18)]'
-                        : r
+                        : r.correct
                         ? 'bg-[rgb(var(--success))]'
                         : 'bg-[rgb(var(--error))]',
                     )}
@@ -229,21 +240,71 @@ export function StageGateTracker<TPayload>({
             <p className="font-mc-serif text-body-prose text-ink-soft mt-1.5 leading-relaxed">{stage.hint}</p>
           ) : null}
         </div>
-        <ol className="space-y-3">
-          {stage.questions.map((q, i) => (
-            <li key={q.id}>
-              {renderQuestion(q, (correct) => answerQuestion(i, correct), {
-                answered: state.responses[i] !== null,
-                correct: state.responses[i] ?? null,
-              })}
-            </li>
-          ))}
-        </ol>
-        {state.completed ? (
+
+        {!state.completed ? (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between font-mc-mono text-mono text-ink-faint">
+              <span>Question {activeQuestionIndex + 1} of {stage.questions.length}</span>
+            </div>
+            
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${activeStage}-${activeQuestionIndex}`}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {renderQuestion(stage.questions[activeQuestionIndex]!, (correct, selected) => answerQuestion(activeQuestionIndex, correct, selected), {
+                  answered: state.responses[activeQuestionIndex] !== null,
+                  correct: state.responses[activeQuestionIndex]?.correct ?? null,
+                  selectedAnswer: state.responses[activeQuestionIndex]?.selectedAnswer ?? null,
+                  questionIndex: activeQuestionIndex,
+                  totalQuestions: stage.questions.length,
+                })}
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex items-center justify-between pt-4">
+              <Button
+                variant="subtle"
+                disabled={activeQuestionIndex === 0}
+                onClick={() => setActiveQuestionIndex((prev) => prev - 1)}
+                leftIcon={<ArrowLeft className="h-4 w-4" />}
+              >
+                Previous
+              </Button>
+              
+              {state.responses[activeQuestionIndex] !== null && (
+                activeQuestionIndex < stage.questions.length - 1 ? (
+                  <Button
+                    onClick={() => setActiveQuestionIndex((prev) => prev + 1)}
+                    rightIcon={<ArrowRight className="h-4 w-4" />}
+                  >
+                    Next Question
+                  </Button>
+                ) : (
+                  <Button variant="accent" onClick={() => {
+                    // Force re-trigger completion check if needed
+                    const allAnswered = stage.questions.every((_, i) => state.responses[i] !== null);
+                    if (allAnswered) {
+                      const score = state.responses.filter((r) => r?.correct).length;
+                      onStageComplete?.(activeStage + 1, score, score >= PASS_SCORE);
+                      if (activeStage === stages.length - 1 && score >= PASS_SCORE) {
+                        onDrillComplete?.();
+                      }
+                    }
+                  }}>
+                    Finish Stage
+                  </Button>
+                )
+              )}
+            </div>
+          </div>
+        ) : (
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
             className={cn(
               'flex items-center justify-between gap-4 rounded-3 px-4 py-3',
               state.passed
@@ -269,19 +330,19 @@ export function StageGateTracker<TPayload>({
                 <Button
                   size="sm"
                   rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}
-                  onClick={() => setActiveStage(activeStage + 1)}
+                  onClick={() => switchStage(activeStage + 1)}
                 >
                   Next stage
                 </Button>
               ) : null}
             </div>
           </motion.div>
-        ) : null}
+        )}
+        
         {allCleared ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
             className={cn(
               'rounded-4 p-5',
               'bg-[image:var(--grad-accent-soft)]',
@@ -289,9 +350,7 @@ export function StageGateTracker<TPayload>({
               'shadow-[var(--glow-accent-soft)]',
             )}
           >
-            <Badge tone="accent" dot pulse>
-              drill cleared
-            </Badge>
+            <Badge tone="accent" dot pulse>drill cleared</Badge>
             <h3 className="font-mc-serif text-h2 font-semibold mt-2 text-ink">All four stages passed.</h3>
           </motion.div>
         ) : null}
