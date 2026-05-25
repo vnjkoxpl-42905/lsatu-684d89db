@@ -246,9 +246,9 @@ export function IntroGuidedWorkbook() {
       <div className="max-w-[1180px] mx-auto px-6 md:px-12 py-24">
         <header className="mb-24">
           <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">Introduction</p>
-          <h1 data-toc className="text-[clamp(56px,8vw,120px)] font-serif italic font-medium leading-[0.80] tracking-[-0.05em] mb-8">Intro to LR Practice Path.</h1>
+          <h1 data-toc className="text-[clamp(56px,8vw,120px)] font-serif italic font-medium leading-[0.80] tracking-[-0.05em] mb-8">Intro to LR Practice Path</h1>
           <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">
-            Integrated learning path.
+            Work through the notes, checkpoints, and practice sets in sequence.
           </p>
         </header>
 
