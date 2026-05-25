@@ -28,7 +28,7 @@ interface PracticeSet {
   description: string;
   constraint: string;
   instructionsSlug: string;
-  qids: string[];
+  count: number;
   Icon: typeof Sparkles;
 }
 
@@ -41,7 +41,7 @@ const SETS: PracticeSet[] = [
     description: 'Practice Main Conclusion questions where the author’s conclusion appears in the first sentence.',
     constraint: 'The conclusion appears in the first sentence, but you still must confirm it with support.',
     instructionsSlug: 'first-sentence-conclusions',
-    qids: [], // Not used for real-question resolution
+    count: 6,
     Icon: Sparkles,
   },
   {
@@ -52,7 +52,7 @@ const SETS: PracticeSet[] = [
     description: 'Practice Main Conclusion questions where the author responds to or rejects another view.',
     constraint: 'Find the author’s own conclusion, not the view the author is rejecting.',
     instructionsSlug: 'rebuttal-conclusions',
-    qids: [], // Not used for real-question resolution
+    count: 4,
     Icon: MessageSquareWarning,
   },
 ];
@@ -67,7 +67,7 @@ export function PracticeDrillsIndex() {
         bootcampOverride: {
           qtypes: ['Main Conclusion'],
           questionFeatures: isRebuttal ? ['Rebuttals'] : ['First Sentence Conclusion'],
-          count: isRebuttal ? 4 : 6,
+          count: set.count,
           title: set.title,
           returnTo: '/bootcamp/intro-to-lr/practice-drills',
           source: 'intro-to-lr-practice-drills',
@@ -75,7 +75,6 @@ export function PracticeDrillsIndex() {
       },
     });
   };
-
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
@@ -115,7 +114,7 @@ export function PracticeDrillsIndex() {
               <div className="grid grid-cols-2 gap-4 mb-8 text-[11px] font-mc-mono uppercase tracking-[0.1em]">
                 <div className="text-[rgba(26,26,26,0.4)]">
                   <span className="block text-[rgba(26,26,26,0.8)]">Count</span>
-                  {set.qids.length} questions
+                  {set.count} questions
                 </div>
                 <div className="text-[rgba(26,26,26,0.4)]">
                   <span className="block text-[rgba(26,26,26,0.8)]">Level</span>
