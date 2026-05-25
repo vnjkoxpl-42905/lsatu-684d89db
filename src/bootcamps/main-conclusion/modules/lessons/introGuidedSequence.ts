@@ -171,13 +171,29 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     id: 'mc-practice-first-sentence',
     type: 'practice-pool',
     title: 'First-Sentence Set',
-    practiceSlug: 'first-sentence',
+    practiceSlug: 'first-sentence-conclusions',
   },
   {
     id: 'mc-practice-rebuttal',
     type: 'practice-pool',
     title: 'Rebuttal Set',
-    practiceSlug: 'rebuttal',
+    practiceSlug: 'rebuttal-conclusions',
+  },
+
+  // Read & Restate
+  {
+    id: 'read-restate-slice',
+    type: 'drill-slice',
+    title: 'Read & Restate',
+    drillId: 'MC-DRL-3.8',
+    stage: 1,
+  },
+  {
+    id: 'pronoun-replacement-slice',
+    type: 'drill-slice',
+    title: 'Pronoun Replacement',
+    drillId: 'MC-DRL-3.7',
+    stage: 1,
   },
 
   // 10. Simulator

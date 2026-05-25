@@ -88,7 +88,7 @@ const PlaceholderBlock = ({ step }: { step: typeof INTRO_GUIDED_SEQUENCE[0] }) =
 
 export function IntroGuidedWorkbook() {
   const { markMilestoneComplete, progress } = useModuleProgress();
-  const isReady = (progress as any).completed_milestones?.includes('MC-MIL-READY-FOR-SIMULATOR');
+  const isReady = progress?.completed_milestones?.includes('MC-MIL-READY-FOR-SIMULATOR') ?? false;
 
   const renderWorkbookContent = (step: typeof INTRO_GUIDED_SEQUENCE[0]) => {
     switch (step.id) {
@@ -199,7 +199,7 @@ export function IntroGuidedWorkbook() {
             </p>
           </WorkbookNoteBlock>
         );
-      case 'restate-slice':
+      case 'read-restate-slice':
         return (
           <div className="py-8 scroll-mt-24">
             <h3 className="text-2xl font-serif italic mb-6">Read & Restate</h3>
@@ -214,9 +214,8 @@ export function IntroGuidedWorkbook() {
           </div>
         );
       case 'mc-practice-first-sentence':
-        return <WorkbookPracticePoolCard slug="first-sentence-conclusions" />;
       case 'mc-practice-rebuttal':
-        return <WorkbookPracticePoolCard slug="rebuttal-conclusions" />;
+        return <WorkbookPracticePoolCard slug={step.practiceSlug!} />;
       case 'simulator-assessment':
         return (
           <div className="py-12 border-t border-[rgba(26,26,26,0.1)] scroll-mt-24">
