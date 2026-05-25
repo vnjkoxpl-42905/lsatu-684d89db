@@ -91,12 +91,15 @@ function LegacyLessonRedirect() {
   return <Navigate to={`/bootcamp/intro-to-lr/lessons/legacy/${lessonId ?? ''}`} replace />;
 }
 
+import { IntroGuidedWorkbook } from '@/bootcamps/main-conclusion/modules/lessons/IntroGuidedWorkbook';
+
 export function BootcampRoutes() {
   return (
     <Routes>
       <Route element={<WorkspaceShell />}>
         <Route index element={<ModuleIndex />} />
-        <Route path="lessons" element={<NewGuidedIntro />} />
+        <Route path="lessons" element={<IntroGuidedWorkbook />} />
+        <Route path="lessons/grid" element={<NewGuidedIntro />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />

@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   BookOpen,
   Library,
@@ -8,9 +8,11 @@ import {
   LineChart,
   ArrowLeft,
   Sparkles,
+  ChevronDown,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { INTRO_GUIDED_SEQUENCE } from '@/bootcamps/main-conclusion/modules/lessons/introGuidedSequence';
 
 interface NavItem {
   label: string;
@@ -50,6 +52,9 @@ const navSections: NavSection[] = [
 ];
 
 export function LeftRail(): JSX.Element {
+  const location = useLocation();
+  const isWorkbookMode = location.pathname.includes('/bootcamp/intro-to-lr/lessons');
+
   return (
     <aside
       className={cn(
@@ -88,18 +93,46 @@ export function LeftRail(): JSX.Element {
         </div>
       </div>
 
-      <nav className="px-2.5 flex-1">
-        {navSections.map((section) => (
-          <details key={section.title} open={!section.collapsed} className="group/details mb-4">
-            <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
-              {section.title}
-              <span className="text-[10px] opacity-50 group-open/details:rotate-180 transition-transform duration-200">⌄</span>
-            </summary>
-            <ul className="space-y-0.5">
-              {section.items.map((item) => (
-                <li key={item.to}>
+      <nav className="px-2.5 flex-1 overflow-y-auto">
+        {isWorkbookMode ? (
+          <div className="space-y-6">
+            <details open className="group/details">
+              <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
+                INTRO MODULE
+                <ChevronDown className="h-3 w-3 opacity-50 group-open/details:rotate-180 transition-transform duration-200" />
+              </summary>
+              <ul className="space-y-0.5">
+                {INTRO_GUIDED_SEQUENCE.map((step) => {
+                  const isActive = location.hash === `#${step.id}`;
+                  return (
+                    <li key={step.id}>
+                      <Link
+                        to={`/bootcamp/intro-to-lr/lessons#${step.id}`}
+                        className={cn(
+                          'group/nav relative flex items-center gap-3 px-3 py-2 rounded-[6px] text-body transition-all duration-150',
+                          isActive
+                            ? 'text-ink bg-[rgb(var(--surface)/0.8)] font-medium'
+                            : 'text-ink-soft hover:text-ink hover:bg-[rgb(var(--surface)/0.4)]',
+                        )}
+                      >
+                        <div className={cn(
+                          'h-1.5 w-1.5 rounded-full shrink-0',
+                          isActive ? 'bg-[rgb(var(--accent))]' : 'bg-[rgb(var(--border)/0.3)]'
+                        )} />
+                        <span className="truncate">{step.title}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+
+            <div className="px-3 pt-4 border-t border-[rgb(var(--border)/0.06)]">
+              <div className="font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 mb-3">Utility</div>
+              <ul className="space-y-0.5">
+                <li>
                   <NavLink
-                    to={item.to}
+                    to="/bootcamp/intro-to-lr/reference"
                     className={({ isActive }) =>
                       cn(
                         'group/nav relative flex items-center gap-3 px-3 py-2 rounded-[6px] text-body transition-all duration-150',
@@ -109,14 +142,59 @@ export function LeftRail(): JSX.Element {
                       )
                     }
                   >
-                    <item.Icon className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
-                    <span>{item.label}</span>
+                    <Library className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
+                    <span>Reference</span>
                   </NavLink>
                 </li>
-              ))}
-            </ul>
-          </details>
-        ))}
+                <li>
+                  <NavLink
+                    to="/bootcamp/intro-to-lr/hard-sentences"
+                    className={({ isActive }) =>
+                      cn(
+                        'group/nav relative flex items-center gap-3 px-3 py-2 rounded-[6px] text-body transition-all duration-150',
+                        isActive
+                          ? 'text-ink bg-[rgb(var(--surface)/0.8)] font-medium'
+                          : 'text-ink-soft hover:text-ink hover:bg-[rgb(var(--surface)/0.4)]',
+                      )
+                    }
+                  >
+                    <ScanText className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
+                    <span>Hard Sentences</span>
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          navSections.map((section) => (
+            <details key={section.title} open={!section.collapsed} className="group/details mb-4">
+              <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
+                {section.title}
+                <ChevronDown className="h-3 w-3 opacity-50 group-open/details:rotate-180 transition-transform duration-200" />
+              </summary>
+              <ul className="space-y-0.5">
+                {section.items.map((item) => (
+                  <li key={item.to}>
+                    <NavLink
+                      to={item.to}
+                      className={({ isActive }) =>
+                        cn(
+                          'group/nav relative flex items-center gap-3 px-3 py-2 rounded-[6px] text-body transition-all duration-150',
+                          isActive
+                            ? 'text-ink bg-[rgb(var(--surface)/0.8)] font-medium'
+                            : 'text-ink-soft hover:text-ink hover:bg-[rgb(var(--surface)/0.4)]',
+                        )
+                      }
+                    >
+                      <item.Icon className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))
+        )}
       </nav>
     </aside>
   );
