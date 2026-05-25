@@ -112,9 +112,76 @@ export default function GuidedDrillStart() {
       return;
     }
 
+    // Intro to LR practice drills — Smart Drill TypeDrillConfig format
+    if (bootcampOverride && (bootcampOverride as any).source === 'intro-to-lr-practice-drills') {
+      const ov = bootcampOverride as {
+        qtypes: string[];
+        qfeatures: string[];
+        difficulties: number[];
+        pts: number[];
+        count: number;
+        title: string;
+        returnTo: string;
+        source: string;
+      };
+
+      if (!Array.isArray(ov.qtypes) || ov.qtypes.length === 0 ||
+          !Array.isArray(ov.qfeatures) || ov.qfeatures.length === 0 ||
+          !Array.isArray(ov.difficulties) || ov.difficulties.length === 0 ||
+          typeof ov.count !== 'number' || ov.count <= 0) {
+        toast.error('Invalid drill configuration: missing required metadata.');
+        return;
+      }
+
+      const all = questionBank.getAllQuestions();
+      const matched = all
+        .filter((q) => ov.qtypes.includes(q.qtype as string))
+        .filter((q) => Array.isArray(q.questionFeatures) && q.questionFeatures.some((f) => ov.qfeatures.includes(f)))
+        .filter((q) => ov.difficulties.includes(q.difficulty as number))
+        .sort((a, b) => (a.difficulty ?? 99) - (b.difficulty ?? 99));
+
+      const selected = matched.slice(0, ov.count);
+
+      // eslint-disable-next-line no-console
+      console.log('[intro-to-lr-practice-drills] launch', {
+        drillTitle: ov.title,
+        qtypesUsed: ov.qtypes,
+        qfeaturesUsed: ov.qfeatures,
+        difficultiesUsed: ov.difficulties,
+        requestedCount: ov.count,
+        totalMatchesFound: matched.length,
+        selectedQids: selected.map((q) => q.qid),
+        selectedDifficulties: selected.map((q) => q.difficulty),
+      });
+
+      if (selected.length === 0) {
+        toast.error(`No questions found for this drill. Filter attempted: qtype = Main Conclusion, feature = [${ov.qfeatures.join(', ')}], difficulties = [${ov.difficulties.join(',')}], requested count = ${ov.count}, matches found = 0.`);
+        return;
+      }
+
+      if (selected.length < ov.count) {
+        toast.warning(`Only ${selected.length} matching questions found. Requested ${ov.count}. Launching available questions.`);
+      }
+
+      if (assignment) {
+        await markCardRead(assignment.id);
+        await markStarted(assignment.id);
+      }
+
+      const qids = selected.map((q) => q.qid).join(',');
+      const params = new URLSearchParams();
+      params.set('mode', 'type-drill');
+      params.set('qids', qids);
+      params.set('returnTo', ov.returnTo);
+      params.set('focus', ov.title);
+      params.set('source', ov.source);
+      navigate(`/drill?${params.toString()}`);
+      return;
+    }
+
     let selectedQids: string[];
-    if (bootcampOverride?.selectedQids) {
-      selectedQids = bootcampOverride.selectedQids;
+    if ((bootcampOverride as any)?.selectedQids) {
+      selectedQids = (bootcampOverride as any).selectedQids;
     } else if (drill) {
       const knownQids = new Set(questionBank.getAllQuestions().map((q) => q.qid));
       const exactQids = resolveExactGuidedDrillQids(drill, assignment, knownQids);
@@ -139,7 +206,7 @@ export default function GuidedDrillStart() {
     }
 
     const config: TypeDrillConfig = {
-      qtypes: drill?.question_types || bootcampOverride?.qtypes || ['Main Conclusion'],
+      qtypes: drill?.question_types || (bootcampOverride as any)?.qtypes || ['Main Conclusion'],
       difficulties: [],
       pts: [],
       count: selectedQids.length,
@@ -150,46 +217,20 @@ export default function GuidedDrillStart() {
     const drillSearchParams = new URLSearchParams();
     drillSearchParams.set('mode', 'type-drill');
     drillSearchParams.set('qids', selectedQids.join(','));
-    drillSearchParams.set('returnTo', bootcampOverride?.returnTo ?? safeReturnPath(searchParams.get('returnTo')));
-    if (bootcampOverride?.title ?? drill?.title) {
-      drillSearchParams.set('focus', bootcampOverride?.title ?? drill!.title);
+    drillSearchParams.set('returnTo', (bootcampOverride as any)?.returnTo ?? safeReturnPath(searchParams.get('returnTo')));
+    if ((bootcampOverride as any)?.title ?? drill?.title) {
+      drillSearchParams.set('focus', (bootcampOverride as any)?.title ?? drill!.title);
     }
-    if (bootcampOverride?.source) {
-      drillSearchParams.set('source', bootcampOverride.source);
+    if ((bootcampOverride as any)?.source) {
+      drillSearchParams.set('source', (bootcampOverride as any).source);
     }
     if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
 
-    if (bootcampOverride?.source === 'intro-to-lr-practice-drills') {
-      const { qtypes, questionFeatures, count } = bootcampOverride;
-      
-      if (!Array.isArray(qtypes) || qtypes.length === 0 || 
-          !Array.isArray(questionFeatures) || questionFeatures.length === 0 || 
-          typeof count !== 'number' || count <= 0) {
-        toast.error("Invalid drill configuration: missing required metadata.");
-        return;
-      }
-
-      const questions = questionBank.getQuestionsByFilter({
-        qtypes: qtypes
-      }).filter(q => q.questionFeatures?.some(f => questionFeatures.includes(f)));
-
-      if (questions.length === 0) {
-        alert(`No questions found with qtype: ${qtypes.join(', ')} and features: ${questionFeatures.join(', ')}`);
-        return;
-      }
-
-      const selected = questionBank.shuffleQuestions(questions).slice(0, count);
-      const qids = selected.map(q => q.qid).join(',');
-      
-      navigate(`/drill?mode=type-drill&qids=${qids}&returnTo=${encodeURIComponent(bootcampOverride.returnTo)}&focus=${encodeURIComponent(bootcampOverride.title)}&source=${encodeURIComponent(bootcampOverride.source)}`);
-      return;
-    }
-
     navigate(`/drill?${drillSearchParams.toString()}`, {
-      state: { 
-        mode: 'type-drill', 
-        config, 
-        practicingLabel: bootcampOverride?.title ?? drill?.title 
+      state: {
+        mode: 'type-drill',
+        config,
+        practicingLabel: (bootcampOverride as any)?.title ?? drill?.title,
       },
     });
   }, [assignment, drill, navigate, qbLoading, searchParams, location.state, bootcampOverride]);
