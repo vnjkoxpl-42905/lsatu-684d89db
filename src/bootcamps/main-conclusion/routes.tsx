@@ -11,6 +11,7 @@
  */
 
 import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
+import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { WorkspaceShell } from '@/bootcamps/main-conclusion/components/workspace-shell/WorkspaceShell';
 import { LockedRoute } from '@/bootcamps/main-conclusion/components/workspace-shell/LockedRoute';
 import { ModuleIndex } from '@/bootcamps/main-conclusion/modules/ModuleIndex';
@@ -64,7 +65,26 @@ const PRACTICE_RUNNER_SETS = {
 function PracticeRunnerWrapper() {
   const { practiceSlug } = useParams();
   const navigate = useNavigate();
-  const set = PRACTICE_RUNNER_SETS[practiceSlug as keyof typeof PRACTICE_RUNNER_SETS] ?? PRACTICE_RUNNER_SETS['first-sentence'];
+  
+  const aliasMap: Record<string, keyof typeof PRACTICE_RUNNER_SETS> = {
+    'first-sentence': 'first-sentence',
+    'first-sentence-conclusions': 'first-sentence',
+    'rebuttal': 'rebuttal',
+    'rebuttal-conclusions': 'rebuttal',
+  };
+
+  const setKey = practiceSlug ? aliasMap[practiceSlug] : null;
+  const set = setKey ? PRACTICE_RUNNER_SETS[setKey] : null;
+
+  if (!set) {
+    return (
+      <div className="p-12 text-center">
+        <h2 className="text-2xl font-serif italic mb-4">Practice set not found</h2>
+        <Button onClick={() => navigate('/bootcamp/intro-to-lr/practice-drills')}>Back to Practice</Button>
+      </div>
+    );
+  }
+
   const items = (SIMULATOR_DATA as any[]).filter((item: any) => (set.qids as readonly string[]).includes(item.id));
   return <PracticeRunner items={items} title={set.title} onExit={() => navigate('/bootcamp/intro-to-lr/practice-drills')} />;
 }
