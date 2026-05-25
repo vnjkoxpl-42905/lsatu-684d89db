@@ -73,7 +73,7 @@ export function PracticeDrillsIndex() {
           Main Conclusion Practice
         </h1>
         <p className="font-mc-serif text-body-prose text-ink-soft mt-4 leading-relaxed max-w-prose">
-          Guided Main Conclusion sets. Review the constraint first, then start the drill.
+          Choose a focused Main Conclusion set, review the pattern, then start the drill.
         </p>
       </header>
 
@@ -113,8 +113,8 @@ export function PracticeDrillsIndex() {
                   <span className="block font-mc-sans text-sm font-medium text-ink">{pool.qfeatures.join(', ')}</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Difficulty</span>
-                  <span className="block font-mc-sans text-sm font-medium text-ink">Easiest available first</span>
+                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Starting Level</span>
+                  <span className="block font-mc-sans text-sm font-medium text-ink">Lower difficulty first</span>
                 </div>
                 <div className="space-y-1">
                   <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Count</span>
