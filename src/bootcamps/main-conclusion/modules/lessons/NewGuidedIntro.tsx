@@ -23,53 +23,22 @@ export function NewGuidedIntro() {
 
           {/* Path Steps */}
           <div className="space-y-16">
-            {INTRO_LR_PATH.map((step, i) => (
-              <section key={step.id} id={step.id} className="scroll-mt-24 p-8 bg-white border border-[rgba(26,26,26,0.05)] rounded-[4px] shadow-sm">
-                <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-4">Step {i + 1}</div>
-                <h2 className="text-3xl font-serif italic mb-6">{step.title}</h2>
+            {INTRO_LR_PATH.map((action, i) => (
+              <section key={action.id} id={action.id} className="scroll-mt-24 p-8 bg-white border border-[rgba(26,26,26,0.05)] rounded-[4px] shadow-sm">
+                <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-4">{action.type}</div>
+                <h2 className="text-3xl font-serif italic mb-6">{action.title}</h2>
                 <p className="text-lg leading-relaxed text-[rgba(26,26,26,0.7)] mb-8 max-w-2xl">
-                  {step.description}
+                  {action.description}
                 </p>
 
                 <div className="flex flex-wrap gap-4">
-                  {step.noteRoute && (
-                    <Link
-                      to={step.noteRoute}
-                      className="inline-flex items-center gap-2 bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-[rgba(26,26,26,0.8)] transition-all"
-                    >
-                      <BookOpen className="h-4 w-4" />
-                      Read Lesson
-                    </Link>
-                  )}
-                  {step.drillId && (
-                    <Link
-                      to={`/bootcamp/intro-to-lr/drills/${step.drillId.replace('MC-DRL-', '')}`}
-                      className="inline-flex items-center gap-2 border border-[rgba(26,26,26,0.1)] px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-[rgba(26,26,26,0.05)] transition-all"
-                    >
-                      <Dumbbell className="h-4 w-4" />
-                      Interactive Drill
-                    </Link>
-                  )}
-                  {step.practiceSlug && (
-                    <Button
-                      variant="subtle"
-                      onClick={() => navigate(`/bootcamp/intro-to-lr/practice-drills/${step.practiceSlug}`)}
-                      className="inline-flex items-center gap-2"
-                    >
-                      <Sparkles className="h-4 w-4" />
-                      Focused Practice
-                    </Button>
-                  )}
-                  {step.id === 'final-practice' && (
-                    <Button
-                      variant="primary"
-                      onClick={() => navigate('/bootcamp/intro-to-lr/simulator')}
-                      className="inline-flex items-center gap-2"
-                    >
-                      <Target className="h-4 w-4" />
-                      Go to Simulator
-                    </Button>
-                  )}
+                  <Link
+                    to={action.route}
+                    className="inline-flex items-center gap-2 bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-[rgba(26,26,26,0.8)] transition-all"
+                  >
+                    {action.type === 'note' ? <BookOpen className="h-4 w-4" /> : <Dumbbell className="h-4 w-4" />}
+                    {action.type === 'note' ? 'Read Lesson' : 'Go to Action'}
+                  </Link>
                 </div>
               </section>
             ))}
