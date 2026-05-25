@@ -7,11 +7,12 @@ import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, 
 import { useModuleProgress } from "@/bootcamps/main-conclusion/hooks/useModuleProgress";
 import { Button } from "@/bootcamps/main-conclusion/components/primitives/Button";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 
 const WorkbookNoteBlock = ({ title, children }: { title: string, children: React.ReactNode }) => (
   <div className="py-12 border-t border-[rgba(26,26,26,0.1)] scroll-mt-24">
     <div className="text-[10px] uppercase tracking-[0.20em] text-[rgba(26,26,26,0.4)] mb-4">Note</div>
-    <h2 className="text-4xl font-serif italic mb-8">{title}</h2>
+    <h2 data-toc className="text-4xl font-serif italic mb-8">{title}</h2>
     <div className="prose prose-stone max-w-none">{children}</div>
   </div>
 );
@@ -199,7 +200,7 @@ export function IntroGuidedWorkbook() {
             </p>
           </WorkbookNoteBlock>
         );
-      case 'read-restate-slice':
+      case 'restate-slice':
         return (
           <div className="py-8 scroll-mt-24">
             <h3 className="text-2xl font-serif italic mb-6">Read & Restate</h3>
@@ -241,10 +242,11 @@ export function IntroGuidedWorkbook() {
 
   return (
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans">
+      <DynamicIslandTOC />
       <div className="max-w-[1180px] mx-auto px-6 md:px-12 py-24">
         <header className="mb-24">
           <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">Introduction</p>
-          <h1 className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">Guided Workbook.</h1>
+          <h1 data-toc className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">Guided Workbook.</h1>
           <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">
             Your integrated learning path.
           </p>
