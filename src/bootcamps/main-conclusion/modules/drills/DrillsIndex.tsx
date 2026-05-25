@@ -130,7 +130,7 @@ export function DrillsIndex() {
       </section>
 
       <section>
-        <h2 className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
+        <h2 data-toc className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
           Full roster
         </h2>
       <ul className="grid gap-3">
