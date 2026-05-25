@@ -29,7 +29,9 @@ function safeReturnPath(value: string | null): string {
 const BOOTCAMP_GUIDED_DRILL_OVERRIDES = {
   'first-sentence-conclusions': {
     qtypes: ['Main Conclusion'],
-    questionFeatures: ['First Sentence Conclusion'],
+    qfeatures: ['First Sentence Conclusion'],
+    difficulties: [1, 2, 3, 4, 5],
+    pts: [],
     count: 6,
     title: 'First-Sentence Main Conclusion',
     returnTo: '/bootcamp/intro-to-lr/practice-drills',
@@ -37,7 +39,9 @@ const BOOTCAMP_GUIDED_DRILL_OVERRIDES = {
   },
   'rebuttal-conclusions': {
     qtypes: ['Main Conclusion'],
-    questionFeatures: ['Rebuttals'],
+    qfeatures: ['Rebuttals'],
+    difficulties: [1, 2, 3, 4, 5],
+    pts: [],
     count: 4,
     title: 'Rebuttal Main Conclusion',
     returnTo: '/bootcamp/intro-to-lr/practice-drills',
