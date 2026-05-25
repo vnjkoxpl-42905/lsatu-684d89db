@@ -99,8 +99,8 @@ export function BootcampRoutes() {
     <Routes>
       <Route element={<WorkspaceShell />}>
         <Route index element={<ModuleIndex />} />
-        <Route path="lessons" element={<IntroGuidedWorkbook />} />
-        <Route path="lessons/grid" element={<NewGuidedIntro />} />
+        <Route path="lessons" element={<NewGuidedIntro />} />
+        <Route path="lessons/workbook" element={<IntroGuidedWorkbook />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
