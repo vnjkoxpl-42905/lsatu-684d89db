@@ -1,13 +1,11 @@
 /**
  * Practice Drills — bootcamp-scoped Guided-Drill-style launchers.
  *
- * Two assigned question sets:
- *   • First-Sentence Main Conclusion  — structure_family "First-sentence"
- *   • Rebuttal Main Conclusion        — structure_family "Rebuttal"
- *
- * Flow: list → instruction card (title, count, constraint)
- *  → /guided-drills/:slug (instruction surface)
- *  → Start Drill launches bootcamp-native runner route at /bootcamp/intro-to-lr/practice-drills/:practiceSlug.
+ * Metadata (titles, qtypes, qfeatures, counts, qids) lives in the
+ * single source of truth at
+ *   src/bootcamps/main-conclusion/data/practiceDrillPools.ts
+ * This file is purely the list UI; it does not filter the question
+ * bank itself.
  */
 
 import { useNavigate } from 'react-router-dom';
@@ -17,42 +15,39 @@ import {
   MessageSquareWarning,
 } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import {
+  MAIN_CONCLUSION_PRACTICE_POOLS,
+  type PracticePool,
+} from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 
-type SetKey = 'first-sentence' | 'rebuttal';
-
-interface PracticeSet {
-  key: SetKey;
-  title: string;
-  badge: string;
-  feature: string;
+interface PracticeCard {
+  pool: PracticePool;
   description: string;
   constraint: string;
-  instructionsSlug: string;
-  count: number;
+  badge: string;
+  featureLabel: string;
   Icon: typeof Sparkles;
 }
 
-const SETS: PracticeSet[] = [
+const CARDS: PracticeCard[] = [
   {
-    key: 'first-sentence',
-    title: 'First-Sentence Main Conclusion',
+    pool: MAIN_CONCLUSION_PRACTICE_POOLS['first-sentence-conclusions'],
+    description:
+      'Practice Main Conclusion questions where the author’s conclusion appears in the first sentence.',
+    constraint:
+      'The conclusion appears in the first sentence, but you still must confirm it with support.',
     badge: 'Main Conclusion',
-    feature: 'First Sentence',
-    description: 'Practice Main Conclusion questions where the author’s conclusion appears in the first sentence.',
-    constraint: 'The conclusion appears in the first sentence, but you still must confirm it with support.',
-    instructionsSlug: 'first-sentence-conclusions',
-    count: 6,
+    featureLabel: 'First Sentence',
     Icon: Sparkles,
   },
   {
-    key: 'rebuttal',
-    title: 'Rebuttal Main Conclusion',
+    pool: MAIN_CONCLUSION_PRACTICE_POOLS['rebuttal-conclusions'],
+    description:
+      'Practice Main Conclusion questions where the author responds to or rejects another view.',
+    constraint:
+      'Find the author’s own conclusion, not the view the author is rejecting.',
     badge: 'Main Conclusion',
-    feature: 'Rebuttal',
-    description: 'Practice Main Conclusion questions where the author responds to or rejects another view.',
-    constraint: 'Find the author’s own conclusion, not the view the author is rejecting.',
-    instructionsSlug: 'rebuttal-conclusions',
-    count: 4,
+    featureLabel: 'Rebuttal',
     Icon: MessageSquareWarning,
   },
 ];
@@ -60,19 +55,9 @@ const SETS: PracticeSet[] = [
 export function PracticeDrillsIndex() {
   const navigate = useNavigate();
 
-  const handleViewInstructions = (set: PracticeSet) => {
-    const isRebuttal = set.key === 'rebuttal';
-    navigate(`/guided-drills/${set.instructionsSlug}?returnTo=/bootcamp/intro-to-lr/practice-drills`, {
-      state: {
-        bootcampOverride: {
-          qtypes: ['Main Conclusion'],
-          questionFeatures: isRebuttal ? ['Rebuttals'] : ['First Sentence Conclusion'],
-          count: set.count,
-          title: set.title,
-          returnTo: '/bootcamp/intro-to-lr/practice-drills',
-          source: 'intro-to-lr-practice-drills',
-        },
-      },
+  const handleViewInstructions = (pool: PracticePool) => {
+    navigate(`/guided-drills/${pool.slug}?returnTo=${encodeURIComponent(pool.returnTo)}`, {
+      state: { bootcampOverride: pool },
     });
   };
 
@@ -91,47 +76,49 @@ export function PracticeDrillsIndex() {
       </header>
 
       <section className="grid gap-6">
-        {SETS.map((set) => {
-          const Icon = set.Icon;
+        {CARDS.map((card) => {
+          const Icon = card.Icon;
+          const { pool } = card;
           return (
             <div
-              key={set.key}
+              key={pool.slug}
               className="group bg-white border border-[rgba(26,26,26,0.1)] p-8 transition-all hover:border-[rgba(26,26,26,0.3)]"
             >
               <div className="flex items-center gap-3 mb-4">
+                <Icon className="h-4 w-4 text-[rgba(26,26,26,0.6)]" strokeWidth={2} />
                 <span className="inline-flex items-center rounded-full bg-[rgba(26,26,26,0.05)] px-2.5 py-0.5 text-[10px] font-semibold text-[rgba(26,26,26,0.6)] uppercase tracking-wider">
-                  {set.badge}
+                  {card.badge}
                 </span>
                 <span className="text-[10px] uppercase tracking-widest text-[rgba(26,26,26,0.4)]">
-                  {set.feature}
+                  {card.featureLabel}
                 </span>
               </div>
-              <h3 className="font-mc-serif text-xl italic mb-3 text-[#1a1a1a]">{set.title}</h3>
+              <h3 className="font-mc-serif text-xl italic mb-3 text-[#1a1a1a]">{pool.title}</h3>
               <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)] mb-6">
-                {set.description}
+                {card.description}
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8 text-[11px] font-mc-mono uppercase tracking-[0.1em]">
                 <div className="text-[rgba(26,26,26,0.4)]">
                   <span className="block text-[rgba(26,26,26,0.8)]">Count</span>
-                  {set.count} questions
+                  {pool.count} questions
                 </div>
                 <div className="text-[rgba(26,26,26,0.4)]">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Level</span>
-                  Introductory
+                  <span className="block text-[rgba(26,26,26,0.8)]">Order</span>
+                  Easiest first
                 </div>
                 <div className="text-[rgba(26,26,26,0.4)] col-span-2">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Order</span>
-                  Curated source order
+                  <span className="block text-[rgba(26,26,26,0.8)]">Filter</span>
+                  qtype = {pool.qtypes.join(', ')} · feature = {pool.qfeatures.join(', ')}
                 </div>
                 <div className="text-[rgba(26,26,26,0.4)] col-span-2">
                   <span className="block text-[rgba(26,26,26,0.8)]">Constraint</span>
-                  {set.constraint}
+                  {card.constraint}
                 </div>
               </div>
 
               <Button
-                onClick={() => handleViewInstructions(set)}
+                onClick={() => handleViewInstructions(pool)}
                 size="lg"
                 rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
               >
