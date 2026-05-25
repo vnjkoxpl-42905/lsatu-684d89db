@@ -41,9 +41,9 @@ export default function GuidedDrillStart() {
   const location = useLocation();
   const { isLoading: qbLoading } = useQuestionBank();
 
-  const stateBootcampOverride = (location.state as any)?.bootcampOverride;
-  const slugBootcampOverride = slug ? BOOTCAMP_GUIDED_DRILL_OVERRIDES[slug as keyof typeof BOOTCAMP_GUIDED_DRILL_OVERRIDES] : undefined;
-  const bootcampOverride = stateBootcampOverride ?? slugBootcampOverride;
+  const stateBootcampOverride = (location.state as any)?.bootcampOverride as PracticePool | undefined;
+  const slugBootcampOverride = slug ? getPracticePool(slug) : undefined;
+  const bootcampOverride: PracticePool | undefined = stateBootcampOverride ?? slugBootcampOverride;
 
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const cleanupIframeListenersRef = React.useRef<(() => void) | null>(null);
@@ -97,55 +97,38 @@ export default function GuidedDrillStart() {
       return;
     }
 
-    // Intro to LR practice drills — Smart Drill TypeDrillConfig format
-    if (bootcampOverride && (bootcampOverride as any).source === 'intro-to-lr-practice-drills') {
-      const ov = bootcampOverride as {
-        qtypes: string[];
-        qfeatures: string[];
-        difficulties: number[];
-        pts: number[];
-        count: number;
-        title: string;
-        returnTo: string;
-        source: string;
-      };
+    // Intro to LR practice drills — use prebuilt MAIN_CONCLUSION_PRACTICE_POOLS qids.
+    if (bootcampOverride && bootcampOverride.source === 'intro-to-lr-practice-drills') {
+      const ov = bootcampOverride;
+      const feature = ov.qfeatures[0];
 
-      if (!Array.isArray(ov.qtypes) || ov.qtypes.length === 0 ||
-          !Array.isArray(ov.qfeatures) || ov.qfeatures.length === 0 ||
-          !Array.isArray(ov.difficulties) || ov.difficulties.length === 0 ||
-          typeof ov.count !== 'number' || ov.count <= 0) {
-        toast.error('Invalid drill configuration: missing required metadata.');
+      if (!Array.isArray(ov.qids) || ov.qids.length === 0) {
+        toast.error(
+          `Practice drill pool is missing or empty for ${ov.slug}. Expected qtype = Main Conclusion, feature = ${feature}, count = ${ov.count}.`,
+        );
         return;
       }
 
-      const all = questionBank.getAllQuestions();
-      const matched = all
-        .filter((q) => ov.qtypes.includes(q.qtype as string))
-        .filter((q) => Array.isArray(q.questionFeatures) && q.questionFeatures.some((f) => ov.qfeatures.includes(f)))
-        .filter((q) => ov.difficulties.includes(q.difficulty as number))
-        .sort((a, b) => (a.difficulty ?? 99) - (b.difficulty ?? 99));
-
-      const selected = matched.slice(0, ov.count);
+      const known = new Set(questionBank.getAllQuestions().map((q) => q.qid));
+      const validQids = ov.qids.filter((qid) => known.has(qid));
+      const invalidQids = ov.qids.filter((qid) => !known.has(qid));
 
       // eslint-disable-next-line no-console
       console.log('[intro-to-lr-practice-drills] launch', {
-        drillTitle: ov.title,
-        qtypesUsed: ov.qtypes,
-        qfeaturesUsed: ov.qfeatures,
-        difficultiesUsed: ov.difficulties,
-        requestedCount: ov.count,
-        totalMatchesFound: matched.length,
-        selectedQids: selected.map((q) => q.qid),
-        selectedDifficulties: selected.map((q) => q.difficulty),
+        slug: ov.slug,
+        title: ov.title,
+        qtypes: ov.qtypes,
+        qfeatures: ov.qfeatures,
+        difficulties: ov.difficulties,
+        count: ov.count,
+        poolQids: ov.qids,
+        validQids,
+        invalidQids,
       });
 
-      if (selected.length === 0) {
-        toast.error(`No questions found for this drill. Filter attempted: qtype = Main Conclusion, feature = [${ov.qfeatures.join(', ')}], difficulties = [${ov.difficulties.join(',')}], requested count = ${ov.count}, matches found = 0.`);
+      if (invalidQids.length > 0) {
+        toast.error('Practice drill pool contains invalid qids. Check practiceDrillPools.ts.');
         return;
-      }
-
-      if (selected.length < ov.count) {
-        toast.warning(`Only ${selected.length} matching questions found. Requested ${ov.count}. Launching available questions.`);
       }
 
       if (assignment) {
@@ -153,10 +136,9 @@ export default function GuidedDrillStart() {
         await markStarted(assignment.id);
       }
 
-      const qids = selected.map((q) => q.qid).join(',');
       const params = new URLSearchParams();
       params.set('mode', 'type-drill');
-      params.set('qids', qids);
+      params.set('qids', validQids.join(','));
       params.set('returnTo', ov.returnTo);
       params.set('focus', ov.title);
       params.set('source', ov.source);
