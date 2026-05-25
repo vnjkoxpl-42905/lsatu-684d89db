@@ -18,6 +18,11 @@ import {
 } from '@/data/guidedDrillHtmlManifest';
 import { toast } from 'sonner';
 import type { TypeDrillConfig } from '@/types/drill';
+import {
+  MAIN_CONCLUSION_PRACTICE_POOLS,
+  getPracticePool,
+  type PracticePool,
+} from '@/bootcamps/main-conclusion/data/practiceDrillPools';
 
 type AssignmentWithDrill = GuidedDrillAssignment & { guided_drill: GuidedDrill };
 
@@ -26,28 +31,8 @@ function safeReturnPath(value: string | null): string {
   return value;
 }
 
-const BOOTCAMP_GUIDED_DRILL_OVERRIDES = {
-  'first-sentence-conclusions': {
-    qtypes: ['Main Conclusion'],
-    qfeatures: ['First Sentence Conclusion'],
-    difficulties: [1, 2, 3, 4, 5],
-    pts: [],
-    count: 6,
-    title: 'First-Sentence Main Conclusion',
-    returnTo: '/bootcamp/intro-to-lr/practice-drills',
-    source: 'intro-to-lr-practice-drills',
-  },
-  'rebuttal-conclusions': {
-    qtypes: ['Main Conclusion'],
-    qfeatures: ['Rebuttals'],
-    difficulties: [1, 2, 3, 4, 5],
-    pts: [],
-    count: 4,
-    title: 'Rebuttal Main Conclusion',
-    returnTo: '/bootcamp/intro-to-lr/practice-drills',
-    source: 'intro-to-lr-practice-drills',
-  },
-} as const;
+// Bootcamp guided-drill slugs that resolve to a prebuilt practice pool.
+const BOOTCAMP_GUIDED_DRILL_OVERRIDES = MAIN_CONCLUSION_PRACTICE_POOLS;
 
 export default function GuidedDrillStart() {
   const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
