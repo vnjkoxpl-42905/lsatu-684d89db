@@ -28,15 +28,17 @@ function safeReturnPath(value: string | null): string {
 
 const BOOTCAMP_GUIDED_DRILL_OVERRIDES = {
   'first-sentence-conclusions': {
-    selectedQids: ['MC-SIM-Q1', 'MC-SIM-Q2', 'MC-SIM-Q3', 'MC-SIM-Q4', 'MC-SIM-Q5', 'MC-SIM-Q6'],
     qtypes: ['Main Conclusion'],
+    questionFeatures: ['First Sentence Conclusion'],
+    count: 6,
     title: 'First-Sentence Main Conclusion',
     returnTo: '/bootcamp/intro-to-lr/practice-drills',
     source: 'intro-to-lr-practice-drills',
   },
   'rebuttal-conclusions': {
-    selectedQids: ['MC-SIM-Q8', 'MC-SIM-Q9', 'MC-SIM-Q10', 'MC-SIM-Q11'],
     qtypes: ['Main Conclusion'],
+    questionFeatures: ['Rebuttals'],
+    count: 4,
     title: 'Rebuttal Main Conclusion',
     returnTo: '/bootcamp/intro-to-lr/practice-drills',
     source: 'intro-to-lr-practice-drills',
@@ -156,6 +158,13 @@ export default function GuidedDrillStart() {
     if (bootcampOverride?.source === 'intro-to-lr-practice-drills') {
       const { qtypes, questionFeatures, count } = bootcampOverride;
       
+      if (!Array.isArray(qtypes) || qtypes.length === 0 || 
+          !Array.isArray(questionFeatures) || questionFeatures.length === 0 || 
+          typeof count !== 'number' || count <= 0) {
+        toast.error("Invalid drill configuration: missing required metadata.");
+        return;
+      }
+
       const questions = questionBank.getQuestionsByFilter({
         qtypes: qtypes
       }).filter(q => q.questionFeatures?.some(f => questionFeatures.includes(f)));
