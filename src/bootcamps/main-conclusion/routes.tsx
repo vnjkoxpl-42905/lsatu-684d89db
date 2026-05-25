@@ -20,7 +20,8 @@ import { CapstoneRoute } from '@/bootcamps/main-conclusion/modules/lessons/Capst
 import { ReferenceIndex } from '@/bootcamps/main-conclusion/modules/reference/ReferenceIndex';
 import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/modules/reference/ReferenceSection';
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
-import { DrillsIndex, DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
+import { DrillsIndex } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
+import { DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillShell';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
 import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';

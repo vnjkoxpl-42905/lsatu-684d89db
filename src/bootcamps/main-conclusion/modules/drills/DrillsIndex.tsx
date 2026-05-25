@@ -23,15 +23,15 @@ interface DrillRow {
 }
 
 export const DRILLS: DrillRow[] = [
-  { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Word ID', route: '/drills/3.1', blurb: 'Spot premise, conclusion, pivot, concession, opposing, opinion words at speed.' },
-  { id: 'MC-DRL-3.2', number: '3.2', title: 'X-Ray Drill', route: '/drills/3.2', blurb: 'Toggle role colors. Confirm or correct your read of the structure.' },
-  { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Reading', route: '/drills/3.3', blurb: 'When the first sentence is the conclusion, support follows. Drill the read.' },
-  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal vs First-Sentence', route: '/drills/3.4', blurb: 'Four stages × five questions. Clear all four to open the Simulator.', gates_simulator: true },
-  { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping', route: '/drills/3.5', blurb: 'Premise → intermediate conclusion → main conclusion. Map the chain.' },
-  { id: 'MC-DRL-3.6', number: '3.6', title: 'Design the Conclusion', route: '/drills/3.6', blurb: 'Whimsical premise pair. Design a valid conclusion and an invalid one.' },
-  { id: 'MC-DRL-3.7', number: '3.7', title: 'Pronoun Replacement', route: '/drills/3.7', blurb: 'Replace this/that/such/those before stating the conclusion to yourself.' },
-  { id: 'MC-DRL-3.8', number: '3.8', title: 'R&R Drill (Read & Restate)', route: '/drills/3.8', blurb: "Read piece, cover, rephrase. Skeptic’s Ear Check between stages." },
-  { id: 'MC-DRL-3.9', number: '3.9', title: 'Nested Claims', route: '/drills/3.9', blurb: 'Multi-conclusion stimuli. Find the main one.' },
+  { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Recognition', route: '/drills/3.1', blurb: 'Identify whether a signal points to support, conclusion, contrast, concession, or another person’s view.' },
+  { id: 'MC-DRL-3.2', number: '3.2', title: 'Structure Reading', route: '/drills/3.2', blurb: 'Confirm the role each sentence plays before choosing the main conclusion.' },
+  { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Conclusions', route: '/drills/3.3', blurb: 'Practice cases where the conclusion appears first and the support follows.' },
+  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal Conclusions', route: '/drills/3.4', blurb: 'Separate the author’s conclusion from the view the author rejects.', gates_simulator: true },
+  { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping', route: '/drills/3.5', blurb: 'Track premise, intermediate conclusion, and main conclusion relationships.' },
+  { id: 'MC-DRL-3.6', number: '3.6', title: 'Build the Conclusion', route: '/drills/3.6', blurb: 'Practice building a conclusion that follows from the support.' },
+  { id: 'MC-DRL-3.7', number: '3.7', title: 'Pronoun Replacement', route: '/drills/3.7', blurb: 'Replace vague references before stating the author’s conclusion.' },
+  { id: 'MC-DRL-3.8', number: '3.8', title: 'Read, Cover, Restate', route: '/drills/3.8', blurb: "Read the argument, cover it, and restate the author’s conclusion in plain language." },
+  { id: 'MC-DRL-3.9', number: '3.9', title: 'Nested Claims', route: '/drills/3.9', blurb: 'Work through arguments with multiple claims and identify the main one.' },
 ];
 
 export function DrillsIndex() {
@@ -197,48 +197,4 @@ export function DrillsIndex() {
       </section>
     </article>
   );
-}
-
-import { useParams } from 'react-router-dom';
-import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
-import { Drill3_1 } from './Drill3_1';
-import { Drill3_2 } from './Drill3_2';
-import { Drill3_3 } from './Drill3_3';
-import { Drill3_4 } from './Drill3_4';
-import { Drill3_5 } from './Drill3_5';
-import { Drill3_6 } from './Drill3_6';
-import { Drill3_7 } from './Drill3_7';
-import { Drill3_8 } from './Drill3_8';
-import { Drill3_9 } from './Drill3_9';
-
-export function DrillShell() {
-  const { drillId } = useParams<{ drillId: string }>();
-  switch (drillId) {
-    case '3.1':
-      return <Drill3_1 />;
-    case '3.2':
-      return <Drill3_2 />;
-    case '3.3':
-      return <Drill3_3 />;
-    case '3.4':
-      return <Drill3_4 />;
-    case '3.5':
-      return <Drill3_5 />;
-    case '3.6':
-      return <Drill3_6 />;
-    case '3.7':
-      return <Drill3_7 />;
-    case '3.8':
-      return <Drill3_8 />;
-    case '3.9':
-      return <Drill3_9 />;
-    default:
-      return (
-        <EmptyState
-          title="Drill not found"
-          body="Drill IDs are 3.1 through 3.9."
-          surfaceId={`drill/${drillId ?? '?'}`}
-        />
-      );
-  }
 }
