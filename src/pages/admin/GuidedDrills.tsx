@@ -181,7 +181,10 @@ export default function AdminGuidedDrills() {
                     <td className={`px-3 py-2 text-center ${poolBad ? 'text-amber-500' : 'text-muted-foreground'}`}>{ps ?? '…'}</td>
                     <td className="px-3 py-2">
                       <div className="flex gap-1">
-                        <Button size="sm" variant="ghost" onClick={() => setPreviewDrill(d)}>Preview</Button>
+                        <Link to={`/guided-drills/${d.slug}?returnTo=/teacher/library/guided-drills`}>
+                          <Button size="sm" variant="outline">Open HTML</Button>
+                        </Link>
+                        <Button size="sm" variant="ghost" onClick={() => setPreviewDrill(d)}>Markdown Preview</Button>
                         <Button size="sm" onClick={() => setAssignDrill(d)}>Assign</Button>
                       </div>
                     </td>
