@@ -154,8 +154,21 @@ export default function GuidedDrillStart() {
     if (assignment) drillSearchParams.set('guidedAssignmentId', assignment.id);
 
     if (bootcampOverride?.source === 'intro-to-lr-practice-drills') {
-      const practiceSlug = slug === 'rebuttal-conclusions' ? 'rebuttal' : 'first-sentence';
-      navigate(`/bootcamp/intro-to-lr/practice-drills/${practiceSlug}`);
+      const { qtypes, questionFeatures, count } = bootcampOverride;
+      
+      const questions = questionBank.getQuestionsByFilter({
+        qtypes: qtypes
+      }).filter(q => q.questionFeatures?.some(f => questionFeatures.includes(f)));
+
+      if (questions.length === 0) {
+        alert(`No questions found with qtype: ${qtypes.join(', ')} and features: ${questionFeatures.join(', ')}`);
+        return;
+      }
+
+      const selected = questionBank.shuffleQuestions(questions).slice(0, count);
+      const qids = selected.map(q => q.qid).join(',');
+      
+      navigate(`/drill?mode=type-drill&qids=${qids}&returnTo=${encodeURIComponent(bootcampOverride.returnTo)}&focus=${encodeURIComponent(bootcampOverride.title)}&source=${encodeURIComponent(bootcampOverride.source)}`);
       return;
     }
 

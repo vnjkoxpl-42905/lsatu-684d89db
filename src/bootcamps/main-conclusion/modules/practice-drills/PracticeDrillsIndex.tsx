@@ -41,7 +41,7 @@ const SETS: PracticeSet[] = [
     description: 'Practice Main Conclusion questions where the author’s conclusion appears in the first sentence.',
     constraint: 'The conclusion appears in the first sentence, but you still must confirm it with support.',
     instructionsSlug: 'first-sentence-conclusions',
-    qids: ['MC-SIM-Q1', 'MC-SIM-Q2', 'MC-SIM-Q3', 'MC-SIM-Q4', 'MC-SIM-Q5', 'MC-SIM-Q6'],
+    qids: [], // Not used for real-question resolution
     Icon: Sparkles,
   },
   {
@@ -52,19 +52,22 @@ const SETS: PracticeSet[] = [
     description: 'Practice Main Conclusion questions where the author responds to or rejects another view.',
     constraint: 'Find the author’s own conclusion, not the view the author is rejecting.',
     instructionsSlug: 'rebuttal-conclusions',
-    qids: ['MC-SIM-Q8', 'MC-SIM-Q9', 'MC-SIM-Q10', 'MC-SIM-Q11'],
+    qids: [], // Not used for real-question resolution
     Icon: MessageSquareWarning,
   },
 ];
 
 export function PracticeDrillsIndex() {
   const navigate = useNavigate();
+
   const handleViewInstructions = (set: PracticeSet) => {
+    const isRebuttal = set.key === 'rebuttal';
     navigate(`/guided-drills/${set.instructionsSlug}?returnTo=/bootcamp/intro-to-lr/practice-drills`, {
       state: {
         bootcampOverride: {
-          selectedQids: set.qids,
           qtypes: ['Main Conclusion'],
+          questionFeatures: isRebuttal ? ['Rebuttals'] : ['First Sentence Conclusion'],
+          count: isRebuttal ? 4 : 6,
           title: set.title,
           returnTo: '/bootcamp/intro-to-lr/practice-drills',
           source: 'intro-to-lr-practice-drills',
@@ -72,6 +75,7 @@ export function PracticeDrillsIndex() {
       },
     });
   };
+
 
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
