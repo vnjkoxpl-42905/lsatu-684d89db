@@ -19,7 +19,6 @@ import {
 import { toast } from 'sonner';
 import type { TypeDrillConfig } from '@/types/drill';
 import {
-  MAIN_CONCLUSION_PRACTICE_POOLS,
   getPracticePool,
   type PracticePool,
 } from '@/bootcamps/main-conclusion/data/practiceDrillPools';
@@ -30,9 +29,6 @@ function safeReturnPath(value: string | null): string {
   if (!value || !value.startsWith('/') || value.startsWith('//')) return '/classroom';
   return value;
 }
-
-// Bootcamp guided-drill slugs that resolve to a prebuilt practice pool.
-const BOOTCAMP_GUIDED_DRILL_OVERRIDES = MAIN_CONCLUSION_PRACTICE_POOLS;
 
 export default function GuidedDrillStart() {
   const { assignmentId, slug } = useParams<{ assignmentId?: string; slug?: string }>();
