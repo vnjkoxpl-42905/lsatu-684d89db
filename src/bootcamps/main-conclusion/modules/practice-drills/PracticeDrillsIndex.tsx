@@ -15,6 +15,8 @@ import {
   MessageSquareWarning,
 } from 'lucide-react';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import {
   MAIN_CONCLUSION_PRACTICE_POOLS,
   type PracticePool,
@@ -62,7 +64,7 @@ export function PracticeDrillsIndex() {
   };
 
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
+    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-6xl mx-auto space-y-12">
       <header>
         <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent mb-3">
           PRACTICE DRILLS
@@ -75,56 +77,68 @@ export function PracticeDrillsIndex() {
         </p>
       </header>
 
-      <section className="grid gap-6">
+      <section className="grid grid-cols-1 desktop:grid-cols-2 gap-8">
         {CARDS.map((card) => {
           const Icon = card.Icon;
           const { pool } = card;
           return (
-            <div
+            <Card
               key={pool.slug}
-              className="group bg-white border border-[rgba(26,26,26,0.1)] p-8 transition-all hover:border-[rgba(26,26,26,0.3)]"
+              variant="surface"
+              interactive={true}
+              className="flex flex-col h-full"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <Icon className="h-4 w-4 text-[rgba(26,26,26,0.6)]" strokeWidth={2} />
-                <span className="inline-flex items-center rounded-full bg-[rgba(26,26,26,0.05)] px-2.5 py-0.5 text-[10px] font-semibold text-[rgba(26,26,26,0.6)] uppercase tracking-wider">
-                  {card.badge}
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-[rgba(26,26,26,0.4)]">
-                  {card.featureLabel}
-                </span>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Badge tone="accent">{card.badge}</Badge>
+                  <span className="font-mc-mono text-[10px] uppercase tracking-widest text-ink-soft opacity-70">
+                    {card.featureLabel}
+                  </span>
+                </div>
+                <Icon className="h-5 w-5 text-mc-accent/40" />
               </div>
-              <h3 className="font-mc-serif text-xl italic mb-3 text-[#1a1a1a]">{pool.title}</h3>
-              <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)] mb-6">
+
+              <h3 className="font-mc-serif text-2xl italic mb-3 text-ink">{pool.title}</h3>
+              <p className="font-mc-sans text-body-small text-ink-soft mb-8 flex-grow">
                 {card.description}
               </p>
 
-              <div className="grid grid-cols-2 gap-4 mb-8 text-[11px] font-mc-mono uppercase tracking-[0.1em]">
-                <div className="text-[rgba(26,26,26,0.4)]">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Count</span>
-                  {pool.count} questions
+              <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-8">
+                <div className="space-y-1">
+                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Question Type</span>
+                  <span className="block font-mc-sans text-sm font-medium text-ink">Main Conclusion</span>
                 </div>
-                <div className="text-[rgba(26,26,26,0.4)]">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Order</span>
-                  Easiest first
+                <div className="space-y-1">
+                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Question Feature</span>
+                  <span className="block font-mc-sans text-sm font-medium text-ink">{pool.qfeatures.join(', ')}</span>
                 </div>
-                <div className="text-[rgba(26,26,26,0.4)] col-span-2">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Filter</span>
-                  qtype = {pool.qtypes.join(', ')} · feature = {pool.qfeatures.join(', ')}
+                <div className="space-y-1">
+                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Difficulty</span>
+                  <span className="block font-mc-sans text-sm font-medium text-ink">Easiest available first</span>
                 </div>
-                <div className="text-[rgba(26,26,26,0.4)] col-span-2">
-                  <span className="block text-[rgba(26,26,26,0.8)]">Constraint</span>
+                <div className="space-y-1">
+                  <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-ink-soft opacity-60">Count</span>
+                  <span className="block font-mc-sans text-sm font-medium text-ink">{pool.count} questions</span>
+                </div>
+              </div>
+
+              <div className="mb-8 p-4 bg-mc-surface-elev border border-ink/5 rounded-lg space-y-2">
+                <span className="block font-mc-mono text-[10px] uppercase tracking-wider text-mc-accent font-semibold">Constraint</span>
+                <p className="font-mc-sans text-sm text-ink leading-relaxed">
                   {card.constraint}
-                </div>
+                </p>
               </div>
 
               <Button
                 onClick={() => handleViewInstructions(pool)}
+                variant="primary"
                 size="lg"
+                className="w-full justify-center"
                 rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
               >
                 View Instructions
               </Button>
-            </div>
+            </Card>
           );
         })}
       </section>
