@@ -1,69 +1,44 @@
 /**
- * Intro to LR Path - Integrated Path Map
- * Defines the logical 8-step sequence for the LR Introduction bootcamp.
+ * Intro to LR Path - Granular Action Sequence
+ * Sequence for Intro to LR bootcamp.
  */
 
-export interface PathStep {
+export type ActionType = 'note' | 'tool' | 'reference' | 'checkpoint' | 'drill' | 'practice' | 'capstone';
+
+export interface PathAction {
   id: string;
+  type: ActionType;
   title: string;
+  route: string;
   description: string;
   noteRoute?: string;
   drillId?: string;
-  toolSlug?: string;
   practiceSlug?: string;
 }
 
-export const INTRO_LR_PATH: PathStep[] = [
-  {
-    id: 'argument-basics',
-    title: 'Argument Basics',
-    description: 'Learn how to separate claims from support and see the basic structure underneath every LR argument.',
-    noteRoute: '/bootcamp/intro-to-lr/lessons/notes/argument-basics',
-  },
-  {
-    id: 'indicator-recognition',
-    title: 'Indicator Recognition',
-    description: 'Identify whether a signal points to support, conclusion, contrast, concession, or another person’s view.',
-    drillId: 'MC-DRL-3.1',
-  },
-  {
-    id: 'structure-reading',
-    title: 'Structure Reading',
-    description: 'Confirm the role each sentence plays before choosing the main conclusion.',
-    drillId: 'MC-DRL-3.2',
-  },
-  {
-    id: 'where-conclusions-hide',
-    title: 'Where Conclusions Hide',
-    description: 'Practice finding conclusions when they appear at the beginning, after a pivot, or between context and evidence.',
-    noteRoute: '/bootcamp/intro-to-lr/lessons/notes/where-conclusions-hide',
-    drillId: 'MC-DRL-3.3',
-    practiceSlug: 'first-sentence-conclusions',
-  },
-  {
-    id: 'opposing-view-rebuttal',
-    title: 'Opposing View & Rebuttal',
-    description: 'Separate the author’s conclusion from the view the author rejects.',
-    drillId: 'MC-DRL-3.4',
-    practiceSlug: 'rebuttal-conclusions',
-  },
-  {
-    id: 'layered-arguments',
-    title: 'Layered Arguments',
-    description: 'Learn how premises, intermediate conclusions, and main conclusions stack together.',
-    noteRoute: '/bootcamp/intro-to-lr/lessons/notes/layered-arguments',
-    drillId: 'MC-DRL-3.5',
-  },
-  {
-    id: 'matching-the-answer',
-    title: 'Matching the Answer',
-    description: 'Practice matching the author’s conclusion without getting trapped by wording changes.',
-    noteRoute: '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer',
-    drillId: 'MC-DRL-3.7',
-  },
-  {
-    id: 'final-practice',
-    title: 'Final Practice',
-    description: 'Capstone application, trap review, and Hard Mode testing.',
-  },
+export const INTRO_LR_PATH: PathAction[] = [
+  { id: 'argument-basics', type: 'note', title: 'Argument Basics', route: '/bootcamp/intro-to-lr/lessons/notes/argument-basics', description: 'Basic structure' },
+  { id: 'build-conclusion', type: 'checkpoint', title: 'Build the Conclusion', route: '/bootcamp/intro-to-lr/lessons#build-conclusion', description: 'Checkpoint' },
+  { id: 'indicator-recognition', type: 'drill', title: 'Indicator Recognition', route: '/bootcamp/intro-to-lr/drills/3.1', description: 'Signal words' },
+  { id: 'structure-reading', type: 'drill', title: 'Structure Reading', route: '/bootcamp/intro-to-lr/drills/3.2', description: 'Sentence roles' },
+  { id: 'where-conclusions-hide', type: 'note', title: 'Where Conclusions Hide', route: '/bootcamp/intro-to-lr/lessons/notes/where-conclusions-hide', description: 'Conclusion placement' },
+  { id: 'first-sentence-conclusions', type: 'drill', title: 'First-Sentence Conclusions', route: '/bootcamp/intro-to-lr/drills/3.3', description: 'First-sentence patterns' },
+  { id: 'first-sentence-practice', type: 'practice', title: 'First-Sentence Main Conclusion', route: '/bootcamp/intro-to-lr/practice-drills/first-sentence-conclusions', description: 'Practice set' },
+  { id: 'rebuttal-conclusions', type: 'drill', title: 'Rebuttal Conclusions', route: '/bootcamp/intro-to-lr/drills/3.4', description: 'Opposing view structure' },
+  { id: 'rebuttal-practice', type: 'practice', title: 'Rebuttal Main Conclusion', route: '/bootcamp/intro-to-lr/practice-drills/rebuttal-conclusions', description: 'Practice set' },
+  { id: 'layered-arguments', type: 'note', title: 'Layered Arguments', route: '/bootcamp/intro-to-lr/lessons/notes/layered-arguments', description: 'Premise stacks' },
+  { id: 'chain-mapping', type: 'drill', title: 'Chain Mapping', route: '/bootcamp/intro-to-lr/drills/3.5', description: 'Logical chains' },
+  { id: 'nested-claims', type: 'drill', title: 'Nested Claims', route: '/bootcamp/intro-to-lr/drills/3.9', description: 'Nested arguments' },
+  { id: 'matching-the-answer', type: 'note', title: 'Matching the Answer', route: '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer', description: 'Matching strategy' },
+  { id: 'pronoun-replacement', type: 'drill', title: 'Pronoun Replacement', route: '/bootcamp/intro-to-lr/drills/3.7', description: 'Vague reference' },
+  { id: 'read-cover-restate', type: 'checkpoint', title: 'Read, Cover, Restate', route: '/bootcamp/intro-to-lr/drills/3.8', description: 'Plain English check' },
+  { id: 'final-practice', type: 'capstone', title: 'Final Practice', route: '/bootcamp/intro-to-lr/simulator', description: 'Question Bank' },
 ];
+
+export function getNextAction(currentPath: string): PathAction | null {
+  const currentIndex = INTRO_LR_PATH.findIndex(a => currentPath.includes(a.route));
+  if (currentIndex >= 0 && currentIndex < INTRO_LR_PATH.length - 1) {
+    return INTRO_LR_PATH[currentIndex + 1];
+  }
+  return null;
+}
