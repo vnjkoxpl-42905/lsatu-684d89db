@@ -3,18 +3,38 @@ import { BookOpen } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 const lessons = [
-  { id: 'argument-basics', title: 'Argument Basics' },
-  { id: 'where-conclusions-hide', title: 'Where Conclusions Hide' },
-  { id: 'layered-arguments', title: 'Layered Arguments' },
-  { id: 'matching-the-answer', title: 'Matching the Answer' },
-  { id: 'practice-path', title: 'Practice Path' },
+  { 
+    id: 'argument-basics', 
+    title: 'Argument Basics', 
+    description: 'Learn how to separate claims from support and see the basic structure underneath every LR argument.' 
+  },
+  { 
+    id: 'where-conclusions-hide', 
+    title: 'Where Conclusions Hide', 
+    description: 'Practice finding conclusions when they appear at the beginning, after a pivot, or between context and evidence.' 
+  },
+  { 
+    id: 'layered-arguments', 
+    title: 'Layered Arguments', 
+    description: 'Learn how premises, intermediate conclusions, and main conclusions stack together.' 
+  },
+  { 
+    id: 'matching-the-answer', 
+    title: 'Matching the Answer', 
+    description: 'Practice matching the author’s conclusion without getting trapped by wording changes.' 
+  },
+  { 
+    id: 'practice-path', 
+    title: 'Practice Path', 
+    description: 'Put the lesson sequence together and move into focused practice.' 
+  },
 ];
 
 export function NewGuidedIntro() {
   return (
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] flex">
       {/* Lesson Navigation */}
-      <nav className="w-64 border-r border-[rgba(26,26,26,0.1)] py-24 px-8 sticky top-0 h-screen overflow-y-auto hidden md:block">
+      <nav className="w-64 border-r border-[rgba(26,26,26,0.08)] py-24 px-8 sticky top-0 h-screen overflow-y-auto hidden md:block">
         <h2 className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.4)] mb-8">Lesson Path</h2>
         <ul className="space-y-6">
           {lessons.map((l, i) => (
@@ -40,13 +60,17 @@ export function NewGuidedIntro() {
             <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed">A guided, article-based journey into LSAT Logical Reasoning.</p>
           </header>
 
-          <section className="space-y-24">
+          <section className="space-y-16">
             {lessons.map((l, i) => (
-              <div key={l.id} id={l.id} className="scroll-mt-24 border-t border-[rgba(26,26,26,0.1)] pt-12">
+              <div 
+                key={l.id} 
+                id={l.id} 
+                className="scroll-mt-24 p-8 bg-white border border-[rgba(26,26,26,0.05)] rounded-[4px] shadow-sm"
+              >
                 <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-4">Lesson {i + 1}</div>
-                <h2 className="text-4xl font-serif italic mb-6">{l.title}</h2>
+                <h2 className="text-3xl font-serif italic mb-4">{l.title}</h2>
                 <p className="text-lg leading-relaxed text-[rgba(26,26,26,0.7)] mb-8">
-                  Core concepts and strategy for {l.title.toLowerCase()}.
+                  {l.description}
                 </p>
                 <Link
                   to={`/bootcamp/intro-to-lr/lessons/notes/${l.id}`}
