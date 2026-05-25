@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { INTRO_GUIDED_SEQUENCE } from "./introGuidedSequence";
-import { DRILL_3_1_STAGE_1, DRILL_3_2_STAGE_1, DRILL_3_3_STAGE_1, DRILL_3_4_STAGE_2, DRILL_3_5_QUESTIONS } from "@/bootcamps/main-conclusion/content/drills.source";
-import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, RebuttalEmbeddedSlice, ChainMappingEmbeddedSlice } from "./EmbeddedDrillRunner";
+import { DRILL_3_1_STAGE_1, DRILL_3_2_STAGE_1, DRILL_3_3_STAGE_1, DRILL_3_4_STAGE_2, DRILL_3_5_QUESTIONS, DRILL_3_9_QUESTIONS, DRILL_3_8_PASSAGES, DRILL_3_7_QUESTIONS } from "@/bootcamps/main-conclusion/content/drills.source";
+import { MAIN_CONCLUSION_PRACTICE_POOLS } from "@/bootcamps/main-conclusion/data/practiceDrillPools";
+import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, RebuttalEmbeddedSlice, ChainMappingEmbeddedSlice, NestedClaimsEmbeddedSlice, ReadRestateEmbeddedSlice, PronounEmbeddedSlice } from "./EmbeddedDrillRunner";
 import { Button } from "@/bootcamps/main-conclusion/components/primitives/Button";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 
@@ -48,6 +50,29 @@ const WorkbookCheckpoint = ({ title, options, correctIndex, explanation }: {
           <p>{explanation}</p>
         </div>
       )}
+    </div>
+  );
+};
+
+const WorkbookPracticePoolCard = ({ slug }: { slug: string }) => {
+  const navigate = useNavigate();
+  const pool = (MAIN_CONCLUSION_PRACTICE_POOLS as any)[slug];
+  if (!pool) return null;
+
+  return (
+    <div className="py-8 px-6 bg-white border border-[rgba(26,26,26,0.1)] rounded-[4px] my-8 shadow-sm">
+      <div className="text-[10px] uppercase tracking-[0.20em] text-[rgba(26,26,26,0.4)] mb-4 uppercase">Focused Practice</div>
+      <h3 className="text-xl font-serif italic mb-2">{pool.title}</h3>
+      <p className="text-sm text-[rgba(26,26,26,0.6)] mb-6">
+        Test your skills with a curated set of {pool.count} questions focused on {pool.qfeatures.join(', ')}.
+      </p>
+      <Button 
+        variant="primary" 
+        className="w-full"
+        onClick={() => navigate(`/bootcamp/intro-to-lr/practice-drills/${slug}`)}
+      >
+        Start focused set
+      </Button>
     </div>
   );
 };
@@ -155,6 +180,13 @@ export function IntroGuidedWorkbook() {
             <ChainMappingEmbeddedSlice questions={DRILL_3_5_QUESTIONS.slice(0, 2)} />
           </div>
         );
+      case 'nested-claims-slice':
+        return (
+          <div className="py-8 scroll-mt-24">
+            <h3 className="text-2xl font-serif italic mb-6">Test the Pattern</h3>
+            <NestedClaimsEmbeddedSlice questions={DRILL_3_9_QUESTIONS.slice(0, 2)} />
+          </div>
+        );
       case 'matching-the-answer':
         return (
           <WorkbookNoteBlock title="Matching the Answer">
@@ -163,6 +195,24 @@ export function IntroGuidedWorkbook() {
             </p>
           </WorkbookNoteBlock>
         );
+      case 'restate-slice':
+        return (
+          <div className="py-8 scroll-mt-24">
+            <h3 className="text-2xl font-serif italic mb-6">Read & Restate</h3>
+            <ReadRestateEmbeddedSlice passages={DRILL_3_8_PASSAGES.slice(0, 2)} />
+          </div>
+        );
+      case 'pronoun-replacement-slice':
+        return (
+          <div className="py-8 scroll-mt-24">
+            <h3 className="text-2xl font-serif italic mb-6">Pronoun Replacement</h3>
+            <PronounEmbeddedSlice questions={DRILL_3_7_QUESTIONS.slice(0, 2)} />
+          </div>
+        );
+      case 'mc-practice-first-sentence':
+        return <WorkbookPracticePoolCard slug="first-sentence-conclusions" />;
+      case 'mc-practice-rebuttal':
+        return <WorkbookPracticePoolCard slug="rebuttal-conclusions" />;
       default:
         return <PlaceholderBlock step={step} />;
     }
