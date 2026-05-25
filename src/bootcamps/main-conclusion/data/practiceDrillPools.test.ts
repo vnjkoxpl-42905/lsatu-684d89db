@@ -8,7 +8,7 @@ import { questionBank } from '@/lib/questionLoader';
 import { MAIN_CONCLUSION_PRACTICE_POOLS } from './practiceDrillPools';
 
 beforeAll(async () => {
-  await questionBank.initialize();
+  await questionBank.load();
 });
 
 for (const [slug, pool] of Object.entries(MAIN_CONCLUSION_PRACTICE_POOLS)) {
