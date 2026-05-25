@@ -33,6 +33,7 @@ export function useModuleProgress(_userId?: string): {
   markRouteVisited: (routeId: string) => Promise<void>;
   markLessonComplete: (lessonId: string, routeId: string) => Promise<void>;
   markDrillComplete: (drillId: string) => Promise<void>;
+  markMilestoneComplete: (milestoneId: string) => Promise<void>;
 } {
   const { user: authUser } = useAuth();
   const [progress, setProgress] = useState<ModuleProgress | null>(null);
@@ -54,6 +55,7 @@ export function useModuleProgress(_userId?: string): {
             unlocked_routes: INITIAL_UNLOCKED_ROUTES,
             completed_lessons: [],
             completed_drills: [],
+            completed_milestones: [],
             completed_capstones: [],
             updated_at: now(),
           });
@@ -61,10 +63,6 @@ export function useModuleProgress(_userId?: string): {
         }
         if (!cancelled) setProgress(existing);
       } catch (e) {
-        // Surface, don't silently swallow. This is local persistence (no
-        // Supabase), so the most common failure is IndexedDB quota or a
-        // disabled-storage browser. We log; the call site (Lesson page,
-        // LockedRoute) renders a fallback when progress stays null.
         console.error('[useModuleProgress] initial load failed', {
           userId,
           error: e,
@@ -170,8 +168,53 @@ export function useModuleProgress(_userId?: string): {
     [authUser, progress],
   );
 
+  const markMilestoneComplete = useCallback(
+    async (milestoneId: string) => {
+      if (!authUser) {
+        throw new Error('markMilestoneComplete called with no authenticated user');
+      }
+      const userId = authUser.id;
+      const progressId = progressIdFor(userId);
+      const persist = getPersistence(userId);
+      try {
+        const current = await persist.get<ModuleProgress>(TABLES.module_progress, progressId);
+        const base = current ?? progress;
+        if (!base) {
+          throw new Error('markMilestoneComplete: progress not yet loaded');
+        }
+        const completed = base.completed_milestones.includes(milestoneId)
+          ? base.completed_milestones
+          : [...base.completed_milestones, milestoneId];
+        const shape: ProgressShape = {
+          unlocked_routes: base.unlocked_routes,
+          completed_lessons: base.completed_lessons,
+          completed_drills: base.completed_drills,
+        };
+        // Check if milestone unlocks any routes. 
+        // We'll update the logic in unlockNext to handle milestones.
+        const additions = unlockNext(milestoneId, shape);
+        const merged: ModuleProgress = {
+          ...base,
+          completed_milestones: completed,
+          unlocked_routes: Array.from(new Set([...base.unlocked_routes, ...additions])),
+          updated_at: now(),
+        };
+        await persist.set(TABLES.module_progress, progressId, merged);
+        setProgress(merged);
+      } catch (e) {
+        console.error('[useModuleProgress] markMilestoneComplete failed', {
+          userId,
+          milestoneId,
+          error: e,
+        });
+        throw e;
+      }
+    },
+    [authUser, progress],
+  );
+
   // Suppress unused-newId warning (kept available for future writes).
   void newId;
 
-  return { progress, markRouteVisited, markLessonComplete, markDrillComplete };
+  return { progress, markRouteVisited, markLessonComplete, markDrillComplete, markMilestoneComplete };
 }

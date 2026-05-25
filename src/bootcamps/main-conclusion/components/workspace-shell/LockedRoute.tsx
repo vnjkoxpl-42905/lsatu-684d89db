@@ -32,7 +32,7 @@ export function LockedRoute({
     <LockedState
       blockedBy={req.blocker}
       unlockHint={req.hint}
-      gotoBlockerHref={`/bootcamp/intro-to-lr/drills/${req.blocker.replace('MC-DRL-', '')}`}
+      gotoBlockerHref={`/bootcamp/intro-to-lr/lessons#simulator-assessment`}
     />
   );
 }

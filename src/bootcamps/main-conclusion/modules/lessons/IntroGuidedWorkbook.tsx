@@ -4,6 +4,7 @@ import { INTRO_GUIDED_SEQUENCE } from "./introGuidedSequence";
 import { DRILL_3_1_STAGE_1, DRILL_3_2_STAGE_1, DRILL_3_3_STAGE_1, DRILL_3_4_STAGE_2, DRILL_3_5_QUESTIONS, DRILL_3_9_QUESTIONS, DRILL_3_8_PASSAGES, DRILL_3_7_QUESTIONS } from "@/bootcamps/main-conclusion/content/drills.source";
 import { MAIN_CONCLUSION_PRACTICE_POOLS } from "@/bootcamps/main-conclusion/data/practiceDrillPools";
 import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, RebuttalEmbeddedSlice, ChainMappingEmbeddedSlice, NestedClaimsEmbeddedSlice, ReadRestateEmbeddedSlice, PronounEmbeddedSlice } from "./EmbeddedDrillRunner";
+import { useModuleProgress } from "@/bootcamps/main-conclusion/hooks/useModuleProgress";
 import { Button } from "@/bootcamps/main-conclusion/components/primitives/Button";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 
@@ -86,6 +87,9 @@ const PlaceholderBlock = ({ step }: { step: typeof INTRO_GUIDED_SEQUENCE[0] }) =
 );
 
 export function IntroGuidedWorkbook() {
+  const { markMilestoneComplete, progress } = useModuleProgress();
+  const isReady = (progress as any).completed_milestones?.includes('MC-MIL-READY-FOR-SIMULATOR');
+
   const renderWorkbookContent = (step: typeof INTRO_GUIDED_SEQUENCE[0]) => {
     switch (step.id) {
       case 'argument-basics':
@@ -213,6 +217,24 @@ export function IntroGuidedWorkbook() {
         return <WorkbookPracticePoolCard slug="first-sentence-conclusions" />;
       case 'mc-practice-rebuttal':
         return <WorkbookPracticePoolCard slug="rebuttal-conclusions" />;
+      case 'simulator-assessment':
+        return (
+          <div className="py-12 border-t border-[rgba(26,26,26,0.1)] scroll-mt-24">
+            <h2 className="text-3xl font-serif italic mb-6">Ready for Simulator?</h2>
+            {!isReady ? (
+              <Button 
+                variant="primary" 
+                onClick={() => markMilestoneComplete('MC-MIL-READY-FOR-SIMULATOR')}
+              >
+                Mark Workbook Complete & Unlock Simulator
+              </Button>
+            ) : (
+              <div className="p-4 bg-green-50 text-green-800 rounded">
+                Workbook complete! Simulator is unlocked.
+              </div>
+            )}
+          </div>
+        );
       default:
         return <PlaceholderBlock step={step} />;
     }

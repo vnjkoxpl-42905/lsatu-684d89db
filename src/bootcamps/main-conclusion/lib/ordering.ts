@@ -7,27 +7,29 @@
 
 import type { DrillId, LessonId } from '@/bootcamps/main-conclusion/types/source-slots';
 
+export type MilestoneId = `MC-MIL-${string}`;
+
 export interface RouteRequirement {
-  blocker: DrillId | LessonId;
+  blocker: DrillId | LessonId | MilestoneId;
   hint: string;
 }
 
 export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   '/simulator': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 (Rebuttal vs First-Sentence Stage-Gate) to unlock the Question Simulator.',
+    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
+    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
   },
   '/simulator/bank': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
+    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
   },
   '/simulator/trap-master': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
+    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
   },
   '/simulator/hard-mode': {
-    blocker: 'MC-DRL-3.4',
-    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
+    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
+    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
   },
 };
 
@@ -57,12 +59,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   // M3 — every drill
   '/drills',
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
-  // M4 — Simulator (still passes through LockedRoute, which is bypassed in preview)
-  '/simulator',
-  '/simulator/bank',
-  '/simulator/trap-master',
-  '/simulator/hard-mode',
-  '/simulator/answer-key-views',
   // M5 — Hard Sentences
   '/hard-sentences',
   '/hard-sentences/capstone',
@@ -95,8 +91,8 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 13) additions.push(`/lessons/1.${next}`);
   }
-  // Drill 3.4 → unlocks Simulator.
-  if (currentRouteId === '/drills/3.4') {
+  // Milestone: workbook readiness unlocks Simulator.
+  if (currentRouteId === 'MC-MIL-READY-FOR-SIMULATOR') {
     additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
   }
   return additions;
