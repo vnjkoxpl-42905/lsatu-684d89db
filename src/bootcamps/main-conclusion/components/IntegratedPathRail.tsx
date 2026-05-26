@@ -10,10 +10,11 @@ import {
 } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 export function IntegratedPathRail() {
-  const { pathname } = useLocation();
-  const currentAction = getCurrentAction(pathname);
-  const currentIndex = getCurrentActionIndex(pathname);
-  const nextAction = getNextAction(pathname);
+  const { pathname, hash } = useLocation();
+  const currentPath = `${pathname}${hash}`;
+  const currentAction = getCurrentAction(currentPath);
+  const currentIndex = getCurrentActionIndex(currentPath);
+  const nextAction = getNextAction(currentPath);
   const totalSteps = INTEGRATED_PATH.length;
 
   return (

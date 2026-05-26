@@ -17,7 +17,7 @@ interface Props {
 
 export function ToolCard({ tool }: Props): JSX.Element {
   return (
-    <section className="space-y-6">
+    <section id={tool.slug} className="scroll-mt-24 space-y-6">
       <header>
         <div className="font-mc-mono text-[10px] uppercase tracking-[0.22em] text-mc-accent inline-flex items-center gap-2">
           <span

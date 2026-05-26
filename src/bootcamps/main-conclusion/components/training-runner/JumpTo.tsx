@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
-  Library,
   Dumbbell,
-  Target,
   ScanText,
   LineChart,
   type LucideIcon,
@@ -20,9 +18,7 @@ interface Pill {
 
 const PILLS: Pill[] = [
   { label: 'Lessons', to: `${BC}/lessons`, Icon: BookOpen },
-  { label: 'Reference', to: `${BC}/reference`, Icon: Library },
   { label: 'Drills', to: `${BC}/drills`, Icon: Dumbbell },
-  { label: 'Simulator', to: `${BC}/simulator`, Icon: Target },
   { label: 'Hard Sentences', to: `${BC}/hard-sentences`, Icon: ScanText },
   { label: 'Diagnostics', to: `${BC}/diagnostics`, Icon: LineChart },
 ];

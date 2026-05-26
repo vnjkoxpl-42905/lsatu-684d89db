@@ -1,9 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 import {
   BookOpen,
-  Library,
   Dumbbell,
-  Target,
   ScanText,
   LineChart,
   ArrowLeft,
@@ -12,7 +10,6 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
-import { INTRO_GUIDED_SEQUENCE } from '@/bootcamps/main-conclusion/modules/lessons/introGuidedSequence';
 
 interface NavItem {
   label: string;
@@ -36,14 +33,12 @@ const navSections: NavSection[] = [
     items: [
       { label: 'Practice Drills', to: '/bootcamp/intro-to-lr/practice-drills', Icon: Sparkles },
       { label: 'Drills', to: '/bootcamp/intro-to-lr/drills', Icon: Dumbbell },
-      { label: 'Simulator', to: '/bootcamp/intro-to-lr/simulator', Icon: Target },
     ],
     collapsed: false,
   },
   {
     title: 'Tools',
     items: [
-      { label: 'Reference', to: '/bootcamp/intro-to-lr/reference', Icon: Library },
       { label: 'Hard Sentences', to: '/bootcamp/intro-to-lr/hard-sentences', Icon: ScanText },
       { label: 'Diagnostics', to: '/bootcamp/intro-to-lr/diagnostics', Icon: LineChart },
     ],

@@ -104,7 +104,13 @@ function RenderBlock({ block }: { block: Block }) {
 
 export function ReferenceSection() {
   const path = window.location.pathname;
-  const section = (refs as RefSection[]).find((s) => s.route === path);
+  const bootcampRelativePath = path.replace(/^\/bootcamp\/intro-to-lr/, '');
+  const section = (refs as RefSection[]).find((s) => {
+    const sectionPath = s.route.startsWith('/bootcamp/intro-to-lr')
+      ? s.route.replace(/^\/bootcamp\/intro-to-lr/, '')
+      : s.route;
+    return sectionPath === bootcampRelativePath;
+  });
 
   if (!section) {
     return (

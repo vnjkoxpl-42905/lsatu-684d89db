@@ -127,20 +127,118 @@ export function BootcampRoutes() {
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
         <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
         <Route path="lessons/legacy/:lessonId" element={<Lesson />} />
-        <Route path="reference" element={<ReferenceIndex />} />
-        <Route path="reference/indicators" element={<IndicatorVault />} />
-        <Route path="reference/2-part-check" element={<ReferenceSection />} />
-        <Route path="reference/fabs" element={<ReferenceSection />} />
-        <Route path="reference/stimulus-tendencies" element={<ReferenceSection />} />
-        <Route path="reference/conclusion-types" element={<ReferenceSection />} />
-        <Route path="reference/rebuttal-structure" element={<ReferenceSection />} />
-        <Route path="reference/three-traps" element={<ReferenceSection />} />
-        <Route path="reference/pronoun-library" element={<ReferenceSection />} />
-        <Route path="reference/concession-decoder" element={<ReferenceSection />} />
-        <Route path="reference/quick-card" element={<ReferenceSection />} />
-        <Route path="reference/companion-mode" element={<ReferenceSection />} />
-        <Route path="reference/named-tools" element={<ReferenceSection />} />
-        <Route path="reference/named-tools/:toolId" element={<NamedToolEntry />} />
+        <Route
+          path="reference"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceIndex />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/indicators"
+          element={
+            <IntroPathLearningLayout>
+              <IndicatorVault />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/2-part-check"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/fabs"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/stimulus-tendencies"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/conclusion-types"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/rebuttal-structure"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/three-traps"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/pronoun-library"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/concession-decoder"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/quick-card"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/companion-mode"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/named-tools"
+          element={
+            <IntroPathLearningLayout>
+              <ReferenceSection />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/named-tools/:toolId"
+          element={
+            <IntroPathLearningLayout>
+              <NamedToolEntry />
+            </IntroPathLearningLayout>
+          }
+        />
         <Route path="drills" element={<DrillsIndex />} />
         <Route path="drills/:drillId" element={<DrillShell />} />
         <Route
