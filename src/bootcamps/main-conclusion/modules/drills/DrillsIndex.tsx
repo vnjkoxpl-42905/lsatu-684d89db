@@ -63,15 +63,6 @@ export const DRILLS: DrillRow[] = [
     gates_simulator: true,
   },
   {
-    id: 'MC-DRL-3.5',
-    number: '3.5',
-    title: 'Chain Mapping',
-    route: '/drills/3.5',
-    skill: 'Argument Hierarchy',
-    interaction: 'role tagging',
-    why: 'See how premises climb through intermediate conclusions into the main conclusion.',
-  },
-  {
     id: 'MC-DRL-3.7',
     number: '3.7',
     title: 'Pronoun Replacement',
@@ -79,24 +70,6 @@ export const DRILLS: DrillRow[] = [
     skill: 'Translation Lab',
     interaction: 'rewrite',
     why: 'Replace vague referential language before you paraphrase the conclusion.',
-  },
-  {
-    id: 'MC-DRL-3.8',
-    number: '3.8',
-    title: 'Read, Cover, Restate',
-    route: '/drills/3.8',
-    skill: 'Translation Lab',
-    interaction: 'cover + restate',
-    why: 'Hold the author’s exact claim in memory and check for drift.',
-  },
-  {
-    id: 'MC-DRL-3.9',
-    number: '3.9',
-    title: 'Nested Claims: Advanced',
-    route: '/drills/3.9',
-    skill: 'Argument Hierarchy',
-    interaction: 'hierarchy tagging',
-    why: 'The advanced version of chain mapping: distinguish main and intermediate claims.',
   },
 ];
 
@@ -117,14 +90,9 @@ const GROUPS = [
     drillIds: ['MC-DRL-3.4'],
   },
   {
-    title: 'Argument Hierarchy',
-    description: 'Premise, intermediate conclusion, main conclusion.',
-    drillIds: ['MC-DRL-3.5', 'MC-DRL-3.9'],
-  },
-  {
     title: 'Translation Lab',
     description: 'Turn the argument into a precise standalone claim.',
-    drillIds: ['MC-DRL-3.7', 'MC-DRL-3.8'],
+    drillIds: ['MC-DRL-3.7'],
   },
 ];
 

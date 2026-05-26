@@ -29,15 +29,11 @@ export const INTEGRATED_PATH: PathAction[] = [
   { id: 'rebuttal-conclusions', type: 'drill', title: 'Rebuttal Conclusions', route: '/bootcamp/intro-to-lr/drills/3.4', description: 'Opposing view structure', phase: 'Opposing View and Rebuttal' },
   { id: 'rebuttal-practice', type: 'practice', title: 'Rebuttal Main Conclusion Practice', route: '/bootcamp/intro-to-lr/practice-drills/rebuttal-conclusions', description: 'Applied practice set', phase: 'Opposing View and Rebuttal' },
   { id: 'layered-arguments', type: 'note', title: 'Layered Arguments', route: '/bootcamp/intro-to-lr/lessons/notes/layered-arguments', description: 'Premise stacks', phase: 'Layered Arguments' },
-  { id: 'chain-mapping', type: 'drill', title: 'Chain Mapping', route: '/bootcamp/intro-to-lr/drills/3.5', description: 'Logical chains', phase: 'Layered Arguments' },
-  { id: 'nested-claims', type: 'drill', title: 'Nested Claims: Advanced', route: '/bootcamp/intro-to-lr/drills/3.9', description: 'Nested arguments', phase: 'Layered Arguments' },
   { id: 'matching-the-answer', type: 'note', title: 'Matching the Answer', route: '/bootcamp/intro-to-lr/lessons/notes/matching-the-answer', description: 'Matching strategy', phase: 'Matching the Answer' },
   { id: 'pronoun-library', type: 'reference', title: 'Pronoun Library', route: '/bootcamp/intro-to-lr/reference/pronoun-library', description: 'Replace vague references', phase: 'Matching the Answer' },
   { id: 'pronoun-replacement-drill', type: 'drill', title: 'Pronoun Replacement Drill', route: '/bootcamp/intro-to-lr/drills/3.7', description: 'Vague reference drill', phase: 'Matching the Answer' },
-  { id: 'read-cover-restate', type: 'checkpoint', title: 'Read, Cover, Restate', route: '/bootcamp/intro-to-lr/drills/3.8', description: 'Final translation checkpoint', phase: 'Matching the Answer' },
   { id: 'simulator-bank', type: 'capstone', title: 'Question Bank', route: '/bootcamp/intro-to-lr/simulator/bank', description: 'Apply the full framework', phase: 'Final Application' },
   { id: 'trap-master', type: 'capstone', title: 'Trap Master', route: '/bootcamp/intro-to-lr/simulator/trap-master', description: 'Diagnose recurring traps', phase: 'Final Application' },
-  { id: 'hard-mode', type: 'capstone', title: 'Hard Mode', route: '/bootcamp/intro-to-lr/simulator/hard-mode', description: 'Remediate hardest items', phase: 'Final Application' },
 ];
 
 export const INTRO_LR_PATH = INTEGRATED_PATH;

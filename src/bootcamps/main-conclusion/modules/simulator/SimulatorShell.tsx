@@ -49,12 +49,6 @@ export function SimulatorOverview() {
       desc: 'Seven trap traits with deep-dive pages.',
       Icon: Bug,
     },
-    {
-      to: '/bootcamp/intro-to-lr/simulator/hard-mode',
-      title: 'Hard mode',
-      desc: 'Five hardest questions per your performance.',
-      Icon: Flame,
-    },
   ];
   return (
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8">
@@ -285,10 +279,9 @@ export function HardMode() {
     <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto">
       <PageHeader eyebrow="Simulator" title="Hard mode" compact />
       <EmptyState
-        title="Hard mode opens after the bank"
-        body="Once you have attempted the question bank, your five hardest items will surface here for a focused re-run."
+        title="Drill Archived"
+        body="Hard Mode is currently undergoing a quality review and is unlinked from the main path."
         surfaceId="simulator/hard-mode"
-        icon={<Flame className="h-5 w-5" strokeWidth={2.2} aria-hidden="true" />}
       />
     </article>
   );

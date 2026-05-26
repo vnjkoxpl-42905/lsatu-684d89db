@@ -30,14 +30,11 @@ export function DrillShell() {
       content = <Drill3_4 />;
       break;
     case '3.5':
-      content = <Drill3_5 />;
-      break;
-    case '3.6':
       content = (
         <EmptyState
           title="Drill Archived"
           body="This drill is currently undergoing a quality review and is unlinked from the main path."
-          surfaceId="drill/3.6"
+          surfaceId="drill/3.5"
         />
       );
       break;
@@ -45,10 +42,22 @@ export function DrillShell() {
       content = <Drill3_7 />;
       break;
     case '3.8':
-      content = <Drill3_8 />;
+      content = (
+        <EmptyState
+          title="Drill Archived"
+          body="This drill is currently undergoing a quality review and is unlinked from the main path."
+          surfaceId="drill/3.8"
+        />
+      );
       break;
     case '3.9':
-      content = <Drill3_9 />;
+      content = (
+        <EmptyState
+          title="Drill Archived"
+          body="This drill is currently undergoing a quality review and is unlinked from the main path."
+          surfaceId="drill/3.9"
+        />
+      );
       break;
     default:
       content = (
