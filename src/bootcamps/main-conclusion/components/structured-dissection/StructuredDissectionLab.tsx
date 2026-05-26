@@ -30,7 +30,7 @@ export function StructuredDissectionLab() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const currentDrill = drills[currentIndex];
-  const step = revealed ? 4 : (selectedPartId === currentDrill.correctConclusionPartId ? (selectedFamily ? 3 : 2) : 1);
+  const step = revealed ? 4 : (selectedPartId ? (selectedFamily ? 3 : 2) : 1);
 
   const handleStart = () => setStarted(true);
 

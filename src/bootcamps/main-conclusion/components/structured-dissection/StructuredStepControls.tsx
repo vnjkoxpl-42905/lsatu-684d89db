@@ -32,7 +32,7 @@ export function StructuredStepControls({
             </p>
           </div>
           <div className="font-mc-mono text-mono text-ink-faint text-xs">
-            Step {step} of 3
+            {step === 4 ? 'Review' : `Step ${step} of 3`}
           </div>
         </div>
       </Card>

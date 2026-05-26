@@ -273,7 +273,7 @@ export function BootcampRoutes() {
           element={
             <LockedRoute routeId="/simulator/bank">
               <IntroPathLearningLayout>
-                <QuestionBank />
+                <StructuredDissectionLab />
               </IntroPathLearningLayout>
             </LockedRoute>
           }
