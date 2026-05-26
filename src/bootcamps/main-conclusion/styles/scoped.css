@@ -243,6 +243,199 @@
 }
 .mc-bootcamp .skip-link:focus { left: var(--s-4); top: var(--s-4); }
 
+.mc-bootcamp .mc-indicator-core-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.mc-bootcamp .mc-indicator-section {
+  border-radius: 24px;
+  border: 1px solid rgb(var(--border) / 0.08);
+  background: rgb(255 255 255 / 0.78);
+  padding: 30px 28px 28px;
+  box-shadow: 0 14px 36px rgb(26 26 26 / 0.05);
+}
+
+.mc-bootcamp .mc-indicator-section-kicker {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: rgb(var(--accent-deep));
+  margin-bottom: 18px;
+}
+
+.mc-bootcamp .mc-indicator-section-title {
+  margin: 0 0 22px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 3.3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.mc-bootcamp .mc-indicator-section-title-premise {
+  color: rgb(var(--role-premise));
+}
+
+.mc-bootcamp .mc-indicator-section-title-conclusion {
+  color: rgb(var(--role-conclusion));
+}
+
+.mc-bootcamp .mc-indicator-section-body {
+  margin: 0 0 24px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.72;
+  color: rgb(var(--ink-soft));
+}
+
+.mc-bootcamp .mc-indicator-section-rule {
+  margin: 0 0 22px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.68;
+  color: rgb(var(--ink-soft));
+}
+
+.mc-bootcamp .mc-indicator-section-rule strong {
+  color: rgb(var(--ink));
+  font-weight: 800;
+}
+
+.mc-bootcamp .mc-indicator-slabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.mc-bootcamp .mc-indicator-slab {
+  min-height: 108px;
+  border-radius: 22px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 14px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.42;
+  border: 2px solid currentColor;
+  background: rgb(255 255 255 / 0.74);
+}
+
+.mc-bootcamp .mc-indicator-slab-premise {
+  color: rgb(var(--role-premise));
+  background: rgb(var(--role-premise) / 0.10);
+}
+
+.mc-bootcamp .mc-indicator-slab-conclusion {
+  color: rgb(var(--role-conclusion));
+  background: rgb(var(--role-conclusion) / 0.10);
+}
+
+.mc-bootcamp .mc-indicator-slab-are-not {
+  color: rgb(209 93 119);
+  background: rgb(209 93 119 / 0.08);
+}
+
+.mc-bootcamp .mc-indicator-slab-label {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  padding-top: 1px;
+}
+
+.mc-bootcamp .mc-indicator-slab-copy {
+  display: block;
+  max-width: 24ch;
+  font-weight: 500;
+  line-height: 1.36;
+  text-wrap: balance;
+}
+
+.mc-bootcamp .mc-indicator-word-group {
+  border-radius: 22px;
+  border: 1px solid rgb(var(--border) / 0.08);
+  background: rgb(255 255 255 / 0.6);
+  padding: 18px;
+}
+
+.mc-bootcamp .mc-indicator-word-group-title {
+  margin: 0 0 14px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.mc-bootcamp .mc-indicator-word-group-title-premise {
+  color: rgb(var(--role-premise));
+}
+
+.mc-bootcamp .mc-indicator-word-group-title-conclusion {
+  color: rgb(var(--role-conclusion));
+}
+
+.mc-bootcamp .mc-indicator-word-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mc-bootcamp .mc-indicator-word-pill {
+  border-radius: 14px;
+  background: #151412;
+  padding: 16px 12px;
+  text-align: center;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+.mc-bootcamp .mc-indicator-word-pill-premise {
+  color: rgb(86 178 255);
+}
+
+.mc-bootcamp .mc-indicator-word-pill-conclusion {
+  color: rgb(34 203 146);
+}
+
+@media (max-width: 767px) {
+  .mc-bootcamp .mc-indicator-section {
+    padding: 24px 18px 22px;
+  }
+
+  .mc-bootcamp .mc-indicator-section-body,
+  .mc-bootcamp .mc-indicator-section-rule {
+    font-size: 16px;
+  }
+
+  .mc-bootcamp .mc-indicator-slabs,
+  .mc-bootcamp .mc-indicator-word-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mc-bootcamp .mc-indicator-slab {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .mc-bootcamp .mc-indicator-slab-copy {
+    max-width: none;
+  }
+}
+
 /* ── Print: Quick Reference Card ──────────────────────────────────────── */
 @media print {
   @page { size: letter; margin: 0.4in; }
