@@ -96,9 +96,14 @@ export function IntroGuidedWorkbook() {
       case 'argument-basics':
         return (
           <WorkbookNoteBlock title="Argument Anatomy">
-            <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              An argument is a claim plus support. The conclusion is what the author wants to prove. The premises are the reasons offered to prove it. The core question is structural: <strong>is this sentence proving something, or is something proving this sentence?</strong>
-            </p>
+            <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed">
+                Every LR question has three parts: the stimulus, the question stem, and the answer choices. Of those three, <strong>the stimulus matters most.</strong>
+              </p>
+              <p className="text-xl leading-relaxed">
+                An argument is a claim plus support. The conclusion is what the author wants to prove. The premises are the reasons offered to prove it. The core question is structural: <strong>is this sentence proving something, or is something proving this sentence?</strong>
+              </p>
+            </div>
           </WorkbookNoteBlock>
         );
       case 'premise-vs-conclusion':
@@ -109,9 +114,9 @@ export function IntroGuidedWorkbook() {
                 Start small. Label the reasons. Then label the claim those reasons are trying to prove.
               </p>
               <div className="border border-[rgba(26,26,26,0.1)] bg-white p-6 space-y-3">
+                <div><strong>Conclusion:</strong> The city should expand library funding.</div>
                 <div><strong>Premise:</strong> The library stays full every afternoon.</div>
                 <div><strong>Premise:</strong> Students use it for tutoring, internet access, and after-school study.</div>
-                <div><strong>Conclusion:</strong> The city should expand library funding.</div>
               </div>
             </div>
           </WorkbookNoteBlock>
