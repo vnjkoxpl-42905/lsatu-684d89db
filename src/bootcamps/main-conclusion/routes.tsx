@@ -33,6 +33,7 @@ import {
   TrapMaster,
   HardMode,
 } from '@/bootcamps/main-conclusion/modules/simulator/SimulatorShell';
+import { StructuredDissectionLab } from '@/bootcamps/main-conclusion/components/structured-dissection/StructuredDissectionLab';
 import { TraitDeepDive } from '@/bootcamps/main-conclusion/components/trap-master/TraitDeepDive';
 import { HardSentencesIndex, HardSentenceSection } from '@/bootcamps/main-conclusion/modules/hard-sentences/HardSentencesIndex';
 import { DiagnosticsIndex } from '@/bootcamps/main-conclusion/modules/diagnostics/DiagnosticsIndex';
