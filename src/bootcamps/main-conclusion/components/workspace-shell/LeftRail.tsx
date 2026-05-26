@@ -32,7 +32,7 @@ const navSections: NavSection[] = [
     title: 'Practice',
     items: [
       { label: 'Practice Drills', to: '/bootcamp/intro-to-lr/practice-drills', Icon: Sparkles },
-      { label: 'Drills', to: '/bootcamp/intro-to-lr/drills', Icon: Dumbbell },
+      { label: 'Drill Lab', to: '/bootcamp/intro-to-lr/drills', Icon: Dumbbell },
     ],
     collapsed: false,
   },

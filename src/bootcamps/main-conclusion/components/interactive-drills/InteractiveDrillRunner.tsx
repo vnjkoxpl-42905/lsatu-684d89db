@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, EyeOff } from 'lucide-react';
+import { ArrowRight, Check, EyeOff } from 'lucide-react';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
@@ -53,9 +53,10 @@ export function InteractiveDrillRunner({
     totalQuestions: 1,
   };
 
-  const [protocolOpen, setProtocolOpen] = useState(true);
+  const [protocolOpen, setProtocolOpen] = useState(() => runnerState.questionIndex === 0);
   const [selectedPartId, setSelectedPartId] = useState<string | null>(null);
   const [secondaryPartId, setSecondaryPartId] = useState<string | null>(null);
+  const [premiseAcknowledged, setPremiseAcknowledged] = useState<Record<'p1' | 'p2', boolean>>({ p1: false, p2: false });
   const [selectedRoleByPart, setSelectedRoleByPart] = useState<Record<string, PartRole | null>>({});
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedFamily, setSelectedFamily] = useState<'First-sentence' | 'Rebuttal' | null>(null);
@@ -73,9 +74,9 @@ export function InteractiveDrillRunner({
   const [selfChecks, setSelfChecks] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    setProtocolOpen(true);
     setSelectedPartId(null);
     setSecondaryPartId(null);
+    setPremiseAcknowledged({ p1: false, p2: false });
     setSelectedRoleByPart({});
     setSelectedCategory(null);
     setSelectedFamily(null);
@@ -401,19 +402,58 @@ export function InteractiveDrillRunner({
   function renderConclusionConstruction() {
     const q = item.payload as DesignConclusionQuestion;
     const evaluated = validClass && invalidClass;
+    const reveal = item.constructionReveal;
+    const premiseReady = premiseAcknowledged.p1 && premiseAcknowledged.p2;
+    const validTone = classificationTone(validClass);
+    const invalidTone = classificationTone(invalidClass);
     return (
       <div className="space-y-4">
-        <Card variant="surface">
-          <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Premise pair</p>
-          <p className="mt-3 font-mc-serif text-body-prose text-ink"><Chip tone="premise">P1</Chip> {q.premise_pair.p1}</p>
-          <p className="mt-2 font-mc-serif text-body-prose text-ink"><Chip tone="premise">P2</Chip> {q.premise_pair.p2}</p>
+        <Card variant="surface" className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Premise workspace</p>
+              <p className="mt-1 font-mc-serif text-body text-ink-soft">Mark what each premise contributes before you write.</p>
+            </div>
+            <Badge tone={premiseReady ? 'success' : 'accent'}>
+              {premiseReady ? 'premises locked' : 'extract first'}
+            </Badge>
+          </div>
+
+          <div className="grid gap-3 desktop:grid-cols-2">
+            <PremiseContributionCard
+              label="P1"
+              premise={q.premise_pair.p1}
+              contribution={reveal?.p1Contribution ?? 'Identify the rule, condition, or general claim this premise gives you.'}
+              checked={premiseAcknowledged.p1}
+              disabled={!!evaluated}
+              onToggle={() => setPremiseAcknowledged((prev) => ({ ...prev, p1: !prev.p1 }))}
+            />
+            <PremiseContributionCard
+              label="P2"
+              premise={q.premise_pair.p2}
+              contribution={reveal?.p2Contribution ?? 'Identify how this premise connects the subject to the rule or first premise.'}
+              checked={premiseAcknowledged.p2}
+              disabled={!!evaluated}
+              onToggle={() => setPremiseAcknowledged((prev) => ({ ...prev, p2: !prev.p2 }))}
+            />
+          </div>
         </Card>
-        <FreeResponsePanel label="One valid conclusion" value={validInput} onChange={setValidInput} placeholder="Write the conclusion that follows from both premises." disabled={!!evaluated} />
-        <FreeResponsePanel label="One tempting invalid conclusion" value={invalidInput} onChange={setInvalidInput} placeholder="Write the attractive wrong move." disabled={!!evaluated} />
+
+        <div className={cn('grid gap-3 transition-opacity desktop:grid-cols-2', !premiseReady && 'opacity-55')}>
+          <FreeResponsePanel label="Forced valid conclusion" value={validInput} onChange={setValidInput} placeholder="What must follow from P1 + P2?" disabled={!premiseReady || !!evaluated} />
+          <FreeResponsePanel label="Tempting invalid conclusion" value={invalidInput} onChange={setInvalidInput} placeholder="Write the trap move a rushed reader might make." disabled={!premiseReady || !!evaluated} />
+        </div>
+
+        {!premiseReady && !evaluated ? (
+          <HintPanel title="Build from the premises">
+            Click both premise-contribution checks first. This keeps the task mechanical: P1 gives the rule, P2 places the subject, then the conclusion is forced.
+          </HintPanel>
+        ) : null}
+
         {!evaluated ? (
           <div className="flex justify-end">
             <Button
-              disabled={!validInput.trim() || !invalidInput.trim()}
+              disabled={!premiseReady || !validInput.trim() || !invalidInput.trim()}
               onClick={() => {
                 const valid = evaluateDesignedConclusion({ premise_pair: q.premise_pair, student_text: validInput, valid_model: q.valid_model, invalid_model: q.invalid_model }).classification;
                 const invalid = evaluateDesignedConclusion({ premise_pair: q.premise_pair, student_text: invalidInput, valid_model: q.valid_model, invalid_model: q.invalid_model }).classification;
@@ -422,18 +462,41 @@ export function InteractiveDrillRunner({
                 complete(true, 'constructed');
               }}
             >
-              Reveal models
+              Classify and reveal
             </Button>
           </div>
         ) : (
-          <Card variant="elev" className="space-y-3">
-            <Badge tone="success">model reveal</Badge>
-            <p className="font-mc-serif text-body-prose text-ink"><strong>Valid:</strong> {q.valid_model}</p>
-            <p className="font-mc-serif text-body text-ink-soft">{q.diagnostic_messages.valid_match}</p>
-            <p className="font-mc-serif text-body-prose text-ink"><strong>Invalid but tempting:</strong> {q.invalid_model}</p>
-            <p className="font-mc-serif text-body text-ink-soft">{q.diagnostic_messages.invalid_but_interesting}</p>
-            {onComplete && !onAnswer ? <Button onClick={() => onComplete(true)}>{completeLabel}</Button> : null}
-          </Card>
+          <div className="space-y-4">
+            <Card variant="elev" className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone="success">model reveal</Badge>
+                <Badge tone={validTone}>valid attempt: {formatClassification(validClass)}</Badge>
+                <Badge tone={invalidTone}>trap attempt: {formatClassification(invalidClass)}</Badge>
+              </div>
+              <div className="grid gap-3">
+                <RevealRow label="P1 contribution" text={reveal?.p1Contribution ?? q.premise_pair.p1} />
+                <RevealRow label="P2 contribution" text={reveal?.p2Contribution ?? q.premise_pair.p2} />
+                <RevealRow label="Forced conclusion" text={reveal?.forcedConclusion ?? q.valid_model} emphasis />
+                <RevealRow label="Tempting wrong move" text={reveal?.temptingWrongMove ?? q.invalid_model} />
+                <RevealRow label="Why the wrong move fails" text={reveal?.wrongMoveFailure ?? q.diagnostic_messages.invalid_but_interesting} />
+              </div>
+            </Card>
+            <div className="grid gap-3 desktop:grid-cols-2">
+              <HintPanel tone="success" title="Why the valid answer follows">
+                {q.diagnostic_messages.valid_match}
+              </HintPanel>
+              <HintPanel tone="error" title="Why the tempting answer fails">
+                {q.diagnostic_messages.invalid_but_interesting}
+              </HintPanel>
+            </div>
+            {onComplete && !onAnswer ? (
+              <div className="flex justify-end">
+                <Button onClick={() => onComplete(true)} rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  {completeLabel}
+                </Button>
+              </div>
+            ) : null}
+          </div>
         )}
       </div>
     );
@@ -594,4 +657,76 @@ function rationaleText(payload: unknown): string | undefined {
   return typeof payload === 'object' && payload !== null && 'rationale' in payload
     ? String((payload as { rationale?: string }).rationale)
     : undefined;
+}
+
+function PremiseContributionCard({
+  label,
+  premise,
+  contribution,
+  checked,
+  disabled,
+  onToggle,
+}: {
+  label: string;
+  premise: string;
+  contribution: string;
+  checked: boolean;
+  disabled: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onToggle}
+      className={cn(
+        'rounded-[6px] border p-4 text-left transition-[background,border-color,box-shadow,transform] duration-150 ease-eased',
+        checked
+          ? 'border-[rgb(var(--success)/0.34)] bg-[rgb(var(--success)/0.07)] shadow-[var(--shadow-1)]'
+          : 'border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface-elev)/0.52)] hover:-translate-y-[1px] hover:border-[rgb(var(--accent)/0.26)]',
+        disabled && 'pointer-events-none opacity-80',
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <Chip tone="premise">{label}</Chip>
+        <span
+          className={cn(
+            'inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border',
+            checked
+              ? 'border-[rgb(var(--success)/0.45)] bg-[rgb(var(--success)/0.16)] text-[rgb(var(--success))]'
+              : 'border-[rgb(var(--border)/0.18)] text-transparent',
+          )}
+          aria-hidden="true"
+        >
+          <Check className="h-3.5 w-3.5" />
+        </span>
+      </div>
+      <p className="mt-3 font-mc-serif text-body-prose leading-relaxed text-ink">{premise}</p>
+      <p className="mt-3 border-t border-[rgb(var(--border)/0.10)] pt-3 font-mc-serif text-small leading-relaxed text-ink-soft">
+        {contribution}
+      </p>
+    </button>
+  );
+}
+
+function RevealRow({ label, text, emphasis = false }: { label: string; text: string; emphasis?: boolean }) {
+  return (
+    <div className={cn('rounded-[6px] border border-[rgb(var(--border)/0.10)] p-3', emphasis ? 'bg-[rgb(var(--accent)/0.08)]' : 'bg-[rgb(var(--surface)/0.62)]')}>
+      <p className="font-mc-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">{label}</p>
+      <p className={cn('mt-1 font-mc-serif leading-relaxed text-ink', emphasis ? 'text-body-prose font-semibold' : 'text-body')}>
+        {text}
+      </p>
+    </div>
+  );
+}
+
+function classificationTone(classification: Classification | null): 'neutral' | 'success' | 'warn' | 'error' | 'accent' {
+  if (classification === 'Valid') return 'success';
+  if (classification === 'Invalid but interesting') return 'warn';
+  if (classification === 'Misses the premises entirely') return 'error';
+  return 'neutral';
+}
+
+function formatClassification(classification: Classification | null): string {
+  return classification ?? 'Not classified';
 }

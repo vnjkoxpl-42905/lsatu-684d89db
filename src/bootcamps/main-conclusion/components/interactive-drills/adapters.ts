@@ -8,6 +8,49 @@ import type {
 } from '@/bootcamps/main-conclusion/content/drills.source';
 import type { InteractiveDrillItem, PartRole, RevealEntry, StimulusPart } from './types';
 
+const EXPLICIT_ROLE_SEQUENCES: Record<string, PartRole[]> = {
+  'D33-S1-Q1': ['conclusion', 'support'],
+  'D33-S1-Q2': ['opposing', 'conclusion'],
+  'D33-S1-Q3': ['conclusion', 'support'],
+  'D33-S1-Q4': ['support', 'conclusion'],
+  'D33-S1-Q5': ['conclusion', 'support'],
+  'D33-S2-Q1': ['background', 'support', 'conclusion'],
+  'D33-S2-Q2': ['opposing', 'conclusion'],
+  'D33-S2-Q3': ['support', 'conclusion'],
+  'D33-S2-Q4': ['conclusion', 'support'],
+  'D33-S2-Q5': ['concession', 'support', 'conclusion'],
+  'D33-S3-Q1': ['concession', 'conclusion'],
+  'D33-S3-Q2': ['conclusion', 'support'],
+  'D33-S3-Q3': ['concession', 'support', 'conclusion'],
+  'D33-S3-Q4': ['conclusion', 'support'],
+  'D33-S3-Q5': ['concession', 'conclusion'],
+  'D33-S4-Q1': ['conclusion', 'support'],
+  'D33-S4-Q2': ['support', 'conclusion'],
+  'D33-S4-Q3': ['opposing', 'conclusion'],
+  'D33-S4-Q4': ['conclusion', 'support'],
+  'D33-S4-Q5': ['opposing', 'conclusion'],
+  'D34-S1-Q1': ['conclusion', 'support'],
+  'D34-S1-Q2': ['opposing', 'conclusion', 'support'],
+  'D34-S1-Q3': ['conclusion', 'support'],
+  'D34-S1-Q4': ['opposing', 'conclusion', 'support'],
+  'D34-S1-Q5': ['conclusion', 'support'],
+  'D34-S2-Q1': ['opposing', 'conclusion'],
+  'D34-S2-Q2': ['concession', 'conclusion'],
+  'D34-S2-Q3': ['conclusion', 'support'],
+  'D34-S2-Q4': ['opposing', 'conclusion', 'support'],
+  'D34-S2-Q5': ['opposing', 'conclusion'],
+  'D34-S3-Q1': ['conclusion', 'opposing'],
+  'D34-S3-Q2': ['opposing', 'conclusion', 'support'],
+  'D34-S3-Q3': ['conclusion', 'support'],
+  'D34-S3-Q4': ['concession', 'conclusion'],
+  'D34-S3-Q5': ['opposing', 'conclusion'],
+  'D34-S4-Q1': ['conclusion', 'support', 'support'],
+  'D34-S4-Q2': ['opposing', 'conclusion'],
+  'D34-S4-Q3': ['opposing', 'support', 'conclusion'],
+  'D34-S4-Q4': ['conclusion', 'support', 'support', 'support'],
+  'D34-S4-Q5': ['conclusion', 'concession', 'support'],
+};
+
 export function splitStimulusIntoParts(stimulus: string, prefix: string): StimulusPart[] {
   return stimulus
     .split(/(?<=[.!?])\s+/)
@@ -94,11 +137,15 @@ export function adaptXRayQuestion(q: XRayQuestion): InteractiveDrillItem {
 }
 
 export function adaptFirstSentenceQuestion(q: FirstSentenceQuestion): InteractiveDrillItem {
+  const roleSequence = EXPLICIT_ROLE_SEQUENCES[q.id];
   const parts = splitStimulusIntoParts(q.stimulus, q.id).map((part, index) => {
-    const isConclusion = q.is_first_sentence_conclusion ? index === 0 : conclusionIndexFromRationale(q.rationale, index);
+    const explicitRole = roleSequence?.[index];
+    const isConclusion = explicitRole
+      ? explicitRole === 'conclusion' || explicitRole === 'main'
+      : q.is_first_sentence_conclusion ? index === 0 : conclusionIndexFromRationale(q.rationale, index);
     return {
       ...part,
-      role: isConclusion ? 'conclusion' as PartRole : inferSupportRole(part.text, q.rationale),
+      role: explicitRole ?? (isConclusion ? 'conclusion' as PartRole : inferSupportRole(part.text, q.rationale)),
       hint: index === 0 && !q.is_first_sentence_conclusion ? firstSentenceTrapLabel(q.rationale) : undefined,
     };
   });
@@ -118,8 +165,9 @@ export function adaptFirstSentenceQuestion(q: FirstSentenceQuestion): Interactiv
 }
 
 export function adaptFamilyQuestion(q: FamilyQuestion): InteractiveDrillItem {
+  const roleSequence = EXPLICIT_ROLE_SEQUENCES[q.id];
   const parts = splitStimulusIntoParts(q.stimulus, q.id).map((part, index) => {
-    const role = roleForFamilyPart(q, part.text, index);
+    const role = roleSequence?.[index] ?? roleForFamilyPart(q, part.text, index);
     return { ...part, role, hint: roleLabel(role) };
   });
   const conclusion = parts.find((part) => part.role === 'conclusion' || part.role === 'main');

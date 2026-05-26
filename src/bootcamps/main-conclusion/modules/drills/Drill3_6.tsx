@@ -13,8 +13,8 @@ import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModulePr
 const protocol = {
   title: 'Build the Conclusion',
   goal: 'Write one conclusion that follows and one tempting conclusion that does not.',
-  interaction: 'Use the two free-response boxes. Stay inside the exact premise pair.',
-  afterSubmit: 'The reveal compares your work to a valid model and an invalid-but-tempting model.',
+  interaction: 'First mark what each premise gives you, then construct the valid and tempting invalid claims.',
+  afterSubmit: 'The reveal classifies both attempts and maps P1, P2, the forced conclusion, and the trap.',
 };
 
 function adaptQuestion(q: DesignConclusionQuestion): InteractiveDrillItem {
@@ -24,6 +24,15 @@ function adaptQuestion(q: DesignConclusionQuestion): InteractiveDrillItem {
     title: 'Build the Conclusion',
     prompt: 'Write a valid conclusion and a tempting invalid conclusion.',
     payload: q,
+    constructionReveal: q.construction_reveal
+      ? {
+          p1Contribution: q.construction_reveal.p1_contribution,
+          p2Contribution: q.construction_reveal.p2_contribution,
+          forcedConclusion: q.construction_reveal.forced_conclusion,
+          temptingWrongMove: q.construction_reveal.tempting_wrong_move,
+          wrongMoveFailure: q.construction_reveal.wrong_move_failure,
+        }
+      : undefined,
   };
 }
 

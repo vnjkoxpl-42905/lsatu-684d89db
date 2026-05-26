@@ -38,6 +38,14 @@ export interface StimulusPart {
   hint?: string;
 }
 
+export interface ConclusionConstructionReveal {
+  p1Contribution: string;
+  p2Contribution: string;
+  forcedConclusion: string;
+  temptingWrongMove: string;
+  wrongMoveFailure: string;
+}
+
 export interface RevealEntry {
   id: string;
   label: string;
@@ -71,6 +79,7 @@ export interface InteractiveDrillItem {
   correctIntermediateConclusionPartIds?: string[];
   hint?: string;
   revealMap?: RevealEntry[];
+  constructionReveal?: ConclusionConstructionReveal;
 }
 
 export interface DrillProtocol {

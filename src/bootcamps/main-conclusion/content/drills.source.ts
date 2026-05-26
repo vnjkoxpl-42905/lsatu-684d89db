@@ -69,6 +69,13 @@ export interface DesignConclusionQuestion {
   premise_pair: { p1: string; p2: string };
   valid_model: string;
   invalid_model: string;
+  construction_reveal?: {
+    p1_contribution: string;
+    p2_contribution: string;
+    forced_conclusion: string;
+    tempting_wrong_move: string;
+    wrong_move_failure: string;
+  };
   diagnostic_messages: {
     valid_match: string;
     invalid_but_interesting: string;
@@ -843,6 +850,13 @@ export const DRILL_3_6_QUESTIONS: DesignConclusionQuestion[] = [
     },
     valid_model: 'Daphne hoards glittery objects.',
     invalid_model: 'All glittery objects belong to dragons.',
+    construction_reveal: {
+      p1_contribution: 'Gives the rule: if something is a pet dragon, it hoards glittery objects.',
+      p2_contribution: 'Places Daphne inside that rule by identifying her as a pet dragon.',
+      forced_conclusion: 'Daphne hoards glittery objects.',
+      tempting_wrong_move: 'All glittery objects belong to dragons.',
+      wrong_move_failure: 'That reverses the rule. The premises tell us what pet dragons do, not who owns every glittery object.',
+    },
     diagnostic_messages: {
       valid_match: 'Direct application of the universal premise to the named dragon. Clean.',
       invalid_but_interesting:
@@ -859,6 +873,13 @@ export const DRILL_3_6_QUESTIONS: DesignConclusionQuestion[] = [
     },
     valid_model: 'Mortimer can teleport.',
     invalid_model: 'Anyone who can teleport must own a broom.',
+    construction_reveal: {
+      p1_contribution: 'Gives the conditional rule: broom-owning wizards can teleport.',
+      p2_contribution: 'Places Mortimer on the broom-owning side of that rule.',
+      forced_conclusion: 'Mortimer can teleport.',
+      tempting_wrong_move: 'Anyone who can teleport must own a broom.',
+      wrong_move_failure: 'That inverts the conditional. The rule runs from broom ownership to teleportation, not from teleportation back to broom ownership.',
+    },
     diagnostic_messages: {
       valid_match: 'Modus ponens on the named wizard. Clean.',
       invalid_but_interesting:
@@ -874,6 +895,13 @@ export const DRILL_3_6_QUESTIONS: DesignConclusionQuestion[] = [
     },
     valid_model: 'No moonlight cricket is singing today.',
     invalid_model: 'A moonlight cricket only sings on Tuesdays.',
+    construction_reveal: {
+      p1_contribution: 'Gives the exclusion: moonlight crickets do not sing on Tuesdays.',
+      p2_contribution: 'Identifies today as Tuesday, so the exclusion applies today.',
+      forced_conclusion: 'No moonlight cricket is singing today.',
+      tempting_wrong_move: 'A moonlight cricket only sings on Tuesdays.',
+      wrong_move_failure: 'That reverses the polarity. A no-singing-on-Tuesday rule does not become an only-sings-on-Tuesday rule.',
+    },
     diagnostic_messages: {
       valid_match: 'Universal-negative applied to the named day. Clean.',
       invalid_but_interesting:
