@@ -209,43 +209,6 @@ export const TOOL_LAB: ToolCard[] = [
     },
   },
   {
-    slug: 'opposing-view-filter',
-    internalId: 'NT-Stegosaurus-Interrogation',
-    name: 'Opposing View Filter',
-    what_it_does:
-      'Catches sentences attributed to other people ("some say," "critics argue," "opponents claim") and labels them so you do not mistake them for the author\'s position.',
-    when_to_use:
-      'On every stimulus, especially when the opener is an attribution. Expect a pivot and the author\'s claim to follow.',
-    prevents:
-      'Mistaking someone else\'s view for the author\'s conclusion — the most common Stash 2 trap.',
-    try_it: {
-      kind: 'pick',
-      prompt:
-        '"Many economists argue the trade deal will reduce manufacturing jobs. However, output in the targeted sectors has risen 8%, and reported layoffs are below the prior-year average. The trade deal is working." What is the author\'s conclusion?',
-      options: [
-        {
-          id: 'A',
-          text: 'The trade deal will reduce manufacturing jobs.',
-          correct: false,
-          reveal: 'That is the opposing view. "Many economists argue" attributes it to others — the author is about to push back.',
-        },
-        {
-          id: 'B',
-          text: 'Output in the targeted sectors has risen 8%.',
-          correct: false,
-          reveal: 'A premise. The author is using it as support.',
-        },
-        {
-          id: 'C',
-          text: 'The trade deal is working.',
-          correct: true,
-          reveal:
-            'Yes. After the pivot ("However") + supporting evidence, the author lands here. This is the author\'s claim.',
-        },
-      ],
-    },
-  },
-  {
     slug: 'x-ray-scan',
     internalId: 'NT-X-Ray-Scan',
     name: 'X-Ray Scan',

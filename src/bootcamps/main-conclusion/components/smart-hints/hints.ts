@@ -36,7 +36,7 @@ export const HINT_REGISTRY: HintSet[] = [
   {
     surface_id: 'MC-LSN-1.7',
     hints: [
-      'The Stegosaurus Interrogation: ask "How do I know that?" of every sentence. If the answer is "another sentence in this stimulus," you found support.',
+      'Intermediate conclusions have support and also provide support. Look for sentences that do both.',
       'Premises support; intermediate conclusions both support AND are supported; the main conclusion is only supported.',
     ],
   },

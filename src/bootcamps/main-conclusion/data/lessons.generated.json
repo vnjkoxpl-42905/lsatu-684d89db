@@ -463,23 +463,9 @@
         "kind": "callout",
         "label": "3-rule diagnostic",
         "body": "1. If a claim <strong>has support</strong>, we can call it a <strong>Conclusion</strong>.<br/>2. If it <strong>provides support</strong>, we can call it a <strong>Premise</strong>.<br/>3. If it <strong>has support and also provides support</strong>, it's an <strong>Intermediate Conclusion</strong>."
-      },
-      {
-        "kind": "p",
-        "text": "One sharper technique: when you can't tell what role a sentence is playing, interrogate it. Ask &ldquo;How do I know that?&rdquo; If the answer is &ldquo;because of this other sentence,&rdquo; you've identified support. If the answer is &ldquo;I don't, the author just says it,&rdquo; you've identified a premise (which the author treats as given). If you can give a reason AND the claim itself is being used as a reason for something else, you've found an intermediate conclusion. We call this the [[NT-Stegosaurus-Interrogation]]Stegosaurus Interrogation[[/]]."
-      },
-      {
-        "kind": "example",
-        "tag": "The stegosaurus interrogation",
-        "body": "&ldquo;The stegosaurus likes eucalyptus leaves. Eucalyptus leaves have a pleasant aroma. The stegosaurus likes something with a pleasant aroma.&rdquo;<br/><br/><em>How do I know the stegosaurus likes eucalyptus leaves?</em> Because... reasons. (Premise.)<br/><em>How do I know eucalyptus leaves have a pleasant aroma?</em> Because... reasons. (Premise.)<br/><em>How do I know the stegosaurus likes something with a pleasant aroma?</em> Because he likes eucalyptus leaves, and they have a pleasant aroma. (Conclusion \u2014 supported by the other two.)"
       }
     ],
-    "named_tool_callouts": [
-      {
-        "tool_id": "NT-Stegosaurus-Interrogation",
-        "appears_in_paragraph": 6
-      }
-    ],
+    "named_tool_callouts": [],
     "reference_callouts": [],
     "checkpoint": {
       "prompt": "In the EV chain stage 3 (gas prices \u2192 more EV buyers \u2192 ICE car doomed), what role does &ldquo;more people will buy EVs&rdquo; play?",

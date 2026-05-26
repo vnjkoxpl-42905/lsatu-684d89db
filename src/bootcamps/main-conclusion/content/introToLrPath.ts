@@ -48,14 +48,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     phase: 'Indicator Recognition',
   },
   {
-    id: 'structure-check',
-    type: 'tool',
-    title: 'Structure Check',
-    route: '/bootcamp/intro-to-lr/reference/named-tools/NT-Stegosaurus-Interrogation',
-    description: 'Quick role diagnostic',
-    phase: 'Structure Check',
-  },
-  {
     id: 'structure-reading',
     type: 'drill',
     title: 'Structure Reading',

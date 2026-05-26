@@ -49,20 +49,12 @@ export const NAMED_TOOLS: NamedToolEntryT[] = [
     source: 'Homework/R&R Drill Stage 2 Instructions (1).pdf (S)',
   },
   {
-    id: 'NT-Stegosaurus-Interrogation',
-    name: 'Stegosaurus Interrogation',
-    what: "Diagnostic technique for telling premises, conclusions, and intermediate conclusions apart by asking 'How do I know that?' If the answer is 'because of this other sentence' you've found support.",
-    where: ['MC-LSN-1.7', 'MC-DRL-3.5'],
-    source: 'Notes/Intermediate conclusion and Hybrid argument notes _dup1.docx (S)',
-  },
-  {
     id: 'NT-Indicator-Vault',
     name: 'Indicator Vault',
     what: 'The 6-category color-coded lookup for indicator words. Conclusion / Premise (FABS) / Pivot / Opinion / Opposing / Concession. Memorize them. Tattoo them if you have to.',
     where: ['MC-REF-2.A'],
     source: "Naming new for build (lifted from MC Companion's UI label) + Notes/Indicator word list .pdf (A)",
-  },
-  {
+  },  {
     id: 'NT-Coach-Note',
     name: "Coach's Note",
     what: "Per-question explanation card. Three parts: Structure map · Core move · Per-answer audit (each wrong answer tagged with a one-word verdict — 'Too strong' / 'Stay narrow' / 'Out of scope').",
