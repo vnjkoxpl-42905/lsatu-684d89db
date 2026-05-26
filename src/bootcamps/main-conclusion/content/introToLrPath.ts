@@ -17,7 +17,6 @@ export interface PathAction {
 export const INTEGRATED_PATH: PathAction[] = [
   { id: 'argument-basics', type: 'note', title: 'Argument Basics', route: '/bootcamp/intro-to-lr/lessons/notes/argument-basics', description: 'Basic structure', phase: 'Argument Basics' },
   { id: 'two-part-check', type: 'reference', title: '2-Part Conclusion Check', route: '/bootcamp/intro-to-lr/reference/2-part-check', description: 'Verify every conclusion candidate', phase: 'Argument Basics' },
-  { id: 'build-conclusion', type: 'checkpoint', title: 'Build the Conclusion', route: '/bootcamp/intro-to-lr/drills/3.6', description: 'Checkpoint', phase: 'Argument Basics' },
   { id: 'signal-words-reference', type: 'reference', title: 'Signal Words Reference', route: '/bootcamp/intro-to-lr/reference/indicators', description: 'FABS and indicator lookup', phase: 'Indicator Recognition' },
   { id: 'indicator-recognition', type: 'drill', title: 'Indicator Recognition', route: '/bootcamp/intro-to-lr/drills/3.1', description: 'Signal words', phase: 'Indicator Recognition' },
   { id: 'structure-check', type: 'tool', title: 'Structure Check', route: '/bootcamp/intro-to-lr/reference/named-tools/NT-Stegosaurus-Interrogation', description: 'Quick role diagnostic', phase: 'Structure Reading' },

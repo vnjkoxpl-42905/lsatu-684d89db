@@ -72,15 +72,6 @@ export const DRILLS: DrillRow[] = [
     why: 'See how premises climb through intermediate conclusions into the main conclusion.',
   },
   {
-    id: 'MC-DRL-3.6',
-    number: '3.6',
-    title: 'Build the Conclusion',
-    route: '/drills/3.6',
-    skill: 'Translation Lab',
-    interaction: 'free response',
-    why: 'Construct what follows, then contrast it with the tempting invalid move.',
-  },
-  {
     id: 'MC-DRL-3.7',
     number: '3.7',
     title: 'Pronoun Replacement',
@@ -133,7 +124,7 @@ const GROUPS = [
   {
     title: 'Translation Lab',
     description: 'Turn the argument into a precise standalone claim.',
-    drillIds: ['MC-DRL-3.6', 'MC-DRL-3.7', 'MC-DRL-3.8'],
+    drillIds: ['MC-DRL-3.7', 'MC-DRL-3.8'],
   },
 ];
 

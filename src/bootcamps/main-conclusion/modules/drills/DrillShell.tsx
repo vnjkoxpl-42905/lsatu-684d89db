@@ -33,7 +33,13 @@ export function DrillShell() {
       content = <Drill3_5 />;
       break;
     case '3.6':
-      content = <Drill3_6 />;
+      content = (
+        <EmptyState
+          title="Drill Archived"
+          body="This drill is currently undergoing a quality review and is unlinked from the main path."
+          surfaceId="drill/3.6"
+        />
+      );
       break;
     case '3.7':
       content = <Drill3_7 />;
