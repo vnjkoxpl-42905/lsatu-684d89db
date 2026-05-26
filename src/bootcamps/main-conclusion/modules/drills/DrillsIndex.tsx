@@ -1,37 +1,140 @@
 /**
- * Module 3: Drills hub.
- * Runner-style: lead with the next drill (gating Drill 3.4 if not done).
- * Roster shows status; each drill page is the active surface.
+ * Module 3: secondary Drill Lab hub.
+ * The IntegratedPathRail remains the primary course path; this page is a
+ * direct-access library for revisiting drill mechanics by skill family.
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Check } from 'lucide-react';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { DynamicDrillLab, type DrillLabCard } from '@/bootcamps/main-conclusion/components/interactive-drills/DynamicDrillLab';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 import { nextDrillStep } from '@/bootcamps/main-conclusion/lib/runner';
-import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
 interface DrillRow {
   id: string;
   number: string;
   title: string;
   route: string;
-  blurb: string;
+  skill: string;
+  interaction: string;
+  why: string;
   gates_simulator?: boolean;
 }
 
 export const DRILLS: DrillRow[] = [
-  { id: 'MC-DRL-3.1', number: '3.1', title: 'Indicator Recognition', route: '/drills/3.1', blurb: 'Identify whether a signal points to support, conclusion, contrast, concession, or another person’s view.' },
-  { id: 'MC-DRL-3.2', number: '3.2', title: 'Structure Reading', route: '/drills/3.2', blurb: 'Confirm the role each sentence plays before choosing the main conclusion.' },
-  { id: 'MC-DRL-3.3', number: '3.3', title: 'First-Sentence Conclusions', route: '/drills/3.3', blurb: 'Practice cases where the conclusion appears first and the support follows.' },
-  { id: 'MC-DRL-3.4', number: '3.4', title: 'Rebuttal Conclusions', route: '/drills/3.4', blurb: 'Separate the author’s conclusion from the view the author rejects.', gates_simulator: true },
-  { id: 'MC-DRL-3.5', number: '3.5', title: 'Chain Mapping', route: '/drills/3.5', blurb: 'Track premise, intermediate conclusion, and main conclusion relationships.' },
-  { id: 'MC-DRL-3.6', number: '3.6', title: 'Build the Conclusion', route: '/drills/3.6', blurb: 'Practice building a conclusion that follows from the support.' },
-  { id: 'MC-DRL-3.7', number: '3.7', title: 'Pronoun Replacement', route: '/drills/3.7', blurb: 'Replace vague references before stating the author’s conclusion.' },
-  { id: 'MC-DRL-3.8', number: '3.8', title: 'Read, Cover, Restate', route: '/drills/3.8', blurb: "Read the argument, cover it, and restate the author’s conclusion in plain language." },
-  { id: 'MC-DRL-3.9', number: '3.9', title: 'Nested Claims', route: '/drills/3.9', blurb: 'Work through arguments with multiple claims and identify the main one.' },
+  {
+    id: 'MC-DRL-3.1',
+    number: '3.1',
+    title: 'Indicator Recognition',
+    route: '/drills/3.1',
+    skill: 'Signal Recognition',
+    interaction: 'classification',
+    why: 'Learn what signal phrases are doing before you trust the surface grammar.',
+  },
+  {
+    id: 'MC-DRL-3.2',
+    number: '3.2',
+    title: 'Structure Reading',
+    route: '/drills/3.2',
+    skill: 'Structure Lab',
+    interaction: 'click conclusion',
+    why: 'Click the conclusion inside the stimulus, then inspect the full role map.',
+  },
+  {
+    id: 'MC-DRL-3.3',
+    number: '3.3',
+    title: 'First-Sentence Conclusions',
+    route: '/drills/3.3',
+    skill: 'Structure Lab',
+    interaction: 'click + check',
+    why: 'Train the difference between a real first-sentence conclusion and an opener trap.',
+  },
+  {
+    id: 'MC-DRL-3.4',
+    number: '3.4',
+    title: 'Rebuttal Conclusions',
+    route: '/drills/3.4',
+    skill: 'Rebuttal Lab',
+    interaction: 'multi-step dissection',
+    why: 'Separate author view from rejected view. Passing this drill unlocks the Simulator.',
+    gates_simulator: true,
+  },
+  {
+    id: 'MC-DRL-3.5',
+    number: '3.5',
+    title: 'Chain Mapping',
+    route: '/drills/3.5',
+    skill: 'Argument Hierarchy',
+    interaction: 'role tagging',
+    why: 'See how premises climb through intermediate conclusions into the main conclusion.',
+  },
+  {
+    id: 'MC-DRL-3.6',
+    number: '3.6',
+    title: 'Build the Conclusion',
+    route: '/drills/3.6',
+    skill: 'Translation Lab',
+    interaction: 'free response',
+    why: 'Construct what follows, then contrast it with the tempting invalid move.',
+  },
+  {
+    id: 'MC-DRL-3.7',
+    number: '3.7',
+    title: 'Pronoun Replacement',
+    route: '/drills/3.7',
+    skill: 'Translation Lab',
+    interaction: 'rewrite',
+    why: 'Replace vague referential language before you paraphrase the conclusion.',
+  },
+  {
+    id: 'MC-DRL-3.8',
+    number: '3.8',
+    title: 'Read, Cover, Restate',
+    route: '/drills/3.8',
+    skill: 'Translation Lab',
+    interaction: 'cover + restate',
+    why: 'Hold the author’s exact claim in memory and check for drift.',
+  },
+  {
+    id: 'MC-DRL-3.9',
+    number: '3.9',
+    title: 'Nested Claims: Advanced',
+    route: '/drills/3.9',
+    skill: 'Argument Hierarchy',
+    interaction: 'hierarchy tagging',
+    why: 'The advanced version of chain mapping: distinguish main and intermediate claims.',
+  },
+];
+
+const GROUPS = [
+  {
+    title: 'Signal Recognition',
+    description: 'Signals are not answers; they are instructions for how to read the next claim.',
+    drillIds: ['MC-DRL-3.1'],
+  },
+  {
+    title: 'Structure Lab',
+    description: 'Conclusion spotting by clicking directly in the stimulus.',
+    drillIds: ['MC-DRL-3.2', 'MC-DRL-3.3'],
+  },
+  {
+    title: 'Rebuttal Lab',
+    description: 'Author view versus rejected view, with the simulator gate preserved.',
+    drillIds: ['MC-DRL-3.4'],
+  },
+  {
+    title: 'Argument Hierarchy',
+    description: 'Premise, intermediate conclusion, main conclusion.',
+    drillIds: ['MC-DRL-3.5', 'MC-DRL-3.9'],
+  },
+  {
+    title: 'Translation Lab',
+    description: 'Turn the argument into a precise standalone claim.',
+    drillIds: ['MC-DRL-3.6', 'MC-DRL-3.7', 'MC-DRL-3.8'],
+  },
 ];
 
 export function DrillsIndex() {
@@ -46,155 +149,59 @@ export function DrillsIndex() {
   const doneCount = DRILLS.filter((d) => completed.has(d.id)).length;
   const pct = Math.round((doneCount / DRILLS.length) * 100);
 
+  function toCard(drill: DrillRow): DrillLabCard {
+    const href = drill.route.startsWith('/bootcamp/intro-to-lr') ? drill.route : `/bootcamp/intro-to-lr${drill.route}`;
+    return {
+      id: drill.id,
+      number: drill.number,
+      title: drill.title,
+      route: href,
+      skill: drill.skill,
+      interaction: drill.interaction,
+      why: drill.why,
+      completed: completed.has(drill.id),
+      active: next.href === href,
+      gatesSimulator: drill.gates_simulator,
+      progressLabel: drill.gates_simulator && !completed.has(drill.id) ? 'gate' : 'available',
+    };
+  }
+
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-3xl mx-auto space-y-8 pb-32">
-      <header className="relative isolate">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-16 left-0 h-48 w-72 opacity-30 blur-3xl"
-          style={{ background: 'radial-gradient(closest-side, rgb(var(--accent) / 0.20), transparent 70%)' }}
-        />
-        <div className="relative">
-          <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-            <span
-              aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(var(--accent)/0.6)]"
-            />
-            Drills
-          </div>
-          <h1 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
-            {doneCount} of {DRILLS.length} cleared
+    <article className="mx-auto max-w-4xl space-y-8 px-6 py-12 pb-32 desktop:px-12 desktop:py-16">
+      <header className="space-y-4">
+        <div>
+          <p className="font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">Secondary Drill Lab</p>
+          <h1 className="mt-2 font-mc-serif text-h1 font-semibold leading-tight text-ink">
+            Practice library, not the path
           </h1>
-          <div
-            className="mt-3 relative h-1.5 w-48 rounded-full bg-[rgb(var(--surface-elev))] overflow-hidden"
-            role="progressbar"
-            aria-valuenow={pct}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          >
-            <div
-              className="absolute inset-y-0 left-0 bg-[image:var(--grad-accent-strong)] shadow-[var(--glow-accent-soft)] transition-[width] duration-300 ease-eased"
-              style={{ width: `${pct}%` }}
-            />
-          </div>
+          <p className="mt-3 max-w-2xl font-mc-serif text-body-prose leading-relaxed text-ink-soft">
+            The rail still owns the course sequence. This hub groups the Intro to LR drills by the skill they train so you can jump back into a lab directly.
+          </p>
         </div>
+        <Card variant="elev" accent>
+          <div className="flex flex-col gap-4 desktop:flex-row desktop:items-center desktop:justify-between">
+            <div>
+              <Badge tone={next.isGate ? 'accent' : 'neutral'} dot={next.isGate} pulse={next.isGate}>
+                {doneCount}/{DRILLS.length} cleared · {pct}%
+              </Badge>
+              <h2 className="mt-2 font-mc-serif text-h2 font-semibold text-ink">{next.title}</h2>
+              <p className="mt-1 font-mc-serif text-body text-ink-soft">{next.subtitle}</p>
+            </div>
+            <Link to={next.href} className="shrink-0 rounded-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2">
+              <Button rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}>{next.cta}</Button>
+            </Link>
+          </div>
+        </Card>
       </header>
 
-      <section
-        className={cn(
-          'relative isolate overflow-hidden rounded-5 p-6 desktop:p-7',
-          'bg-[image:var(--grad-surface-elev)]',
-          'border border-[color:var(--border-accent-soft)]',
-          'shadow-[var(--shadow-3),var(--glow-accent-soft)]',
-        )}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--border-accent-strong)] to-transparent"
+      {GROUPS.map((group) => (
+        <DynamicDrillLab
+          key={group.title}
+          title={group.title}
+          description={group.description}
+          drills={group.drillIds.map((id) => toCard(DRILLS.find((drill) => drill.id === id)!))}
         />
-        <div className="relative flex flex-col desktop:flex-row desktop:items-center desktop:justify-between gap-5">
-          <div className="min-w-0 flex-1">
-            <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.18em] text-mc-accent">
-              <span
-                aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_8px_rgb(var(--accent)/0.6)]"
-              />
-              {next.eyebrow}
-            </div>
-            <h2 className="font-mc-serif text-h1 font-semibold mt-2 text-ink leading-tight">
-              {next.title}
-            </h2>
-            <p className="font-mc-serif text-body-prose mt-3 text-ink-soft leading-relaxed">
-              {next.subtitle}
-            </p>
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <Link
-                to={next.href}
-                className="rounded-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-              >
-                <Button
-                  size="lg"
-                  rightIcon={<ArrowRight className="h-4 w-4" strokeWidth={2.2} />}
-                >
-                  {next.cta}
-                </Button>
-              </Link>
-              {next.isGate ? (
-                <Badge tone="accent" dot pulse>
-                  unlocks Simulator
-                </Badge>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2 data-toc className="font-mc-mono text-label uppercase tracking-[0.18em] text-ink-faint mb-4">
-          Full roster
-        </h2>
-      <ul className="grid gap-3">
-        {DRILLS.map((d) => {
-          const isDone = completed.has(d.id);
-          const isActive = !isDone && d.number === next.href.split('/').pop();
-          return (
-          <li key={d.id}>
-            <Link
-              to={d.route.startsWith('/bootcamp/intro-to-lr') ? d.route : `/bootcamp/intro-to-lr${d.route}`}
-              className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
-            >
-              <Card variant="surface" interactive accent={d.gates_simulator || isActive}>
-                <div className="flex items-start gap-4">
-                  <div
-                    className={cn(
-                      'shrink-0 inline-flex h-10 w-10 items-center justify-center rounded-full font-mc-mono text-body font-semibold',
-                      isDone
-                        ? 'bg-[rgb(var(--success)/0.16)] text-[rgb(var(--success))] border border-[rgb(var(--success)/0.40)]'
-                        : d.gates_simulator || isActive
-                        ? 'bg-[image:var(--grad-accent-strong)] text-[rgb(var(--bg))] border border-[color:var(--border-accent-mid)] shadow-[inset_0_1px_0_rgb(255_255_255/0.10),var(--glow-accent-soft)]'
-                        : 'bg-[rgb(var(--surface-elev))] text-ink-soft border border-[rgb(var(--border)/0.10)]',
-                    )}
-                  >
-                    {isDone ? <Check className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" /> : d.number}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-baseline gap-2">
-                      {isDone ? (
-                        <Badge tone="success" dot>cleared</Badge>
-                      ) : isActive ? (
-                        <Badge tone="accent" dot pulse>next up</Badge>
-                      ) : null}
-                      {d.gates_simulator && !isDone ? (
-                        <Badge tone="accent" dot>
-                          <Zap className="h-3 w-3 -ml-0.5" strokeWidth={2.2} aria-hidden="true" />
-                          unlocks Simulator
-                        </Badge>
-                      ) : null}
-                    </div>
-                    <h3
-                      className={cn(
-                        'font-mc-serif text-h3 font-semibold mt-1 leading-tight transition-colors duration-150 ease-eased',
-                        isDone ? 'text-ink-soft' : 'text-ink group-hover:text-mc-accent',
-                      )}
-                    >
-                      {d.title}
-                    </h3>
-                    <p className="font-mc-serif text-body-prose text-ink-soft mt-2 leading-relaxed">
-                      {d.blurb}
-                    </p>
-                  </div>
-                  <ArrowRight
-                    className="shrink-0 h-4 w-4 mt-1 text-ink-faint transition-all duration-220 ease-eased group-hover:text-mc-accent group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </div>
-              </Card>
-            </Link>
-          </li>
-          );
-        })}
-      </ul>
-      </section>
+      ))}
     </article>
   );
 }

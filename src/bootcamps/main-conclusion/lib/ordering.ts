@@ -16,20 +16,20 @@ export interface RouteRequirement {
 
 export const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   '/simulator': {
-    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
-    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
+    blocker: 'MC-DRL-3.4',
+    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
   },
   '/simulator/bank': {
-    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
-    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
+    blocker: 'MC-DRL-3.4',
+    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
   },
   '/simulator/trap-master': {
-    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
-    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
+    blocker: 'MC-DRL-3.4',
+    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
   },
   '/simulator/hard-mode': {
-    blocker: 'MC-MIL-READY-FOR-SIMULATOR',
-    hint: 'Complete the Intro to LR Workbook to unlock the Question Simulator.',
+    blocker: 'MC-DRL-3.4',
+    hint: 'Complete Drill 3.4 to unlock the Question Simulator.',
   },
 };
 
@@ -59,6 +59,12 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   // M3 — every drill
   '/drills',
   ...Array.from({ length: 9 }, (_, i) => `/drills/3.${i + 1}`),
+  // Preview/review mode includes simulator surfaces; persisted student unlocks
+  // still come only from Drill 3.4 completion below.
+  '/simulator',
+  '/simulator/bank',
+  '/simulator/trap-master',
+  '/simulator/hard-mode',
   // M5 — Hard Sentences
   '/hard-sentences',
   '/hard-sentences/capstone',
@@ -91,8 +97,8 @@ export function unlockNext(currentRouteId: string, _progress: ProgressShape): st
     const next = Number(lessonMatch[1]) + 1;
     if (next <= 13) additions.push(`/lessons/1.${next}`);
   }
-  // Milestone: workbook readiness unlocks Simulator.
-  if (currentRouteId === 'MC-MIL-READY-FOR-SIMULATOR') {
+  // Drill 3.4 is the simulator gate.
+  if (currentRouteId === '/drills/3.4') {
     additions.push('/simulator', '/simulator/bank', '/simulator/trap-master', '/simulator/hard-mode');
   }
   return additions;

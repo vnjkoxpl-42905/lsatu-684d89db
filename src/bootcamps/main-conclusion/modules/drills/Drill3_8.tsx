@@ -15,11 +15,19 @@ import { Textarea } from '@/bootcamps/main-conclusion/components/primitives/Inpu
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
 import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
 import { PageHeader } from '@/bootcamps/main-conclusion/components/primitives/PageHeader';
+import { DrillProtocolCard } from '@/bootcamps/main-conclusion/components/interactive-drills/DrillProtocolCard';
 import { DRILL_3_8_PASSAGES } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
 
-type Stage = 'read' | 'rephrase' | 'skeptic' | 'done';
+type Stage = 'read' | 'rephrase' | 'self-check' | 'done';
+
+const protocol = {
+  title: 'Read, Cover, Restate',
+  goal: 'Hold the author’s exact conclusion in memory without importing extra meaning.',
+  interaction: 'Read the passage, cover it, restate from memory by mic or text, then complete the self-check.',
+  afterSubmit: 'The comparison highlights key phrase coverage and asks whether your restatement preserved the claim.',
+};
 
 function isMobileViewport(): boolean {
   if (typeof window === 'undefined') return false;
@@ -55,9 +63,10 @@ export function Drill3_8() {
       <PageHeader
         eyebrow="Drill 3.8"
         title="R&amp;R Drill · Read &amp; Restate"
-        description="Read the passage. Cover it. Rephrase from memory. Apply the Skeptic’s Ear Check."
+        description="Read the passage. Cover it. Rephrase from memory. Compare against key phrases and self-check the conclusion."
         compact
       />
+      <DrillProtocolCard protocol={protocol} compact />
       <div className="flex flex-wrap gap-2">
           <Chip tone="neutral">passage {pIndex + 1} / {DRILL_3_8_PASSAGES.length}</Chip>
           {isMobile ? (
@@ -73,9 +82,9 @@ export function Drill3_8() {
         <ReadStage passage={passage} onContinue={() => setStage('rephrase')} />
       )}
       {stage === 'rephrase' && (
-        <RephraseStage passage={passage} canMic={canMic} onContinue={() => setStage('skeptic')} />
+        <RephraseStage passage={passage} canMic={canMic} onContinue={() => setStage('self-check')} />
       )}
-      {stage === 'skeptic' && <SkepticStage onContinue={nextPassage} />}
+      {stage === 'self-check' && <SelfCheckStage onContinue={nextPassage} />}
       {stage === 'done' && (
         <Card variant="elev" className="border border-[rgb(var(--success)/0.40)] bg-[rgb(var(--success)/0.04)]">
           <Badge tone="success">drill complete</Badge>
@@ -187,22 +196,35 @@ function RephraseStage({
   );
 }
 
-function SkepticStage({ onContinue }: { onContinue: () => void }) {
-  const [note, setNote] = useState('');
+function SelfCheckStage({ onContinue }: { onContinue: () => void }) {
+  const [checks, setChecks] = useState<Record<string, boolean>>({});
+  const items = [
+    'preserved the author’s exact claim',
+    'avoided importing extra meaning',
+    'kept conclusion distinct from support',
+  ];
+  const complete = items.every((item) => checks[item]);
   return (
     <Card variant="surface">
-      <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Stage 3 · Skeptic's Ear Check</div>
+      <div className="font-mc-mono text-mono uppercase tracking-wider text-ink-faint">Stage 3 · Self-check</div>
       <p className="font-mc-serif text-body-prose text-ink mt-2">
-        After your rephrase: what is the simplest question or challenge to this argument?
+        Before moving on, check whether your restatement preserved the author’s conclusion without drift.
       </p>
-      <Textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="One sentence. The skeptic's first move."
-        className="mt-3"
-      />
+      <div className="mt-4 space-y-3">
+        {items.map((item) => (
+          <label key={item} className="flex items-center gap-3 font-mc-serif text-body text-ink-soft">
+            <input
+              type="checkbox"
+              checked={!!checks[item]}
+              onChange={(event) => setChecks((prev) => ({ ...prev, [item]: event.target.checked }))}
+              className="h-4 w-4 accent-[rgb(var(--accent))]"
+            />
+            Did I {item}?
+          </label>
+        ))}
+      </div>
       <div className="mt-4 flex justify-end">
-        <Button onClick={onContinue} disabled={!note.trim()} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
+        <Button onClick={onContinue} disabled={!complete} rightIcon={<ArrowRight className="h-3.5 w-3.5" strokeWidth={2.2} />}>
           Save and continue
         </Button>
       </div>

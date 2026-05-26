@@ -1,153 +1,73 @@
 /**
- * Drill 3.1 · Indicator Word ID — Stage-Gate frame.
- * Stage 1 carries 5 authored items. Stages 2-4 stub pending Joshua's authoring pass.
+ * Drill 3.1 · Indicator Recognition.
+ * StageGateTracker stays as the progression shell; the interaction is rendered
+ * by the shared Dynamic Drill Lab runner.
  */
 
 import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/components/stage-gate/StageGateTracker';
-import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { InteractiveDrillRunner } from '@/bootcamps/main-conclusion/components/interactive-drills/InteractiveDrillRunner';
+import { adaptIndicatorQuestion } from '@/bootcamps/main-conclusion/components/interactive-drills/adapters';
+import type { InteractiveDrillItem } from '@/bootcamps/main-conclusion/components/interactive-drills/types';
 import {
   DRILL_3_1_STAGE_1,
   DRILL_3_1_STAGE_2,
   DRILL_3_1_STAGE_3,
   DRILL_3_1_STAGE_4,
-  type IndicatorIdQuestion,
 } from '@/bootcamps/main-conclusion/content/drills.source';
 import { useUser } from '@/bootcamps/main-conclusion/hooks/useUser';
 import { useModuleProgress } from '@/bootcamps/main-conclusion/hooks/useModuleProgress';
-import { cn } from '@/bootcamps/main-conclusion/lib/cn';
 
-const stages: Stage<IndicatorIdQuestion>[] = [
+const stages: Stage<InteractiveDrillItem>[] = [
   {
     number: 1,
     title: 'Signal Basics',
     hint: 'Learn the core jobs signals perform: support, conclusion, contrast, concession, opinion, and opposing view.',
-    questions: DRILL_3_1_STAGE_1.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+    questions: DRILL_3_1_STAGE_1.map((q) => ({ id: q.id, prompt: q.prompt, payload: adaptIndicatorQuestion(q) })),
   },
   {
     number: 2,
     title: 'Signal Phrases',
     hint: 'Some signals are phrases. Read what the phrase is doing, not just what words it contains.',
-    questions: DRILL_3_1_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+    questions: DRILL_3_1_STAGE_2.map((q) => ({ id: q.id, prompt: q.prompt, payload: adaptIndicatorQuestion(q) })),
   },
   {
     number: 3,
     title: 'Contrast and Concession',
     hint: 'When a sentence contains more than one signal, ask which side the author ultimately supports.',
-    questions: DRILL_3_1_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+    questions: DRILL_3_1_STAGE_3.map((q) => ({ id: q.id, prompt: q.prompt, payload: adaptIndicatorQuestion(q) })),
   },
   {
     number: 4,
     title: 'Recognition Sprint',
     hint: 'Make the same call faster without losing precision.',
-    questions: DRILL_3_1_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: q })),
+    questions: DRILL_3_1_STAGE_4.map((q) => ({ id: q.id, prompt: q.prompt, payload: adaptIndicatorQuestion(q) })),
   },
 ];
+
+const protocol = {
+  title: 'Indicator Recognition',
+  goal: 'Identify the job of the highlighted signal phrase.',
+  interaction: 'Choose premise, conclusion, pivot, concession, opposing view, or opinion.',
+  afterSubmit: 'Wrong choices coach the function; correct choices reveal why the phrase works that way.',
+};
 
 export function Drill3_1() {
   const user = useUser();
   const { markDrillComplete } = useModuleProgress(user?.id);
 
   return (
-    <article className="px-6 py-12 desktop:px-12 desktop:py-16 max-w-2xl mx-auto">
+    <article className="mx-auto max-w-3xl px-6 py-12 desktop:px-12 desktop:py-16">
       <StageGateTracker
         drillId="MC-DRL-3.1"
         eyebrow="Guided Drill"
         title="Indicator Recognition"
-        subtitle="Learn to identify whether a signal is pointing to support, conclusion, contrast, concession, or someone else’s view."
+        subtitle="Classify what each signal phrase is doing before the argument structure gets more crowded."
         stages={stages}
         renderQuestion={(q, onAnswer, state) => (
-          <IndicatorQuestionView q={q.payload} state={state} onAnswer={onAnswer} />
+          <InteractiveDrillRunner item={q.payload} state={state} protocol={protocol} onAnswer={onAnswer} />
         )}
         onDrillComplete={() => markDrillComplete?.('MC-DRL-3.1')}
       />
     </article>
-  );
-}
-
-interface ViewProps {
-  q: IndicatorIdQuestion;
-  state: { 
-    answered: boolean; 
-    correct: boolean | null; 
-    selectedAnswer?: string | null; 
-    questionIndex: number;
-    totalQuestions: number;
-  };
-  onAnswer: (correct: boolean, selectedAnswer?: string) => void;
-}
-
-function IndicatorQuestionView({ q, state, onAnswer }: ViewProps) {
-  function pick(category: string) {
-    if (state.answered) return;
-    onAnswer(category === q.correct_category, category);
-  }
-
-  const parts = q.text.split(new RegExp(`(${q.highlighted_word})`, 'g'));
-
-  return (
-    <div className="space-y-6">
-      <Card variant="surface" className="p-6">
-        <p className="font-mc-mono text-xs uppercase tracking-widest text-ink-faint">
-          Question {state.questionIndex + 1} of {state.totalQuestions}
-        </p>
-        <p className="font-mc-serif text-h3 text-ink mt-4 leading-relaxed">
-          {parts.map((p, i) =>
-            p === q.highlighted_word ? (
-              <mark key={i} className="bg-[#F3D27A]/35 text-[#1a1a1a] border-b border-[#D6A82E] rounded-sm px-1 not-italic">
-                {p}
-              </mark>
-            ) : (
-              <span key={i}>{p}</span>
-            ),
-          )}
-        </p>
-        <p className="font-mc-serif text-body text-ink-soft italic mt-4">
-          What job is the highlighted signal doing?
-        </p>
-      </Card>
-
-      <div className="grid grid-cols-2 gap-3">
-        {q.category_options.map((cat) => {
-          const isSelected = state.selectedAnswer === cat;
-          const isCorrect = cat === q.correct_category;
-          
-          let tone: 'subtle' | 'success' | 'error' = 'subtle';
-          if (state.answered) {
-            if (isCorrect) tone = 'success';
-            else if (isSelected) tone = 'error';
-          }
-
-          return (
-            <Button
-              key={cat}
-              variant={tone === 'subtle' ? 'subtle' : 'primary'}
-              className={cn(
-                'h-auto py-3 text-body font-semibold justify-center',
-                state.answered && !isSelected && !isCorrect && 'opacity-30'
-              )}
-              disabled={state.answered}
-              onClick={() => pick(cat)}
-            >
-              {cat === 'opposing' ? 'Opposing View' : cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </Button>
-          );
-        })}
-      </div>
-
-      {state.answered && (
-        <div className={cn(
-          'p-4 rounded-3 border font-mc-serif text-body-prose',
-          state.correct 
-            ? 'bg-[rgb(var(--success)/0.08)] border-[rgb(var(--success)/0.2)] text-ink'
-            : 'bg-[rgb(var(--error)/0.08)] border-[rgb(var(--error)/0.2)] text-ink'
-        )}>
-          <p className="font-semibold mb-1">
-            {state.correct ? 'Correct.' : 'Not quite.'}
-          </p>
-          <p className="text-ink-soft">{q.rationale}</p>
-        </div>
-      )}
-    </div>
   );
 }

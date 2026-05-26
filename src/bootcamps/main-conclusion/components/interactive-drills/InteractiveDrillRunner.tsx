@@ -1,0 +1,597 @@
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowRight, EyeOff } from 'lucide-react';
+import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
+import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
+import { Chip } from '@/bootcamps/main-conclusion/components/primitives/Chip';
+import { Input } from '@/bootcamps/main-conclusion/components/primitives/Input';
+import { evaluateDesignedConclusion, type Classification } from '@/bootcamps/main-conclusion/lib/ai-templates/whimsical-evaluator';
+import { cn } from '@/bootcamps/main-conclusion/lib/cn';
+import { ClickableStimulus } from './ClickableStimulus';
+import { DrillProtocolCard } from './DrillProtocolCard';
+import { FreeResponsePanel } from './FreeResponsePanel';
+import { HintPanel } from './HintPanel';
+import { RoleRevealMap } from './RoleRevealMap';
+import { StructureClassifier } from './StructureClassifier';
+import type {
+  DrillProtocol,
+  InteractiveDrillItem,
+  PartRole,
+  RunnerState,
+} from './types';
+import type {
+  DesignConclusionQuestion,
+  FamilyQuestion,
+  FirstSentenceQuestion,
+  IndicatorIdQuestion,
+  PronounReplacementQuestion,
+  RrPassage,
+} from '@/bootcamps/main-conclusion/content/drills.source';
+
+interface Props {
+  item: InteractiveDrillItem;
+  state?: RunnerState;
+  protocol: DrillProtocol;
+  onAnswer?: (correct: boolean, selectedAnswer?: string) => void;
+  onComplete?: (correct?: boolean) => void;
+  completeLabel?: string;
+}
+
+export function InteractiveDrillRunner({
+  item,
+  state,
+  protocol,
+  onAnswer,
+  onComplete,
+  completeLabel = 'Next',
+}: Props) {
+  const runnerState = state ?? {
+    answered: false,
+    correct: null,
+    selectedAnswer: null,
+    questionIndex: 0,
+    totalQuestions: 1,
+  };
+
+  const [protocolOpen, setProtocolOpen] = useState(true);
+  const [selectedPartId, setSelectedPartId] = useState<string | null>(null);
+  const [secondaryPartId, setSecondaryPartId] = useState<string | null>(null);
+  const [selectedRoleByPart, setSelectedRoleByPart] = useState<Record<string, PartRole | null>>({});
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedFamily, setSelectedFamily] = useState<'First-sentence' | 'Rebuttal' | null>(null);
+  const [firstSentenceAnswer, setFirstSentenceAnswer] = useState<boolean | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [validInput, setValidInput] = useState('');
+  const [invalidInput, setInvalidInput] = useState('');
+  const [validClass, setValidClass] = useState<Classification | null>(null);
+  const [invalidClass, setInvalidClass] = useState<Classification | null>(null);
+  const [pronounPick, setPronounPick] = useState(false);
+  const [antecedent, setAntecedent] = useState('');
+  const [rewrite, setRewrite] = useState('');
+  const [covered, setCovered] = useState(false);
+  const [selfChecks, setSelfChecks] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setProtocolOpen(true);
+    setSelectedPartId(null);
+    setSecondaryPartId(null);
+    setSelectedRoleByPart({});
+    setSelectedCategory(null);
+    setSelectedFamily(null);
+    setFirstSentenceAnswer(null);
+    setHint(null);
+    setRevealed(false);
+    setValidInput('');
+    setInvalidInput('');
+    setValidClass(null);
+    setInvalidClass(null);
+    setPronounPick(false);
+    setAntecedent('');
+    setRewrite('');
+    setCovered(false);
+    setSelfChecks({});
+  }, [item.id]);
+
+  const complete = (correct = true, selectedAnswer?: string) => {
+    onAnswer?.(correct, selectedAnswer);
+  };
+
+  return (
+    <div className="space-y-5">
+      {protocolOpen ? (
+        <DrillProtocolCard protocol={protocol} onStart={() => setProtocolOpen(false)} />
+      ) : (
+        <DrillProtocolCard protocol={protocol} compact />
+      )}
+
+      {!protocolOpen ? (
+        <>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <Badge tone="accent" dot>
+                question {String(runnerState.questionIndex + 1).padStart(2, '0')}/{runnerState.totalQuestions}
+              </Badge>
+              <Badge tone="neutral" className="ml-2">
+                {item.id}
+              </Badge>
+            </div>
+            {runnerState.answered ? (
+              <Badge tone={runnerState.correct ? 'success' : 'error'}>
+                {runnerState.correct ? 'correct' : 'review'}
+              </Badge>
+            ) : null}
+          </div>
+
+          {renderMode()}
+        </>
+      ) : null}
+    </div>
+  );
+
+  function renderMode() {
+    switch (item.mode) {
+      case 'signal_classification':
+        return renderSignal();
+      case 'conclusion_click':
+        return renderConclusionClick();
+      case 'first_sentence_check':
+        return renderFirstSentenceCheck();
+      case 'rebuttal_dissection':
+        return renderRebuttalDissection();
+      case 'chain_mapping':
+      case 'nested_claims':
+        return renderRoleTagging(item.mode === 'nested_claims');
+      case 'conclusion_construction':
+        return renderConclusionConstruction();
+      case 'pronoun_replacement':
+        return renderPronounReplacement();
+      case 'read_cover_restate':
+        return renderReadCoverRestate();
+      default:
+        return null;
+    }
+  }
+
+  function renderSignal() {
+    const q = item.payload as IndicatorIdQuestion;
+    const parts = q.text.split(new RegExp(`(${escapeRegExp(q.highlighted_word)})`, 'g'));
+    const answered = runnerState.answered || revealed;
+    return (
+      <div className="space-y-4">
+        <Card variant="surface">
+          <p className="font-mc-serif text-h3 leading-relaxed text-ink">
+            {parts.map((part, index) =>
+              part === q.highlighted_word ? (
+                <mark key={index} className="rounded-[4px] border-b border-[rgb(var(--accent)/0.60)] bg-[rgb(var(--accent)/0.24)] px-1 text-ink not-italic">
+                  {part}
+                </mark>
+              ) : (
+                <span key={index}>{part}</span>
+              ),
+            )}
+          </p>
+        </Card>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {q.category_options.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? 'primary' : 'subtle'}
+              disabled={answered}
+              onClick={() => {
+                setSelectedCategory(category);
+                if (category === q.correct_category) {
+                  setRevealed(true);
+                  complete(true, category);
+                } else {
+                  setHint(`Try again: this phrase is not functioning as ${formatCategory(category)}. Ask what claim it introduces.`);
+                }
+              }}
+              className={cn(answered && category !== q.correct_category && 'opacity-40')}
+            >
+              {formatCategory(category)}
+            </Button>
+          ))}
+        </div>
+        {hint && !answered ? <HintPanel title="Coached hint">{hint}</HintPanel> : null}
+        {answered ? (
+          <HintPanel tone="success" title="Reveal">
+            <p>{q.rationale}</p>
+          </HintPanel>
+        ) : null}
+      </div>
+    );
+  }
+
+  function renderConclusionClick() {
+    const parts = item.parts ?? [];
+    const answered = runnerState.answered || revealed;
+    return (
+      <div className="space-y-4">
+        <ClickableStimulus
+          parts={parts}
+          selectedIds={selectedPartId ? [selectedPartId] : []}
+          revealed={answered}
+          disabled={answered}
+          onSelect={(part) => {
+            setSelectedPartId(part.id);
+            if (part.id === item.correctConclusionPartId) {
+              setRevealed(true);
+              complete(true, part.id);
+            } else {
+              setHint(part.hint ?? item.hint ?? 'That sentence is not the author’s final claim. Look for what it supports.');
+            }
+          }}
+        />
+        {hint && !answered ? <HintPanel title="Coached hint">{hint}</HintPanel> : null}
+        {answered && item.revealMap ? <RoleRevealMap entries={item.revealMap} summary={rationaleText(item.payload)} /> : null}
+      </div>
+    );
+  }
+
+  function renderFirstSentenceCheck() {
+    const q = item.payload as FirstSentenceQuestion;
+    const parts = item.parts ?? [];
+    const conclusionFound = selectedPartId === item.correctConclusionPartId;
+    const answered = runnerState.answered || revealed;
+    return (
+      <div className="space-y-4">
+        <ClickableStimulus
+          parts={parts}
+          selectedIds={selectedPartId ? [selectedPartId] : []}
+          revealed={answered}
+          disabled={answered || conclusionFound}
+          onSelect={(part) => {
+            setSelectedPartId(part.id);
+            if (part.id === item.correctConclusionPartId) {
+              setHint(null);
+            } else {
+              setHint(part.hint ?? 'That is not the author’s actual conclusion. Keep reading for the claim the support points toward.');
+            }
+          }}
+        />
+        {!conclusionFound && hint ? <HintPanel title="Coached hint">{hint}</HintPanel> : null}
+        {conclusionFound && !answered ? (
+          <Card variant="surface" className="space-y-3">
+            <p className="font-mc-serif text-body-prose text-ink">Now decide: was that conclusion the first sentence?</p>
+            <div className="flex gap-2">
+              <Button variant={firstSentenceAnswer === true ? 'primary' : 'subtle'} onClick={() => setFirstSentenceAnswer(true)}>
+                Yes
+              </Button>
+              <Button variant={firstSentenceAnswer === false ? 'primary' : 'subtle'} onClick={() => setFirstSentenceAnswer(false)}>
+                No
+              </Button>
+              <Button
+                className="ml-auto"
+                disabled={firstSentenceAnswer === null}
+                onClick={() => {
+                  const correct = firstSentenceAnswer === q.is_first_sentence_conclusion;
+                  setRevealed(true);
+                  complete(correct, String(firstSentenceAnswer));
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+          </Card>
+        ) : null}
+        {answered && item.revealMap ? <RoleRevealMap entries={item.revealMap} summary={q.rationale} /> : null}
+      </div>
+    );
+  }
+
+  function renderRebuttalDissection() {
+    const q = item.payload as FamilyQuestion;
+    const parts = item.parts ?? [];
+    const step = selectedPartId === item.correctConclusionPartId ? (selectedFamily ? 3 : 2) : 1;
+    const answered = runnerState.answered || revealed;
+    const followUpIds = selectedFamily === 'Rebuttal' ? item.correctOpposingPartIds ?? [] : item.correctSupportPartIds ?? [];
+    const ready = selectedPartId && selectedFamily && secondaryPartId;
+    return (
+      <div className="space-y-4">
+        <Card variant="ghost" className="p-4">
+          <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Step {step}</p>
+          <p className="mt-1 font-mc-serif text-body-prose text-ink-soft">
+            {step === 1 ? 'Click the author’s main conclusion.' : step === 2 ? 'Classify the structure.' : selectedFamily === 'Rebuttal' ? 'Click the rejected or opposing view.' : 'Click a support claim.'}
+          </p>
+        </Card>
+        <ClickableStimulus
+          parts={parts}
+          selectedIds={[selectedPartId, secondaryPartId].filter(Boolean) as string[]}
+          revealed={answered}
+          disabled={answered}
+          onSelect={(part) => {
+            if (step === 1) {
+              setSelectedPartId(part.id);
+              if (part.id !== item.correctConclusionPartId) setHint('That is not the author’s final position. Find the sentence the rest of the argument is aimed at proving or defending.');
+              else setHint(null);
+              return;
+            }
+            if (step === 3 && part.id !== selectedPartId) {
+              setSecondaryPartId(part.id);
+              setHint(null);
+            }
+          }}
+        />
+        {step === 2 && !answered ? <StructureClassifier value={selectedFamily} onChange={setSelectedFamily} /> : null}
+        {hint && !answered ? <HintPanel title="Coached hint">{hint}</HintPanel> : null}
+        {!answered ? (
+          <div className="flex justify-end">
+            <Button
+              disabled={!ready}
+              onClick={() => {
+                const correct = selectedPartId === item.correctConclusionPartId && selectedFamily === q.family && !!secondaryPartId && followUpIds.includes(secondaryPartId);
+                setRevealed(true);
+                complete(correct, `${selectedPartId}:${selectedFamily}:${secondaryPartId}`);
+              }}
+            >
+              Submit dissection
+            </Button>
+          </div>
+        ) : null}
+        {answered && item.revealMap ? <RoleRevealMap entries={item.revealMap} summary={q.rationale} /> : null}
+      </div>
+    );
+  }
+
+  function renderRoleTagging(advanced: boolean) {
+    const parts = item.parts ?? [];
+    const allTagged = parts.every((part) => selectedRoleByPart[part.id]);
+    const answered = runnerState.answered || revealed;
+    const score = parts.filter((part) => selectedRoleByPart[part.id] === part.role).length;
+    const roles: PartRole[] = advanced ? ['premise', 'intermediate', 'main'] : ['premise', 'intermediate', 'main'];
+    return (
+      <div className="space-y-4">
+        <div className="space-y-3">
+          {parts.map((part) => (
+            <Card key={part.id} variant="surface" className={cn(answered && selectedRoleByPart[part.id] === part.role && 'border-[rgb(var(--success)/0.35)] bg-[rgb(var(--success)/0.055)]')}>
+              <p className="font-mc-serif text-body-prose text-ink">{part.text}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {roles.map((role) => (
+                  <Button
+                    key={role}
+                    size="sm"
+                    variant={selectedRoleByPart[part.id] === role ? 'primary' : 'subtle'}
+                    disabled={answered}
+                    onClick={() => setSelectedRoleByPart((prev) => ({ ...prev, [part.id]: role }))}
+                  >
+                    {role === 'main' ? 'Main' : role === 'intermediate' ? 'Intermediate' : 'Premise'}
+                  </Button>
+                ))}
+              </div>
+              {answered && selectedRoleByPart[part.id] !== part.role ? (
+                <p className="mt-2 font-mc-mono text-mono text-ink-faint">correct role: <Chip tone={part.role === 'main' ? 'conclusion' : part.role === 'intermediate' ? 'pivot' : 'premise'}>{part.role}</Chip></p>
+              ) : null}
+            </Card>
+          ))}
+        </div>
+        {!answered ? (
+          <div className="flex justify-end">
+            <Button
+              disabled={!allTagged}
+              onClick={() => {
+                const correct = score === parts.length;
+                setRevealed(true);
+                complete(correct, JSON.stringify(selectedRoleByPart));
+              }}
+            >
+              Reveal hierarchy
+            </Button>
+          </div>
+        ) : null}
+        {answered ? (
+          <>
+            <HintPanel tone={score === parts.length ? 'success' : 'error'} title="Hierarchy score">
+              {score}/{parts.length} roles matched. The map below shows the real structure.
+            </HintPanel>
+            {item.revealMap ? <RoleRevealMap entries={item.revealMap} summary={rationaleText(item.payload)} /> : null}
+            {onComplete && !onAnswer ? (
+              <div className="flex justify-end">
+                <Button onClick={() => onComplete(score === parts.length)} rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  {completeLabel}
+                </Button>
+              </div>
+            ) : null}
+          </>
+        ) : null}
+      </div>
+    );
+  }
+
+  function renderConclusionConstruction() {
+    const q = item.payload as DesignConclusionQuestion;
+    const evaluated = validClass && invalidClass;
+    return (
+      <div className="space-y-4">
+        <Card variant="surface">
+          <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Premise pair</p>
+          <p className="mt-3 font-mc-serif text-body-prose text-ink"><Chip tone="premise">P1</Chip> {q.premise_pair.p1}</p>
+          <p className="mt-2 font-mc-serif text-body-prose text-ink"><Chip tone="premise">P2</Chip> {q.premise_pair.p2}</p>
+        </Card>
+        <FreeResponsePanel label="One valid conclusion" value={validInput} onChange={setValidInput} placeholder="Write the conclusion that follows from both premises." disabled={!!evaluated} />
+        <FreeResponsePanel label="One tempting invalid conclusion" value={invalidInput} onChange={setInvalidInput} placeholder="Write the attractive wrong move." disabled={!!evaluated} />
+        {!evaluated ? (
+          <div className="flex justify-end">
+            <Button
+              disabled={!validInput.trim() || !invalidInput.trim()}
+              onClick={() => {
+                const valid = evaluateDesignedConclusion({ premise_pair: q.premise_pair, student_text: validInput, valid_model: q.valid_model, invalid_model: q.invalid_model }).classification;
+                const invalid = evaluateDesignedConclusion({ premise_pair: q.premise_pair, student_text: invalidInput, valid_model: q.valid_model, invalid_model: q.invalid_model }).classification;
+                setValidClass(valid);
+                setInvalidClass(invalid);
+                complete(true, 'constructed');
+              }}
+            >
+              Reveal models
+            </Button>
+          </div>
+        ) : (
+          <Card variant="elev" className="space-y-3">
+            <Badge tone="success">model reveal</Badge>
+            <p className="font-mc-serif text-body-prose text-ink"><strong>Valid:</strong> {q.valid_model}</p>
+            <p className="font-mc-serif text-body text-ink-soft">{q.diagnostic_messages.valid_match}</p>
+            <p className="font-mc-serif text-body-prose text-ink"><strong>Invalid but tempting:</strong> {q.invalid_model}</p>
+            <p className="font-mc-serif text-body text-ink-soft">{q.diagnostic_messages.invalid_but_interesting}</p>
+            {onComplete && !onAnswer ? <Button onClick={() => onComplete(true)}>{completeLabel}</Button> : null}
+          </Card>
+        )}
+      </div>
+    );
+  }
+
+  function renderPronounReplacement() {
+    const q = item.payload as PronounReplacementQuestion;
+    const model = q.acceptable_replacements[0] ?? q.pronoun;
+    const cleanRewrite = q.candidate_conclusion.replace(q.pronoun, model);
+    const ready = pronounPick && antecedent.trim() && rewrite.trim();
+    const answered = runnerState.answered || revealed;
+    return (
+      <div className="space-y-4">
+        <Card variant="surface">
+          <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Candidate conclusion</p>
+          <p className="mt-3 font-mc-serif text-h3 leading-relaxed text-ink">
+            {q.candidate_conclusion.replace(q.pronoun, '')}
+            <button
+              type="button"
+              disabled={answered}
+              onClick={() => setPronounPick(true)}
+              className={cn('rounded-[4px] border px-1 text-mc-accent', pronounPick ? 'border-[rgb(var(--accent)/0.45)] bg-[rgb(var(--accent)/0.14)]' : 'border-transparent bg-[rgb(var(--accent)/0.06)]')}
+            >
+              {q.pronoun}
+            </button>
+          </p>
+        </Card>
+        <Input value={antecedent} onChange={(event) => setAntecedent(event.target.value)} placeholder="Identify the antecedent..." disabled={answered} />
+        <Input value={rewrite} onChange={(event) => setRewrite(event.target.value)} placeholder="Rewrite the conclusion with the antecedent..." disabled={answered} />
+        {!answered ? (
+          <div className="flex justify-end">
+            <Button
+              disabled={!ready}
+              onClick={() => {
+                const lower = `${antecedent} ${rewrite}`.toLowerCase();
+                const correct = !rewrite.toLowerCase().includes(q.pronoun.toLowerCase()) && q.acceptable_replacements.some((replacement) => lower.includes(replacement.toLowerCase().split(/\s+/).slice(0, 2).join(' ')));
+                setRevealed(true);
+                complete(correct, rewrite);
+              }}
+            >
+              Reveal replacement
+            </Button>
+          </div>
+        ) : (
+          <>
+            <HintPanel tone="success" title="Clean replacement">
+              <p>{cleanRewrite}</p>
+              <p className="mt-2">{q.rationale}</p>
+            </HintPanel>
+            {onComplete && !onAnswer ? (
+              <div className="flex justify-end">
+                <Button onClick={() => onComplete(true)} rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  {completeLabel}
+                </Button>
+              </div>
+            ) : null}
+          </>
+        )}
+      </div>
+    );
+  }
+
+  function renderReadCoverRestate() {
+    const q = item.payload as RrPassage;
+    const checks = [
+      'preserved the author’s exact claim',
+      'avoided importing extra meaning',
+      'kept conclusion distinct from support',
+    ];
+    const hits = q.key_phrases.filter((phrase) => rewrite.toLowerCase().includes(phrase.toLowerCase()));
+    const answered = runnerState.answered || revealed;
+    return (
+      <div className="space-y-4">
+        <Card variant="surface">
+          <div className="flex items-center justify-between gap-3">
+            <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">{q.title}</p>
+            <Button size="sm" variant="subtle" onClick={() => setCovered((prev) => !prev)} leftIcon={<EyeOff className="h-3.5 w-3.5" />}>
+              {covered ? 'Uncover' : 'Cover'}
+            </Button>
+          </div>
+          {covered ? (
+            <div className="mt-4 rounded-[6px] border border-dashed border-[rgb(var(--border)/0.20)] p-8 text-center font-mc-serif text-body text-ink-faint">
+              Passage covered. Restate from memory.
+            </div>
+          ) : (
+            <p className="mt-4 font-mc-serif text-body-prose leading-relaxed text-ink">{q.passage}</p>
+          )}
+        </Card>
+        <FreeResponsePanel label="Restate the author’s conclusion" value={rewrite} onChange={setRewrite} placeholder="Cover the passage, then write the author’s conclusion..." disabled={answered} />
+        {rewrite.trim() ? (
+          <Card variant="ghost" className="p-4">
+            <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Key phrase comparison</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {q.key_phrases.map((phrase) => (
+                <Chip key={phrase} tone={rewrite.toLowerCase().includes(phrase.toLowerCase()) ? 'accent' : 'neutral'}>
+                  {phrase}
+                </Chip>
+              ))}
+            </div>
+            <p className="mt-2 font-mc-serif text-body text-ink-soft">{hits.length}/{q.key_phrases.length} key phrases preserved.</p>
+          </Card>
+        ) : null}
+        <Card variant="surface" className="space-y-3">
+          <p className="font-mc-mono text-mono uppercase tracking-[0.18em] text-ink-faint">Self-check</p>
+          {checks.map((check) => (
+            <label key={check} className="flex items-center gap-3 font-mc-serif text-body text-ink-soft">
+              <input
+                type="checkbox"
+                checked={!!selfChecks[check]}
+                disabled={answered}
+                onChange={(event) => setSelfChecks((prev) => ({ ...prev, [check]: event.target.checked }))}
+                className="h-4 w-4 accent-[rgb(var(--accent))]"
+              />
+              Did I {check}?
+            </label>
+          ))}
+        </Card>
+        {!answered ? (
+          <div className="flex justify-end">
+            <Button
+              disabled={!rewrite.trim() || checks.some((check) => !selfChecks[check])}
+              onClick={() => {
+                setRevealed(true);
+                complete(true, rewrite);
+              }}
+            >
+              Complete passage
+            </Button>
+          </div>
+        ) : (
+          <>
+            <HintPanel tone="success" title="Comparison complete">
+              Keep the conclusion in the author’s exact lane. Key phrases are guides, not a word-for-word requirement.
+            </HintPanel>
+            {onComplete && !onAnswer ? (
+              <div className="flex justify-end">
+                <Button onClick={() => onComplete(true)} rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  {completeLabel}
+                </Button>
+              </div>
+            ) : null}
+          </>
+        )}
+      </div>
+    );
+  }
+}
+
+function formatCategory(category: string): string {
+  return category === 'opposing' ? 'Opposing View' : category.charAt(0).toUpperCase() + category.slice(1);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function rationaleText(payload: unknown): string | undefined {
+  return typeof payload === 'object' && payload !== null && 'rationale' in payload
+    ? String((payload as { rationale?: string }).rationale)
+    : undefined;
+}
