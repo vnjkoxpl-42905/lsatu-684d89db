@@ -9,6 +9,7 @@ import { StageGateTracker, type Stage } from '@/bootcamps/main-conclusion/compon
 import { InteractiveDrillRunner } from '@/bootcamps/main-conclusion/components/interactive-drills/InteractiveDrillRunner';
 import { adaptFamilyQuestion } from '@/bootcamps/main-conclusion/components/interactive-drills/adapters';
 import type { InteractiveDrillItem } from '@/bootcamps/main-conclusion/components/interactive-drills/types';
+import { StructuredStageQuestion } from '@/bootcamps/main-conclusion/components/structured-dissection/StructuredStageQuestion';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -60,6 +61,7 @@ export function Drill3_4() {
   const { markDrillComplete } = useModuleProgress(user?.id);
   const navigate = useNavigate();
   const [completed, setCompleted] = useState(false);
+  const [stage4Started, setStage4Started] = useState(false);
 
   return (
     <article className="mx-auto max-w-3xl space-y-4 px-6 py-12 desktop:px-12 desktop:py-16">
@@ -73,9 +75,20 @@ export function Drill3_4() {
       <StageGateTracker
         drillId="MC-DRL-3.4"
         stages={stages}
-        renderQuestion={(q, onAnswer, state) => (
-          <InteractiveDrillRunner item={q.payload} state={state} protocol={protocol} onAnswer={onAnswer} />
-        )}
+        renderQuestion={(q, onAnswer, state) =>
+          q.id.startsWith('D34-S4-') ? (
+            <StructuredStageQuestion
+              item={q.payload}
+              state={state}
+              onAnswer={onAnswer}
+              totalQuestions={stages[3].questions.length}
+              started={stage4Started}
+              onStart={() => setStage4Started(true)}
+            />
+          ) : (
+            <InteractiveDrillRunner item={q.payload} state={state} protocol={protocol} onAnswer={onAnswer} />
+          )
+        }
         onDrillComplete={async () => {
           await markDrillComplete?.('MC-DRL-3.4');
           setCompleted(true);
