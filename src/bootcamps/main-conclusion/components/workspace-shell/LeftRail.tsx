@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import {
   BookOpen,
   Dumbbell,
@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   Sparkles,
   ChevronDown,
+  Bookmark,
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/bootcamps/main-conclusion/lib/cn';
@@ -39,6 +40,7 @@ const navSections: NavSection[] = [
   {
     title: 'Tools',
     items: [
+      { label: 'Flashcards', to: '/bootcamp/intro-to-lr/reference/flashcards', Icon: Bookmark },
       { label: 'Hard Sentences', to: '/bootcamp/intro-to-lr/hard-sentences', Icon: ScanText },
       { label: 'Diagnostics', to: '/bootcamp/intro-to-lr/diagnostics', Icon: LineChart },
     ],
@@ -47,6 +49,8 @@ const navSections: NavSection[] = [
 ];
 
 export function LeftRail(): JSX.Element {
+  const location = useLocation();
+
   return (
     <aside
       className={cn(
@@ -87,7 +91,17 @@ export function LeftRail(): JSX.Element {
 
       <nav className="px-2.5 flex-1 overflow-y-auto">
         {navSections.map((section) => (
-          <details key={section.title} open={!section.collapsed} className="group/details mb-4">
+          <details
+            key={section.title}
+            open={
+              !section.collapsed ||
+              section.items.some(
+                (item) =>
+                  location.pathname === item.to || location.pathname.startsWith(`${item.to}/`),
+              )
+            }
+            className="group/details mb-4"
+          >
             <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
               {section.title}
               <ChevronDown className="h-3 w-3 opacity-50 group-open/details:rotate-180 transition-transform duration-200" />

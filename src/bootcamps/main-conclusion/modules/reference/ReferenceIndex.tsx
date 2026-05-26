@@ -5,7 +5,7 @@
  */
 
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Wrench } from 'lucide-react';
+import { ArrowUpRight, Bookmark, Wrench } from 'lucide-react';
 import refs from '@/bootcamps/main-conclusion/data/references.generated.json';
 import { Card } from '@/bootcamps/main-conclusion/components/primitives/Card';
 import { Badge } from '@/bootcamps/main-conclusion/components/primitives/Badge';
@@ -24,7 +24,7 @@ interface RefSection {
 
 // Map raw reference IDs to clean student-facing names.
 const REF_LABEL: Record<string, string> = {
-  'MC-REF-2.A': 'Indicator Vault',
+  'MC-REF-2.A': 'Core Indicator Words',
   'MC-REF-2.B': '2-Part Conclusion Check',
   'MC-REF-2.C': 'FABS premise indicators',
   'MC-REF-2.D': 'Stimulus tendencies',
@@ -35,6 +35,9 @@ const REF_LABEL: Record<string, string> = {
   'MC-REF-2.I': 'Concession decoder',
   'MC-REF-2.J': 'Quick reference card',
   'MC-REF-2.K': 'Companion mode',
+  'MC-REF-2.L': 'Pivot Indicators',
+  'MC-REF-2.M': 'Opposing & Concession',
+  'MC-REF-2.N': 'Opinion Indicators',
 };
 
 export function ReferenceIndex() {
@@ -66,6 +69,33 @@ export function ReferenceIndex() {
       </header>
 
       <section className="max-w-[800px] mx-auto">
+        <div className="mb-10">
+          <Link
+            to="/bootcamp/intro-to-lr/reference/flashcards"
+            className="group block rounded-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-mc-accent focus-visible:outline-offset-2"
+          >
+            <Card variant="elev" interactive accent>
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="inline-flex items-center gap-2 font-mc-mono text-label uppercase tracking-[0.16em] text-mc-accent">
+                    <Bookmark className="h-3.5 w-3.5" strokeWidth={2.1} aria-hidden="true" />
+                    Flashcards
+                  </div>
+                  <h2 className="mt-3 font-mc-serif text-h2 font-semibold leading-tight text-ink group-hover:text-mc-accent transition-colors duration-150 ease-eased">
+                    Structured drill flashcards
+                  </h2>
+                  <p className="mt-3 font-mc-serif text-body-prose text-ink-soft max-w-[60ch] leading-relaxed">
+                    All 33 structuredrill flashcards, rebuilt as a native Intro to LR study surface with a sidebar card list.
+                  </p>
+                </div>
+                <Badge tone="success" dot className="shrink-0">
+                  33 cards
+                </Badge>
+              </div>
+            </Card>
+          </Link>
+        </div>
+
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-mc-mono text-label uppercase tracking-[0.16em] text-ink-faint inline-flex items-center gap-2">
             <Wrench className="h-3 w-3 text-mc-accent" strokeWidth={2.2} aria-hidden="true" />

@@ -143,20 +143,47 @@ export function IntroGuidedWorkbook() {
         );
       case 'indicator-words':
         return (
-          <WorkbookNoteBlock title="Indicator Words">
+          <WorkbookNoteBlock title="Core Indicator Words">
             <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
               <p className="text-xl leading-relaxed">
-                Learn indicators after you understand the parts. Conclusion indicators, premise indicators, pivots, and concession or opposing-view signals all help you spot structure faster.
+                Learn indicators after you understand the parts. These are the foundational signals that speed up your structural reading.
               </p>
               <ul className="space-y-3 text-lg leading-relaxed list-disc pl-5">
-                <li><strong>Conclusion indicators:</strong> therefore, thus, hence, so</li>
-                <li><strong>Premise indicators:</strong> because, since, for, given that</li>
-                <li><strong>Pivot indicators:</strong> but, however, yet</li>
-                <li><strong>Concession or opposing-view indicators:</strong> although, even though, some people argue</li>
+                <li>
+                  <strong>Core Conclusion indicators:</strong> therefore, thus, so, hence, it follows that
+                </li>
+                <li>
+                  <strong>Core Premise indicators (FABS):</strong> for, after all, because, since
+                </li>
               </ul>
-              <p className="text-lg leading-relaxed">
-                But indicators are still just clues. They point. They do not prove. Support is what confirms the conclusion.
-              </p>
+              <div className="bg-white border border-[rgba(26,26,26,0.1)] p-6 rounded-[4px] space-y-4 my-6">
+                <p className="font-semibold text-lg">Indicator words are clues, not proof.</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>First find the structure.</li>
+                  <li>Then use indicators to speed up confirmation.</li>
+                  <li>Conclusion indicators usually point to the author’s claim.</li>
+                  <li>FABS usually points to support.</li>
+                  <li>Always ask: what is being proved, and what is doing the proving?</li>
+                </ul>
+              </div>
+              <div className="space-y-6 mt-8">
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-[rgba(26,26,26,0.4)]">
+                    Example: Conclusion Indicator
+                  </p>
+                  <p className="text-lg italic bg-white p-4 border-l-4 border-mc-conclusion">
+                    “The library is full every afternoon. <strong>Therefore</strong>, the city should expand library funding.”
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-[rgba(26,26,26,0.4)]">
+                    Example: Premise Indicator
+                  </p>
+                  <p className="text-lg italic bg-white p-4 border-l-4 border-mc-premise">
+                    “The city should expand library funding <strong>because</strong> students rely on the library for tutoring and internet access.”
+                  </p>
+                </div>
+              </div>
             </div>
           </WorkbookNoteBlock>
         );
@@ -168,12 +195,21 @@ export function IntroGuidedWorkbook() {
                 Once you know what premises and conclusions are, and once you know how indicators behave, you can verify a conclusion candidate with two checks.
               </p>
               <div className="border border-[rgba(26,26,26,0.1)] bg-[#F9F7F4] p-6 space-y-3">
-                <div><strong>1.</strong> Is it the kind of sentence an author would want to prove?</div>
-                <div><strong>2.</strong> Is there support in the stimulus aimed at proving it?</div>
+                <div>
+                  <strong>1.</strong> Is it the kind of sentence an author would want to prove? (An opinion
+                  or judgment)
+                </div>
+                <div>
+                  <strong>2.</strong> Is there support in the stimulus aimed at proving it?
+                </div>
               </div>
-              <p className="text-lg leading-relaxed">
-                If the sentence sounds like a real claim and the other sentences are working to prove it, you have your conclusion.
-              </p>
+              <div className="bg-white p-6 border border-[rgba(26,26,26,0.1)] space-y-3">
+                <p className="font-semibold">Opinion Indicators:</p>
+                <p className="text-lg">
+                  Watch for words like <strong>should, ought, must, clearly, likely, misguided</strong>.
+                  These mark a sentence as a judgment, making it a high-probability conclusion candidate.
+                </p>
+              </div>
             </div>
           </WorkbookNoteBlock>
         );
@@ -187,9 +223,21 @@ export function IntroGuidedWorkbook() {
       case 'where-conclusions-hide':
         return (
           <WorkbookNoteBlock title="Where Conclusions Hide">
-            <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              The conclusion isn't always at the end. Look for it in the first sentence, after a pivot (but, however), or between context and evidence.
-            </p>
+            <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
+                The conclusion isn't always at the end. Look for it in the first sentence, after a pivot
+                (but, however), or between context and evidence.
+              </p>
+              <div className="bg-white p-6 border border-[rgba(26,26,26,0.1)] space-y-3">
+                <p className="font-semibold">Pivot Indicators:</p>
+                <p className="text-lg">
+                  <strong>but, however, yet, nevertheless, nonetheless</strong>
+                </p>
+                <p className="text-base italic">
+                  Pivots mark a turn. The author’s true claim is almost always on the far side of the pivot.
+                </p>
+              </div>
+            </div>
           </WorkbookNoteBlock>
         );
       case 'first-sentence-slice':
@@ -202,9 +250,22 @@ export function IntroGuidedWorkbook() {
       case 'rebuttal-trojan-horse':
         return (
           <WorkbookNoteBlock title="Rebuttal / Trojan Horse">
-            <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              Authors often introduce an opposing view only to defeat it. Look for the pivot after the initial opposing claim.
-            </p>
+            <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
+                Authors often introduce an opposing view only to defeat it. Look for the pivot after the
+                initial opposing claim.
+              </p>
+              <div className="grid gap-4 md:grid-cols-2 mt-6">
+                <div className="bg-white p-6 border border-[rgba(26,26,26,0.1)] space-y-3">
+                  <p className="font-semibold">Opposing View Indicators:</p>
+                  <p className="text-lg">critics argue, some people say, many believe</p>
+                </div>
+                <div className="bg-white p-6 border border-[rgba(26,26,26,0.1)] space-y-3">
+                  <p className="font-semibold">Concession Indicators:</p>
+                  <p className="text-lg">although, while, despite, granted, admittedly</p>
+                </div>
+              </div>
+            </div>
           </WorkbookNoteBlock>
         );
       case 'rebuttal-slice':

@@ -21,6 +21,7 @@ import { CapstoneRoute } from '@/bootcamps/main-conclusion/modules/lessons/Capst
 import { ReferenceIndex } from '@/bootcamps/main-conclusion/modules/reference/ReferenceIndex';
 import { ReferenceSection, NamedToolEntry } from '@/bootcamps/main-conclusion/modules/reference/ReferenceSection';
 import { IndicatorVault } from '@/bootcamps/main-conclusion/modules/reference/IndicatorVault';
+import { StructuredFlashcards } from '@/bootcamps/main-conclusion/modules/reference/StructuredFlashcards';
 import { DrillsIndex } from '@/bootcamps/main-conclusion/modules/drills/DrillsIndex';
 import { DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillShell';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
@@ -137,10 +138,26 @@ export function BootcampRoutes() {
           }
         />
         <Route
+          path="reference/flashcards"
+          element={
+            <IntroPathLearningLayout>
+              <StructuredFlashcards />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
           path="reference/indicators"
           element={
             <IntroPathLearningLayout>
               <IndicatorVault />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="reference/indicators-core"
+          element={
+            <IntroPathLearningLayout>
+              <IndicatorVault coreOnly />
             </IntroPathLearningLayout>
           }
         />

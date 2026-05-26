@@ -22,6 +22,7 @@ export const NamedToolList = z.array(NamedToolEntry);
 export const IndicatorCategory = z.object({
   id: z.string().regex(/^IND-/),
   name: z.string(),
+  is_core: z.boolean(),
   color_token: z.string(), // e.g. '--role-conclusion'
   description: z.string(),
   words: z.array(z.string()).min(1),
