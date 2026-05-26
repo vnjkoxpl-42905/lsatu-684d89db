@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { STRUCTURED_FLASHCARDS } from '@/bootcamps/main-conclusion/data/structuredFlashcards';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
 import { Flashcard } from '@/bootcamps/main-conclusion/components/interactive-drills/Flashcard';
 
 export function StructuredFlashcards() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const moveSelection = (direction: -1 | 1) => {
-    setCurrentIndex((prev) => (prev + direction + STRUCTURED_FLASHCARDS.length) % STRUCTURED_FLASHCARDS.length);
+  const handleAction = (action: 'review' | 'got-it') => {
+    // In a real app, track 'got-it' progress; here we just cycle
+    setCurrentIndex((prev) => (prev + 1) % STRUCTURED_FLASHCARDS.length);
   };
 
   const card = STRUCTURED_FLASHCARDS[currentIndex];
@@ -22,26 +21,7 @@ export function StructuredFlashcards() {
         </p>
       </div>
 
-      <Flashcard card={card} />
-
-      <div className="mt-12 flex items-center gap-4">
-        <Button
-          variant="subtle"
-          size="lg"
-          leftIcon={<ChevronLeft className="h-5 w-5" />}
-          onClick={() => moveSelection(-1)}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="subtle"
-          size="lg"
-          rightIcon={<ChevronRight className="h-5 w-5" />}
-          onClick={() => moveSelection(1)}
-        >
-          Next
-        </Button>
-      </div>
+      <Flashcard card={card} onAction={handleAction} />
     </article>
   );
 }
