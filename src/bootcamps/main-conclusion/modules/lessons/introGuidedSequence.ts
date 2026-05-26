@@ -29,7 +29,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
   {
     id: 'argument-basics',
     type: 'note',
-    title: 'Argument Basics',
+    title: 'Argument Anatomy',
     noteId: 'argument-basics',
     requiredForSimulator: true,
   },
@@ -44,16 +44,8 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
   {
     id: 'premise-vs-conclusion',
     type: 'note',
-    title: 'Premise vs Conclusion',
+    title: 'Mini Premise / Conclusion Breakdown',
     noteId: 'premise-vs-conclusion', // This might be combined in argument-basics but we can split or map
-    requiredForSimulator: true,
-  },
-  {
-    id: 'x-ray-slice',
-    type: 'drill-slice',
-    title: 'X-Ray Basics',
-    drillId: 'MC-DRL-3.2',
-    stage: 1,
     requiredForSimulator: true,
   },
 
@@ -74,7 +66,24 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
 
-  // 4. Where Conclusions Hide
+  // 4. 2-Part Conclusion Check
+  {
+    id: 'two-part-check',
+    type: 'note',
+    title: '2-Part Conclusion Check',
+    noteId: 'two-part-check',
+    requiredForSimulator: true,
+  },
+  {
+    id: 'x-ray-slice',
+    type: 'drill-slice',
+    title: 'X-Ray Basics',
+    drillId: 'MC-DRL-3.2',
+    stage: 1,
+    requiredForSimulator: true,
+  },
+
+  // 5. Where Conclusions Hide
   {
     id: 'where-conclusions-hide',
     type: 'note',
@@ -91,7 +100,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
 
-  // 5. Rebuttal / Trojan Horse
+  // 6. Rebuttal / Trojan Horse
   {
     id: 'rebuttal-trojan-horse',
     type: 'note',
@@ -108,7 +117,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
 
-  // 6. Layered Arguments
+  // 7. Layered Arguments
   {
     id: 'layered-arguments',
     type: 'note',
@@ -133,7 +142,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
 
-  // 7. Matching the Answer
+  // 8. Matching the Answer
   {
     id: 'matching-the-answer',
     type: 'note',
@@ -158,7 +167,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
 
-  // 8. Practice Path
+  // 9. Practice Path
   {
     id: 'practice-path',
     type: 'drill-full-review',
@@ -166,7 +175,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     description: 'Consolidate your skills with full drills.',
   },
 
-  // 9. Main Conclusion Practice
+  // 10. Main Conclusion Practice
   {
     id: 'mc-practice-first-sentence',
     type: 'practice-pool',
@@ -196,7 +205,7 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     stage: 1,
   },
 
-  // 10. Simulator
+  // 11. Simulator
   {
     id: 'simulator-assessment',
     type: 'simulator',

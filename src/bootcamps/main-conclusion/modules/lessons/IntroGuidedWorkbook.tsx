@@ -95,9 +95,9 @@ export function IntroGuidedWorkbook() {
     switch (step.id) {
       case 'argument-basics':
         return (
-          <WorkbookNoteBlock title="Argument Basics">
+          <WorkbookNoteBlock title="Argument Anatomy">
             <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              An argument is the author taking a position and giving you reasons to believe it. It's a two-part structure: a <strong>claim</strong> (the conclusion) plus <strong>support</strong> (the premises).
+              An argument is a claim plus support. The conclusion is what the author wants to prove. The premises are the reasons offered to prove it. The core question is structural: <strong>is this sentence proving something, or is something proving this sentence?</strong>
             </p>
           </WorkbookNoteBlock>
         );
@@ -112,10 +112,17 @@ export function IntroGuidedWorkbook() {
         );
       case 'premise-vs-conclusion':
         return (
-          <WorkbookNoteBlock title="Premise vs Conclusion">
-            <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              Accept the premises as given. Question the conclusion. What is the author trying to prove?
-            </p>
+          <WorkbookNoteBlock title="Mini Premise / Conclusion Breakdown">
+            <div className="space-y-5 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed">
+                Start small. Label the reasons. Then label the claim those reasons are trying to prove.
+              </p>
+              <div className="border border-[rgba(26,26,26,0.1)] bg-white p-6 space-y-3">
+                <div><strong>Premise:</strong> The library stays full every afternoon.</div>
+                <div><strong>Premise:</strong> Students use it for tutoring, internet access, and after-school study.</div>
+                <div><strong>Conclusion:</strong> The city should expand library funding.</div>
+              </div>
+            </div>
           </WorkbookNoteBlock>
         );
       case 'x-ray-slice':
@@ -128,9 +135,31 @@ export function IntroGuidedWorkbook() {
       case 'indicator-words':
         return (
           <WorkbookNoteBlock title="Indicator Words">
-            <p className="text-xl leading-relaxed text-[rgba(26,26,26,0.8)]">
-              Indicators are clues, not proof. Use them to point you in the right direction, but always verify with support.
-            </p>
+            <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed">
+                Learn indicators after you understand the parts. Conclusion indicators, premise indicators, pivots, and concession or opposing-view signals all help you spot structure faster.
+              </p>
+              <p className="text-lg leading-relaxed">
+                But indicators are still just clues. They point. They do not prove. Support is what confirms the conclusion.
+              </p>
+            </div>
+          </WorkbookNoteBlock>
+        );
+      case 'two-part-check':
+        return (
+          <WorkbookNoteBlock title="2-Part Conclusion Check">
+            <div className="space-y-5 text-[rgba(26,26,26,0.8)]">
+              <p className="text-xl leading-relaxed">
+                Once you know what premises and conclusions are, and once you know how indicators behave, you can verify a conclusion candidate with two checks.
+              </p>
+              <div className="border border-[rgba(26,26,26,0.1)] bg-[#F9F7F4] p-6 space-y-3">
+                <div><strong>1.</strong> Is it the kind of sentence an author would want to prove?</div>
+                <div><strong>2.</strong> Is there support in the stimulus aimed at proving it?</div>
+              </div>
+              <p className="text-lg leading-relaxed">
+                If the sentence sounds like a real claim and the other sentences are working to prove it, you have your conclusion.
+              </p>
+            </div>
           </WorkbookNoteBlock>
         );
       case 'indicator-slice':
