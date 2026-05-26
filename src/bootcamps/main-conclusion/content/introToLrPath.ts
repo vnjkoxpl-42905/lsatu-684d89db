@@ -36,10 +36,98 @@ export const INTEGRATED_PATH: PathAction[] = [
 
 export const INTRO_LR_PATH = INTEGRATED_PATH;
 
-export function getNextAction(currentPath: string): PathAction | null {
-  const currentIndex = INTEGRATED_PATH.findIndex(a => currentPath.includes(a.route));
+const PRACTICE_ALIAS_MAP: Record<string, string> = {
+  '/bootcamp/intro-to-lr/practice-drills/first-sentence': '/bootcamp/intro-to-lr/practice-drills/first-sentence-conclusions',
+  '/bootcamp/intro-to-lr/practice-drills/rebuttal': '/bootcamp/intro-to-lr/practice-drills/rebuttal-conclusions',
+  '/bootcamp/intro-to-lr/simulator/answer-key-views': '/bootcamp/intro-to-lr/simulator/bank',
+};
+
+function stripPathname(pathname: string): string {
+  const [withoutQuery] = pathname.split(/[?#]/, 1);
+  if (!withoutQuery) return '';
+  if (withoutQuery.length > 1 && withoutQuery.endsWith('/')) {
+    return withoutQuery.slice(0, -1);
+  }
+  return withoutQuery;
+}
+
+export function normalizePathnameForAction(pathname: string): string {
+  const normalized = stripPathname(pathname);
+
+  for (const [alias, canonical] of Object.entries(PRACTICE_ALIAS_MAP)) {
+    if (normalized === alias || normalized.startsWith(`${alias}/`)) {
+      return normalized.replace(alias, canonical);
+    }
+  }
+
+  return normalized;
+}
+
+function matchesActionRoute(pathname: string, route: string): boolean {
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
+
+export function getCurrentActionIndex(pathname: string): number {
+  const normalizedPath = normalizePathnameForAction(pathname);
+  const indexedRoutes = INTEGRATED_PATH.map((action, index) => ({ action, index })).sort(
+    (left, right) => right.action.route.length - left.action.route.length,
+  );
+
+  const matched = indexedRoutes.find(({ action }) => matchesActionRoute(normalizedPath, action.route));
+  return matched ? matched.index : -1;
+}
+
+export function getCurrentAction(pathname: string): PathAction | null {
+  const currentIndex = getCurrentActionIndex(pathname);
+  return currentIndex >= 0 ? INTEGRATED_PATH[currentIndex] : null;
+}
+
+export function getNextAction(pathname: string): PathAction | null {
+  const currentIndex = getCurrentActionIndex(pathname);
   if (currentIndex >= 0 && currentIndex < INTEGRATED_PATH.length - 1) {
     return INTEGRATED_PATH[currentIndex + 1];
   }
   return null;
+}
+
+export function getActionTypeLabel(type: ActionType): string {
+  switch (type) {
+    case 'note':
+      return 'Lesson';
+    case 'tool':
+      return 'Tool';
+    case 'reference':
+      return 'Reference';
+    case 'checkpoint':
+      return 'Checkpoint';
+    case 'drill':
+      return 'Drill';
+    case 'practice':
+      return 'Practice';
+    case 'capstone':
+      return 'Capstone';
+    default:
+      return 'Action';
+  }
+}
+
+export function getActionButtonLabel(type: ActionType): string {
+  switch (type) {
+    case 'note':
+      return 'Read Lesson';
+    case 'tool':
+      return 'Open Tool';
+    case 'reference':
+      return 'Open Reference';
+    case 'checkpoint':
+      return 'Start Checkpoint';
+    case 'drill':
+      return 'Start Drill';
+    case 'practice':
+      return 'Start Practice';
+    case 'capstone':
+      return 'Open Capstone';
+    default:
+      return 'Continue';
+  }
 }

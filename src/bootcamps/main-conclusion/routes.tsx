@@ -25,6 +25,7 @@ import { DrillsIndex } from '@/bootcamps/main-conclusion/modules/drills/DrillsIn
 import { DrillShell } from '@/bootcamps/main-conclusion/modules/drills/DrillShell';
 import { PracticeDrillsIndex } from '@/bootcamps/main-conclusion/modules/practice-drills/PracticeDrillsIndex';
 import { PracticeRunner } from '@/bootcamps/main-conclusion/components/practice/PracticeRunner';
+import { IntroPathLearningLayout } from '@/bootcamps/main-conclusion/components/IntroPathLearningLayout';
 import SIMULATOR_DATA from '@/bootcamps/main-conclusion/data/simulator.generated.json';
 import {
   SimulatorOverview,
@@ -142,13 +143,29 @@ export function BootcampRoutes() {
         <Route path="reference/named-tools/:toolId" element={<NamedToolEntry />} />
         <Route path="drills" element={<DrillsIndex />} />
         <Route path="drills/:drillId" element={<DrillShell />} />
-        <Route path="practice-drills" element={<PracticeDrillsIndex />} />
-        <Route path="practice-drills/:practiceSlug" element={<PracticeRunnerWrapper />} />
+        <Route
+          path="practice-drills"
+          element={
+            <IntroPathLearningLayout>
+              <PracticeDrillsIndex />
+            </IntroPathLearningLayout>
+          }
+        />
+        <Route
+          path="practice-drills/:practiceSlug"
+          element={
+            <IntroPathLearningLayout>
+              <PracticeRunnerWrapper />
+            </IntroPathLearningLayout>
+          }
+        />
         <Route
           path="simulator"
           element={
             <LockedRoute routeId="/simulator">
-              <SimulatorOverview />
+              <IntroPathLearningLayout>
+                <SimulatorOverview />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />
@@ -156,7 +173,9 @@ export function BootcampRoutes() {
           path="simulator/bank"
           element={
             <LockedRoute routeId="/simulator/bank">
-              <QuestionBank />
+              <IntroPathLearningLayout>
+                <QuestionBank />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />
@@ -164,7 +183,9 @@ export function BootcampRoutes() {
           path="simulator/trap-master"
           element={
             <LockedRoute routeId="/simulator/trap-master">
-              <TrapMaster />
+              <IntroPathLearningLayout>
+                <TrapMaster />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />
@@ -172,7 +193,9 @@ export function BootcampRoutes() {
           path="simulator/trap-master/:traitId"
           element={
             <LockedRoute routeId="/simulator/trap-master">
-              <TraitDeepDive />
+              <IntroPathLearningLayout>
+                <TraitDeepDive />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />
@@ -180,7 +203,9 @@ export function BootcampRoutes() {
           path="simulator/answer-key-views"
           element={
             <LockedRoute routeId="/simulator/answer-key-views">
-              <QuestionBank />
+              <IntroPathLearningLayout>
+                <QuestionBank />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />
@@ -188,7 +213,9 @@ export function BootcampRoutes() {
           path="simulator/hard-mode"
           element={
             <LockedRoute routeId="/simulator/hard-mode">
-              <HardMode />
+              <IntroPathLearningLayout>
+                <HardMode />
+              </IntroPathLearningLayout>
             </LockedRoute>
           }
         />

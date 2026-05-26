@@ -36,7 +36,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
   return (
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] font-sans">
       <DynamicIslandTOC />
-      <div className="flex h-full">
+      <div className="flex h-full flex-col gap-4 px-4 py-4 desktop:flex-row desktop:gap-0 desktop:px-0 desktop:py-0">
         <IntegratedPathRail />
         <main className="flex-1 max-w-[1180px] mx-auto px-6 md:px-12">
           {/* Launch / Hero Screen */}

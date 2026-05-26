@@ -1,12 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Dumbbell, Target, Sparkles, ChevronRight } from 'lucide-react';
-import { cn } from '@/bootcamps/main-conclusion/lib/cn';
-import { INTRO_LR_PATH } from '@/bootcamps/main-conclusion/content/introToLrPath';
-import { Button } from '@/bootcamps/main-conclusion/components/primitives/Button';
+import { Link } from 'react-router-dom';
+import { BookOpen, Dumbbell } from 'lucide-react';
+import { INTRO_LR_PATH, getActionButtonLabel } from '@/bootcamps/main-conclusion/content/introToLrPath';
 
 export function NewGuidedIntro() {
-  const navigate = useNavigate();
-
   return (
     <div className="mc-bootcamp min-h-screen bg-[#F5F2ED] text-[#1a1a1a] flex">
       {/* Main Content Area */}
@@ -23,7 +19,7 @@ export function NewGuidedIntro() {
 
           {/* Path Steps */}
           <div className="space-y-16">
-            {INTRO_LR_PATH.map((action, i) => (
+            {INTRO_LR_PATH.map((action) => (
               <section key={action.id} id={action.id} className="scroll-mt-24 p-8 bg-white border border-[rgba(26,26,26,0.05)] rounded-[4px] shadow-sm">
                 <div className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-4">{action.type}</div>
                 <h2 className="text-3xl font-serif italic mb-6">{action.title}</h2>
@@ -37,7 +33,7 @@ export function NewGuidedIntro() {
                     className="inline-flex items-center gap-2 bg-[#1a1a1a] text-[#F5F2ED] px-6 py-3 text-sm font-bold uppercase tracking-wider hover:bg-[rgba(26,26,26,0.8)] transition-all"
                   >
                     {action.type === 'note' ? <BookOpen className="h-4 w-4" /> : <Dumbbell className="h-4 w-4" />}
-                    {action.type === 'note' ? 'Read Lesson' : 'Go to Action'}
+                    {getActionButtonLabel(action.type)}
                   </Link>
                 </div>
               </section>
