@@ -33,13 +33,6 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     noteId: 'argument-basics',
     requiredForSimulator: true,
   },
-  {
-    id: 'argument-basics-checkpoint',
-    type: 'checkpoint',
-    title: 'Basics Checkpoint',
-    requiredForSimulator: true,
-  },
-
   // 2. Premise vs Conclusion
   {
     id: 'premise-vs-conclusion',
@@ -57,15 +50,6 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     noteId: 'indicator-words',
     requiredForSimulator: true,
   },
-  {
-    id: 'indicator-slice',
-    type: 'drill-slice',
-    title: 'Signal Drill',
-    drillId: 'MC-DRL-3.1',
-    stage: 1,
-    requiredForSimulator: true,
-  },
-
   // 4. 2-Part Conclusion Check
   {
     id: 'two-part-check',
@@ -75,10 +59,24 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     requiredForSimulator: true,
   },
   {
+    id: 'structure-checkpoint',
+    type: 'checkpoint',
+    title: 'Structure Checkpoint',
+    requiredForSimulator: true,
+  },
+  {
     id: 'x-ray-slice',
     type: 'drill-slice',
     title: 'X-Ray Basics',
     drillId: 'MC-DRL-3.2',
+    stage: 1,
+    requiredForSimulator: true,
+  },
+  {
+    id: 'indicator-slice',
+    type: 'drill-slice',
+    title: 'Signal Drill',
+    drillId: 'MC-DRL-3.1',
     stage: 1,
     requiredForSimulator: true,
   },
@@ -125,22 +123,6 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     noteId: 'layered-arguments',
     requiredForSimulator: true,
   },
-  {
-    id: 'chain-mapping-slice',
-    type: 'drill-slice',
-    title: 'Chain Mapping',
-    drillId: 'MC-DRL-3.5',
-    stage: 1,
-    requiredForSimulator: true,
-  },
-  {
-    id: 'nested-claims-slice',
-    type: 'drill-slice',
-    title: 'Nested Claims',
-    drillId: 'MC-DRL-3.9',
-    stage: 1,
-    requiredForSimulator: true,
-  },
 
   // 8. Matching the Answer
   {
@@ -148,14 +130,6 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     type: 'note',
     title: 'Matching the Answer',
     noteId: 'matching-the-answer',
-    requiredForSimulator: true,
-  },
-  {
-    id: 'read-restate-slice',
-    type: 'drill-slice',
-    title: 'Restate',
-    drillId: 'MC-DRL-3.8',
-    stage: 1,
     requiredForSimulator: true,
   },
   {
@@ -187,22 +161,6 @@ export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
     type: 'practice-pool',
     title: 'Rebuttal Set',
     practiceSlug: 'rebuttal-conclusions',
-  },
-
-  // Read & Restate
-  {
-    id: 'read-restate-slice',
-    type: 'drill-slice',
-    title: 'Read & Restate',
-    drillId: 'MC-DRL-3.8',
-    stage: 1,
-  },
-  {
-    id: 'pronoun-replacement-slice',
-    type: 'drill-slice',
-    title: 'Pronoun Replacement',
-    drillId: 'MC-DRL-3.7',
-    stage: 1,
   },
 
   // 11. Simulator

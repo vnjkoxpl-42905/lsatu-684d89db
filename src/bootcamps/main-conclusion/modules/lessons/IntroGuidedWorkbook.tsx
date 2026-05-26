@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { INTRO_GUIDED_SEQUENCE } from "./introGuidedSequence";
-import { DRILL_3_1_STAGE_1, DRILL_3_2_STAGE_1, DRILL_3_3_STAGE_1, DRILL_3_4_STAGE_2, DRILL_3_5_QUESTIONS, DRILL_3_9_QUESTIONS, DRILL_3_8_PASSAGES, DRILL_3_7_QUESTIONS } from "@/bootcamps/main-conclusion/content/drills.source";
+import { DRILL_3_1_STAGE_1, DRILL_3_2_STAGE_1, DRILL_3_3_STAGE_1, DRILL_3_4_STAGE_2, DRILL_3_7_QUESTIONS } from "@/bootcamps/main-conclusion/content/drills.source";
 import { MAIN_CONCLUSION_PRACTICE_POOLS } from "@/bootcamps/main-conclusion/data/practiceDrillPools";
-import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, RebuttalEmbeddedSlice, ChainMappingEmbeddedSlice, NestedClaimsEmbeddedSlice, ReadRestateEmbeddedSlice, PronounEmbeddedSlice } from "./EmbeddedDrillRunner";
+import { XRayEmbeddedSlice, IndicatorEmbeddedSlice, FirstSentenceEmbeddedSlice, RebuttalEmbeddedSlice, PronounEmbeddedSlice } from "./EmbeddedDrillRunner";
 import { useModuleProgress } from "@/bootcamps/main-conclusion/hooks/useModuleProgress";
 import { Button } from "@/bootcamps/main-conclusion/components/primitives/Button";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
@@ -101,15 +101,6 @@ export function IntroGuidedWorkbook() {
             </p>
           </WorkbookNoteBlock>
         );
-      case 'argument-basics-checkpoint':
-        return (
-          <WorkbookCheckpoint 
-            title="Quick Check: Argument or Non-Argument?"
-            options={["Argument", "Non-Argument"]}
-            correctIndex={0}
-            explanation="The author is making a judgment—this is an argument."
-          />
-        );
       case 'premise-vs-conclusion':
         return (
           <WorkbookNoteBlock title="Mini Premise / Conclusion Breakdown">
@@ -125,6 +116,19 @@ export function IntroGuidedWorkbook() {
             </div>
           </WorkbookNoteBlock>
         );
+      case 'structure-checkpoint':
+        return (
+          <WorkbookCheckpoint
+            title="Which sentence is doing the proving?"
+            options={[
+              "The recommendation is the premise, because it sounds strongest.",
+              "The evidence sentence is the premise, and the recommendation is the conclusion.",
+              "Both are conclusions because both express ideas.",
+            ]}
+            correctIndex={1}
+            explanation="The premise is the sentence giving the reason. The conclusion is the sentence that reason is trying to prove."
+          />
+        );
       case 'x-ray-slice':
         return (
           <div className="py-8 scroll-mt-24">
@@ -139,6 +143,12 @@ export function IntroGuidedWorkbook() {
               <p className="text-xl leading-relaxed">
                 Learn indicators after you understand the parts. Conclusion indicators, premise indicators, pivots, and concession or opposing-view signals all help you spot structure faster.
               </p>
+              <ul className="space-y-3 text-lg leading-relaxed list-disc pl-5">
+                <li><strong>Conclusion indicators:</strong> therefore, thus, hence, so</li>
+                <li><strong>Premise indicators:</strong> because, since, for, given that</li>
+                <li><strong>Pivot indicators:</strong> but, however, yet</li>
+                <li><strong>Concession or opposing-view indicators:</strong> although, even though, some people argue</li>
+              </ul>
               <p className="text-lg leading-relaxed">
                 But indicators are still just clues. They point. They do not prove. Support is what confirms the conclusion.
               </p>
@@ -207,20 +217,6 @@ export function IntroGuidedWorkbook() {
             </p>
           </WorkbookNoteBlock>
         );
-      case 'chain-mapping-slice':
-        return (
-          <div className="py-8 scroll-mt-24">
-            <h3 className="text-2xl font-serif italic mb-6">Map the Chain</h3>
-            <ChainMappingEmbeddedSlice questions={DRILL_3_5_QUESTIONS.slice(0, 2)} />
-          </div>
-        );
-      case 'nested-claims-slice':
-        return (
-          <div className="py-8 scroll-mt-24">
-            <h3 className="text-2xl font-serif italic mb-6">Test the Pattern</h3>
-            <NestedClaimsEmbeddedSlice questions={DRILL_3_9_QUESTIONS.slice(0, 2)} />
-          </div>
-        );
       case 'matching-the-answer':
         return (
           <WorkbookNoteBlock title="Matching the Answer">
@@ -228,13 +224,6 @@ export function IntroGuidedWorkbook() {
               The right answer preserves the author's claim perfectly while changing the words. Stay anchored to Force, Scope, and Direction.
             </p>
           </WorkbookNoteBlock>
-        );
-      case 'restate-slice':
-        return (
-          <div className="py-8 scroll-mt-24">
-            <h3 className="text-2xl font-serif italic mb-6">Read & Restate</h3>
-            <ReadRestateEmbeddedSlice passages={DRILL_3_8_PASSAGES.slice(0, 2)} />
-          </div>
         );
       case 'pronoun-replacement-slice':
         return (
