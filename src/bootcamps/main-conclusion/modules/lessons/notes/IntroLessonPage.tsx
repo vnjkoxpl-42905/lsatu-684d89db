@@ -2,6 +2,13 @@ import type { ReactNode } from "react";
 
 import { IntroNotesShell } from "./IntroNotesShell";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+import {
+  AnswerChoiceDeck,
+  IndicatorPillGroup,
+  InteractiveCard,
+  SupportSimulator,
+  XRayExample,
+} from "./NoteInteractions";
 
 export type IntroLessonPageId =
   | "how-to-read-lr-stimulus"
@@ -54,26 +61,30 @@ const LessonSection = ({
 const CalloutCard = ({
   children,
   className,
+  prominent = false,
 }: {
   children: ReactNode;
   className?: string;
+  prominent?: boolean;
 }) => (
-  <div className={cn("rounded-[8px] border border-[rgba(26,26,26,0.10)] bg-[#FBF8F1] p-6 md:p-8", className)}>
+  <InteractiveCard prominent={prominent} className={cn("bg-[#FBF8F1] p-6 md:p-8", className)}>
     {children}
-  </div>
+  </InteractiveCard>
 );
 
 const GridCard = ({
   title,
   children,
+  prominent = false,
 }: {
   title: string;
   children: ReactNode;
+  prominent?: boolean;
 }) => (
-  <div className="rounded-[8px] border border-[rgba(26,26,26,0.10)] bg-white p-6 md:p-8">
+  <InteractiveCard prominent={prominent} focusable className="p-6 md:p-8">
     <h3 className="mb-4 font-serif text-[28px] italic leading-tight text-[#1a1a1a]">{title}</h3>
     <div className="space-y-4 text-[18px] leading-[1.68] text-[rgba(26,26,26,0.82)]">{children}</div>
-  </div>
+  </InteractiveCard>
 );
 
 const RowCard = ({
@@ -83,12 +94,12 @@ const RowCard = ({
   left: ReactNode;
   right: ReactNode;
 }) => (
-  <div className="overflow-hidden rounded-[10px] border border-[rgba(26,26,26,0.12)] bg-white">
+  <InteractiveCard focusable className="overflow-hidden">
     <div className="grid grid-cols-1 divide-y divide-[rgba(26,26,26,0.10)] md:grid-cols-[220px_1fr] md:divide-x md:divide-y-0">
       <div className="p-6 font-serif text-[24px] font-semibold leading-tight text-[#1a1a1a] md:p-8">{left}</div>
       <div className="p-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)] md:p-8">{right}</div>
     </div>
-  </div>
+  </InteractiveCard>
 );
 
 const QuoteCard = ({ children, className }: { children: ReactNode; className?: string }) => (
@@ -207,8 +218,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             This is a labeled anatomy example, not a graded question.
           </p>
-          <div className="grid gap-5">
-            <GridCard title="Stimulus">
+          <div className="grid gap-5 md:grid-cols-3">
+            <GridCard title="Stimulus" prominent>
               <p>
                 "Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each
                 to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst
@@ -219,17 +230,62 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               <p>Each of the following describes a flaw in the game show host's reasoning EXCEPT:</p>
             </GridCard>
             <GridCard title="Answer Choices">
-              <BulletList
-                items={[
-                  "(A) It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
-                  "(B) It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
-                  "(C) It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
-                  "(D) It inappropriately relies on the emotional appeal of an animal succeeding in a human profession. [Correct]",
-                  "(E) It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
-                ]}
-              />
+              <p>
+                The choices are not the reasoning. They are where the test checks whether you understood the reasoning.
+              </p>
             </GridCard>
           </div>
+          <AnswerChoiceDeck
+            items={[
+              {
+                id: "A",
+                text: "It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
+              },
+              {
+                id: "B",
+                text: "It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
+              },
+              {
+                id: "C",
+                text: "It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
+              },
+              {
+                id: "D",
+                text: "It inappropriately relies on the emotional appeal of an animal succeeding in a human profession.",
+                state: "correct",
+              },
+              {
+                id: "E",
+                text: "It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
+              },
+            ]}
+          />
+          <XRayExample
+            title="Scan the anatomy before you even think about the answer"
+            description="Turn the scan on to separate the prompt into the three parts LSAT gives you every time."
+            blocks={[
+              {
+                id: "stimulus",
+                label: "Stimulus",
+                tone: "premise",
+                content:
+                  '"Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst increased by only $140."',
+              },
+              {
+                id: "stem",
+                label: "Question stem",
+                tone: "pivot",
+                content: "Each of the following describes a flaw in the game show host's reasoning EXCEPT:",
+              },
+              {
+                id: "choices",
+                label: "Answer choices",
+                tone: "conclusion",
+                content:
+                  "The choices test whether you understood the stimulus. They do not create the reasoning for you.",
+              },
+            ]}
+          />
         </LessonSection>
       </>
     ),
@@ -282,6 +338,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             <p>Your blocks are solid. They aren't going anywhere. These are your <strong>premises</strong>.</p>
             <p>Your cake is squishy and fragile. It needs to be held up because it cannot fend for itself. This is your <strong>conclusion</strong>.</p>
           </div>
+          <SupportSimulator />
           <CalloutCard className="bg-white">
             <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-[18px] leading-[1.8] text-[#1a1a1a]">{`{CAKE}             <- Conclusion (squishy claims)
 
@@ -389,6 +446,35 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               <strong>FABS. Memorize it.</strong>
             </p>
           </div>
+          <IndicatorPillGroup
+            label="Tap each indicator"
+            items={[
+              {
+                id: "for",
+                label: "For",
+                tone: "premise",
+                explanation: "When you see 'for,' the author is usually about to hand you support for a claim that just appeared.",
+              },
+              {
+                id: "after-all",
+                label: "After all",
+                tone: "premise",
+                explanation: "After all signals a justification. The author is backing up something they want you to accept.",
+              },
+              {
+                id: "because",
+                label: "Because",
+                tone: "premise",
+                explanation: "Because introduces a reason. It tells you why the author thinks the later or earlier claim should be believed.",
+              },
+              {
+                id: "since",
+                label: "Since",
+                tone: "premise",
+                explanation: "Since often marks evidence rather than time in LR. Read the sentence structurally, not conversationally.",
+              },
+            ]}
+          />
           <QuoteCard className="bg-[#FBF8F1] pr-6">
             <p>
               <strong>Remember:</strong> For, After all, Because, Since = FABS. These words introduce premises.
@@ -446,14 +532,84 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               <strong>Memorize this list.</strong>
             </p>
           </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>The old bridge has started to crack, and engineers have warned that it is no longer safe. <strong>Therefore</strong>, the city should repair the bridge.</em>
-            </p>
-            <p className="mt-4">
-              <em><strong>Since</strong> the old bridge has started to crack and engineers have warned that it is no longer safe, the city should repair the bridge.</em>
-            </p>
-          </QuoteCard>
+          <IndicatorPillGroup
+            label="Conclusion clues"
+            items={[
+              {
+                id: "therefore",
+                label: "therefore",
+                tone: "conclusion",
+                explanation: "Therefore points forward to the claim the author wants you to accept.",
+              },
+              {
+                id: "thus",
+                label: "thus",
+                tone: "conclusion",
+                explanation: "Thus is compact, but it does the same job: it flags the author's takeaway.",
+              },
+              {
+                id: "hence",
+                label: "hence",
+                tone: "conclusion",
+                explanation: "Hence often sounds formal, but structurally it still means 'this follows from what came before.'",
+              },
+              {
+                id: "it-follows",
+                label: "it follows that",
+                tone: "conclusion",
+                explanation: "This phrase practically announces, 'Here is the claim I think my evidence proves.'",
+              },
+            ]}
+          />
+          <XRayExample
+            title="Same argument, different packaging"
+            description="One version labels the conclusion directly. The other labels the premises instead. The structure stays the same."
+            focusModes={[
+              { id: "version-a", label: "Version A" },
+              { id: "version-b", label: "Version B" },
+              { id: "conclusion", label: "Conclusion" },
+            ]}
+            blocks={[
+              {
+                id: "bridge-a-premise",
+                label: "Premise region",
+                tone: "premise",
+                tags: ["version-a"],
+                content: (
+                  <em>The old bridge has started to crack, and engineers have warned that it is no longer safe.</em>
+                ),
+              },
+              {
+                id: "bridge-a-conclusion",
+                label: "Indicator + conclusion",
+                tone: "conclusion",
+                tags: ["version-a", "conclusion"],
+                content: (
+                  <em>
+                    <strong>Therefore</strong>, the city should repair the bridge.
+                  </em>
+                ),
+              },
+              {
+                id: "bridge-b-premise",
+                label: "Indicator + premise",
+                tone: "premise",
+                tags: ["version-b"],
+                content: (
+                  <em>
+                    <strong>Since</strong> the old bridge has started to crack and engineers have warned that it is no longer safe,
+                  </em>
+                ),
+              },
+              {
+                id: "bridge-b-conclusion",
+                label: "Conclusion region",
+                tone: "conclusion",
+                tags: ["version-b", "conclusion"],
+                content: <em>the city should repair the bridge.</em>,
+              },
+            ]}
+          />
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>
               Same argument. Different indicator words. The conclusion is identical in both: <em>the city should repair the bridge.</em> In the first version, <strong>therefore</strong> points at it directly. In the second, <strong>since</strong> marks the premises instead, and the conclusion is just whatever's left.
@@ -515,113 +671,66 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Recommendations" className="space-y-8">
           <SectionHeading title="1. Recommendations" subtitle="What should happen" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A recommendation tells us what should happen.</p>
-            <p>The author is not describing the world. The author is giving advice, proposing a rule, or telling someone what ought to be done.</p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Double-blind techniques should be used whenever possible in scientific experiments.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The word <strong>should</strong> is the clue. The author has looked at the situation and decided on a course of action.</p>
-            <p>But recommendations always smuggle in a comparison. The author is assuming that the benefits of the proposal outweigh the costs, risks, or alternatives.</p>
-            <p>That is where these arguments usually break.</p>
-            <p>A weakener might show that the recommendation is too expensive, impractical, harmful in some cases, or worse than another available option.</p>
-            <p>The author says, "Do this."</p>
-            <p>Your job is to ask, <strong>"Why is that the best move?"</strong></p>
-          </div>
+          <GridCard title="Recommendation card" prominent>
+            <p><strong>Definition:</strong> A recommendation tells us what should happen.</p>
+            <p><strong>Example:</strong> <em>Double-blind techniques should be used whenever possible in scientific experiments.</em></p>
+            <p><strong>What the author is doing:</strong> Giving advice, proposing a rule, or saying what ought to be done.</p>
+            <p><strong>Common weakness:</strong> The author has to assume the proposal is better than the costs, risks, or alternatives.</p>
+            <p><strong>Student question:</strong> <strong>Why is that the best move?</strong></p>
+          </GridCard>
         </LessonSection>
 
         <LessonSection tocTitle="Causal Hypotheses" className="space-y-8">
           <SectionHeading title="2. Causal Hypotheses" subtitle="What explains it" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A causal hypothesis claims to know why something happened.</p>
-            <p>The author notices a pattern, statistic, trend, or timing connection, then turns that connection into an explanation.</p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Restrictions on tobacco advertisements caused the reduction in the number of people smoking.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The word <strong>caused</strong> is doing the heavy lifting.</p>
-            <p>The problem is that patterns do not prove causes. Just because two things happened around the same time does not mean one produced the other.</p>
-            <p>Maybe something else caused the drop in smoking. Maybe smoking was already declining. Maybe public attitudes changed. Maybe the restriction helped, but was not the main cause.</p>
-            <p>Causal conclusions are fragile because they usually move too quickly from "these things are connected" to "this thing caused that thing."</p>
-            <p>The author says, "This explains it."</p>
-            <p>Your job is to ask, <strong>"What else could explain it?"</strong></p>
-          </div>
+          <GridCard title="Causal hypothesis card" prominent>
+            <p><strong>Definition:</strong> A causal hypothesis claims to know why something happened.</p>
+            <p><strong>Example:</strong> <em>Restrictions on tobacco advertisements caused the reduction in the number of people smoking.</em></p>
+            <p><strong>What the author is doing:</strong> Turning a pattern, trend, or timing connection into an explanation.</p>
+            <p><strong>Common weakness:</strong> Correlation, timing, or coexistence do not prove cause; something else may explain the result.</p>
+            <p><strong>Student question:</strong> <strong>What else could explain it?</strong></p>
+          </GridCard>
         </LessonSection>
 
         <LessonSection tocTitle="Predictions" className="space-y-8">
           <SectionHeading title="3. Predictions" subtitle="What will happen" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A prediction claims that something will happen.</p>
-            <p>The author takes what is true now, or what has been true so far, and projects it into the future.</p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Global warming probably will not produce more frequent and intense tropical storms.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The word <strong>probably</strong> does not make the argument safe. It only makes the conclusion sound more careful.</p>
-            <p>Every prediction depends on a quiet assumption: the relevant conditions will stay the same.</p>
-            <p>Often, they will not.</p>
-            <p>A prediction can fail because new evidence appears, a trend changes, outside conditions shift, or the author relies too heavily on the past.</p>
-            <p>The author says, "This is what will happen."</p>
-            <p>Your job is to ask, <strong>"What could change?"</strong></p>
-          </div>
+          <GridCard title="Prediction card" prominent>
+            <p><strong>Definition:</strong> A prediction claims that something will happen.</p>
+            <p><strong>Example:</strong> <em>Global warming probably will not produce more frequent and intense tropical storms.</em></p>
+            <p><strong>What the author is doing:</strong> Projecting current or past conditions into the future.</p>
+            <p><strong>Common weakness:</strong> Predictions assume the relevant conditions will stay stable, and often they do not.</p>
+            <p><strong>Student question:</strong> <strong>What could change?</strong></p>
+          </GridCard>
         </LessonSection>
 
         <LessonSection tocTitle="Judgments And Labels" className="space-y-8">
           <SectionHeading title="4. Judgments and Labels" subtitle="What verdict is being assigned" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A judgment assigns a verdict.</p>
-            <p>The author is not just reporting facts. The author is evaluating something, blaming something, praising something, or attaching a label to it.</p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Because the new products are selling poorly, the ad campaign is ill-conceived.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p><strong>Ill-conceived</strong> is not a fact. It is a judgment.</p>
-            <p>The author sees poor sales and blames the ad campaign. But poor sales alone do not prove that the campaign was bad.</p>
-            <p>Maybe the product itself was weak. Maybe the price was too high. Maybe the market changed. Maybe a competitor released something better. Maybe the campaign worked, but not well enough to overcome other problems.</p>
-            <p>Judgment conclusions often sound confident because the label is strong. But the reasoning underneath is usually doing less work than the author thinks.</p>
-            <p>The author says, "This deserves that label."</p>
-            <p>Your job is to ask, <strong>"Did they actually prove that label fits?"</strong></p>
-          </div>
+          <GridCard title="Judgment / label card" prominent>
+            <p><strong>Definition:</strong> A judgment assigns a verdict or label.</p>
+            <p><strong>Example:</strong> <em>Because the new products are selling poorly, the ad campaign is ill-conceived.</em></p>
+            <p><strong>What the author is doing:</strong> Evaluating, blaming, praising, or attaching a descriptive verdict.</p>
+            <p><strong>Common weakness:</strong> The label sounds strong, but the evidence may not actually prove that the label fits.</p>
+            <p><strong>Student question:</strong> <strong>Did they actually prove that label fits?</strong></p>
+          </GridCard>
         </LessonSection>
 
         <LessonSection tocTitle="Rebuttals" className="space-y-8">
           <SectionHeading title="5. Rebuttals" subtitle="When the author says someone else is wrong" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>A rebuttal is the author saying someone else is wrong.</p>
-            <p>These usually have a clear setup:</p>
-          </div>
-          <NumberList
-            items={[
-              <span><strong>Attribution:</strong> someone else's view is introduced.</span>,
-              <span><strong>Pivot:</strong> the author turns against that view.</span>,
-              <span><strong>Rebuttal:</strong> the author gives their own disagreement.</span>,
-            ]}
-          />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Critics say this movie is unrealistic. They are wrong, because it is a funny comedy and that is all that matters.</em>
-            </p>
-          </QuoteCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>The critics' view is the attribution. The phrase <strong>they are wrong</strong> is the pivot into the author's position.</p>
-            <p>Once you see that pattern, rebuttal conclusions become much easier to find. The author is not merely giving a new idea. The author is responding to someone else.</p>
-            <p>The weakness usually sits in the response. The author may reject the other side for a bad reason, misunderstand the criticism, or fail to address the actual point being made.</p>
-            <p>The author says, "They are wrong."</p>
-            <p>Your job is to ask, <strong>"Did the author actually answer them?"</strong></p>
-          </div>
+          <GridCard title="Rebuttal card" prominent>
+            <p><strong>Definition:</strong> A rebuttal is the author saying someone else is wrong.</p>
+            <p><strong>Example:</strong> <em>Critics say this movie is unrealistic. They are wrong, because it is a funny comedy and that is all that matters.</em></p>
+            <p><strong>What the author is doing:</strong> Introducing another view, pivoting, and then responding against it.</p>
+            <p><strong>Common weakness:</strong> The author may answer the wrong criticism, reject the other side badly, or never really respond to the point.</p>
+            <p><strong>Student question:</strong> <strong>Did the author actually answer them?</strong></p>
+          </GridCard>
+          <CalloutCard className="bg-white">
+            <NumberList
+              items={[
+                <span><strong>Attribution:</strong> someone else's view is introduced.</span>,
+                <span><strong>Pivot:</strong> the author turns against that view.</span>,
+                <span><strong>Rebuttal:</strong> the author gives their own disagreement.</span>,
+              ]}
+            />
+          </CalloutCard>
         </LessonSection>
 
         <LessonSection tocTitle="Remember" className="space-y-8 border-b-0">
@@ -725,6 +834,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               ]}
             />
           </GridCard>
+          <IndicatorPillGroup
+            label="Attribution language"
+            items={[
+              { id: "critics", label: "some critics argue", tone: "opposing", explanation: "That phrase tells you the sentence belongs to critics, not automatically to the author." },
+              { id: "believe", label: "many people believe", tone: "opposing", explanation: "Belief language is a clue that the view is being attributed before the author takes a stance on it." },
+              { id: "assumed", label: "it is often assumed", tone: "opposing", explanation: "Assumptions often introduce a position the author may qualify or push back against." },
+            ]}
+          />
           <GridCard title="Common Student Mistake">
             <p>Students often mistake another person's view for the author's conclusion.</p>
             <p>Before calling something the conclusion, ask: <strong>Whose view is this?</strong></p>
@@ -795,6 +912,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               items={["although", "even though", "while", "granted", "admittedly", "to be sure", "despite"]}
             />
           </GridCard>
+          <IndicatorPillGroup
+            label="Concession language"
+            items={[
+              { id: "although", label: "although", tone: "pivot", explanation: "Although often lets the author grant a point before steering toward the real claim." },
+              { id: "granted", label: "granted", tone: "pivot", explanation: "Granted flags a point the author is willing to give away without surrendering the argument." },
+              { id: "admittedly", label: "admittedly", tone: "pivot", explanation: "Admittedly sounds generous, but structurally it often clears space for the author's real move." },
+            ]}
+          />
           <GridCard title="Common Student Mistake">
             <p>Students often mistake a concession for the author's main point because it sounds important or balanced.</p>
           </GridCard>
@@ -829,6 +954,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               items={["but", "however", "nevertheless", "still", "yet", "even so", "nonetheless", "despite this"]}
             />
           </GridCard>
+          <IndicatorPillGroup
+            label="Pivot language"
+            items={[
+              { id: "but", label: "but", tone: "pivot", explanation: "But is the cleanest turn signal. Something important often happens right after it." },
+              { id: "however", label: "however", tone: "pivot", explanation: "However often marks the moment the author separates from an opposing view." },
+              { id: "still", label: "still", tone: "pivot", explanation: "Still acknowledges the pressure from the other side, then pushes forward anyway." },
+            ]}
+          />
           <GridCard title="Common Student Mistake">
             <p>Students often ignore pivot words and accidentally choose the opposing view or concession as the conclusion.</p>
           </GridCard>
@@ -857,6 +990,51 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="Full Argument Examples" className="space-y-8">
           <SectionHeading title="Applied Labeled Examples" subtitle="Putting the pieces together" />
+          <XRayExample
+            title="Vegetarian diets: separate the author's case from everything around it"
+            description="This is the full layered structure students often blur together on first read."
+            blocks={[
+              {
+                id: "veg-opposing",
+                label: "Opposing view",
+                tone: "opposing",
+                tags: ["claim-a"],
+                content: <em>Many nutritionists argue that vegetarian diets make it difficult to get enough protein.</em>,
+              },
+              {
+                id: "veg-support",
+                label: "Opposing support",
+                tone: "opposing",
+                tags: ["claim-a"],
+                content: <em>They point out that meat contains all essential amino acids.</em>,
+              },
+              {
+                id: "veg-concession",
+                label: "Concession",
+                tone: "pivot",
+                tags: ["claim-b"],
+                content: <em>Although vegetarian diets require more planning,</em>,
+              },
+              {
+                id: "veg-author-premise",
+                label: "Author's premise",
+                tone: "premise",
+                tags: ["claim-b"],
+                content: <em>plant-based diets can provide complete nutrition when properly balanced.</em>,
+              },
+              {
+                id: "veg-conclusion",
+                label: "Author's conclusion",
+                tone: "conclusion",
+                tags: ["claim-b"],
+                content: <em>Therefore, most people can be healthy without eating meat.</em>,
+              },
+            ]}
+            focusModes={[
+              { id: "claim-a", label: "Opposing side" },
+              { id: "claim-b", label: "Author's side" },
+            ]}
+          />
           <div className="grid gap-5">
             <GridCard title="Example 1: Vegetarian Diets">
               <QuoteCard>
@@ -1067,11 +1245,43 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <LessonSection tocTitle="Apatosaurus Argument" className="space-y-8">
           <SectionHeading title="Example: The Apatosaurus Argument" subtitle="Run the check on each claim" />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">Here is a simple rebuttal argument:</p>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <em>Some paleontologists suggest the Apatosaurus was able to gallop. However, this is unlikely. Experiments show the strain of galloping would have broken their legs.</em>
-            </p>
-          </QuoteCard>
+          <XRayExample
+            title="Apatosaurus argument"
+            description="Use the scan to separate the attributed view, the author's conclusion, and the supporting evidence."
+            source={
+              <p>
+                <em>Some paleontologists suggest the Apatosaurus was able to gallop. However, this is unlikely. Experiments show the strain of galloping would have broken their legs.</em>
+              </p>
+            }
+            blocks={[
+              {
+                id: "claim-a",
+                label: "Claim A · attributed view",
+                tone: "opposing",
+                tags: ["claim-a"],
+                content: <em>Some paleontologists suggest the Apatosaurus was able to gallop.</em>,
+              },
+              {
+                id: "claim-b",
+                label: "Claim B · author's conclusion",
+                tone: "conclusion",
+                tags: ["claim-b"],
+                content: <em>However, this is unlikely.</em>,
+              },
+              {
+                id: "claim-c",
+                label: "Claim C · premise",
+                tone: "premise",
+                tags: ["claim-c", "claim-b"],
+                content: <em>Experiments show the strain of galloping would have broken their legs.</em>,
+              },
+            ]}
+            focusModes={[
+              { id: "claim-a", label: "Claim A" },
+              { id: "claim-b", label: "Claim B" },
+              { id: "claim-c", label: "Claim C" },
+            ]}
+          />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">There are three claims here. Only one is the main conclusion.</p>
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">Let's run the check.</p>
         </LessonSection>
@@ -1160,7 +1370,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>For every possible conclusion, ask:</p>
           </div>
-          <CalloutCard className="bg-white">
+          <CalloutCard className="bg-white" prominent>
             <NumberList
               items={[
                 <span><strong>Is this the author's own opinion?</strong></span>,

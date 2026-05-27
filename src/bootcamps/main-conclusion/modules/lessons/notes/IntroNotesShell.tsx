@@ -47,10 +47,10 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
               <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">{subtitle}</p>
             </div>
 
-            <aside className="summary-card bg-white border border-[rgba(26,26,26,0.1)] p-1 shadow-[0_26px_76px_rgba(26,26,26,0.12)]">
+            <aside className="summary-card rounded-[20px] border border-[rgba(26,26,26,0.1)] bg-white p-1 shadow-[0_26px_76px_rgba(26,26,26,0.12)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_34px_90px_rgba(26,26,26,0.16)] focus-within:-translate-y-[2px] focus-within:border-[rgba(26,26,26,0.18)] focus-within:shadow-[0_34px_90px_rgba(26,26,26,0.16)]">
               <button 
                 onClick={() => document.getElementById('notesDrawer')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full bg-[#1a1a1a] text-[#F5F2ED] p-8 min-h-[350px] flex flex-col items-center justify-center gap-6 text-center hover:bg-[rgba(26,26,26,0.9)] transition-all"
+                className="w-full rounded-[18px] bg-[#1a1a1a] text-[#F5F2ED] p-8 min-h-[350px] flex flex-col items-center justify-center gap-6 text-center transition-all duration-200 ease-out hover:bg-[rgba(26,26,26,0.9)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
               >
                 <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[rgba(245,242,237,0.46)]">BEGIN</div>
                 <div className="text-4xl font-serif italic">Start reading</div>
@@ -76,7 +76,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                     <div className="flex justify-end">
                       <Link 
                         to={nextAction.route} 
-                        className="group flex items-center justify-between p-8 bg-white border border-[rgba(26,26,26,0.1)] hover:border-[rgba(26,26,26,0.3)] transition-all"
+                        className="group flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
                       >
                         <div>
                           <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
@@ -85,7 +85,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
                           <div className="text-2xl font-serif italic mb-1">{nextAction.title}</div>
                           <div className="text-sm text-[rgba(26,26,26,0.6)]">{nextAction.description}</div>
                         </div>
-                        <div className="bg-[#1a1a1a] text-[#F5F2ED] px-6 py-4 flex items-center gap-3 group-hover:bg-[rgba(26,26,26,0.88)] ml-4">
+                        <div className="rounded-full bg-[#1a1a1a] text-[#F5F2ED] px-6 py-4 flex items-center gap-3 transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.88)] ml-4">
                           <span className="text-[12px] uppercase tracking-[0.18em] font-bold">Continue</span>
                           <ArrowRight className="h-5 w-5" />
                         </div>
