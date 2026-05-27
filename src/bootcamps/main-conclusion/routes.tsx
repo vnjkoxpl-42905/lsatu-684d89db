@@ -110,8 +110,6 @@ function NoteLoader() {
     case 'beyond-premises-and-conclusions':
     case 'two-part-conclusion-check':
       return <IntroLessonPage pageId={pageId} />;
-    case 'practice-path':
-      return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
     default:
       return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
   }
