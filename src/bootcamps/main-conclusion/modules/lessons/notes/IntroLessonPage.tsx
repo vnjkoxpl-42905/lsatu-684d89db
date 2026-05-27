@@ -11,6 +11,7 @@ import {
 } from "./NoteInteractions";
 import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
+import { ConclusionTypeSwitchboard } from "./components/ConclusionTypeSwitchboard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { StructureXRayText } from "./components/StructureXRayText";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
@@ -673,6 +674,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               already starting to see where the argument might break.
             </p>
           </div>
+          <ConclusionTypeSwitchboard />
         </LessonSection>
 
         <LessonSection tocTitle="Recommendations" className="space-y-8">
