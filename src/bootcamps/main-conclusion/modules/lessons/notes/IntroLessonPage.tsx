@@ -9,8 +9,11 @@ import {
   SupportSimulator,
   XRayExample,
 } from "./NoteInteractions";
+import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
+import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { StructureXRayText } from "./components/StructureXRayText";
+import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
 
 export type IntroLessonPageId =
   | "how-to-read-lr-stimulus"
@@ -439,6 +442,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               },
             ]}
           />
+          <PremiseSupportCheck />
           <QuoteCard className="bg-[#FBF8F1] pr-6">
             <p>
               <strong>Remember:</strong> For, After all, Because, Since = FABS. These words introduce premises.
@@ -1037,6 +1041,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               { id: "claim-b", label: "Author's side" },
             ]}
           />
+          <RoleSpotlightSequence />
           <div className="grid gap-5">
             <GridCard title="Example 1: Vegetarian Diets">
               <QuoteCard>
@@ -1286,6 +1291,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">There are three claims here. Only one is the main conclusion.</p>
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">Let's run the check.</p>
+          <TwoPartConclusionCheckMachine />
         </LessonSection>
 
         <LessonSection tocTitle="Claim A" className="space-y-8">
