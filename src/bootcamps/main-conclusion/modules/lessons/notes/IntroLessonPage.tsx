@@ -204,7 +204,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <QuestionAnatomyScanner />
           <StructureXRayText
             title="Stock Analysts stimulus"
-            description="Once the anatomy is clear, turn on the X-Ray and see what the stimulus itself is doing."
+            description="Once the anatomy is clear, show the structure and see what the stimulus itself is doing."
             coachNote={
               <>
                 The answer choices are downstream from this structure. The conclusion is the claim about humans and apes.

@@ -65,7 +65,7 @@ export function StructureXRayText({
 }) {
   const reducedMotion = useReducedMotion();
   const panelId = useId();
-  const [xrayOn, setXrayOn] = useState(false);
+  const [structureOn, setStructureOn] = useState(false);
   const [activeSegmentId, setActiveSegmentId] = useState<string | null>(null);
 
   const activeSegment = segments.find((segment) => segment.id === activeSegmentId) ?? null;
@@ -76,22 +76,22 @@ export function StructureXRayText({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
-              Structure X-Ray
+              Structure view
             </div>
             <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">{title}</h3>
             {description ? <div className="max-w-2xl text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">{description}</div> : null}
           </div>
           <button
             type="button"
-            aria-expanded={xrayOn}
+            aria-expanded={structureOn}
             aria-controls={panelId}
             onClick={() => {
-              setXrayOn((current) => !current);
-              if (xrayOn) setActiveSegmentId(null);
+              setStructureOn((current) => !current);
+              if (structureOn) setActiveSegmentId(null);
             }}
             className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#F5F2ED] transition-colors duration-200 ease-out hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
           >
-            {xrayOn ? "Hide Structure X-Ray" : "Run Structure X-Ray"}
+            {structureOn ? "Hide structure" : "Show structure"}
           </button>
         </div>
       </div>
@@ -103,16 +103,16 @@ export function StructureXRayText({
               <button
                 key={segment.id}
                 type="button"
-                disabled={!xrayOn}
-                aria-pressed={xrayOn && activeSegmentId === segment.id}
+                disabled={!structureOn}
+                aria-pressed={structureOn && activeSegmentId === segment.id}
                 onClick={() => setActiveSegmentId((current) => (current === segment.id ? null : segment.id))}
                 className={cn(
                   "inline rounded-[4px] px-[2px] py-[1px] text-left transition-[color,border-color,background-color,opacity] duration-150 ease-out",
-                  xrayOn ? "cursor-pointer hover:bg-[rgba(26,26,26,0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2" : "cursor-default",
-                  !xrayOn && "text-[rgba(26,26,26,0.84)]",
-                  xrayOn && ROLE_STYLES[segment.role].ink,
-                  xrayOn && ROLE_STYLES[segment.role].underline,
-                  xrayOn && activeSegmentId === segment.id && "bg-[rgba(26,26,26,0.04)]",
+                  structureOn ? "cursor-pointer hover:bg-[rgba(26,26,26,0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2" : "cursor-default",
+                  !structureOn && "text-[rgba(26,26,26,0.84)]",
+                  structureOn && ROLE_STYLES[segment.role].ink,
+                  structureOn && ROLE_STYLES[segment.role].underline,
+                  structureOn && activeSegmentId === segment.id && "bg-[rgba(26,26,26,0.04)]",
                 )}
               >
                 {segment.text}{" "}
@@ -122,7 +122,7 @@ export function StructureXRayText({
         </div>
 
         <AnimatePresence initial={false}>
-          {xrayOn ? (
+          {structureOn ? (
             <motion.div
               initial={reducedMotion ? false : { opacity: 0, y: 8 }}
               animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
@@ -155,7 +155,7 @@ export function StructureXRayText({
             </motion.div>
           ) : (
             <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-[#FBF8F1] px-4 py-4 text-[15px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
-              Turn on the X-Ray after you read the stimulus normally. The goal is to see the structure only after you have engaged with the text.
+              Read the stimulus normally first. Then show the structure so you can see what each part is doing.
             </div>
           )}
         </AnimatePresence>

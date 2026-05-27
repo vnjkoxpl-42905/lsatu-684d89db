@@ -177,30 +177,63 @@ export function AnswerChoiceDeck({
 
 export function SupportSimulator() {
   const [removed, setRemoved] = useState(false);
+  const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
+  const [submittedCheck, setSubmittedCheck] = useState(false);
   const reducedMotion = useReducedMotion();
+
+  const readyForCheck = removed;
+  const checkCorrect = selectedCheck === "lost-support";
+
+  function toggleSupport() {
+    setRemoved((current) => {
+      const next = !current;
+      if (!next) {
+        setSelectedCheck(null);
+        setSubmittedCheck(false);
+      }
+      return next;
+    });
+  }
+
+  function resetAll() {
+    setRemoved(false);
+    setSelectedCheck(null);
+    setSubmittedCheck(false);
+  }
 
   return (
     <InteractiveCard prominent className="overflow-hidden border-[rgba(26,26,26,0.14)] bg-[linear-gradient(180deg,#fffdf9_0%,#fbf7ef_100%)] p-6 md:p-8">
       <div className="space-y-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.5)]">Support Simulator</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.5)]">Support check</p>
             <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">See what happens when support disappears</h3>
             <p className="max-w-2xl text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
               Premises are the load-bearing pieces. When one drops away, the conclusion immediately looks less secure.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span
+              aria-live="polite"
+              className={cn(
+                "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
+                removed
+                  ? "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]"
+                  : "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]",
+              )}
+            >
+              {removed ? "Support weakened" : "Supported"}
+            </span>
             <button
               type="button"
-              onClick={() => setRemoved((current) => !current)}
+              onClick={toggleSupport}
               className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
             >
-              {removed ? "Restore Support" : "Remove a Premise"}
+              {removed ? "Put support back" : "Take one premise away"}
             </button>
             <button
               type="button"
-              onClick={() => setRemoved(false)}
+              onClick={resetAll}
               className="rounded-full border border-[rgba(26,26,26,0.12)] bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors duration-200 hover:bg-[#F8F5EE] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
             >
               Reset
@@ -272,6 +305,91 @@ export function SupportSimulator() {
             </div>
           </div>
         </div>
+
+        <AnimatePresence initial={false}>
+          {readyForCheck ? (
+            <motion.div
+              initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+              animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+              transition={{ duration: reducedMotion ? 0.01 : 0.2, ease: "easeOut" }}
+              className="space-y-4 rounded-[16px] border border-[rgba(26,26,26,0.08)] bg-white p-5"
+            >
+              <div className="space-y-2">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
+                  Quick check
+                </div>
+                <p className="text-[18px] leading-[1.65] text-[#1a1a1a]">What failed when one premise disappeared?</p>
+              </div>
+
+              <div className="grid gap-3">
+                {[
+                  {
+                    id: "lost-support",
+                    label: "The claim lost part of the support holding it up.",
+                  },
+                  {
+                    id: "premise-false",
+                    label: "The missing premise became false, so the argument ended.",
+                  },
+                  {
+                    id: "conclusion-role",
+                    label: "The conclusion turned into a premise once the block moved.",
+                  },
+                ].map((choice) => (
+                  <button
+                    key={choice.id}
+                    type="button"
+                    disabled={submittedCheck}
+                    aria-pressed={selectedCheck === choice.id}
+                    onClick={() => setSelectedCheck(choice.id)}
+                    className={cn(
+                      "rounded-[12px] border px-4 py-4 text-left text-[16px] leading-[1.6] transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
+                      selectedCheck === choice.id
+                        ? "border-[rgba(26,26,26,0.22)] bg-[#FBF8F1] shadow-[0_10px_18px_rgba(26,26,26,0.05)]"
+                        : "border-[rgba(26,26,26,0.10)] bg-white hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)]",
+                      submittedCheck && choice.id === "lost-support" && "border-[#B9D6B4] bg-[#F6FBF3]",
+                      submittedCheck && selectedCheck === choice.id && choice.id !== "lost-support" && "border-[#E6D6B2] bg-[#FEFBF2]",
+                    )}
+                  >
+                    {choice.label}
+                  </button>
+                ))}
+              </div>
+
+              {!submittedCheck ? (
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-[14px] leading-[1.6] text-[rgba(26,26,26,0.62)]">
+                    Pick the best description before revealing the explanation.
+                  </p>
+                  <button
+                    type="button"
+                    disabled={!selectedCheck}
+                    onClick={() => setSubmittedCheck(true)}
+                    className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                  >
+                    Check it
+                  </button>
+                </div>
+              ) : (
+                <div
+                  aria-live="polite"
+                  className={cn(
+                    "rounded-[12px] border px-4 py-4 text-[15px] leading-[1.65]",
+                    checkCorrect
+                      ? "border-[#B9D6B4] bg-[#F6FBF3] text-[#2F5B35]"
+                      : "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]",
+                  )}
+                >
+                  <strong>{checkCorrect ? "Exactly." : "Not quite."}</strong>{" "}
+                  The problem is not that the premise became false or that the conclusion changed jobs. The problem is
+                  that the claim lost some of the evidence supporting it.
+                </div>
+              )}
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </InteractiveCard>
   );
@@ -307,7 +425,7 @@ export function XRayExample({
       <div className="border-b border-[rgba(26,26,26,0.08)] px-6 py-5 md:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">X-Ray Example</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">Structure example</div>
             <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">{title}</h3>
             {description ? <div className="text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">{description}</div> : null}
           </div>
@@ -322,7 +440,7 @@ export function XRayExample({
             aria-pressed={scanOn}
             className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
           >
-            {scanOn ? "Hide X-Ray" : "X-Ray Scan"}
+            {scanOn ? "Hide structure" : "Show structure"}
           </button>
         </div>
       </div>

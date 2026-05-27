@@ -135,7 +135,7 @@ export function QuestionAnatomyScanner() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
-              Question Anatomy Scanner
+              Question anatomy
             </div>
             <p className="max-w-2xl text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">
               Click each part in order. Stimulus first, then question stem, then answer choices.
