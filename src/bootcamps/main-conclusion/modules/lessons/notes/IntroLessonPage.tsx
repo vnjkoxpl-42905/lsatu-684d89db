@@ -130,7 +130,7 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
 
 const pages: Record<IntroLessonPageId, PageDefinition> = {
   "how-to-read-lr-stimulus": {
-    eyebrow: "Page 1",
+    eyebrow: "",
     title: "How to Read an LR Stimulus",
     subtitle:
       "Logical Reasoning starts with active reading: find the conclusion, find the premises, and test whether the support really proves the claim.",
@@ -172,7 +172,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "three-parts-lr-question": {
-    eyebrow: "Page 2",
+    eyebrow: "",
     title: "The Three Parts of an LR Question",
     subtitle: "Every question has a stimulus, a question stem, and answer choices, but the reasoning lives in the stimulus.",
     content: (
@@ -201,7 +201,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         </LessonSection>
 
         <LessonSection tocTitle="Stock Analysts" className="space-y-8 border-b-0">
-          <SectionHeading title="Anatomy Example" subtitle="The Stock Analysts" />
+          <SectionHeading title="Structure Example" subtitle="The Stock Analysts" />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             This is one normal LR question. Touch the visible parts in order, then run the structure view on the
             stimulus itself.
@@ -209,7 +209,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <QuestionAnatomyScanner />
           <StructureXRayText
             title="Stock Analysts stimulus"
-            description="Once the anatomy is clear, show the structure and see what the stimulus itself is doing."
+            description="Once the question structure is clear, show the structure and see what the stimulus itself is doing."
             coachNote={
               <>
                 The answer choices are downstream from this structure. The conclusion is the claim about humans and apes.
@@ -259,7 +259,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "so-an-argument": {
-    eyebrow: "Page 3",
+    eyebrow: "",
     title: "So, An Argument",
     subtitle: "Arguments are the centerpiece of LR: premises support conclusions, and everything else builds from that picture.",
     content: (
@@ -338,7 +338,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   premises: {
-    eyebrow: "Page 4",
+    eyebrow: "",
     title: "Premises",
     subtitle: "Premises are the facts and evidence you accept as true; the real question is how they connect to the conclusion.",
     content: (
@@ -454,7 +454,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   conclusions: {
-    eyebrow: "Page 5",
+    eyebrow: "",
     title: "Conclusions",
     subtitle: "Conclusions are the author's claims and judgments; they are the part of the argument you question.",
     content: (
@@ -649,7 +649,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "five-types-of-conclusions": {
-    eyebrow: "Page 6",
+    eyebrow: "",
     title: "Five Types of Conclusions",
     subtitle: "Once you find the conclusion, name its type so you can predict the weakness that usually comes with it.",
     content: (
@@ -761,7 +761,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "beyond-premises-and-conclusions": {
-    eyebrow: "Page 7",
+    eyebrow: "",
     title: "Beyond Premises and Conclusions",
     subtitle: "Not every sentence belongs to the author's own argument, so separate context, opposition, concessions, and pivots from the real claim.",
     content: (
@@ -1197,7 +1197,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   "two-part-conclusion-check": {
-    eyebrow: "Page 8",
+    eyebrow: "",
     title: "The 2-Part Conclusion Check",
     subtitle: "Two questions. Both must be yes. It is the cleanest way to verify the main conclusion.",
     content: (

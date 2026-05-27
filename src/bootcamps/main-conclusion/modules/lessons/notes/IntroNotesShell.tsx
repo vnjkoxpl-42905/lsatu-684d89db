@@ -5,7 +5,7 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { getNextAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
 
 interface IntroNotesShellProps {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   subtitle: string;
   children: ReactNode;
@@ -40,7 +40,11 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
           {/* Launch / Hero Screen */}
           <section className="launch-screen min-h-screen flex flex-col justify-center grid grid-cols-1 md:grid-cols-[1fr_minmax(330px,390px)] gap-16 items-center py-20">
             <div className="hero-copy">
-              <p className="text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)] mb-6">{eyebrow}</p>
+              {eyebrow ? (
+                <p className="mb-6 text-[10px] uppercase tracking-[0.30em] text-[rgba(26,26,26,0.46)]">
+                  {eyebrow}
+                </p>
+              ) : null}
               <h1 className="text-[clamp(72px,10vw,136px)] font-serif italic font-medium leading-[0.80] tracking-[-0.08em] mb-8">{title}</h1>
               <p className="text-xl md:text-2xl text-[rgba(26,26,26,0.6)] leading-relaxed max-w-2xl">{subtitle}</p>
             </div>

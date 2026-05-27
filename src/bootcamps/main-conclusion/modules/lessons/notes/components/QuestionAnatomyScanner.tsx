@@ -16,6 +16,7 @@ type AnatomyRegion = {
 
 type ScannerStep = {
   id: AnatomyRegionId;
+  label: string;
   prompt: string;
   success: string;
 };
@@ -23,17 +24,20 @@ type ScannerStep = {
 const STEPS: ScannerStep[] = [
   {
     id: "stimulus",
-    prompt: "Find the stimulus first.",
+    label: "Stimulus",
+    prompt: "Tap the stimulus first.",
     success: "Right. The reasoning lives in the stimulus.",
   },
   {
     id: "stem",
-    prompt: "Now find the question stem.",
+    label: "Stem",
+    prompt: "Now tap the question stem.",
     success: "Good. The question stem tells you the task.",
   },
   {
     id: "answers",
-    prompt: "Now find the answer choices.",
+    label: "Answers",
+    prompt: "Now tap the answer choices.",
     success: "Exactly. The answer choices test whether you understood the stimulus.",
   },
 ];
@@ -102,8 +106,9 @@ export function QuestionAnatomyScanner() {
       const isCompleted = completedIds.includes(region.id);
       const isActive = activeId === region.id;
       const isExpected = nextStep?.id === region.id;
+      const isWaiting = !isComplete && !isCompleted && !isExpected;
       const isSecondaryAfterComplete = isComplete && region.id !== "stimulus";
-      return { ...region, isCompleted, isActive, isExpected, isSecondaryAfterComplete };
+      return { ...region, isCompleted, isActive, isExpected, isWaiting, isSecondaryAfterComplete };
     });
   }, [activeId, completedIds, isComplete, nextStep]);
 
@@ -116,7 +121,7 @@ export function QuestionAnatomyScanner() {
 
     if (regionId !== nextStep?.id) {
       const expectedLabel = REGIONS.find((region) => region.id === nextStep?.id)?.label ?? "the next part";
-      setError(`Not yet. Find ${expectedLabel.toLowerCase()} first.`);
+      setError(`Not yet. Tap ${expectedLabel.toLowerCase()} first.`);
       return;
     }
 
@@ -131,14 +136,21 @@ export function QuestionAnatomyScanner() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[12px] border border-[rgba(26,26,26,0.10)] bg-white p-5 md:p-6">
+      <div className="relative overflow-hidden rounded-[12px] border border-[#D8BE82] bg-[#FFFDF8] p-5 shadow-[0_18px_42px_rgba(116,84,27,0.08)] md:p-6">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[#D8BE82]"
+        />
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
-              Question anatomy
+            <div className="inline-flex rounded-full border border-[#E6D6B2] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#74541B] shadow-[0_8px_18px_rgba(116,84,27,0.06)]">
+              Mini Drill
             </div>
-            <p className="max-w-2xl text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">
-              Click each part in order. Stimulus first, then question stem, then answer choices.
+            <p className="max-w-2xl text-[18px] font-medium leading-[1.55] text-[#1a1a1a]">
+              Tap the highlighted part of the question.
+            </p>
+            <p className="max-w-2xl text-[15px] leading-[1.6] text-[rgba(26,26,26,0.66)]">
+              Move through the three parts in order: stimulus, question stem, then answer choices.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -146,27 +158,48 @@ export function QuestionAnatomyScanner() {
               const isCurrent = nextStep?.id === step.id;
               const isDone = completedIds.includes(step.id);
               return (
-                <span
+                <motion.span
                   key={step.id}
                   aria-current={isCurrent ? "step" : undefined}
+                  animate={
+                    isCurrent && !reducedMotion
+                      ? {
+                          scale: [1, 1.035, 1],
+                          boxShadow: [
+                            "0 0 0 0 rgba(216,190,130,0)",
+                            "0 0 0 6px rgba(216,190,130,0.18)",
+                            "0 0 0 0 rgba(216,190,130,0)",
+                          ],
+                        }
+                      : { scale: 1, boxShadow: "0 0 0 0 rgba(216,190,130,0)" }
+                  }
+                  transition={
+                    isCurrent && !reducedMotion
+                      ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" }
+                      : { duration: 0.16 }
+                  }
                   className={cn(
                     "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
                     isDone
-                      ? "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]"
+                      ? "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35] shadow-[inset_0_0_0_1px_rgba(47,91,53,0.04)]"
                       : isCurrent
-                        ? "border-[rgba(26,26,26,0.18)] bg-[rgba(26,26,26,0.06)] text-[#1a1a1a]"
+                        ? "border-[#D8BE82] bg-[#FEFBF2] text-[#74541B]"
                         : "border-[rgba(26,26,26,0.10)] bg-white text-[rgba(26,26,26,0.48)]",
                   )}
                 >
-                  Step {index + 1}
-                </span>
+                  {isDone ? "Found" : `${index + 1} ${step.label}`}
+                </motion.span>
               );
             })}
           </div>
         </div>
 
-        <div id={statusId} aria-live="polite" className="mt-4 rounded-[10px] bg-[#FBF8F1] px-4 py-3 text-[15px] leading-[1.6] text-[rgba(26,26,26,0.76)]">
-          {status}
+        <div id={statusId} aria-live="polite" className="mt-5 flex items-center gap-3 rounded-[10px] border border-[#E6D6B2] bg-white px-4 py-3 text-[16px] font-medium leading-[1.55] text-[#5D4216] shadow-[0_10px_24px_rgba(116,84,27,0.05)]">
+          <span
+            aria-hidden="true"
+            className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#C49B45] shadow-[0_0_0_5px_rgba(216,190,130,0.22)]"
+          />
+          <span>{status}</span>
         </div>
 
         <AnimatePresence initial={false}>
@@ -187,20 +220,44 @@ export function QuestionAnatomyScanner() {
 
       <div className="space-y-4" role="group" aria-describedby={statusId}>
         {regionStates.map((region) => (
-          <button
+          <motion.button
             key={region.id}
             type="button"
             onClick={() => handleRegionClick(region.id)}
+            animate={
+              region.isExpected && !reducedMotion
+                ? {
+                    y: [0, -2, 0],
+                    boxShadow: [
+                      "0 18px 42px rgba(116,84,27,0.10), 0 0 0 0 rgba(216,190,130,0.00)",
+                      "0 22px 52px rgba(116,84,27,0.16), 0 0 0 7px rgba(216,190,130,0.18)",
+                      "0 18px 42px rgba(116,84,27,0.10), 0 0 0 0 rgba(216,190,130,0.00)",
+                    ],
+                  }
+                : { y: 0 }
+            }
+            transition={
+              region.isExpected && !reducedMotion
+                ? { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.18 }
+            }
             className={cn(
-              "block w-full rounded-[12px] border bg-white text-left transition-[transform,box-shadow,border-color,opacity] duration-200 ease-out",
+              "relative block w-full overflow-hidden rounded-[12px] border bg-white text-left transition-[transform,box-shadow,border-color,opacity] duration-200 ease-out",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
               "hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_14px_28px_rgba(26,26,26,0.06)]",
               region.isCompleted && "border-[rgba(26,26,26,0.18)] shadow-[0_10px_22px_rgba(26,26,26,0.04)]",
-              region.isExpected && !region.isCompleted && "border-[rgba(26,26,26,0.16)] bg-[#FFFDFC]",
+              region.isExpected && !region.isCompleted && "border-[#D8BE82] bg-[#FFFDF8] shadow-[0_18px_42px_rgba(116,84,27,0.10)]",
               region.isActive && "border-[rgba(26,26,26,0.22)] shadow-[0_16px_30px_rgba(26,26,26,0.08)]",
+              region.isWaiting && "opacity-70",
               region.isSecondaryAfterComplete && "opacity-60",
             )}
           >
+            {region.isExpected && !region.isCompleted ? (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-[12px] bg-[linear-gradient(90deg,rgba(216,190,130,0.10),transparent_28%,transparent)]"
+              />
+            ) : null}
             <div className="border-b border-[rgba(26,26,26,0.08)] px-5 py-4 md:px-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="space-y-1">
@@ -215,11 +272,11 @@ export function QuestionAnatomyScanner() {
                     region.isCompleted
                       ? "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]"
                       : region.isExpected
-                        ? "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]"
+                        ? "border-[#D8BE82] bg-[#FEFBF2] text-[#74541B] shadow-[0_8px_18px_rgba(116,84,27,0.08)]"
                         : "border-[rgba(26,26,26,0.10)] bg-white text-[rgba(26,26,26,0.48)]",
                   )}
                 >
-                  {region.isCompleted ? "Found" : region.isExpected ? "Find this now" : "Available"}
+                  {region.isCompleted ? "Found" : region.isExpected ? "Tap this" : "Available"}
                 </span>
               </div>
               <p className="mt-3 text-[15px] leading-[1.65] text-[rgba(26,26,26,0.68)]">{region.description}</p>
@@ -238,7 +295,7 @@ export function QuestionAnatomyScanner() {
                 region.content
               )}
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
 

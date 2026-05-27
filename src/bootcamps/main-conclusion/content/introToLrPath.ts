@@ -21,7 +21,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'How to Read an LR Stimulus',
     route: '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
     description: 'Start with active reading and the right student mindset.',
-    phase: 'Page 1',
   },
   {
     id: 'three-parts-lr-question',
@@ -29,7 +28,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'The Three Parts of an LR Question',
     route: '/bootcamp/intro-to-lr/lessons/notes/three-parts-lr-question',
     description: 'See the stimulus, stem, and answer choices in the right order.',
-    phase: 'Page 2',
   },
   {
     id: 'so-an-argument',
@@ -37,7 +35,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'So, An Argument',
     route: '/bootcamp/intro-to-lr/lessons/notes/so-an-argument',
     description: 'Lock in the basic picture: premises support conclusions.',
-    phase: 'Page 3',
   },
   {
     id: 'premises',
@@ -45,7 +42,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Premises',
     route: '/bootcamp/intro-to-lr/lessons/notes/premises',
     description: 'Learn what counts as evidence and how to treat it on the LSAT.',
-    phase: 'Page 4',
   },
   {
     id: 'conclusions',
@@ -53,7 +49,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/conclusions',
     description: 'Focus on the claim the author is trying to prove.',
-    phase: 'Page 5',
   },
   {
     id: 'five-types-of-conclusions',
@@ -61,7 +56,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Five Types of Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/five-types-of-conclusions',
     description: 'Name the type of claim so you can predict the weakness.',
-    phase: 'Page 6',
   },
   {
     id: 'beyond-premises-and-conclusions',
@@ -69,7 +63,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'Beyond Premises and Conclusions',
     route: '/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions',
     description: 'Separate context, opposition, concessions, and pivots from the real argument.',
-    phase: 'Page 7',
   },
   {
     id: 'two-part-conclusion-check',
@@ -77,7 +70,6 @@ export const INTEGRATED_PATH: PathAction[] = [
     title: 'The 2-Part Conclusion Check',
     route: '/bootcamp/intro-to-lr/lessons/notes/two-part-conclusion-check',
     description: 'Run the two-question filter on every conclusion candidate.',
-    phase: 'Page 8',
   },
   {
     id: 'structure-reading',
