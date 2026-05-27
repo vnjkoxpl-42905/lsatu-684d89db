@@ -49,6 +49,7 @@ import { Journal } from '@/bootcamps/main-conclusion/modules/journal/Journal';
 import { Settings } from '@/bootcamps/main-conclusion/modules/settings/Settings';
 import { NewGuidedIntro } from '@/bootcamps/main-conclusion/modules/lessons/NewGuidedIntro';
 import ArgumentBasicsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/argument-basics';
+import ArgumentAnatomyNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/argument-anatomy';
 import WhereConclusionsHideNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/where-conclusions-hide';
 import LayeredArgumentsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/layered-arguments';
 import MatchingTheAnswerNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/matching-the-answer';
@@ -96,6 +97,7 @@ function NoteLoader() {
   const { noteId } = useParams();
   switch (noteId) {
     case 'argument-basics': return <ArgumentBasicsNotes />;
+    case 'argument-anatomy': return <ArgumentAnatomyNotes />;
     case 'where-conclusions-hide': return <WhereConclusionsHideNotes />;
     case 'layered-arguments': return <LayeredArgumentsNotes />;
     case 'matching-the-answer': return <MatchingTheAnswerNotes />;

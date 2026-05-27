@@ -1,178 +1,157 @@
+import type { ReactNode } from "react";
+
 import { IntroNotesShell } from "./IntroNotesShell";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
-import { ArrowRight } from "lucide-react";
 
-const Kicker = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <div className={cn("text-[10px] uppercase tracking-[0.26em] font-bold text-[rgba(26,26,26,0.48)] mb-4", className)}>
+const Kicker = ({ children }: { children: ReactNode }) => (
+  <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.26em] text-[rgba(26,26,26,0.48)]">{children}</div>
+);
+
+const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+  <div className="space-y-3">
+    <Kicker>{title}</Kicker>
+    {subtitle ? <h2 className="font-serif text-[40px] italic leading-tight text-[#1a1a1a]">{subtitle}</h2> : null}
+  </div>
+);
+
+const LessonSection = ({
+  tocTitle,
+  children,
+  className,
+}: {
+  tocTitle: string;
+  children: ReactNode;
+  className?: string;
+}) => (
+  <section
+    data-toc
+    data-toc-title={tocTitle}
+    className={cn("note-section border-b border-[rgba(26,26,26,0.1)] p-10 md:p-12", className)}
+  >
     {children}
+  </section>
+);
+
+const CalloutCard = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => (
+  <div className={cn("rounded-[8px] border border-[rgba(26,26,26,0.10)] bg-[#FBF8F1] p-6 md:p-8", className)}>
+    {children}
+  </div>
+);
+
+const GridCard = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => (
+  <div className="rounded-[8px] border border-[rgba(26,26,26,0.10)] bg-white p-6 md:p-8">
+    <h3 className="mb-4 font-serif text-[28px] italic leading-tight text-[#1a1a1a]">{title}</h3>
+    <div className="space-y-4 text-[18px] leading-[1.68] text-[rgba(26,26,26,0.82)]">{children}</div>
+  </div>
+);
+
+const RowCard = ({
+  left,
+  right,
+}: {
+  left: ReactNode;
+  right: ReactNode;
+}) => (
+  <div className="overflow-hidden rounded-[10px] border border-[rgba(26,26,26,0.12)] bg-white">
+    <div className="grid grid-cols-1 divide-y divide-[rgba(26,26,26,0.10)] md:grid-cols-[220px_1fr] md:divide-x md:divide-y-0">
+      <div className="p-6 font-serif text-[24px] font-semibold leading-tight text-[#1a1a1a] md:p-8">{left}</div>
+      <div className="p-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)] md:p-8">{right}</div>
+    </div>
   </div>
 );
 
 export default function LayeredArgumentsNotes() {
   return (
     <IntroNotesShell
-      eyebrow="Lesson 3"
+      eyebrow="Lesson 4"
       title="Layered Arguments."
-      subtitle="Master the complexity of multi-layered arguments and hidden claims."
+      subtitle="Some claims get support and then turn around and support something larger."
     >
-      {/* 1. Opening Section */}
-      <section 
-        data-toc 
-        data-toc-title="Multi-conclusion arguments" 
-        className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)]"
-      >
-        <p className="font-mc-serif italic text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.02] text-[#1a1a1a] tracking-[-0.03em] mb-10 max-w-[18ch]">
-          Some conclusions do double duty.
+      <LessonSection tocTitle="The chain" className="space-y-8">
+        <SectionHeading title="The chain" subtitle="When one conclusion becomes a premise" />
+        <p className="font-serif text-[30px] italic leading-[1.35] text-[#1a1a1a]">
+          A layered argument has a middle claim that does double duty: it is supported by earlier reasons, then used to support the main conclusion.
         </p>
-        <div className="max-w-[42rem]">
-          <p className="font-mc-sans text-[20px] leading-[1.6] text-[rgba(26,26,26,0.86)]">
-            A sentence can be proven by one claim and then used to prove something bigger. On the LSAT, arguments often stack this way to create layers.
+      </LessonSection>
+
+      <LessonSection tocTitle="Bridge test" className="space-y-8">
+        <SectionHeading title="Bridge test" subtitle="How to spot the intermediate conclusion" />
+        <div className="grid gap-5 md:grid-cols-2">
+          <GridCard title="Check 1">
+            <p>What supports this claim?</p>
+          </GridCard>
+          <GridCard title="Check 2">
+            <p>What does this claim support?</p>
+          </GridCard>
+        </div>
+        <CalloutCard>
+          <p className="text-[20px] leading-[1.75] text-[#1a1a1a]">
+            If the answer to both questions is &quot;something in the stimulus,&quot; you are probably looking at an intermediate conclusion.
           </p>
-        </div>
-      </section>
+        </CalloutCard>
+      </LessonSection>
 
-      {/* 2. Argument Chain Section: Visual Flow */}
-      <section 
-        data-toc 
-        data-toc-title="The argument chain" 
-        className="border-b border-[rgba(26,26,26,0.1)] bg-[#FAF7EF]/30"
-      >
-        <div className="p-12 desktop:p-16 pb-8 text-center">
-          <Kicker>The argument chain</Kicker>
-          <p className="font-mc-sans text-[16px] text-[rgba(26,26,26,0.6)] mb-12">
-            Follow the flow of support to find the final point.
+      <LessonSection tocTitle="Supported vs not fully supported" className="space-y-8">
+        <SectionHeading title="Supported vs not fully supported" subtitle="Why some chains still leave a gap" />
+        <div className="grid gap-5 md:grid-cols-2">
+          <GridCard title="Supported">
+            <p>Each step in the chain gives enough reason to move to the next claim.</p>
+          </GridCard>
+          <GridCard title="Not fully supported">
+            <p>The argument makes a jump. The premises or intermediate conclusion suggest the next step, but do not fully earn it.</p>
+          </GridCard>
+        </div>
+      </LessonSection>
+
+      <LessonSection tocTitle="Gap example" className="space-y-8">
+        <SectionHeading title="Gap example" subtitle="Later-stage validity language" />
+        <CalloutCard className="bg-[#FCFAF5]">
+          <p className="font-serif text-[22px] italic leading-[1.7] text-[#1a1a1a]">
+            &quot;The school&apos;s debate team has won every regional meet this year, so it is clearly the best team in the country. Therefore, the school should cut funding for all other extracurricular programs and focus almost entirely on debate.&quot;
           </p>
+        </CalloutCard>
+        <div className="space-y-4">
+          <RowCard
+            left="Intermediate conclusion"
+            right="The team is the best in the country."
+          />
+          <RowCard
+            left="Main conclusion"
+            right="The school should focus almost entirely on debate."
+          />
+          <RowCard
+            left="Why the chain fails"
+            right="Even if the first step were strong, the argument still jumps from debate success to a sweeping funding decision."
+          />
         </div>
-        
-        <div className="flex flex-col md:flex-row items-stretch border-t border-[rgba(26,26,26,0.1)]">
-          <div className="flex-1 p-10 desktop:p-12 flex flex-col items-center text-center">
-            <div className="font-mc-mono text-[11px] uppercase tracking-widest text-[rgba(26,26,26,0.4)] mb-4">Starting Point</div>
-            <h3 className="font-mc-serif text-2xl italic mb-4">Premise</h3>
-            <div className="h-10 w-px bg-[rgba(26,26,26,0.1)] mb-4 hidden md:block" />
-            <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)]">
-              Gives support. This is the evidence you accept as true.
-            </p>
-          </div>
-          
-          <div className="md:w-12 flex items-center justify-center py-4 md:py-0 bg-[#FAF7EF]/50">
-            <ArrowRight className="h-5 w-5 text-[rgba(26,26,26,0.2)] rotate-90 md:rotate-0" />
-          </div>
-
-          <div className="flex-1 p-10 desktop:p-12 flex flex-col items-center text-center bg-white shadow-[0_0_40px_rgba(0,0,0,0.02)] relative z-10">
-            <div className="font-mc-mono text-[11px] uppercase tracking-widest text-[rgba(26,26,26,0.4)] mb-4">The Bridge</div>
-            <h3 className="font-mc-serif text-2xl italic mb-4">Intermediate Conclusion</h3>
-            <div className="h-10 w-px bg-[#1a1a1a] mb-4 hidden md:block" />
-            <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.8)]">
-              Receives support and gives support. It bridges the gap between evidence and the final goal.
-            </p>
-          </div>
-
-          <div className="md:w-12 flex items-center justify-center py-4 md:py-0 bg-[#FAF7EF]/50">
-            <ArrowRight className="h-5 w-5 text-[rgba(26,26,26,0.2)] rotate-90 md:rotate-0" />
-          </div>
-
-          <div className="flex-1 p-10 desktop:p-12 flex flex-col items-center text-center">
-            <div className="font-mc-mono text-[11px] uppercase tracking-widest text-[rgba(26,26,26,0.4)] mb-4">Final Target</div>
-            <h3 className="font-mc-serif text-2xl italic mb-4">Main Conclusion</h3>
-            <div className="h-10 w-px bg-[rgba(26,26,26,0.1)] mb-4 hidden md:block" />
-            <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)]">
-              The final point. Everything in the stimulus is built to prove this claim.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Bridge Test Section */}
-      <section 
-        data-toc 
-        data-toc-title="The Bridge Test" 
-        className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)]"
-      >
-        <div className="max-w-[50rem] mx-auto">
-          <div className="bg-[#FAF7EF] border border-[rgba(26,26,26,0.1)] p-10 desktop:p-12">
-            <Kicker>The Bridge Test</Kicker>
-            <h2 className="font-mc-serif text-3xl italic mb-8 text-[#1a1a1a]">
-              If a claim is both supported and supporting, it is probably an intermediate conclusion.
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-[rgba(26,26,26,0.1)]">
-              <div className="space-y-2">
-                <div className="font-mc-mono text-[11px] uppercase tracking-wider text-[rgba(26,26,26,0.4)]">Check 1</div>
-                <p className="font-mc-sans text-[17px] text-[rgba(26,26,26,0.8)]">What supports this claim?</p>
-              </div>
-              <div className="space-y-2">
-                <div className="font-mc-mono text-[11px] uppercase tracking-wider text-[rgba(26,26,26,0.4)]">Check 2</div>
-                <p className="font-mc-sans text-[17px] text-[rgba(26,26,26,0.8)]">What does this claim support?</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Author's View Section */}
-      <section 
-        data-toc 
-        data-toc-title="Author's position" 
-        className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)]"
-      >
-        <Kicker>Distinguishing the view</Kicker>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-          <div className="p-8 border border-[rgba(26,26,26,0.06)] hover:border-[rgba(26,26,26,0.12)] transition-colors">
-            <h3 className="font-mc-serif text-xl italic mb-4">Opposing view</h3>
-            <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)]">
-              A position held by someone else that the author intends to disprove. Usually appears early.
-            </p>
-          </div>
-          <div className="p-8 border border-[rgba(26,26,26,0.06)] hover:border-[rgba(26,26,26,0.12)] transition-colors">
-            <h3 className="font-mc-serif text-xl italic mb-4">Concession</h3>
-            <p className="font-mc-sans text-[15px] leading-relaxed text-[rgba(26,26,26,0.6)]">
-              A point the author acknowledges as true but which does not override the main conclusion.
-            </p>
-          </div>
-          <div className="p-8 bg-[#1a1a1a] text-[#F5F2ED] rounded-[1px]">
-            <h3 className="font-mc-serif text-xl italic mb-4">Author's conclusion</h3>
-            <p className="font-mc-sans text-[15px] leading-relaxed text-white/70">
-              The position the author is actually building toward. This is your target on Main Conclusion questions.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Trojan Horse Section */}
-      <section 
-        data-toc 
-        data-toc-title="Trojan Horse structure" 
-        className="p-12 desktop:p-16 border-b border-[rgba(26,26,26,0.1)] bg-[#FAF7EF]/20"
-      >
-        <div className="max-w-[42rem]">
-          <Kicker>Common structures</Kicker>
-          <h2 className="font-mc-serif text-3xl italic mb-6">The Trojan Horse Opening</h2>
-          <p className="font-mc-sans text-[19px] leading-relaxed text-[rgba(26,26,26,0.8)]">
-            A Trojan Horse opening sounds agreeable at first. Then the author pivots. The real conclusion usually lives after the turn.
+        <CalloutCard className="bg-white">
+          <Kicker>Later-language note</Kicker>
+          <p className="text-[20px] leading-[1.75] text-[rgba(26,26,26,0.84)]">
+            In stricter logic terms, a claim is valid only when the support guarantees it. On the LSAT, many arguments feel persuasive without reaching that standard, which is why beginner pages first talk about support versus not fully supported.
           </p>
-        </div>
-      </section>
+        </CalloutCard>
+      </LessonSection>
 
-      {/* 6. Final Check card */}
-      <section 
-        data-toc 
-        data-toc-title="Final Check" 
-        className="p-12 desktop:p-24"
-      >
-        <div className="max-w-[54rem] mx-auto">
-          <div className="relative p-12 desktop:p-16 bg-[#1a1a1a] text-[#F5F2ED] rounded-[2px] shadow-[var(--shadow-3)] overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -mr-20 -mt-20" />
-            
-            <Kicker className="text-white/40">Final Check</Kicker>
-            <h2 className="font-mc-serif text-[clamp(2rem,5vw,3.5rem)] italic leading-[1.1] mb-10">
-              Layered arguments ask two questions: what supports this claim, and what does this claim support?
-            </h2>
-            
-            <div className="font-mc-mono text-[12px] uppercase tracking-[0.2em] text-white/40 pt-10 border-t border-white/10">
-              Map the chain to find the goal.
-            </div>
-          </div>
-        </div>
-      </section>
+      <LessonSection tocTitle="Student takeaway" className="space-y-8 border-b-0">
+        <SectionHeading title="Student takeaway" subtitle="Map each step before you judge it" />
+        <CalloutCard className="border-[rgba(26,26,26,0.92)] bg-[#1a1a1a] text-[#F5F2ED]">
+          <p className="text-[22px] leading-[1.8]">
+            In layered arguments, identify the middle claim first, then ask whether each step is genuinely supported or only loosely suggested.
+          </p>
+        </CalloutCard>
+      </LessonSection>
     </IntroNotesShell>
   );
 }
