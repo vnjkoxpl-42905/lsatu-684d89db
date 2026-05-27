@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { IntroNotesShell } from "./IntroNotesShell";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
+import { ConclusionPicker } from "@/bootcamps/main-conclusion/components/conclusion-picker/ConclusionPicker";
 import {
   IndicatorPillGroup,
   InteractiveCard,
@@ -573,6 +574,44 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               },
             ]}
           />
+          <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
+                  One quick rep
+                </div>
+                <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">
+                  Pick the conclusion before the page tells you
+                </h3>
+                <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
+                  Read the whole argument first. Then pick the sentence the rest is trying to support.
+                </p>
+              </div>
+              <ConclusionPicker
+                stimulus="The city museum has operated at a deficit for three years. However, the museum provides free educational programs for local schools. Therefore, the city should continue funding it."
+                candidates={[
+                  {
+                    id: "museum-background",
+                    text: "The city museum has operated at a deficit for three years.",
+                    is_main: false,
+                    rationale: "This sets the scene. It matters to the topic, but the author is not trying to prove that this deficit exists.",
+                  },
+                  {
+                    id: "museum-premise",
+                    text: "The museum provides free educational programs for local schools.",
+                    is_main: false,
+                    rationale: "This is support. It is one reason the author gives for the funding recommendation.",
+                  },
+                  {
+                    id: "museum-conclusion",
+                    text: "The city should continue funding it.",
+                    is_main: true,
+                    rationale: "This is the author's recommendation, and the educational-programs sentence is offered to support it.",
+                  },
+                ]}
+              />
+            </div>
+          </InteractiveCard>
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>
               Same argument. Different indicator words. The conclusion is identical in both: <em>the city should repair the bridge.</em> In the first version, <strong>therefore</strong> points at it directly. In the second, <strong>since</strong> marks the premises instead, and the conclusion is just whatever's left.
