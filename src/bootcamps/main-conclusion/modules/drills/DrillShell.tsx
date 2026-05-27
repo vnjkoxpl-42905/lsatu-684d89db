@@ -1,7 +1,6 @@
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 import { useParams } from 'react-router-dom';
 import { EmptyState } from '@/bootcamps/main-conclusion/components/primitives/EmptyState';
-import { IntegratedPathRail } from '@/bootcamps/main-conclusion/components/IntegratedPathRail';
 import { Drill3_1 } from './Drill3_1';
 import { Drill3_2 } from './Drill3_2';
 import { Drill3_3 } from './Drill3_3';
@@ -70,9 +69,8 @@ export function DrillShell() {
   }
 
   return (
-    <div className="flex h-full flex-col gap-4 px-4 py-4 desktop:flex-row desktop:gap-0 desktop:px-0 desktop:py-0">
-      <IntegratedPathRail />
-      <div className="min-w-0 flex-1 overflow-y-auto">
+    <div className="mx-auto w-full max-w-[1200px] px-6 py-8 md:px-10 md:py-10 desktop:px-12 desktop:py-12">
+      <div className="min-w-0">
         {content}
         <DynamicIslandTOC />
       </div>

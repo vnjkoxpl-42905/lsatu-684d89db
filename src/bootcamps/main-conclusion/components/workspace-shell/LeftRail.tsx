@@ -48,30 +48,76 @@ const navSections: NavSection[] = [
   },
 ];
 
-export function LeftRail(): JSX.Element {
+interface LeftRailProps {
+  collapsed: boolean;
+  onExpand: () => void;
+  onCollapse: () => void;
+}
+
+export function LeftRail({
+  collapsed,
+  onExpand,
+  onCollapse,
+}: LeftRailProps): JSX.Element {
   const location = useLocation();
 
   return (
     <aside
+      onMouseEnter={onExpand}
+      onMouseLeave={onCollapse}
+      onFocusCapture={onExpand}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          onCollapse();
+        }
+      }}
       className={cn(
         'left-rail relative flex h-full flex-col phone:hidden',
         'border-r border-[rgb(var(--border)/0.08)]',
         'bg-[rgb(var(--surface-elev)/0.74)] backdrop-blur-md',
+        'transition-[padding,background-color] duration-220 ease-eased',
+        'desktop:overflow-x-hidden',
+        collapsed ? 'desktop:px-2' : 'desktop:px-0',
       )}
+      aria-label="Intro to LR navigation"
     >
-      <div className="px-5 pt-7 pb-6">
+      <div
+        className={cn(
+          'pt-7 pb-6 transition-[padding] duration-220 ease-eased',
+          collapsed ? 'px-5 desktop:px-2.5' : 'px-5',
+        )}
+      >
         <Link
           to="/mainhub"
           className={cn(
-            'mb-5 inline-flex items-center gap-1.5 rounded-[4px] px-2 py-1 -ml-2',
+            'mb-5 inline-flex items-center rounded-[4px] py-1 transition-[gap,padding,margin] duration-220 ease-eased',
             'font-mc-mono text-label uppercase tracking-wider text-ink-faint',
             'hover:text-ink transition-colors duration-150',
+            collapsed
+              ? 'gap-1.5 px-2 -ml-2 desktop:justify-center desktop:gap-0 desktop:px-0 desktop:mx-auto desktop:ml-0 desktop:w-10'
+              : 'gap-1.5 px-2 -ml-2',
           )}
+          aria-label="Back to Main Hub"
+          title={collapsed ? 'Main Hub' : undefined}
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          Main Hub
+          <span
+            className={cn(
+              'whitespace-nowrap transition-[opacity,transform,width] duration-180 ease-eased',
+              collapsed
+                ? 'w-auto translate-x-0 opacity-100 desktop:w-0 desktop:-translate-x-1 desktop:opacity-0 desktop:pointer-events-none'
+                : 'w-auto translate-x-0 opacity-100',
+            )}
+          >
+            Main Hub
+          </span>
         </Link>
-        <div className="flex items-baseline gap-2">
+        <div
+          className={cn(
+            'flex items-baseline gap-2 transition-[gap] duration-220 ease-eased',
+            collapsed ? 'desktop:justify-center desktop:gap-0' : '',
+          )}
+        >
           <span
             className={cn(
               'inline-flex h-7 w-7 items-center justify-center rounded-[4px]',
@@ -81,7 +127,14 @@ export function LeftRail(): JSX.Element {
           >
             LR
           </span>
-          <div>
+          <div
+            className={cn(
+              'overflow-hidden transition-[opacity,transform,width] duration-180 ease-eased',
+              collapsed
+                ? 'w-auto translate-x-0 opacity-100 desktop:w-0 desktop:-translate-x-1 desktop:opacity-0'
+                : 'w-auto translate-x-0 opacity-100',
+            )}
+          >
             <div className="font-mc-serif text-h3 font-medium italic text-ink leading-none">
               Intro to LR
             </div>
@@ -89,11 +142,17 @@ export function LeftRail(): JSX.Element {
         </div>
       </div>
 
-      <nav className="px-2.5 flex-1 overflow-y-auto">
+      <nav
+        className={cn(
+          'flex-1 overflow-y-auto transition-[padding] duration-220 ease-eased',
+          collapsed ? 'px-2.5 desktop:px-1.5' : 'px-2.5',
+        )}
+      >
         {navSections.map((section) => (
           <details
             key={section.title}
             open={
+              collapsed ||
               !section.collapsed ||
               section.items.some(
                 (item) =>
@@ -102,10 +161,14 @@ export function LeftRail(): JSX.Element {
             }
             className="group/details mb-4"
           >
-            <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
-              {section.title}
-              <ChevronDown className="h-3 w-3 opacity-50 group-open/details:rotate-180 transition-transform duration-200" />
-            </summary>
+            {collapsed ? (
+              <summary className="sr-only">{section.title}</summary>
+            ) : (
+              <summary className="px-3 mb-2 font-mc-mono text-[10px] uppercase tracking-widest text-ink-faint/60 cursor-pointer list-none flex items-center justify-between">
+                {section.title}
+                <ChevronDown className="h-3 w-3 opacity-50 group-open/details:rotate-180 transition-transform duration-200" />
+              </summary>
+            )}
             <ul className="space-y-0.5">
               {section.items.map((item) => (
                 <li key={item.to}>
@@ -113,15 +176,29 @@ export function LeftRail(): JSX.Element {
                     to={item.to}
                     className={({ isActive }) =>
                       cn(
-                        'group/nav relative flex items-center gap-3 px-3 py-2 rounded-[6px] text-body transition-all duration-150',
+                        'group/nav relative flex items-center rounded-[6px] text-body transition-all duration-150',
+                        collapsed
+                          ? 'gap-3 px-3 py-2 desktop:justify-center desktop:px-0 desktop:py-2.5 desktop:gap-0'
+                          : 'gap-3 px-3 py-2',
                         isActive
                           ? 'text-ink bg-[rgb(var(--surface)/0.8)] font-medium'
                           : 'text-ink-soft hover:text-ink hover:bg-[rgb(var(--surface)/0.4)]',
                       )
                     }
+                    aria-label={item.label}
+                    title={collapsed ? item.label : undefined}
                   >
                     <item.Icon className="h-4 w-4 shrink-0 opacity-70" strokeWidth={1.8} />
-                    <span>{item.label}</span>
+                    <span
+                      className={cn(
+                        'whitespace-nowrap overflow-hidden transition-[opacity,transform,width] duration-180 ease-eased',
+                        collapsed
+                          ? 'w-auto translate-x-0 opacity-100 desktop:w-0 desktop:-translate-x-1 desktop:opacity-0 desktop:pointer-events-none'
+                          : 'w-auto translate-x-0 opacity-100',
+                      )}
+                    >
+                      {item.label}
+                    </span>
                   </NavLink>
                 </li>
               ))}

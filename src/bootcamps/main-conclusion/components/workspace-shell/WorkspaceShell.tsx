@@ -36,6 +36,7 @@ export function WorkspaceShell(): JSX.Element {
 
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [tutorOpen, setTutorOpen] = useState(false);
+  const [desktopRailOpen, setDesktopRailOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
@@ -89,8 +90,18 @@ export function WorkspaceShell(): JSX.Element {
         <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
         Main Hub
       </Link>
-      <div className="grid h-full desktop:grid-cols-[260px_1fr] phone:grid-cols-1 tablet:grid-cols-[220px_1fr]">
-        <LeftRail />
+      <div
+        className={cn(
+          'grid h-full phone:grid-cols-1 tablet:grid-cols-[220px_1fr]',
+          'transition-[grid-template-columns] duration-220 ease-eased',
+          desktopRailOpen ? 'desktop:grid-cols-[260px_1fr]' : 'desktop:grid-cols-[72px_1fr]',
+        )}
+      >
+        <LeftRail
+          collapsed={!desktopRailOpen}
+          onExpand={() => setDesktopRailOpen(true)}
+          onCollapse={() => setDesktopRailOpen(false)}
+        />
         <main id="main" ref={mainRef} className="relative overflow-y-auto bg-transparent">
           <div
             aria-hidden="true"
