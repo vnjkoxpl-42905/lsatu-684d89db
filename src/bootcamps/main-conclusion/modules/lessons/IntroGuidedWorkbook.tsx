@@ -93,25 +93,25 @@ export function IntroGuidedWorkbook() {
 
   const renderWorkbookContent = (step: typeof INTRO_GUIDED_SEQUENCE[0]) => {
     switch (step.id) {
-      case 'argument-basics':
+      case 'stimulus-first':
         return (
-          <WorkbookNoteBlock title="Argument Anatomy">
+          <WorkbookNoteBlock title="Stimulus First">
             <div className="space-y-4 text-[rgba(26,26,26,0.8)]">
               <p className="text-xl leading-relaxed">
                 Every LR question has three parts: the stimulus, the question stem, and the answer choices. Of those three, <strong>the stimulus matters most.</strong>
               </p>
               <p className="text-xl leading-relaxed">
-                An argument is a claim plus support. The conclusion is what the author wants to prove. The premises are the reasons offered to prove it. The core question is structural: <strong>is this sentence proving something, or is something proving this sentence?</strong>
+                Read the passage before you look for tasks or answers. Your first job is to decide what the stimulus is saying and whether it is merely giving information or actually making a case.
               </p>
             </div>
           </WorkbookNoteBlock>
         );
-      case 'premise-vs-conclusion':
+      case 'argument-anatomy':
         return (
-          <WorkbookNoteBlock title="Mini Premise / Conclusion Breakdown">
+          <WorkbookNoteBlock title="Argument Anatomy">
             <div className="space-y-5 text-[rgba(26,26,26,0.8)]">
               <p className="text-xl leading-relaxed">
-                Start small. Label the reasons. Then label the claim those reasons are trying to prove.
+                Once you know the stimulus comes first, the next question is structural: is this passage only informing you, or is it using reasons to support a claim?
               </p>
               <div className="border border-[rgba(26,26,26,0.1)] bg-white p-6 space-y-3">
                 <div><strong>Conclusion:</strong> The city should expand library funding.</div>
@@ -141,7 +141,7 @@ export function IntroGuidedWorkbook() {
             <XRayEmbeddedSlice questions={DRILL_3_2_STAGE_1.slice(0, 2)} />
           </div>
         );
-      case 'indicator-words':
+      case 'core-indicators':
         return (
           <WorkbookNoteBlock title="Core Indicator Words">
             <div className="space-y-4 text-[rgba(26,26,26,0.8)]">

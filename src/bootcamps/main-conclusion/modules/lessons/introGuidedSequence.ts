@@ -25,29 +25,29 @@ export interface WorkbookStep {
 }
 
 export const INTRO_GUIDED_SEQUENCE: WorkbookStep[] = [
-  // 1. Argument Basics
+  // 1. Stimulus First
   {
-    id: 'argument-basics',
+    id: 'stimulus-first',
     type: 'note',
-    title: 'Argument Anatomy',
+    title: 'Stimulus First',
     noteId: 'argument-basics',
     requiredForSimulator: true,
   },
-  // 2. Premise vs Conclusion
+  // 2. Argument Anatomy
   {
-    id: 'premise-vs-conclusion',
+    id: 'argument-anatomy',
     type: 'note',
-    title: 'Mini Premise / Conclusion Breakdown',
-    noteId: 'premise-vs-conclusion', // This might be combined in argument-basics but we can split or map
+    title: 'Argument Anatomy',
+    noteId: 'argument-anatomy',
     requiredForSimulator: true,
   },
 
-  // 3. Indicator Words
+  // 3. Core Indicator Words
   {
-    id: 'indicator-words',
+    id: 'core-indicators',
     type: 'note',
-    title: 'Indicator Words',
-    noteId: 'indicator-words',
+    title: 'Core Indicator Words',
+    noteId: 'indicators-core',
     requiredForSimulator: true,
   },
   // 4. 2-Part Conclusion Check
