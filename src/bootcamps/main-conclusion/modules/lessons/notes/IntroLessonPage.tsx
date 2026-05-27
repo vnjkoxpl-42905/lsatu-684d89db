@@ -1,9 +1,9 @@
+import { useState } from "react";
 import type { ReactNode } from "react";
 
 import { IntroNotesShell } from "./IntroNotesShell";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 import {
-  AnswerChoiceDeck,
   IndicatorPillGroup,
   InteractiveCard,
   SupportSimulator,
@@ -87,21 +87,6 @@ const GridCard = ({
   </InteractiveCard>
 );
 
-const RowCard = ({
-  left,
-  right,
-}: {
-  left: ReactNode;
-  right: ReactNode;
-}) => (
-  <InteractiveCard focusable className="overflow-hidden">
-    <div className="grid grid-cols-1 divide-y divide-[rgba(26,26,26,0.10)] md:grid-cols-[220px_1fr] md:divide-x md:divide-y-0">
-      <div className="p-6 font-serif text-[24px] font-semibold leading-tight text-[#1a1a1a] md:p-8">{left}</div>
-      <div className="p-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)] md:p-8">{right}</div>
-    </div>
-  </InteractiveCard>
-);
-
 const QuoteCard = ({ children, className }: { children: ReactNode; className?: string }) => (
   <div
     className={cn(
@@ -136,6 +121,86 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
     ))}
   </div>
 );
+
+function LrQuestionAnatomyBlock() {
+  const [showParts, setShowParts] = useState(false);
+
+  return (
+    <InteractiveCard prominent className="overflow-hidden border-[rgba(26,26,26,0.12)] bg-[#FFFDFC]">
+      <div className="border-b border-[rgba(26,26,26,0.08)] px-6 py-5 md:px-8">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.46)]">
+              Stock Analysts
+            </div>
+            <p className="text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">
+              One normal LR question. Use the button to reveal where each visible part lives.
+            </p>
+          </div>
+          <button
+            type="button"
+            aria-pressed={showParts}
+            onClick={() => setShowParts((current) => !current)}
+            className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#F5F2ED] transition-colors duration-200 ease-out hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+          >
+            Show Question Parts
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-6 px-6 py-6 md:px-8 md:py-8">
+        <div className="space-y-3">
+          {showParts ? (
+            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
+              Stimulus
+            </div>
+          ) : null}
+          <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-5 shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
+            <p className="text-[18px] leading-[1.8] text-[rgba(26,26,26,0.84)]">
+              &ldquo;Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each
+              to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst
+              increased by only $140.&rdquo;
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {showParts ? (
+            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
+              Question Stem
+            </div>
+          ) : null}
+          <p className="text-[18px] font-semibold leading-[1.7] text-[#1a1a1a]">
+            Each of the following describes a flaw in the game show host&apos;s reasoning EXCEPT:
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {showParts ? (
+            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
+              Answer Choices
+            </div>
+          ) : null}
+          <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
+            <ol className="divide-y divide-[rgba(26,26,26,0.08)]">
+              {[
+                "(A) It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
+                "(B) It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
+                "(C) It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
+                "(D) It inappropriately relies on the emotional appeal of an animal succeeding in a human profession.",
+                "(E) It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
+              ].map((choice) => (
+                <li key={choice} className="px-5 py-4 text-[17px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                  {choice}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </InteractiveCard>
+  );
+}
 
 const pages: Record<IntroLessonPageId, PageDefinition> = {
   "how-to-read-lr-stimulus": {
@@ -189,103 +254,39 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <LessonSection tocTitle="Structural Triad" className="space-y-8">
           <SectionHeading title="Structural Triad" subtitle="The Three Parts of an LR Question" />
           <CalloutCard className="bg-white">
-            <p className="text-[22px] leading-[1.75] text-[#1a1a1a]">
-              Every Logical Reasoning question has three parts: the stimulus, the question stem, and the answer choices.
-              Of those three, the stimulus matters most. The answer is not sitting in the answer choices. The answer
-              choices test whether you understood the stimulus correctly.
-            </p>
+            <div className="space-y-5">
+              <p className="text-[22px] leading-[1.75] text-[#1a1a1a]">
+                Every Logical Reasoning question has three parts: the stimulus, the question stem, and the answer choices.
+              </p>
+              <BulletList
+                className="space-y-2 pl-5 text-[18px] leading-[1.65] text-[rgba(26,26,26,0.78)]"
+                items={[
+                  <span><strong>Stimulus first.</strong></span>,
+                  <span><strong>Question stem second.</strong></span>,
+                  <span><strong>Answer choices third.</strong></span>,
+                ]}
+              />
+              <p className="text-[18px] leading-[1.75] text-[rgba(26,26,26,0.82)]">
+                The stimulus matters most because the reasoning lives there. The question stem tells you the task. The
+                answer choices test whether you understood the stimulus.
+              </p>
+            </div>
           </CalloutCard>
         </LessonSection>
 
-        <LessonSection tocTitle="Breakdown Table" className="space-y-4">
-          <SectionHeading title="Breakdown Table" subtitle="What each part is doing" />
-          <RowCard
-            left="1. Stimulus"
-            right="The short passage you read first. This is where the reasoning lives. Your job is to figure out what facts or evidence the author is giving you and what claim the author is trying to prove. That means your real task is to separate premises from conclusions."
-          />
-          <RowCard
-            left="2. Question Stem"
-            right="The question stem tells you what job you need to do with the argument: find the flaw, strengthen the argument, weaken the argument, identify the main conclusion, or find an assumption. First understand the argument. Then use the question stem to know what to do with it."
-          />
-          <RowCard
-            left="3. Answer Choices"
-            right="The answer choices do not create the reasoning. They test whether you understood it correctly. Do not start by comparing answer choices before you understand the stimulus. The stimulus comes first."
-          />
-        </LessonSection>
-
         <LessonSection tocTitle="Stock Analysts" className="space-y-8 border-b-0">
-          <SectionHeading title="Applied X-ray Example" subtitle="The Stock Analysts" />
+          <SectionHeading title="Anatomy Example" subtitle="The Stock Analysts" />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            This is a labeled anatomy example, not a graded question.
+            This is not a quiz. It is one normal LR question shown so you can see where each visible part lives.
           </p>
-          <div className="grid gap-5 md:grid-cols-3">
-            <GridCard title="Stimulus" prominent>
-              <p>
-                "Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each
-                to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst
-                increased by only $140."
-              </p>
-            </GridCard>
-            <GridCard title="Question Stem">
-              <p>Each of the following describes a flaw in the game show host's reasoning EXCEPT:</p>
-            </GridCard>
-            <GridCard title="Answer Choices">
-              <p>
-                The choices are not the reasoning. They are where the test checks whether you understood the reasoning.
-              </p>
-            </GridCard>
-          </div>
-          <AnswerChoiceDeck
-            items={[
-              {
-                id: "A",
-                text: "It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
-              },
-              {
-                id: "B",
-                text: "It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
-              },
-              {
-                id: "C",
-                text: "It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
-              },
-              {
-                id: "D",
-                text: "It inappropriately relies on the emotional appeal of an animal succeeding in a human profession.",
-                state: "correct",
-              },
-              {
-                id: "E",
-                text: "It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
-              },
-            ]}
-          />
-          <XRayExample
-            title="Scan the anatomy before you even think about the answer"
-            description="Turn the scan on to separate the prompt into the three parts LSAT gives you every time."
-            blocks={[
-              {
-                id: "stimulus",
-                label: "Stimulus",
-                tone: "premise",
-                content:
-                  '"Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst increased by only $140."',
-              },
-              {
-                id: "stem",
-                label: "Question stem",
-                tone: "pivot",
-                content: "Each of the following describes a flaw in the game show host's reasoning EXCEPT:",
-              },
-              {
-                id: "choices",
-                label: "Answer choices",
-                tone: "conclusion",
-                content:
-                  "The choices test whether you understood the stimulus. They do not create the reasoning for you.",
-              },
-            ]}
-          />
+          <LrQuestionAnatomyBlock />
+          <CalloutCard className="bg-white" prominent>
+            <div className="space-y-3 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+              <p><strong>Stimulus:</strong> where the reasoning lives.</p>
+              <p><strong>Question Stem:</strong> what task you must perform.</p>
+              <p><strong>Answer Choices:</strong> where the test checks whether you understood the stimulus.</p>
+            </div>
+          </CalloutCard>
         </LessonSection>
       </>
     ),
