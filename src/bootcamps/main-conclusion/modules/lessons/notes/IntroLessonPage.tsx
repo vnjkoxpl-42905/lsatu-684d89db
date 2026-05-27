@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { ReactNode } from "react";
 
 import { IntroNotesShell } from "./IntroNotesShell";
@@ -9,6 +8,8 @@ import {
   SupportSimulator,
   XRayExample,
 } from "./NoteInteractions";
+import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
+import { StructureXRayText } from "./components/StructureXRayText";
 
 export type IntroLessonPageId =
   | "how-to-read-lr-stimulus"
@@ -122,86 +123,6 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
   </div>
 );
 
-function LrQuestionAnatomyBlock() {
-  const [showParts, setShowParts] = useState(false);
-
-  return (
-    <InteractiveCard prominent className="overflow-hidden border-[rgba(26,26,26,0.12)] bg-[#FFFDFC]">
-      <div className="border-b border-[rgba(26,26,26,0.08)] px-6 py-5 md:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.46)]">
-              Stock Analysts
-            </div>
-            <p className="text-[16px] leading-[1.65] text-[rgba(26,26,26,0.72)]">
-              One normal LR question. Use the button to reveal where each visible part lives.
-            </p>
-          </div>
-          <button
-            type="button"
-            aria-pressed={showParts}
-            onClick={() => setShowParts((current) => !current)}
-            className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#F5F2ED] transition-colors duration-200 ease-out hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-          >
-            Show Question Parts
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-6 px-6 py-6 md:px-8 md:py-8">
-        <div className="space-y-3">
-          {showParts ? (
-            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
-              Stimulus
-            </div>
-          ) : null}
-          <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-5 shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
-            <p className="text-[18px] leading-[1.8] text-[rgba(26,26,26,0.84)]">
-              &ldquo;Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each
-              to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst
-              increased by only $140.&rdquo;
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {showParts ? (
-            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
-              Question Stem
-            </div>
-          ) : null}
-          <p className="text-[18px] font-semibold leading-[1.7] text-[#1a1a1a]">
-            Each of the following describes a flaw in the game show host&apos;s reasoning EXCEPT:
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          {showParts ? (
-            <div className="inline-flex rounded-full border border-[rgba(26,26,26,0.10)] bg-[rgba(26,26,26,0.03)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.56)]">
-              Answer Choices
-            </div>
-          ) : null}
-          <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
-            <ol className="divide-y divide-[rgba(26,26,26,0.08)]">
-              {[
-                "(A) It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
-                "(B) It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
-                "(C) It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
-                "(D) It inappropriately relies on the emotional appeal of an animal succeeding in a human profession.",
-                "(E) It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
-              ].map((choice) => (
-                <li key={choice} className="px-5 py-4 text-[17px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-                  {choice}
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </InteractiveCard>
-  );
-}
-
 const pages: Record<IntroLessonPageId, PageDefinition> = {
   "how-to-read-lr-stimulus": {
     eyebrow: "Page 1",
@@ -277,9 +198,50 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <LessonSection tocTitle="Stock Analysts" className="space-y-8 border-b-0">
           <SectionHeading title="Anatomy Example" subtitle="The Stock Analysts" />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            This is not a quiz. It is one normal LR question shown so you can see where each visible part lives.
+            This is one normal LR question. Touch the visible parts in order, then run the structure view on the
+            stimulus itself.
           </p>
-          <LrQuestionAnatomyBlock />
+          <QuestionAnatomyScanner />
+          <StructureXRayText
+            title="Stock Analysts stimulus"
+            description="Once the anatomy is clear, turn on the X-Ray and see what the stimulus itself is doing."
+            coachNote={
+              <>
+                The answer choices are downstream from this structure. The conclusion is the claim about humans and apes.
+                The rest of the stimulus is the evidence used to support it.
+              </>
+            }
+            segments={[
+              {
+                id: "stock-analysts-conclusion",
+                text: "Humans are no better than apes at investing.",
+                role: "conclusion",
+                label: "Conclusion",
+                explanation: "This is the author's main claim. It is the judgment the rest of the stimulus is trying to support.",
+              },
+              {
+                id: "stock-analysts-premise-1",
+                text: "We gave five stock analysts and one chimpanzee $1,350 each to invest.",
+                role: "premise",
+                label: "Premise",
+                explanation: "This sets up the comparison the author will use as evidence.",
+              },
+              {
+                id: "stock-analysts-premise-2",
+                text: "After one month, the chimp won, increasing its net worth by $210.",
+                role: "premise",
+                label: "Premise",
+                explanation: "This is factual support the author uses to push the conclusion.",
+              },
+              {
+                id: "stock-analysts-premise-3",
+                text: "The next best analyst increased by only $140.",
+                role: "premise",
+                label: "Premise",
+                explanation: "This comparison is the final support point the argument leans on.",
+              },
+            ]}
+          />
           <CalloutCard className="bg-white" prominent>
             <div className="space-y-3 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
               <p><strong>Stimulus:</strong> where the reasoning lives.</p>
