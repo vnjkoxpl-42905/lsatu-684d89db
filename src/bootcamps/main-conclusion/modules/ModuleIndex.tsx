@@ -50,12 +50,12 @@ export function ModuleIndex(): JSX.Element {
     ? {
         ...step,
         eyebrow: 'START HERE',
-        title: 'Lesson 1: What’s an argument?',
+        title: 'Page 1: How to Read an LR Stimulus',
         subtitle:
-          'Before you answer LR questions, learn how to see the argument clearly: what the author claims, what support they give, and where the reasoning can break.',
-        cta: 'Begin Lesson 1',
+          'Start with the reading mindset first: find the conclusion, find the premises, and test whether the support really proves the claim.',
+        cta: 'Begin Page 1',
         // Force absolute path for navigation
-        href: '/bootcamp/intro-to-lr/lessons/notes/argument-basics',
+        href: '/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus',
         secondary: undefined,
       }
     : {
@@ -71,4 +71,3 @@ export function ModuleIndex(): JSX.Element {
     </div>
   );
 }
-

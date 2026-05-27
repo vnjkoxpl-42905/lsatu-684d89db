@@ -48,12 +48,7 @@ import { SrsQueue } from '@/bootcamps/main-conclusion/modules/diagnostics/SrsQue
 import { Journal } from '@/bootcamps/main-conclusion/modules/journal/Journal';
 import { Settings } from '@/bootcamps/main-conclusion/modules/settings/Settings';
 import { NewGuidedIntro } from '@/bootcamps/main-conclusion/modules/lessons/NewGuidedIntro';
-import ArgumentBasicsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/argument-basics';
-import ArgumentAnatomyNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/argument-anatomy';
-import WhereConclusionsHideNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/where-conclusions-hide';
-import LayeredArgumentsNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/layered-arguments';
-import MatchingTheAnswerNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/matching-the-answer';
-import PracticePathNotes from '@/bootcamps/main-conclusion/modules/lessons/notes/practice-path';
+import { IntroLessonPage, type IntroLessonPageId } from '@/bootcamps/main-conclusion/modules/lessons/notes/IntroLessonPage';
 
 const PRACTICE_RUNNER_SETS = {
   'first-sentence': {
@@ -95,21 +90,48 @@ function PracticeRunnerWrapper() {
 
 function NoteLoader() {
   const { noteId } = useParams();
-  switch (noteId) {
-    case 'argument-basics': return <ArgumentBasicsNotes />;
-    case 'argument-anatomy': return <ArgumentAnatomyNotes />;
-    case 'where-conclusions-hide': return <WhereConclusionsHideNotes />;
-    case 'layered-arguments': return <LayeredArgumentsNotes />;
-    case 'matching-the-answer': return <MatchingTheAnswerNotes />;
-    case 'practice-path': return <PracticePathNotes />;
-    default: return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
+  const redirects: Record<string, IntroLessonPageId> = {
+    'argument-basics': 'how-to-read-lr-stimulus',
+    'argument-anatomy': 'three-parts-lr-question',
+    'where-conclusions-hide': 'conclusions',
+    'layered-arguments': 'beyond-premises-and-conclusions',
+    'matching-the-answer': 'two-part-conclusion-check',
+  };
+
+  const pageId = (noteId && noteId in redirects ? redirects[noteId] : noteId) as IntroLessonPageId | undefined;
+
+  switch (pageId) {
+    case 'how-to-read-lr-stimulus':
+    case 'three-parts-lr-question':
+    case 'so-an-argument':
+    case 'premises':
+    case 'conclusions':
+    case 'five-types-of-conclusions':
+    case 'beyond-premises-and-conclusions':
+    case 'two-part-conclusion-check':
+      return <IntroLessonPage pageId={pageId} />;
+    case 'practice-path':
+      return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
+    default:
+      return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
   }
 }
 
 function LegacyLessonRedirect() {
   const { lessonId } = useParams();
-  if (lessonId === '1.1') {
-    return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/argument-basics" replace />;
+  const noteByLessonId: Record<string, IntroLessonPageId> = {
+    '1.1': 'how-to-read-lr-stimulus',
+    '1.2': 'three-parts-lr-question',
+    '1.3': 'so-an-argument',
+    '1.4': 'premises',
+    '1.5': 'conclusions',
+    '1.6': 'five-types-of-conclusions',
+    '1.7': 'beyond-premises-and-conclusions',
+    '1.8': 'two-part-conclusion-check',
+  };
+
+  if (lessonId && lessonId in noteByLessonId) {
+    return <Navigate to={`/bootcamp/intro-to-lr/lessons/notes/${noteByLessonId[lessonId]}`} replace />;
   }
   if (lessonId === '1.13') {
     return <Navigate to="/bootcamp/intro-to-lr/lessons/legacy/1.13" replace />;
