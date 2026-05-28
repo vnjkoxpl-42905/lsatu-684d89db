@@ -530,9 +530,9 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           />
           <CalloutCard className="bg-white" prominent>
             <div className="space-y-3 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-              <p><strong>Stimulus:</strong> where the reasoning lives.</p>
-              <p><strong>Question Stem:</strong> what task you must perform.</p>
-              <p><strong>Answer Choices:</strong> where the test checks whether you understood the stimulus.</p>
+              <p><strong>Stimulus:</strong> The stimulus is the content you are being asked about.</p>
+              <p><strong>Question Stem:</strong> The Question stem tells you the task.</p>
+              <p><strong>Answer Choices:</strong> The answer choices list the possible answers.</p>
             </div>
           </CalloutCard>
         </LessonSection>
