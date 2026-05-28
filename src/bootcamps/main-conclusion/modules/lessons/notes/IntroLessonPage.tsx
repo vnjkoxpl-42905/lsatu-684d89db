@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import { IntroNotesShell } from "./IntroNotesShell";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
@@ -128,6 +129,288 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
   </div>
 );
 
+type ReadingDrillStep = {
+  id: "claim" | "support" | "prove";
+  label: string;
+  question: string;
+  prompt: string;
+  choices: Array<{
+    id: string;
+    text: string;
+    correct: boolean;
+    feedback: string;
+  }>;
+};
+
+const ACTIVE_READING_STEPS: ReadingDrillStep[] = [
+  {
+    id: "claim",
+    label: "Claim",
+    question: "What is the author trying to prove?",
+    prompt: "Find the sentence that needs support.",
+    choices: [
+      {
+        id: "claim-library-hours",
+        text: "The city should keep the library open later.",
+        correct: true,
+        feedback: "Yes. That is the author's claim. Everything else is there to make this recommendation sound reasonable.",
+      },
+      {
+        id: "claim-attendance",
+        text: "Evening attendance has doubled.",
+        correct: false,
+        feedback: "That is evidence. It supports the recommendation, but it is not the thing the author is trying to prove.",
+      },
+      {
+        id: "claim-students",
+        text: "Many students can only visit after work.",
+        correct: false,
+        feedback: "That is another support point. It gives a reason for later hours.",
+      },
+    ],
+  },
+  {
+    id: "support",
+    label: "Support",
+    question: "What evidence is offered?",
+    prompt: "Find what the author gives you as support.",
+    choices: [
+      {
+        id: "support-both",
+        text: "Evening attendance doubled, and students need after-work access.",
+        correct: true,
+        feedback: "Right. Those are the two reasons offered for the recommendation.",
+      },
+      {
+        id: "support-should",
+        text: "The library should stay open later.",
+        correct: false,
+        feedback: "That is the claim. Support is the reason offered for that claim.",
+      },
+      {
+        id: "support-none",
+        text: "No evidence is offered.",
+        correct: false,
+        feedback: "There is evidence here: attendance and student access both support the recommendation.",
+      },
+    ],
+  },
+  {
+    id: "prove",
+    label: "Test",
+    question: "Does the evidence prove the claim?",
+    prompt: "Question the author before you trust the argument.",
+    choices: [
+      {
+        id: "prove-not-yet",
+        text: "Not yet. It helps, but we still need to ask about cost, staffing, and alternatives.",
+        correct: true,
+        feedback: "Exactly. Active reading means you do not just find support. You ask whether it proves enough.",
+      },
+      {
+        id: "prove-complete",
+        text: "Yes. Higher attendance automatically proves the library should stay open later.",
+        correct: false,
+        feedback: "Too fast. Higher attendance matters, but the author still has to deal with costs and tradeoffs.",
+      },
+      {
+        id: "prove-ignore",
+        text: "It does not matter whether the support proves the claim.",
+        correct: false,
+        feedback: "That question is the whole game. LR rewards students who test the support.",
+      },
+    ],
+  },
+];
+
+function ActiveReadingMoves() {
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {[
+        {
+          label: "Find the conclusion",
+          body: "What is the author trying to make you believe?",
+        },
+        {
+          label: "Find the support",
+          body: "What reasons does the author give you?",
+        },
+        {
+          label: "Test the proof",
+          body: "Do those reasons actually get all the way there?",
+        },
+      ].map((move, index) => (
+        <div
+          key={move.label}
+          className="rounded-[10px] border border-[rgba(26,26,26,0.10)] bg-white px-5 py-5 shadow-[0_10px_24px_rgba(26,26,26,0.04)]"
+        >
+          <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full border border-[#E6D6B2] bg-[#FEFBF2] text-[13px] font-semibold text-[#74541B]">
+            {index + 1}
+          </div>
+          <h3 className="text-[17px] font-semibold leading-tight text-[#1a1a1a]">{move.label}</h3>
+          <p className="mt-3 text-[15px] leading-[1.6] text-[rgba(26,26,26,0.68)]">{move.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StimulusReadingDrill() {
+  const reducedMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const activeStep = ACTIVE_READING_STEPS[activeIndex];
+  const selectedChoiceId = answers[activeStep.id] ?? null;
+  const selectedChoice = activeStep.choices.find((choice) => choice.id === selectedChoiceId) ?? null;
+  const isComplete = ACTIVE_READING_STEPS.every((step) => {
+    const selectedId = answers[step.id];
+    return step.choices.some((choice) => choice.id === selectedId && choice.correct);
+  });
+
+  function handleChoice(choiceId: string) {
+    const choice = activeStep.choices.find((item) => item.id === choiceId);
+    if (!choice) return;
+    setAnswers((current) => ({ ...current, [activeStep.id]: choiceId }));
+    if (choice.correct && activeIndex < ACTIVE_READING_STEPS.length - 1) {
+      window.setTimeout(() => setActiveIndex((current) => Math.min(current + 1, ACTIVE_READING_STEPS.length - 1)), 280);
+    }
+  }
+
+  return (
+    <InteractiveCard
+      prominent
+      className="overflow-hidden border-[#D8BE82] bg-[#FFFDF8] shadow-[0_22px_50px_rgba(116,84,27,0.10)]"
+    >
+      <div className="border-b border-[#E8DDC8] px-6 py-6 md:px-8">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-3">
+            <div className="inline-flex rounded-full border border-[#E6D6B2] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#74541B]">
+              Mini Drill
+            </div>
+            <h3 className="text-[28px] font-semibold leading-tight text-[#1a1a1a]">Read this like a test taker.</h3>
+            <p className="max-w-2xl text-[16px] leading-[1.6] text-[rgba(26,26,26,0.70)]">
+              Do the move now: find the claim, find the support, then decide whether the support proves enough.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {ACTIVE_READING_STEPS.map((step, index) => {
+              const selectedId = answers[step.id];
+              const done = step.choices.some((choice) => choice.id === selectedId && choice.correct);
+              const current = index === activeIndex;
+              return (
+                <motion.button
+                  key={step.id}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  animate={
+                    current && !reducedMotion
+                      ? {
+                          scale: [1, 1.035, 1],
+                          boxShadow: [
+                            "0 0 0 0 rgba(216,190,130,0)",
+                            "0 0 0 6px rgba(216,190,130,0.18)",
+                            "0 0 0 0 rgba(216,190,130,0)",
+                          ],
+                        }
+                      : { scale: 1, boxShadow: "0 0 0 0 rgba(216,190,130,0)" }
+                  }
+                  transition={current && !reducedMotion ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : { duration: 0.16 }}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
+                    done
+                      ? "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]"
+                      : current
+                        ? "border-[#D8BE82] bg-[#FEFBF2] text-[#74541B]"
+                        : "border-[rgba(26,26,26,0.10)] bg-white text-[rgba(26,26,26,0.48)]",
+                  )}
+                >
+                  {index + 1} {step.label}
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-6 px-6 py-6 md:px-8">
+        <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-5 shadow-[0_12px_26px_rgba(26,26,26,0.04)]">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.42)]">
+            Stimulus
+          </p>
+          <p className="text-[19px] leading-[1.75] text-[rgba(26,26,26,0.86)]">
+            The city should keep the library open later. Evening attendance has doubled this year, and many students can
+            only visit after work.
+          </p>
+        </div>
+
+        <div className="rounded-[12px] border border-[#E6D6B2] bg-white px-5 py-5 shadow-[0_12px_26px_rgba(116,84,27,0.06)]">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#74541B]">{activeStep.prompt}</p>
+              <h3 className="mt-2 text-[22px] font-semibold leading-tight text-[#1a1a1a]">{activeStep.question}</h3>
+            </div>
+            <span className="rounded-full border border-[#D8BE82] bg-[#FEFBF2] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#74541B]">
+              Tap one
+            </span>
+          </div>
+
+          <div className="grid gap-3">
+            {activeStep.choices.map((choice) => {
+              const selected = selectedChoiceId === choice.id;
+              return (
+                <button
+                  key={choice.id}
+                  type="button"
+                  onClick={() => handleChoice(choice.id)}
+                  className={cn(
+                    "rounded-[10px] border px-4 py-4 text-left text-[16px] leading-[1.55] transition-[border-color,background-color,box-shadow,transform]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8BE82] focus-visible:ring-offset-2",
+                    selected && choice.correct && "border-[#B9D6B4] bg-[#F6FBF3] text-[#2F5B35] shadow-[0_10px_22px_rgba(47,91,53,0.08)]",
+                    selected && !choice.correct && "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B] shadow-[0_10px_22px_rgba(116,84,27,0.06)]",
+                    !selected && "border-[rgba(26,26,26,0.10)] bg-white text-[rgba(26,26,26,0.78)] hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)]",
+                  )}
+                >
+                  {choice.text}
+                </button>
+              );
+            })}
+          </div>
+
+          <AnimatePresence initial={false} mode="wait">
+            {selectedChoice ? (
+              <motion.div
+                key={selectedChoice.id}
+                initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                transition={{ duration: reducedMotion ? 0.01 : 0.18, ease: "easeOut" }}
+                className={cn(
+                  "mt-4 rounded-[10px] border px-4 py-3 text-[15px] leading-[1.6]",
+                  selectedChoice.correct
+                    ? "border-[#B9D6B4] bg-[#F6FBF3] text-[#2F5B35]"
+                    : "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]",
+                )}
+              >
+                {selectedChoice.feedback}
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
+
+        {isComplete ? (
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+            animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            className="rounded-[12px] border border-[#B9D6B4] bg-[#F6FBF3] px-5 py-4 text-[16px] leading-[1.65] text-[#2F5B35]"
+          >
+            <strong>That is active reading:</strong> claim first, support second, proof test third.
+          </motion.div>
+        ) : null}
+      </div>
+    </InteractiveCard>
+  );
+}
+
 const pages: Record<IntroLessonPageId, PageDefinition> = {
   "how-to-read-lr-stimulus": {
     eyebrow: "",
@@ -136,37 +419,35 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
       "Logical Reasoning starts with active reading: find the conclusion, find the premises, and test whether the support really proves the claim.",
     content: (
       <>
-        <LessonSection tocTitle="Primary Directive" className="space-y-8">
-          <SectionHeading title="Primary Directive" subtitle="How to Read an LR Stimulus" />
-          <CalloutCard className="bg-white">
-            <p className="text-[22px] leading-[1.75] text-[#1a1a1a]">
-              The core job: When you read an LR stimulus, do not read passively. Find the conclusion, find the premises,
-              and ask whether the premises really prove the conclusion.
-            </p>
+        <LessonSection tocTitle="The First Move" className="space-y-8">
+          <SectionHeading title="Start Here" subtitle="Read the stimulus actively" />
+          <CalloutCard className="border-[#D8BE82] bg-[#FFFDF8]" prominent>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#74541B]">
+                  Your job before the answers
+                </p>
+                <p className="text-[22px] font-medium leading-[1.55] text-[#1a1a1a]">
+                  Do not let the stimulus wash over you. Read it like a small argument you have to inspect.
+                </p>
+              </div>
+              <ActiveReadingMoves />
+            </div>
           </CalloutCard>
         </LessonSection>
 
-        <LessonSection tocTitle="Assessment Metrics" className="space-y-8 border-b-0">
-          <SectionHeading title="Assessment Metrics" subtitle="What Logical Reasoning Tests" />
-          <div className="grid gap-5">
-            <GridCard title="1. Read Intently">
-              <p>
-                You must pay attention to what each sentence is doing. If you do not really understand what you are
-                reading, you will not answer the question correctly.
-              </p>
-              <p>Do not skim. Do not assume. Do not paraphrase too loosely. Track the role of each statement.</p>
-            </GridCard>
-            <GridCard title="2. Question the Author">
-              <p>
-                Many students read an LR stimulus and think, "That sounds fine." That is the wrong mindset. The author's
-                conclusion is often the weak point.
-              </p>
-              <p>
-                Ask whether the evidence actually proves the claim, whether the author is going too far, and whether there
-                is a gap between the premises and the conclusion.
-              </p>
-            </GridCard>
+        <LessonSection tocTitle="The Reading Job" className="space-y-8 border-b-0">
+          <SectionHeading title="The Reading Job" subtitle="Try the move on a tiny stimulus" />
+          <div className="space-y-5 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.78)]">
+            <p>
+              Logical Reasoning rewards active readers. That means you track what each sentence is doing and question
+              the author's leap before the answer choices distract you.
+            </p>
+            <p>
+              Use the drill below to practice the whole move in miniature.
+            </p>
           </div>
+          <StimulusReadingDrill />
         </LessonSection>
       </>
     ),
