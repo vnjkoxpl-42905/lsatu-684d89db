@@ -14,7 +14,6 @@ import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
 import { ConclusionTypeSwitchboard } from "./components/ConclusionTypeSwitchboard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
-import { StructureXRayText } from "./components/StructureXRayText";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
 
 export type IntroLessonPageId =
@@ -488,46 +487,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             stimulus itself.
           </p>
           <QuestionAnatomyScanner />
-          <StructureXRayText
-            title="Stock Analysts stimulus"
-            description="Once the question structure is clear, show the structure and see what the stimulus itself is doing."
-            coachNote={
-              <>
-                The answer choices are downstream from this structure. The conclusion is the claim about humans and apes.
-                The rest of the stimulus is the evidence used to support it.
-              </>
-            }
-            segments={[
-              {
-                id: "stock-analysts-conclusion",
-                text: "Humans are no better than apes at investing.",
-                role: "conclusion",
-                label: "Conclusion",
-                explanation: "This is the author's main claim. It is the judgment the rest of the stimulus is trying to support.",
-              },
-              {
-                id: "stock-analysts-premise-1",
-                text: "We gave five stock analysts and one chimpanzee $1,350 each to invest.",
-                role: "premise",
-                label: "Premise",
-                explanation: "This sets up the comparison the author will use as evidence.",
-              },
-              {
-                id: "stock-analysts-premise-2",
-                text: "After one month, the chimp won, increasing its net worth by $210.",
-                role: "premise",
-                label: "Premise",
-                explanation: "This is factual support the author uses to push the conclusion.",
-              },
-              {
-                id: "stock-analysts-premise-3",
-                text: "The next best analyst increased by only $140.",
-                role: "premise",
-                label: "Premise",
-                explanation: "This comparison is the final support point the argument leans on.",
-              },
-            ]}
-          />
           <CalloutCard className="bg-white" prominent>
             <div className="space-y-3 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
               <p><strong>Stimulus:</strong> The stimulus is the content you are being asked about.</p>
