@@ -480,8 +480,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </CalloutCard>
         </LessonSection>
 
-        <LessonSection tocTitle="Stock Analysts" className="space-y-8 border-b-0">
-          <SectionHeading title="Structure Example" subtitle="The Stock Analysts" />
+        <LessonSection tocTitle="The Anatomy of a Logical Reasoning Question" className="space-y-8 border-b-0">
+          <SectionHeading title="Structure Example" subtitle="The Anatomy of a Logical Reasoning Question" />
           <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             This is one normal LR question. Touch the visible parts in order, then run the structure view on the
             stimulus itself.
