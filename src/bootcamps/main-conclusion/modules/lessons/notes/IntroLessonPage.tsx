@@ -536,33 +536,8 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </p>
         </LessonSection>
 
-        <LessonSection tocTitle="Simple Argument" className="space-y-8">
-          <SectionHeading title="Behold, A Simple Argument" subtitle="Cake and blocks" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>
-              Imagine you're building a table made of blocks to keep a delicious piece of cake off the floor (you live a
-              very interesting life in this example).
-            </p>
-            <p>Your blocks are solid. They aren't going anywhere. These are your <strong>premises</strong>.</p>
-            <p>Your cake is squishy and fragile. It needs to be held up because it cannot fend for itself. This is your <strong>conclusion</strong>.</p>
-          </div>
+        <LessonSection tocTitle="A conclusion needs support" className="space-y-8">
           <SupportSimulator />
-          <CalloutCard className="bg-white">
-            <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-[18px] leading-[1.8] text-[#1a1a1a]">{`{CAKE}             <- Conclusion (squishy claims)
-
-[BLOCK] [BLOCK]    <- Premises (solid facts)`}</pre>
-          </CalloutCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>
-              The cake is only safe from the floor because you arranged your blocks exactly right. Conclusions are
-              worthless and delicious like this too. They can't keep themselves off the floor.
-            </p>
-            <p>
-              Left to their own devices, conclusions would run amok and we'd never get anything done. Conclusions need
-              premises, or they're just opinions lying in the dirt.
-            </p>
-            <p>Let's dive into premises and conclusions. Make sure this sinks in. Everything that follows depends on it.</p>
-          </div>
         </LessonSection>
 
         <LessonSection tocTitle="Core Takeaway" className="space-y-8 border-b-0">

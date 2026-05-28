@@ -176,220 +176,226 @@ export function AnswerChoiceDeck({
 }
 
 export function SupportSimulator() {
-  const [removed, setRemoved] = useState(false);
-  const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
-  const [submittedCheck, setSubmittedCheck] = useState(false);
+  const premiseSupports = [
+    { id: "premise-1", label: "Premise 1", x: 178 },
+    { id: "premise-2", label: "Premise 2", x: 360 },
+    { id: "premise-3", label: "Premise 3", x: 542 },
+  ] as const;
+
+  type PremiseSupportId = (typeof premiseSupports)[number]["id"];
+
+  const [confirmedPremises, setConfirmedPremises] = useState<PremiseSupportId[]>([]);
   const reducedMotion = useReducedMotion();
+  const titleId = useId();
+  const isComplete = confirmedPremises.length === premiseSupports.length;
 
-  const readyForCheck = removed;
-  const checkCorrect = selectedCheck === "lost-support";
-
-  function toggleSupport() {
-    setRemoved((current) => {
-      const next = !current;
-      if (!next) {
-        setSelectedCheck(null);
-        setSubmittedCheck(false);
-      }
-      return next;
-    });
-  }
-
-  function resetAll() {
-    setRemoved(false);
-    setSelectedCheck(null);
-    setSubmittedCheck(false);
+  function togglePremise(id: PremiseSupportId) {
+    setConfirmedPremises((current) =>
+      current.includes(id) ? current.filter((premiseId) => premiseId !== id) : [...current, id],
+    );
   }
 
   return (
     <InteractiveCard prominent className="overflow-hidden border-[rgba(26,26,26,0.14)] bg-[linear-gradient(180deg,#fffdf9_0%,#fbf7ef_100%)] p-6 md:p-8">
       <div className="space-y-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.5)]">Support check</p>
-            <h3 className="font-serif text-[30px] italic leading-tight text-[#1a1a1a]">See what happens when support disappears</h3>
-            <p className="max-w-2xl text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
-              Premises are the load-bearing pieces. When one drops away, the conclusion immediately looks less secure.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span
-              aria-live="polite"
-              className={cn(
-                "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
-                removed
-                  ? "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]"
-                  : "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]",
-              )}
-            >
-              {removed ? "Support weakened" : "Supported"}
-            </span>
-            <button
-              type="button"
-              onClick={toggleSupport}
-              className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-            >
-              {removed ? "Put support back" : "Take one premise away"}
-            </button>
-            <button
-              type="button"
-              onClick={resetAll}
-              className="rounded-full border border-[rgba(26,26,26,0.12)] bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1a1a1a] transition-colors duration-200 hover:bg-[#F8F5EE] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-            >
-              Reset
-            </button>
-          </div>
+        <div className="max-w-3xl space-y-3">
+          <h3 className="font-serif text-[34px] italic leading-tight text-[#1a1a1a]">A conclusion needs support</h3>
+          <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
+            A conclusion is the claim the argument is trying to hold up.
+          </p>
+          <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
+            Premises are the supports underneath it. They keep the claim standing.
+          </p>
         </div>
 
-        <div className="rounded-[16px] border border-[rgba(26,26,26,0.08)] bg-[rgba(255,255,255,0.7)] p-6">
-          <div className="mx-auto flex max-w-[540px] flex-col items-center gap-4">
-            <motion.div
-              animate={
-                removed && !reducedMotion
-                  ? { rotate: -3, x: 10, y: 6 }
-                  : { rotate: 0, x: 0, y: 0 }
-              }
-              transition={{ duration: reducedMotion ? 0.01 : 0.38, ease: "easeOut" }}
-              className="relative w-full max-w-[360px] rounded-[18px] border border-[#E6D6B2] bg-[linear-gradient(180deg,#FFF3D5_0%,#F7E3B2_100%)] px-6 py-5 text-center shadow-[0_18px_30px_rgba(130,96,28,0.16)]"
+        <div className="rounded-[18px] border border-[rgba(26,26,26,0.10)] bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(248,244,235,0.84)_100%)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_18px_36px_rgba(26,26,26,0.06)] md:p-6">
+          <svg
+            role="img"
+            aria-labelledby={titleId}
+            viewBox="0 0 720 430"
+            className="h-auto w-full overflow-visible"
+          >
+            <title id={titleId}>Premises support a conclusion</title>
+            <defs>
+              <linearGradient id="support-floor" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stopColor="#F6F0E4" />
+                <stop offset="100%" stopColor="#E8DDCB" />
+              </linearGradient>
+              <linearGradient id="support-beam" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor={isComplete ? "#FFF3D0" : "#F7F1E6"} />
+                <stop offset="100%" stopColor={isComplete ? "#E8C978" : "#DED3C2"} />
+              </linearGradient>
+              <linearGradient id="support-leg-confirmed" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#F5DFA8" />
+                <stop offset="100%" stopColor="#B78D34" />
+              </linearGradient>
+              <linearGradient id="support-leg-tentative" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#F3F6F7" />
+                <stop offset="100%" stopColor="#D8E2E7" />
+              </linearGradient>
+              <filter id="support-soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                <feDropShadow dx="0" dy="14" stdDeviation="12" floodColor="#1A1A1A" floodOpacity="0.12" />
+              </filter>
+              <filter id="support-warm-glow" x="-35%" y="-35%" width="170%" height="190%">
+                <feDropShadow dx="0" dy="10" stdDeviation="10" floodColor="#B88727" floodOpacity="0.22" />
+              </filter>
+            </defs>
+
+            <motion.g
+              initial={reducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: reducedMotion ? 0.01 : 0.12, ease: "easeOut" }}
             >
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(78,58,22,0.6)]">Conclusion</div>
-              <div className="mt-2 font-serif text-[28px] italic text-[#4E3A16]">The author's claim</div>
-              <div className="mt-2 text-[15px] leading-[1.55] text-[rgba(78,58,22,0.76)]">
-                The squishy part that needs to be held up.
-              </div>
-            </motion.div>
+              <ellipse cx="360" cy="368" rx="286" ry="34" fill="#1A1A1A" opacity="0.045" />
+              <path
+                d="M86 350H634L596 382H124L86 350Z"
+                fill="url(#support-floor)"
+                stroke="rgba(120,97,63,0.20)"
+                strokeWidth="1.5"
+              />
+              <line x1="108" x2="612" y1="350" y2="350" stroke="rgba(97,76,45,0.24)" strokeWidth="2" />
+            </motion.g>
 
-            <div className="flex w-full max-w-[420px] items-end justify-center gap-5">
-              <motion.div
-                layout
-                transition={{ duration: reducedMotion ? 0.01 : 0.3, ease: "easeOut" }}
-                className="flex-1"
+            {premiseSupports.map((support, index) => {
+              const confirmed = confirmedPremises.includes(support.id);
+              return (
+                <motion.g
+                  key={support.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Confirm Premise ${index + 1}`}
+                  aria-pressed={confirmed}
+                  onClick={() => togglePremise(support.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      togglePremise(support.id);
+                    }
+                  }}
+                  initial={reducedMotion ? false : { scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  transition={{ duration: reducedMotion ? 0.01 : 0.32, ease: [0.22, 1, 0.36, 1], delay: reducedMotion ? 0 : 0.08 + index * 0.04 }}
+                  style={{
+                    transformBox: "fill-box",
+                    transformOrigin: "center bottom",
+                  }}
+                  className="cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C49A40] focus-visible:outline-offset-[3px]"
+                >
+                  <rect x={support.x - 46} y="132" width="92" height="226" rx="18" fill="transparent" />
+                  <rect
+                    x={support.x - 18}
+                    y="150"
+                    width="36"
+                    height="200"
+                    rx="10"
+                    fill={confirmed ? "url(#support-leg-confirmed)" : "url(#support-leg-tentative)"}
+                    opacity={confirmed ? 1 : 0.56}
+                    stroke={confirmed ? "#A87922" : "#9BAEB9"}
+                    strokeWidth={confirmed ? 2.4 : 1.6}
+                    strokeDasharray={confirmed ? undefined : "8 8"}
+                    filter={confirmed ? "url(#support-warm-glow)" : undefined}
+                  />
+                  <path
+                    d={`M${support.x - 18} 150H${support.x + 18}L${support.x + 10} 162H${support.x - 10}Z`}
+                    fill={confirmed ? "#FFE7AA" : "#EFF4F6"}
+                    opacity={confirmed ? 0.92 : 0.55}
+                  />
+                  <rect
+                    x={support.x - 38}
+                    y="341"
+                    width="76"
+                    height="12"
+                    rx="6"
+                    fill={confirmed ? "#C69A3E" : "#B9C7CF"}
+                    opacity={confirmed ? 0.82 : 0.35}
+                  />
+                  <motion.text
+                    x={support.x}
+                    y="398"
+                    textAnchor="middle"
+                    initial={reducedMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: confirmed ? 1 : 0.68 }}
+                    transition={{ duration: reducedMotion ? 0.01 : 0.18, delay: reducedMotion ? 0 : 0.34 }}
+                    fill={confirmed ? "#6F4D12" : "rgba(26,26,26,0.56)"}
+                    fontSize="17"
+                    fontWeight="700"
+                    letterSpacing="0.12em"
+                  >
+                    {support.label}
+                  </motion.text>
+                </motion.g>
+              );
+            })}
+
+            <motion.g
+              initial={reducedMotion ? false : { opacity: 0, y: -16 }}
+              animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: isComplete ? 4 : 0 }}
+              transition={{ duration: reducedMotion ? 0.01 : 0.36, ease: [0.22, 1, 0.36, 1], delay: reducedMotion ? 0 : 0.28 }}
+              filter={isComplete ? "url(#support-soft-shadow)" : undefined}
+            >
+              <rect
+                x="112"
+                y="70"
+                width="496"
+                height="84"
+                rx="18"
+                fill="url(#support-beam)"
+                stroke={isComplete ? "#B88A2E" : "rgba(120,97,63,0.28)"}
+                strokeWidth={isComplete ? 2.5 : 1.5}
+              />
+              <path
+                d="M128 154H592L572 174H148L128 154Z"
+                fill={isComplete ? "#D9AF55" : "#CBC0AE"}
+                opacity={isComplete ? 0.72 : 0.45}
+              />
+              <motion.text
+                x="360"
+                y="109"
+                textAnchor="middle"
+                initial={reducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: reducedMotion ? 0.01 : 0.18, delay: reducedMotion ? 0 : 0.42 }}
+                fill={isComplete ? "#5C3E0C" : "rgba(26,26,26,0.72)"}
+                fontSize="18"
+                fontWeight="800"
+                letterSpacing="0.18em"
               >
-                <div className="rounded-[14px] border border-[#CBDDEB] bg-[#F4FAFE] px-4 py-5 text-center shadow-[0_10px_22px_rgba(54,91,122,0.10)]">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#456A88]">Premise 1</div>
-                  <div className="mt-2 text-[15px] leading-[1.55] text-[#24425D]">Solid evidence already on the table</div>
-                </div>
-              </motion.div>
-
-              <AnimatePresence initial={false}>
-                {!removed ? (
-                  <motion.div
-                    layout
-                    initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-                    animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                    exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.9 }}
-                    transition={{ duration: reducedMotion ? 0.01 : 0.32, ease: "easeOut" }}
-                    className="flex-1"
-                  >
-                    <div className="rounded-[14px] border border-[#CBDDEB] bg-[#F4FAFE] px-4 py-5 text-center shadow-[0_10px_22px_rgba(54,91,122,0.10)]">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#456A88]">Premise 2</div>
-                      <div className="mt-2 text-[15px] leading-[1.55] text-[#24425D]">More support keeping the claim upright</div>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    initial={false}
-                    animate={{ opacity: 1 }}
-                    className="flex flex-1 items-center justify-center rounded-[14px] border border-dashed border-[rgba(26,26,26,0.12)] px-4 py-5 text-center text-[14px] uppercase tracking-[0.16em] text-[rgba(26,26,26,0.42)]"
-                  >
-                    missing support
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div className="text-center text-[15px] leading-[1.6] text-[rgba(26,26,26,0.7)]">
-              {removed
-                ? "The claim is still there, but it no longer feels properly held up."
-                : "Both premises are doing the load-bearing work that keeps the conclusion from crashing down."}
-            </div>
-          </div>
+                CONCLUSION
+              </motion.text>
+              <motion.text
+                x="360"
+                y="134"
+                textAnchor="middle"
+                initial={reducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: reducedMotion ? 0.01 : 0.18, delay: reducedMotion ? 0 : 0.44 }}
+                fill={isComplete ? "#6F4D12" : "rgba(26,26,26,0.58)"}
+                fontSize="16"
+                fontWeight="500"
+              >
+                The claim being supported
+              </motion.text>
+            </motion.g>
+          </svg>
         </div>
 
         <AnimatePresence initial={false}>
-          {readyForCheck ? (
+          {isComplete ? (
             <motion.div
               initial={reducedMotion ? false : { opacity: 0, y: 10 }}
               animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
-              transition={{ duration: reducedMotion ? 0.01 : 0.2, ease: "easeOut" }}
-              className="space-y-4 rounded-[16px] border border-[rgba(26,26,26,0.08)] bg-white p-5"
+              transition={{ duration: reducedMotion ? 0.01 : 0.22, ease: "easeOut" }}
+              className="rounded-[14px] border border-[#E6D6B2] bg-[#FEFBF2] px-5 py-4 text-[17px] leading-[1.65] text-[#74541B]"
             >
-              <div className="space-y-2">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.48)]">
-                  Quick check
-                </div>
-                <p className="text-[18px] leading-[1.65] text-[#1a1a1a]">What failed when one premise disappeared?</p>
-              </div>
-
-              <div className="grid gap-3">
-                {[
-                  {
-                    id: "lost-support",
-                    label: "The claim lost part of the support holding it up.",
-                  },
-                  {
-                    id: "premise-false",
-                    label: "The missing premise became false, so the argument ended.",
-                  },
-                  {
-                    id: "conclusion-role",
-                    label: "The conclusion turned into a premise once the block moved.",
-                  },
-                ].map((choice) => (
-                  <button
-                    key={choice.id}
-                    type="button"
-                    disabled={submittedCheck}
-                    aria-pressed={selectedCheck === choice.id}
-                    onClick={() => setSelectedCheck(choice.id)}
-                    className={cn(
-                      "rounded-[12px] border px-4 py-4 text-left text-[16px] leading-[1.6] transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
-                      selectedCheck === choice.id
-                        ? "border-[rgba(26,26,26,0.22)] bg-[#FBF8F1] shadow-[0_10px_18px_rgba(26,26,26,0.05)]"
-                        : "border-[rgba(26,26,26,0.10)] bg-white hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)]",
-                      submittedCheck && choice.id === "lost-support" && "border-[#B9D6B4] bg-[#F6FBF3]",
-                      submittedCheck && selectedCheck === choice.id && choice.id !== "lost-support" && "border-[#E6D6B2] bg-[#FEFBF2]",
-                    )}
-                  >
-                    {choice.label}
-                  </button>
-                ))}
-              </div>
-
-              {!submittedCheck ? (
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-[14px] leading-[1.6] text-[rgba(26,26,26,0.62)]">
-                    Pick the best description before revealing the explanation.
-                  </p>
-                  <button
-                    type="button"
-                    disabled={!selectedCheck}
-                    onClick={() => setSubmittedCheck(true)}
-                    className="rounded-full border border-[rgba(26,26,26,0.12)] bg-[#1a1a1a] px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#F5F2ED] transition-colors duration-200 hover:bg-[rgba(26,26,26,0.88)] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-                  >
-                    Check it
-                  </button>
-                </div>
-              ) : (
-                <div
-                  aria-live="polite"
-                  className={cn(
-                    "rounded-[12px] border px-4 py-4 text-[15px] leading-[1.65]",
-                    checkCorrect
-                      ? "border-[#B9D6B4] bg-[#F6FBF3] text-[#2F5B35]"
-                      : "border-[#E6D6B2] bg-[#FEFBF2] text-[#74541B]",
-                  )}
-                >
-                  <strong>{checkCorrect ? "Exactly." : "Not quite."}</strong>{" "}
-                  The problem is not that the premise became false or that the conclusion changed jobs. The problem is
-                  that the claim lost some of the evidence supporting it.
-                </div>
-              )}
+              Without premises, the conclusion is just a claim with nothing holding it up.
             </motion.div>
           ) : null}
         </AnimatePresence>
+
+        <p className="text-[17px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
+          That is the basic structure of an argument: premises support a conclusion.
+        </p>
       </div>
     </InteractiveCard>
   );
