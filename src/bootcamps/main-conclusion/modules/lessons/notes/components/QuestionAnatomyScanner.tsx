@@ -47,12 +47,13 @@ const REGIONS: AnatomyRegion[] = [
     id: "stimulus",
     label: "Stimulus",
     eyebrow: "Reasoning surface",
-    description: "Read this first. This is where the actual reasoning lives.",
+    description: "The stimulus is the content you are being asked about.",
     content: (
       <p className="text-[18px] leading-[1.8] text-[rgba(26,26,26,0.84)]">
-        Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each to
-        invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst increased by
-        only $140.
+        Politician: Nobody can deny that homelessness is a problem yet there seems to be little agreement on how to
+        solve it. One thing, however is clear: ignoring the problem will not make it go away. Only if the government
+        steps in and provides the homeless with housing will this problem disappear, and this necessitates increased
+        taxation. For this reason, we should raise taxes.
       </p>
     ),
   },
@@ -60,10 +61,10 @@ const REGIONS: AnatomyRegion[] = [
     id: "stem",
     label: "Question Stem",
     eyebrow: "Task prompt",
-    description: "This tells you what job you need to perform on the stimulus.",
+    description: "The stem tells you the task.",
     content: (
       <p className="text-[18px] font-semibold leading-[1.7] text-[#1a1a1a]">
-        Each of the following describes a flaw in the game show host&apos;s reasoning EXCEPT:
+        Which one of the following principles, if valid, most supports the politician’s argument?
       </p>
     ),
   },
@@ -71,15 +72,15 @@ const REGIONS: AnatomyRegion[] = [
     id: "answers",
     label: "Answer Choices",
     eyebrow: "Response set",
-    description: "These only matter after you understand the stimulus.",
+    description: "The answer choices list the possible answers.",
     content: (
       <ol className="divide-y divide-[rgba(26,26,26,0.08)] text-left">
         {[
-          "(A) It draws a sweeping conclusion about two entire species based on an exceptionally small sample size.",
-          "(B) It takes for granted that a single one-month trial is a reliable indicator of long-term investing skill.",
-          "(C) It fails to consider the possibility that the chimpanzee's success was merely the result of random chance.",
-          "(D) It inappropriately relies on the emotional appeal of an animal succeeding in a human profession.",
-          "(E) It presumes, without providing justification, that the five chosen analysts are representative of human investors generally.",
+          "(A) Only if a measure is required to solve a problem should it be adopted.",
+          "(B) Only if a measure is sufficient to solve a problem should it be adopted.",
+          "(C) If a measure is required to solve a problem, then it should be adopted.",
+          "(D) If a measure is sufficient to solve a problem, then it should be adopted.",
+          "(E) If a measure is sufficient to solve a problem, any steps necessitated by that measure should be adopted.",
         ].map((choice) => (
           <li key={choice} className="px-5 py-4 text-[17px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             {choice}
