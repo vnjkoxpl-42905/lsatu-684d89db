@@ -7,6 +7,7 @@ import { ConclusionPicker } from "@/bootcamps/main-conclusion/components/conclus
 import {
   IndicatorPillGroup,
   InteractiveCard,
+  PremiseIndicatorLab,
   SupportSimulator,
   XRayExample,
 } from "./NoteInteractions";
@@ -649,36 +650,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               <strong>FABS. Memorize it.</strong>
             </p>
           </div>
-          <IndicatorPillGroup
-            label="Tap each indicator"
-            variant="warm"
-            items={[
-              {
-                id: "for",
-                label: "For",
-                tone: "premise",
-                explanation: "When you see 'for,' the author is usually about to hand you support for a claim that just appeared.",
-              },
-              {
-                id: "after-all",
-                label: "After all",
-                tone: "premise",
-                explanation: "After all signals a justification. The author is backing up something they want you to accept.",
-              },
-              {
-                id: "because",
-                label: "Because",
-                tone: "premise",
-                explanation: "Because introduces a reason. It tells you why the author thinks the later or earlier claim should be believed.",
-              },
-              {
-                id: "since",
-                label: "Since",
-                tone: "premise",
-                explanation: "Since often marks evidence rather than time in LR. Read the sentence structurally, not conversationally.",
-              },
-            ]}
-          />
+          <PremiseIndicatorLab />
           <PremiseSupportCheck />
           <PremiseRememberCallout>
             <p>
