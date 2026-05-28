@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { getNextAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
+import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 
 interface IntroNotesShellProps {
   eyebrow?: string;
@@ -27,6 +28,7 @@ const getActionLabel = (type: ActionType) => {
 export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNotesShellProps) {
   const { pathname } = useLocation();
   const nextAction = getNextAction(pathname);
+  const isPremisesNote = pathname.endsWith("/lessons/notes/premises");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,7 +67,7 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
           </section>
 
           {/* Notes Drawer */}
-          <section className="notes-drawer pb-32" id="notesDrawer">
+          <section className={cn("notes-drawer", isPremisesNote ? "pb-48 md:pb-56" : "pb-32")} id="notesDrawer">
             <article className="note-card bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_14px_34px_rgba(26,26,26,0.075)] overflow-hidden">
               <div className="note-content">
                 {children}

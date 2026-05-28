@@ -69,19 +69,35 @@ export function InteractiveCard({
 export function IndicatorPillGroup({
   items,
   label,
+  variant = "default",
 }: {
   items: Array<{ id: string; label: string; explanation: ReactNode; tone?: Tone }>;
   label?: string;
+  variant?: "default" | "warm";
 }) {
   const [activeId, setActiveId] = useState<string | null>(items[0]?.id ?? null);
   const reducedMotion = useReducedMotion();
   const descriptionId = useId();
   const activeItem = items.find((item) => item.id === activeId) ?? null;
+  const isWarm = variant === "warm";
 
   return (
-    <div className="space-y-4">
+    <div
+      className={cn(
+        "space-y-4",
+        isWarm &&
+          "rounded-[16px] border border-[#E6D6B2] bg-[linear-gradient(180deg,#FFFDF8_0%,#FBF4E7_100%)] p-5 shadow-[0_16px_34px_rgba(92,67,20,0.06)]",
+      )}
+    >
       {label ? (
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.52)]">{label}</p>
+        <p
+          className={cn(
+            "text-[11px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.52)]",
+            isWarm && "text-[#74541B]",
+          )}
+        >
+          {label}
+        </p>
       ) : null}
       <div className="flex flex-wrap gap-3">
         {items.map((item) => {
@@ -97,9 +113,13 @@ export function IndicatorPillGroup({
               className={cn(
                 "rounded-full border px-4 py-2 text-[14px] font-semibold tracking-[0.01em] transition-all duration-200 ease-out",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                tone.badge,
-                tone.ring,
-                active ? "translate-y-[-1px] shadow-[0_10px_18px_rgba(26,26,26,0.08)]" : "opacity-90 hover:opacity-100",
+                isWarm
+                  ? active
+                    ? "border-[#D5AD5F] bg-[#FFF7E6] text-[#5C3D0E] shadow-[0_12px_20px_rgba(116,84,27,0.11)]"
+                    : "border-[#E6D6B2] bg-white/80 text-[rgba(26,26,26,0.72)] hover:border-[#D5AD5F] hover:bg-[#FFFBF2]"
+                  : tone.badge,
+                isWarm ? "focus-visible:ring-[#D5AD5F]" : tone.ring,
+                active ? "translate-y-[-1px]" : "opacity-90 hover:opacity-100",
               )}
             >
               {item.label}
@@ -118,8 +138,10 @@ export function IndicatorPillGroup({
             transition={{ duration: reducedMotion ? 0.01 : 0.2, ease: "easeOut" }}
             className={cn(
               "rounded-[12px] border px-5 py-4 text-[16px] leading-[1.65]",
-              toneStyles[activeItem.tone ?? "neutral"].surface,
-              toneStyles[activeItem.tone ?? "neutral"].text,
+              isWarm
+                ? "border-[#E6D6B2] border-l-[#C79B45] border-l-4 bg-[#FFFDF8] text-[rgba(26,26,26,0.78)] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]"
+                : toneStyles[activeItem.tone ?? "neutral"].surface,
+              !isWarm && toneStyles[activeItem.tone ?? "neutral"].text,
             )}
           >
             {activeItem.explanation}

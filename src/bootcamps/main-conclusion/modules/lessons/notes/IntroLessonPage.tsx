@@ -104,6 +104,22 @@ const QuoteCard = ({ children, className }: { children: ReactNode; className?: s
   </div>
 );
 
+const PremiseRememberCallout = ({ children }: { children: ReactNode }) => (
+  <div className="rounded-[14px] border border-[#E6D6B2] border-l-[#C79B45] border-l-4 bg-[linear-gradient(180deg,#FFFDF8_0%,#FBF6EA_100%)] px-6 py-5 shadow-[0_14px_30px_rgba(92,67,20,0.06)]">
+    <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[#74541B]">Remember</div>
+    <div className="text-[18px] leading-[1.72] text-[rgba(26,26,26,0.84)]">{children}</div>
+  </div>
+);
+
+const PremiseTeachingExcerpt = ({ children }: { children: ReactNode }) => (
+  <div className="rounded-[14px] border border-[rgba(116,84,27,0.18)] bg-[linear-gradient(180deg,#FFFDF9_0%,#FBF7EF_100%)] px-6 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.82),0_12px_28px_rgba(26,26,26,0.045)]">
+    <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.22em] text-[rgba(116,84,27,0.72)]">Teaching Excerpt</div>
+    <div className="border-l-2 border-[#D5AD5F] pl-5 text-[18px] leading-[1.82] text-[rgba(26,26,26,0.78)]">
+      {children}
+    </div>
+  </div>
+);
+
 const BulletList = ({ items, className }: { items: ReactNode[]; className?: string }) => (
   <ul className={cn("list-disc space-y-3 pl-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]", className)}>
     {items.map((item, index) => (
@@ -558,7 +574,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "Premises are the facts and evidence you accept as true; the real question is how they connect to the conclusion.",
     content: (
       <>
-        <LessonSection tocTitle="Statements Of Fact" className="space-y-8">
+        <LessonSection tocTitle="Statements Of Fact" className="space-y-9 bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFDF8_100%)]">
           <SectionHeading title="Premises" subtitle="Statements of fact" />
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>Premises are just the facts. The evidence. They describe how the world is, and on the LSAT, you accept them as true, full stop.</p>
@@ -568,6 +584,11 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               completely dry, and the forecast says it will be clear all afternoon." You are not questioning their
               conclusion first. You are attacking the facts they used to support it.
             </p>
+          </div>
+          <PremiseRememberCallout>
+            <p>On the LSAT, premises are given. Accept them as true, then ask what they are being used to support.</p>
+          </PremiseRememberCallout>
+          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>
               The LSAT doesn't allow it. Premises are locked in. You accept them and move on. <strong>The correct answer almost never questions the truth of a premise.</strong> The moment you start poking at whether a premise is accurate, you've left the building.
             </p>
@@ -578,7 +599,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </div>
         </LessonSection>
 
-        <LessonSection tocTitle="What Premises Are And Aren't" className="space-y-8">
+        <LessonSection tocTitle="What Premises Are And Aren't" className="space-y-9">
           <SectionHeading title="What Premises Are and Aren't" subtitle="What they do in the argument" />
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>Premises do the argument's heavy lifting. They're the evidence that makes the conclusion worth anything.</p>
@@ -587,14 +608,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               exist, solid, already true, handed to you for free.
             </p>
           </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
+          <PremiseTeachingExcerpt>
             <p>
               <em>
                 You said we should cancel the picnic because the park is flooded and the weather is supposed to be terrible.
                 But the park is completely dry. And the forecast says it will be clear all afternoon.
               </em>
             </p>
-          </QuoteCard>
+          </PremiseTeachingExcerpt>
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>
               Two premises just got attacked: "the park is flooded" and "the weather is supposed to be terrible." That's
@@ -608,15 +629,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               <strong>Premises are defined by their relationship to the conclusion.</strong> That's the key. A sentence isn't a premise because of what it says. It's a premise because of what it's doing in the argument: supporting the claim.
             </p>
           </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
+          <PremiseRememberCallout>
             <p>
-              <strong>Remember:</strong> Accept premises as true. Don't debate them. Focus on whether they support the
-              conclusion.
+              Accept premises as true. Don't debate them. Focus on whether they support the conclusion.
             </p>
-          </QuoteCard>
+          </PremiseRememberCallout>
         </LessonSection>
 
-        <LessonSection tocTitle="Premise Indicators" className="space-y-8 border-b-0">
+        <LessonSection tocTitle="Premise Indicators" className="space-y-9 border-b-0 bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFCF6_100%)]">
           <SectionHeading title="Premise Indicators" subtitle="FABS" />
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>Certain words signal that a premise is coming. Learn them and you'll start spotting argument structure automatically.</p>
@@ -631,6 +651,7 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           </div>
           <IndicatorPillGroup
             label="Tap each indicator"
+            variant="warm"
             items={[
               {
                 id: "for",
@@ -659,11 +680,11 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             ]}
           />
           <PremiseSupportCheck />
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
+          <PremiseRememberCallout>
             <p>
-              <strong>Remember:</strong> For, After all, Because, Since = FABS. These words introduce premises.
+              For, After all, Because, Since = FABS. These words introduce premises.
             </p>
-          </QuoteCard>
+          </PremiseRememberCallout>
         </LessonSection>
       </>
     ),
