@@ -153,11 +153,7 @@ export function StructureXRayText({
                 {activeSegment?.explanation ?? coachNote ?? "The answer choices are downstream from this structure. Read the reasoning first."}
               </div>
             </motion.div>
-          ) : (
-            <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-[#FBF8F1] px-4 py-4 text-[15px] leading-[1.65] text-[rgba(26,26,26,0.76)]">
-              Read the stimulus normally first. Then show the structure so you can see what each part is doing.
-            </div>
-          )}
+          ) : null}
         </AnimatePresence>
       </div>
     </div>
