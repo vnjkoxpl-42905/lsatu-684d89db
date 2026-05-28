@@ -111,7 +111,7 @@ function NoteLoader() {
     case 'two-part-conclusion-check':
       return <IntroLessonPage pageId={pageId} />;
     default:
-      return <Navigate to="/bootcamp/intro-to-lr/lessons" replace />;
+      return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />;
   }
 }
 
@@ -127,6 +127,10 @@ function LegacyLessonRedirect() {
     '1.7': 'beyond-premises-and-conclusions',
     '1.8': 'two-part-conclusion-check',
   };
+
+  if (lessonId === 'note' || lessonId === 'notes') {
+    return <Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />;
+  }
 
   if (lessonId && lessonId in noteByLessonId) {
     return <Navigate to={`/bootcamp/intro-to-lr/lessons/notes/${noteByLessonId[lessonId]}`} replace />;
@@ -147,6 +151,8 @@ export function BootcampRoutes() {
         <Route path="lessons" element={<NewGuidedIntro />} />
         <Route path="lessons/workbook" element={<IntroGuidedWorkbook />} />
         <Route path="lessons/legacy" element={<LessonsIndex />} />
+        <Route path="lessons/note" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />} />
+        <Route path="lessons/notes" element={<Navigate to="/bootcamp/intro-to-lr/lessons/notes/how-to-read-lr-stimulus" replace />} />
         <Route path="lessons/notes/:noteId" element={<NoteLoader />} />
         <Route path="lessons/:lessonId" element={<LegacyLessonRedirect />} />
         <Route path="lessons/legacy/1.13" element={<CapstoneRoute />} />
