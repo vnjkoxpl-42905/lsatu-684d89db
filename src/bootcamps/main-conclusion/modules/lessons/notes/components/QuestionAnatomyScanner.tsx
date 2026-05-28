@@ -9,7 +9,6 @@ type AnatomyRegionId = "stimulus" | "stem" | "answers";
 type AnatomyRegion = {
   id: AnatomyRegionId;
   label: string;
-  eyebrow: string;
   description: string;
   content: ReactNode;
 };
@@ -46,7 +45,6 @@ const REGIONS: AnatomyRegion[] = [
   {
     id: "stimulus",
     label: "Stimulus",
-    eyebrow: "Reasoning surface",
     description: "The stimulus is the content you are being asked about.",
     content: (
       <p className="text-[18px] leading-[1.8] text-[rgba(26,26,26,0.84)]">
@@ -60,7 +58,6 @@ const REGIONS: AnatomyRegion[] = [
   {
     id: "stem",
     label: "Question Stem",
-    eyebrow: "Task prompt",
     description: "The stem tells you the task.",
     content: (
       <p className="text-[18px] font-semibold leading-[1.7] text-[#1a1a1a]">
@@ -71,7 +68,6 @@ const REGIONS: AnatomyRegion[] = [
   {
     id: "answers",
     label: "Answer Choices",
-    eyebrow: "Response set",
     description: "The answer choices list the possible answers.",
     content: (
       <ol className="divide-y divide-[rgba(26,26,26,0.08)] text-left">
@@ -261,10 +257,7 @@ export function QuestionAnatomyScanner() {
             ) : null}
             <div className="border-b border-[rgba(26,26,26,0.08)] px-5 py-4 md:px-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[rgba(26,26,26,0.44)]">
-                    {region.eyebrow}
-                  </div>
+                <div>
                   <div className="font-serif text-[25px] italic leading-tight text-[#1a1a1a]">{region.label}</div>
                 </div>
                 <span
