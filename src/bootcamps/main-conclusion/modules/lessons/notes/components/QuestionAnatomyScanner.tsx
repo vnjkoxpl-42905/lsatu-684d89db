@@ -50,9 +50,9 @@ const REGIONS: AnatomyRegion[] = [
     description: "Read this first. This is where the actual reasoning lives.",
     content: (
       <p className="text-[18px] leading-[1.8] text-[rgba(26,26,26,0.84)]">
-        &ldquo;Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each
-        to invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst increased by
-        only $140.&rdquo;
+        Humans are no better than apes at investing. We gave five stock analysts and one chimpanzee $1,350 each to
+        invest. After one month, the chimp won, increasing its net worth by $210. The next best analyst increased by
+        only $140.
       </p>
     ),
   },
