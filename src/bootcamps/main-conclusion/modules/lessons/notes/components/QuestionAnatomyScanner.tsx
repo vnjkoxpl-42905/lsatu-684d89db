@@ -24,7 +24,7 @@ const STEPS: ScannerStep[] = [
   {
     id: "stimulus",
     label: "Stimulus",
-    prompt: "Tap the stimulus first.",
+    prompt: "Tap the stimulus.",
     success: "Right. The reasoning lives in the stimulus.",
   },
   {
@@ -191,13 +191,43 @@ export function QuestionAnatomyScanner() {
           </div>
         </div>
 
-        <div id={statusId} aria-live="polite" className="mt-5 flex items-center gap-3 rounded-[10px] border border-[#E6D6B2] bg-white px-4 py-3 text-[16px] font-medium leading-[1.55] text-[#5D4216] shadow-[0_10px_24px_rgba(116,84,27,0.05)]">
-          <span
+        <motion.div
+          id={statusId}
+          aria-live="polite"
+          animate={
+            nextStep && !reducedMotion
+              ? {
+                  boxShadow: [
+                    "0 12px 28px rgba(116,84,27,0.06), 0 0 0 0 rgba(216,190,130,0.00)",
+                    "0 18px 36px rgba(116,84,27,0.10), 0 0 0 4px rgba(216,190,130,0.16)",
+                    "0 12px 28px rgba(116,84,27,0.06), 0 0 0 0 rgba(216,190,130,0.00)",
+                  ],
+                }
+              : { boxShadow: "0 12px 28px rgba(116,84,27,0.06)" }
+          }
+          transition={nextStep && !reducedMotion ? { duration: 2.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.18 }}
+          className="mt-5 flex items-center gap-3 rounded-[12px] border border-[#D8BE82] bg-[linear-gradient(180deg,#fffdfa_0%,#fffaf1_100%)] px-4 py-3.5 text-[16px] font-medium leading-[1.55] text-[#5D4216]"
+        >
+          <motion.span
             aria-hidden="true"
-            className="h-2.5 w-2.5 shrink-0 rounded-full bg-[#C49B45] shadow-[0_0_0_5px_rgba(216,190,130,0.22)]"
+            animate={
+              nextStep && !reducedMotion
+                ? {
+                    scale: [1, 1.18, 1],
+                    opacity: [0.85, 1, 0.85],
+                    boxShadow: [
+                      "0 0 0 0 rgba(216,190,130,0.18)",
+                      "0 0 0 8px rgba(216,190,130,0.00)",
+                      "0 0 0 0 rgba(216,190,130,0.18)",
+                    ],
+                  }
+                : { scale: 1, opacity: 1, boxShadow: "0 0 0 0 rgba(216,190,130,0.00)" }
+            }
+            transition={nextStep && !reducedMotion ? { duration: 1.8, repeat: Infinity, ease: "easeInOut" } : { duration: 0.18 }}
+            className="h-3 w-3 shrink-0 rounded-full bg-[#C49B45]"
           />
           <span>{status}</span>
-        </div>
+        </motion.div>
 
         <AnimatePresence initial={false}>
           {error ? (
@@ -243,7 +273,7 @@ export function QuestionAnatomyScanner() {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
               "hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_14px_28px_rgba(26,26,26,0.06)]",
               region.isCompleted && "border-[rgba(26,26,26,0.18)] shadow-[0_10px_22px_rgba(26,26,26,0.04)]",
-              region.isExpected && !region.isCompleted && "border-[#D8BE82] bg-[#FFFDF8] shadow-[0_18px_42px_rgba(116,84,27,0.10)]",
+              region.isExpected && !region.isCompleted && "border-[#D8BE82] bg-[linear-gradient(180deg,#fffdfa_0%,#fff7eb_100%)] shadow-[0_22px_52px_rgba(116,84,27,0.12)]",
               region.isActive && "border-[rgba(26,26,26,0.22)] shadow-[0_16px_30px_rgba(26,26,26,0.08)]",
               region.isWaiting && "opacity-70",
               region.isSecondaryAfterComplete && "opacity-60",
@@ -252,7 +282,7 @@ export function QuestionAnatomyScanner() {
             {region.isExpected && !region.isCompleted ? (
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[12px] bg-[linear-gradient(90deg,rgba(216,190,130,0.10),transparent_28%,transparent)]"
+                className="pointer-events-none absolute inset-0 rounded-[12px] bg-[linear-gradient(120deg,rgba(216,190,130,0.12),rgba(216,190,130,0.05)_22%,transparent_42%)]"
               />
             ) : null}
             <div className="border-b border-[rgba(26,26,26,0.08)] px-5 py-4 md:px-6">
@@ -266,23 +296,32 @@ export function QuestionAnatomyScanner() {
                     region.isCompleted
                       ? "border-[#B9D6B4] bg-[#F2F8EF] text-[#2F5B35]"
                       : region.isExpected
-                        ? "border-[#D8BE82] bg-[#FEFBF2] text-[#74541B] shadow-[0_8px_18px_rgba(116,84,27,0.08)]"
+                        ? "border-[#D8BE82] bg-[#FEFBF2] text-[#74541B] shadow-[0_10px_24px_rgba(116,84,27,0.10)]"
                         : "border-[rgba(26,26,26,0.10)] bg-white text-[rgba(26,26,26,0.48)]",
                   )}
                 >
                   {region.isCompleted ? "Found" : region.isExpected ? "Tap this" : "Available"}
                 </span>
               </div>
-              <p className="mt-3 text-[15px] leading-[1.65] text-[rgba(26,26,26,0.68)]">{region.description}</p>
+              <p className={cn(
+                "mt-3 text-[15px] leading-[1.65] text-[rgba(26,26,26,0.68)]",
+                region.isExpected && !region.isCompleted && "text-[rgba(93,66,22,0.92)]",
+              )}>{region.description}</p>
             </div>
 
             <div className={cn("px-5 py-5 md:px-6", region.id === "answers" && "rounded-b-[12px]")}>
               {region.id === "answers" ? (
-                <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
+                <div className={cn(
+                  "rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white shadow-[0_10px_22px_rgba(26,26,26,0.04)]",
+                  region.isExpected && !region.isCompleted && "border-[#E6D6B2] shadow-[0_14px_28px_rgba(116,84,27,0.08)]",
+                )}>
                   {region.content}
                 </div>
               ) : region.id === "stimulus" ? (
-                <div className="rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-5 shadow-[0_10px_22px_rgba(26,26,26,0.04)]">
+                <div className={cn(
+                  "rounded-[12px] border border-[rgba(26,26,26,0.08)] bg-white px-5 py-5 shadow-[0_10px_22px_rgba(26,26,26,0.04)]",
+                  region.isExpected && !region.isCompleted && "border-[#E6D6B2] shadow-[0_14px_28px_rgba(116,84,27,0.08)]",
+                )}>
                   {region.content}
                 </div>
               ) : (
