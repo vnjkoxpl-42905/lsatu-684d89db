@@ -76,6 +76,8 @@ const TeacherBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherBo
 const TeacherStudentBootcampDetail = React.lazy(() => import("./pages/teacher/TeacherStudentBootcampDetail"));
 const TeacherAdmin = React.lazy(() => import("./pages/teacher/TeacherAdmin"));
 const TeacherTemplates = React.lazy(() => import("./pages/teacher/TeacherTemplates"));
+const BootcampReferences = React.lazy(() => import("./pages/teacher/BootcampReferences"));
+const BootcampReferenceDetail = React.lazy(() => import("./pages/teacher/BootcampReferenceDetail"));
 import Inbox from "./pages/Inbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BootcampGate from "./components/hub/BootcampGate";
@@ -371,6 +373,23 @@ const App = () => {
                     <Route path="smartboard" element={<Navigate to="/teacher/library/smartboard" replace />} />
                     <Route path="analytics-bridge" element={<Navigate to="/teacher/library/analytics" replace />} />
                   </Route>
+
+                  {/* Admin-only Bootcamp Reference Library. Never exposed to students. Moved outside nesting to fix 404. */}
+                  <Route path="/teacher/reference-library" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <BootcampReferences />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/teacher/reference-library/:refId" element={
+                    <ProtectedRoute requireAdmin>
+                      <React.Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+                        <BootcampReferenceDetail />
+                      </React.Suspense>
+                    </ProtectedRoute>
+                  } />
+
                   <Route path="/classroom/ta/:assignmentId" element={
                     <ProtectedRoute flag="has_classroom_access">
                       <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
