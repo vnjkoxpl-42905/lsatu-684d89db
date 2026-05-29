@@ -218,12 +218,17 @@ export default function BootcampReferenceDetail() {
               Preview
             </h2>
 
-            {entry.previewStatus === 'static-ready' && entry.previewPath ? (
+            {(() => {
+              const iframeSrc = entry.appRoute ?? entry.previewPath;
+              if ((entry.previewStatus === 'static-ready' || entry.appRoute) && iframeSrc) {
+                return (
               <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800/60">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-[11px] text-zinc-400">Static preview available</span>
+                    <span className="text-[11px] text-zinc-400">
+                      {entry.appRoute ? 'Live in-app preview' : 'Static preview available'}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -233,8 +238,18 @@ export default function BootcampReferenceDetail() {
                     >
                       {previewExpanded ? 'Collapse' : 'Expand'}
                     </button>
+                    {entry.appRoute && (
+                      <button
+                        type="button"
+                        onClick={() => navigate(entry.appRoute!)}
+                        className="inline-flex items-center gap-1 text-[11px] text-amber-400/80 hover:text-amber-300 transition-colors"
+                      >
+                        Open in app
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+                    )}
                     <a
-                      href={entry.previewPath}
+                      href={iframeSrc}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-[11px] text-amber-400/80 hover:text-amber-300 transition-colors"
@@ -251,15 +266,19 @@ export default function BootcampReferenceDetail() {
                   )}
                 >
                   <iframe
-                    src={entry.previewPath}
+                    src={iframeSrc}
                     title={`Preview: ${entry.title}`}
                     className="w-full h-full border-0 bg-white"
-                    sandbox="allow-scripts allow-same-origin"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                     loading="lazy"
                   />
                 </div>
               </div>
-            ) : entry.previewStatus === 'metadata-only' ? (
+                );
+              }
+              return null;
+            })() ||
+            (entry.previewStatus === 'metadata-only' ? (
               <div className="bg-zinc-900/30 border border-zinc-800/40 rounded-lg px-5 py-6 flex flex-col items-center gap-2 text-center">
                 <Info className="w-5 h-5 text-amber-400/50" />
                 <p className="text-xs font-medium text-zinc-400">Metadata only</p>
