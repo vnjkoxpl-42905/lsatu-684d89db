@@ -178,7 +178,7 @@ const premiseIndicatorLabItems: PremiseIndicatorLabItem[] = [
     example: {
       conclusion: "You should try the curry,",
       indicator: "for",
-      premise: "you like spicy food.",
+      premise: "it is the restaurant's signature dish.",
       order: "conclusion-first",
     },
   },
