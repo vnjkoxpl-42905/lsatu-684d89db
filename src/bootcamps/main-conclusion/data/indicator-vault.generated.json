@@ -5,7 +5,7 @@
     "is_core": true,
     "color_token": "--role-conclusion",
     "description": "These flag the author's main claim. When you see one, ask: what comes after it? That's almost certainly the conclusion.",
-    "words": ["therefore", "thus", "so", "hence", "it follows that"],
+    "words": ["therefore", "thus", "hence", "so", "consequently", "as a result", "it follows that", "this shows that"],
     "example": "\"The library is full every afternoon. **Therefore**, the city should expand library funding.\""
   },
   {

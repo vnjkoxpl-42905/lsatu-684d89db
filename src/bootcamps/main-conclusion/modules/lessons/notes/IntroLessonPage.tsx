@@ -718,55 +718,57 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     ),
   },
   conclusions: {
-    eyebrow: "",
-    title: "Conclusions",
+    eyebrow: "THE MAIN POINT",
+    title: "Conclusions: The Author's Claim",
     subtitle: "Conclusions are the author's claims and judgments; they are the part of the argument you question.",
     content: (
       <>
-        <LessonSection tocTitle="Claimy Judgments" className="space-y-8">
-          <SectionHeading title="Claimy Judgments That Are Usually Wrong" subtitle="What conclusions are" />
+        <LessonSection tocTitle="The Author's Claim" className="space-y-8">
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Conclusions are the judgments the author makes. They are the main event. Everything in an argument exists to support them.</p>
-            <p>
-              Here's what makes conclusions interesting: the author goes out on a limb. They take what's been handed to
-              them in the premises and infer something new, something the premises alone don't automatically prove. That
-              gap between what the premises say and what the conclusion claims is where the entire LSAT lives.
-            </p>
-            <p>
-              <strong>Conclusions are the part of the argument you question.</strong> Not the premises. The conclusion.
-            </p>
+            <p>Conclusions are the judgments the author makes. They are the main point the author wants you to accept. This is the part of the argument you should examine most carefully.</p>
           </div>
-        </LessonSection>
 
-        <LessonSection tocTitle="What Conclusions Are And Aren't" className="space-y-8">
-          <SectionHeading title="What Conclusions Are and Aren't" subtitle="Why they are vulnerable" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+          <QuoteCard className="bg-[#FBF8F1] pr-6 border-l-4 border-l-[#D5AD5F]">
             <p>
-              Conclusions are not ironclad. That's the whole point. <strong>The premises are usually not arranged well enough to actually prove the conclusion,</strong> and finding exactly why is your job on most LR questions.
-            </p>
-            <p>
-              Conclusions can't stand on their own either. They are completely dependent on the premises. Pull the
-              premises out and the conclusion is just an opinion, floating, unsupported, worth nothing.
-            </p>
-          </div>
-          <QuoteCard className="bg-[#FBF8F1] pr-6">
-            <p>
-              <strong>Remember:</strong> Arguments are all about the relationship between the conclusion and its premises.
+              <strong>Key rule:</strong> The conclusion is the part of the argument you should be most suspicious of. Ask whether it is too strong, whether it goes beyond the evidence, whether the author assumed something missing, and whether the premises really get us there.
             </p>
           </QuoteCard>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-[12px] border border-[#D5E7CF] bg-[#FBFDF8] p-5">
+              <span className="text-[12px] font-bold text-[#2F5B35] uppercase tracking-wider block mb-2">ARE:</span>
+              <ul className="list-disc list-inside text-[16px] text-[#2F5B35] space-y-1">
+                <li>Author's claim</li>
+                <li>The point argued for</li>
+                <li>Part you question</li>
+              </ul>
+            </div>
+            <div className="rounded-[12px] border border-[#E6D6B2] bg-[#FEFBF2] p-5">
+              <span className="text-[12px] font-bold text-[#74541B] uppercase tracking-wider block mb-2">ARE NOT:</span>
+              <ul className="list-disc list-inside text-[16px] text-[#74541B] space-y-1">
+                <li>Automatically proven</li>
+                <li>Self-supporting</li>
+                <li>Always clear</li>
+              </ul>
+            </div>
+          </div>
         </LessonSection>
 
         <LessonSection tocTitle="Conclusion Indicators" className="space-y-8">
-          <SectionHeading title="Conclusion Indicators" subtitle="Useful clues" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Just like premises have indicator words, so do conclusions. When you see these, a conclusion is right behind them:</p>
-            <p className="font-semibold text-[#1a1a1a]">therefore / accordingly / consequently / so / thus / hence / it follows that</p>
-            <p>
-              <strong>Memorize this list.</strong>
-            </p>
+          <SectionHeading title="Conclusion Indicator Words" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              "therefore", "thus", "hence", "so",
+              "consequently", "as a result", "it follows that", "this shows that"
+            ].map((word) => (
+              <div key={word} className="rounded-full border border-[#D5E7CF] bg-[#FBFDF8] px-4 py-2 text-[14px] font-semibold text-[#2F5B35] text-center capitalize">
+                {word}
+              </div>
+            ))}
           </div>
+
           <IndicatorPillGroup
-            label="Conclusion clues"
+            label="Conclusion clues (deep dive)"
             items={[
               {
                 id: "therefore",
@@ -881,12 +883,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
               />
             </div>
           </InteractiveCard>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>
-              Same argument. Different indicator words. The conclusion is identical in both: <em>the city should repair the bridge.</em> In the first version, <strong>therefore</strong> points at it directly. In the second, <strong>since</strong> marks the premises instead, and the conclusion is just whatever's left.
-            </p>
-            <p>The argument did not change. Only the packaging did.</p>
-          </div>
         </LessonSection>
 
         <LessonSection tocTitle="Do Not Just Hunt" className="space-y-8 border-b-0">
