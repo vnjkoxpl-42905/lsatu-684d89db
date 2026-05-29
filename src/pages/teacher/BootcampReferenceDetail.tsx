@@ -295,7 +295,7 @@ export default function BootcampReferenceDetail() {
                   displayed. The ZIP source file is available for manual inspection.
                 </p>
               </div>
-            )}
+            ))}
           </section>
 
           {/* Use as inspiration */}
