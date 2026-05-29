@@ -1,9 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import { PremiseSupportCheck } from "./PremiseSupportCheck";
 import { RoleSpotlightSequence } from "./RoleSpotlightSequence";
 import { TwoPartConclusionCheckMachine } from "./TwoPartConclusionCheckMachine";
+import { IntroLessonPage } from "../IntroLessonPage";
 
 describe("remaining intro note interactions", () => {
   it("reveals which sentence is doing the support work on the premises page", () => {
@@ -89,5 +91,19 @@ describe("remaining intro note interactions", () => {
 
     expect(screen.getByText(/claim a does not pass the check/i)).toBeInTheDocument();
     expect(screen.getByText(/it belongs to some paleontologists, not to the author/i)).toBeInTheDocument();
+  });
+
+  it("renders interactive applied examples on the beyond-premises page", () => {
+    window.scrollTo = () => {};
+
+    render(
+      <MemoryRouter initialEntries={["/bootcamp/intro-to-lr/lessons/notes/beyond-premises-and-conclusions"]}>
+        <IntroLessonPage pageId="beyond-premises-and-conclusions" />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getAllByText(/label the stimulus yourself/i)).toHaveLength(5);
+    expect(screen.getAllByRole("button", { name: "Background" }).length).toBeGreaterThan(0);
+    expect(screen.getByText(/example 1: vegetarian diets/i)).toBeInTheDocument();
   });
 });

@@ -15,6 +15,7 @@ import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
 import { ConclusionTypeSwitchboard } from "./components/ConclusionTypeSwitchboard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
+import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
 
 export type IntroLessonPageId =
@@ -144,6 +145,16 @@ const BreakdownList = ({ items }: { items: ReactNode[] }) => (
     ))}
   </div>
 );
+
+const ROLE_LABELER_ROLES: RoleLabelerRole[] = [
+  { id: "background", label: "Background", tone: "background" },
+  { id: "opposing-view", label: "Opposing View", tone: "opposing" },
+  { id: "opposing-support", label: "Opposing Support", tone: "opposing" },
+  { id: "concession", label: "Concession", tone: "concession" },
+  { id: "pivot", label: "Pivot", tone: "pivot" },
+  { id: "author-premise", label: "Author's Premise", tone: "premise" },
+  { id: "author-conclusion", label: "Author's Conclusion", tone: "conclusion" },
+];
 
 type ReadingDrillStep = {
   id: "claim" | "support" | "prove";
@@ -1252,102 +1263,217 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
             ]}
           />
           <RoleSpotlightSequence />
+          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+            <p>Now do the sorting work yourself.</p>
+            <p>Each example uses the same seven-role rail. Pick the role, then label the sentence that actually does that job.</p>
+          </div>
           <div className="grid gap-5">
-            <GridCard title="Example 1: Vegetarian Diets">
-              <QuoteCard>
-                <p>
-                  <em>Many nutritionists argue that vegetarian diets make it difficult to get enough protein. They point out that meat contains all essential amino acids. Although vegetarian diets require more planning, plant-based diets can provide complete nutrition when properly balanced. Therefore, most people can be healthy without eating meat.</em>
-                </p>
-              </QuoteCard>
-              <BreakdownList
-                items={[
-                  <span><strong>Background:</strong> None.</span>,
-                  <span><strong>Opposing View:</strong> Many nutritionists argue that vegetarian diets make it difficult to get enough protein.</span>,
-                  <span><strong>Opposing Support:</strong> Meat contains all essential amino acids.</span>,
-                  <span><strong>Concession:</strong> Vegetarian diets require more planning.</span>,
-                  <span><strong>Pivot:</strong> Although.</span>,
-                  <span><strong>Author's Premise:</strong> Plant-based diets can provide complete nutrition when properly balanced.</span>,
-                  <span><strong>Author's Conclusion:</strong> Most people can be healthy without eating meat.</span>,
-                  <span><strong>Why the conclusion is the conclusion:</strong> It is the author's own claim and it is supported by the statement about balanced plant-based diets.</span>,
-                ]}
-              />
-            </GridCard>
-            <GridCard title="Example 2: Museum Funding">
-              <QuoteCard>
-                <p>
-                  <em>The city museum has operated at a deficit for three years. Some taxpayers argue that public funding for the museum should be eliminated. They point out that only a small percentage of residents visit the museum each year. However, the museum provides free educational programs for local schools, so the city should continue funding it.</em>
-                </p>
-              </QuoteCard>
-              <BreakdownList
-                items={[
-                  <span><strong>Background:</strong> The city museum has operated at a deficit for three years.</span>,
-                  <span><strong>Opposing View:</strong> Public funding for the museum should be eliminated.</span>,
-                  <span><strong>Opposing Support:</strong> Only a small percentage of residents visit the museum each year.</span>,
-                  <span><strong>Concession:</strong> None explicit.</span>,
-                  <span><strong>Pivot:</strong> However.</span>,
-                  <span><strong>Author's Premise:</strong> The museum provides free educational programs for local schools.</span>,
-                  <span><strong>Author's Conclusion:</strong> The city should continue funding it.</span>,
-                  <span><strong>Why the conclusion is the conclusion:</strong> It is the author's recommendation and it is supported by the educational-programs premise.</span>,
-                ]}
-              />
-            </GridCard>
-            <GridCard title="Example 3: Online Classes">
-              <QuoteCard>
-                <p>
-                  <em>Online courses have become more common at many universities. Critics claim that these courses are inferior to in-person classes because students interact less with instructors. While some online courses are poorly designed, well-run online courses can include frequent discussion, feedback, and live meetings. Thus, universities should not reject online courses as a category.</em>
-                </p>
-              </QuoteCard>
-              <BreakdownList
-                items={[
-                  <span><strong>Background:</strong> Online courses have become more common at many universities.</span>,
-                  <span><strong>Opposing View:</strong> Online courses are inferior to in-person classes.</span>,
-                  <span><strong>Opposing Support:</strong> Students interact less with instructors.</span>,
-                  <span><strong>Concession:</strong> Some online courses are poorly designed.</span>,
-                  <span><strong>Pivot:</strong> While.</span>,
-                  <span><strong>Author's Premise:</strong> Well-run online courses can include frequent discussion, feedback, and live meetings.</span>,
-                  <span><strong>Author's Conclusion:</strong> Universities should not reject online courses as a category.</span>,
-                  <span><strong>Why the conclusion is the conclusion:</strong> It is the author's recommendation and it is supported by the premise about well-run courses.</span>,
-                ]}
-              />
-            </GridCard>
-            <GridCard title="Example 4: Traffic Cameras">
-              <QuoteCard>
-                <p>
-                  <em>Several intersections in the city have high accident rates. Many drivers believe traffic cameras are mainly a way for the city to collect fines. Granted, the cameras will generate some revenue. Still, intersections with cameras in nearby cities have seen fewer serious crashes, so installing cameras at the most dangerous intersections would improve public safety.</em>
-                </p>
-              </QuoteCard>
-              <BreakdownList
-                items={[
-                  <span><strong>Background:</strong> Several intersections in the city have high accident rates.</span>,
-                  <span><strong>Opposing View:</strong> Traffic cameras are mainly a way for the city to collect fines.</span>,
-                  <span><strong>Opposing Support:</strong> None explicit.</span>,
-                  <span><strong>Concession:</strong> The cameras will generate some revenue.</span>,
-                  <span><strong>Pivot:</strong> Still.</span>,
-                  <span><strong>Author's Premise:</strong> Intersections with cameras in nearby cities have seen fewer serious crashes.</span>,
-                  <span><strong>Author's Conclusion:</strong> Installing cameras at the most dangerous intersections would improve public safety.</span>,
-                  <span><strong>Why the conclusion is the conclusion:</strong> It is the claim the author is trying to prove with the nearby-cities evidence.</span>,
-                ]}
-              />
-            </GridCard>
-            <GridCard title="Example 5: Local Bookstores">
-              <QuoteCard>
-                <p>
-                  <em>Large online retailers often sell books at lower prices than independent bookstores. It is often assumed that local bookstores cannot compete with them. But local bookstores host community events, recommend books personally, and create spaces for readers to meet. Therefore, independent bookstores can remain valuable even when they cannot match online prices.</em>
-                </p>
-              </QuoteCard>
-              <BreakdownList
-                items={[
-                  <span><strong>Background:</strong> Large online retailers often sell books at lower prices than independent bookstores.</span>,
-                  <span><strong>Opposing View:</strong> Local bookstores cannot compete with large online retailers.</span>,
-                  <span><strong>Opposing Support:</strong> The lower-price comparison supports that assumption.</span>,
-                  <span><strong>Concession:</strong> Local bookstores cannot always match online prices.</span>,
-                  <span><strong>Pivot:</strong> But.</span>,
-                  <span><strong>Author's Premise:</strong> Local bookstores host events, recommend books personally, and create spaces for readers to meet.</span>,
-                  <span><strong>Author's Conclusion:</strong> Independent bookstores can remain valuable even when they cannot match online prices.</span>,
-                  <span><strong>Why the conclusion is the conclusion:</strong> It is the author's own judgment and the community-value premise supports it.</span>,
-                ]}
-              />
-            </GridCard>
+            <RoleLabeler
+              title="Example 1: Vegetarian Diets"
+              roles={ROLE_LABELER_ROLES}
+              stimulus={[
+                {
+                  id: "veg-opposing-view",
+                  text: "Many nutritionists argue that vegetarian diets make it difficult to get enough protein.",
+                },
+                {
+                  id: "veg-opposing-support",
+                  text: "They point out that meat contains all essential amino acids.",
+                },
+                {
+                  id: "veg-concession",
+                  text: "Although vegetarian diets require more planning,",
+                },
+                {
+                  id: "veg-author-premise",
+                  text: "plant-based diets can provide complete nutrition when properly balanced.",
+                },
+                {
+                  id: "veg-author-conclusion",
+                  text: "Therefore, most people can be healthy without eating meat.",
+                },
+              ]}
+              answerKey={{
+                "veg-opposing-view": "opposing-view",
+                "veg-opposing-support": "opposing-support",
+                "veg-concession": "concession",
+                "veg-author-premise": "author-premise",
+                "veg-author-conclusion": "author-conclusion",
+              }}
+              teachingSummary={[
+                "Opposing View: nutritionists say vegetarian diets make protein hard to get.",
+                "Opposing Support: meat contains all essential amino acids.",
+                "Concession: vegetarian diets require more planning.",
+                "Author's Premise: balanced plant-based diets can still provide complete nutrition.",
+                "Author's Conclusion: most people can be healthy without eating meat.",
+              ]}
+            />
+            <RoleLabeler
+              title="Example 2: Museum Funding"
+              roles={ROLE_LABELER_ROLES}
+              stimulus={[
+                {
+                  id: "museum-background",
+                  text: "The city museum has operated at a deficit for three years.",
+                },
+                {
+                  id: "museum-opposing-view",
+                  text: "Some taxpayers argue that public funding for the museum should be eliminated.",
+                },
+                {
+                  id: "museum-opposing-support",
+                  text: "They point out that only a small percentage of residents visit the museum each year.",
+                },
+                {
+                  id: "museum-author-premise",
+                  text: "However, the museum provides free educational programs for local schools,",
+                },
+                {
+                  id: "museum-author-conclusion",
+                  text: "so the city should continue funding it.",
+                },
+              ]}
+              answerKey={{
+                "museum-background": "background",
+                "museum-opposing-view": "opposing-view",
+                "museum-opposing-support": "opposing-support",
+                "museum-author-premise": "author-premise",
+                "museum-author-conclusion": "author-conclusion",
+              }}
+              teachingSummary={[
+                "Background: the museum deficit sets the scene.",
+                "Opposing View: some taxpayers want funding eliminated.",
+                "Opposing Support: they point to low attendance.",
+                "Author's Premise: the museum provides free educational programs.",
+                "Author's Conclusion: the city should continue funding it.",
+              ]}
+            />
+            <RoleLabeler
+              title="Example 3: Online Classes"
+              roles={ROLE_LABELER_ROLES}
+              stimulus={[
+                {
+                  id: "online-background",
+                  text: "Online courses have become more common at many universities.",
+                },
+                {
+                  id: "online-opposing-view",
+                  text: "Critics claim that these courses are inferior to in-person classes",
+                },
+                {
+                  id: "online-opposing-support",
+                  text: "because students interact less with instructors.",
+                },
+                {
+                  id: "online-concession",
+                  text: "While some online courses are poorly designed,",
+                },
+                {
+                  id: "online-author-premise",
+                  text: "well-run online courses can include frequent discussion, feedback, and live meetings.",
+                },
+                {
+                  id: "online-author-conclusion",
+                  text: "Thus, universities should not reject online courses as a category.",
+                },
+              ]}
+              answerKey={{
+                "online-background": "background",
+                "online-opposing-view": "opposing-view",
+                "online-opposing-support": "opposing-support",
+                "online-concession": "concession",
+                "online-author-premise": "author-premise",
+                "online-author-conclusion": "author-conclusion",
+              }}
+              teachingSummary={[
+                "Background: online courses are now common.",
+                "Opposing View: critics say the courses are inferior.",
+                "Opposing Support: they point to less instructor interaction.",
+                "Concession: some online courses are poorly designed.",
+                "Author's Premise: well-run courses can still include discussion, feedback, and live meetings.",
+                "Author's Conclusion: universities should not reject online courses as a category.",
+              ]}
+            />
+            <RoleLabeler
+              title="Example 4: Traffic Cameras"
+              roles={ROLE_LABELER_ROLES}
+              stimulus={[
+                {
+                  id: "camera-background",
+                  text: "Several intersections in the city have high accident rates.",
+                },
+                {
+                  id: "camera-opposing-view",
+                  text: "Many drivers believe traffic cameras are mainly a way for the city to collect fines.",
+                },
+                {
+                  id: "camera-concession",
+                  text: "Granted, the cameras will generate some revenue.",
+                },
+                {
+                  id: "camera-pivot",
+                  text: "Still,",
+                },
+                {
+                  id: "camera-author-premise",
+                  text: "intersections with cameras in nearby cities have seen fewer serious crashes,",
+                },
+                {
+                  id: "camera-author-conclusion",
+                  text: "so installing cameras at the most dangerous intersections would improve public safety.",
+                },
+              ]}
+              answerKey={{
+                "camera-background": "background",
+                "camera-opposing-view": "opposing-view",
+                "camera-concession": "concession",
+                "camera-pivot": "pivot",
+                "camera-author-premise": "author-premise",
+                "camera-author-conclusion": "author-conclusion",
+              }}
+              teachingSummary={[
+                "Background: the city has dangerous intersections.",
+                "Opposing View: some drivers think cameras are just for fines.",
+                "Concession: the cameras will generate some revenue.",
+                "Pivot: 'Still' marks the turn back to the author's position.",
+                "Author's Premise: nearby cities saw fewer serious crashes after adding cameras.",
+                "Author's Conclusion: installing cameras would improve public safety.",
+              ]}
+            />
+            <RoleLabeler
+              title="Example 5: Local Bookstores"
+              roles={ROLE_LABELER_ROLES}
+              stimulus={[
+                {
+                  id: "bookstore-background",
+                  text: "Large online retailers often sell books at lower prices than independent bookstores.",
+                },
+                {
+                  id: "bookstore-opposing-view",
+                  text: "It is often assumed that local bookstores cannot compete with them.",
+                },
+                {
+                  id: "bookstore-author-premise",
+                  text: "But local bookstores host community events, recommend books personally, and create spaces for readers to meet.",
+                },
+                {
+                  id: "bookstore-author-conclusion",
+                  text: "Therefore, independent bookstores can remain valuable even when they cannot match online prices.",
+                },
+              ]}
+              answerKey={{
+                "bookstore-background": "background",
+                "bookstore-opposing-view": "opposing-view",
+                "bookstore-author-premise": "author-premise",
+                "bookstore-author-conclusion": "author-conclusion",
+              }}
+              teachingSummary={[
+                "Background: online retailers often charge less.",
+                "Opposing View: people assume bookstores cannot compete.",
+                "Author's Premise: bookstores add value through events, recommendations, and community space.",
+                "Author's Conclusion: independent bookstores can still remain valuable even without matching online prices.",
+              ]}
+            />
           </div>
         </LessonSection>
 
