@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibrant Protocol Drafts</title>
+  <style>
+    :root {
+      --cream: #f5f2ed;
+      --paper: #faf7ef;
+      --panel: #fffdfa;
+      --ink: #1a1a1a;
+      --muted: #666055;
+      --line: rgba(26, 26, 26, 0.10);
+      --gold: #b88f37;
+      --sky: #6f99df;
+      --sky-soft: rgba(111, 153, 223, 0.10);
+      --sky-border: rgba(111, 153, 223, 0.80);
+      --sage: #18a57b;
+      --sage-soft: rgba(24, 165, 123, 0.10);
+      --sage-border: rgba(24, 165, 123, 0.82);
+      --rose: #d15d77;
+      --rose-soft: rgba(209, 93, 119, 0.10);
+      --rose-border: rgba(209, 93, 119, 0.82);
+      --shadow: 0 28px 76px rgba(60, 40, 14, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 0%, rgba(255,255,255,0.94), transparent 24%),
+        radial-gradient(circle at 90% 4%, rgba(184,143,55,0.14), transparent 22%),
+        var(--cream);
+    }
+
+    .page {
+      max-width: 1560px;
+      margin: 0 auto;
+      padding: 30px 24px 56px;
+    }
+
+    .eyebrow {
+      font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      max-width: 1120px;
+      font: 500 italic clamp(34px, 4vw, 58px)/0.95 Georgia, "Times New Roman", serif;
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      max-width: 1050px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .note {
+      background: rgba(255,255,255,0.62);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .note strong { color: var(--ink); }
+
+    .drafts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .draft {
+      background: rgba(255,255,255,0.74);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .draft:hover {
+      transform: translateY(-3px);
+      border-color: rgba(184,143,55,0.32);
+      box-shadow: 0 34px 88px rgba(60,40,14,0.12);
+    }
+
+    .draft.selected {
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 4px rgba(184,143,55,0.18), 0 34px 88px rgba(60,40,14,0.14);
+    }
+
+    .preview {
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18), transparent 16%),
+        rgba(250,247,239,0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .surface {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(26,26,26,0.08);
+      border-radius: 26px;
+      padding: 14px;
+      min-height: 1160px;
+    }
+
+    .module {
+      border-radius: 26px;
+      padding: 30px 28px 28px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(26,26,26,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module + .module { margin-top: 18px; }
+
+    .module::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .kicker {
+      position: relative;
+      z-index: 1;
+      font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .title {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 22px;
+      font: 700 clamp(31px, 3vw, 52px)/0.98 "Trebuchet MS", "Avenir Next Condensed", "Arial Narrow", sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    .body {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 24px;
+      font-size: 21px;
+      line-height: 1.7;
+      color: #47423b;
+    }
+
+    .rule {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 22px;
+      font-size: 20px;
+      line-height: 1.65;
+      color: #35312c;
+    }
+
+    .rule strong {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .slabs {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .slab {
+      min-height: 108px;
+      border-radius: 22px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr);
+      align-items: start;
+      column-gap: 14px;
+      font-size: 18px;
+      line-height: 1.42;
+      background: rgba(255,255,255,0.74);
+      border: 2px solid currentColor;
+    }
+
+    .slab-label {
+      display: block;
+      font-weight: 800;
+      font-size: 18px;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      padding-top: 1px;
+    }
+
+    .slab-copy {
+      display: block;
+      font-weight: 500;
+      line-height: 1.36;
+      max-width: 24ch;
+      text-wrap: balance;
+    }
+
+    .slab.blue { color: var(--sky); background: var(--sky-soft); }
+    .slab.sage { color: var(--sage); background: var(--sage-soft); }
+    .slab.rose { color: var(--rose); background: var(--rose-soft); }
+
+    .indicators {
+      position: relative;
+      z-index: 1;
+      border-radius: 22px;
+      padding: 18px;
+      border: 1px solid rgba(26,26,26,0.08);
+      background: rgba(255,255,255,0.58);
+    }
+
+    .indicator-title {
+      margin: 0 0 14px;
+      font: 700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #8a8379;
+    }
+
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .chip {
+      border-radius: 14px;
+      background: #151412;
+      padding: 16px 12px;
+      text-align: center;
+      font: 700 18px/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    .chip.blue { color: #56b2ff; }
+    .chip.sage { color: #22cb92; }
+
+    .meta {
+      padding: 16px 18px 18px;
+      background: rgba(255,255,255,0.90);
+    }
+
+    .meta-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(184,143,55,0.18);
+      color: var(--gold);
+      font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.1em;
+    }
+
+    .tag {
+      font: 700 10px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-title {
+      margin: 0 0 8px;
+      font: 600 24px/1.08 Georgia, "Times New Roman", serif;
+    }
+
+    .meta-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .draft-a .premise {
+      background:
+        linear-gradient(180deg, rgba(111,153,223,0.10), transparent 34%),
+        rgba(255,255,255,0.80);
+    }
+
+    .draft-a .premise .title { color: var(--sky); }
+
+    .draft-a .conclusion {
+      background:
+        linear-gradient(180deg, rgba(24,165,123,0.10), transparent 34%),
+        rgba(255,255,255,0.80);
+    }
+
+    .draft-a .conclusion .title { color: var(--sage); }
+
+    .draft-b .premise {
+      background:
+        radial-gradient(circle at 92% 8%, rgba(111,153,223,0.18), transparent 18%),
+        linear-gradient(180deg, rgba(111,153,223,0.06), transparent 34%),
+        rgba(255,255,255,0.82);
+      border-color: rgba(111,153,223,0.22);
+    }
+
+    .draft-b .premise .title { color: var(--sky); }
+    .draft-b .premise .indicators { background: rgba(111,153,223,0.06); }
+
+    .draft-b .conclusion {
+      background:
+        radial-gradient(circle at 92% 8%, rgba(24,165,123,0.16), transparent 18%),
+        linear-gradient(180deg, rgba(24,165,123,0.06), transparent 34%),
+        rgba(255,255,255,0.82);
+      border-color: rgba(24,165,123,0.20);
+    }
+
+    .draft-b .conclusion .title { color: var(--sage); }
+    .draft-b .conclusion .indicators { background: rgba(24,165,123,0.05); }
+
+    .draft-c .surface {
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 20%),
+        rgba(255,255,255,0.70);
+      padding: 10px;
+    }
+
+    .draft-c .module {
+      border-radius: 30px;
+      padding: 32px 30px 28px;
+      box-shadow: 0 16px 40px rgba(60,40,14,0.04);
+    }
+
+    .draft-c .premise {
+      background:
+        linear-gradient(180deg, rgba(111,153,223,0.14), transparent 26%),
+        rgba(255,255,255,0.86);
+    }
+
+    .draft-c .premise .title { color: var(--sky); }
+
+    .draft-c .conclusion {
+      background:
+        linear-gradient(180deg, rgba(24,165,123,0.14), transparent 26%),
+        rgba(255,255,255,0.86);
+    }
+
+    .draft-c .conclusion .title { color: var(--sage); }
+
+    .draft-c .slab.blue {
+      border-color: var(--sky-border);
+      background: linear-gradient(180deg, rgba(111,153,223,0.14), rgba(111,153,223,0.07));
+    }
+
+    .draft-c .slab.sage {
+      border-color: var(--sage-border);
+      background: linear-gradient(180deg, rgba(24,165,123,0.14), rgba(24,165,123,0.07));
+    }
+
+    .draft-c .slab.rose {
+      border-color: var(--rose-border);
+      background: linear-gradient(180deg, rgba(209,93,119,0.14), rgba(209,93,119,0.07));
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1420px) {
+      .drafts { grid-template-columns: 1fr; }
+      .notes { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .page { padding: 18px 12px 40px; }
+      .slabs, .chips { grid-template-columns: 1fr; }
+      .surface { min-height: 0; }
+      .title { font-size: 40px; }
+      .body, .rule { font-size: 18px; }
+      .chip { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="eyebrow">Color and organization study</div>
+    <h1>3 brighter drafts that keep your bootcamp theme but borrow the reference screenshot’s color energy and visual organization</h1>
+    <p class="subtitle">
+      These keep the same premise/conclusion content structure you approved, but add back the vibrancy from the dark reference screenshot through brighter section titles, colored `ARE / ARE NOT` bars, and clearer grouping. The goal is not to copy the dark palette, but to bring that same energy into the Intro to LR bootcamp’s cream environment.
+    </p>
+
+    <div class="notes">
+      <div class="note"><strong>A:</strong> soft bright headings and colored bars. Safest fit for the current bootcamp.</div>
+      <div class="note"><strong>B:</strong> more obvious color grouping and glow-like emphasis around each section.</div>
+      <div class="note"><strong>C:</strong> strongest match to the screenshot’s bright organization while still feeling premium and on-brand.</div>
+    </div>
+
+    <div class="drafts">
+      <div class="draft draft-a" data-choice="a" onclick="toggleSelect(this)">
+        <div class="preview">
+          <section class="surface">
+            <article class="module premise">
+              <div class="kicker">The building blocks</div>
+              <h2 class="title">Premises: Statements of Fact</h2>
+              <p class="body">Premises are the facts or evidence in the argument. They tell you what the author is giving you to work with. On the LSAT, you accept the premises as true. Do not push back on the premises. Push back on the conclusion.</p>
+              <p class="rule"><strong>Key rule:</strong> The question is not whether the premises are true. The question is whether the premises actually support the conclusion.</p>
+              <div class="slabs">
+                <div class="slab blue">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Facts, Evidence, Support, Building blocks.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Main judgments, The part you attack, Final claims.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Premise Indicators: FABS</h4>
+                <div class="chips">
+                  <div class="chip blue">FOR</div>
+                  <div class="chip blue">AFTER ALL</div>
+                  <div class="chip blue">BECAUSE</div>
+                  <div class="chip blue">SINCE</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="module conclusion">
+              <div class="kicker">The main point</div>
+              <h2 class="title">Conclusions: The Author's Claim</h2>
+              <p class="body">Conclusions are the judgments the author makes. They are the main point the author wants you to accept. This is the part of the argument you should examine most carefully.</p>
+              <p class="rule"><strong>Key rule:</strong> The conclusion is the part of the argument you should be most suspicious of. Ask whether it is too strong, whether it goes beyond the evidence, whether the author assumed something missing, and whether the premises really get us there.</p>
+              <div class="slabs">
+                <div class="slab sage">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Author's claim, The point argued for, Part you question.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Automatically proven, Self-supporting, Always clear.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Conclusion Indicator Words</h4>
+                <div class="chips">
+                  <div class="chip sage">THEREFORE</div>
+                  <div class="chip sage">THUS</div>
+                  <div class="chip sage">HENCE</div>
+                  <div class="chip sage">SO</div>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+        <div class="meta">
+          <div class="meta-head">
+            <span class="letter">A</span>
+            <span class="tag">Balanced</span>
+          </div>
+          <h2 class="meta-title">Soft vibrant organization</h2>
+          <p class="meta-copy">Adds color and structure clearly, but still stays very safe inside the current bootcamp’s softer editorial language.</p>
+        </div>
+      </div>
+
+      <div class="draft draft-b" data-choice="b" onclick="toggleSelect(this)">
+        <div class="preview">
+          <section class="surface">
+            <article class="module premise">
+              <div class="kicker">The building blocks</div>
+              <h2 class="title">Premises: Statements of Fact</h2>
+              <p class="body">Premises are the facts or evidence in the argument. They tell you what the author is giving you to work with. On the LSAT, you accept the premises as true. Do not push back on the premises. Push back on the conclusion.</p>
+              <p class="rule"><strong>Key rule:</strong> The question is not whether the premises are true. The question is whether the premises actually support the conclusion.</p>
+              <div class="slabs">
+                <div class="slab blue">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Facts, Evidence, Support, Building blocks.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Main judgments, The part you attack, Final claims.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Premise Indicators: FABS</h4>
+                <div class="chips">
+                  <div class="chip blue">FOR</div>
+                  <div class="chip blue">AFTER ALL</div>
+                  <div class="chip blue">BECAUSE</div>
+                  <div class="chip blue">SINCE</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="module conclusion">
+              <div class="kicker">The main point</div>
+              <h2 class="title">Conclusions: The Author's Claim</h2>
+              <p class="body">Conclusions are the judgments the author makes. They are the main point the author wants you to accept. This is the part of the argument you should examine most carefully.</p>
+              <p class="rule"><strong>Key rule:</strong> The conclusion is the part of the argument you should be most suspicious of. Ask whether it is too strong, whether it goes beyond the evidence, whether the author assumed something missing, and whether the premises really get us there.</p>
+              <div class="slabs">
+                <div class="slab sage">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Author's claim, The point argued for, Part you question.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Automatically proven, Self-supporting, Always clear.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Conclusion Indicator Words</h4>
+                <div class="chips">
+                  <div class="chip sage">THEREFORE</div>
+                  <div class="chip sage">THUS</div>
+                  <div class="chip sage">HENCE</div>
+                  <div class="chip sage">SO</div>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+        <div class="meta">
+          <div class="meta-head">
+            <span class="letter">B</span>
+            <span class="tag">More energetic</span>
+          </div>
+          <h2 class="meta-title">Stronger color grouping</h2>
+          <p class="meta-copy">Pushes the premise and conclusion sections farther apart visually so the organization reads faster and brighter, closer to the reference screenshot’s energy.</p>
+        </div>
+      </div>
+
+      <div class="draft draft-c" data-choice="c" onclick="toggleSelect(this)">
+        <div class="preview">
+          <section class="surface">
+            <article class="module premise">
+              <div class="kicker">The building blocks</div>
+              <h2 class="title">Premises: Statements of Fact</h2>
+              <p class="body">Premises are the facts or evidence in the argument. They tell you what the author is giving you to work with. On the LSAT, you accept the premises as true. Do not push back on the premises. Push back on the conclusion.</p>
+              <p class="rule"><strong>Key rule:</strong> The question is not whether the premises are true. The question is whether the premises actually support the conclusion.</p>
+              <div class="slabs">
+                <div class="slab blue">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Facts, Evidence, Support, Building blocks.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Main judgments, The part you attack, Final claims.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Premise Indicators: FABS</h4>
+                <div class="chips">
+                  <div class="chip blue">FOR</div>
+                  <div class="chip blue">AFTER ALL</div>
+                  <div class="chip blue">BECAUSE</div>
+                  <div class="chip blue">SINCE</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="module conclusion">
+              <div class="kicker">The main point</div>
+              <h2 class="title">Conclusions: The Author's Claim</h2>
+              <p class="body">Conclusions are the judgments the author makes. They are the main point the author wants you to accept. This is the part of the argument you should examine most carefully.</p>
+              <p class="rule"><strong>Key rule:</strong> The conclusion is the part of the argument you should be most suspicious of. Ask whether it is too strong, whether it goes beyond the evidence, whether the author assumed something missing, and whether the premises really get us there.</p>
+              <div class="slabs">
+                <div class="slab sage">
+                  <span class="slab-label">ARE:</span>
+                  <span class="slab-copy">Author's claim, The point argued for, Part you question.</span>
+                </div>
+                <div class="slab rose">
+                  <span class="slab-label">ARE NOT:</span>
+                  <span class="slab-copy">Automatically proven, Self-supporting, Always clear.</span>
+                </div>
+              </div>
+              <div class="indicators">
+                <h4 class="indicator-title">Conclusion Indicator Words</h4>
+                <div class="chips">
+                  <div class="chip sage">THEREFORE</div>
+                  <div class="chip sage">THUS</div>
+                  <div class="chip sage">HENCE</div>
+                  <div class="chip sage">SO</div>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+        <div class="meta">
+          <div class="meta-head">
+            <span class="letter">C</span>
+            <span class="tag">Closest to screenshot energy</span>
+          </div>
+          <h2 class="meta-title">Bright premium protocol</h2>
+          <p class="meta-copy">This is the strongest translation of the screenshot’s vibrancy and organization into your bootcamp colors: bright section titles, vivid `ARE / ARE NOT` bars, and crisp grouped chips without turning the page dark.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">Refresh the browser tab. If one feels right, tell me `A`, `B`, or `C`, or something like `C but softer` or `B with C’s conclusion section`.</p>
+  </div>
+</body>
+</html>

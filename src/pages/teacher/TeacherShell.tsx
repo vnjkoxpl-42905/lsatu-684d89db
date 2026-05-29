@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   Shield,
   FileText,
+  Archive,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUserPermissions } from '@/hooks/useUserPermissions';
@@ -23,6 +24,7 @@ const NAV: { to: string; label: string; Icon: React.ComponentType<{ className?: 
   { to: '/teacher/bootcamps', label: 'Bootcamps', Icon: Flame },
   { to: '/teacher/library', label: 'Library', Icon: Library },
   { to: '/teacher/templates', label: 'Templates', Icon: FileText },
+  { to: '/teacher/reference-library', label: 'Bootcamp References', Icon: Archive },
   { to: '/teacher/admin', label: 'Admin', Icon: Shield },
 ].filter((item) =>
   item.to === '/teacher/bootcamps' ? BOOTCAMPS_DASHBOARD_ENABLED : true,
