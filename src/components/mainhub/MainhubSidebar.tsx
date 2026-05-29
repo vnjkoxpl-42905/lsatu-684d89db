@@ -2,39 +2,41 @@ import * as React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Command,
-  GraduationCap,
-  Dumbbell,
-  CalendarDays,
-  MessagesSquare,
-  Flame,
-  Archive,
-} from "lucide-react";
-import { format } from "date-fns";
-import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
-import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
+  import {
+    Command,
+    GraduationCap,
+    Dumbbell,
+    CalendarDays,
+    MessagesSquare,
+    Flame,
+    Archive,
+  } from "lucide-react";
+  import { format } from "date-fns";
+  import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
+  import { useLayoutPrefs } from "@/hooks/useLayoutPrefs";
 
-export interface MainhubSidebarProps {
-  displayName?: string | null;
-}
+  export interface MainhubSidebarProps {
+    displayName?: string | null;
+  }
 
-type NavItem = {
-  to: string;
-  label: string;
-  Icon: React.ComponentType<{ className?: string }>;
-  flag?: PermissionFlag;
-  adminOnly?: boolean;
-  activePrefixes?: readonly string[];
-};
+  type NavItem = {
+    to: string;
+    label: string;
+    Icon: React.ComponentType<{ className?: string }>;
+    flag?: PermissionFlag;
+    adminOnly?: boolean;
+    activePrefixes?: readonly string[];
+  };
 
-const NAV_ITEMS: readonly NavItem[] = [
-  { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
-  { to: "/teacher/reference-library", label: "Reference Library", Icon: Archive, adminOnly: true },
-  { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
-  { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
-  { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
-  { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
-  { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
-] as const;
+  const NAV_ITEMS: readonly NavItem[] = [
+    { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
+    { to: "/teacher/reference-library", label: "Reference Library", Icon: Archive, adminOnly: true },
+    { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
+    { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
+    { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
+    { to: "/practice", label: "Practice Hub", Icon: Dumbbell, flag: "has_practice_access" },
+    { to: "/schedule", label: "Schedule", Icon: CalendarDays, flag: "has_schedule_access" },
+  ] as const;
 
 const today = format(new Date(), "EEEE, MMMM d");
 
