@@ -24,6 +24,23 @@ describe("remaining intro note interactions", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the premises page as one integrated teaching system with are and are-not summaries", () => {
+    window.scrollTo = () => {};
+
+    render(
+      <MemoryRouter initialEntries={["/bootcamp/intro-to-lr/lessons/notes/premises"]}>
+        <IntroLessonPage pageId="premises" />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/the facts\. the evidence\. accept them as true\./i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/not questionable\. don't depend on the conclusion\. don't depend on each other\./i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/premise-indicator lab/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/the park is flooded/i).length).toBeGreaterThan(0);
+  });
+
   it("walks students through separating background, other views, the turn, and the author's point", () => {
     render(<RoleSpotlightSequence />);
 

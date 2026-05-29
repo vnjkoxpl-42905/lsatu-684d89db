@@ -122,6 +122,52 @@ const PremiseTeachingExcerpt = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
+const PremiseSystemFrame = ({ children }: { children: ReactNode }) => (
+  <div className="overflow-hidden rounded-[28px] border border-[rgba(116,84,27,0.14)] bg-[linear-gradient(180deg,#FFFDFC_0%,#FFF8EE_100%)] shadow-[0_22px_46px_rgba(92,67,20,0.08)]">
+    {children}
+  </div>
+);
+
+const PremiseSystemSection = ({
+  tocTitle,
+  children,
+  className,
+  border = true,
+}: {
+  tocTitle: string;
+  children: ReactNode;
+  className?: string;
+  border?: boolean;
+}) => (
+  <section
+    data-toc
+    data-toc-title={tocTitle}
+    className={cn("px-10 py-10 md:px-12 md:py-12", border && "border-b border-[rgba(116,84,27,0.12)]", className)}
+  >
+    {children}
+  </section>
+);
+
+const PremiseKeyRule = ({ children }: { children: ReactNode }) => (
+  <div className="rounded-[18px] border border-[rgba(116,84,27,0.16)] bg-white/80 px-6 py-5 shadow-[0_14px_26px_rgba(92,67,20,0.05)]">
+    <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[#8B6A2F]">Key Rule</div>
+    <div className="text-[18px] leading-[1.72] text-[rgba(26,26,26,0.82)]">{children}</div>
+  </div>
+);
+
+const PremiseSummarySlabs = () => (
+  <div className="grid gap-4 lg:grid-cols-2">
+    <div className="rounded-[20px] border border-[#C9D8EA] bg-[#F7FBFE] px-6 py-5 shadow-[0_12px_24px_rgba(36,66,93,0.06)]">
+      <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.20em] text-[#4C79B8]">Are</div>
+      <p className="text-[18px] leading-[1.72] text-[rgba(26,26,26,0.84)]">The facts. The evidence. Accept them as true.</p>
+    </div>
+    <div className="rounded-[20px] border border-[#E6D6B2] bg-[#FFF9F1] px-6 py-5 shadow-[0_12px_24px_rgba(116,84,27,0.06)]">
+      <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.20em] text-[#8B6A2F]">Are Not</div>
+      <p className="text-[18px] leading-[1.72] text-[rgba(26,26,26,0.84)]">Not questionable. Don't depend on the conclusion. Don't depend on each other.</p>
+    </div>
+  </div>
+);
+
 const BulletList = ({ items, className }: { items: ReactNode[]; className?: string }) => (
   <ul className={cn("list-disc space-y-3 pl-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]", className)}>
     {items.map((item, index) => (
@@ -586,89 +632,88 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "Premises are the facts and evidence you accept as true; the real question is how they connect to the conclusion.",
     content: (
       <>
-        <LessonSection tocTitle="Statements Of Fact" className="space-y-9 bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFDF8_100%)]">
-          <SectionHeading title="Premises" subtitle="Statements of fact" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Premises are just the facts. The evidence. They describe how the world is, and on the LSAT, you accept them as true, full stop.</p>
-            <p>
-              In real life, we argue by attacking each other's evidence all the time. Someone says, "We should cancel the
-              picnic because the park is flooded and the weather is supposed to be terrible." You might say, "The park is
-              completely dry, and the forecast says it will be clear all afternoon." You are not questioning their
-              conclusion first. You are attacking the facts they used to support it.
-            </p>
-          </div>
-          <PremiseRememberCallout>
-            <p>On the LSAT, premises are given. Accept them as true, then ask what they are being used to support.</p>
-          </PremiseRememberCallout>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>
-              The LSAT doesn't allow it. Premises are locked in. You accept them and move on. <strong>The correct answer almost never questions the truth of a premise.</strong> The moment you start poking at whether a premise is accurate, you've left the building.
-            </p>
-            <p>
-              What you focus on instead is how the premises connect to the conclusion. Whether they actually support the
-              claim the author is making. That's the whole game.
-            </p>
-          </div>
-        </LessonSection>
+        <div className="space-y-8">
+          <PremiseSystemFrame>
+            <PremiseSystemSection tocTitle="Statements Of Fact" className="space-y-9 bg-[linear-gradient(180deg,rgba(255,255,255,0.88)_0%,rgba(255,252,245,0.72)_100%)]">
+              <SectionHeading title="Premises" subtitle="Statements of fact" />
+              <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                <p>Premises are just the facts. The evidence. They describe how the world is, and on the LSAT, you accept them as true, full stop.</p>
+                <p>
+                  In real life, we argue by attacking each other's evidence all the time. Someone says, "We should cancel the
+                  picnic because the park is flooded and the weather is supposed to be terrible." You might say, "The park is
+                  completely dry, and the forecast says it will be clear all afternoon." You are not questioning their
+                  conclusion first. You are attacking the facts they used to support it.
+                </p>
+              </div>
+              <PremiseRememberCallout>
+                <p>On the LSAT, premises are given. Accept them as true, then ask what they are being used to support.</p>
+              </PremiseRememberCallout>
+              <PremiseKeyRule>
+                <p>
+                  What you focus on instead is how the premises connect to the conclusion. Whether they actually support the
+                  claim the author is making. That's the whole game.
+                </p>
+              </PremiseKeyRule>
+            </PremiseSystemSection>
 
-        <LessonSection tocTitle="What Premises Are And Aren't" className="space-y-9">
-          <SectionHeading title="What Premises Are and Aren't" subtitle="What they do in the argument" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Premises do the argument's heavy lifting. They're the evidence that makes the conclusion worth anything.</p>
-            <p>
-              They are not questionable. Not on the LSAT. They don't depend on the conclusion or on each other. They just
-              exist, solid, already true, handed to you for free.
-            </p>
-          </div>
-          <PremiseTeachingExcerpt>
-            <p>
-              <em>
-                You said we should cancel the picnic because the park is flooded and the weather is supposed to be terrible.
-                But the park is completely dry. And the forecast says it will be clear all afternoon.
-              </em>
-            </p>
-          </PremiseTeachingExcerpt>
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>
-              Two premises just got attacked: "the park is flooded" and "the weather is supposed to be terrible." That's
-              everyday argument. The LSAT is more interesting than that.
-            </p>
-            <p>
-              It doesn't ask you to poke holes in the evidence. It asks you whether the evidence actually leads where the
-              author thinks it does. That's a harder, more useful question, and it's the one that gets you points.
-            </p>
-            <p>
-              <strong>Premises are defined by their relationship to the conclusion.</strong> That's the key. A sentence isn't a premise because of what it says. It's a premise because of what it's doing in the argument: supporting the claim.
-            </p>
-          </div>
-          <PremiseRememberCallout>
-            <p>
-              Accept premises as true. Don't debate them. Focus on whether they support the conclusion.
-            </p>
-          </PremiseRememberCallout>
-        </LessonSection>
+            <PremiseSystemSection tocTitle="What Premises Are And Aren't" className="space-y-9">
+              <SectionHeading title="What Premises Are and Aren't" subtitle="What they do in the argument" />
+              <PremiseSummarySlabs />
+              <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                <p>Premises do the argument's heavy lifting. They're the evidence that makes the conclusion worth anything.</p>
+                <p>
+                  They are not questionable. Not on the LSAT. They don't depend on the conclusion or on each other. They just
+                  exist, solid, already true, handed to you for free.
+                </p>
+              </div>
+              <PremiseTeachingExcerpt>
+                <p>
+                  <em>
+                    You said we should cancel the picnic because the park is flooded and the weather is supposed to be terrible.
+                    But the park is completely dry. And the forecast says it will be clear all afternoon.
+                  </em>
+                </p>
+              </PremiseTeachingExcerpt>
+              <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                <p>
+                  Two premises just got attacked: "the park is flooded" and "the weather is supposed to be terrible." That's
+                  everyday argument. The LSAT is more interesting than that.
+                </p>
+                <p>
+                  It doesn't ask you to poke holes in the evidence. It asks you whether the evidence actually leads where the
+                  author thinks it does. That's a harder, more useful question, and it's the one that gets you points.
+                </p>
+                <p>
+                  <strong>Premises are defined by their relationship to the conclusion.</strong> That's the key. A sentence isn't a premise because of what it says. It's a premise because of what it's doing in the argument: supporting the claim.
+                </p>
+              </div>
+            </PremiseSystemSection>
 
-        <LessonSection tocTitle="Premise Indicators" className="space-y-9 border-b-0 bg-[linear-gradient(180deg,#FFFFFF_0%,#FFFCF6_100%)]">
-          <SectionHeading title="Premise Indicators" subtitle="FABS" />
-          <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-            <p>Certain words signal that a premise is coming. Learn them and you'll start spotting argument structure automatically.</p>
-            <p>The four big ones: <strong>For, After all, Because, Since.</strong> FABS.</p>
-            <p>
-              When you see any of these, a premise is right behind it. The author is handing you evidence. Take it,
-              accept it, and ask what it's being used to support.
-            </p>
-            <p>
-              <strong>FABS. Memorize it.</strong>
-            </p>
-          </div>
-          <PremiseIndicatorLab />
-          <PremiseSupportCheck />
-          <PremiseRememberCallout>
-            <p>
-              For, After all, Because, Since = FABS. These words introduce premises.
-            </p>
-          </PremiseRememberCallout>
-        </LessonSection>
+            <PremiseSystemSection tocTitle="Premise Indicators" className="space-y-9 bg-[linear-gradient(180deg,rgba(255,255,255,0.55)_0%,rgba(255,250,241,0.78)_100%)]" border={false}>
+              <SectionHeading title="Premise Indicators" subtitle="FABS" />
+              <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                <p>Certain words signal that a premise is coming. Learn them and you'll start spotting argument structure automatically.</p>
+                <p>The four big ones: <strong>For, After all, Because, Since.</strong> FABS.</p>
+                <p>
+                  When you see any of these, a premise is right behind it. The author is handing you evidence. Take it,
+                  accept it, and ask what it's being used to support.
+                </p>
+                <p>
+                  <strong>FABS. Memorize it.</strong>
+                </p>
+              </div>
+              <div className="space-y-6">
+                <PremiseIndicatorLab />
+                <PremiseSupportCheck />
+              </div>
+              <PremiseRememberCallout>
+                <p>
+                  Accept premises as true. Don't debate them. Focus on whether they support the conclusion.
+                </p>
+              </PremiseRememberCallout>
+            </PremiseSystemSection>
+          </PremiseSystemFrame>
+        </div>
       </>
     ),
   },
