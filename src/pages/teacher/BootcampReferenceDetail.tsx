@@ -248,15 +248,20 @@ export default function BootcampReferenceDetail() {
                         <ExternalLink className="w-3 h-3" />
                       </button>
                     )}
-                    <a
-                      href={iframeSrc}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const url = entry.appRoute
+                          ? `${window.location.origin}${entry.appRoute}`
+                          : new URL(iframeSrc, window.location.origin).toString();
+                        const win = window.open(url, '_blank', 'noopener,noreferrer');
+                        if (!win) window.location.href = url;
+                      }}
                       className="inline-flex items-center gap-1 text-[11px] text-amber-400/80 hover:text-amber-300 transition-colors"
                     >
                       Open full screen
                       <ExternalLink className="w-3 h-3" />
-                    </a>
+                    </button>
                   </div>
                 </div>
                 <div
