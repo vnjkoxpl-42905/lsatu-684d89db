@@ -41,10 +41,10 @@ const REFERENCE_TYPE_ICONS: Record<ReferenceType, React.ComponentType<{ classNam
 };
 
 function ReferenceCard({
-  ref: entry,
+  entry,
   onOpen,
 }: {
-  ref: BootcampReference;
+  entry: BootcampReference;
   onOpen: (id: string) => void;
 }) {
   const Icon = REFERENCE_TYPE_ICONS[entry.referenceType];
