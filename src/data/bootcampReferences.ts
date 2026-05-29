@@ -15,8 +15,11 @@ export interface BootcampReference {
   referenceType: ReferenceType;
   status: 'reference';
   previewStatus: PreviewStatus;
-  /** Static HTML index path relative to /references/bootcamps/ in /public — only set if previewStatus is 'static-ready' */
+  /** Static HTML index path relative to /public — only set if previewStatus is 'static-ready' */
   previewPath?: string;
+  /** Optional in-app route (e.g. `/bootcamp/causation-station`). When set, the detail page
+   *  prefers this over the static preview because it runs the real integrated app. */
+  appRoute?: string;
   tags: string[];
   notes: string;
   importedAt: string; // ISO date string
@@ -34,6 +37,7 @@ export const BOOTCAMP_REFERENCES: BootcampReference[] = [
     status: 'reference',
     previewStatus: 'static-ready',
     previewPath: '/references/bootcamps/causation-station/index.html',
+    appRoute: '/bootcamp/causation-station',
     tags: ['causation', 'causal-reasoning', 'bootcamp', 'training-yard', 'wrong-answer-journal', 'ai-tutor'],
     notes: 'FULL INTEGRATION: Source code moved to src/references/bootcamps/causation-station/. Features Training Yard, WAJ, and Gemini-powered AI tutor. This is the canonical bootcamp model for LSAT U.',
     importedAt: '2026-05-28T00:00:00Z',
