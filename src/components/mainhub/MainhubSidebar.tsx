@@ -7,6 +7,7 @@ import {
   CalendarDays,
   MessagesSquare,
   Flame,
+  Archive,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useUserPermissions, type PermissionFlag } from "@/hooks/useUserPermissions";
@@ -27,6 +28,7 @@ type NavItem = {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { to: "/teacher", label: "Teacher Workspace", Icon: Command, adminOnly: true, activePrefixes: ["/teacher"] },
+  { to: "/teacher/reference-library", label: "Reference Library", Icon: Archive, adminOnly: true },
   { to: "/classroom", label: "Classroom", Icon: GraduationCap, flag: "has_classroom_access" },
   { to: "/bootcamps", label: "Bootcamps", Icon: Flame, flag: "has_bootcamp_access" },
   { to: "/inbox", label: "Messages", Icon: MessagesSquare, flag: "has_chat_access" },
