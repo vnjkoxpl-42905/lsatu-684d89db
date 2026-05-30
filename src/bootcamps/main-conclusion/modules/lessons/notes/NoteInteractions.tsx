@@ -174,7 +174,7 @@ const premiseIndicatorLabItems: PremiseIndicatorLabItem[] = [
     label: "For",
     chipNote: "Evidence",
     functionLabel: "Support follows the claim",
-    teachingNote: `"For" usually introduces support for the claim that came before it.`,
+    teachingNote: `"For" commonly introduces a reason or evidence that supports the claim before it. Read what comes after "for" as the support.`,
     example: {
       conclusion: "You should try the curry,",
       indicator: "for",
@@ -187,7 +187,7 @@ const premiseIndicatorLabItems: PremiseIndicatorLabItem[] = [
     label: "After all",
     chipNote: "Support",
     functionLabel: "Reason arrives after the claim",
-    teachingNote: `"After all" adds a reason after the author has already made the claim.`,
+    teachingNote: `"After all" introduces a supporting reason after the claim—it's another way the author gives evidence.`,
     example: {
       conclusion: "You should try the curry.",
       indicator: "After all,",
@@ -200,7 +200,7 @@ const premiseIndicatorLabItems: PremiseIndicatorLabItem[] = [
     label: "Because",
     chipNote: "Reason",
     functionLabel: "Reason is introduced directly",
-    teachingNote: `"Because" directly introduces the reason.`,
+    teachingNote: `"Because" signals that what follows is the reason or explanation supporting the claim.`,
     example: {
       conclusion: "You should try the curry",
       indicator: "because",
@@ -213,7 +213,7 @@ const premiseIndicatorLabItems: PremiseIndicatorLabItem[] = [
     label: "Since",
     chipNote: "Fact",
     functionLabel: "Premise often appears first",
-    teachingNote: `"Since" often places the premise before the conclusion.`,
+    teachingNote: `"Since" frequently puts the supporting fact or background first; the following text is usually the premise.`,
     example: {
       conclusion: "you should try the curry.",
       indicator: "Since",
@@ -308,7 +308,7 @@ export function PremiseIndicatorLab() {
             <div className="border-b border-[#E5D2AC] px-5 py-5 md:px-6">
               <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div className="space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Active Indicator</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Indicator — where support appears</p>
                   <div className="flex flex-wrap items-center gap-3">
                     <h4 className="font-serif text-[34px] italic leading-none text-[#1D1610]">{activeItem.label}</h4>
                     <span className="rounded-full border border-[#E1C78F] bg-[#FFF8EA] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7A5920]">
@@ -327,61 +327,33 @@ export function PremiseIndicatorLab() {
                 <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[rgba(248,235,206,0.82)]">
                   Example sentence
                 </p>
-                <div className="space-y-3">
-                  <p className="text-[24px] leading-[1.5] text-[#F8F4EC] md:text-[28px]">
-                    {activeItem.example.order === "conclusion-first" ? (
-                      <>
-                        <span className="text-[#F6E2B6]">{activeItem.example.conclusion}</span>{" "}
-                        <span className="rounded-full bg-[#D6A64D] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(214,166,77,0.24)]">
-                          {activeItem.example.indicator}
-                        </span>{" "}
-                        <span>{activeItem.example.premise}</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>{activeItem.example.indicator}</span>{" "}
-                        <span className="text-[#F8F4EC]">{activeItem.example.premise}</span>{" "}
-                        <span className="rounded-full bg-[#F1DFC0] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(241,223,192,0.18)]">
-                          {activeItem.example.conclusion}
-                        </span>
-                      </>
-                    )}
-                  </p>
+                  <div className="space-y-3">
+                    <p className="text-[24px] leading-[1.5] text-[#F8F4EC] md:text-[28px]">
+                      {activeItem.example.order === "conclusion-first" ? (
+                        <>
+                          <span className="text-[#F6E2B6]">{activeItem.example.conclusion}</span>{" "}
+                          <span className="rounded-full bg-[#D6A64D] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(214,166,77,0.24)]">
+                            {activeItem.example.indicator}
+                          </span>{" "}
+                          <span>{activeItem.example.premise}</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>{activeItem.example.indicator}</span>{" "}
+                          <span className="text-[#F8F4EC]">{activeItem.example.premise}</span>{" "}
+                          <span className="rounded-full bg-[#F1DFC0] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(241,223,192,0.18)]">
+                            {activeItem.example.conclusion}
+                          </span>
+                        </>
+                      )}
+                    </p>
 
-                  <div className="grid gap-3 md:grid-cols-3">
-                    {activeItem.example.order === "conclusion-first" ? (
-                      <>
-                        <div className="rounded-[18px] border border-[rgba(246,226,182,0.34)] bg-[rgba(246,226,182,0.10)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#E2C887]">Conclusion</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.conclusion}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-[rgba(214,166,77,0.42)] bg-[rgba(214,166,77,0.16)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#F2D79A]">Indicator</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.indicator}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.06)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#C8D6E8]">Premise</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.premise}</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="rounded-[18px] border border-[rgba(214,166,77,0.42)] bg-[rgba(214,166,77,0.16)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#F2D79A]">Indicator</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.indicator}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.06)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#C8D6E8]">Premise</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.premise}</p>
-                        </div>
-                        <div className="rounded-[18px] border border-[rgba(246,226,182,0.34)] bg-[rgba(246,226,182,0.10)] px-4 py-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#E2C887]">Conclusion</p>
-                          <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.conclusion}</p>
-                        </div>
-                      </>
-                    )}
+                    <div className="rounded-[18px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] px-4 py-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#C8D6E8]">After the indicator</p>
+                      <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.example.premise}</p>
+                      <p className="mt-2 text-[13px] leading-[1.45] text-[rgba(248,244,236,0.85)]">This part is typically the premise — the reason or evidence supporting the claim.</p>
+                    </div>
                   </div>
-                </div>
               </div>
 
               <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
@@ -393,7 +365,7 @@ export function PremiseIndicatorLab() {
                 <div className="rounded-[22px] border border-[#D7B87D] bg-[linear-gradient(180deg,#FFFDF8_0%,#FDF3E1_100%)] px-5 py-5 shadow-[0_16px_28px_rgba(92,67,20,0.07)]">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Quick check</p>
                   <p className="mt-3 text-[17px] leading-[1.6] text-[rgba(26,26,26,0.82)]">
-                    What role does the phrase after the indicator play?
+                    Which best describes the part immediately after the indicator in this sentence?
                   </p>
                   <div className="mt-4 grid gap-2.5">
                     {(["premise", "conclusion", "background"] as const).map((option) => {
@@ -410,7 +382,7 @@ export function PremiseIndicatorLab() {
                               : "border-[#E6D6B2] bg-white/90 text-[rgba(26,26,26,0.74)] hover:border-[#D7B87D] hover:bg-[#FFF8EA]",
                           )}
                         >
-                          {option}
+                          {option.charAt(0).toUpperCase() + option.slice(1)}
                         </button>
                       );
                     })}
@@ -431,8 +403,8 @@ export function PremiseIndicatorLab() {
                         )}
                       >
                         {isCorrect
-                          ? "Right. The phrase after the indicator is the premise. That is the supporting evidence the author wants you to accept."
-                          : "Not quite. In these examples, the phrase after the indicator is the premise. It is the support being used to hold up the conclusion."}
+                          ? "Right — the text after the indicator is the premise: the reason or evidence supporting the claim."
+                          : "Not quite. Here, the text after the indicator is the premise — the supporting reason or evidence for the conclusion."}
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
