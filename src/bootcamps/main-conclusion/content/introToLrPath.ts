@@ -198,6 +198,14 @@ export function getNextAction(pathname: string): PathAction | null {
   return null;
 }
 
+export function getPreviousAction(pathname: string): PathAction | null {
+  const currentIndex = getCurrentActionIndex(pathname);
+  if (currentIndex > 0) {
+    return INTEGRATED_PATH[currentIndex - 1];
+  }
+  return null;
+}
+
 export function getActionTypeLabel(type: ActionType): string {
   switch (type) {
     case 'note':

@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { DynamicIslandTOC } from "@/components/ui/dynamic-island-toc";
-import { ArrowDown, ArrowRight } from "lucide-react";
-import { getNextAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
+import { ArrowDown, ArrowRight, ArrowLeft } from "lucide-react";
+import { getNextAction, getPreviousAction, ActionType } from "@/bootcamps/main-conclusion/content/introToLrPath";
 import { cn } from "@/bootcamps/main-conclusion/lib/cn";
 
 interface IntroNotesShellProps {
@@ -12,15 +12,16 @@ interface IntroNotesShellProps {
   children: ReactNode;
 }
 
-const getActionLabel = (type: ActionType) => {
+const getActionLabel = (type: ActionType, direction: 'next' | 'prev' = 'next') => {
+  const prefix = direction === 'next' ? 'Next' : 'Previous';
   switch (type) {
-    case 'note': return 'Next Lesson';
-    case 'tool': return 'Next Tool';
-    case 'reference': return 'Next Reference';
-    case 'checkpoint': return 'Next Checkpoint';
-    case 'drill': return 'Next Drill';
-    case 'practice': return 'Next Practice';
-    case 'capstone': return 'Next Capstone';
+    case 'note': return `${prefix} Lesson`;
+    case 'tool': return `${prefix} Tool`;
+    case 'reference': return `${prefix} Reference`;
+    case 'checkpoint': return `${prefix} Checkpoint`;
+    case 'drill': return `${prefix} Drill`;
+    case 'practice': return `${prefix} Practice`;
+    case 'capstone': return `${prefix} Capstone`;
     default: return 'Continue';
   }
 };
@@ -28,6 +29,7 @@ const getActionLabel = (type: ActionType) => {
 export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNotesShellProps) {
   const { pathname } = useLocation();
   const nextAction = getNextAction(pathname);
+  const prevAction = getPreviousAction(pathname);
   const isPremisesNote = pathname.endsWith("/lessons/notes/premises");
 
   useEffect(() => {
@@ -74,25 +76,47 @@ export function IntroNotesShell({ eyebrow, title, subtitle, children }: IntroNot
               </div>
 
               {/* Integrated Navigation */}
-              {nextAction && (
+              {(prevAction || nextAction) && (
                 <div className="note-navigation bg-[#FAF7EF] border-t border-[rgba(26,26,26,0.1)] p-10 md:p-12">
-                  <div className="flex justify-end">
-                    <Link 
-                      to={nextAction.route} 
-                      className="group flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
-                    >
-                      <div>
-                        <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
-                          {getActionLabel(nextAction.type)}
+                  <div className="flex flex-col md:flex-row gap-6 justify-between">
+                    {/* Previous Action */}
+                    {prevAction ? (
+                      <Link 
+                        to={prevAction.route} 
+                        className="group flex-1 flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                      >
+                        <div className="flex items-center gap-3 rounded-full bg-[rgba(26,26,26,0.05)] px-6 py-4 text-[#1a1a1a] transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.1)] mr-4">
+                          <ArrowLeft className="h-5 w-5" />
                         </div>
-                        <div className="text-2xl font-serif italic mb-1">{nextAction.title}</div>
-                        <div className="text-sm text-[rgba(26,26,26,0.6)]">{nextAction.description}</div>
-                      </div>
-                      <div className="ml-4 flex items-center gap-3 rounded-full bg-[#1a1a1a] px-6 py-4 text-[#F5F2ED] transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.88)]">
-                        <span className="text-[12px] uppercase tracking-[0.18em] font-bold">Continue</span>
-                        <ArrowRight className="h-5 w-5" />
-                      </div>
-                    </Link>
+                        <div className="flex-1 text-right">
+                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
+                            {getActionLabel(prevAction.type, 'prev')}
+                          </div>
+                          <div className="text-2xl font-serif italic mb-1">{prevAction.title}</div>
+                          <div className="text-sm text-[rgba(26,26,26,0.6)]">{prevAction.description}</div>
+                        </div>
+                      </Link>
+                    ) : <div className="flex-1 hidden md:block" />}
+
+                    {/* Next Action */}
+                    {nextAction ? (
+                      <Link 
+                        to={nextAction.route} 
+                        className="group flex-1 flex items-center justify-between rounded-[16px] p-8 bg-white border border-[rgba(26,26,26,0.1)] shadow-[0_10px_24px_rgba(26,26,26,0.04)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-[2px] hover:border-[rgba(26,26,26,0.22)] hover:shadow-[0_20px_40px_rgba(26,26,26,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2"
+                      >
+                        <div className="flex-1">
+                          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[rgba(26,26,26,0.5)] mb-2 capitalize">
+                            {getActionLabel(nextAction.type, 'next')}
+                          </div>
+                          <div className="text-2xl font-serif italic mb-1">{nextAction.title}</div>
+                          <div className="text-sm text-[rgba(26,26,26,0.6)]">{nextAction.description}</div>
+                        </div>
+                        <div className="ml-4 flex items-center gap-3 rounded-full bg-[#1a1a1a] px-6 py-4 text-[#F5F2ED] transition-colors duration-200 group-hover:bg-[rgba(26,26,26,0.88)]">
+                          <span className="text-[12px] uppercase tracking-[0.18em] font-bold">Continue</span>
+                          <ArrowRight className="h-5 w-5" />
+                        </div>
+                      </Link>
+                    ) : <div className="flex-1 hidden md:block" />}
                   </div>
                 </div>
               )}
