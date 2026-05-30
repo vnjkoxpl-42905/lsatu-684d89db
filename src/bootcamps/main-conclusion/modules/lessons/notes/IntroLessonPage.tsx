@@ -637,15 +637,21 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
           <PremiseSystemFrame>
             <PremiseSystemSection tocTitle="Statements Of Fact" className="space-y-9 bg-[linear-gradient(180deg,rgba(255,255,255,0.88)_0%,rgba(255,252,245,0.72)_100%)]">
               <SectionHeading title="Premises" subtitle="Statements of fact" />
-              <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
-                <p>Premises are just the facts. The evidence. They describe how the world is, and on the LSAT, you accept them as true, full stop.</p>
-                <p>
-                  In real life, we argue by attacking each other's evidence all the time. Someone says, "We should cancel the
-                  picnic because the park is flooded and the weather is supposed to be terrible." You might say, "The park is
-                  completely dry, and the forecast says it will be clear all afternoon." You are not questioning their
-                  conclusion first. You are attacking the facts they used to support it.
-                </p>
+              
+              <QuoteCard className="bg-[#FBF8F1] pr-6">
+                <p className="font-semibold text-lg text-[#1a1a1a]">Premises are just the facts. The evidence.</p>
+                <p className="text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">They describe how the world is, and on the LSAT, you accept them as true, full stop.</p>
+              </QuoteCard>
+
+              <div className="space-y-6 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
+                <p className="font-medium text-[#1a1a1a]">In real life, we attack the facts:</p>
+                <div className="border-l-4 border-[#E8D08B] pl-6 py-2 space-y-3">
+                    <p className="italic text-gray-700">"We should cancel the picnic because the park is flooded."</p>
+                    <p className="font-semibold text-[#1a1a1a]">"Actually, the park is dry and the forecast is clear."</p>
+                </div>
+                <p>You are attacking the facts they used to support the conclusion, not just the conclusion itself.</p>
               </div>
+              
               <PremiseRememberCallout>
                 <p>On the LSAT, premises are given. Accept them as true, then ask what they are being used to support.</p>
               </PremiseRememberCallout>
