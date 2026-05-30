@@ -744,56 +744,6 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         <LessonSection tocTitle="Conclusion Indicators" className="space-y-8">
           <SectionHeading title="Conclusion Indicator Lab" />
           <ConclusionIndicatorLab />
-
-          <XRayExample
-            title="Same argument, different packaging"
-            description="One version labels the conclusion directly. The other labels the premises instead. The structure stays the same."
-            focusModes={[
-              { id: "version-a", label: "Version A" },
-              { id: "version-b", label: "Version B" },
-              { id: "conclusion", label: "Conclusion" },
-            ]}
-            blocks={[
-              {
-                id: "bridge-a-premise",
-                label: "Premise region",
-                tone: "premise",
-                tags: ["version-a"],
-                content: (
-                  <em>The old bridge has started to crack, and engineers have warned that it is no longer safe.</em>
-                ),
-              },
-              {
-                id: "bridge-a-conclusion",
-                label: "Indicator + conclusion",
-                tone: "conclusion",
-                tags: ["version-a", "conclusion"],
-                content: (
-                  <em>
-                    <strong>Therefore</strong>, the city should repair the bridge.
-                  </em>
-                ),
-              },
-              {
-                id: "bridge-b-premise",
-                label: "Indicator + premise",
-                tone: "premise",
-                tags: ["version-b"],
-                content: (
-                  <em>
-                    <strong>Since</strong> the old bridge has started to crack and engineers have warned that it is no longer safe,
-                  </em>
-                ),
-              },
-              {
-                id: "bridge-b-conclusion",
-                label: "Conclusion region",
-                tone: "conclusion",
-                tags: ["version-b", "conclusion"],
-                content: <em>the city should repair the bridge.</em>,
-              },
-            ]}
-          />
           <InteractiveCard prominent className="bg-[#FFFDFC] p-6 md:p-8">
             <div className="space-y-5">
               <div className="space-y-2">
