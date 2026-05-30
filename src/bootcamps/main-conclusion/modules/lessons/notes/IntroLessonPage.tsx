@@ -10,6 +10,7 @@ import {
   PremiseIndicatorLab,
   SupportSimulator,
   XRayExample,
+  ConclusionIndicatorLab,
 } from "./NoteInteractions";
 import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
