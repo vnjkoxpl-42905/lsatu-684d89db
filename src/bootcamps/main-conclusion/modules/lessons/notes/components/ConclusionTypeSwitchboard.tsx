@@ -152,9 +152,9 @@ export function ConclusionTypeSwitchboard() {
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,26,26,0.18)] focus-visible:ring-offset-2",
                       !submitted &&
                         "border-[rgba(26,26,26,0.10)] bg-white hover:-translate-y-[1px] hover:border-[rgba(26,26,26,0.18)] hover:shadow-[0_14px_28px_rgba(26,26,26,0.06)]",
-                      checked && !submitted && "border-[#C7D9E8] bg-[#F8FBFE]",
-                      isCorrect && "border-[#B9D6B4] bg-[#F6FBF3]",
-                      isWrongPick && "border-[#E6D6B2] bg-[#FEFBF2]",
+                      checked && !submitted && "border-[var(--role-conclusion)] bg-[#F0FDF4]",
+                      isCorrect && "border-[var(--role-conclusion)] bg-[#F0FDF4]",
+                      isWrongPick && "border-[var(--state-error)] bg-[#FEF2F2]",
                       submitted && !isCorrect && !isWrongPick && "border-[rgba(26,26,26,0.08)] bg-[rgba(26,26,26,0.02)]",
                     )}
                   >
