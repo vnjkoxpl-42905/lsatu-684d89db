@@ -915,6 +915,12 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     subtitle: "The mindset shift: separating the argument from context, opposition, concessions, and pivots.",
     content: (
       <>
+import { motion } from 'framer-motion';
+
+// ... (existing imports, assuming framer-motion is already available as a project dependency)
+
+// ... (re-implementing inside the existing structure)
+
         <LessonSection tocTitle="Big Picture Overview" className="space-y-8">
           <SectionHeading title="Big Picture Overview" subtitle="Not every sentence belongs to the argument" />
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
@@ -926,9 +932,14 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
 
         <LessonSection tocTitle="The Core Rule" className="space-y-8 border-b-0">
           <SectionHeading title="The Core Rule" subtitle="Ask what job the sentence is doing" />
-          <div className="font-mono text-aspiring-gold bg-surface-elev rounded-sm px-2 py-1 inline-block">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="font-mono text-aspiring-gold bg-surface-elev rounded-sm px-2 py-1 inline-block"
+          >
             <strong>Do not ask what the sentence says. Ask what job it is doing.</strong>
-          </div>
+          </motion.div>
           <div className="space-y-4 font-body-prose text-ink-soft leading-[1.7]">
             <p>A sentence may sound important and still not be the author's conclusion.</p>
             <p>The role matters more than the topic. Your job is to separate the author's argument from everything around it.</p>
