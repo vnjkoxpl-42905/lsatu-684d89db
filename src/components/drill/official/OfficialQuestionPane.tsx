@@ -117,6 +117,16 @@ export default function OfficialQuestionPane({
           eraserMode={highlightMode === "erase"}
           searchTerm={searchTerm}
         />
+        
+        {/* Core Argument Concept */}
+        <div className="mt-8 border-t border-white/5 pt-6">
+          <p className="font-outfit text-sm font-semibold tracking-wide text-ink-bright">
+            <span className="text-aspiring-gold">An argument</span> is the relationship between premises and conclusions!
+          </p>
+          <p className="mt-2 font-outfit text-xs text-ink-faint italic">
+            Without premises, a conclusion has no support.
+          </p>
+        </div>
       </div>
 
       {/* Question column */}
