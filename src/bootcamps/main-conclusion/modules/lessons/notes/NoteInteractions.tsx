@@ -850,3 +850,227 @@ export function XRayExample({
     </InteractiveCard>
   );
 }
+
+type ConclusionIndicatorItem = {
+  id: string;
+  label: string;
+  chipNote: string;
+  functionLabel: string;
+  teachingNote: string;
+  premise: string;
+  conclusion: string;
+};
+
+const conclusionIndicatorItems: ConclusionIndicatorItem[] = [
+  {
+    id: "therefore",
+    label: "Therefore",
+    chipNote: "Claim",
+    functionLabel: "Formal conclusion marker",
+    teachingNote: `"Therefore" signals the author's main claim, drawn from the reasons just given.`,
+    premise: "The old bridge has cracked, and engineers warn it is no longer safe.",
+    conclusion: "the city should repair the bridge.",
+  },
+  {
+    id: "thus",
+    label: "Thus",
+    chipNote: "Result",
+    functionLabel: "Packages the takeaway",
+    teachingNote: `"Thus" packages the conclusion as the natural result of the evidence.`,
+    premise: "Three of the five council members have publicly opposed the new policy.",
+    conclusion: "the policy is unlikely to pass.",
+  },
+  {
+    id: "so",
+    label: "So",
+    chipNote: "Therefore",
+    functionLabel: "Conversational conclusion",
+    teachingNote: `"So" introduces a conclusion in plain, conversational reasoning.`,
+    premise: "It has been raining all morning,",
+    conclusion: "you should bring an umbrella.",
+  },
+  {
+    id: "hence",
+    label: "Hence",
+    chipNote: "Inference",
+    functionLabel: "Formal inference",
+    teachingNote: `"Hence" is a formal way of saying "and so, the conclusion is..."`,
+    premise: "The sample size was extremely small and the controls were inconsistent.",
+    conclusion: "the experiment's results cannot be trusted.",
+  },
+];
+
+export function ConclusionIndicatorLab() {
+  const [pinnedId, setPinnedId] = useState<string | null>(conclusionIndicatorItems[0]?.id ?? null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [responses, setResponses] = useState<Record<string, "premise" | "conclusion" | "background" | null>>({});
+  const reducedMotion = useReducedMotion();
+
+  const activeId = hoveredId ?? pinnedId ?? conclusionIndicatorItems[0]?.id ?? null;
+  const activeItem = conclusionIndicatorItems.find((i) => i.id === activeId) ?? conclusionIndicatorItems[0];
+  const selectedAnswer = activeItem ? responses[activeItem.id] ?? null : null;
+  const hasAnswered = Boolean(selectedAnswer);
+  const isCorrect = selectedAnswer === "conclusion";
+
+  return (
+    <InteractiveCard
+      prominent
+      className="overflow-hidden rounded-[26px] border-[#DFC28D] bg-[linear-gradient(180deg,#FFFEFA_0%,#FCF5E8_100%)] p-5 shadow-[0_24px_50px_rgba(92,67,20,0.08)] md:p-7"
+    >
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Conclusion-Indicator Lab</p>
+          <p className="max-w-3xl text-[18px] leading-[1.7] text-[rgba(26,26,26,0.78)]">
+            Touch each indicator and watch how the author signals their main claim. The phrase after the indicator is the conclusion.
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {conclusionIndicatorItems.map((item) => {
+            const selected = item.id === activeItem.id;
+            const pinned = item.id === pinnedId;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onMouseEnter={() => setHoveredId(item.id)}
+                onMouseLeave={() => setHoveredId((c) => (c === item.id ? null : c))}
+                onFocus={() => setHoveredId(item.id)}
+                onBlur={() => setHoveredId((c) => (c === item.id ? null : c))}
+                onClick={() => setPinnedId((c) => (c === item.id ? null : item.id))}
+                aria-pressed={pinned}
+                className={cn(
+                  "rounded-[22px] border px-4 py-4 text-left transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C89F4D] focus-visible:ring-offset-2",
+                  "hover:-translate-y-[2px] hover:shadow-[0_18px_30px_rgba(92,67,20,0.10)]",
+                  selected
+                    ? "border-[#C89F4D] bg-[linear-gradient(180deg,#FFF9EE_0%,#FFF2D7_100%)] shadow-[0_20px_32px_rgba(116,84,27,0.12)] ring-1 ring-[#E8D1A1]"
+                    : "border-[#E6D6B2] bg-[rgba(255,255,255,0.84)] shadow-[0_8px_18px_rgba(92,67,20,0.05)]",
+                )}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[19px] font-semibold text-[#36250C]">{item.label}</span>
+                  <span
+                    className={cn(
+                      "h-2.5 w-2.5 rounded-full border transition-all duration-200",
+                      selected ? "border-[#C89F4D] bg-[#C89F4D] shadow-[0_0_0_4px_rgba(200,159,77,0.18)]" : "border-[#D8C39A] bg-white",
+                    )}
+                  />
+                </div>
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">{item.chipNote}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={activeItem.id}
+            initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+            animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: reducedMotion ? 0.01 : 0.18, ease: "easeOut" }}
+            className="overflow-hidden rounded-[26px] border border-[#D7B87D] bg-[linear-gradient(180deg,#FFFDF9_0%,#FCF4E6_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_18px_36px_rgba(92,67,20,0.08)]"
+          >
+            <div className="border-b border-[#E5D2AC] px-5 py-5 md:px-6">
+              <div className="space-y-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Active Indicator</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h4 className="font-serif text-[34px] italic leading-none text-[#1D1610]">{activeItem.label}</h4>
+                  <span className="rounded-full border border-[#E1C78F] bg-[#FFF8EA] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7A5920]">
+                    {activeItem.functionLabel}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-5 px-5 py-5 md:px-6 md:py-6">
+              <div className="rounded-[24px] border border-[#24344A] bg-[linear-gradient(180deg,#26364C_0%,#162233_100%)] p-5 shadow-[0_22px_44px_rgba(16,25,38,0.28)]">
+                <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[rgba(248,235,206,0.82)]">
+                  Example sentence
+                </p>
+                <p className="text-[24px] leading-[1.5] text-[#F8F4EC] md:text-[28px]">
+                  <span>{activeItem.premise}</span>{" "}
+                  <span className="rounded-full bg-[#D6A64D] px-3 py-1 text-[#182434] shadow-[0_10px_20px_rgba(214,166,77,0.24)]">
+                    {activeItem.label},
+                  </span>{" "}
+                  <span className="text-[#F6E2B6]">{activeItem.conclusion}</span>
+                </p>
+
+                <div className="mt-4 grid gap-3 md:grid-cols-3">
+                  <div className="rounded-[18px] border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.06)] px-4 py-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#C8D6E8]">Premise</p>
+                    <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.premise}</p>
+                  </div>
+                  <div className="rounded-[18px] border border-[rgba(214,166,77,0.42)] bg-[rgba(214,166,77,0.16)] px-4 py-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#F2D79A]">Indicator</p>
+                    <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.label}</p>
+                  </div>
+                  <div className="rounded-[18px] border border-[rgba(246,226,182,0.34)] bg-[rgba(246,226,182,0.10)] px-4 py-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.20em] text-[#E2C887]">Conclusion</p>
+                    <p className="mt-2 text-[15px] leading-[1.55] text-[#FFF8EA]">{activeItem.conclusion}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
+                <div className="rounded-[22px] border border-[#E3CFAB] bg-[rgba(255,252,245,0.9)] px-5 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.86)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Teaching note</p>
+                  <p className="mt-3 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.78)]">{activeItem.teachingNote}</p>
+                </div>
+
+                <div className="rounded-[22px] border border-[#D7B87D] bg-[linear-gradient(180deg,#FFFDF8_0%,#FDF3E1_100%)] px-5 py-5 shadow-[0_16px_28px_rgba(92,67,20,0.07)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#8B6A2F]">Quick check</p>
+                  <p className="mt-3 text-[17px] leading-[1.6] text-[rgba(26,26,26,0.82)]">
+                    What role does the phrase after the indicator play?
+                  </p>
+                  <div className="mt-4 grid gap-2.5">
+                    {(["premise", "conclusion", "background"] as const).map((option) => {
+                      const selected = selectedAnswer === option;
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => setResponses((c) => ({ ...c, [activeItem.id]: option }))}
+                          className={cn(
+                            "rounded-[16px] border px-4 py-3 text-left text-[15px] font-medium capitalize transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C89F4D] focus-visible:ring-offset-2",
+                            selected
+                              ? "border-[#C89F4D] bg-[#FFF4DE] text-[#5E3F12] shadow-[0_10px_18px_rgba(116,84,27,0.10)]"
+                              : "border-[#E6D6B2] bg-white/90 text-[rgba(26,26,26,0.74)] hover:border-[#D7B87D] hover:bg-[#FFF8EA]",
+                          )}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <AnimatePresence initial={false}>
+                    {hasAnswered ? (
+                      <motion.div
+                        key={`${activeItem.id}-${selectedAnswer}`}
+                        initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                        animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                        exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                        transition={{ duration: reducedMotion ? 0.01 : 0.16, ease: "easeOut" }}
+                        className={cn(
+                          "mt-4 rounded-[16px] border px-4 py-3 text-[15px] leading-[1.65]",
+                          isCorrect
+                            ? "border-[#BDA05C] bg-[#FFF7E4] text-[#5C4216]"
+                            : "border-[#D9C7A7] bg-[#FFFDF8] text-[rgba(26,26,26,0.72)]",
+                        )}
+                      >
+                        {isCorrect
+                          ? "Right. After a conclusion-indicator, the phrase that follows is the author's main claim, supported by the reasons that came before."
+                          : "Not quite. After words like therefore, thus, so, and hence, the phrase that follows is the conclusion — the author's main claim."}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </InteractiveCard>
+  );
+}
+
