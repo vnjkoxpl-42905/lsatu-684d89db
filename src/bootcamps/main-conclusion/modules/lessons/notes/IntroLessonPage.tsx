@@ -818,14 +818,18 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
     content: (
       <>
         <LessonSection tocTitle="Five Types Of Conclusions" className="space-y-8">
-          <SectionHeading title="Five Types of Conclusions" subtitle="What kind of claim is the author making?" />
+          <InteractiveCard prominent className="bg-[#FFFDFC] p-8 border-[#DFC28D]">
+            <h2 className="font-serif text-[32px] font-medium text-[#1a1a1a]">Five Types of Conclusions</h2>
+            <p className="mt-2 text-[18px] text-[rgba(26,26,26,0.78)]">
+              What kind of claim is the author making?
+            </p>
+          </InteractiveCard>
           <div className="space-y-4 text-[18px] leading-[1.7] text-[rgba(26,26,26,0.82)]">
             <p>The argument did not change. Only the packaging did.</p>
             <p>Indicator words are packaging. They can point you toward a conclusion, but they do not tell you what kind of conclusion you are dealing with.</p>
             <p>
               That is the real question:
             </p>
-            <p className="font-serif text-[28px] italic text-[#1a1a1a]">What kind of claim is the author making?</p>
             <p>
               This matters because conclusions are not all built the same way. Some tell us what should happen. Some explain
               why something happened. Some predict what will happen next. Some pass judgment. Some reject another person's
