@@ -15,6 +15,7 @@ import {
 import { PremiseSupportCheck } from "./components/PremiseSupportCheck";
 import { QuestionAnatomyScanner } from "./components/QuestionAnatomyScanner";
 import { ConclusionTypeSwitchboard } from "./components/ConclusionTypeSwitchboard";
+import { ConclusionTypeCard } from "./components/ConclusionTypeCard";
 import { RoleSpotlightSequence } from "./components/RoleSpotlightSequence";
 import { RoleLabeler, type RoleLabelerRole } from "./components/RoleLabeler";
 import { TwoPartConclusionCheckMachine } from "./components/TwoPartConclusionCheckMachine";
@@ -844,67 +845,48 @@ const pages: Record<IntroLessonPageId, PageDefinition> = {
         </LessonSection>
 
         <LessonSection tocTitle="Recommendations" className="space-y-8">
-          <SectionHeading title="1. Recommendations" subtitle="What should happen" />
-          <GridCard title="Recommendation card" prominent>
-            <p><strong>Definition:</strong> A recommendation tells us what should happen.</p>
-            <p><strong>Example:</strong> <em>Double-blind techniques should be used whenever possible in scientific experiments.</em></p>
-            <p><strong>What the author is doing:</strong> Giving advice, proposing a rule, or saying what ought to be done.</p>
-            <p><strong>Common weakness:</strong> The author has to assume the proposal is better than the costs, risks, or alternatives.</p>
-            <p><strong>Student question:</strong> <strong>Why is that the best move?</strong></p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Causal Hypotheses" className="space-y-8">
-          <SectionHeading title="2. Causal Hypotheses" subtitle="What explains it" />
-          <GridCard title="Causal hypothesis card" prominent>
-            <p><strong>Definition:</strong> A causal hypothesis claims to know why something happened.</p>
-            <p><strong>Example:</strong> <em>Restrictions on tobacco advertisements caused the reduction in the number of people smoking.</em></p>
-            <p><strong>What the author is doing:</strong> Turning a pattern, trend, or timing connection into an explanation.</p>
-            <p><strong>Common weakness:</strong> Correlation, timing, or coexistence do not prove cause; something else may explain the result.</p>
-            <p><strong>Student question:</strong> <strong>What else could explain it?</strong></p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Predictions" className="space-y-8">
-          <SectionHeading title="3. Predictions" subtitle="What will happen" />
-          <GridCard title="Prediction card" prominent>
-            <p><strong>Definition:</strong> A prediction claims that something will happen.</p>
-            <p><strong>Example:</strong> <em>Global warming probably will not produce more frequent and intense tropical storms.</em></p>
-            <p><strong>What the author is doing:</strong> Projecting current or past conditions into the future.</p>
-            <p><strong>Common weakness:</strong> Predictions assume the relevant conditions will stay stable, and often they do not.</p>
-            <p><strong>Student question:</strong> <strong>What could change?</strong></p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Judgments And Labels" className="space-y-8">
-          <SectionHeading title="4. Judgments and Labels" subtitle="What verdict is being assigned" />
-          <GridCard title="Judgment / label card" prominent>
-            <p><strong>Definition:</strong> A judgment assigns a verdict or label.</p>
-            <p><strong>Example:</strong> <em>Because the new products are selling poorly, the ad campaign is ill-conceived.</em></p>
-            <p><strong>What the author is doing:</strong> Evaluating, blaming, praising, or attaching a descriptive verdict.</p>
-            <p><strong>Common weakness:</strong> The label sounds strong, but the evidence may not actually prove that the label fits.</p>
-            <p><strong>Student question:</strong> <strong>Did they actually prove that label fits?</strong></p>
-          </GridCard>
-        </LessonSection>
-
-        <LessonSection tocTitle="Rebuttals" className="space-y-8">
-          <SectionHeading title="5. Rebuttals" subtitle="When the author says someone else is wrong" />
-          <GridCard title="Rebuttal card" prominent>
-            <p><strong>Definition:</strong> A rebuttal is the author saying someone else is wrong.</p>
-            <p><strong>Example:</strong> <em>Critics say this movie is unrealistic. They are wrong, because it is a funny comedy and that is all that matters.</em></p>
-            <p><strong>What the author is doing:</strong> Introducing another view, pivoting, and then responding against it.</p>
-            <p><strong>Common weakness:</strong> The author may answer the wrong criticism, reject the other side badly, or never really respond to the point.</p>
-            <p><strong>Student question:</strong> <strong>Did the author actually answer them?</strong></p>
-          </GridCard>
-          <CalloutCard className="bg-white">
-            <NumberList
-              items={[
-                <span><strong>Attribution:</strong> someone else's view is introduced.</span>,
-                <span><strong>Pivot:</strong> the author turns against that view.</span>,
-                <span><strong>Rebuttal:</strong> the author gives their own disagreement.</span>,
-              ]}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ConclusionTypeCard 
+              title="Recommendations"
+              definition="A recommendation tells us what should happen."
+              example="Double-blind techniques should be used whenever possible in scientific experiments."
+              weakness="The author has to assume the proposal is better than the costs, risks, or alternatives."
+              question="Why is that the best move?"
+              colorClass="hover:border-t-[4px] hover:border-t-[#FACC15]"
             />
-          </CalloutCard>
+            <ConclusionTypeCard 
+              title="Causal Hypotheses"
+              definition="A causal hypothesis claims to know why something happened."
+              example="Restrictions on tobacco advertisements caused the reduction in the number of people smoking."
+              weakness="Correlation, timing, or coexistence do not prove cause; something else may explain the result."
+              question="What else could explain it?"
+              colorClass="hover:border-t-[4px] hover:border-t-[#A855F7]"
+            />
+            <ConclusionTypeCard 
+              title="Predictions"
+              definition="A prediction claims that something will happen."
+              example="Global warming probably will not produce more frequent and intense tropical storms."
+              weakness="Predictions assume the relevant conditions will stay stable, and often they do not."
+              question="What could change?"
+              colorClass="hover:border-t-[4px] hover:border-t-[#38BDF8]"
+            />
+            <ConclusionTypeCard 
+              title="Judgments / Labels"
+              definition="A judgment assigns a verdict or label."
+              example="Because the new products are selling poorly, the ad campaign is ill-conceived."
+              weakness="The label sounds strong, but the evidence may not actually prove that the label fits."
+              question="Did they actually prove that label fits?"
+              colorClass="hover:border-t-[4px] hover:border-t-[#10B981]"
+            />
+            <ConclusionTypeCard 
+              title="Rebuttals"
+              definition="A rebuttal is the author saying someone else is wrong."
+              example="Critics say this movie is unrealistic. They are wrong, because it is a funny comedy and that is all that matters."
+              weakness="The author may answer the wrong criticism, reject the other side badly, or never really respond to the point."
+              question="Did the author actually answer them?"
+              colorClass="hover:border-t-[4px] hover:border-t-[#F97316]"
+            />
+          </div>
         </LessonSection>
         
         <LessonSection tocTitle="Interactive Practice" className="space-y-8">
